@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringResponse;
@@ -20,20 +20,20 @@ import reactor.core.publisher.Mono;
 public final class ExtensionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"hvyoma\"}";
+        String responseStr = "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"spzhzmtksjc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMonitoringResponse response = manager.extensions()
-            .getWithResponse("xcy", "hkgmnsg", "pxycphdr", com.azure.core.util.Context.NONE)
+            .getWithResponse("wvmzegjonfhjir", "gdn", "z", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.clusterMonitoringEnabled());
-        Assertions.assertEquals("hvyoma", response.workspaceId());
+        Assertions.assertTrue(response.clusterMonitoringEnabled());
+        Assertions.assertEquals("spzhzmtksjc", response.workspaceId());
     }
 }

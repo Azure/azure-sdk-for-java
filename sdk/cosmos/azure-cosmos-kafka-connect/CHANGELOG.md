@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.6.0-beta.1 (Unreleased)
+### 2.12.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,45 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.11.0 (2026-06-08)
+
+#### Bugs Fixed
+* Fixed per-record error isolation in Kafka sink transformer to honor DLQ and tolerance settings, instead of failing the entire batch when a single record fails during transformation. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
+* Guarded `ErrantRecordReporter.report()` in `CosmosWriterBase` against secondary failures so DLQ errors do not mask original write failures. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
+
+### 2.10.0 (2026-05-01)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.80.0`.
+  
+### 2.9.0 (2026-03-27)
+
+#### Features Added
+* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
+
+### 2.8.0 (2026-01-26)
+
+#### Bugs Fixed
+* Added filtering to deserialization of `"azure.cosmos.client.metadata.caches.snapshot"` - See [PR 47594](https://github.com/Azure/azure-sdk-for-java/pull/47594)
+
+### 2.7.0 (2025-12-09)
+
+#### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 2.6.1 (2025-11-18)
+
+#### Bugs Fixed
+* Fixed duplicate processing in `CosmosSourceConnector` when task rebalance(pause/resume) happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
+
+### 2.6.0 (2025-10-21)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.75.0`.
 
 ### 2.5.1 (2025-08-22)
 

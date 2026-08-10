@@ -12,19 +12,20 @@ public final class UsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Usage model = BinaryData.fromString(
-            "{\"unit\":\"l\",\"currentValue\":4701202797943859637,\"limit\":171678662002400976,\"name\":{\"value\":\"twvogvbbe\",\"localizedValue\":\"cngqqmoakufgmjz\"}}")
+            "{\"unit\":\"gdknnqv\",\"currentValue\":8546326573006782142,\"limit\":796378729484127038,\"name\":{\"value\":\"udsgs\",\"localizedValue\":\"mkycgra\"}}")
             .toObject(Usage.class);
-        Assertions.assertEquals("l", model.unit());
-        Assertions.assertEquals(4701202797943859637L, model.currentValue());
-        Assertions.assertEquals(171678662002400976L, model.limit());
+        Assertions.assertEquals("gdknnqv", model.unit());
+        Assertions.assertEquals(8546326573006782142L, model.currentValue());
+        Assertions.assertEquals(796378729484127038L, model.limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Usage model = new Usage().withUnit("l").withCurrentValue(4701202797943859637L).withLimit(171678662002400976L);
+        Usage model
+            = new Usage().withUnit("gdknnqv").withCurrentValue(8546326573006782142L).withLimit(796378729484127038L);
         model = BinaryData.fromObject(model).toObject(Usage.class);
-        Assertions.assertEquals("l", model.unit());
-        Assertions.assertEquals(4701202797943859637L, model.currentValue());
-        Assertions.assertEquals(171678662002400976L, model.limit());
+        Assertions.assertEquals("gdknnqv", model.unit());
+        Assertions.assertEquals(8546326573006782142L, model.currentValue());
+        Assertions.assertEquals(796378729484127038L, model.limit());
     }
 }

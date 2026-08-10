@@ -93,17 +93,6 @@ public final class MemberUpdateStatus implements JsonSerializable<MemberUpdateSt
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

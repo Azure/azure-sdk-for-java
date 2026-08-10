@@ -13,18 +13,18 @@ public final class RetentionPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyDetails model
-            = BinaryData.fromString("{\"retentionPeriodInDays\":68812306,\"orchestrationState\":\"Failed\"}")
+            = BinaryData.fromString("{\"retentionPeriodInDays\":1022740915,\"orchestrationState\":\"Terminated\"}")
                 .toObject(RetentionPolicyDetails.class);
-        Assertions.assertEquals(68812306, model.retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.FAILED, model.orchestrationState());
+        Assertions.assertEquals(1022740915, model.retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED, model.orchestrationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetentionPolicyDetails model = new RetentionPolicyDetails().withRetentionPeriodInDays(68812306)
-            .withOrchestrationState(PurgeableOrchestrationState.FAILED);
+        RetentionPolicyDetails model = new RetentionPolicyDetails().withRetentionPeriodInDays(1022740915)
+            .withOrchestrationState(PurgeableOrchestrationState.TERMINATED);
         model = BinaryData.fromObject(model).toObject(RetentionPolicyDetails.class);
-        Assertions.assertEquals(68812306, model.retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.FAILED, model.orchestrationState());
+        Assertions.assertEquals(1022740915, model.retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED, model.orchestrationState());
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -66,7 +66,7 @@ public final class ConnectionsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -159,7 +159,9 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     * 
+     * Retrieves the specified connection and its configuration details without including credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -167,11 +169,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -186,8 +188,10 @@ public final class ConnectionsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, without populating connection credentials along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a connection
+     * 
+     * Retrieves the specified connection and its configuration details without including credential values along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConnectionWithResponseAsync(String name, RequestOptions requestOptions) {
@@ -197,7 +201,9 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * Get a connection by name, without populating connection credentials.
+     * Get a connection
+     * 
+     * Retrieves the specified connection and its configuration details without including credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -205,11 +211,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -224,7 +230,10 @@ public final class ConnectionsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, without populating connection credentials along with {@link Response}.
+     * @return a connection
+     * 
+     * Retrieves the specified connection and its configuration details without including credential values along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getConnectionWithResponse(String name, RequestOptions requestOptions) {
@@ -234,7 +243,9 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     * 
+     * Retrieves the specified connection together with its credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -242,11 +253,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -261,7 +272,9 @@ public final class ConnectionsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, with its connection credentials along with {@link Response} on successful
+     * @return a connection with credentials
+     * 
+     * Retrieves the specified connection together with its credential values along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -273,7 +286,9 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * Get a connection by name, with its connection credentials.
+     * Get a connection with credentials
+     * 
+     * Retrieves the specified connection together with its credential values.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -281,11 +296,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -300,7 +315,9 @@ public final class ConnectionsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a connection by name, with its connection credentials along with {@link Response}.
+     * @return a connection with credentials
+     * 
+     * Retrieves the specified connection together with its credential values along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getConnectionWithCredentialsWithResponse(String name, RequestOptions requestOptions) {
@@ -310,15 +327,17 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     * 
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -329,11 +348,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -361,15 +380,17 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     * 
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -380,11 +401,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -410,15 +431,17 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     * 
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -429,11 +452,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -459,15 +482,17 @@ public final class ConnectionsImpl {
     }
 
     /**
-     * List all connections in the project, without populating connection credentials.
+     * List connections
+     * 
+     * Returns the connections available in the current project, optionally filtered by type or default status.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
+     * <tr><td>connectionType</td><td>String</td><td>No</td><td>Lists connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys".</td></tr>
-     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
+     * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>Lists connections that are default
      * connections</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -478,11 +503,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -508,6 +533,8 @@ public final class ConnectionsImpl {
     }
 
     /**
+     * List connections
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -516,11 +543,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -550,6 +577,8 @@ public final class ConnectionsImpl {
     }
 
     /**
+     * List connections
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -558,11 +587,11 @@ public final class ConnectionsImpl {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)

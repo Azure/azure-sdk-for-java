@@ -14,16 +14,19 @@ import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
-import com.azure.communication.callautomation.models.CustomCallingContext.SipHeaderPrefix;
-import com.azure.communication.callautomation.models.MoveParticipantsOptions;
-import com.azure.communication.callautomation.models.MoveParticipantsResult;
+import com.azure.communication.callautomation.models.SipHeaderPrefix;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
+import com.azure.communication.callautomation.models.MoveParticipantsOptions;
+import com.azure.communication.callautomation.models.MoveParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
+import com.azure.communication.common.CommunicationCloudEnvironment;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.exception.HttpResponseException;
@@ -166,6 +169,40 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void transferToParticipantCallMicrosoftTeamsAppIdentifier() {
+        CallConnectionAsync callConnectionAsync
+            = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        TransferCallResult transferCallResult
+            = callConnectionAsync.transferCallToParticipant(teamsAppIdentifier).block();
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
+    public void transferToParticipantCallWithResponseMicrosoftTeamsAppIdentifier() {
+        CallConnectionAsync callConnectionAsync
+            = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        TransferCallToParticipantOptions transferCallToParticipantOptions
+            = new TransferCallToParticipantOptions(teamsAppIdentifier).setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<TransferCallResult> transferCallResultResponse
+            = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
     public void transferToParticipantCallWithResponse() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -183,7 +220,6 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(transferCallResultResponse.getValue());
     }
 
-    @Test
     public void transferToParticipantCallWithResponsePhoneNumberIdentifierXMSHeader() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -194,7 +230,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             = new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT);
         transferCallToParticipantOptions.getCustomCallingContext()
-            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X_MS_CUSTOM);
         Response<TransferCallResult> transferCallResultResponse
             = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
         assertNotNull(transferCallResultResponse);
@@ -252,7 +288,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
                 .setOperationContext(CALL_OPERATION_CONTEXT)
                 .setTransferee(new CommunicationUserIdentifier(CALL_TRANSFEREE_ID));
         transferCallToParticipantOptions.getCustomCallingContext()
-            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+            .addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X_MS_CUSTOM);
         Response<TransferCallResult> transferCallResultResponse
             = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
         assertNotNull(transferCallResultResponse);
@@ -313,6 +349,38 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void addParticipantWithMicrosoftTeamsAppIdentifier() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateAddParticipantsResponse(), 202))))
+                .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        AddParticipantResult addParticipantsResult
+            = callConnectionAsync.addParticipant(new CallInvite(teamsAppIdentifier)).block();
+
+        assertNotNull(addParticipantsResult);
+    }
+
+    @Test
+    public void addParticipantWithResponseMicrosoftTeamsAppIdentifier() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateAddParticipantsResponse(), 202))))
+                .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        AddParticipantOptions addParticipantsOptions
+            = new AddParticipantOptions(new CallInvite(teamsAppIdentifier)).setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<AddParticipantResult> addParticipantsResultResponse
+            = callConnectionAsync.addParticipantWithResponse(addParticipantsOptions).block();
+
+        assertNotNull(addParticipantsResultResponse);
+        assertEquals(202, addParticipantsResultResponse.getStatusCode());
+        assertNotNull(addParticipantsResultResponse.getValue());
+    }
+
+    @Test
     public void removeParticipants() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -342,6 +410,44 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(removeParticipantsResultResponse);
         assertEquals(202, removeParticipantsResultResponse.getStatusCode());
         assertNotNull(removeParticipantsResultResponse.getValue());
+    }
+
+    @Test
+    public void moveParticipants() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateMoveParticipantsResponse(), 202))))
+                .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        List<CommunicationIdentifier> targetParticipants
+            = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        MoveParticipantsResult moveParticipantsResult
+            = callConnectionAsync.moveParticipants(targetParticipants, CALL_FROM_CALL_CONNECTION_ID).block();
+
+        assertNotNull(moveParticipantsResult);
+        assertEquals(CALL_OPERATION_CONTEXT, moveParticipantsResult.getOperationContext());
+        assertEquals(CALL_FROM_CALL_CONNECTION_ID, moveParticipantsResult.getFromCall());
+        assertEquals(CALL_TARGET_ID,
+            ((CommunicationUserIdentifier) moveParticipantsResult.getParticipants().get(0).getIdentifier()).getId());
+    }
+
+    @Test
+    public void moveParticipantsWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateMoveParticipantsResponse(), 202))))
+                .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        List<CommunicationIdentifier> targetParticipants
+            = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        MoveParticipantsOptions moveParticipantsOptions
+            = new MoveParticipantsOptions(targetParticipants, CALL_FROM_CALL_CONNECTION_ID)
+                .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<MoveParticipantsResult> moveParticipantsResultResponse
+            = callConnectionAsync.moveParticipantsWithResponse(moveParticipantsOptions).block();
+
+        assertNotNull(moveParticipantsResultResponse);
+        assertEquals(202, moveParticipantsResultResponse.getStatusCode());
+        assertNotNull(moveParticipantsResultResponse.getValue());
+        assertEquals(CALL_FROM_CALL_CONNECTION_ID, moveParticipantsResultResponse.getValue().getFromCall());
     }
 
     @Test
@@ -428,46 +534,5 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(response);
         assertEquals(202, response.getStatusCode());
         assertNotNull(response.getValue());
-    }
-
-    @Test
-    public void moveParticipants() {
-        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
-            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateMoveParticipantsResponse(), 202))))
-                .getCallConnectionAsync(CALL_CONNECTION_ID);
-
-        MoveParticipantsResult moveParticipantsResult
-            = callConnectionAsync
-                .moveParticipants(
-                    new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))),
-                    FROM_CALL_CONNECTION_ID)
-                .block();
-
-        assertNotNull(moveParticipantsResult);
-        assertNotNull(moveParticipantsResult.getParticipants());
-        assertEquals(1, moveParticipantsResult.getParticipants().size());
-        assertEquals(CALL_TARGET_ID,
-            ((CommunicationUserIdentifier) moveParticipantsResult.getParticipants().get(0).getIdentifier()).getId());
-        assertEquals(FROM_CALL_CONNECTION_ID, moveParticipantsResult.getFromCall());
-    }
-
-    @Test
-    public void moveParticipantsWithResponse() {
-        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(
-            new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateMoveParticipantsResponse(), 202))))
-                .getCallConnectionAsync(CALL_CONNECTION_ID);
-
-        MoveParticipantsOptions moveParticipantsOptions = new MoveParticipantsOptions(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))),
-            FROM_CALL_CONNECTION_ID).setOperationContext(CALL_OPERATION_CONTEXT);
-
-        Response<MoveParticipantsResult> moveParticipantsResultResponse
-            = callConnectionAsync.moveParticipantsWithResponse(moveParticipantsOptions).block();
-
-        assertNotNull(moveParticipantsResultResponse);
-        assertEquals(202, moveParticipantsResultResponse.getStatusCode());
-        assertNotNull(moveParticipantsResultResponse.getValue());
-        assertEquals(FROM_CALL_CONNECTION_ID, moveParticipantsResultResponse.getValue().getFromCall());
-        assertEquals(CALL_OPERATION_CONTEXT, moveParticipantsResultResponse.getValue().getOperationContext());
     }
 }

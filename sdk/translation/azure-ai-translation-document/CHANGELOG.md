@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,77 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0 (2026-07-06)
+
+### Features Added
+
+- Added support for the `2026-03-01` service API version, which is now the default.
+- Added image translation support:
+  - Added the `BatchOptions` model with the `translateTextWithinImage` property, and the `options` property on `TranslationBatch`, to enable translation of text embedded within images for batch requests.
+  - Added `beginTranslation(List<DocumentTranslationInput>, Boolean)` convenience overloads to `DocumentTranslationClient` and `DocumentTranslationAsyncClient` to enable batch image translation without constructing a `TranslationBatch`/`BatchOptions`.
+  - Added the `translateTextWithinImage` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document requests.
+  - Added image scan reporting to `DocumentStatusResult`: `imageCharacterDetectedCount`, `imageChargedCount`, `totalImageScansSucceededCount`, and `totalImageScansFailedCount`.
+  - Added image scan totals to `TranslationStatusSummary`: `totalImageScansSucceededCount`, `totalImageScansFailedCount`, and `totalImagesChargedCount`.
+- Added custom translation model support:
+  - Added the `deploymentName` property to `TranslationTarget` to specify the deployment name of the custom translation model for a batch translation request.
+  - Added the `deploymentName` property to `DocumentStatusResult`, exposing the deployment name of the custom translation model used for the translation.
+  - Added the `deploymentName` parameter to `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` for single document translation requests.
+- Added the `DocumentTranslateOptions` model and `translate(String, DocumentTranslateContent, DocumentTranslateOptions)` convenience overloads to `SingleDocumentTranslationClient` and `SingleDocumentTranslationAsyncClient`, grouping the optional `sourceLanguage`, `category`, `deploymentName`, `allowFallback`, and `translateTextWithinImage` settings into a single options bag.
+
+### Breaking Changes
+
+- Renamed `DocumentStatusResult.getCharacterCharged()` to `getCharacterChargedCount()` for naming consistency with the other count properties. Existing callers must update to the new method name.
+- Replaced the `SingleDocumentTranslationClient.translate` and `SingleDocumentTranslationAsyncClient.translate` convenience overload `translate(String, DocumentTranslateContent, String, String, Boolean)` with `translate(String, DocumentTranslateContent, String, String, String, Boolean, Boolean)`, adding the `deploymentName` and `translateTextWithinImage` parameters (positioned after `category` and `allowFallback` respectively). Existing callers of the previous overload must update their call sites to the new signature.
+- Made the `type` parameter required on `getSupportedFormats`, matching the service contract. Removed the no-argument `getSupportedFormats()` overload from `DocumentTranslationClient` and `DocumentTranslationAsyncClient`; callers must now pass a `FileFormatType` (for example, `getSupportedFormats(FileFormatType.DOCUMENT)`).
+- Changed the underlying values of `FileFormatType.DOCUMENT` and `FileFormatType.GLOSSARY` from `document`/`glossary` to `Document`/`Glossary` to match the service. The enum constant names are unchanged.
+
+## 1.0.9 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
+## 1.0.8 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 1.0.7 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 1.0.6 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 1.0.5 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
 ## 1.0.4 (2025-08-21)
 
@@ -19,7 +90,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 
-
 ## 1.0.3 (2025-07-29)
 
 ### Other Changes
@@ -28,7 +98,6 @@
 
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
-
 
 ## 1.0.2 (2025-06-19)
 
@@ -39,7 +108,6 @@
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
 
-
 ## 1.0.1 (2025-03-24)
 
 ### Other Changes
@@ -49,7 +117,6 @@
 - Upgraded `azure-json` from `1.3.0` to version `1.5.0`.
 - Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.11`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.3`.
-
 
 ## 1.0.0 (2024-11-20)
 

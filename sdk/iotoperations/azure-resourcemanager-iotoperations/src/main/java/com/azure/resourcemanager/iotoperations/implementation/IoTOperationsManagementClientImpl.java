@@ -26,16 +26,21 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.iotoperations.fluent.AkriConnectorTemplatesClient;
+import com.azure.resourcemanager.iotoperations.fluent.AkriConnectorsClient;
+import com.azure.resourcemanager.iotoperations.fluent.AkriServicesClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerAuthenticationsClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerAuthorizationsClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokerListenersClient;
 import com.azure.resourcemanager.iotoperations.fluent.BrokersClient;
 import com.azure.resourcemanager.iotoperations.fluent.DataflowEndpointsClient;
+import com.azure.resourcemanager.iotoperations.fluent.DataflowGraphsClient;
 import com.azure.resourcemanager.iotoperations.fluent.DataflowProfilesClient;
 import com.azure.resourcemanager.iotoperations.fluent.DataflowsClient;
 import com.azure.resourcemanager.iotoperations.fluent.InstancesClient;
 import com.azure.resourcemanager.iotoperations.fluent.IoTOperationsManagementClient;
 import com.azure.resourcemanager.iotoperations.fluent.OperationsClient;
+import com.azure.resourcemanager.iotoperations.fluent.RegistryEndpointsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -261,6 +266,76 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
     }
 
     /**
+     * The DataflowGraphsClient object to access its operations.
+     */
+    private final DataflowGraphsClient dataflowGraphs;
+
+    /**
+     * Gets the DataflowGraphsClient object to access its operations.
+     * 
+     * @return the DataflowGraphsClient object.
+     */
+    public DataflowGraphsClient getDataflowGraphs() {
+        return this.dataflowGraphs;
+    }
+
+    /**
+     * The RegistryEndpointsClient object to access its operations.
+     */
+    private final RegistryEndpointsClient registryEndpoints;
+
+    /**
+     * Gets the RegistryEndpointsClient object to access its operations.
+     * 
+     * @return the RegistryEndpointsClient object.
+     */
+    public RegistryEndpointsClient getRegistryEndpoints() {
+        return this.registryEndpoints;
+    }
+
+    /**
+     * The AkriConnectorTemplatesClient object to access its operations.
+     */
+    private final AkriConnectorTemplatesClient akriConnectorTemplates;
+
+    /**
+     * Gets the AkriConnectorTemplatesClient object to access its operations.
+     * 
+     * @return the AkriConnectorTemplatesClient object.
+     */
+    public AkriConnectorTemplatesClient getAkriConnectorTemplates() {
+        return this.akriConnectorTemplates;
+    }
+
+    /**
+     * The AkriConnectorsClient object to access its operations.
+     */
+    private final AkriConnectorsClient akriConnectors;
+
+    /**
+     * Gets the AkriConnectorsClient object to access its operations.
+     * 
+     * @return the AkriConnectorsClient object.
+     */
+    public AkriConnectorsClient getAkriConnectors() {
+        return this.akriConnectors;
+    }
+
+    /**
+     * The AkriServicesClient object to access its operations.
+     */
+    private final AkriServicesClient akriServices;
+
+    /**
+     * Gets the AkriServicesClient object to access its operations.
+     * 
+     * @return the AkriServicesClient object.
+     */
+    public AkriServicesClient getAkriServices() {
+        return this.akriServices;
+    }
+
+    /**
      * Initializes an instance of IoTOperationsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -277,7 +352,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01";
+        this.apiVersion = "2026-03-01";
         this.operations = new OperationsClientImpl(this);
         this.instances = new InstancesClientImpl(this);
         this.brokers = new BrokersClientImpl(this);
@@ -287,6 +362,11 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
         this.dataflowProfiles = new DataflowProfilesClientImpl(this);
         this.dataflows = new DataflowsClientImpl(this);
         this.dataflowEndpoints = new DataflowEndpointsClientImpl(this);
+        this.dataflowGraphs = new DataflowGraphsClientImpl(this);
+        this.registryEndpoints = new RegistryEndpointsClientImpl(this);
+        this.akriConnectorTemplates = new AkriConnectorTemplatesClientImpl(this);
+        this.akriConnectors = new AkriConnectorsClientImpl(this);
+        this.akriServices = new AkriServicesClientImpl(this);
     }
 
     /**
@@ -400,7 +480,7 @@ public final class IoTOperationsManagementClientImpl implements IoTOperationsMan
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

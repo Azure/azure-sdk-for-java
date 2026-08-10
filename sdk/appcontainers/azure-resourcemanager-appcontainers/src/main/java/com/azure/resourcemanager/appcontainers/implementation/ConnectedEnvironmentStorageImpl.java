@@ -64,18 +64,14 @@ public final class ConnectedEnvironmentStorageImpl
     public ConnectedEnvironmentStorage create() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectedEnvironmentStorage create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context);
         return this;
     }
 
@@ -93,18 +89,14 @@ public final class ConnectedEnvironmentStorageImpl
     public ConnectedEnvironmentStorage apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ConnectedEnvironmentStorage apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironmentsStorages()
-            .createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, connectedEnvironmentName, storageName, this.innerModel(), context);
         return this;
     }
 

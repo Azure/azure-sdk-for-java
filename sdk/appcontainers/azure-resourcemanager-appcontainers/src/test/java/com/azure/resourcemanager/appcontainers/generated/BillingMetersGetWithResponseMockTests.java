@@ -21,7 +21,7 @@ public final class BillingMetersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"vuicp\",\"properties\":{\"category\":\"rrmhwrbfdp\",\"meterType\":\"lubhvjg\",\"displayName\":\"ocu\"},\"id\":\"lw\",\"name\":\"hmem\",\"type\":\"ooclutnp\"}]}";
+            = "{\"value\":[{\"location\":\"ycsxzu\",\"properties\":{\"category\":\"rlsmdesqplpvmjc\",\"meterType\":\"ewbidyvteowxv\",\"displayName\":\"iudeu\"},\"id\":\"sxze\",\"name\":\"paxwkufyk\",\"type\":\"vuhx\"},{\"location\":\"mrutznabaobnsluj\",\"properties\":{\"category\":\"tymkmvguihywart\",\"meterType\":\"phkixkykxdssjpe\",\"displayName\":\"ucfx\"},\"id\":\"kkflrmymyincqlhr\",\"name\":\"s\",\"type\":\"sl\"},{\"location\":\"iiovgqcgxu\",\"properties\":{\"category\":\"kctotiowlxteq\",\"meterType\":\"tjgwdtguk\",\"displayName\":\"nblwphqlkcc\"},\"id\":\"gygqwah\",\"name\":\"iul\",\"type\":\"gniiprglvaw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class BillingMetersGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BillingMeterCollection response
-            = manager.billingMeters().getWithResponse("pjrtws", com.azure.core.util.Context.NONE).getValue();
+            = manager.billingMeters().getWithResponse("ukklelss", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("vuicp", response.value().get(0).location());
-        Assertions.assertEquals("rrmhwrbfdp", response.value().get(0).properties().category());
-        Assertions.assertEquals("lubhvjg", response.value().get(0).properties().meterType());
-        Assertions.assertEquals("ocu", response.value().get(0).properties().displayName());
+        Assertions.assertEquals("ycsxzu", response.value().get(0).location());
+        Assertions.assertEquals("rlsmdesqplpvmjc", response.value().get(0).properties().category());
+        Assertions.assertEquals("ewbidyvteowxv", response.value().get(0).properties().meterType());
+        Assertions.assertEquals("iudeu", response.value().get(0).properties().displayName());
     }
 }

@@ -11,12 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableSolutionTemplateVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableSolutionTemplateVersion model = BinaryData
-            .fromString(
-                "{\"solutionTemplateVersion\":\"kl\",\"latestConfigRevision\":\"dxbjhwuaanozj\",\"isConfigured\":true}")
+        AvailableSolutionTemplateVersion model = BinaryData.fromString(
+            "{\"solutionTemplateVersion\":\"ifrvtpu\",\"latestConfigRevision\":\"ujmqlgkfbtndoa\",\"isConfigured\":false}")
             .toObject(AvailableSolutionTemplateVersion.class);
-        Assertions.assertEquals("kl", model.solutionTemplateVersion());
-        Assertions.assertEquals("dxbjhwuaanozj", model.latestConfigRevision());
-        Assertions.assertTrue(model.isConfigured());
+        Assertions.assertEquals("ifrvtpu", model.solutionTemplateVersion());
+        Assertions.assertEquals("ujmqlgkfbtndoa", model.latestConfigRevision());
+        Assertions.assertFalse(model.isConfigured());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -75,24 +74,6 @@ public final class DateRange implements JsonSerializable<DateRange> {
         this.end = end;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (start() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property start in model DateRange"));
-        }
-        if (end() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property end in model DateRange"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DateRange.class);
 
     /**
      * {@inheritDoc}

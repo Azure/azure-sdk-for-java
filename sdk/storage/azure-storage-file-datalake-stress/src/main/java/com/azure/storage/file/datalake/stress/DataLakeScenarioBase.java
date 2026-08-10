@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
@@ -14,17 +15,22 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
-import com.azure.storage.stress.TelemetryHelper;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import com.azure.storage.stress.TelemetryHelper;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
 public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String FILE_SYSTEM_NAME = "stress-" + UUID.randomUUID();
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeScenarioBase.class);
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final DataLakeFileSystemClient syncFileSystemClient;
     private final DataLakeFileSystemAsyncClient asyncFileSystemClient;
@@ -72,8 +78,84 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
-        return asyncNoFaultFileSystemClient.deleteIfExists()
+        return cleanupFileSystemWithRetry()
+            .onErrorResume(error -> {
+                // Log cleanup failure but don't fail the overall test
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("FileSystem cleanup failed");
+
+                return Mono.empty();
+            })
             .then(super.globalCleanupAsync());
+    }
+
+    private static final int DELETE_TIMEOUT_SECONDS = 30;
+    private static final int PATH_CLEANUP_TIMEOUT_SECONDS = 60;
+    private static final int MAX_RETRY_ATTEMPTS = 3;
+
+    private Mono<Void> cleanupFileSystemWithRetry() {
+        return tryDeleteFileSystem()
+            .onErrorResume(error -> fallbackCleanup());
+    }
+
+    private Mono<Void> tryDeleteFileSystem() {
+        return asyncNoFaultFileSystemClient.deleteIfExists()
+            .then()
+            .timeout(Duration.ofSeconds(DELETE_TIMEOUT_SECONDS))
+            .retry(MAX_RETRY_ATTEMPTS);
+    }
+
+    private Mono<Void> fallbackCleanup() {
+        return deleteAllPathsInFileSystem()
+            .then(tryDeleteFileSystemOnce())
+            .onErrorResume(this::logCleanupFailure);
+    }
+
+    private Mono<Void> tryDeleteFileSystemOnce() {
+        return asyncNoFaultFileSystemClient.deleteIfExists()
+            .then()
+            .timeout(Duration.ofSeconds(DELETE_TIMEOUT_SECONDS));
+    }
+
+    private Mono<Void> logCleanupFailure(Throwable error) {
+        LOGGER.atWarning()
+            .addKeyValue("error", error.getMessage())
+            .log("Final file system cleanup failed after retries");
+        return Mono.empty();
+    }
+
+    /**
+     * Deletes all paths in the file system sequentially to avoid throttling.
+     */
+    private Mono<Void> deleteAllPathsInFileSystem() {
+        return asyncNoFaultFileSystemClient.listPaths()
+            .concatMap(this::deletePathQuietly)
+            .then()
+            .timeout(Duration.ofSeconds(PATH_CLEANUP_TIMEOUT_SECONDS))
+            .onErrorResume(error -> {
+                LOGGER.atWarning()
+                    .addKeyValue("error", error.getMessage())
+                    .log("Path cleanup partially failed");
+                return Mono.empty();
+            });
+    }
+
+    private Mono<Void> deletePathQuietly(com.azure.storage.file.datalake.models.PathItem pathItem) {
+        DataLakePathDeleteOptions deleteOptions = new DataLakePathDeleteOptions();
+        deleteOptions.setIsRecursive(true);
+
+        if (pathItem.isDirectory()) {
+            return asyncNoFaultFileSystemClient.getDirectoryAsyncClient(pathItem.getName())
+                .deleteIfExistsWithResponse(deleteOptions)
+                .onErrorResume(e -> Mono.empty())
+                .then();
+        } else {
+            return asyncNoFaultFileSystemClient.getFileAsyncClient(pathItem.getName())
+                .deleteIfExists()
+                .onErrorResume(e -> Mono.empty())
+                .then();
+        }
     }
 
     @SuppressWarnings("try")
@@ -86,10 +168,15 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     @Override
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .onErrorResume(e -> Mono.empty());
+            .retryWhen(reactor.util.retry.Retry.max(3)
+                .filter(e -> !(Exceptions.unwrap(e) instanceof ContentMismatchException)))
+            .doOnError(e -> LOGGER.atWarning()
+                .addKeyValue("error", e.getMessage())
+                .log("DataLake test operation failed after retries"));
     }
 
     protected abstract void runInternal(Context context) throws Exception;
+
     protected abstract Mono<Void> runInternalAsync(Context context);
 
     protected DataLakeFileSystemClient getSyncFileSystemClient() {

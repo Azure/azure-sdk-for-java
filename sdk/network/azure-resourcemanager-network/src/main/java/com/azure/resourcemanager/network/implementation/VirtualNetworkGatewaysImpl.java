@@ -36,7 +36,7 @@ public class VirtualNetworkGatewaysImpl extends
     // TODO: Test this
     @Override
     public PagedFlux<VirtualNetworkGateway> listAsync() {
-        return PagedConverter
+        return PagedConverterForMergedPagedFlux
             .mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
                 rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }

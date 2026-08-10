@@ -16,7 +16,15 @@ package com.azure.cosmos.implementation;
  */
 public enum UserAgentFeatureFlags {
     PerPartitionAutomaticFailover(1),
-    PerPartitionCircuitBreaker(1 << 1);
+    PerPartitionCircuitBreaker(1 << 1),
+    ThinClient(1 << 2),
+    // BinaryEncoding(1 << 3),
+    Http2(1 << 4),
+    RegionScopedSessionCapturing(1 << 5),
+    // Bit 6 (1 << 6) is reserved in the Java SDK for HTTP/2 PING keepalive health.
+    // Cross-SDK reservation in .NET (UserAgentFeatureFlags.cs) will be tracked
+    // separately and is not a blocker for surfacing this flag in Java telemetry.
+    Http2PingHealth(1 << 6);
 
     private final int value;
 

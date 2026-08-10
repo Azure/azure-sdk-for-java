@@ -30,12 +30,8 @@ public final class ManagedAzResiliencyStatusesImpl implements ManagedAzResilienc
         Context context) {
         Response<ManagedAzResiliencyStatusInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedAzResiliencyStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedAzResiliencyStatusImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedAzResiliencyStatus get(String resourceGroupName, String clusterName) {

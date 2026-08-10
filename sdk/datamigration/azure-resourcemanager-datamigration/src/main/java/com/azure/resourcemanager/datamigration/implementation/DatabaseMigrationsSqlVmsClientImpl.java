@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.datamigration.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -116,6 +117,28 @@ public final class DatabaseMigrationsSqlVmsClientImpl implements DatabaseMigrati
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseMigrationSqlVmInner parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
+            @PathParam("targetDbName") String targetDbName, @QueryParam("force") Boolean force,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
+            @PathParam("targetDbName") String targetDbName, @QueryParam("force") Boolean force,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cancel")
@@ -577,6 +600,336 @@ public final class DatabaseMigrationsSqlVmsClientImpl implements DatabaseMigrati
         String targetDbName, DatabaseMigrationSqlVmInner parameters, Context context) {
         return beginCreateOrUpdate(resourceGroupName, sqlVirtualMachineName, targetDbName, parameters, context)
             .getFinalResult();
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, String targetDbName, Boolean force) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlVirtualMachineName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                targetDbName, force, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName, Boolean force) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlVirtualMachineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName, targetDbName,
+            force, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName, Boolean force, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlVirtualMachineName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName, targetDbName,
+            force, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatabaseMigrationSqlVmInner>, DatabaseMigrationSqlVmInner>
+        beginDeleteAsync(String resourceGroupName, String sqlVirtualMachineName, String targetDbName, Boolean force) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineName, targetDbName, force);
+        return this.client.<DatabaseMigrationSqlVmInner, DatabaseMigrationSqlVmInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatabaseMigrationSqlVmInner.class, DatabaseMigrationSqlVmInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatabaseMigrationSqlVmInner>, DatabaseMigrationSqlVmInner>
+        beginDeleteAsync(String resourceGroupName, String sqlVirtualMachineName, String targetDbName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineName, targetDbName, force);
+        return this.client.<DatabaseMigrationSqlVmInner, DatabaseMigrationSqlVmInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatabaseMigrationSqlVmInner.class, DatabaseMigrationSqlVmInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DatabaseMigrationSqlVmInner>, DatabaseMigrationSqlVmInner>
+        beginDelete(String resourceGroupName, String sqlVirtualMachineName, String targetDbName, Boolean force) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, sqlVirtualMachineName, targetDbName, force);
+        return this.client.<DatabaseMigrationSqlVmInner, DatabaseMigrationSqlVmInner>getLroResult(response,
+            DatabaseMigrationSqlVmInner.class, DatabaseMigrationSqlVmInner.class, Context.NONE);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DatabaseMigrationSqlVmInner>, DatabaseMigrationSqlVmInner>
+        beginDelete(String resourceGroupName, String sqlVirtualMachineName, String targetDbName) {
+        final Boolean force = null;
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, sqlVirtualMachineName, targetDbName, force);
+        return this.client.<DatabaseMigrationSqlVmInner, DatabaseMigrationSqlVmInner>getLroResult(response,
+            DatabaseMigrationSqlVmInner.class, DatabaseMigrationSqlVmInner.class, Context.NONE);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DatabaseMigrationSqlVmInner>, DatabaseMigrationSqlVmInner> beginDelete(
+        String resourceGroupName, String sqlVirtualMachineName, String targetDbName, Boolean force, Context context) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, sqlVirtualMachineName, targetDbName, force, context);
+        return this.client.<DatabaseMigrationSqlVmInner, DatabaseMigrationSqlVmInner>getLroResult(response,
+            DatabaseMigrationSqlVmInner.class, DatabaseMigrationSqlVmInner.class, context);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DatabaseMigrationSqlVmInner> deleteAsync(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName, Boolean force) {
+        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName, targetDbName, force).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DatabaseMigrationSqlVmInner> deleteAsync(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName) {
+        final Boolean force = null;
+        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName, targetDbName, force).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseMigrationSqlVmInner delete(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName) {
+        final Boolean force = null;
+        return beginDelete(resourceGroupName, sqlVirtualMachineName, targetDbName, force).getFinalResult();
+    }
+
+    /**
+     * Delete Database Migration resource.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName The sqlVirtualMachineName parameter.
+     * @param targetDbName The name of the target database.
+     * @param force Optional force delete boolean. If this is provided as true, migration will be deleted even if
+     * active.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Virtual Machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseMigrationSqlVmInner delete(String resourceGroupName, String sqlVirtualMachineName,
+        String targetDbName, Boolean force, Context context) {
+        return beginDelete(resourceGroupName, sqlVirtualMachineName, targetDbName, force, context).getFinalResult();
     }
 
     /**

@@ -23,7 +23,7 @@ public final class TargetsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"kwcegyamlbn\",\"displayName\":\"eqacjjvpilguooq\",\"contextId\":\"agmdit\",\"targetSpecification\":{},\"capabilities\":[\"iookjbsah\",\"tdtpdelqacslmo\",\"oebn\"],\"hierarchyLevel\":\"xofvcjk\",\"status\":{\"lastModified\":\"2021-04-17T05:22:10Z\",\"deployed\":781083421,\"expectedRunningJobId\":1982278594,\"runningJobId\":1368173114,\"status\":\"w\",\"statusDetails\":\"mdujtmvcopexcm\",\"generation\":1949452896,\"targetStatuses\":[{\"name\":\"hlkyqltqsrog\",\"status\":\"wkffdjkt\",\"componentStatuses\":[{},{}]}]},\"solutionScope\":\"dfvclglxnfu\",\"state\":\"active\",\"provisioningState\":\"Canceled\"},\"eTag\":\"sqo\",\"extendedLocation\":{\"name\":\"fikayiansharujtj\",\"type\":\"CustomLocation\"},\"location\":\"fzyjqt\",\"tags\":{\"qqekewvnqvcdlgu\":\"kpqhjpenuygbq\",\"nlaxpunjqikcz\":\"ucmfdj\",\"xmfcsserxhtv\":\"vitac\",\"tsjgqrsx\":\"oxhlw\"},\"id\":\"p\",\"name\":\"uuuybnchrsziz\",\"type\":\"yuel\"}";
+            = "{\"properties\":{\"description\":\"lmknbnxwcdom\",\"displayName\":\"pvfqawz\",\"contextId\":\"gbrt\",\"targetSpecification\":{},\"capabilities\":[\"aclkiexhajlfnt\"],\"hierarchyLevel\":\"iqfyuttdi\",\"status\":{\"lastModified\":\"2021-09-07T21:32:41Z\",\"deployed\":149960086,\"expectedRunningJobId\":1375874232,\"runningJobId\":714698861,\"status\":\"xkyctwwgzwx\",\"statusDetails\":\"mecvogygzyvneeza\",\"generation\":390965858,\"targetStatuses\":[{\"name\":\"oqqtl\",\"status\":\"hzbkrkjj\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"qnvhnqoe\",\"status\":\"ogiyetes\",\"componentStatuses\":[{},{},{}]},{\"name\":\"dbztjhqtfbov\",\"status\":\"nkbw\",\"componentStatuses\":[{},{},{}]}]},\"solutionScope\":\"uhpsprkzyaupia\",\"state\":\"active\",\"provisioningState\":\"Deleting\"},\"eTag\":\"bwqroohtuovm\",\"extendedLocation\":{\"name\":\"nur\",\"type\":\"EdgeZone\"},\"location\":\"mghihp\",\"tags\":{\"sjuscvsfxigctmg\":\"mslclblyjxlt\",\"zqccydrtce\":\"uupb\",\"eq\":\"kdqkkyihzt\",\"ecfehuwa\":\"gqzgwldoychill\"},\"id\":\"a\",\"name\":\"uhicqllizstacsjv\",\"type\":\"rweft\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class TargetsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .getByResourceGroupWithResponse("kqzeqyjleziunjx", "fza", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("patlbijp", "gsksrfhf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fzyjqt", response.location());
-        Assertions.assertEquals("kpqhjpenuygbq", response.tags().get("qqekewvnqvcdlgu"));
-        Assertions.assertEquals("kwcegyamlbn", response.properties().description());
-        Assertions.assertEquals("eqacjjvpilguooq", response.properties().displayName());
-        Assertions.assertEquals("agmdit", response.properties().contextId());
-        Assertions.assertEquals("iookjbsah", response.properties().capabilities().get(0));
-        Assertions.assertEquals("xofvcjk", response.properties().hierarchyLevel());
-        Assertions.assertEquals("dfvclglxnfu", response.properties().solutionScope());
+        Assertions.assertEquals("mghihp", response.location());
+        Assertions.assertEquals("mslclblyjxlt", response.tags().get("sjuscvsfxigctmg"));
+        Assertions.assertEquals("lmknbnxwcdom", response.properties().description());
+        Assertions.assertEquals("pvfqawz", response.properties().displayName());
+        Assertions.assertEquals("gbrt", response.properties().contextId());
+        Assertions.assertEquals("aclkiexhajlfnt", response.properties().capabilities().get(0));
+        Assertions.assertEquals("iqfyuttdi", response.properties().hierarchyLevel());
+        Assertions.assertEquals("uhpsprkzyaupia", response.properties().solutionScope());
         Assertions.assertEquals(ResourceState.ACTIVE, response.properties().state());
-        Assertions.assertEquals("fikayiansharujtj", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("nur", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
     }
 }

@@ -472,7 +472,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
                 this.hostName,
                 this.changeFeedProcessorOptions.getMinScaleCount(),
                 this.changeFeedProcessorOptions.getMaxScaleCount(),
-                this.changeFeedProcessorOptions.getLeaseExpirationInterval());
+                this.changeFeedProcessorOptions.getLeaseExpirationInterval(),
+                this.changeFeedProcessorOptions.getMaxLeasesToAcquirePerCycle());
         }
 
         PartitionController partitionController =

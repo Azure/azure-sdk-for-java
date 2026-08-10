@@ -47,8 +47,7 @@ public class CosmosPagedFluxTest extends TestSuiteBase {
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.cosmosAsyncClient).isNotNull();
-        this.cosmosAsyncClient.close();
+        safeClose(this.cosmosAsyncClient);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagemover.models.Endpoint;
  */
 public final class EndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureMultiCloudConnector.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureMultiCloudConnector.json
      */
     /**
      * Sample code: Endpoints_Update_AzureMultiCloudConnector.
@@ -28,7 +28,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageNfsFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageNfsFileShare.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageNfsFileShare.
@@ -45,7 +45,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_NfsMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_NfsMount.json
      */
     /**
      * Sample code: Endpoints_Update_NfsMount.
@@ -61,7 +61,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageSmbFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageSmbFileShare.
@@ -78,7 +78,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_AzureStorageBlobContainer.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_Update_AzureStorageBlobContainer.
@@ -95,7 +95,7 @@ public final class EndpointsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_Update_SmbMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_SmbMount.json
      */
     /**
      * Sample code: Endpoints_Update_SmbMount.
@@ -103,6 +103,22 @@ public final class EndpointsUpdateSamples {
      * @param manager Entry point to StorageMoverManager.
      */
     public static void endpointsUpdateSmbMount(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        Endpoint resource = manager.endpoints()
+            .getWithResponse("examples-rg", "examples-storageMoverName", "examples-endpointName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/Endpoints_Update_S3WithHMAC.json
+     */
+    /**
+     * Sample code: Endpoints_Update_S3WithHmac.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void endpointsUpdateS3WithHmac(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
         Endpoint resource = manager.endpoints()
             .getWithResponse("examples-rg", "examples-storageMoverName", "examples-endpointName",
                 com.azure.core.util.Context.NONE)

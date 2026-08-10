@@ -11,7 +11,7 @@ public final class BackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupProperties model
-            = BinaryData.fromString("{\"earliestRestoreTime\":\"vwmf\"}").toObject(BackupProperties.class);
+            = BinaryData.fromString("{\"earliestRestoreTime\":\"zvcputegjvwmfda\"}").toObject(BackupProperties.class);
     }
 
     @org.junit.jupiter.api.Test

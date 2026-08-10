@@ -24,7 +24,7 @@ public final class DiscoverySourcesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Succeeded\",\"sourceId\":\"ybcibvyvdcsit\"},\"location\":\"naamde\",\"tags\":{\"rkgqhcjrefo\":\"hfiqscjeypvhe\"},\"id\":\"gm\",\"name\":\"qsl\",\"type\":\"yyvxyqjpkcattpn\"}";
+            = "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Succeeded\",\"sourceId\":\"ggzfbu\"},\"location\":\"mvfaxkffeiith\",\"tags\":{\"v\":\"ez\"},\"id\":\"hxmzsbbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class DiscoverySourcesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoverySourceResource response = manager.discoverySources()
-            .define("ynpwlbj")
-            .withRegion("ltyfsop")
-            .withExistingMap("ualhbxxhejj", "zvdudgwdslfhotwm")
-            .withTags(mapOf("xzdmohctb", "uesnzwdejbavo", "ndnvo", "vudwx"))
-            .withProperties(new DiscoverySourceResourceProperties().withSourceId("cftadeh"))
+            .define("d")
+            .withRegion("iqzbq")
+            .withExistingMap("poczvyifqrvkdvjs", "lrmv")
+            .withTags(mapOf("okacspk", "ovm", "jmflbvvnch", "lhzdobp", "ajiwkuo", "kcciwwzjuqkhr", "sauuimj", "oskg"))
+            .withProperties(new DiscoverySourceResourceProperties().withSourceId("kpnpulexxbczwtr"))
             .create();
 
-        Assertions.assertEquals("naamde", response.location());
-        Assertions.assertEquals("hfiqscjeypvhe", response.tags().get("rkgqhcjrefo"));
-        Assertions.assertEquals("ybcibvyvdcsit", response.properties().sourceId());
+        Assertions.assertEquals("mvfaxkffeiith", response.location());
+        Assertions.assertEquals("ez", response.tags().get("v"));
+        Assertions.assertEquals("ggzfbu", response.properties().sourceId());
     }
 
     // Use "Map.of" if available

@@ -13,4 +13,12 @@ public class IndexesTestHelpers {
     public static HttpPipeline getHttpPipeline(SearchIndexAsyncClient searchIndexAsyncClient) {
         return searchIndexAsyncClient.getHttpPipeline();
     }
+
+    public static String getEndpoint(SearchIndexClient searchIndexClient) {
+        return searchIndexClient.getEndpoint();
+    }
+
+    public static String getEndpoint(SearchIndexAsyncClient searchIndexAsyncClient) {
+        return searchIndexAsyncClient.getEndpoint();
+    }
 }

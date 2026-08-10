@@ -24,7 +24,7 @@ public final class ConfigTemplatesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"mehllizhceu\",\"latestVersion\":\"qodkadppyibngql\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"rxwhydtlu\",\"location\":\"adswz\",\"tags\":{\"y\":\"yemlowuowhlxln\"},\"id\":\"mouvbl\",\"name\":\"mo\",\"type\":\"zkltrfowtdvrfmv\"}";
+            = "{\"properties\":{\"description\":\"rbnyrukoilacidu\",\"latestVersion\":\"leipjl\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"p\",\"location\":\"uzythqkkwhbgxv\",\"tags\":{\"tmujdtvmc\":\"vulnxdmn\",\"dnyxfzuvrz\":\"yymffhmjp\",\"mzjqrbr\":\"z\",\"jpp\":\"vnmdyfoeboj\"},\"id\":\"laohoqkp\",\"name\":\"t\",\"type\":\"qjilaywkdcwmqsyr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class ConfigTemplatesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigTemplate response = manager.configTemplates()
-            .define("ufanray")
-            .withRegion("ygzmxieqvdsmak")
-            .withExistingResourceGroup("xlzdesygrijwa")
-            .withTags(mapOf("bx", "qcahyhxal"))
-            .withProperties(new ConfigTemplateProperties().withDescription("ueqfrojsyd"))
+            .define("gqbedygi")
+            .withRegion("kbrfgdrwji")
+            .withExistingResourceGroup("eboywhczzqrhm")
+            .withTags(mapOf("cwv", "hfjsrwqrxetf", "dqntycnawthv", "r", "nuyeamcmhud", "ax"))
+            .withProperties(new ConfigTemplateProperties().withDescription("zwnykdidjchl"))
             .create();
 
-        Assertions.assertEquals("adswz", response.location());
-        Assertions.assertEquals("yemlowuowhlxln", response.tags().get("y"));
-        Assertions.assertEquals("mehllizhceu", response.properties().description());
+        Assertions.assertEquals("uzythqkkwhbgxv", response.location());
+        Assertions.assertEquals("vulnxdmn", response.tags().get("tmujdtvmc"));
+        Assertions.assertEquals("rbnyrukoilacidu", response.properties().description());
     }
 
     // Use "Map.of" if available

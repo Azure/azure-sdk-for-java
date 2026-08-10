@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -128,29 +127,6 @@ public final class IpAccessRule implements JsonSerializable<IpAccessRule> {
         this.action = action;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model IpAccessRule"));
-        }
-        if (sourceAddressPrefixes() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceAddressPrefixes in model IpAccessRule"));
-        }
-        if (action() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property action in model IpAccessRule"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(IpAccessRule.class);
 
     /**
      * {@inheritDoc}

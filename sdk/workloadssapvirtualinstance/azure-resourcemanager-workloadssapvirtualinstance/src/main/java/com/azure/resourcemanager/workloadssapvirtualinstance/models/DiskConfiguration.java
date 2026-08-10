@@ -53,21 +53,6 @@ public final class DiskConfiguration implements JsonSerializable<DiskConfigurati
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (diskVolumeConfigurations() != null) {
-            diskVolumeConfigurations().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

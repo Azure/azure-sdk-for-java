@@ -21,7 +21,7 @@ public final class OperatorApiPlansGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"operatorName\":\"anuzbpzkafkuw\",\"camaraApiName\":\"rnwb\",\"supportedLocations\":[\"hseyvju\",\"rts\"],\"operatorRegions\":[\"pkdeemaofmxagkvt\",\"elmqk\"],\"markets\":[\"hvljuahaquh\",\"dhmdua\",\"aex\"],\"limits\":\"vfadmws\",\"marketplaceProperties\":{\"offerId\":\"gvxp\",\"legacyOfferId\":\"omzlfmi\",\"publisherId\":\"wbnb\",\"planId\":\"ldawkzbaliourqha\",\"termId\":\"uhashsfwx\"},\"provisioningState\":\"Deleting\"},\"id\":\"z\",\"name\":\"cugicjoox\",\"type\":\"j\"}";
+            = "{\"properties\":{\"operatorName\":\"utauv\",\"camaraApiName\":\"tkuwhhmhykojo\",\"supportedLocations\":[\"nn\",\"lpichk\"],\"operatorRegions\":[\"kcdyhbpk\",\"pwdreqnovvqf\",\"vljxywsu\",\"syrsndsytgadgvra\"],\"markets\":[\"neqn\"],\"limits\":\"rrwlquuijfqkace\",\"marketplaceProperties\":{\"offerId\":\"pfpubjibww\",\"publisherId\":\"tohqkvpuvksgp\",\"planId\":\"aknynfsynljphuop\",\"planTermsAndConditionsLinks\":[\"dlqiyntorzih\",\"eosjswsr\",\"slyzrpzbchckqq\"]},\"provisioningState\":\"Accepted\"},\"id\":\"xiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,18 +31,16 @@ public final class OperatorApiPlansGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperatorApiPlan response
-            = manager.operatorApiPlans().getWithResponse("kyv", com.azure.core.util.Context.NONE).getValue();
+            = manager.operatorApiPlans().getWithResponse("erpqlpqwcciuqg", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("anuzbpzkafkuw", response.properties().operatorName());
-        Assertions.assertEquals("rnwb", response.properties().camaraApiName());
-        Assertions.assertEquals("hseyvju", response.properties().supportedLocations().get(0));
-        Assertions.assertEquals("pkdeemaofmxagkvt", response.properties().operatorRegions().get(0));
-        Assertions.assertEquals("hvljuahaquh", response.properties().markets().get(0));
-        Assertions.assertEquals("vfadmws", response.properties().limits());
-        Assertions.assertEquals("gvxp", response.properties().marketplaceProperties().offerId());
-        Assertions.assertEquals("omzlfmi", response.properties().marketplaceProperties().legacyOfferId());
-        Assertions.assertEquals("wbnb", response.properties().marketplaceProperties().publisherId());
-        Assertions.assertEquals("ldawkzbaliourqha", response.properties().marketplaceProperties().planId());
-        Assertions.assertEquals("uhashsfwx", response.properties().marketplaceProperties().termId());
+        Assertions.assertEquals("utauv", response.properties().operatorName());
+        Assertions.assertEquals("tkuwhhmhykojo", response.properties().camaraApiName());
+        Assertions.assertEquals("nn", response.properties().supportedLocations().get(0));
+        Assertions.assertEquals("kcdyhbpk", response.properties().operatorRegions().get(0));
+        Assertions.assertEquals("neqn", response.properties().markets().get(0));
+        Assertions.assertEquals("rrwlquuijfqkace", response.properties().limits());
+        Assertions.assertEquals("pfpubjibww", response.properties().marketplaceProperties().offerId());
+        Assertions.assertEquals("tohqkvpuvksgp", response.properties().marketplaceProperties().publisherId());
+        Assertions.assertEquals("aknynfsynljphuop", response.properties().marketplaceProperties().planId());
     }
 }

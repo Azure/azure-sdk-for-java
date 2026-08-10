@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +20,7 @@ import java.util.List;
 public final class VirtualMachineScaleSetNetworkConfigurationProperties
     implements JsonSerializable<VirtualMachineScaleSetNetworkConfigurationProperties> {
     /*
+     * 
      * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      */
@@ -67,12 +67,14 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     private DeleteOptions deleteOption;
 
     /*
+     * 
      * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      */
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
     /*
+     * 
      * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      */
@@ -85,7 +87,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the primary property: Specifies the primary network interface in case the virtual machine has more
+     * Get the primary property:
+     * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      * 
      * @return the primary value.
@@ -95,7 +98,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the primary property: Specifies the primary network interface in case the virtual machine has more
+     * Set the primary property:
+     * Specifies the primary network interface in case the virtual machine has more
      * than 1 network interface.
      * 
      * @param primary the primary value to set.
@@ -276,7 +280,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * Get the auxiliaryMode property:
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      * 
      * @return the auxiliaryMode value.
@@ -286,7 +291,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * Set the auxiliaryMode property:
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface
      * resource.
      * 
      * @param auxiliaryMode the auxiliaryMode value to set.
@@ -299,7 +305,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
+     * Get the auxiliarySku property:
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      * 
      * @return the auxiliarySku value.
@@ -309,7 +316,8 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
     }
 
     /**
-     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface
+     * Set the auxiliarySku property:
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface
      * resource.
      * 
      * @param auxiliarySku the auxiliarySku value to set.
@@ -320,27 +328,6 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties
         this.auxiliarySku = auxiliarySku;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-        if (ipConfigurations() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property ipConfigurations in model VirtualMachineScaleSetNetworkConfigurationProperties"));
-        } else {
-            ipConfigurations().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER
-        = new ClientLogger(VirtualMachineScaleSetNetworkConfigurationProperties.class);
 
     /**
      * {@inheritDoc}

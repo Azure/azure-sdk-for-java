@@ -33,8 +33,8 @@ public final class ExascaleDbNodesActionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DbActionResponse response = manager.exascaleDbNodes()
-            .action("qgvriibakcla", "jfrnxousxauzlwv", "gmwohqfzizvu",
-                new DbNodeAction().withAction(DbNodeActionEnum.RESET), com.azure.core.util.Context.NONE);
+            .action("haokgkskjiv", "sshajqfukpee", "pgeumilh",
+                new DbNodeAction().withAction(DbNodeActionEnum.SOFT_RESET), com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(AzureResourceProvisioningState.PROVISIONING, response.provisioningState());
     }

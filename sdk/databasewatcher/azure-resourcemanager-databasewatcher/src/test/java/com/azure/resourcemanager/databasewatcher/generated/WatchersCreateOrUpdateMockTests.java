@@ -29,7 +29,7 @@ public final class WatchersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"datastore\":{\"adxClusterResourceId\":\"uh\",\"kustoClusterDisplayName\":\"p\",\"kustoClusterUri\":\"sjyofdx\",\"kustoDataIngestionUri\":\"uusdttouwa\",\"kustoDatabaseName\":\"oekqvk\",\"kustoManagementUrl\":\"lns\",\"kustoOfferingType\":\"adx\"},\"status\":\"Running\",\"provisioningState\":\"Succeeded\",\"defaultAlertRuleIdentityResourceId\":\"sflhhca\"},\"identity\":{\"principalId\":\"jixisxyawjoyaqcs\",\"tenantId\":\"jpkiidzyexznelix\",\"type\":\"None\",\"userAssignedIdentities\":{\"ggdtpnapnyiro\":{\"clientId\":\"folhbnxknal\",\"principalId\":\"lp\"},\"n\":{\"clientId\":\"hpigv\",\"principalId\":\"ylgqgitxmedjvcsl\"},\"tfdygpfqb\":{\"clientId\":\"wncwzzhxgktrmg\",\"principalId\":\"napkteoellw\"}}},\"location\":\"ceopzfqrhhuaopp\",\"tags\":{\"lzdahzxctobgbkdm\":\"eqx\",\"grcfb\":\"izpost\"},\"id\":\"nrmfqjhhk\",\"name\":\"bpvjymjhx\",\"type\":\"j\"}";
+            = "{\"properties\":{\"datastore\":{\"adxClusterResourceId\":\"qugxywpmueefjzwf\",\"kustoClusterDisplayName\":\"q\",\"kustoClusterUri\":\"jidsuyonobglaoc\",\"kustoDataIngestionUri\":\"xtccmg\",\"kustoDatabaseName\":\"udxytlmoyrx\",\"kustoManagementUrl\":\"wfudwpzntxhdzhl\",\"kustoOfferingType\":\"adx\"},\"status\":\"Running\",\"provisioningState\":\"Succeeded\",\"defaultAlertRuleIdentityResourceId\":\"frlh\"},\"identity\":{\"principalId\":\"bkyvp\",\"tenantId\":\"anuzbpzkafkuw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"deemao\":{\"principalId\":\"bmehh\",\"clientId\":\"yvjusrtslhsp\"},\"aquhcdhm\":{\"principalId\":\"xagkvtmelmqkrh\",\"clientId\":\"vljua\"}}},\"location\":\"alaexqpvfadmwsrc\",\"tags\":{\"zlfmisgwbnbbeld\":\"xpvgo\",\"ali\":\"wkz\"},\"id\":\"urqhaka\",\"name\":\"hashsfwxosow\",\"type\":\"xcug\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,36 +38,35 @@ public final class WatchersCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Watcher response
-            = manager.watchers()
-                .define("zbtd")
-                .withRegion("iwwroyqbexrmc")
-                .withExistingResourceGroup("l")
-                .withTags(mapOf("vah", "ycnojvknmefqsg", "qzcjrvxdj", "pjyzhpv", "awjvzunluthnnp", "lmwlxkvugfhzo"))
-                .withProperties(new WatcherProperties()
-                    .withDatastore(new Datastore().withAdxClusterResourceId("znbmpowuwprzq")
-                        .withKustoClusterDisplayName("eualupjmkhf")
-                        .withKustoClusterUri("obbc")
-                        .withKustoDataIngestionUri("wsrtjriplrbpbe")
-                        .withKustoDatabaseName("tghfgblcgwxzvl")
-                        .withKustoManagementUrl("qhjk")
-                        .withKustoOfferingType(KustoOfferingType.FREE))
-                    .withDefaultAlertRuleIdentityResourceId("mxiebw"))
-                .withIdentity(new ManagedServiceIdentityV4().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("iuhprwmdyvxqta", new UserAssignedIdentity())))
-                .create();
+        Watcher response = manager.watchers()
+            .define("vlopwiyighx")
+            .withRegion("k")
+            .withExistingResourceGroup("xnkjzkdesl")
+            .withTags(mapOf("kphywpnvjto", "dhbt"))
+            .withProperties(new WatcherProperties()
+                .withDatastore(new Datastore().withAdxClusterResourceId("zb")
+                    .withKustoClusterDisplayName("uebbaumnyqup")
+                    .withKustoClusterUri("deoj")
+                    .withKustoDataIngestionUri("a")
+                    .withKustoDatabaseName("ckhsmtxpsieb")
+                    .withKustoManagementUrl("fhvpesaps")
+                    .withKustoOfferingType(KustoOfferingType.FABRIC))
+                .withDefaultAlertRuleIdentityResourceId("jdhtldwkyzxu"))
+            .withIdentity(new ManagedServiceIdentityV4().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("jfcn", new UserAssignedIdentity())))
+            .create();
 
-        Assertions.assertEquals("ceopzfqrhhuaopp", response.location());
-        Assertions.assertEquals("eqx", response.tags().get("lzdahzxctobgbkdm"));
-        Assertions.assertEquals("uh", response.properties().datastore().adxClusterResourceId());
-        Assertions.assertEquals("p", response.properties().datastore().kustoClusterDisplayName());
-        Assertions.assertEquals("sjyofdx", response.properties().datastore().kustoClusterUri());
-        Assertions.assertEquals("uusdttouwa", response.properties().datastore().kustoDataIngestionUri());
-        Assertions.assertEquals("oekqvk", response.properties().datastore().kustoDatabaseName());
-        Assertions.assertEquals("lns", response.properties().datastore().kustoManagementUrl());
+        Assertions.assertEquals("alaexqpvfadmwsrc", response.location());
+        Assertions.assertEquals("xpvgo", response.tags().get("zlfmisgwbnbbeld"));
+        Assertions.assertEquals("qugxywpmueefjzwf", response.properties().datastore().adxClusterResourceId());
+        Assertions.assertEquals("q", response.properties().datastore().kustoClusterDisplayName());
+        Assertions.assertEquals("jidsuyonobglaoc", response.properties().datastore().kustoClusterUri());
+        Assertions.assertEquals("xtccmg", response.properties().datastore().kustoDataIngestionUri());
+        Assertions.assertEquals("udxytlmoyrx", response.properties().datastore().kustoDatabaseName());
+        Assertions.assertEquals("wfudwpzntxhdzhl", response.properties().datastore().kustoManagementUrl());
         Assertions.assertEquals(KustoOfferingType.ADX, response.properties().datastore().kustoOfferingType());
-        Assertions.assertEquals("sflhhca", response.properties().defaultAlertRuleIdentityResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("frlh", response.properties().defaultAlertRuleIdentityResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

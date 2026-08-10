@@ -7,27 +7,66 @@ package com.azure.resourcemanager.storagemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionUpdateProperties;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import com.azure.resourcemanager.storagemover.models.Frequency;
+import com.azure.resourcemanager.storagemover.models.Minute;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import com.azure.resourcemanager.storagemover.models.SchedulerTime;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class JobDefinitionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateProperties model
-            = BinaryData.fromString("{\"description\":\"klbb\",\"copyMode\":\"Mirror\",\"agentName\":\"wzbhvgyugu\"}")
-                .toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("klbb", model.description());
+        JobDefinitionUpdateProperties model = BinaryData.fromString(
+            "{\"description\":\"qkqujidsu\",\"copyMode\":\"Mirror\",\"agentName\":\"bglaocqxtccm\",\"connections\":[\"dxyt\",\"moyrxvwfudwpz\",\"txhdzh\"],\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"schedule\":{\"frequency\":\"Daily\",\"isActive\":true,\"executionTime\":{\"hour\":869075022,\"minute\":0},\"startDate\":\"2021-11-29T20:48:55Z\",\"daysOfWeek\":[\"yvpycanuzbpzk\"],\"daysOfMonth\":[863454925,1834539320,133840349],\"cronExpression\":\"rnwb\",\"endDate\":\"2021-01-14T01:50:46Z\"}}")
+            .toObject(JobDefinitionUpdateProperties.class);
+        Assertions.assertEquals("qkqujidsu", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("wzbhvgyugu", model.agentName());
+        Assertions.assertEquals("bglaocqxtccm", model.agentName());
+        Assertions.assertEquals("dxyt", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
+        Assertions.assertEquals(Frequency.DAILY, model.schedule().frequency());
+        Assertions.assertTrue(model.schedule().isActive());
+        Assertions.assertEquals(869075022, model.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-29T20:48:55Z"), model.schedule().startDate());
+        Assertions.assertEquals("yvpycanuzbpzk", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(863454925, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("rnwb", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T01:50:46Z"), model.schedule().endDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateProperties model = new JobDefinitionUpdateProperties().withDescription("klbb")
+        JobDefinitionUpdateProperties model = new JobDefinitionUpdateProperties().withDescription("qkqujidsu")
             .withCopyMode(CopyMode.MIRROR)
-            .withAgentName("wzbhvgyugu");
+            .withAgentName("bglaocqxtccm")
+            .withConnections(Arrays.asList("dxyt", "moyrxvwfudwpz", "txhdzh"))
+            .withDataIntegrityValidation(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5)
+            .withSchedule(new ScheduleInfo().withFrequency(Frequency.DAILY)
+                .withIsActive(true)
+                .withExecutionTime(new SchedulerTime().withHour(869075022).withMinute(Minute.ZERO))
+                .withStartDate(OffsetDateTime.parse("2021-11-29T20:48:55Z"))
+                .withDaysOfWeek(Arrays.asList("yvpycanuzbpzk"))
+                .withDaysOfMonth(Arrays.asList(863454925, 1834539320, 133840349))
+                .withCronExpression("rnwb")
+                .withEndDate(OffsetDateTime.parse("2021-01-14T01:50:46Z")));
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("klbb", model.description());
+        Assertions.assertEquals("qkqujidsu", model.description());
         Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
-        Assertions.assertEquals("wzbhvgyugu", model.agentName());
+        Assertions.assertEquals("bglaocqxtccm", model.agentName());
+        Assertions.assertEquals("dxyt", model.connections().get(0));
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5, model.dataIntegrityValidation());
+        Assertions.assertEquals(Frequency.DAILY, model.schedule().frequency());
+        Assertions.assertTrue(model.schedule().isActive());
+        Assertions.assertEquals(869075022, model.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.ZERO, model.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-29T20:48:55Z"), model.schedule().startDate());
+        Assertions.assertEquals("yvpycanuzbpzk", model.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(863454925, model.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("rnwb", model.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T01:50:46Z"), model.schedule().endDate());
     }
 }

@@ -126,20 +126,6 @@ public final class DedicatedHsmProperties implements JsonSerializable<DedicatedH
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (managementNetworkProfile() != null) {
-            managementNetworkProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

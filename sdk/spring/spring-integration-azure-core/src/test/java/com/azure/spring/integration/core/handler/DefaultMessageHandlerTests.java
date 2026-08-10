@@ -11,18 +11,20 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.MessageTimeoutException;
+import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,7 +62,11 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);
     }
-    public abstract void setUp();
+    public void setUp() {
+        StandardEvaluationContext sec = new StandardEvaluationContext();
+        when(beanFactory.containsBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME)).thenReturn(true);
+        when(beanFactory.getBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME, StandardEvaluationContext.class)).thenReturn(sec);
+    }
 
     @Test
     @SuppressWarnings("unchecked")
@@ -70,15 +76,10 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     }
 
     @Test
-    @SuppressWarnings({"deprecation", "removal"})
     public void testSendCallback() {
-        ListenableFutureCallback<Void> callbackSpy = spy(new ListenableFutureCallback<Void>() {
+        BiConsumer<Void, Throwable> callbackSpy = spy(new BiConsumer<Void, Throwable>() {
             @Override
-            public void onFailure(Throwable ex) {
-            }
-
-            @Override
-            public void onSuccess(Void v) {
+            public void accept(Void v, Throwable ex) {
             }
         });
 
@@ -86,7 +87,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         this.handler.handleMessage(this.message);
 
-        verify(callbackSpy, times(1)).onSuccess(eq(null));
+        verify(callbackSpy, times(1)).accept(eq(null), eq(null));
     }
 
     @Test

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.changeFeedMetrics.{ChangeFeedMetricsListener, ChangeFeedMetricsTracker}
 import com.azure.cosmos.implementation.guava25.collect.{HashBiMap, Maps}
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, UUIDs}
-import com.azure.cosmos.changeFeedMetrics.{ChangeFeedMetricsListener, ChangeFeedMetricsTracker}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
@@ -115,18 +115,18 @@ private class ChangeFeedMicroBatchStream
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
-    end
-      .inputPartitions
-      .get
-      .map(partition => {
+    val parsedStartChangeFeedState = SparkBridgeImplementationInternal.parseChangeFeedState(start.changeFeedState)
+    val partitions = end.inputPartitions.get
+    val continuationStates = SparkBridgeImplementationInternal
+      .extractChangeFeedStateForRanges(parsedStartChangeFeedState, partitions.map(_.feedRange))
+    partitions
+      .zip(continuationStates)
+      .map { case (partition, continuationState) =>
           val index = partitionIndexMap.asScala.getOrElseUpdate(partition.feedRange, partitionIndex.incrementAndGet())
           partition
-           .withContinuationState(
-             SparkBridgeImplementationInternal
-              .extractChangeFeedStateForRange(start.changeFeedState, partition.feedRange),
-             clearEndLsn = false)
+           .withContinuationState(continuationState, clearEndLsn = false)
            .withIndex(index)
-      })
+      }
   }
 
   /**
@@ -209,7 +209,7 @@ private class ChangeFeedMicroBatchStream
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
       val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
-        container, changeFeedConfig, partitioningConfig, Some(streamId))
+        container, containerConfig, changeFeedConfig, partitioningConfig, Some(streamId))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dell.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -47,20 +46,6 @@ public final class UserDetails implements JsonSerializable<UserDetails> {
         this.email = email;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (email() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property email in model UserDetails"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UserDetails.class);
 
     /**
      * {@inheritDoc}

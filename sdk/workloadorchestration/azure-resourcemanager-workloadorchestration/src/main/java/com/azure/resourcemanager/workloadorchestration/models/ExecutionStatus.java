@@ -83,17 +83,6 @@ public final class ExecutionStatus implements JsonSerializable<ExecutionStatus> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (stageHistory() != null) {
-            stageHistory().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -148,20 +148,6 @@ public final class CloudHsmClusterProperties implements JsonSerializable<CloudHs
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (hsms() != null) {
-            hsms().forEach(e -> e.validate());
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

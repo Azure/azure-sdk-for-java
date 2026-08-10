@@ -99,6 +99,39 @@ public interface Branches {
     PagedIterable<Branch> list(String resourceGroupName, String organizationName, String projectName, Context context);
 
     /**
+     * Action to validate preflight checks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param parameters Parameters for preflight checks.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the pre-deletion validation operation along with {@link Response}.
+     */
+    Response<PreflightCheckResult> preflightWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, PreflightCheckParameters parameters, Context context);
+
+    /**
+     * Action to validate preflight checks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param parameters Parameters for preflight checks.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the pre-deletion validation operation.
+     */
+    PreflightCheckResult preflight(String resourceGroupName, String organizationName, String projectName,
+        String branchName, PreflightCheckParameters parameters);
+
+    /**
      * Get a Branch.
      * 
      * @param id the resource ID.

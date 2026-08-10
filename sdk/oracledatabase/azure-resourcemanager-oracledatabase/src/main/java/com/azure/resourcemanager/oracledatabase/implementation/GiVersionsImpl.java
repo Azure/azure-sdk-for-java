@@ -30,12 +30,8 @@ public final class GiVersionsImpl implements GiVersions {
 
     public Response<GiVersion> getWithResponse(String location, String giversionname, Context context) {
         Response<GiVersionInner> inner = this.serviceClient().getWithResponse(location, giversionname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GiVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GiVersionImpl(inner.getValue(), this.manager()));
     }
 
     public GiVersion get(String location, String giversionname) {
@@ -52,8 +48,10 @@ public final class GiVersionsImpl implements GiVersions {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GiVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone, Context context) {
-        PagedIterable<GiVersionInner> inner = this.serviceClient().listByLocation(location, shape, zone, context);
+    public PagedIterable<GiVersion> listByLocation(String location, SystemShapes shape, String zone,
+        String shapeAttribute, Context context) {
+        PagedIterable<GiVersionInner> inner
+            = this.serviceClient().listByLocation(location, shape, zone, shapeAttribute, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GiVersionImpl(inner1, this.manager()));
     }
 

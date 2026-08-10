@@ -1086,6 +1086,8 @@ public final class ServiceTasksClientImpl implements ServiceTasksClient {
     }
 
     /**
+     * Get service level tasks for a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1111,6 +1113,8 @@ public final class ServiceTasksClientImpl implements ServiceTasksClient {
     }
 
     /**
+     * Get service level tasks for a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1137,6 +1141,8 @@ public final class ServiceTasksClientImpl implements ServiceTasksClient {
     }
 
     /**
+     * Get service level tasks for a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

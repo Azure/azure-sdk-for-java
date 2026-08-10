@@ -32,12 +32,6 @@ public final class SecretSyncUpdateProperties implements JsonSerializable<Secret
     private String serviceAccountName;
 
     /*
-     * Type specifies the type of the Kubernetes secret object, e.g. "Opaque" or"kubernetes.io/tls". The controller must
-     * have permission to create secrets of the specified type.
-     */
-    private KubernetesSecretType kubernetesSecretType;
-
-    /*
      * ForceSynchronization can be used to force the secret synchronization. The secret synchronization is triggered by
      * changing the value in this field. This field is not used to resolve synchronization conflicts.
      */
@@ -105,28 +99,6 @@ public final class SecretSyncUpdateProperties implements JsonSerializable<Secret
     }
 
     /**
-     * Get the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. "Opaque"
-     * or"kubernetes.io/tls". The controller must have permission to create secrets of the specified type.
-     * 
-     * @return the kubernetesSecretType value.
-     */
-    public KubernetesSecretType kubernetesSecretType() {
-        return this.kubernetesSecretType;
-    }
-
-    /**
-     * Set the kubernetesSecretType property: Type specifies the type of the Kubernetes secret object, e.g. "Opaque"
-     * or"kubernetes.io/tls". The controller must have permission to create secrets of the specified type.
-     * 
-     * @param kubernetesSecretType the kubernetesSecretType value to set.
-     * @return the SecretSyncUpdateProperties object itself.
-     */
-    public SecretSyncUpdateProperties withKubernetesSecretType(KubernetesSecretType kubernetesSecretType) {
-        this.kubernetesSecretType = kubernetesSecretType;
-        return this;
-    }
-
-    /**
      * Get the forceSynchronization property: ForceSynchronization can be used to force the secret synchronization. The
      * secret synchronization is triggered by changing the value in this field. This field is not used to resolve
      * synchronization conflicts.
@@ -175,17 +147,6 @@ public final class SecretSyncUpdateProperties implements JsonSerializable<Secret
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (objectSecretMapping() != null) {
-            objectSecretMapping().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -193,8 +154,6 @@ public final class SecretSyncUpdateProperties implements JsonSerializable<Secret
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("secretProviderClassName", this.secretProviderClassName);
         jsonWriter.writeStringField("serviceAccountName", this.serviceAccountName);
-        jsonWriter.writeStringField("kubernetesSecretType",
-            this.kubernetesSecretType == null ? null : this.kubernetesSecretType.toString());
         jsonWriter.writeStringField("forceSynchronization", this.forceSynchronization);
         jsonWriter.writeArrayField("objectSecretMapping", this.objectSecretMapping,
             (writer, element) -> writer.writeJson(element));
@@ -220,9 +179,6 @@ public final class SecretSyncUpdateProperties implements JsonSerializable<Secret
                     deserializedSecretSyncUpdateProperties.secretProviderClassName = reader.getString();
                 } else if ("serviceAccountName".equals(fieldName)) {
                     deserializedSecretSyncUpdateProperties.serviceAccountName = reader.getString();
-                } else if ("kubernetesSecretType".equals(fieldName)) {
-                    deserializedSecretSyncUpdateProperties.kubernetesSecretType
-                        = KubernetesSecretType.fromString(reader.getString());
                 } else if ("forceSynchronization".equals(fieldName)) {
                     deserializedSecretSyncUpdateProperties.forceSynchronization = reader.getString();
                 } else if ("objectSecretMapping".equals(fieldName)) {

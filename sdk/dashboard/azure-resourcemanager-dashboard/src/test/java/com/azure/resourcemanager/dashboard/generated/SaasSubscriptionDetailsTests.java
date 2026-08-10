@@ -13,13 +13,13 @@ public final class SaasSubscriptionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SaasSubscriptionDetails model = BinaryData.fromString(
-            "{\"planId\":\"ngj\",\"offerId\":\"cczsq\",\"publisherId\":\"hvmdajvnysounq\",\"term\":{\"termUnit\":\"noae\",\"startDate\":\"2021-10-06T07:30:47Z\",\"endDate\":\"2021-12-02T06:25:29Z\"}}")
+            "{\"planId\":\"jugwdkcglhsl\",\"offerId\":\"jdyggdtji\",\"publisherId\":\"b\",\"term\":{\"termUnit\":\"fqweykhmene\",\"startDate\":\"2021-09-26T05:32:17Z\",\"endDate\":\"2021-10-31T01:47:04Z\"}}")
             .toObject(SaasSubscriptionDetails.class);
-        Assertions.assertEquals("ngj", model.planId());
-        Assertions.assertEquals("cczsq", model.offerId());
-        Assertions.assertEquals("hvmdajvnysounq", model.publisherId());
-        Assertions.assertEquals("noae", model.term().termUnit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T07:30:47Z"), model.term().startDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T06:25:29Z"), model.term().endDate());
+        Assertions.assertEquals("jugwdkcglhsl", model.planId());
+        Assertions.assertEquals("jdyggdtji", model.offerId());
+        Assertions.assertEquals("b", model.publisherId());
+        Assertions.assertEquals("fqweykhmene", model.term().termUnit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-26T05:32:17Z"), model.term().startDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T01:47:04Z"), model.term().endDate());
     }
 }

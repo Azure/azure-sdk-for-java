@@ -52,6 +52,7 @@ public class StoreResultDiagnosticsSerializerTests {
                 true,
                 null,
                 1,
+                -1,
                 1,
                 1,
                 null,

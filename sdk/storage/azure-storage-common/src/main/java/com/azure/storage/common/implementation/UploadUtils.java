@@ -98,7 +98,9 @@ public class UploadUtils {
                 }
                 int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
                 return Flux.range(0, numSplits).map(i -> {
-                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                    // While duplicate.asReadOnlyBuffer() is safer, it significantly slows down crc64 calculation because it forces a copy of the buffer.
+                    // No downstream buffers should be modifying the buffer anyways.
+                    ByteBuffer duplicate = buffer.duplicate();
                     duplicate.position(i * chunkSize);
                     duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
                     return duplicate;
@@ -145,6 +147,25 @@ public class UploadUtils {
             channel.close();
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    /**
+     * It computes the MD5 of the provided buffer
+     * @param data The data.
+     * @param logger Logger to log errors.
+     * @return The md5 of the data.
+     */
+    public static byte[] computeMd5(ByteBuffer data, ClientLogger logger) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(data.duplicate().asReadOnlyBuffer());
+            return digest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

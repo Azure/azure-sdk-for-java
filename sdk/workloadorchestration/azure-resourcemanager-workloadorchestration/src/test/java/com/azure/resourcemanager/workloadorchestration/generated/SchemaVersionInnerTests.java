@@ -13,16 +13,16 @@ public final class SchemaVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"kknryrtihf\",\"provisioningState\":\"Failed\"},\"eTag\":\"bpzvgn\",\"id\":\"symglzufcyz\",\"name\":\"ohdbihanufh\",\"type\":\"cbjy\"}")
+            "{\"properties\":{\"value\":\"wczbys\",\"provisioningState\":\"Deleting\"},\"eTag\":\"x\",\"id\":\"ivyqniwbybrkxvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"}")
             .toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("kknryrtihf", model.properties().value());
+        Assertions.assertEquals("wczbys", model.properties().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaVersionInner model
-            = new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("kknryrtihf"));
+            = new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("wczbys"));
         model = BinaryData.fromObject(model).toObject(SchemaVersionInner.class);
-        Assertions.assertEquals("kknryrtihf", model.properties().value());
+        Assertions.assertEquals("wczbys", model.properties().value());
     }
 }

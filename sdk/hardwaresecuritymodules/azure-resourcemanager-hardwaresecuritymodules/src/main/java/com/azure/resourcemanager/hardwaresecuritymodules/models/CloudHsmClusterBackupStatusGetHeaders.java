@@ -16,7 +16,7 @@ public final class CloudHsmClusterBackupStatusGetHeaders {
     /*
      * The x-ms-request-id property.
      */
-    private final String xMsRequestId;
+    private final String requestId;
 
     /*
      * The Location property.
@@ -30,17 +30,17 @@ public final class CloudHsmClusterBackupStatusGetHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CloudHsmClusterBackupStatusGetHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.requestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the requestId property: The x-ms-request-id property.
      * 
-     * @return the xMsRequestId value.
+     * @return the requestId value.
      */
-    public String xMsRequestId() {
-        return this.xMsRequestId;
+    public String requestId() {
+        return this.requestId;
     }
 
     /**
@@ -50,13 +50,5 @@ public final class CloudHsmClusterBackupStatusGetHeaders {
      */
     public String location() {
         return this.location;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 }

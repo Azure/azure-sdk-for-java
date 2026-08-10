@@ -153,23 +153,6 @@ public final class DataflowBuiltInTransformationSettings
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (datasets() != null) {
-            datasets().forEach(e -> e.validate());
-        }
-        if (filter() != null) {
-            filter().forEach(e -> e.validate());
-        }
-        if (map() != null) {
-            map().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

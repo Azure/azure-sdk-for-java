@@ -6,7 +6,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.resourcemanager.workloadorchestration.models.ResourceState;
 import com.azure.resourcemanager.workloadorchestration.models.Target;
-import com.azure.resourcemanager.workloadorchestration.models.TargetProperties;
+import com.azure.resourcemanager.workloadorchestration.models.TargetUpdateProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ public final class TargetsUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key8026", "fakeTokenPlaceholder"))
-            .withProperties(new TargetProperties().withDescription("yhnhdpznncdvncmnvoeohqjx")
+            .withProperties(new TargetUpdateProperties().withDescription("yhnhdpznncdvncmnvoeohqjx")
                 .withDisplayName("pguujtzjjvixgjitugybrefp")
                 .withContextId(
                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}")

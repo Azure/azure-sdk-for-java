@@ -32,7 +32,7 @@ autorest
 ```yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.spark

@@ -11,7 +11,7 @@ public final class MigrateSchemaSqlServerSqlDbTaskOutputErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSchemaSqlServerSqlDbTaskOutputError model = BinaryData.fromString(
-            "{\"resultType\":\"SchemaErrorOutput\",\"commandText\":\"vf\",\"errorText\":\"kvntjlrigjkskyri\",\"id\":\"vzidsxwaab\"}")
+            "{\"resultType\":\"SchemaErrorOutput\",\"commandText\":\"tzh\",\"errorText\":\"glka\",\"id\":\"onqjujeickpzvcpo\"}")
             .toObject(MigrateSchemaSqlServerSqlDbTaskOutputError.class);
     }
 

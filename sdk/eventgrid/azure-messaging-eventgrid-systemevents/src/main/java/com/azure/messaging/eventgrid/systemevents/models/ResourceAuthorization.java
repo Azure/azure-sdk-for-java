@@ -34,16 +34,13 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
      * The evidence for the authorization.
      */
     @Generated
-    private final Map<String, String> evidence;
+    private Map<String, String> evidence;
 
     /**
      * Creates an instance of ResourceAuthorization class.
-     * 
-     * @param evidence the evidence value to set.
      */
     @Generated
-    private ResourceAuthorization(Map<String, String> evidence) {
-        this.evidence = evidence;
+    private ResourceAuthorization() {
     }
 
     /**
@@ -83,7 +80,6 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("evidence", this.evidence, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeStringField("action", this.action);
         return jsonWriter.writeEndObject();
@@ -101,26 +97,22 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
     @Generated
     public static ResourceAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Map<String, String> evidence = null;
-            String scope = null;
-            String action = null;
+            ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("evidence".equals(fieldName)) {
-                    evidence = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> evidence = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceAuthorization.evidence = evidence;
                 } else if ("scope".equals(fieldName)) {
-                    scope = reader.getString();
+                    deserializedResourceAuthorization.scope = reader.getString();
                 } else if ("action".equals(fieldName)) {
-                    action = reader.getString();
+                    deserializedResourceAuthorization.action = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization(evidence);
-            deserializedResourceAuthorization.scope = scope;
-            deserializedResourceAuthorization.action = action;
 
             return deserializedResourceAuthorization;
         });

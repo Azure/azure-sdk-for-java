@@ -84,17 +84,6 @@ public final class VolumeClaimSpecSelector implements JsonSerializable<VolumeCla
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (matchExpressions() != null) {
-            matchExpressions().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

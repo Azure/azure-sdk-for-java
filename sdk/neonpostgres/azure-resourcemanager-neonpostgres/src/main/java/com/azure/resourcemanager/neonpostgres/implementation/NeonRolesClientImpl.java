@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.neonpostgres.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,12 +26,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.neonpostgres.fluent.NeonRolesClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonRoleInner;
 import com.azure.resourcemanager.neonpostgres.implementation.models.NeonRoleListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -83,6 +91,50 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
             @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
             @PathParam("branchName") String branchName, @HeaderParam("Accept") String accept, Context context);
 
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("neonRoleName") String neonRoleName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NeonRoleInner resource, Context context);
+
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("neonRoleName") String neonRoleName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NeonRoleInner resource, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("neonRoleName") String neonRoleName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonRoles/{neonRoleName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("projectName") String projectName,
+            @PathParam("branchName") String branchName, @PathParam("neonRoleName") String neonRoleName,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -114,28 +166,6 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeonRoleInner>> listSinglePageAsync(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -180,32 +210,6 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NeonRoleListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -230,32 +234,6 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listSinglePage(String resourceGroupName, String organizationName,
         String projectName, String branchName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (organizationName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (branchName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter branchName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NeonRoleListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
@@ -305,6 +283,299 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
     }
 
     /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
+                neonRoleName, contentType, accept, resource, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+            contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String neonRoleName, NeonRoleInner resource, Context context) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+            contentType, accept, resource, context);
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, organizationName,
+            projectName, branchName, neonRoleName, resource);
+        return this.client.<NeonRoleInner, NeonRoleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NeonRoleInner.class, NeonRoleInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
+            branchName, neonRoleName, resource);
+        return this.client.<NeonRoleInner, NeonRoleInner>getLroResult(response, NeonRoleInner.class,
+            NeonRoleInner.class, Context.NONE);
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NeonRoleInner>, NeonRoleInner> beginCreateOrUpdate(String resourceGroupName,
+        String organizationName, String projectName, String branchName, String neonRoleName, NeonRoleInner resource,
+        Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, organizationName, projectName,
+            branchName, neonRoleName, resource, context);
+        return this.client.<NeonRoleInner, NeonRoleInner>getLroResult(response, NeonRoleInner.class,
+            NeonRoleInner.class, context);
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NeonRoleInner> createOrUpdateAsync(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String neonRoleName, NeonRoleInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+            resource).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, NeonRoleInner resource) {
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource)
+            .getFinalResult();
+    }
+
+    /**
+     * Create a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Neon Role resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NeonRoleInner createOrUpdate(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, NeonRoleInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonRoleName, resource,
+            context).getFinalResult();
+    }
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String organizationName,
+        String projectName, String branchName, String neonRoleName) {
+        return FluxUtil
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName,
+                neonRoleName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName) {
+        return deleteWithResponseAsync(resourceGroupName, organizationName, projectName, branchName, neonRoleName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String organizationName, String projectName,
+        String branchName, String neonRoleName, Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, projectName, branchName, neonRoleName,
+            context);
+    }
+
+    /**
+     * Delete a NeonRole.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Name of the Neon Organizations resource.
+     * @param projectName The name of the Project.
+     * @param branchName The name of the Branch.
+     * @param neonRoleName The name of the NeonRole.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String organizationName, String projectName, String branchName,
+        String neonRoleName) {
+        deleteWithResponse(resourceGroupName, organizationName, projectName, branchName, neonRoleName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -316,13 +587,6 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NeonRoleInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NeonRoleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -341,15 +605,6 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NeonRoleListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -369,20 +624,9 @@ public final class NeonRolesClientImpl implements NeonRolesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeonRoleInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NeonRoleListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NeonRolesClientImpl.class);
 }

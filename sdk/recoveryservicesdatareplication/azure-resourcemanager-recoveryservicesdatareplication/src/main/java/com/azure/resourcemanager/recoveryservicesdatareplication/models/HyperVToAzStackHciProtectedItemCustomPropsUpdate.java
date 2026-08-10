@@ -191,21 +191,6 @@ public final class HyperVToAzStackHciProtectedItemCustomPropsUpdate extends Prot
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (nicsToInclude() != null) {
-            nicsToInclude().forEach(e -> e.validate());
-        }
-        if (dynamicMemoryConfig() != null) {
-            dynamicMemoryConfig().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

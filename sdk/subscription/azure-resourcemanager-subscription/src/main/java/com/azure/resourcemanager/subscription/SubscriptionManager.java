@@ -22,23 +22,27 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.subscription.fluent.SubscriptionClient;
 import com.azure.resourcemanager.subscription.implementation.AliasImpl;
+import com.azure.resourcemanager.subscription.implementation.BillingAccountsImpl;
 import com.azure.resourcemanager.subscription.implementation.OperationsImpl;
 import com.azure.resourcemanager.subscription.implementation.SubscriptionClientBuilder;
 import com.azure.resourcemanager.subscription.implementation.SubscriptionOperationsImpl;
+import com.azure.resourcemanager.subscription.implementation.SubscriptionPoliciesImpl;
 import com.azure.resourcemanager.subscription.implementation.SubscriptionsImpl;
-import com.azure.resourcemanager.subscription.implementation.TenantsImpl;
 import com.azure.resourcemanager.subscription.models.Alias;
+import com.azure.resourcemanager.subscription.models.BillingAccounts;
 import com.azure.resourcemanager.subscription.models.Operations;
 import com.azure.resourcemanager.subscription.models.SubscriptionOperations;
+import com.azure.resourcemanager.subscription.models.SubscriptionPolicies;
 import com.azure.resourcemanager.subscription.models.Subscriptions;
-import com.azure.resourcemanager.subscription.models.Tenants;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -49,13 +53,15 @@ import java.util.stream.Collectors;
 public final class SubscriptionManager {
     private Subscriptions subscriptions;
 
-    private Tenants tenants;
-
     private SubscriptionOperations subscriptionOperations;
 
     private Operations operations;
 
     private Alias alias;
+
+    private SubscriptionPolicies subscriptionPolicies;
+
+    private BillingAccounts billingAccounts;
 
     private final SubscriptionClient clientObject;
 
@@ -108,6 +114,9 @@ public final class SubscriptionManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-subscription.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -215,12 +224,14 @@ public final class SubscriptionManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.subscription")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -279,18 +290,6 @@ public final class SubscriptionManager {
     }
 
     /**
-     * Gets the resource collection API of Tenants.
-     * 
-     * @return Resource collection API of Tenants.
-     */
-    public Tenants tenants() {
-        if (this.tenants == null) {
-            this.tenants = new TenantsImpl(clientObject.getTenants(), this);
-        }
-        return tenants;
-    }
-
-    /**
      * Gets the resource collection API of SubscriptionOperations.
      * 
      * @return Resource collection API of SubscriptionOperations.
@@ -325,6 +324,30 @@ public final class SubscriptionManager {
             this.alias = new AliasImpl(clientObject.getAlias(), this);
         }
         return alias;
+    }
+
+    /**
+     * Gets the resource collection API of SubscriptionPolicies.
+     * 
+     * @return Resource collection API of SubscriptionPolicies.
+     */
+    public SubscriptionPolicies subscriptionPolicies() {
+        if (this.subscriptionPolicies == null) {
+            this.subscriptionPolicies = new SubscriptionPoliciesImpl(clientObject.getSubscriptionPolicies(), this);
+        }
+        return subscriptionPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of BillingAccounts.
+     * 
+     * @return Resource collection API of BillingAccounts.
+     */
+    public BillingAccounts billingAccounts() {
+        if (this.billingAccounts == null) {
+            this.billingAccounts = new BillingAccountsImpl(clientObject.getBillingAccounts(), this);
+        }
+        return billingAccounts;
     }
 
     /**

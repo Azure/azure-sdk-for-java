@@ -10,11 +10,9 @@ trigger:
     include:
       - sdk/hdinsight/ci.yml
       - sdk/hdinsight/azure-resourcemanager-hdinsight/
-      - sdk/hdinsight/azure-resourcemanager-hdinsight-containers/
     exclude:
       - sdk/hdinsight/pom.xml
       - sdk/hdinsight/azure-resourcemanager-hdinsight/pom.xml
-      - sdk/hdinsight/azure-resourcemanager-hdinsight-containers/pom.xml
 
 pr:
   branches:
@@ -27,19 +25,13 @@ pr:
     include:
       - sdk/hdinsight/ci.yml
       - sdk/hdinsight/azure-resourcemanager-hdinsight/
-      - sdk/hdinsight/azure-resourcemanager-hdinsight-containers/
     exclude:
       - sdk/hdinsight/pom.xml
       - sdk/hdinsight/azure-resourcemanager-hdinsight/pom.xml
-      - sdk/hdinsight/azure-resourcemanager-hdinsight-containers/pom.xml
 
 parameters:
 - name: release_azureresourcemanagerhdinsight
   displayName: 'azure-resourcemanager-hdinsight'
-  type: boolean
-  default: false
-- name: release_azureresourcemanagerhdinsightcontainers
-  displayName: 'azure-resourcemanager-hdinsight-containers'
   type: boolean
   default: false
 
@@ -52,7 +44,3 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerhdinsight
         releaseInBatch: ${{ parameters.release_azureresourcemanagerhdinsight }}
-      - name: azure-resourcemanager-hdinsight-containers
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerhdinsightcontainers
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerhdinsightcontainers }}

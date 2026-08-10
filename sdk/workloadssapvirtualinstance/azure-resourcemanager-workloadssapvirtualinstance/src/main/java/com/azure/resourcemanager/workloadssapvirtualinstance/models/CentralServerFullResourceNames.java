@@ -107,20 +107,6 @@ public final class CentralServerFullResourceNames implements JsonSerializable<Ce
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (virtualMachines() != null) {
-            virtualMachines().forEach(e -> e.validate());
-        }
-        if (loadBalancer() != null) {
-            loadBalancer().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

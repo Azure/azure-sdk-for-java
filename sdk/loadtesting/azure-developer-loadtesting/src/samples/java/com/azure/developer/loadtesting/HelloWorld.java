@@ -14,6 +14,7 @@ import com.azure.developer.loadtesting.models.LoadTestConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.developer.loadtesting.models.MetricNamespaces;
+import com.azure.developer.loadtesting.models.OperationStatus;
 import com.azure.developer.loadtesting.models.PassFailAction;
 import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
@@ -21,6 +22,7 @@ import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PfMetrics;
 import com.azure.developer.loadtesting.models.SecretType;
 import com.azure.developer.loadtesting.models.TestFileInfo;
+import com.azure.developer.loadtesting.models.TestRunInsights;
 import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.developer.loadtesting.models.TestSecret;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -60,6 +62,7 @@ public final class HelloWorld {
         final String testRunId = "sample-test-run-id";
         final String testFileName = "test-script.jmx";
         final String testFilePath = "C:/path/to/file/sample-script.jmx";
+        final String clonedTestId = "cloned-test-id";
 
         /*
          * BEGIN: Create test
@@ -120,6 +123,19 @@ public final class HelloWorld {
         System.out.println(fileUrlOut.getValue().toString());
         /*
          * END: Upload test file
+         */
+
+        /*
+         * BEGIN: Clone test
+         */
+        // Clone the test to create a copy with a new test ID
+        SyncPoller<OperationStatus, LoadTest> clonePoller = adminClient.beginCloneTest(testId, clonedTestId);
+        clonePoller.waitForCompletion();
+        LoadTest clonedTest = clonePoller.getFinalResult();
+
+        System.out.println("Cloned test ID: " + clonedTest.getTestId());
+        /*
+         * END: Clone test
          */
 
         /*
@@ -201,6 +217,23 @@ public final class HelloWorld {
         });
         /*
          * END: List metrics
+         */
+
+        /*
+         * BEGIN: Generate and get actionable insights
+         */
+        // Generate actionable insights for the completed test run
+        SyncPoller<TestRunInsights, Void> insightsPoller = testRunClient.beginGenerateTestRunInsights(testRunId);
+        insightsPoller.waitForCompletion();
+
+        System.out.println("Insights generation completed.");
+
+        // Get the latest insights for the test run
+        TestRunInsights insights = testRunClient.getLatestTestRunInsights(testRunId);
+
+        System.out.println("Insights status: " + insights.getStatus());
+        /*
+         * END: Generate and get actionable insights
          */
     }
 }

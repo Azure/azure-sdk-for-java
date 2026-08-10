@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.chaos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -80,31 +79,6 @@ public final class ChaosTargetListSelector extends ChaosTargetSelector {
         super.withFilter(filter);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (targets() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property targets in model ChaosTargetListSelector"));
-        } else {
-            targets().forEach(e -> e.validate());
-        }
-        if (id() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property id in model ChaosTargetListSelector"));
-        }
-        if (filter() != null) {
-            filter().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ChaosTargetListSelector.class);
 
     /**
      * {@inheritDoc}

@@ -31,12 +31,8 @@ public final class EndpointsImpl implements Endpoints {
         Context context) {
         Response<EndpointInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storageMoverName, endpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EndpointImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EndpointImpl(inner.getValue(), this.manager()));
     }
 
     public Endpoint get(String resourceGroupName, String storageMoverName, String endpointName) {

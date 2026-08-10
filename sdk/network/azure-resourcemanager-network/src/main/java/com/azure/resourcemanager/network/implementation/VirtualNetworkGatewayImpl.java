@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
@@ -140,11 +141,22 @@ class VirtualNetworkGatewayImpl extends
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIpAddress() {
         final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
-        this.creatablePip = this.manager()
+        PublicIpAddress.DefinitionStages.WithCreate ipAddressToCreate = this.manager()
             .publicIpAddresses()
             .define(pipName)
             .withRegion(this.regionName())
             .withExistingResourceGroup(this.resourceGroupName());
+
+        // ref https://learn.microsoft.com/azure/vpn-gateway/vpn-gateway-vpn-faq#can-i-request-a-static-public-ip-address-for-my-vpn-gateway
+        if (this.sku() == null || this.sku().name() == VirtualNetworkGatewaySkuName.BASIC) {
+            /*
+             * Condition of "this.sku() == null" keeps the previous behavior.
+             * When SKU is not set (i.e. user explicitly calls "withNewPublicIpAddress()"), it still creates a Public IP Address with Basic SKU.
+             */
+            this.creatablePip = ipAddressToCreate.withSku(PublicIPSkuType.BASIC);
+        } else {
+            this.creatablePip = ipAddressToCreate.withSku(PublicIPSkuType.STANDARD);
+        }
         return this;
     }
 
@@ -358,12 +370,7 @@ class VirtualNetworkGatewayImpl extends
 
     private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
-            final String pipName = this.manager().resourceManager().internalContext().randomResourceName("pip", 9);
-            this.creatablePip = this.manager()
-                .publicIpAddresses()
-                .define(pipName)
-                .withRegion(this.regionName())
-                .withExistingResourceGroup(this.resourceGroupName());
+            this.withNewPublicIpAddress();
         }
         return this.creatablePip;
     }

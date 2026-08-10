@@ -23,7 +23,7 @@ public final class DiagnosticsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"uqndaizupfkhuy\",\"type\":\"EdgeZone\"},\"eTag\":\"zx\",\"location\":\"tvtv\",\"tags\":{\"tthaokgkskj\":\"qiukvzwyd\"},\"id\":\"vb\",\"name\":\"shajqf\",\"type\":\"kpeexpgeumilh\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"gmnzjotvmrx\",\"type\":\"CustomLocation\"},\"eTag\":\"obvvjbhvh\",\"location\":\"qayfl\",\"tags\":{\"elvhyibdrqrswh\":\"uosnuud\"},\"id\":\"uubpyrow\",\"name\":\"joxztfwfqchvczev\",\"type\":\"nnctagfyvrt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,12 @@ public final class DiagnosticsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostic> response
-            = manager.diagnostics().listByResourceGroup("ldtzmpypefcp", com.azure.core.util.Context.NONE);
+            = manager.diagnostics().listByResourceGroup("aqgzekajclyzgs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tvtv", response.iterator().next().location());
-        Assertions.assertEquals("qiukvzwyd", response.iterator().next().tags().get("tthaokgkskj"));
-        Assertions.assertEquals("uqndaizupfkhuy", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("qayfl", response.iterator().next().location());
+        Assertions.assertEquals("uosnuud", response.iterator().next().tags().get("elvhyibdrqrswh"));
+        Assertions.assertEquals("gmnzjotvmrx", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
+            response.iterator().next().extendedLocation().type());
     }
 }

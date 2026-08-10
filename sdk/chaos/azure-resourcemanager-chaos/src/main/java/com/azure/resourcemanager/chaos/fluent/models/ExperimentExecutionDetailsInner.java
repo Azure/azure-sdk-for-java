@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsPropertiesRunInformation;
+import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
@@ -108,6 +109,15 @@ public final class ExperimentExecutionDetailsInner implements JsonSerializable<E
     }
 
     /**
+     * Get the provisioningState property: Resource provisioning state. Not currently in use for executions.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the failureReason property: The reason why the execution failed.
      * 
      * @return the failureReason value.
@@ -132,17 +142,6 @@ public final class ExperimentExecutionDetailsInner implements JsonSerializable<E
      */
     public ExperimentExecutionDetailsPropertiesRunInformation runInformation() {
         return this.innerProperties() == null ? null : this.innerProperties().runInformation();
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 
     /**

@@ -287,8 +287,7 @@ public interface ConnectedEnvironment {
     /**
      * The template for ConnectedEnvironment update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithStaticIp,
-        UpdateStages.WithDaprAIConnectionString, UpdateStages.WithCustomDomainConfiguration {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          * 
@@ -320,60 +319,6 @@ public interface ConnectedEnvironment {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the ConnectedEnvironment update allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: The complex type of the extended location..
-             * 
-             * @param extendedLocation The complex type of the extended location.
-             * @return the next definition stage.
-             */
-            Update withExtendedLocation(ExtendedLocation extendedLocation);
-        }
-
-        /**
-         * The stage of the ConnectedEnvironment update allowing to specify staticIp.
-         */
-        interface WithStaticIp {
-            /**
-             * Specifies the staticIp property: Static IP of the connectedEnvironment.
-             * 
-             * @param staticIp Static IP of the connectedEnvironment.
-             * @return the next definition stage.
-             */
-            Update withStaticIp(String staticIp);
-        }
-
-        /**
-         * The stage of the ConnectedEnvironment update allowing to specify daprAIConnectionString.
-         */
-        interface WithDaprAIConnectionString {
-            /**
-             * Specifies the daprAIConnectionString property: Application Insights connection string used by Dapr to
-             * export Service to Service communication telemetry.
-             * 
-             * @param daprAIConnectionString Application Insights connection string used by Dapr to export Service to
-             * Service communication telemetry.
-             * @return the next definition stage.
-             */
-            Update withDaprAIConnectionString(String daprAIConnectionString);
-        }
-
-        /**
-         * The stage of the ConnectedEnvironment update allowing to specify customDomainConfiguration.
-         */
-        interface WithCustomDomainConfiguration {
-            /**
-             * Specifies the customDomainConfiguration property: Custom domain configuration for the environment.
-             * 
-             * @param customDomainConfiguration Custom domain configuration for the environment.
-             * @return the next definition stage.
-             */
-            Update withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
         }
     }
 

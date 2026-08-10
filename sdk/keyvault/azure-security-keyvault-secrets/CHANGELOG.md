@@ -1,6 +1,6 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,77 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.11.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
+## 4.11.0 (2026-05-26)
+
+### Features Added
+
+- Added support for service version `V2025_07_01`.
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret()` and `getSecretWithResponse()` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+
+## 4.10.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 4.11.0-beta.1 (2026-03-23)
+
+### Features Added
+
+- Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if
+  applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret` and
+  `getSecretWithResponse` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
+- Added support for service API version `2025-07-01`. This is now the default service version used by the client.
+
+## 4.10.6 (2026-03-23)
+
+### Bugs Fixed
+
+- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+
+## 4.10.5 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 4.10.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 4.10.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
 ## 4.10.2 (2025-08-21)
 
@@ -19,7 +90,6 @@
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
 
-
 ## 4.10.1 (2025-07-29)
 
 ### Other Changes
@@ -28,7 +98,6 @@
 
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
-
 
 ## 4.10.0 (2025-06-13)
 

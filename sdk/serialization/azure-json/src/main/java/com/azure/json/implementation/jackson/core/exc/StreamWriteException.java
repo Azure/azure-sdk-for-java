@@ -16,23 +16,8 @@ public abstract class StreamWriteException extends JsonProcessingException {
 
     protected transient JsonGenerator _processor;
 
-    protected StreamWriteException(Throwable rootCause, JsonGenerator g) {
-        super(rootCause);
-        _processor = g;
-    }
-
     protected StreamWriteException(String msg, JsonGenerator g) {
-        super(msg, (JsonLocation) null);
+        super(msg, null);
         _processor = g;
-    }
-
-    protected StreamWriteException(String msg, Throwable rootCause, JsonGenerator g) {
-        super(msg, null, rootCause);
-        _processor = g;
-    }
-
-    @Override
-    public JsonGenerator getProcessor() {
-        return _processor;
     }
 }

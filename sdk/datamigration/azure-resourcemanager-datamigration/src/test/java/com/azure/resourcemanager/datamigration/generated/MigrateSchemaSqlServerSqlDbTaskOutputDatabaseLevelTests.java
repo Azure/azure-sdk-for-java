@@ -11,7 +11,7 @@ public final class MigrateSchemaSqlServerSqlDbTaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSchemaSqlServerSqlDbTaskOutputDatabaseLevel model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"qxtbjwgnyf\",\"state\":\"Skipped\",\"stage\":\"UploadingScript\",\"startedOn\":\"2021-10-02T06:50:13Z\",\"endedOn\":\"2021-04-20T08:13:28Z\",\"databaseErrorResultPrefix\":\"hajqglcfh\",\"schemaErrorResultPrefix\":\"rqryxynqn\",\"numberOfSuccessfulOperations\":5335686241812058202,\"numberOfFailedOperations\":3232521207125821036,\"fileId\":\"xznptgoeiyb\",\"id\":\"bp\"}")
+            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"axri\",\"state\":\"Skipped\",\"stage\":\"DeployingSchema\",\"startedOn\":\"2021-04-29T04:04:36Z\",\"endedOn\":\"2021-06-22T09:26:41Z\",\"databaseErrorResultPrefix\":\"hsln\",\"schemaErrorResultPrefix\":\"xieixynllxec\",\"numberOfSuccessfulOperations\":8846648603221019927,\"numberOfFailedOperations\":7901820677225280471,\"fileId\":\"lhc\",\"id\":\"jutifdwfmvigorqj\"}")
             .toObject(MigrateSchemaSqlServerSqlDbTaskOutputDatabaseLevel.class);
     }
 

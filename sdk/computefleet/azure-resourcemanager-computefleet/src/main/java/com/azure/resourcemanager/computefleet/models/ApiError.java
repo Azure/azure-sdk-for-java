@@ -94,20 +94,6 @@ public final class ApiError implements JsonSerializable<ApiError> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (details() != null) {
-            details().forEach(e -> e.validate());
-        }
-        if (innererror() != null) {
-            innererror().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

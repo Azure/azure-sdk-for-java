@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.terraform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * Export parameter for resources queried by ARG (Azure Resource Graph).
+ * Uses ARG (Azure Resource Graph) query to choose resources to be exported.
  */
 @Fluent
 public final class ExportQuery extends BaseExportModel {
@@ -22,28 +22,34 @@ public final class ExportQuery extends BaseExportModel {
     private Type type = Type.EXPORT_QUERY;
 
     /*
-     * The ARG where predicate. Note that you can combine multiple conditions in one `where` predicate, e.g.
-     * `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`
+     * The ARG where predicate. Multiple predicates can be combined using `and` operator. Example: `resourceGroup =~
+     * "my-rg" and type =~ "microsoft.network/virtualnetworks"`. The default ARG table is `Resources`, use 'table'
+     * property to query a different table.
      */
     private String query;
 
     /*
-     * The name pattern of the Terraform resources
+     * The id prefix for the exported Terraform resources. Defaults to `res-`.
      */
     private String namePattern;
 
     /*
-     * Whether to recursively list child resources of the query result
+     * Recursively includes child resources. Defaults to `false`.
      */
     private Boolean recursive;
 
     /*
-     * The ARG table name
+     * Includes the resource group in the exported Terraform resources. Defaults to `false`.
+     */
+    private Boolean includeResourceGroup;
+
+    /*
+     * The ARG table name. Defaults to 'Resources'.
      */
     private String table;
 
     /*
-     * The ARG Scope Filter parameter
+     * The ARG Scope Filter parameter.
      */
     private AuthorizationScopeFilter authorizationScopeFilter;
 
@@ -64,8 +70,9 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Get the query property: The ARG where predicate. Note that you can combine multiple conditions in one `where`
-     * predicate, e.g. `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`.
+     * Get the query property: The ARG where predicate. Multiple predicates can be combined using `and` operator.
+     * Example: `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`. The default ARG table is
+     * `Resources`, use 'table' property to query a different table.
      * 
      * @return the query value.
      */
@@ -74,8 +81,9 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Set the query property: The ARG where predicate. Note that you can combine multiple conditions in one `where`
-     * predicate, e.g. `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`.
+     * Set the query property: The ARG where predicate. Multiple predicates can be combined using `and` operator.
+     * Example: `resourceGroup =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`. The default ARG table is
+     * `Resources`, use 'table' property to query a different table.
      * 
      * @param query the query value to set.
      * @return the ExportQuery object itself.
@@ -86,7 +94,7 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Get the namePattern property: The name pattern of the Terraform resources.
+     * Get the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @return the namePattern value.
      */
@@ -95,7 +103,7 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Set the namePattern property: The name pattern of the Terraform resources.
+     * Set the namePattern property: The id prefix for the exported Terraform resources. Defaults to `res-`.
      * 
      * @param namePattern the namePattern value to set.
      * @return the ExportQuery object itself.
@@ -106,7 +114,7 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Get the recursive property: Whether to recursively list child resources of the query result.
+     * Get the recursive property: Recursively includes child resources. Defaults to `false`.
      * 
      * @return the recursive value.
      */
@@ -115,7 +123,7 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Set the recursive property: Whether to recursively list child resources of the query result.
+     * Set the recursive property: Recursively includes child resources. Defaults to `false`.
      * 
      * @param recursive the recursive value to set.
      * @return the ExportQuery object itself.
@@ -126,7 +134,29 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Get the table property: The ARG table name.
+     * Get the includeResourceGroup property: Includes the resource group in the exported Terraform resources. Defaults
+     * to `false`.
+     * 
+     * @return the includeResourceGroup value.
+     */
+    public Boolean includeResourceGroup() {
+        return this.includeResourceGroup;
+    }
+
+    /**
+     * Set the includeResourceGroup property: Includes the resource group in the exported Terraform resources. Defaults
+     * to `false`.
+     * 
+     * @param includeResourceGroup the includeResourceGroup value to set.
+     * @return the ExportQuery object itself.
+     */
+    public ExportQuery withIncludeResourceGroup(Boolean includeResourceGroup) {
+        this.includeResourceGroup = includeResourceGroup;
+        return this;
+    }
+
+    /**
+     * Get the table property: The ARG table name. Defaults to 'Resources'.
      * 
      * @return the table value.
      */
@@ -135,7 +165,7 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Set the table property: The ARG table name.
+     * Set the table property: The ARG table name. Defaults to 'Resources'.
      * 
      * @param table the table value to set.
      * @return the ExportQuery object itself.
@@ -193,19 +223,40 @@ public final class ExportQuery extends BaseExportModel {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (query() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property query in model ExportQuery"));
-        }
+    public ExportQuery withIncludeRoleAssignment(Boolean includeRoleAssignment) {
+        super.withIncludeRoleAssignment(includeRoleAssignment);
+        return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ExportQuery.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportQuery withIncludeManagedResource(Boolean includeManagedResource) {
+        super.withIncludeManagedResource(includeManagedResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportQuery withExcludeAzureResource(List<String> excludeAzureResource) {
+        super.withExcludeAzureResource(excludeAzureResource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportQuery withExcludeTerraformResource(List<String> excludeTerraformResource) {
+        super.withExcludeTerraformResource(excludeTerraformResource);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -216,10 +267,17 @@ public final class ExportQuery extends BaseExportModel {
         jsonWriter.writeStringField("targetProvider", targetProvider() == null ? null : targetProvider().toString());
         jsonWriter.writeBooleanField("fullProperties", fullProperties());
         jsonWriter.writeBooleanField("maskSensitive", maskSensitive());
+        jsonWriter.writeBooleanField("includeRoleAssignment", includeRoleAssignment());
+        jsonWriter.writeBooleanField("includeManagedResource", includeManagedResource());
+        jsonWriter.writeArrayField("excludeAzureResource", excludeAzureResource(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludeTerraformResource", excludeTerraformResource(),
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("query", this.query);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("namePattern", this.namePattern);
         jsonWriter.writeBooleanField("recursive", this.recursive);
+        jsonWriter.writeBooleanField("includeResourceGroup", this.includeResourceGroup);
         jsonWriter.writeStringField("table", this.table);
         jsonWriter.writeStringField("authorizationScopeFilter",
             this.authorizationScopeFilter == null ? null : this.authorizationScopeFilter.toString());
@@ -248,6 +306,16 @@ public final class ExportQuery extends BaseExportModel {
                     deserializedExportQuery.withFullProperties(reader.getNullable(JsonReader::getBoolean));
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedExportQuery.withMaskSensitive(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeRoleAssignment".equals(fieldName)) {
+                    deserializedExportQuery.withIncludeRoleAssignment(reader.getNullable(JsonReader::getBoolean));
+                } else if ("includeManagedResource".equals(fieldName)) {
+                    deserializedExportQuery.withIncludeManagedResource(reader.getNullable(JsonReader::getBoolean));
+                } else if ("excludeAzureResource".equals(fieldName)) {
+                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportQuery.withExcludeAzureResource(excludeAzureResource);
+                } else if ("excludeTerraformResource".equals(fieldName)) {
+                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExportQuery.withExcludeTerraformResource(excludeTerraformResource);
                 } else if ("query".equals(fieldName)) {
                     deserializedExportQuery.query = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -256,6 +324,8 @@ public final class ExportQuery extends BaseExportModel {
                     deserializedExportQuery.namePattern = reader.getString();
                 } else if ("recursive".equals(fieldName)) {
                     deserializedExportQuery.recursive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeResourceGroup".equals(fieldName)) {
+                    deserializedExportQuery.includeResourceGroup = reader.getNullable(JsonReader::getBoolean);
                 } else if ("table".equals(fieldName)) {
                     deserializedExportQuery.table = reader.getString();
                 } else if ("authorizationScopeFilter".equals(fieldName)) {

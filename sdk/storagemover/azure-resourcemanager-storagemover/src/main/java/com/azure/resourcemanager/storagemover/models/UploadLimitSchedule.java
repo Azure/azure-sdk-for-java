@@ -51,17 +51,6 @@ public final class UploadLimitSchedule implements JsonSerializable<UploadLimitSc
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (weeklyRecurrences() != null) {
-            weeklyRecurrences().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -20,7 +20,7 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
     @Test
     public void testListReplicasWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-10-05T02:02:46Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"dudxjascowvfdjk\",\"containers\":[{},{},{}],\"initContainers\":[{},{}]},\"id\":\"kk\",\"name\":\"nmgzvyfijdkzuqnw\",\"type\":\"it\"}]}";
+            = "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-29T14:21:44Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"kvwjtqpkevmy\",\"containers\":[{},{},{},{}],\"initContainers\":[{},{}]},\"id\":\"pxklurccl\",\"name\":\"gxannnoytzposewx\",\"type\":\"gpxvkqmaupxvpi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ContainerAppsRevisionReplicasListReplicasWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReplicaCollection response = manager.containerAppsRevisionReplicas()
-            .listReplicasWithResponse("rxhxkn", "ccrmmk", "upijubyqjfkakfq", com.azure.core.util.Context.NONE)
+            .listReplicasWithResponse("wltxeqipxgzdyims", "ayorprav", "jogeslabnsmjkwyn",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

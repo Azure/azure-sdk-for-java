@@ -17,26 +17,27 @@ public final class DiagnosticInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"oyjathwtzol\",\"type\":\"EdgeZone\"},\"eTag\":\"mwmdxmebwjscjpa\",\"location\":\"xveabf\",\"tags\":{\"ijddtvqc\":\"mwmqtibx\",\"jaeukmrsieekpn\":\"tad\",\"pibudqwyxebeybpm\":\"zaapmudqmeqwi\"},\"id\":\"znrtffyaqit\",\"name\":\"hheioqaqhvseuf\",\"type\":\"qyrxp\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"uwfmduragegizvc\",\"type\":\"CustomLocation\"},\"eTag\":\"lisdjubggbq\",\"location\":\"kxkbsazgakgacyr\",\"tags\":{\"pv\":\"dmspof\",\"iofrzgbzjedmstk\":\"hryl\",\"nktwfansnvpdibmi\":\"nlvxbcuii\",\"qnyophzfyls\":\"ostbzbkiwb\"},\"id\":\"crpfbcunez\",\"name\":\"cez\",\"type\":\"lfwyfwlwxjwetn\"}")
             .toObject(DiagnosticInner.class);
-        Assertions.assertEquals("xveabf", model.location());
-        Assertions.assertEquals("mwmqtibx", model.tags().get("ijddtvqc"));
-        Assertions.assertEquals("oyjathwtzol", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("kxkbsazgakgacyr", model.location());
+        Assertions.assertEquals("dmspof", model.tags().get("pv"));
+        Assertions.assertEquals("uwfmduragegizvc", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticInner model = new DiagnosticInner().withLocation("xveabf")
-            .withTags(mapOf("ijddtvqc", "mwmqtibx", "jaeukmrsieekpn", "tad", "pibudqwyxebeybpm", "zaapmudqmeqwi"))
+        DiagnosticInner model = new DiagnosticInner().withLocation("kxkbsazgakgacyr")
+            .withTags(mapOf("pv", "dmspof", "iofrzgbzjedmstk", "hryl", "nktwfansnvpdibmi", "nlvxbcuii", "qnyophzfyls",
+                "ostbzbkiwb"))
             .withProperties(new DiagnosticProperties())
             .withExtendedLocation(
-                new ExtendedLocation().withName("oyjathwtzol").withType(ExtendedLocationType.EDGE_ZONE));
+                new ExtendedLocation().withName("uwfmduragegizvc").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(DiagnosticInner.class);
-        Assertions.assertEquals("xveabf", model.location());
-        Assertions.assertEquals("mwmqtibx", model.tags().get("ijddtvqc"));
-        Assertions.assertEquals("oyjathwtzol", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("kxkbsazgakgacyr", model.location());
+        Assertions.assertEquals("dmspof", model.tags().get("pv"));
+        Assertions.assertEquals("uwfmduragegizvc", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     // Use "Map.of" if available

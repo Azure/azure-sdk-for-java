@@ -129,6 +129,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class BlobApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -328,33 +329,31 @@ public class BlobApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     public void uploadFailWithSmallTimeoutsForServiceClient() {
-        // setting very small timeout values for the service client
+        // Use realistic but small timeout values that will fail for upload but are deterministic in their behavior
+        HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofMillis(1))
+            .setReadTimeout(Duration.ofMillis(1))
+            .setWriteTimeout(Duration.ofMillis(1))
+            .setConnectTimeout(Duration.ofMillis(1));
+
+        BlobServiceClient serviceClient
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
+                .clientOptions(clientOptions)
+                .buildClient();
+
         liveTestScenarioWithRetry(() -> {
-            HttpClientOptions clientOptions = new HttpClientOptions().setApplicationId("client-options-id")
-                .setResponseTimeout(Duration.ofNanos(1))
-                .setReadTimeout(Duration.ofNanos(1))
-                .setWriteTimeout(Duration.ofNanos(1))
-                .setConnectTimeout(Duration.ofNanos(1));
-
-            BlobServiceClientBuilder clientBuilder
-                = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                    .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                    .retryOptions(new RequestRetryOptions(null, 1, (Integer) null, null, null, null))
-                    .clientOptions(clientOptions);
-
-            BlobServiceClient serviceClient = clientBuilder.buildClient();
-
             int size = 1024;
             byte[] randomData = getRandomByteArray(size);
             ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-            BlobContainerClient blobContainer = serviceClient.createBlobContainer(generateContainerName());
+            BlobContainerClient blobContainer = serviceClient.getBlobContainerClient(cc.getBlobContainerName());
             BlobClient blobClient = blobContainer.getBlobClient(generateBlobName());
             // test whether failure occurs due to small timeout intervals set on the service client
             assertThrows(RuntimeException.class, () -> blobClient.uploadWithResponse(input, size, null, null, null,
                 null, null, Duration.ofSeconds(10), null));
         });
-
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
@@ -1663,6 +1662,71 @@ public class BlobApiTests extends BlobTestBase {
         return Stream.of(Arguments.of((String) null), Arguments.of("\"foo\" = 'bar'"));
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void setGetTagOptionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = new HashMap<>();
+
+        t.put("foo", "bar");
+
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertResponseStatusCode(
+            bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE), 204);
+        assertResponseStatusCode(
+            bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE), 200);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void setTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+
+        //The x-ms-if-tags-request header is not supported
+        t.put("notfoo", "notbar");
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac), null, Context.NONE));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        //The x-ms-if-tags-request header is not supported
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class,
+            () -> bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, Context.NONE));
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
     @Test
     public void setTagsACFail() {
@@ -2090,12 +2154,24 @@ public class BlobApiTests extends BlobTestBase {
             () -> bu2.copyFromUrlWithResponse(bc.getBlobUrl(), null, null, null, bac, null, null));
     }
 
+    // Abort-copy tests race the service: the cross-account copy must still be pending when the abort request
+    // lands. A larger source widens that window (A1); combined with an assumeTrue guard on the poll status (B),
+    // the tests assert abort behavior when a copy is genuinely pending and skip (rather than fail) if the
+    // service finished the copy first. Server-to-server copy, so the larger size costs only the initial upload.
+    //
+    // The source is capped just under the test proxy's 30,000,000-byte request-body limit: a body at/above that
+    // limit cannot be ingested by the proxy in record or playback (it fails with HTTP 500 "Request body too large"
+    // or a premature connection close, and also destabilizes the shared proxy connection pool for concurrent
+    // tests). 28 MiB (29,360,128 bytes) stays under the cap while keeping the window wide enough to exercise abort.
+    private static final int ABORT_COPY_SOURCE_SIZE_BYTES = 28 * Constants.MB;
+
     @Test
     public void abortCopyBaseSimple() {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2108,6 +2184,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId());
         BlobStorageException e
             = assertThrows(BlobStorageException.class, () -> bu2.abortCopyFromUrl(lastResponse.getValue().getCopyId()));
@@ -2123,7 +2201,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2139,6 +2218,8 @@ public class BlobApiTests extends BlobTestBase {
             bu2.beginCopy(bc.getBlobUrl() + "?" + sas, null, null, null, null, blobRequestConditions, null));
         PollResponse<BlobCopyInfo> response = poller.poll();
         assertNotEquals(LongRunningOperationStatus.FAILED, response.getStatus());
+        assumeTrue(response.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; cannot observe the 412 lease mismatch.");
         BlobCopyInfo blobCopyInfo = response.getValue();
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
@@ -2154,7 +2235,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();
@@ -2167,6 +2249,8 @@ public class BlobApiTests extends BlobTestBase {
         PollResponse<BlobCopyInfo> lastResponse = poller.poll();
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         Response<Void> response
             = bu2.abortCopyFromUrlWithResponse(lastResponse.getValue().getCopyId(), null, null, null);
         HttpHeaders headers = response.getHeaders();
@@ -2184,7 +2268,8 @@ public class BlobApiTests extends BlobTestBase {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         new SpecializedBlobClientBuilder().blobClient(bc)
             .buildBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, true);
+            .upload(new ByteArrayInputStream(getRandomByteArray(ABORT_COPY_SOURCE_SIZE_BYTES)),
+                ABORT_COPY_SOURCE_SIZE_BYTES, true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateContainerName());
         cu2.create();
@@ -2201,6 +2286,8 @@ public class BlobApiTests extends BlobTestBase {
 
         assertNotNull(lastResponse);
         assertNotNull(lastResponse.getValue());
+        assumeTrue(lastResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS,
+            "Copy already completed before abort could be issued; nothing pending to abort.");
         String copyId = lastResponse.getValue().getCopyId();
         assertResponseStatusCode(bu2.abortCopyFromUrlWithResponse(copyId, leaseId, null, null), 204);
         // cleanup:
@@ -2494,6 +2581,45 @@ public class BlobApiTests extends BlobTestBase {
 
         assertThrows(BlobStorageException.class,
             () -> bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditions(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfModifiedSince(changeTime.plusDays(-1));
+        } else {
+            // requires no modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusMinutes(5));
+        }
+
+        assertResponseStatusCode(bc.deleteWithResponse(null, brc, null, null), 202);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditionsFail(boolean isAccessTierModifiedSince) {
+        bc.setAccessTier(AccessTier.COOL);
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfModifiedSince(changeTime.plusMinutes(5));
+        } else {
+            // requires no modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusDays(-1));
+        }
+
+        BlobStorageException e
+            = assertThrows(BlobStorageException.class, () -> bc.deleteWithResponse(null, brc, null, null));
+        assertEquals(412, e.getStatusCode());
+        assertEquals("AccessTierChangeTimeConditionNotMet", e.getErrorCode().toString());
     }
 
     @Test
@@ -3106,6 +3232,35 @@ public class BlobApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @Test
+    public void blobNameEncodingOnGetBlobUrl() {
+        BlobClient blobClient = cc.getBlobClient("my blob");
+        String expectedEncodedBlobName = "my%20blob";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedBlobName));
+    }
+
+    @Test
+    void containerNameEncodingOnGetBlobUrl() {
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient("my container");
+        BlobClient blobClient = containerClient.getBlobClient(generateBlobName());
+        String expectedEncodedContainerName = "my%20container";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void uploadStreamAccessTierSmart() {
+        bc = cc.getBlobClient(generateBlobName());
+        InputStream data = new ByteArrayInputStream(getRandomByteArray(Constants.KB));
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data).setTier(AccessTier.SMART);
+        bc.uploadWithResponse(options, null, Context.NONE);
+
+        Response<BlobProperties> response = bc.getPropertiesWithResponse(null, null, Context.NONE);
+        assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+        assertNotNull(response.getValue().getSmartAccessTier());
     }
 
 }

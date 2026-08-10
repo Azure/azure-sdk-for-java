@@ -17,7 +17,10 @@ public final class ListBlobsOptions {
 
     private BlobListDetails details;
     private String prefix;
+    private String startFrom;
     private Integer maxResultsPerPage;
+    private StorageResponseSerializationFormat storageResponseSerializationFormat;
+    private String endBefore;
 
     /**
      * Constructs an unpopulated {@link ListBlobsOptions}.
@@ -65,6 +68,72 @@ public final class ListBlobsOptions {
      */
     public ListBlobsOptions setPrefix(String prefix) {
         this.prefix = prefix;
+        return this;
+    }
+
+    /**
+     * Gets an optional parameter that specifies an absolute path within the container.
+     * This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
+     * For non-recursive lists, only one entity level is supported.
+     *
+     * @return the marker indicating where to start listing blobs (inclusive)
+     */
+    public String getStartFrom() {
+        return startFrom;
+    }
+
+    /**
+     * Sets an optional parameter that specifies an absolute path within the container. This parameter is similar to the prefix filter: it allows listing blobs starting from the specified path, rather than from the beginning of the container.
+     * For non-recursive lists, only one entity level is supported.
+     *
+     * @param startFrom The marker indicating where to start listing blobs (inclusive)
+     * @return the updated ListBlobsOptions object
+     */
+    public ListBlobsOptions setStartFrom(String startFrom) {
+        this.startFrom = startFrom;
+        return this;
+    }
+
+    /**
+     * Gets the endBefore value. Only supported with Arrow listings. The listing will end before this path (exclusive).
+     *
+     * @return the endBefore value.
+     */
+    public String getEndBefore() {
+        return endBefore;
+    }
+
+    /**
+     * Sets the endBefore value. Only supported with Arrow listings. The listing will end before this path (exclusive).
+     *
+     * @param endBefore the endBefore value to set.
+     * @return the updated ListBlobsOptions object.
+     */
+    public ListBlobsOptions setEndBefore(String endBefore) {
+        this.endBefore = endBefore;
+        return this;
+    }
+
+    /**
+     * Gets the response serialization format the service should use when listing blobs.
+     *
+     * @return the {@link StorageResponseSerializationFormat}, or {@code null} if unset
+     * (equivalent to {@link StorageResponseSerializationFormat#AUTO}).
+     */
+    public StorageResponseSerializationFormat getStorageResponseSerializationFormat() {
+        return storageResponseSerializationFormat;
+    }
+
+    /**
+     * Sets the response serialization format the service should use when listing blobs.
+     *
+     * @param storageResponseSerializationFormat the format to request. {@code null} and
+     * {@link StorageResponseSerializationFormat#AUTO} both let the SDK pick.
+     * @return the updated {@link ListBlobsOptions} object.
+     */
+    public ListBlobsOptions
+        setStorageResponseSerializationFormat(StorageResponseSerializationFormat storageResponseSerializationFormat) {
+        this.storageResponseSerializationFormat = storageResponseSerializationFormat;
         return this;
     }
 

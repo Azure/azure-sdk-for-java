@@ -20,6 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsRevisionReplicasClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaCollectionInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaInner;
@@ -56,7 +57,7 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientContainerAppsRevisionReplicas")
     public interface ContainerAppsRevisionReplicasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/replicas/{replicaName}")
@@ -70,10 +71,31 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ReplicaInner> getReplicaSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("revisionName") String revisionName,
+            @PathParam("replicaName") String replicaName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/replicas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ReplicaCollectionInner>> listReplicas(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @PathParam("revisionName") String revisionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/revisions/{revisionName}/replicas")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ReplicaCollectionInner> listReplicasSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName, @PathParam("revisionName") String revisionName,
@@ -133,51 +155,6 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
      * @param replicaName Name of the Container App Revision Replica.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a replica for a Container App Revision along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getReplicaWithResponseAsync(String resourceGroupName, String containerAppName,
-        String revisionName, String replicaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (revisionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
-        }
-        if (replicaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getReplica(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, revisionName, replicaName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a replica for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
-     * @param replicaName Name of the Container App Revision Replica.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,8 +183,35 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaInner> getReplicaWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, String replicaName, Context context) {
-        return getReplicaWithResponseAsync(resourceGroupName, containerAppName, revisionName, replicaName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (revisionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
+        }
+        if (replicaName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getReplicaSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, revisionName, replicaName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -276,47 +280,6 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param revisionName Name of the Container App Revision.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revision Replicas collection ARM resource along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaCollectionInner>> listReplicasWithResponseAsync(String resourceGroupName,
-        String containerAppName, String revisionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (revisionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listReplicas(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, revisionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * List replicas for a Container App Revision.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param revisionName Name of the Container App Revision.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,7 +307,31 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReplicaCollectionInner> listReplicasWithResponse(String resourceGroupName, String containerAppName,
         String revisionName, Context context) {
-        return listReplicasWithResponseAsync(resourceGroupName, containerAppName, revisionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (revisionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter revisionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listReplicasSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, revisionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -362,4 +349,6 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     public ReplicaCollectionInner listReplicas(String resourceGroupName, String containerAppName, String revisionName) {
         return listReplicasWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerAppsRevisionReplicasClientImpl.class);
 }

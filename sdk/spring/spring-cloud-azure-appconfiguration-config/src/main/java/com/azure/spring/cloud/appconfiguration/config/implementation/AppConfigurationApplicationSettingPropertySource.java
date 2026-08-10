@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -43,14 +42,18 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     private final String[] labelFilters;
 
+    private final List<String> tagsFilter;
+
     AppConfigurationApplicationSettingPropertySource(String name, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters,
+        List<String> tagsFilter) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(name + getLabelName(labelFilters), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.keyFilter = keyFilter;
         this.labelFilters = labelFilters;
+        this.tagsFilter = tagsFilter;
     }
 
     /**
@@ -61,14 +64,22 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
+    @Override
     public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
-        List<String> labels = Arrays.asList(labelFilters);
+        replicaClient.getTracingInfo().resetAiConfigurationTracing();
+
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilters));
+
         // Reverse labels so they have the right priority order.
         Collections.reverse(labels);
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
+
+            if (tagsFilter != null && !tagsFilter.isEmpty()) {
+                settingSelector.setTagsFilter(tagsFilter);
+            }
 
             // * for wildcard match
             processConfigurationSettings(replicaClient.listSettings(settingSelector, context), settingSelector.getKeyFilter(),
@@ -80,6 +91,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         List<String> keyPrefixTrimValues)
         throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
+            replicaClient.getTracingInfo().updateAiConfigurationTracing(setting.getContentType());
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
                 keyPrefixTrimValues.add(keyFilter.substring(0, keyFilter.length() - 1));
@@ -105,7 +117,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      *
      * @param key Application Setting name
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
-     * @return Key Vault Secret Value
      * @throws InvalidConfigurationPropertyValueException
      */
     private void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference)
@@ -128,7 +139,6 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
         throws InvalidConfigurationPropertyValueException {
         // Feature Flags aren't loaded as configuration, but are loaded as feature flags when loading a snapshot.
-        return;
     }
 
     private void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
@@ -145,7 +155,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
         if (trimStrings != null) {
             for (String trim : trimStrings) {
                 if (key.startsWith(trim)) {
-                    return key.replaceFirst("^" + trim, "").replace('/', '.');
+                    return key.substring(trim.length()).replace('/', '.');
                 }
             }
         }

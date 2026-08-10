@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.DiagnosticInner;
+import com.azure.resourcemanager.workloadorchestration.models.DiagnosticUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in DiagnosticsClient.
@@ -119,7 +120,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties);
+        String diagnosticName, DiagnosticUpdate properties);
 
     /**
      * Updates existing Diagnostic resource.
@@ -135,7 +136,7 @@ public interface DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiagnosticInner>, DiagnosticInner> beginUpdate(String resourceGroupName,
-        String diagnosticName, DiagnosticInner properties, Context context);
+        String diagnosticName, DiagnosticUpdate properties, Context context);
 
     /**
      * Updates existing Diagnostic resource.
@@ -149,7 +150,7 @@ public interface DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties);
+    DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties);
 
     /**
      * Updates existing Diagnostic resource.
@@ -164,7 +165,7 @@ public interface DiagnosticsClient {
      * @return a Diagnostic resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticInner properties,
+    DiagnosticInner update(String resourceGroupName, String diagnosticName, DiagnosticUpdate properties,
         Context context);
 
     /**

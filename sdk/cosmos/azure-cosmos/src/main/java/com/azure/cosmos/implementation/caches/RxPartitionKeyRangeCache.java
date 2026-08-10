@@ -3,16 +3,16 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InCompleteRoutingMapException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -24,37 +24,70 @@ import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+import java.net.URI;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
+ *
+ * <p>The routing-map storage is obtained from {@link SharedPartitionKeyRangeCacheRegistry}
+ * keyed by the service endpoint URI; clients configured with the same service
+ * endpoint share it. {@link #close()} releases this instance's reference. The
+ * fetching logic (network call, collection resolution, diagnostics) remains
+ * per-client. Clients configured with different endpoint URIs &mdash; including
+ * a regional endpoint versus the global endpoint of the same account &mdash;
+ * do <b>not</b> share.</p>
  **/
-public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
+public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache, Closeable {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapCache;
     private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
     private final DiagnosticsClientContext clientContext;
+    private final URI sharedCacheEndpointKey;
+    private final AtomicBoolean closed = new AtomicBoolean(false);
+    private final SharedPartitionKeyRangeCacheRegistry.ReleaseHandle releaseHandle;
 
-    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
-        this.routingMapCache = new AsyncCacheNonBlocking<>();
+    public RxPartitionKeyRangeCache(
+        RxDocumentClientImpl client,
+        RxCollectionCache collectionCache,
+        URI serviceEndpoint) {
+
+        this.sharedCacheEndpointKey = serviceEndpoint;
+        SharedPartitionKeyRangeCacheRegistry.AcquireResult acquired =
+            SharedPartitionKeyRangeCacheRegistry.getInstance().acquire(this.sharedCacheEndpointKey, this);
+        this.routingMapCache = acquired.cache;
+        this.releaseHandle = acquired.releaseHandle;
         this.client = client;
         this.collectionCache = collectionCache;
         this.clientContext = client;
+    }
+
+    /** Idempotent release of this instance's shared-cache reference. */
+    @Override
+    public void close() {
+        if (closed.compareAndSet(false, true)) {
+            SharedPartitionKeyRangeCacheRegistry.getInstance().release(
+                this.sharedCacheEndpointKey, this.routingMapCache, this.releaseHandle);
+        }
     }
 
     /* (non-Javadoc)
@@ -64,8 +97,13 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
         return routingMapCache.getAsync(
                 collectionRid,
-                routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue,
-                    properties), currentValue -> shouldForceRefresh(previousValue, currentValue))
+                routingMap ->
+                    getRoutingMapForCollectionWithRetry(
+                        metaDataDiagnosticsContext,
+                        collectionRid,
+                        previousValue,
+                        properties),
+                currentValue -> shouldForceRefresh(previousValue, currentValue))
             .map(Utils.ValueHolder::new)
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
@@ -171,7 +209,13 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
             collectionRid,
-            routingMap -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties), forceRefresh -> false).map(Utils.ValueHolder::new);
+            routingMap ->
+                getRoutingMapForCollectionWithRetry(
+                    metaDataDiagnosticsContext,
+                    collectionRid,
+                    null,
+                    properties),
+            forceRefresh -> false).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
@@ -202,51 +246,119 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             collectionRoutingMapValueHolder.v, null));
     }
 
+    private Mono<CollectionRoutingMap> getRoutingMapForCollectionWithRetry(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        CollectionRoutingMap previousRoutingMap,
+        Map<String, Object> properties) {
+
+        return ObservableHelper.inlineIfPossible(
+                () -> getRoutingMapForCollectionAsync(
+                    metaDataDiagnosticsContext,
+                    collectionRid,
+                    previousRoutingMap,
+                    properties),
+                new InCompleteRoutingMapRetryPolicy())
+            .onErrorResume(throwable -> {
+                if (throwable instanceof InCompleteRoutingMapException) {
+                    return Mono.error(
+                        new NotFoundException(
+                            String.format("GetRoutingMapForCollectionAsync(collectionRid: {%s}), RANGE information either doesn't exist or is not complete.", collectionRid)));
+                }
+
+                return Mono.error(throwable);
+            });
+    }
+
     private Mono<CollectionRoutingMap> getRoutingMapForCollectionAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext,
         String collectionRid,
         CollectionRoutingMap previousRoutingMap,
         Map<String, Object> properties) {
 
-        // TODO: NOTE: main java code doesn't do anything in regard to the previous routing map
-        // .Net code instead of using DocumentClient controls sending request and receiving requests here
+        Instant pkRangesCallStartTime = Instant.now();
+        String previousChangeFeedIfNoneMatch =
+            previousRoutingMap == null ? null : previousRoutingMap.getChangeFeedNextIfNoneMatch();
 
-        // here we stick to what main java sdk does, investigate later.
+        logger.debug(
+            "getRoutingMapForCollectionAsync with collectionRid {}, changeFeedNextIfNontMatch {}",
+            collectionRid,
+            previousChangeFeedIfNoneMatch);
 
-        Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(metaDataDiagnosticsContext, collectionRid , false, properties);
+        Flux<FeedResponse<PartitionKeyRange>> rangesObs =
+            getPartitionKeyRange(
+                metaDataDiagnosticsContext,
+                collectionRid,
+                previousChangeFeedIfNoneMatch,
+                properties);
 
-        return rangesObs.flatMap(ranges -> {
+        AtomicReference<String> continuationToken = new AtomicReference<>(previousChangeFeedIfNoneMatch);
+        List<PartitionKeyRange> ranges = new ArrayList<>();
 
-            List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesTuples =
-                ranges.stream().map(range -> new  ImmutablePair<>(range, (IServerIdentity) null)).collect(Collectors.toList());
+        return rangesObs
+            .doOnNext(response -> {
+                ranges.addAll(response.getResults());
+                continuationToken.set(response.getContinuationToken());
+            })
+            .collectList()
+            .flatMap(allResults -> {
+                CollectionRoutingMap updatedMap =
+                    updateRoutingMap(collectionRid, previousRoutingMap, ranges, continuationToken.get());
 
-
-            CollectionRoutingMap routingMap;
-            if (previousRoutingMap == null)
-            {
-                // Splits could have happened during change feed query and we might have a mix of gone and new ranges.
-                Set<String> goneRanges = new HashSet<>(ranges.stream().flatMap(range -> CollectionUtils.emptyIfNull(range.getParents()).stream()).collect(Collectors.toSet()));
-
-                routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
-                    rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.getId())).collect(Collectors.toList()),
-                    collectionRid);
-            }
-            else
-            {
-                routingMap = previousRoutingMap.tryCombine(rangesTuples);
-            }
-
-            if (routingMap == null)
-            {
-                // RANGE information either doesn't exist or is not complete.
-                return Mono.error(new NotFoundException(String.format("GetRoutingMapForCollectionAsync(collectionRid: {%s}), RANGE information either doesn't exist or is not complete.", collectionRid)));
-            }
-
-            return Mono.just(routingMap);
-        });
+                return Mono.just(updatedMap);
+            })
+            .doFinally(signal -> {
+                if (metaDataDiagnosticsContext != null) {
+                    Instant pkRangesCallEndTime = Instant.now();
+                    MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic =
+                        new MetadataDiagnosticsContext.MetadataDiagnostics(
+                            pkRangesCallStartTime,
+                            pkRangesCallEndTime,
+                            MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
+                    metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                }
+            });
     }
 
-    private Mono<List<PartitionKeyRange>> getPartitionKeyRange(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, boolean forceRefresh, Map<String, Object> properties) {
+    private CollectionRoutingMap updateRoutingMap(
+        String collectionRid,
+        CollectionRoutingMap previousRoutingMap,
+        List<PartitionKeyRange> ranges,
+        String changeFeedNextIfNoneMatch) {
+
+        logger.debug(
+            "updateRoutingMap for collectionRid {}, changeFeedNextIfNoneMatch {}, ranges size {}",
+            collectionRid,
+            changeFeedNextIfNoneMatch,
+            ranges.size());
+
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesTuples =
+            ranges.stream().map(range -> new ImmutablePair<>(range, (IServerIdentity) null)).collect(Collectors.toList());
+
+        CollectionRoutingMap routingMap;
+        if (previousRoutingMap == null)
+        {
+            // Splits could have happened during change feed query and we might have a mix of gone and new ranges.
+            Set<String> goneRanges = new HashSet<>(ranges.stream().flatMap(range -> CollectionUtils.emptyIfNull(range.getParents()).stream()).collect(Collectors.toSet()));
+
+            routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
+                rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.getId())).collect(Collectors.toList()),
+                collectionRid,
+                changeFeedNextIfNoneMatch);
+        }
+        else
+        {
+            routingMap = previousRoutingMap.tryCombine(rangesTuples, changeFeedNextIfNoneMatch, collectionRid);
+        }
+
+        return routingMap;
+    }
+
+    private Flux<FeedResponse<PartitionKeyRange>> getPartitionKeyRange(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String collectionRid,
+        String previousRoutingMapContinuationToken,
+        Map<String, Object> properties) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
             OperationType.ReadFeed,
             collectionRid,
@@ -259,27 +371,18 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(metaDataDiagnosticsContext, request)
             .map(collectionValueHolder -> collectionValueHolder.v);
 
-        return collectionObs.flatMap(coll -> {
+        return collectionObs.flatMapMany(coll -> {
 
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(
+                cosmosQueryRequestOptions,
+                previousRoutingMapContinuationToken);
+
             if (properties != null) {
                 ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
-            Instant addressCallStartTime = Instant.now();
 
-            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
-                // maxConcurrent = 1 to makes it in the right getOrder
-                .flatMap(p -> {
-                    if(metaDataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
-                        metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
-
-                    return Flux.fromIterable(p.getResults());
-                }, 1).collectList();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions);
         });
     }
 }

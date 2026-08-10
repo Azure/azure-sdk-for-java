@@ -135,7 +135,7 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
             .withHostName("*." + domain.name())
             .withWildcardSku()
             .withDomainVerification(domain)
-            .withNewKeyVault("graphvault", Region.US_WEST)
+            .withNewKeyVault("graphvault", Region.US_WEST3)
             .withValidYears(1)
             .create();
     }

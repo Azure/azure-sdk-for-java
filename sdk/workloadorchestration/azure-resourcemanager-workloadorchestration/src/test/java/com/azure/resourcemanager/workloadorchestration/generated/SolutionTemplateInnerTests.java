@@ -17,31 +17,31 @@ public final class SolutionTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"ivfxzsjabibsyst\",\"capabilities\":[\"fsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"latestVersion\":\"hjjklff\",\"state\":\"active\",\"enableExternalValidation\":false,\"provisioningState\":\"Succeeded\"},\"eTag\":\"zrfze\",\"location\":\"ebizikayuh\",\"tags\":{\"vtldgmfpgvmpip\":\"jbsybbqw\",\"x\":\"slthaq\"},\"id\":\"smwutwbdsrezpd\",\"name\":\"hneuyowqkd\",\"type\":\"ytisibir\"}")
+            "{\"properties\":{\"description\":\"snjvcdwxlpqekftn\",\"capabilities\":[\"tjsyin\",\"wfqatmtd\"],\"latestVersion\":\"mdvy\",\"state\":\"inactive\",\"enableExternalValidation\":true,\"provisioningState\":\"Canceled\"},\"eTag\":\"ywkbirryuzhlhkjo\",\"location\":\"vqqaatjinrvgo\",\"tags\":{\"x\":\"fiibfggjioolvr\",\"kkgll\":\"v\",\"uhbxvvy\":\"wjygvjayvblmhvk\"},\"id\":\"gsopbyrqufegxu\",\"name\":\"wz\",\"type\":\"bnhlmc\"}")
             .toObject(SolutionTemplateInner.class);
-        Assertions.assertEquals("ebizikayuh", model.location());
-        Assertions.assertEquals("jbsybbqw", model.tags().get("vtldgmfpgvmpip"));
-        Assertions.assertEquals("ivfxzsjabibsyst", model.properties().description());
-        Assertions.assertEquals("fsdjpvkvp", model.properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
-        Assertions.assertFalse(model.properties().enableExternalValidation());
+        Assertions.assertEquals("vqqaatjinrvgo", model.location());
+        Assertions.assertEquals("fiibfggjioolvr", model.tags().get("x"));
+        Assertions.assertEquals("snjvcdwxlpqekftn", model.properties().description());
+        Assertions.assertEquals("tjsyin", model.properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
+        Assertions.assertTrue(model.properties().enableExternalValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateInner model = new SolutionTemplateInner().withLocation("ebizikayuh")
-            .withTags(mapOf("vtldgmfpgvmpip", "jbsybbqw", "x", "slthaq"))
-            .withProperties(new SolutionTemplateProperties().withDescription("ivfxzsjabibsyst")
-                .withCapabilities(Arrays.asList("fsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo"))
-                .withState(ResourceState.ACTIVE)
-                .withEnableExternalValidation(false));
+        SolutionTemplateInner model = new SolutionTemplateInner().withLocation("vqqaatjinrvgo")
+            .withTags(mapOf("x", "fiibfggjioolvr", "kkgll", "v", "uhbxvvy", "wjygvjayvblmhvk"))
+            .withProperties(new SolutionTemplateProperties().withDescription("snjvcdwxlpqekftn")
+                .withCapabilities(Arrays.asList("tjsyin", "wfqatmtd"))
+                .withState(ResourceState.INACTIVE)
+                .withEnableExternalValidation(true));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateInner.class);
-        Assertions.assertEquals("ebizikayuh", model.location());
-        Assertions.assertEquals("jbsybbqw", model.tags().get("vtldgmfpgvmpip"));
-        Assertions.assertEquals("ivfxzsjabibsyst", model.properties().description());
-        Assertions.assertEquals("fsdjpvkvp", model.properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.properties().state());
-        Assertions.assertFalse(model.properties().enableExternalValidation());
+        Assertions.assertEquals("vqqaatjinrvgo", model.location());
+        Assertions.assertEquals("fiibfggjioolvr", model.tags().get("x"));
+        Assertions.assertEquals("snjvcdwxlpqekftn", model.properties().description());
+        Assertions.assertEquals("tjsyin", model.properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.properties().state());
+        Assertions.assertTrue(model.properties().enableExternalValidation());
     }
 
     // Use "Map.of" if available

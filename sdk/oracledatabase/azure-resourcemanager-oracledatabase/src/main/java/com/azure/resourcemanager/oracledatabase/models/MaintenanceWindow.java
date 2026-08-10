@@ -309,20 +309,6 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (months() != null) {
-            months().forEach(e -> e.validate());
-        }
-        if (daysOfWeek() != null) {
-            daysOfWeek().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

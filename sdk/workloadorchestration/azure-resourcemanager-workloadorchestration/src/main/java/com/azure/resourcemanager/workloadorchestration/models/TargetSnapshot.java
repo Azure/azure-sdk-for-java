@@ -67,22 +67,19 @@ public final class TargetSnapshot implements JsonSerializable<TargetSnapshot> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetId", this.targetId);
-        jsonWriter.writeMapField("targetSpecification", this.targetSpecification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("targetSpecification", this.targetSpecification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("solutionScope", this.solutionScope);
         return jsonWriter.writeEndObject();
     }

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -255,45 +254,6 @@ public final class TargetProperties implements JsonSerializable<TargetProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property description in model TargetProperties"));
-        }
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property displayName in model TargetProperties"));
-        }
-        if (contextId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property contextId in model TargetProperties"));
-        }
-        if (targetSpecification() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetSpecification in model TargetProperties"));
-        }
-        if (capabilities() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property capabilities in model TargetProperties"));
-        }
-        if (hierarchyLevel() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property hierarchyLevel in model TargetProperties"));
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TargetProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -302,8 +262,13 @@ public final class TargetProperties implements JsonSerializable<TargetProperties
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("contextId", this.contextId);
-        jsonWriter.writeMapField("targetSpecification", this.targetSpecification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("targetSpecification", this.targetSpecification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("hierarchyLevel", this.hierarchyLevel);
         jsonWriter.writeStringField("solutionScope", this.solutionScope);

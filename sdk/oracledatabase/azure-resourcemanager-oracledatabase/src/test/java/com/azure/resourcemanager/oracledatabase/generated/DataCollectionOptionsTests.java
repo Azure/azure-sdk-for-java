@@ -12,21 +12,21 @@ public final class DataCollectionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataCollectionOptions model = BinaryData.fromString(
-            "{\"isDiagnosticsEventsEnabled\":true,\"isHealthMonitoringEnabled\":true,\"isIncidentLogsEnabled\":false}")
+            "{\"isDiagnosticsEventsEnabled\":false,\"isHealthMonitoringEnabled\":true,\"isIncidentLogsEnabled\":true}")
             .toObject(DataCollectionOptions.class);
-        Assertions.assertTrue(model.isDiagnosticsEventsEnabled());
+        Assertions.assertFalse(model.isDiagnosticsEventsEnabled());
         Assertions.assertTrue(model.isHealthMonitoringEnabled());
-        Assertions.assertFalse(model.isIncidentLogsEnabled());
+        Assertions.assertTrue(model.isIncidentLogsEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataCollectionOptions model = new DataCollectionOptions().withIsDiagnosticsEventsEnabled(true)
+        DataCollectionOptions model = new DataCollectionOptions().withIsDiagnosticsEventsEnabled(false)
             .withIsHealthMonitoringEnabled(true)
-            .withIsIncidentLogsEnabled(false);
+            .withIsIncidentLogsEnabled(true);
         model = BinaryData.fromObject(model).toObject(DataCollectionOptions.class);
-        Assertions.assertTrue(model.isDiagnosticsEventsEnabled());
+        Assertions.assertFalse(model.isDiagnosticsEventsEnabled());
         Assertions.assertTrue(model.isHealthMonitoringEnabled());
-        Assertions.assertFalse(model.isIncidentLogsEnabled());
+        Assertions.assertTrue(model.isIncidentLogsEnabled());
     }
 }

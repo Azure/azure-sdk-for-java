@@ -60,7 +60,6 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * A {@link ChannelPool} implementation that enforces a maximum number of concurrent direct TCP Cosmos connections.
@@ -219,7 +218,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
         RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
+        this.poolHandler = new RntbdClientChannelHandler(
+            config,
+            healthChecker,
+            connectionStateListener,
+            serverErrorInjector,
+            endpoint.serverKeyUsedAsActualRemoteAddress());
+
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
@@ -1435,7 +1440,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.poolHandler.channelReleased(channel);
                 promise.setSuccess(null);
             } else {
-                final ChannelAcquisitionException error = new ChannelAcquisitionException(lenientFormat(
+                final ChannelAcquisitionException error = new ChannelAcquisitionException(String.format(
                     "cannot offer channel back to pool because the pool is at capacity (%s)\n  %s\n  %s",
                     this.maxChannels,
                     this,
@@ -1514,7 +1519,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
             }
         } else {
-            final IllegalStateException error = new IllegalStateException(lenientFormat(
+            final IllegalStateException error = new IllegalStateException(String.format(
                 "%s cannot be released because it was not acquired by this pool: %s",
                 RntbdObjectMapper.toJson(channel),
                 this));

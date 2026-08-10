@@ -6,28 +6,27 @@ package com.azure.ai.projects.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * SAS Credential definition.
+ * Shared Access Signature (SAS) credential definition.
  */
 @Immutable
-public final class SasCredential implements JsonSerializable<SasCredential> {
+public final class SasCredential extends BaseCredential {
 
     /*
-     * SAS uri
+     * The type of credential used by the connection
      */
     @Generated
-    private String sasUri;
+    private CredentialType type = CredentialType.SAS;
 
     /*
-     * Type of credential
+     * SAS token
      */
     @Generated
-    private final String type = "SAS";
+    private String sasToken;
 
     /**
      * Creates an instance of SasCredential class.
@@ -37,23 +36,24 @@ public final class SasCredential implements JsonSerializable<SasCredential> {
     }
 
     /**
-     * Get the sasUri property: SAS uri.
-     *
-     * @return the sasUri value.
-     */
-    @Generated
-    public String getSasUri() {
-        return this.sasUri;
-    }
-
-    /**
-     * Get the type property: Type of credential.
+     * Get the type property: The type of credential used by the connection.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    @Override
+    public CredentialType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the sasToken property: SAS token.
+     *
+     * @return the sasToken value.
+     */
+    @Generated
+    public String getSasToken() {
+        return this.sasToken;
     }
 
     /**
@@ -63,6 +63,7 @@ public final class SasCredential implements JsonSerializable<SasCredential> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -72,7 +73,6 @@ public final class SasCredential implements JsonSerializable<SasCredential> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of SasCredential if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SasCredential.
      */
     @Generated
@@ -82,8 +82,10 @@ public final class SasCredential implements JsonSerializable<SasCredential> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("sasUri".equals(fieldName)) {
-                    deserializedSasCredential.sasUri = reader.getString();
+                if ("type".equals(fieldName)) {
+                    deserializedSasCredential.type = CredentialType.fromString(reader.getString());
+                } else if ("SAS".equals(fieldName)) {
+                    deserializedSasCredential.sasToken = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

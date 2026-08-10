@@ -15,7 +15,7 @@ public final class ManagedEnvironmentPropertiesPeerTrafficConfigurationTests {
         ManagedEnvironmentPropertiesPeerTrafficConfiguration model
             = BinaryData.fromString("{\"encryption\":{\"enabled\":false}}")
                 .toObject(ManagedEnvironmentPropertiesPeerTrafficConfiguration.class);
-        Assertions.assertEquals(false, model.encryption().enabled());
+        Assertions.assertFalse(model.encryption().enabled());
     }
 
     @org.junit.jupiter.api.Test
@@ -24,6 +24,6 @@ public final class ManagedEnvironmentPropertiesPeerTrafficConfigurationTests {
             = new ManagedEnvironmentPropertiesPeerTrafficConfiguration().withEncryption(
                 new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(false));
         model = BinaryData.fromObject(model).toObject(ManagedEnvironmentPropertiesPeerTrafficConfiguration.class);
-        Assertions.assertEquals(false, model.encryption().enabled());
+        Assertions.assertFalse(model.encryption().enabled());
     }
 }

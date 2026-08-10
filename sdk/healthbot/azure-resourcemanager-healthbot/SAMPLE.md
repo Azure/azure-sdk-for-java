@@ -31,8 +31,7 @@ import java.util.Map;
  */
 public final class BotsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ResourceCreationPut.json
+     * x-ms-original-file: 2025-11-01/ResourceCreationPut.json
      */
     /**
      * Sample code: BotCreate.
@@ -76,9 +75,7 @@ public final class BotsCreateSamples {
  */
 public final class BotsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ResourceDeletionDelete.
-     * json
+     * x-ms-original-file: 2025-11-01/ResourceDeletionDelete.json
      */
     /**
      * Sample code: BotDelete.
@@ -99,8 +96,7 @@ public final class BotsDeleteSamples {
  */
 public final class BotsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ResourceInfoGet.json
+     * x-ms-original-file: 2025-11-01/ResourceInfoGet.json
      */
     /**
      * Sample code: ResourceInfoGet.
@@ -122,9 +118,7 @@ public final class BotsGetByResourceGroupSamples {
  */
 public final class BotsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ListBotsBySubscription.
-     * json
+     * x-ms-original-file: 2025-11-01/ListBotsBySubscription.json
      */
     /**
      * Sample code: List Bots by Subscription.
@@ -145,9 +139,7 @@ public final class BotsListSamples {
  */
 public final class BotsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ListBotsByResourceGroup.
-     * json
+     * x-ms-original-file: 2025-11-01/ListBotsByResourceGroup.json
      */
     /**
      * Sample code: List Bots by Resource Group.
@@ -168,8 +160,7 @@ public final class BotsListByResourceGroupSamples {
  */
 public final class BotsListSecretsSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ListSecrets.json
+     * x-ms-original-file: 2025-11-01/ListSecrets.json
      */
     /**
      * Sample code: Bot List Secrets.
@@ -190,9 +181,7 @@ public final class BotsListSecretsSamples {
  */
 public final class BotsRegenerateApiJwtSecretSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/RegenerateApiJwtSecret.
-     * json
+     * x-ms-original-file: 2025-11-01/RegenerateApiJwtSecret.json
      */
     /**
      * Sample code: Bot Regenerate API JWT Secret.
@@ -218,8 +207,7 @@ import com.azure.resourcemanager.healthbot.models.SkuName;
  */
 public final class BotsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/ResourceUpdatePatch.json
+     * x-ms-original-file: 2025-11-01/ResourceUpdatePatch.json
      */
     /**
      * Sample code: BotUpdate.
@@ -243,8 +231,7 @@ public final class BotsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthbot/resource-manager/Microsoft.HealthBot/stable/2025-05-25/examples/GetOperations.json
+     * x-ms-original-file: 2025-11-01/GetOperations.json
      */
     /**
      * Sample code: Get Operations.

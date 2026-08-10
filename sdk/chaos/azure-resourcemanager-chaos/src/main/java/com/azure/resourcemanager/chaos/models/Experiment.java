@@ -86,6 +86,14 @@ public interface Experiment {
     List<ChaosTargetSelector> selectors();
 
     /**
+     * Gets the customerDataStorage property: Optional customer-managed Storage account where Experiment schema will be
+     * stored.
+     * 
+     * @return the customerDataStorage value.
+     */
+    CustomerDataStorageProperties customerDataStorage();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -195,7 +203,8 @@ public interface Experiment {
          * The stage of the Experiment definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithCustomerDataStorage {
             /**
              * Executes the create request.
              * 
@@ -236,6 +245,21 @@ public interface Experiment {
              * @return the next definition stage.
              */
             WithCreate withIdentity(ResourceIdentity identity);
+        }
+
+        /**
+         * The stage of the Experiment definition allowing to specify customerDataStorage.
+         */
+        interface WithCustomerDataStorage {
+            /**
+             * Specifies the customerDataStorage property: Optional customer-managed Storage account where Experiment
+             * schema will be stored..
+             * 
+             * @param customerDataStorage Optional customer-managed Storage account where Experiment schema will be
+             * stored.
+             * @return the next definition stage.
+             */
+            WithCreate withCustomerDataStorage(CustomerDataStorageProperties customerDataStorage);
         }
     }
 

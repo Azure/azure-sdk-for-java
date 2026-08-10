@@ -12,8 +12,8 @@ public final class FlexComponentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlexComponentListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"minimumCoreCount\":1784311457,\"availableCoreCount\":953269937,\"availableDbStorageInGbs\":1886433502,\"runtimeMinimumCoreCount\":1615411821,\"shape\":\"ou\",\"availableMemoryInGbs\":583930793,\"availableLocalStorageInGbs\":1629176755,\"computeModel\":\"qaaysjkixqt\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"ezl\"},\"id\":\"ffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"minimumCoreCount\":1760801565,\"availableCoreCount\":404997188,\"availableDbStorageInGbs\":84771050,\"runtimeMinimumCoreCount\":1385853585,\"shape\":\"p\",\"availableMemoryInGbs\":2023825690,\"availableLocalStorageInGbs\":587818822,\"computeModel\":\"scw\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"evzhfsto\"},\"id\":\"hojujbypelmcuv\",\"name\":\"ixbjx\",\"type\":\"fw\"},{\"properties\":{\"minimumCoreCount\":156258046,\"availableCoreCount\":729990408,\"availableDbStorageInGbs\":1448571025,\"runtimeMinimumCoreCount\":1926666832,\"shape\":\"p\",\"availableMemoryInGbs\":156092628,\"availableLocalStorageInGbs\":1511616464,\"computeModel\":\"nujrywvtyl\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"curdoiwiitht\"},\"id\":\"ubxcbihw\",\"name\":\"knfd\",\"type\":\"twjchrdg\"}],\"nextLink\":\"hxumwctondzj\"}")
+            "{\"value\":[{\"properties\":{\"minimumCoreCount\":1224652239,\"availableCoreCount\":779819591,\"availableDbStorageInGbs\":1575038550,\"runtimeMinimumCoreCount\":938334267,\"shape\":\"mv\",\"availableMemoryInGbs\":1791682028,\"availableLocalStorageInGbs\":276592669,\"computeModel\":\"vwxnbkfe\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"cy\"},\"id\":\"zdgiruj\",\"name\":\"zbomvzzbtdcqvpni\",\"type\":\"ujviylwdshfs\"}],\"nextLink\":\"rbgyefry\"}")
             .toObject(FlexComponentListResult.class);
-        Assertions.assertEquals("hxumwctondzj", model.nextLink());
+        Assertions.assertEquals("rbgyefry", model.nextLink());
     }
 }

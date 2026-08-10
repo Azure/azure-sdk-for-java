@@ -1,8 +1,8 @@
-# Azure Resource Manager DnsResolver client library for Java
+# Azure Resource Manager Dns Resolver client library for Java
 
-Azure Resource Manager DnsResolver client library for Java.
+Azure Resource Manager Dns Resolver client library for Java.
 
-This package contains Microsoft Azure SDK for DnsResolver Management SDK. DNS Resolver Client. Package tag package-2025-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Dns Resolver Management SDK. The DNS Resolver Management Client. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-dnsresolver</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

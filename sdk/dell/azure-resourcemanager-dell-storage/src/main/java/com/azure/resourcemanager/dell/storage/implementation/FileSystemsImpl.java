@@ -31,12 +31,8 @@ public final class FileSystemsImpl implements FileSystems {
         Context context) {
         Response<FileSystemResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, filesystemName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FileSystemResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FileSystemResourceImpl(inner.getValue(), this.manager()));
     }
 
     public FileSystemResource getByResourceGroup(String resourceGroupName, String filesystemName) {

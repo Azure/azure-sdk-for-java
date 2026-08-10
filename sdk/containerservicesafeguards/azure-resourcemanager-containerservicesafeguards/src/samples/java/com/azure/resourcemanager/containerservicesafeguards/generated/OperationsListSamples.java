@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicesafeguards.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-02-preview/Operations_List.json
+     * x-ms-original-file: 2025-07-01/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.

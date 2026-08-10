@@ -256,7 +256,7 @@ public interface Schema {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(SchemaProperties properties);
+            Update withProperties(SchemaUpdateProperties properties);
         }
     }
 
@@ -282,7 +282,7 @@ public interface Schema {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return schema Version Resource.
      */
     SchemaVersion createVersion(SchemaVersionWithUpdateTypeInner body);
 
@@ -294,7 +294,7 @@ public interface Schema {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return schema Version Resource.
      */
     SchemaVersion createVersion(SchemaVersionWithUpdateTypeInner body, Context context);
 

@@ -33,12 +33,8 @@ public final class DedicatedHsmsImpl implements DedicatedHsms {
         Context context) {
         Response<DedicatedHsmInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DedicatedHsmImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DedicatedHsmImpl(inner.getValue(), this.manager()));
     }
 
     public DedicatedHsm getByResourceGroup(String resourceGroupName, String name) {

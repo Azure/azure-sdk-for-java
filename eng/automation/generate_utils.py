@@ -9,101 +9,20 @@ import logging
 import requests
 import tempfile
 import subprocess
-import urllib.parse
-from typing import Tuple, List, Union
+from typing import Optional, Tuple, List, Union
 from datetime import datetime
 
 pwd = os.getcwd()
 # os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
-from utils import update_service_files_for_new_lib
-from utils import update_root_pom
-from utils import update_version
 from utils import is_windows
-from utils import set_or_increase_version
 
 os.chdir(pwd)
 
-
-# Add two more indent for list in yaml dump
-class ListIndentDumper(yaml.SafeDumper):
-
-    def increase_indent(self, flow=False, indentless=False):
-        return super(ListIndentDumper, self).increase_indent(flow, False)
-
-
-def generate(
-    sdk_root: str,
-    service: str,
-    spec_root: str,
-    readme: str,
-    autorest: str,
-    use: str,
-    output_folder: str,
-    module: str,
-    namespace: str,
-    tag: str = None,
-    version: str = None,
-    autorest_options: str = "",
-    premium: bool = False,
-    **kwargs,
-) -> bool:
-    output_dir = os.path.join(
-        sdk_root,
-        "sdk/{0}".format(service),
-        module,
-    )
-
-    require_sdk_integration = not os.path.exists(os.path.join(output_dir, "src"))
-
-    remove_generated_source_code(output_dir, namespace)
-
-    if re.match(r"https?://", spec_root):
-        readme = urllib.parse.urljoin(spec_root, readme)
-    else:
-        readme = os.path.join(spec_root, readme)
-
-    tag_option = "--tag={0}".format(tag) if tag else ""
-    version_option = "--package-version={0}".format(version) if version else ""
-
-    command = (
-        "autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} "
-        "--java.namespace={4} {5}".format(
-            autorest,
-            use,
-            os.path.abspath(sdk_root),
-            os.path.abspath(output_dir),
-            namespace,
-            " ".join(
-                (
-                    tag_option,
-                    version_option,
-                    FLUENTPREMIUM_ARGUMENTS if premium else FLUENTLITE_ARGUMENTS,
-                    autorest_options,
-                    readme,
-                )
-            ),
-        )
-    )
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error("[GENERATE] Code generation failed.")
-        logging.error(
-            "Please first check if the failure happens only to Java automation, or for all SDK automations. "
-            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff. "
-            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
-        )
-        return False
-
-    group = GROUP_ID
-    if require_sdk_integration:
-        update_service_files_for_new_lib(sdk_root, service, group, module)
-        update_root_pom(sdk_root, service)
-    update_version(sdk_root, output_folder)
-
-    return True
-
-
+# Pattern for matching GitHub tspconfig.yaml blob URLs
+TSPCONFIG_URL_PATTERN = re.compile(
+    r"^https://github.com/(?P<repo>Azure/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
+)
 def remove_generated_source_code(sdk_folder: str, namespace: str):
     main_source_folder = os.path.join(sdk_folder, "src/main/java")
     main_resources_folder = os.path.join(sdk_folder, "src/main/resources")
@@ -241,6 +160,11 @@ def compare_with_maven_package(
                 version=previous_version,
             )
         )
+        if r.status_code == 404:
+            logging.warning(
+                "[Changelog][Skip] previous version {0} not found on Maven (404)".format(previous_version)
+            )
+            return breaking, changelog, breaking_changes
         r.raise_for_status()
         old_jar_fd, old_jar = tempfile.mkstemp(".jar")
         try:
@@ -285,118 +209,148 @@ def get_version(
     return None
 
 
-def valid_service(service: str):
-    return re.sub(r"[^a-z0-9_]", "", service.lower())
+def resolve_tspconfig_variables(value: str, config: dict, emitter_name: str) -> Optional[str]:
+    """
+    Resolve template variables in a tspconfig value, following the same resolution
+    order as the spec validation (sdk-tspconfig-validation.ts):
+    1. Emitter options (e.g., options.@azure-tools/typespec-java.service-dir)
+    2. Parameters (e.g., parameters.service-dir.default)
+    3. Global config keys
+
+    {output-dir} is treated as empty since we want paths relative to sdk_root.
+    {project-root} is similarly a runtime variable and is ignored.
+
+    Iterates up to 10 times to handle nested variables.
+    Returns the resolved string, or None if unresolved variables remain.
+    """
+    # Runtime variables provided by tsp-client, not defined in tspconfig.yaml.
+    # {output-dir} is the sdk_root — we want relative paths, so treat as empty.
+    # {project-root} is the spec project root — not relevant for SDK folder resolution. Mainly used for typespec-autorest. Treat as empty as well.
+    runtime_variables = {"output-dir": "", "project-root": ""}
+
+    resolved = value
+    max_iterations = 10
+
+    for _ in range(max_iterations):
+        if "{" not in resolved:
+            return resolved
+
+        new_resolved = resolved
+        for match in re.finditer(r"\{([^}]+)\}", resolved):
+            var_name = match.group(1)
+
+            # 0. Check runtime variables
+            if var_name in runtime_variables:
+                new_resolved = new_resolved.replace(f"{{{var_name}}}", runtime_variables[var_name])
+                continue
+
+            # 1. Check emitter options
+            var_value = config.get("options", {}).get(emitter_name, {}).get(var_name)
+            # 2. Check parameters
+            if var_value is None:
+                var_value = config.get("parameters", {}).get(var_name, {}).get("default")
+            # 3. Check global config
+            if var_value is None:
+                var_value = config.get(var_name)
+
+            if isinstance(var_value, str):
+                new_resolved = new_resolved.replace(f"{{{var_name}}}", var_value)
+
+        if new_resolved == resolved:
+            # No progress — unresolved variables remain
+            unresolved = re.search(r"\{([^}]+)\}", resolved)
+            var = unresolved.group(1) if unresolved else "unknown"
+            logging.warning(f"[RESOLVE] Could not resolve variable {{{var}}} in tspconfig")
+            return None
+        resolved = new_resolved
+
+    if "{" in resolved:
+        logging.warning("[RESOLVE] Maximum resolution depth reached, possible circular reference")
+        return None
+
+    return resolved
 
 
-def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
-    # return comment and api_specs
+def resolve_sdk_folder_from_tspconfig(tsp_project: str, spec_root: str = None) -> Optional[str]:
+    """
+    Parse tspconfig.yaml to determine the SDK folder without running generation.
+    Returns the sdk_folder relative to sdk_root (e.g. 'sdk/storagemover/azure-resourcemanager-storagemover'),
+    or None if it cannot be determined.
+    """
 
-    with open(api_specs_file, "r", encoding="utf-8") as fin:
-        lines = fin.readlines()
+    try:
+        tspconfig_content = _read_tspconfig(tsp_project, spec_root)
+        if not tspconfig_content:
+            return None
 
-    comment = ""
+        yaml_json = yaml.safe_load(tspconfig_content)
+        if not isinstance(yaml_json, dict):
+            logging.warning("[RESOLVE] tspconfig.yaml root is not a mapping; cannot resolve SDK folder")
+            return None
 
-    for i, line in enumerate(lines):
-        if not line.strip().startswith("#"):
-            comment = "".join(lines[:i])
-            api_specs = yaml.safe_load("".join(lines[i:]))
-            break
+        java_emitter = "@azure-tools/typespec-java"
+        java_options = yaml_json.get("options", {}).get(java_emitter, {})
+        emitter_output_dir = java_options.get("emitter-output-dir")
+        if not emitter_output_dir or not isinstance(emitter_output_dir, str):
+            return None
+
+        # Resolve all template variables following the spec validation order
+        # e.g. "{output-dir}/{service-dir}/azure-resourcemanager-widget" will resolve to "sdk/{service}/azure-resourcemanager-widget" after resolution, and then we can parse the service name and get the sdk_folder
+        sdk_folder = resolve_tspconfig_variables(emitter_output_dir, yaml_json, java_emitter)
+        if not sdk_folder:
+            return None
+
+        # Remove leading path separator after stripping output-dir
+        sdk_folder = re.sub(r"^[/\\]+", "", sdk_folder)
+
+        # Sanity check: sdk_folder should be under sdk/ directory
+        if not sdk_folder.startswith("sdk/"):
+            logging.warning(
+                f"[RESOLVE] Resolved SDK folder '{sdk_folder}' does not start with 'sdk/'"
+            )
+            return None
+
+        logging.info(f"[RESOLVE] Resolved SDK folder from tspconfig: {sdk_folder}")
+        return sdk_folder
+    except Exception as e:
+        logging.error(f"[RESOLVE] Failed to resolve SDK folder from tspconfig: {e}", exc_info=True)
+        return None
+
+
+def _read_tspconfig(tsp_project: str, spec_root: str = None) -> Optional[str]:
+    """Read tspconfig.yaml content from either a remote URL or local path."""
+
+    url_match = TSPCONFIG_URL_PATTERN.match(tsp_project)
+
+    if url_match:
+        repo = url_match.group("repo")
+        commit = url_match.group("commit")
+        path = url_match.group("path")
+        raw_url = f"https://raw.githubusercontent.com/{repo}/{commit}/{path}/tspconfig.yaml"
+        response = requests.get(raw_url, timeout=30)
+        if response.status_code == 200:
+            return response.text
+        logging.warning(f"[RESOLVE] Failed to fetch tspconfig from {raw_url}: HTTP {response.status_code}")
+        return None
     else:
-        raise Exception("api-specs.yml should has non comment line")
-
-    return comment, api_specs
-
-
-def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
-    with open(api_specs_file, "w", encoding="utf-8") as fout:
-        fout.write(comment)
-        fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
-
-
-def get_and_update_service_from_api_specs(
-    api_specs_file: str,
-    spec: str,
-    service: str = None,
-    suffix: str = None,
-    truncate_service: bool = False,
-):
-    """
-    Updates the API specs file with the provided service name and optional suffix.
-
-    Args:
-        api_specs_file (str): Path to the API specs file.
-        spec (str): The specification key to update in the API specs.
-        service (str, optional): The service name to associate with the spec. If not provided, it will be derived.
-        suffix (str, optional): An optional suffix to add to the spec entry in the API specs file.
-        truncate_service (bool, optional): Whether to truncate the service name to a maximum length of 32 characters.
-
-    Returns:
-        str: The validated and potentially updated service name.
-    """
-    special_spec = {"resources"}
-    if spec in special_spec:
-        if not service:
-            service = spec
-        return valid_service(service)
-
-    comment, api_specs = read_api_specs(api_specs_file)
-
-    api_spec = api_specs.get(spec)
-    if not service:
-        if api_spec:
-            service = api_spec.get("service")
-        if not service:
-            service = spec
-            # remove segment contains ".", e.g. "Microsoft.KubernetesConfiguration", "Astronomer.Astro"
-            service = re.sub(r"/[^/]+(\.[^/]+)+", "", service)
-            # truncate length of service to 32, as this is the maximum length for package name in Java repository
-            if truncate_service:
-                service = valid_service(service)
-                max_length = 32
-                if len(service) > max_length:
-                    logging.warning(f'[VALIDATE] service name truncated from "{service}" to "{service[:max_length]}"')
-                    service = service[:max_length]
-    service = valid_service(service)
-
-    if service != spec:
-        api_specs[spec] = dict() if not api_spec else api_spec
-        api_specs[spec]["service"] = service
-
-    if suffix:
-        api_specs[spec]["suffix"] = suffix
-
-    write_api_specs(api_specs_file, comment, api_specs)
-
-    return service
-
-
-def get_suffix_from_api_specs(api_specs_file: str, spec: str):
-    comment, api_specs = read_api_specs(api_specs_file)
-
-    api_spec = api_specs.get(spec)
-    if api_spec and api_spec.get("suffix"):
-        return api_spec.get("suffix")
-
-    return None
-
-
-def update_spec(spec: str, subspec: str) -> str:
-    if subspec:
-        spec = spec + subspec
-    return spec
+        tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
+        tspconfig_path = tsp_dir if tsp_dir.endswith("tspconfig.yaml") else os.path.join(tsp_dir, "tspconfig.yaml")
+        if os.path.exists(tspconfig_path):
+            with open(tspconfig_path, "r", encoding="utf-8") as f:
+                return f.read()
+        logging.warning(f"[RESOLVE] tspconfig.yaml not found at {tspconfig_path}")
+        return None
 
 
 def generate_typespec_project(
     tsp_project: str,
     sdk_root: str,
     spec_root: str = None,
-    head_sha: str = "",
-    repo_url: str = "",
+    head_sha: str = "HEAD",
+    repo_url: str = "Azure/azure-rest-api-specs",
     remove_before_regen: bool = False,
     group_id: str = None,
     api_version: str = None,
-    generate_beta_sdk: bool = True,
     version: str = None,  # SDK version
     disable_customization: bool = False,
     **kwargs,
@@ -410,19 +364,19 @@ def generate_typespec_project(
     service = None
     module = None
     require_sdk_integration = False
+    resolved_sdk_folder = None
 
     try:
-        url_match = re.match(
-            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
-            tsp_project,
-            re.IGNORECASE,
-        )
+        url_match = TSPCONFIG_URL_PATTERN.match(tsp_project)
 
         tspconfig_valid = True
         if url_match:
             # generate from remote url
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
                 "--update-if-exists",
@@ -438,6 +392,9 @@ def generate_typespec_project(
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd_base = [
                 "npx" + (".cmd" if is_windows() else ""),
+                "--no",
+                "--prefix",
+                os.path.join(sdk_root, "eng/common/tsp-client"),
                 "tsp-client",
                 "init",
                 "--update-if-exists",
@@ -458,60 +415,36 @@ def generate_typespec_project(
                 emitter_options.append("customization-class=")
                 emitter_options.append("partial-update=false")
 
-            tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
-            check_call(tsp_cmd, sdk_root)
+            # Resolve sdk_folder from tspconfig to generate only once
+            resolved_sdk_folder = resolve_sdk_folder_from_tspconfig(tsp_project, spec_root)
 
-            sdk_folder = find_sdk_folder(sdk_root)
-            logging.info("SDK folder: " + sdk_folder)
-            if sdk_folder:
-                # parse service and module
+            if resolved_sdk_folder:
+                sdk_folder = resolved_sdk_folder
+                logging.info("SDK folder (from tspconfig): " + sdk_folder)
                 module, service = parse_service_module(sdk_folder)
-                # check require_sdk_integration
-                cmd = ["git", "add", "."]
-                check_call(cmd, sdk_root)
-                cmd = [
-                    "git",
-                    "status",
-                    "--porcelain",
-                    os.path.join(sdk_folder, "pom.xml"),
-                ]
-                logging.info("Command line: " + " ".join(cmd))
-                output = subprocess.check_output(cmd, cwd=sdk_root)
-                output_str = str(output, "utf-8")
-                git_items = output_str.splitlines()
-                if len(git_items) > 0:
-                    git_pom_item = git_items[0]
-                    # new pom.xml implies new SDK
-                    require_sdk_integration = git_pom_item.startswith("A ")
-                if remove_before_regen and group_id:
-                    # clear existing generated source code, and regenerate
-                    drop_changes(sdk_root)
-                    remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
-                    _, current_version = set_or_increase_version(
-                        sdk_root, group_id, module, version=version, preview=generate_beta_sdk
-                    )
+                require_sdk_integration = not os.path.exists(
+                    os.path.join(sdk_root, sdk_folder, "pom.xml")
+                )
 
-                    emitter_options.append(f"package-version={current_version}")
-                    # currently for self-serve, may also need it in regular generation
+                if remove_before_regen and group_id:
+                    remove_generated_source_code(os.path.join(sdk_root, sdk_folder), f"{group_id}.{service}")
                     if api_version:
                         emitter_options.append(f"api-version={api_version}")
 
-                    tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
-                    # regenerate
-                    check_call(tsp_cmd, sdk_root)
+                tsp_cmd = tsp_cmd_add_emitter_options(tsp_cmd_base, emitter_options)
+                check_call(tsp_cmd, sdk_root)
                 succeeded = True
-    except subprocess.CalledProcessError as error:
-        logging.error(f"[GENERATE] Code generation failed. tsp-client init fails: {error}")
-        try:
-            sdk_folder = find_sdk_folder(sdk_root)
-            logging.info("SDK folder: " + sdk_folder)
-            if sdk_folder:
-                # parse service and module
-                module, service = parse_service_module(sdk_folder)
             else:
-                logging.info(f"[GENERATE] Code generation failed. No sdk folder found.")
-        except Exception as e:
-            logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
+                raise RuntimeError(
+                    f"Failed to resolve SDK folder from tspconfig.yaml at '{tsp_project}'. "
+                    "Please check that tspconfig.yaml has valid Java emitter options "
+                    "with 'emitter-output-dir' and 'service-dir'."
+                )
+    except (subprocess.CalledProcessError, RuntimeError) as error:
+        logging.error(f"[GENERATE] Code generation failed: {error}")
+        if resolved_sdk_folder:
+            sdk_folder = resolved_sdk_folder
+            module, service = parse_service_module(sdk_folder)
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
@@ -591,10 +524,6 @@ def clean_sdk_folder(sdk_root: str, sdk_folder: str) -> bool:
         shutil.rmtree(sdk_path, ignore_errors=True)
         succeeded = True
     return succeeded
-
-
-def is_mgmt_premium(module: str) -> bool:
-    return module in FLUENT_PREMIUM_PACKAGES
 
 
 def copy_file_sync(source: str, target: str) -> None:

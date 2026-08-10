@@ -381,6 +381,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     }
 
     @Override
+    public boolean isAccessKeyAuthenticationEnabled() {
+        return !ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().disableAccessKeyAuthentication());
+    }
+
+    @Override
     public RedisCacheImpl withBasicSku() {
         if (isInCreateMode()) {
             createParameters.withSku(new Sku().withName(SkuName.BASIC).withFamily(SkuFamily.C));
@@ -738,6 +743,26 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             createParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         } else {
             updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl disableAccessKeyAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDisableAccessKeyAuthentication(true);
+        } else {
+            updateParameters.withDisableAccessKeyAuthentication(true);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl enableAccessKeyAuthentication() {
+        if (isInCreateMode()) {
+            createParameters.withDisableAccessKeyAuthentication(false);
+        } else {
+            updateParameters.withDisableAccessKeyAuthentication(false);
         }
         return this;
     }

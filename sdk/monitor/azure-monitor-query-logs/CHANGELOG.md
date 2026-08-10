@@ -10,6 +10,52 @@
 
 ### Other Changes
 
+## 1.0.6 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
+## 1.0.5 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+
+## 1.0.4 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 1.0.3 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 1.0.2 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 ## 1.0.1 (2025-08-21)
 
 ### Other Changes
@@ -18,7 +64,6 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-
 
 ## 1.0.0 (2025-07-25)
 

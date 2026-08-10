@@ -31,16 +31,16 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     public static final ConnectionType AZURE_STORAGE_ACCOUNT = fromString("AzureStorageAccount");
 
     /**
+     * Azure AI Search.
+     */
+    @Generated
+    public static final ConnectionType AZURE_AISEARCH = fromString("CognitiveSearch");
+
+    /**
      * CosmosDB.
      */
     @Generated
     public static final ConnectionType COSMOS_DB = fromString("CosmosDB");
-
-    /**
-     * Generic connection that uses API Key authentication.
-     */
-    @Generated
-    public static final ConnectionType APIKEY = fromString("ApiKey");
 
     /**
      * Application Configuration.
@@ -92,8 +92,14 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
     }
 
     /**
-     * Azure AI Search.
+     * Generic connection that uses API Key authentication.
      */
     @Generated
-    public static final ConnectionType AZURE_AI_SEARCH = fromString("CognitiveSearch");
+    public static final ConnectionType API_KEY = fromString("ApiKey");
+
+    /**
+     * Remote tool.
+     */
+    @Generated
+    public static final ConnectionType REMOTE_TOOL_PREVIEW = fromString("RemoteTool_Preview");
 }

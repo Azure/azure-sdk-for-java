@@ -13,9 +13,12 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.JobRunError;
 import com.azure.resourcemanager.storagemover.models.JobRunScanStatus;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
+import com.azure.resourcemanager.storagemover.models.JobRunWarning;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.TriggerType;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The Job Run resource.
@@ -153,6 +156,24 @@ public final class JobRunInner extends ProxyResource {
      */
     public OffsetDateTime executionEndTime() {
         return this.innerProperties() == null ? null : this.innerProperties().executionEndTime();
+    }
+
+    /**
+     * Get the triggerType property: Trigger type for the job run. Default is manual.
+     * 
+     * @return the triggerType value.
+     */
+    public TriggerType triggerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().triggerType();
+    }
+
+    /**
+     * Get the scheduledExecutionTime property: Scheduled execution time. Null if Trigger type is manual.
+     * 
+     * @return the scheduledExecutionTime value.
+     */
+    public OffsetDateTime scheduledExecutionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledExecutionTime();
     }
 
     /**
@@ -350,23 +371,21 @@ public final class JobRunInner extends ProxyResource {
     }
 
     /**
+     * Get the warnings property: Warning details.
+     * 
+     * @return the warnings value.
+     */
+    public List<JobRunWarning> warnings() {
+        return this.innerProperties() == null ? null : this.innerProperties().warnings();
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of this resource.
      * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 
     /**

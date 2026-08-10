@@ -48,17 +48,6 @@ public final class AvsVmVolumeUpdateProperties implements JsonSerializable<AvsVm
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (softDeletion() != null) {
-            softDeletion().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

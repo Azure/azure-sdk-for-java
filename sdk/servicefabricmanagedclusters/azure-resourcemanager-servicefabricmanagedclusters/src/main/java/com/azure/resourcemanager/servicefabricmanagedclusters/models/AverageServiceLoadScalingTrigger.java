@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -176,27 +175,6 @@ public final class AverageServiceLoadScalingTrigger extends ScalingTrigger {
         this.useOnlyPrimaryLoad = useOnlyPrimaryLoad;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (metricName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property metricName in model AverageServiceLoadScalingTrigger"));
-        }
-        if (scaleInterval() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property scaleInterval in model AverageServiceLoadScalingTrigger"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AverageServiceLoadScalingTrigger.class);
 
     /**
      * {@inheritDoc}

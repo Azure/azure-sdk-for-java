@@ -17,6 +17,8 @@ import com.azure.resourcemanager.workloadorchestration.models.SolutionVersion;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionVersionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.Target;
 import com.azure.resourcemanager.workloadorchestration.models.TargetProperties;
+import com.azure.resourcemanager.workloadorchestration.models.TargetUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.TargetUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.UninstallSolutionParameter;
 import com.azure.resourcemanager.workloadorchestration.models.UpdateExternalValidationStatusParameter;
 import java.util.Collections;
@@ -92,6 +94,8 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
 
     private String targetName;
 
+    private TargetUpdate updateProperties;
+
     public TargetImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -119,20 +123,21 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public TargetImpl update() {
+        this.updateProperties = new TargetUpdate();
         return this;
     }
 
     public Target apply() {
         this.innerObject = serviceManager.serviceClient()
             .getTargets()
-            .update(resourceGroupName, targetName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, targetName, updateProperties, Context.NONE);
         return this;
     }
 
     public Target apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getTargets()
-            .update(resourceGroupName, targetName, this.innerModel(), context);
+            .update(resourceGroupName, targetName, updateProperties, context);
         return this;
     }
 
@@ -228,8 +233,13 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     }
 
     public TargetImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public TargetImpl withProperties(TargetProperties properties) {
@@ -240,5 +250,14 @@ public final class TargetImpl implements Target, Target.Definition, Target.Updat
     public TargetImpl withExtendedLocation(ExtendedLocation extendedLocation) {
         this.innerModel().withExtendedLocation(extendedLocation);
         return this;
+    }
+
+    public TargetImpl withProperties(TargetUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

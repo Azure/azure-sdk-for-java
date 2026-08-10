@@ -23,8 +23,8 @@ import javax.xml.stream.XMLStreamException;
  * that are needed by {@link WNameTable} instances, to be able to
  * construct {@link WName} instances for element and attribute names.
  */
-public abstract class WNameFactory {
-    public abstract WName constructName(String localName) throws XMLStreamException;
+public interface WNameFactory {
+    WName constructName(String localName) throws XMLStreamException;
 
-    public abstract WName constructName(String prefix, String localName) throws XMLStreamException;
+    WName constructName(String prefix, String localName) throws XMLStreamException;
 }

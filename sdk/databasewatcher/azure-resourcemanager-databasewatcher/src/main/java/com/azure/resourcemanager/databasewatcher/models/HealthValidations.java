@@ -74,7 +74,7 @@ public interface HealthValidations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
      */
     HealthValidation startValidation(String resourceGroupName, String watcherName, String healthValidationName);
 
@@ -88,7 +88,7 @@ public interface HealthValidations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return concrete proxy resource types can be created by aliasing this type using a specific property type.
      */
     HealthValidation startValidation(String resourceGroupName, String watcherName, String healthValidationName,
         Context context);

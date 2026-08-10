@@ -23,6 +23,7 @@ import com.azure.resourcemanager.appservice.models.WebAppBasic;
 import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsTests extends AppServiceTest {
@@ -58,17 +59,17 @@ public class WebAppsTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(appServicePlanName1, plan1.name());
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
         // Create in a new group with existing app service plan
@@ -78,7 +79,7 @@ public class WebAppsTests extends AppServiceTest {
             .withNewResourceGroup(rgName2)
             .create();
         Assertions.assertNotNull(webApp2);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp1.region());
 
         // Get
         WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName1, webApp1.name());
@@ -99,7 +100,7 @@ public class WebAppsTests extends AppServiceTest {
             .apply();
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan2);
-        Assertions.assertEquals(Region.US_WEST, plan2.region());
+        Assertions.assertEquals(Region.US_WEST3, plan2.region());
         Assertions.assertEquals(PricingTier.STANDARD_S2, plan2.pricingTier());
         Assertions.assertEquals(WebAppRuntimeStack.NETCORE.runtime(),
             webApp1.manager()
@@ -131,7 +132,7 @@ public class WebAppsTests extends AppServiceTest {
 
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
@@ -185,20 +186,21 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertTrue(webApp1.windowsFxVersion().contains(imageAndTag));
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canListWebAppAndFunctionApp() {
         rgName2 = null;
 
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .create();
 
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName2)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName1)
             .create();
 
@@ -219,7 +221,7 @@ public class WebAppsTests extends AppServiceTest {
     public void canUpdateIpRestriction() {
         WebApp webApp2 = appServiceManager.webApps()
             .define(webappName2)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName2)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .create();
@@ -231,7 +233,7 @@ public class WebAppsTests extends AppServiceTest {
 
         WebApp webApp1 = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .withAccessFromIpAddressRange("167.220.0.0/16", 300)
@@ -267,11 +269,11 @@ public class WebAppsTests extends AppServiceTest {
 
     @Test
     public void canCreateWebAppWithDisablePublicNetworkAccess() {
-        resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST).create();
-        resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST).create();
+        resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST3).create();
+        resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST3).create();
         WebApp webApp = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .disablePublicNetworkAccess()
@@ -283,11 +285,11 @@ public class WebAppsTests extends AppServiceTest {
 
     @Test
     public void canUpdatePublicNetworkAccess() {
-        resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST).create();
-        resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST).create();
+        resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST3).create();
+        resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST3).create();
         WebApp webApp = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName1)
             .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
             .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))

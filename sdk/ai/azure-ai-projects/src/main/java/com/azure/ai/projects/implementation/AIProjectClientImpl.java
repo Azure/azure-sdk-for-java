@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -17,22 +17,20 @@ import com.azure.core.util.serializer.SerializerAdapter;
  */
 public final class AIProjectClientImpl {
     /**
-     * Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      */
     private final String endpoint;
 
     /**
-     * Gets Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * Gets Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * 
      * @return the endpoint value.
      */
@@ -43,14 +41,14 @@ public final class AIProjectClientImpl {
     /**
      * Service version.
      */
-    private final ProjectsServiceVersion serviceVersion;
+    private final AIProjectsServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -83,6 +81,132 @@ public final class AIProjectClientImpl {
     }
 
     /**
+     * The BetaModelsImpl object to access its operations.
+     */
+    private final BetaModelsImpl betaModels;
+
+    /**
+     * Gets the BetaModelsImpl object to access its operations.
+     * 
+     * @return the BetaModelsImpl object.
+     */
+    public BetaModelsImpl getBetaModels() {
+        return this.betaModels;
+    }
+
+    /**
+     * The BetaRedTeamsImpl object to access its operations.
+     */
+    private final BetaRedTeamsImpl betaRedTeams;
+
+    /**
+     * Gets the BetaRedTeamsImpl object to access its operations.
+     * 
+     * @return the BetaRedTeamsImpl object.
+     */
+    public BetaRedTeamsImpl getBetaRedTeams() {
+        return this.betaRedTeams;
+    }
+
+    /**
+     * The BetaEvaluationTaxonomiesImpl object to access its operations.
+     */
+    private final BetaEvaluationTaxonomiesImpl betaEvaluationTaxonomies;
+
+    /**
+     * Gets the BetaEvaluationTaxonomiesImpl object to access its operations.
+     * 
+     * @return the BetaEvaluationTaxonomiesImpl object.
+     */
+    public BetaEvaluationTaxonomiesImpl getBetaEvaluationTaxonomies() {
+        return this.betaEvaluationTaxonomies;
+    }
+
+    /**
+     * The BetaEvaluatorsImpl object to access its operations.
+     */
+    private final BetaEvaluatorsImpl betaEvaluators;
+
+    /**
+     * Gets the BetaEvaluatorsImpl object to access its operations.
+     * 
+     * @return the BetaEvaluatorsImpl object.
+     */
+    public BetaEvaluatorsImpl getBetaEvaluators() {
+        return this.betaEvaluators;
+    }
+
+    /**
+     * The BetaInsightsImpl object to access its operations.
+     */
+    private final BetaInsightsImpl betaInsights;
+
+    /**
+     * Gets the BetaInsightsImpl object to access its operations.
+     * 
+     * @return the BetaInsightsImpl object.
+     */
+    public BetaInsightsImpl getBetaInsights() {
+        return this.betaInsights;
+    }
+
+    /**
+     * The BetaSchedulesImpl object to access its operations.
+     */
+    private final BetaSchedulesImpl betaSchedules;
+
+    /**
+     * Gets the BetaSchedulesImpl object to access its operations.
+     * 
+     * @return the BetaSchedulesImpl object.
+     */
+    public BetaSchedulesImpl getBetaSchedules() {
+        return this.betaSchedules;
+    }
+
+    /**
+     * The BetaRoutinesImpl object to access its operations.
+     */
+    private final BetaRoutinesImpl betaRoutines;
+
+    /**
+     * Gets the BetaRoutinesImpl object to access its operations.
+     * 
+     * @return the BetaRoutinesImpl object.
+     */
+    public BetaRoutinesImpl getBetaRoutines() {
+        return this.betaRoutines;
+    }
+
+    /**
+     * The BetaSkillsImpl object to access its operations.
+     */
+    private final BetaSkillsImpl betaSkills;
+
+    /**
+     * Gets the BetaSkillsImpl object to access its operations.
+     * 
+     * @return the BetaSkillsImpl object.
+     */
+    public BetaSkillsImpl getBetaSkills() {
+        return this.betaSkills;
+    }
+
+    /**
+     * The BetaDatasetsImpl object to access its operations.
+     */
+    private final BetaDatasetsImpl betaDatasets;
+
+    /**
+     * Gets the BetaDatasetsImpl object to access its operations.
+     * 
+     * @return the BetaDatasetsImpl object.
+     */
+    public BetaDatasetsImpl getBetaDatasets() {
+        return this.betaDatasets;
+    }
+
+    /**
      * The ConnectionsImpl object to access its operations.
      */
     private final ConnectionsImpl connections;
@@ -94,20 +218,6 @@ public final class AIProjectClientImpl {
      */
     public ConnectionsImpl getConnections() {
         return this.connections;
-    }
-
-    /**
-     * The EvaluationsImpl object to access its operations.
-     */
-    private final EvaluationsImpl evaluations;
-
-    /**
-     * Gets the EvaluationsImpl object to access its operations.
-     * 
-     * @return the EvaluationsImpl object.
-     */
-    public EvaluationsImpl getEvaluations() {
-        return this.evaluations;
     }
 
     /**
@@ -153,31 +263,30 @@ public final class AIProjectClientImpl {
     }
 
     /**
-     * The RedTeamsImpl object to access its operations.
+     * The EvaluationRulesImpl object to access its operations.
      */
-    private final RedTeamsImpl redTeams;
+    private final EvaluationRulesImpl evaluationRules;
 
     /**
-     * Gets the RedTeamsImpl object to access its operations.
+     * Gets the EvaluationRulesImpl object to access its operations.
      * 
-     * @return the RedTeamsImpl object.
+     * @return the EvaluationRulesImpl object.
      */
-    public RedTeamsImpl getRedTeams() {
-        return this.redTeams;
+    public EvaluationRulesImpl getEvaluationRules() {
+        return this.evaluationRules;
     }
 
     /**
      * Initializes an instance of AIProjectClient client.
      * 
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(String endpoint, ProjectsServiceVersion serviceVersion) {
+    public AIProjectClientImpl(String endpoint, AIProjectsServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -186,15 +295,14 @@ public final class AIProjectClientImpl {
      * Initializes an instance of AIProjectClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
-    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, ProjectsServiceVersion serviceVersion) {
+    public AIProjectClientImpl(HttpPipeline httpPipeline, String endpoint, AIProjectsServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -203,25 +311,32 @@ public final class AIProjectClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Project endpoint. In the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/_project"
-     * if your Foundry Hub has only one Project, or to use the default Project in your Hub. Or in the form
-     * "https://&lt;your-ai-services-account-name&gt;.services.ai.azure.com/api/projects/&lt;your-project-name&gt;" if
-     * you want to explicitly
-     * specify the Foundry Project name.
+     * @param endpoint Foundry Project endpoint in the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/{project-name}".
+     * If you only have one Project in your Foundry Hub, or to target the default Project
+     * in your Hub, use the form
+     * "https://{ai-services-account-name}.services.ai.azure.com/api/projects/_project".
      * @param serviceVersion Service version.
      */
     public AIProjectClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        ProjectsServiceVersion serviceVersion) {
+        AIProjectsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.betaModels = new BetaModelsImpl(this);
+        this.betaRedTeams = new BetaRedTeamsImpl(this);
+        this.betaEvaluationTaxonomies = new BetaEvaluationTaxonomiesImpl(this);
+        this.betaEvaluators = new BetaEvaluatorsImpl(this);
+        this.betaInsights = new BetaInsightsImpl(this);
+        this.betaSchedules = new BetaSchedulesImpl(this);
+        this.betaRoutines = new BetaRoutinesImpl(this);
+        this.betaSkills = new BetaSkillsImpl(this);
+        this.betaDatasets = new BetaDatasetsImpl(this);
         this.connections = new ConnectionsImpl(this);
-        this.evaluations = new EvaluationsImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.indexes = new IndexesImpl(this);
         this.deployments = new DeploymentsImpl(this);
-        this.redTeams = new RedTeamsImpl(this);
+        this.evaluationRules = new EvaluationRulesImpl(this);
     }
 }

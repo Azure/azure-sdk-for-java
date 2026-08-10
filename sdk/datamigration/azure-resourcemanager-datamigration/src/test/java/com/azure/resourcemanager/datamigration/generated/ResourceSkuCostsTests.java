@@ -12,7 +12,7 @@ public final class ResourceSkuCostsTests {
     public void testDeserialize() throws Exception {
         ResourceSkuCosts model = BinaryData
             .fromString(
-                "{\"meterID\":\"ftswibyrcdlbhsh\",\"quantity\":885852348663181026,\"extendedUnit\":\"cstwity\"}")
+                "{\"meterID\":\"jxbkzbzkdvn\",\"quantity\":8813282248554538021,\"extendedUnit\":\"durgkakmokz\"}")
             .toObject(ResourceSkuCosts.class);
     }
 

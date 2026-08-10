@@ -3,14 +3,20 @@
 
 package com.azure.ai.documentintelligence;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,11 +24,8 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.TestProxyTestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
@@ -56,133 +59,39 @@ public final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
-    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
-    static {
-        EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
-    }
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-    public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION
         = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
-    public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION
-        = GLOBAL_CONFIGURATION.get("DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL");
+    public static final String STORAGE_ACCOUNT_NAME = GLOBAL_CONFIGURATION.get("STORAGE_ACCOUNT_NAME");
+    public static final String SELECTION_MARK_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("SELECTION_MARK_DATA_CONTAINER_NAME");
+    public static final String MULTIPAGE_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("MULTIPAGE_TRAINING_DATA_CONTAINER_NAME");
+    public static final String CLASSIFIER_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("CLASSIFIER_TRAINING_DATA_CONTAINER_NAME");
+    public static final String BATCH_TRAINING_DATA_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("BATCH_TRAINING_DATA_CONTAINER_NAME");
+    public static final String BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME
+        = GLOBAL_CONFIGURATION.get("BATCH_TRAINING_DATA_RESULT_CONTAINER_NAME");
+    public static final String TRAINING_DATA_CONTAINER_NAME = GLOBAL_CONFIGURATION.get("TRAINING_DATA_CONTAINER_NAME");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private TestUtils() {
     }
 
-    static void urlRunner(Consumer<String> testRunner, String fileName) {
-        testRunner.accept(URL_TEST_FILE_FORMAT + fileName);
+    static String urlSource(String fileName) {
+        return URL_TEST_FILE_FORMAT + fileName;
     }
 
-    static void getDataRunnerHelper(BiConsumer<byte[], Long> testRunner, String fileName) {
-        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-
+    static byte[] getData(String fileName) {
         try {
-            testRunner.accept(Files.readAllBytes(Paths.get(LOCAL_FILE_PATH + fileName)), fileLength);
+            return Files.readAllBytes(Paths.get(LOCAL_FILE_PATH + fileName));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public static void getTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
-    }
-
-    public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
-    }
-
-    public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
-    }
-
-    public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
-        testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
-    }
-
-    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner,
-        boolean isPlaybackMode) {
-        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode),
-            getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the multipage training data set SAS Url value based on the test running mode.
-     *
-     * @return the multipgae training data set Url
-     */
-    private static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the selection marks training data set SAS Url value based on the test running mode.
-     *
-     * @return the selection marks training data set Url
-     */
-    private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url for classifiers
-     */
-    private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    private static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    private static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode
-            ? "https://isPlaybackmode"
-            : DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -196,11 +105,9 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients().forEach(httpClient -> {
-            Arrays.stream(DocumentIntelligenceServiceVersion.values())
-                .filter(TestUtils::shouldServiceVersionBeTested)
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-        });
+        getHttpClients().forEach(httpClient -> Arrays.stream(DocumentIntelligenceServiceVersion.values())
+            .filter(TestUtils::shouldServiceVersionBeTested)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
@@ -245,5 +152,49 @@ public final class TestUtils {
             new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..resultUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.LIVE) {
+            return tryGetPipelineCredentialOrElse(() -> new AzureCliCredentialBuilder().build());
+        } else if (testMode == TestMode.RECORD) {
+            return tryGetPipelineCredentialOrElse(() -> new DefaultAzureCredentialBuilder().build());
+        } else {
+            return new MockTokenCredential();
+        }
+    }
+
+    /**
+     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
+     * Azure DevOps. If not, returns the {@link TokenCredential} supplied by {@code orElse}.
+     *
+     * @param orElse Supplies the {@link TokenCredential} to return if not running in Azure DevOps.
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or the {@code orElse} credential.
+     */
+    @SuppressWarnings("deprecation")
+    private static TokenCredential tryGetPipelineCredentialOrElse(Supplier<TokenCredential> orElse) {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return orElse.get();
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
     }
 }

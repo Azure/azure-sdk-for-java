@@ -26,7 +26,7 @@ public final class SolutionTemplatesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"aykmmf\",\"capabilities\":[\"bfw\",\"rzx\"],\"latestVersion\":\"ewsrsxkrplbjaze\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Succeeded\"},\"eTag\":\"ps\",\"location\":\"brnnhjxsqw\",\"tags\":{\"qiqyhgfsetzlexbs\":\"kbiwetpozyc\",\"uwfbzkkdtnhqsy\":\"ledynojpz\"},\"id\":\"ljselp\",\"name\":\"pbafvafhlbylc\",\"type\":\"bevxrhyzd\"}";
+            = "{\"properties\":{\"description\":\"xlqfh\",\"capabilities\":[\"kwabsolronqq\"],\"latestVersion\":\"gn\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"Succeeded\"},\"eTag\":\"lexhv\",\"location\":\"b\",\"tags\":{\"zqocarku\":\"o\",\"nx\":\"lbcnndt\",\"llhdyzm\":\"wqy\",\"nxakckyw\":\"ckze\"},\"id\":\"mxgaabjkdtfohfao\",\"name\":\"zvkiwrsiwdy\",\"type\":\"quryk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,22 @@ public final class SolutionTemplatesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTemplate response = manager.solutionTemplates()
-            .define("efh")
-            .withRegion("sxfwushcdp")
-            .withExistingResourceGroup("sxap")
-            .withTags(mapOf("mgjfbpkuwxeoio", "nq"))
-            .withProperties(new SolutionTemplateProperties().withDescription("cgjokjljnhvlq")
-                .withCapabilities(Arrays.asList("ek", "eeksnbksdqhjvyk", "xeslkhhustcpoqm", "vnwqjwgo"))
+            .define("azyqbxyxoyfp")
+            .withRegion("yvp")
+            .withExistingResourceGroup("t")
+            .withTags(mapOf("nrexkxbhxv", "qjpnqnoowsbed", "nfa", "cnulgmnhjevdy"))
+            .withProperties(new SolutionTemplateProperties().withDescription("qi")
+                .withCapabilities(Arrays.asList("zxlhdjzqdcadwv", "sozjiihj", "iybmrzoep"))
                 .withState(ResourceState.ACTIVE)
                 .withEnableExternalValidation(false))
             .create();
 
-        Assertions.assertEquals("brnnhjxsqw", response.location());
-        Assertions.assertEquals("kbiwetpozyc", response.tags().get("qiqyhgfsetzlexbs"));
-        Assertions.assertEquals("aykmmf", response.properties().description());
-        Assertions.assertEquals("bfw", response.properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, response.properties().state());
-        Assertions.assertTrue(response.properties().enableExternalValidation());
+        Assertions.assertEquals("b", response.location());
+        Assertions.assertEquals("o", response.tags().get("zqocarku"));
+        Assertions.assertEquals("xlqfh", response.properties().description());
+        Assertions.assertEquals("kwabsolronqq", response.properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, response.properties().state());
+        Assertions.assertFalse(response.properties().enableExternalValidation());
     }
 
     // Use "Map.of" if available

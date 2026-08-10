@@ -14,7 +14,7 @@ stages:
       - template: /eng/pipelines/templates/variables/image.yml
     jobs:
       - job: SignPackage
-        timeoutInMinutes: 20
+        timeoutInMinutes: 60
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
@@ -22,14 +22,9 @@ stages:
         steps:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipCheckoutNone: true
-              Repositories:
-                - Name: Azure/azure-sdk-for-java
-                  Commitish: $(Build.SourceVersion)
-                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+          - checkout: self
+            fetchDepth: 1
+            path: azure-sdk-for-java
 
           - download: current
             displayName: 'Download Artifact: packages'
@@ -50,6 +45,11 @@ stages:
           - download: current
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
+
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed
@@ -74,7 +74,7 @@ stages:
   # pipeline completes.
   - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
     - ${{ each artifact in parameters.Artifacts }}:
-      - stage:
+      - stage: Release_${{artifact.safeName}}
         displayName: 'Release: ${{artifact.name}}'
         dependsOn: Signing
         variables:
@@ -101,6 +101,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
           - deployment: PublishESRPPackage
             displayName: "Publish to Maven Central via ESRP"
@@ -150,7 +151,10 @@ stages:
                     - Name: Azure/azure-sdk-for-java
                       Commitish: $(Build.SourceVersion)
                       WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-              - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+              # Setup Maven mirror settings and authenticate with Azure Artifacts
+              - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+                parameters:
+                  SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
               - template: tools/gpg/gpg.yml@azure-sdk-build-tools
               # Publish to the azure-sdk-for-java feed.
               - template: /eng/pipelines/templates/steps/java-dev-feed-publishing.yml

@@ -118,18 +118,6 @@ public final class PublicCloudConnectorUpdate extends TrackedResourceUpdate {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

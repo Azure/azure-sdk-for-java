@@ -19,7 +19,7 @@ public final class UpdateSapVirtualInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateSapVirtualInstanceRequest model = BinaryData.fromString(
-            "{\"tags\":{\"xipeilpjzuaejx\":\"hnnpr\",\"mv\":\"ultskzbbtdz\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"waboe\":{\"clientId\":\"ozuhkfp\",\"principalId\":\"jyofdxluusdtto\"}}},\"properties\":{\"managedResourcesNetworkAccessType\":\"Private\"}}")
+            "{\"tags\":{\"xipeilpjzuaejx\":\"hnnpr\",\"mv\":\"ultskzbbtdz\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"waboe\":{\"principalId\":\"ozuhkfp\",\"clientId\":\"jyofdxluusdtto\"}}},\"properties\":{\"managedResourcesNetworkAccessType\":\"Private\"}}")
             .toObject(UpdateSapVirtualInstanceRequest.class);
         Assertions.assertEquals("hnnpr", model.tags().get("xipeilpjzuaejx"));
         Assertions.assertEquals(SAPVirtualInstanceIdentityType.NONE, model.identity().type());

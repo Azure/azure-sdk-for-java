@@ -6,7 +6,6 @@ package com.azure.resourcemanager.workloadorchestration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -127,34 +126,19 @@ public final class StageSpec implements JsonSerializable<StageSpec> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model StageSpec"));
-        }
-        if (tasks() != null) {
-            tasks().forEach(e -> e.validate());
-        }
-        if (taskOption() != null) {
-            taskOption().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StageSpec.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("specification", this.specification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("specification", this.specification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("tasks", this.tasks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("taskOption", this.taskOption);
         return jsonWriter.writeEndObject();

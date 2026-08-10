@@ -91,17 +91,6 @@ public final class EndpointAccessResourceInner implements JsonSerializable<Endpo
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerRelay() != null) {
-            innerRelay().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

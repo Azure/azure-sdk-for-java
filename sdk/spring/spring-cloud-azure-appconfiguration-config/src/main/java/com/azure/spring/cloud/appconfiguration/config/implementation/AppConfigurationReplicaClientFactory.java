@@ -16,7 +16,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AppConfigurationReplicaClientFactory {
 
     /** Map of connection managers keyed by origin endpoint */
-    private static final Map<String, ConnectionManager> CONNECTIONS = new HashMap<>();
+    private final Map<String, ConnectionManager> connections = new HashMap<>();
 
     /** List of configured stores for endpoint resolution */
     private final List<ConfigStore> configStores;
@@ -31,11 +31,9 @@ public class AppConfigurationReplicaClientFactory {
     AppConfigurationReplicaClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
         this.configStores = configStores;
-        if (CONNECTIONS.isEmpty()) {
-            for (ConfigStore store : configStores) {
-                ConnectionManager manager = new ConnectionManager(clientBuilder, store, replicaLookUp);
-                CONNECTIONS.put(manager.getMainEndpoint(), manager);
-            }
+        for (ConfigStore store : configStores) {
+            ConnectionManager manager = new ConnectionManager(clientBuilder, store, replicaLookUp);
+            connections.put(manager.getMainEndpoint(), manager);
         }
     }
 
@@ -45,28 +43,27 @@ public class AppConfigurationReplicaClientFactory {
      * @return map of endpoint to connection manager
      */
     public Map<String, ConnectionManager> getConnections() {
-        return CONNECTIONS;
+        return connections;
     }
 
     /**
-     * Returns available replica clients for a given configuration store.
-     * 
-     * @param originEndpoint identifier of the store (primary endpoint)
-     * @return list of available replica clients for the store
+     * Gets the next active replica client for a given origin endpoint.
+     *
+     * @param originEndpoint the origin configuration store endpoint
+     * @param useLastActive whether to use the last active client if available
+     * @return the next active AppConfigurationReplicaClient
      */
-    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
-        return getAvailableClients(originEndpoint, false);
+    AppConfigurationReplicaClient getNextActiveClient(String originEndpoint, boolean useLastActive) {
+        return connections.get(originEndpoint).getNextActiveClient(useLastActive);
     }
 
     /**
-     * Returns available replica clients for a given configuration store with current client preference.
+     * Finds the currently active clients for a given origin endpoint.
      * 
-     * @param originEndpoint identifier of the store (primary endpoint)
-     * @param useCurrent whether to prefer the currently active client
-     * @return list of available replica clients for the store
+     * @param originEndpoint the origin configuration store endpoint
      */
-    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint, Boolean useCurrent) {
-        return CONNECTIONS.get(originEndpoint).getAvailableClients(useCurrent);
+    void findActiveClients(String originEndpoint) {
+        connections.get(originEndpoint).findActiveClients();
     }
 
     /**
@@ -76,7 +73,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param endpoint the specific replica endpoint that failed
      */
     void backoffClient(String originEndpoint, String endpoint) {
-        CONNECTIONS.get(originEndpoint).backoffClient(endpoint);
+        connections.get(originEndpoint).backoffClient(endpoint);
     }
 
     /**
@@ -87,7 +84,7 @@ public class AppConfigurationReplicaClientFactory {
     Map<String, AppConfigurationStoreHealth> getHealth() {
         Map<String, AppConfigurationStoreHealth> health = new HashMap<>();
 
-        CONNECTIONS.forEach((key, value) -> health.put(key, value.getHealth()));
+        connections.forEach((key, value) -> health.put(key, value.getHealth()));
 
         return health;
     }
@@ -109,13 +106,13 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
-     * Sets the current active replica for a configuration store.
+     * Gets the duration in milliseconds until the next client becomes available for the specified store.
      * 
      * @param originEndpoint the origin configuration store endpoint
-     * @param replicaEndpoint the replica endpoint that was successfully connected to
+     * @return duration in milliseconds until next client is available, or 0 if one is available now
      */
-    void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
-        CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
+    long getMillisUntilNextClientAvailable(String originEndpoint) {
+        return connections.get(originEndpoint).getMillisUntilNextClientAvailable();
     }
 
     /**
@@ -126,7 +123,7 @@ public class AppConfigurationReplicaClientFactory {
      * @param syncToken the new sync token to store
      */
     void updateSyncToken(String originEndpoint, String endpoint, String syncToken) {
-        CONNECTIONS.get(originEndpoint).updateSyncToken(endpoint, syncToken);
+        connections.get(originEndpoint).updateSyncToken(endpoint, syncToken);
     }
 
 }

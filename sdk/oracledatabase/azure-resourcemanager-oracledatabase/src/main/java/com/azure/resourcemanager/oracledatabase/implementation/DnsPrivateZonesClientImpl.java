@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.DnsPrivateZonesClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.DnsPrivateZoneInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.DnsPrivateZoneListResult;
@@ -126,21 +125,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DnsPrivateZoneInner>> getWithResponseAsync(String location, String dnsprivatezonename) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (dnsprivatezonename == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter dnsprivatezonename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -176,24 +160,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DnsPrivateZoneInner> getWithResponse(String location, String dnsprivatezonename, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (dnsprivatezonename == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dnsprivatezonename is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, dnsprivatezonename, accept, context);
@@ -226,17 +192,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DnsPrivateZoneInner>> listByLocationSinglePageAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -272,20 +227,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DnsPrivateZoneListResult> res = service.listByLocationSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, Context.NONE);
@@ -305,20 +246,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationSinglePage(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DnsPrivateZoneListResult> res = service.listByLocationSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), location, accept, context);
@@ -369,13 +296,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DnsPrivateZoneInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocationNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -395,15 +315,6 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DnsPrivateZoneListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -423,21 +334,10 @@ public final class DnsPrivateZonesClientImpl implements DnsPrivateZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DnsPrivateZoneInner> listByLocationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DnsPrivateZoneListResult> res
             = service.listByLocationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DnsPrivateZonesClientImpl.class);
 }

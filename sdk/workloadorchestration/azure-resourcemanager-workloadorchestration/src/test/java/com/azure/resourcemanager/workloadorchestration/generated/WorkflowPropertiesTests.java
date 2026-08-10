@@ -11,7 +11,7 @@ public final class WorkflowPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkflowProperties model
-            = BinaryData.fromString("{\"workflowTemplateId\":\"uziycsl\",\"provisioningState\":\"Deleting\"}")
+            = BinaryData.fromString("{\"workflowTemplateId\":\"msidxasicddyvv\",\"provisioningState\":\"InProgress\"}")
                 .toObject(WorkflowProperties.class);
     }
 

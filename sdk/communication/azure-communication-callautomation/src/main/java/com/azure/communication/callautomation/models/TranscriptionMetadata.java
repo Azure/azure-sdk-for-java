@@ -7,7 +7,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Trans
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
 
 /**
- * Metadata for Transcription Streaming.
+ * The metadata of transcription which contains the information such as subscriptionId, locale ...
  */
 public final class TranscriptionMetadata extends StreamingData {
 
@@ -31,6 +31,11 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     private final String correlationId;
 
+    /*
+     * The custom speech recognition model endpoint id
+     */
+    private final String speechRecognitionModelEndpointId;
+
     static {
         TranscriptionMetadataContructorProxy
             .setAccessor(new TranscriptionMetadataContructorProxy.TranscriptionMetadataContructorProxyAccessor() {
@@ -46,23 +51,16 @@ public final class TranscriptionMetadata extends StreamingData {
      * @param internalData Transcription meta data internal.
      */
     TranscriptionMetadata(TranscriptionMetadataConverter internalData) {
+        super(StreamingDataKind.TRANSCRIPTION_METADATA);
         this.transcriptionSubscriptionId = internalData.getTranscriptionSubscriptionId();
         this.locale = internalData.getLocale();
         this.callConnectionId = internalData.getCallConnectionId();
         this.correlationId = internalData.getCorrelationId();
+        this.speechRecognitionModelEndpointId = internalData.getSpeechRecognitionModelEndpointId();
     }
 
     /**
-     * Creates an instance of TranscriptionMetadata class.
-     */
-    public TranscriptionMetadata() {
-        this.transcriptionSubscriptionId = null;
-        this.locale = null;
-        this.callConnectionId = null;
-        this.correlationId = null;
-    }
-
-    /**
+     * The custom speech recognition model endpoint id
      * Get the transcriptionSubscriptionId property.
      *
      * @return the transcriptionSubscriptionId value.
@@ -72,6 +70,7 @@ public final class TranscriptionMetadata extends StreamingData {
     }
 
     /**
+     * The target locale in which the translated text needs to be
      * Get the locale property.
      *
      * @return the locale value.
@@ -96,5 +95,15 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+    /**
+     * The custom speech recognition model endpoint id
+     * Get the speechRecognitionModelEndpointId property.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return speechRecognitionModelEndpointId;
     }
 }

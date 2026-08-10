@@ -12,13 +12,13 @@ public final class MtlsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Mtls model = BinaryData.fromString("{\"enabled\":true}").toObject(Mtls.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Mtls model = new Mtls().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(Mtls.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 }

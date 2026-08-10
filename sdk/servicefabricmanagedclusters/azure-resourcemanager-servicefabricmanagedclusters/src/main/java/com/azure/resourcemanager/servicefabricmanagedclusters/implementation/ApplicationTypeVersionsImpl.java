@@ -31,12 +31,8 @@ public final class ApplicationTypeVersionsImpl implements ApplicationTypeVersion
         String applicationTypeName, String version, Context context) {
         Response<ApplicationTypeVersionResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplicationTypeVersionResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplicationTypeVersionResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ApplicationTypeVersionResource get(String resourceGroupName, String clusterName, String applicationTypeName,

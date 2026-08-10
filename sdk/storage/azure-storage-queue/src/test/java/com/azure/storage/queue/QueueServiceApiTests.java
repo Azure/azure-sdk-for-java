@@ -6,6 +6,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -18,6 +19,7 @@ import com.azure.storage.queue.models.QueueRetentionPolicy;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.UserDelegationKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -27,6 +29,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -271,5 +275,29 @@ public class QueueServiceApiTests extends QueueTestBase {
         QueueServiceClient aadService = getOAuthServiceClientBuilder().audience(audience).buildClient();
 
         assertNotNull(aadService.getProperties());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueServiceGetUserDelegationKey() {
+        QueueServiceClient oAuthServiceClient = getOAuthQueueServiceClient();
+
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+        Response<UserDelegationKey> response
+            = oAuthServiceClient.getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, Context.NONE);
+
+        assertEquals(expiry, response.getValue().getSignedExpiry());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2026-02-06")
+    public void queueServiceGetUserDelegationKeyAuthError() {
+        OffsetDateTime expiry = testResourceNamer.now().plusHours(1).truncatedTo(ChronoUnit.SECONDS);
+
+        //not oauth client
+        QueueStorageException e = assertThrows(QueueStorageException.class, () -> primaryQueueServiceClient
+            .getUserDelegationKeyWithResponse(testResourceNamer.now(), expiry, null, Context.NONE));
+
+        QueueTestHelper.assertExceptionStatusCodeAndMessage(e, 403, QueueErrorCode.AUTHENTICATION_FAILED);
     }
 }

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiMinorVersionInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.GiMinorVersionListResult;
@@ -138,20 +137,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiMinorVersionInner>> listByParentSinglePageAsync(String location, String giversionname,
         ShapeFamily shapeFamily, String zone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -215,24 +200,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
         ShapeFamily shapeFamily, String zone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -258,24 +225,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
         ShapeFamily shapeFamily, String zone, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -337,24 +286,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GiMinorVersionInner>> getWithResponseAsync(String location, String giversionname,
         String giMinorVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
-        if (giMinorVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter giMinorVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -394,28 +325,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GiMinorVersionInner> getWithResponse(String location, String giversionname,
         String giMinorVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
-        if (giMinorVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giMinorVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, giversionname, giMinorVersionName, accept, context);
@@ -449,13 +358,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiMinorVersionInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -475,15 +377,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -503,21 +396,10 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GiMinorVersionsClientImpl.class);
 }

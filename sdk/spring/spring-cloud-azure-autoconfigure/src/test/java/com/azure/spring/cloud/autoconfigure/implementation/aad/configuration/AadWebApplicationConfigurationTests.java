@@ -6,9 +6,9 @@ package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +26,7 @@ class AadWebApplicationConfigurationTests {
     void useDefaultSecurityFilterChain() {
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=web_application",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {
@@ -45,6 +46,7 @@ class AadWebApplicationConfigurationTests {
                 AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=web_application",
                 "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
             )
             .run(context -> {

@@ -23,9 +23,11 @@ public class Exclusion {
 
     /**
      * @param users the users to set
+     * @return the updated Exclusion object
      */
-    public void setUsers(List<String> users) {
+    public Exclusion setUsers(List<String> users) {
         this.users = users;
+        return this;
     }
 
     /**
@@ -37,9 +39,11 @@ public class Exclusion {
 
     /**
      * @param groups the audiences to set
+     * @return the updated Exclusion object
      */
-    public void setGroups(List<String> groups) {
+    public Exclusion setGroups(List<String> groups) {
         this.groups = groups;
+        return this;
     }
 
 }

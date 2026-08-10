@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.io.IOException;
@@ -281,6 +282,24 @@ public final class DaprComponentInner extends ProxyResource {
         }
         this.innerProperties().withScopes(scopes);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Dapr Component.
+     * 
+     * @return the provisioningState value.
+     */
+    public DaprComponentProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentErrors();
     }
 
     /**

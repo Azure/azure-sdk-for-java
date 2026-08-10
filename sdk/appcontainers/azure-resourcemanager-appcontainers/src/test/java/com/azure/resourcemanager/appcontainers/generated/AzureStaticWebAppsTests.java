@@ -15,7 +15,7 @@ public final class AzureStaticWebAppsTests {
         AzureStaticWebApps model
             = BinaryData.fromString("{\"enabled\":false,\"registration\":{\"clientId\":\"gbquxigj\"}}")
                 .toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals("gbquxigj", model.registration().clientId());
     }
 
@@ -24,7 +24,7 @@ public final class AzureStaticWebAppsTests {
         AzureStaticWebApps model = new AzureStaticWebApps().withEnabled(false)
             .withRegistration(new AzureStaticWebAppsRegistration().withClientId("gbquxigj"));
         model = BinaryData.fromObject(model).toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals("gbquxigj", model.registration().clientId());
     }
 }

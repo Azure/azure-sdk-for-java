@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptionsBase<CosmosQueryRequestOptionsImpl> {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
     private Boolean emitVerboseTracesInQuery;
@@ -32,6 +31,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCountForHybridSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private String collectionRid;
+    private CosmosFullTextScoreScope fullTextScoreScope;
 
     /**
      * Instantiates a new query request options.
@@ -72,6 +72,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
         this.maxItemCountForHybridSearch = options.maxItemCountForHybridSearch;
         this.collectionRid = options.collectionRid;
+        this.fullTextScoreScope = options.fullTextScoreScope;
     }
 
     /**
@@ -407,5 +408,25 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCollectionRid(String collectionRid) {
         this.collectionRid = collectionRid;
+    }
+
+    /**
+     * Gets the scope for computing BM25 statistics used by FullTextScore in hybrid search queries.
+     *
+     * @return the full text score scope. Defaults to {@link CosmosFullTextScoreScope#GLOBAL}.
+     */
+    public CosmosFullTextScoreScope getFullTextScoreScope() {
+        return this.fullTextScoreScope != null ? this.fullTextScoreScope : CosmosFullTextScoreScope.GLOBAL;
+    }
+
+    /**
+     * Sets the scope for computing BM25 statistics used by FullTextScore in hybrid search queries.
+     *
+     * @param fullTextScoreScope the full text score scope.
+     * @return the CosmosQueryRequestOptionsImpl.
+     */
+    public CosmosQueryRequestOptionsImpl setFullTextScoreScope(CosmosFullTextScoreScope fullTextScoreScope) {
+        this.fullTextScoreScope = fullTextScoreScope;
+        return this;
     }
 }

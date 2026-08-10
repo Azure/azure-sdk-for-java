@@ -22,7 +22,7 @@ public final class SolutionTemplateVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurations\":\"okrtalvnb\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"luclvdjjuk\",\"id\":\"dnqodx\",\"name\":\"hhxhq\",\"type\":\"aqnvzoqgyipemchg\"}";
+            = "{\"properties\":{\"configurations\":\"hg\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"jolgjyyxpvels\",\"id\":\"rqz\",\"name\":\"vxoqe\",\"type\":\"ntxwaljglzob\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SolutionTemplateVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionTemplateVersion response = manager.solutionTemplateVersions()
-            .getWithResponse("yjtcdxabbujftab", "nbbklqpxzucafed", "wwnlzafwxudgnh", com.azure.core.util.Context.NONE)
+            .getWithResponse("aodetv", "hkxdxuwsaifmc", "nosbz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("okrtalvnb", response.properties().configurations());
+        Assertions.assertEquals("hg", response.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, response.properties().orchestratorType());
     }
 }

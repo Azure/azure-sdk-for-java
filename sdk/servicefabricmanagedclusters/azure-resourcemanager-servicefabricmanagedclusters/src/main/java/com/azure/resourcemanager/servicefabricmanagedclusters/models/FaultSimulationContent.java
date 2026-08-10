@@ -87,17 +87,6 @@ public class FaultSimulationContent implements JsonSerializable<FaultSimulationC
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (constraints() != null) {
-            constraints().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -10,14 +10,15 @@ public class ShouldRetryResult {
     public final static ShouldRetryResult RETRY_NOW =
         ShouldRetryResult.retryAfter(Duration.ZERO);
 
-    /// <summary>
-    /// How long to wait before next retry. 0 indicates retry immediately.
-    /// </summary>
-    public final Duration backOffTime;
+
     public final Exception exception;
     public final Quadruple<Boolean, Boolean, Duration, Integer> policyArg;
     public boolean shouldRetry;
     public boolean nonRelatedException;
+    /// <summary>
+    /// How long to wait before next retry. 0 indicates retry immediately.
+    /// </summary>
+    public Duration backOffTime;
 
     private ShouldRetryResult(Duration dur, Exception e, boolean shouldRetry,
                               Quadruple<Boolean, Boolean, Duration, Integer> policyArg, boolean nonRelatedException) {
@@ -84,5 +85,12 @@ public class ShouldRetryResult {
         } else {
             throw this.exception;
         }
+    }
+
+    public ShouldRetryResult withRandomSalt(int randomSaltInMillis) {
+        if (this.backOffTime != null) {
+            this.backOffTime = this.backOffTime.plusMillis(randomSaltInMillis);
+        }
+        return this;
     }
 }

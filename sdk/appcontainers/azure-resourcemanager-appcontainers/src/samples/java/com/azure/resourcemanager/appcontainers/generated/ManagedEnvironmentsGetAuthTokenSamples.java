@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentsGetAuthTokenSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_GetAuthToken.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ManagedEnvironments_GetAuthToken.json
      */
     /**
      * Sample code: Get Managed Environment Auth Token.

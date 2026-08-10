@@ -12,18 +12,18 @@ public final class JavaComponentConfigurationPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentConfigurationProperty model
-            = BinaryData.fromString("{\"propertyName\":\"yyurmochpprprsnm\",\"value\":\"ayzejnhlbkpbz\"}")
+            = BinaryData.fromString("{\"propertyName\":\"qitmhheioqaqhv\",\"value\":\"ufuqyrx\"}")
                 .toObject(JavaComponentConfigurationProperty.class);
-        Assertions.assertEquals("yyurmochpprprsnm", model.propertyName());
-        Assertions.assertEquals("ayzejnhlbkpbz", model.value());
+        Assertions.assertEquals("qitmhheioqaqhv", model.propertyName());
+        Assertions.assertEquals("ufuqyrx", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JavaComponentConfigurationProperty model
-            = new JavaComponentConfigurationProperty().withPropertyName("yyurmochpprprsnm").withValue("ayzejnhlbkpbz");
+            = new JavaComponentConfigurationProperty().withPropertyName("qitmhheioqaqhv").withValue("ufuqyrx");
         model = BinaryData.fromObject(model).toObject(JavaComponentConfigurationProperty.class);
-        Assertions.assertEquals("yyurmochpprprsnm", model.propertyName());
-        Assertions.assertEquals("ayzejnhlbkpbz", model.value());
+        Assertions.assertEquals("qitmhheioqaqhv", model.propertyName());
+        Assertions.assertEquals("ufuqyrx", model.value());
     }
 }

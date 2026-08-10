@@ -9,8 +9,10 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class StoreResponse {
     private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
+
+    // Initial capacity for the replica-status map. Chosen to avoid resizing in
+    // the common case where only a handful of replica status entries are tracked.
+    private static final int REPLICA_STATUS_MAP_INITIAL_CAPACITY = 6;
+
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
@@ -67,21 +74,48 @@ public class StoreResponse {
         }
 
         this.status = status;
-        replicaStatusList = new HashMap<>();
-        if (contentStream != null) {
-            try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
+    }
+
+    /**
+     * Creates a StoreResponse directly from HttpHeaders, avoiding intermediate HashMap allocation.
+     * Header names are stored as lowercase keys (matching HttpHeaders internal representation).
+     * The OWNER_FULL_NAME header value is URL-decoded inline (equivalent to HttpUtils.unescape).
+     */
+    public StoreResponse(
+            String endpoint,
+            int status,
+            HttpHeaders httpHeaders,
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+
+        int headerCount = httpHeaders.size();
+        responseHeaderNames = new String[headerCount];
+        responseHeaderValues = new String[headerCount];
+        this.endpoint = endpoint != null ? endpoint : "";
+
+        httpHeaders.populateLowerCaseHeaders(responseHeaderNames, responseHeaderValues);
+
+        // URL-decode OWNER_FULL_NAME header value inline (replaces HttpUtils.unescape).
+        // This is kept separate from populateLowerCaseHeaders because HttpHeaders is a
+        // general-purpose HTTP class and should not contain Cosmos-specific URL-decoding logic.
+        for (int i = 0; i < headerCount; i++) {
+            if (HttpConstants.HttpHeaders.OWNER_FULL_NAME.equalsIgnoreCase(responseHeaderNames[i])) {
+                responseHeaderValues[i] = HttpUtils.urlDecode(responseHeaderValues[i]);
+                break;
             }
-            finally {
-                try {
-                    contentStream.close();
-                } catch (IOException e) {
-                    logger.debug("Could not successfully close content stream.", e);
-                }
-            }
-        } else {
-            this.responsePayload = null;
         }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
     }
 
     private StoreResponse(
@@ -105,8 +139,30 @@ public class StoreResponse {
         }
 
         this.status = status;
-        replicaStatusList = new HashMap<>();
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
         this.responsePayload = responsePayload;
+    }
+
+    private static JsonNodeStorePayload parseResponsePayload(
+        ByteBufInputStream contentStream,
+        int responsePayloadLength,
+        String[] headerNames,
+        String[] headerValues) {
+
+        if (contentStream == null) {
+            return null;
+        }
+        try {
+            return new JsonNodeStorePayload(contentStream, responsePayloadLength, headerNames, headerValues);
+        } finally {
+            try {
+                contentStream.close();
+            } catch (Throwable e) {
+                if (!(e instanceof IllegalReferenceCountException)) {
+                    logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                }
+            }
+        }
     }
 
     public int getStatus() {
@@ -170,6 +226,11 @@ public class StoreResponse {
         return -1;
     }
 
+    // NOTE: Only used in local test through transport client interceptor
+    public void setGCLSN(long gclsn) {
+        this.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(gclsn));
+    }
+
     public String getPartitionKeyRangeId() {
         return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
@@ -194,6 +255,20 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    //NOTE: only used for testing purpose to change the response header value
+    void setHeaderValue(String headerName, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
+                responseHeaderValues[i] = value;
+                break;
+            }
+        }
     }
 
     public double getRequestCharge() {
@@ -253,6 +328,19 @@ public class StoreResponse {
         return subStatusCode;
     }
 
+    public long getNumberOfReadRegions() {
+        long numberOfReadRegions = -1L;
+        String numberOfReadRegionsString = this.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
+        if (StringUtils.isNotEmpty(numberOfReadRegionsString)) {
+            try {
+                return Long.parseLong(numberOfReadRegionsString);
+            } catch (NumberFormatException e) {
+                logger.warn("Failed to parse NUMBER_OF_READ_REGIONS header value: {}. Returning -1.", numberOfReadRegionsString);
+            }
+        }
+        return numberOfReadRegions;
+    }
+
     public Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
     }
@@ -275,7 +363,7 @@ public class StoreResponse {
 
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>(HttpUtils.mapCapacityForSize(this.responseHeaderNames.length));
         for (int i = 0; i < this.responseHeaderNames.length; i++) {
             String headerName = this.responseHeaderNames[i];
             if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {

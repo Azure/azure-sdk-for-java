@@ -30,6 +30,18 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
     private String exceptionRuleId;
 
     /*
+     * Router Jobs events Tags
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Router Job events Labels
+     */
+    @Generated
+    private Map<String, String> labels;
+
+    /*
      * Router Job events Queue Id
      */
     @Generated
@@ -51,13 +63,10 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
      * Creates an instance of AcsRouterJobExceptionTriggeredEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      */
     @Generated
-    private AcsRouterJobExceptionTriggeredEventData(String jobId, Map<String, String> labels,
-        Map<String, String> tags) {
-        super(jobId, labels, tags);
+    private AcsRouterJobExceptionTriggeredEventData(String jobId) {
+        super(jobId);
     }
 
     /**
@@ -78,6 +87,28 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
     @Generated
     public String getExceptionRuleId() {
         return this.exceptionRuleId;
+    }
+
+    /**
+     * Get the tags property: Router Jobs events Tags.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the labels property: Router Job events Labels.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getLabels() {
+        return this.labels;
     }
 
     /**
@@ -121,8 +152,6 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
@@ -175,7 +204,9 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
                 }
             }
             AcsRouterJobExceptionTriggeredEventData deserializedAcsRouterJobExceptionTriggeredEventData
-                = new AcsRouterJobExceptionTriggeredEventData(jobId, labels, tags);
+                = new AcsRouterJobExceptionTriggeredEventData(jobId);
+            deserializedAcsRouterJobExceptionTriggeredEventData.labels = labels;
+            deserializedAcsRouterJobExceptionTriggeredEventData.tags = tags;
             deserializedAcsRouterJobExceptionTriggeredEventData.channelReference = channelReference;
             deserializedAcsRouterJobExceptionTriggeredEventData.channelId = channelId;
             deserializedAcsRouterJobExceptionTriggeredEventData.queueId = queueId;

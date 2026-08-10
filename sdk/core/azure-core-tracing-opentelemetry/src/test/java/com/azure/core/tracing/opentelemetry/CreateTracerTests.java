@@ -31,6 +31,10 @@ public class CreateTracerTests {
         .addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create()))
         .build();
 
+    private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
+    private static final AttributeKey<String> AZURE_RESOURCE_PROVIDER_NAMESPACE
+        = AttributeKey.stringKey("azure.resource_provider.namespace");
+
     private final OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
 
     @Test
@@ -79,8 +83,9 @@ public class CreateTracerTests {
 
         Context span = tracer.start("test", Context.NONE);
         SpanData data = getSpanData(span);
-        assertEquals(1, data.getAttributes().size());
-        assertEquals("namespace", data.getAttributes().get(AttributeKey.stringKey("az.namespace")));
+        assertEquals(2, data.getAttributes().size());
+        assertEquals("namespace", data.getAttributes().get(AZ_NAMESPACE));
+        assertEquals("namespace", data.getAttributes().get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -89,10 +94,12 @@ public class CreateTracerTests {
 
         Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "namespace", options);
 
-        Context span = tracer.start("test", new Context("az.namespace", "another"));
+        Context span = tracer.start("test", new Context(AZ_NAMESPACE.getKey(), "another")
+            .addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), "andAnother"));
         SpanData data = getSpanData(span);
-        assertEquals(1, data.getAttributes().size());
-        assertEquals("namespace", data.getAttributes().get(AttributeKey.stringKey("az.namespace")));
+        assertEquals(2, data.getAttributes().size());
+        assertEquals("namespace", data.getAttributes().get(AZ_NAMESPACE));
+        assertEquals("namespace", data.getAttributes().get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -151,7 +158,8 @@ public class CreateTracerTests {
         assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
         assertEquals("https://aka.ms/az/sdk/schema:1.42.0", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertEquals("1.2.3-beta.45", readableSpan.getInstrumentationScopeInfo().getVersion());
-        assertEquals("namespace", readableSpan.getAttributes().get(AttributeKey.stringKey("az.namespace")));
+        assertEquals("namespace", readableSpan.getAttributes().get(AZ_NAMESPACE));
+        assertEquals("namespace", readableSpan.getAttributes().get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     private static SpanData getSpanData(Context context) {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -122,25 +121,13 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (host() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property host in model NfsMountEndpointProperties"));
-        }
-        if (export() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property export in model NfsMountEndpointProperties"));
-        }
+    public NfsMountEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NfsMountEndpointProperties.class);
 
     /**
      * {@inheritDoc}
@@ -149,6 +136,7 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeStringField("export", this.export);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -174,6 +162,9 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
                 if ("description".equals(fieldName)) {
                     deserializedNfsMountEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNfsMountEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

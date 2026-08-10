@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.NodeTypesClient;
@@ -420,24 +419,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NodeTypeInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -477,28 +458,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodeTypeInner> getWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, clusterName, nodeTypeName, accept, context);
@@ -536,29 +495,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, String nodeTypeName, NodeTypeInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -584,34 +520,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -636,34 +544,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -796,7 +676,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -811,29 +691,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -844,7 +701,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -859,34 +716,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -895,7 +724,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -911,34 +740,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -947,7 +748,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -969,7 +770,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -990,7 +791,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1013,7 +814,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1033,7 +834,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1051,7 +852,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     }
 
     /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags.
+     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
@@ -1083,24 +884,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, context))
@@ -1120,28 +903,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
@@ -1161,28 +922,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, context);
     }
@@ -1305,21 +1044,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeInner>> listByManagedClustersSinglePageAsync(String resourceGroupName,
         String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1358,24 +1082,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersSinglePage(String resourceGroupName, String clusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListResult> res
             = service.listByManagedClustersSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1398,24 +1104,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersSinglePage(String resourceGroupName, String clusterName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListResult> res
             = service.listByManagedClustersSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1474,29 +1162,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1521,34 +1186,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deallocateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.deallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -1572,34 +1209,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deallocateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.deallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -1744,29 +1353,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteNodeWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteNode(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1791,34 +1377,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteNodeWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.deleteNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -1842,34 +1400,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteNodeWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.deleteNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2014,29 +1544,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2061,34 +1568,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> redeployWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2112,34 +1591,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> redeployWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2283,29 +1734,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2330,34 +1758,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reimageWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2381,34 +1781,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reimageWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2552,29 +1924,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2599,34 +1948,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2650,34 +1971,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2821,29 +2114,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2868,34 +2138,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -2919,34 +2161,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -3089,29 +2303,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.startFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3135,34 +2326,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationContentWrapper parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -3185,34 +2348,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationContentWrapper parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -3232,12 +2367,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartFaultSimulationAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulationAsync(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = startFaultSimulationWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -3253,11 +2388,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
         Response<BinaryData> response
             = startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -3274,11 +2410,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationContentWrapper parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters,
+        Context context) {
         Response<BinaryData> response
             = startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -3291,11 +2429,11 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> startFaultSimulationAsync(String resourceGroupName, String clusterName, String nodeTypeName,
-        FaultSimulationContentWrapper parameters) {
+    private Mono<FaultSimulationInner> startFaultSimulationAsync(String resourceGroupName, String clusterName,
+        String nodeTypeName, FaultSimulationContentWrapper parameters) {
         return beginStartFaultSimulationAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3310,11 +2448,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
     }
 
     /**
@@ -3328,11 +2467,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context) {
-        beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
+            .getFinalResult();
     }
 
     /**
@@ -3350,29 +2491,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.stopFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3396,34 +2514,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -3446,34 +2536,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
@@ -3493,12 +2555,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopFaultSimulationAsync(String resourceGroupName,
-        String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
+    private PollerFlux<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulationAsync(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopFaultSimulationWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
     /**
@@ -3514,11 +2576,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
         Response<BinaryData> response
             = stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
     }
 
     /**
@@ -3535,11 +2598,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopFaultSimulation(String resourceGroupName, String clusterName,
-        String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
+    public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
+        String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters,
+        Context context) {
         Response<BinaryData> response
             = stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
+            FaultSimulationInner.class, FaultSimulationInner.class, context);
     }
 
     /**
@@ -3552,11 +2617,11 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopFaultSimulationAsync(String resourceGroupName, String clusterName, String nodeTypeName,
-        FaultSimulationIdContent parameters) {
+    private Mono<FaultSimulationInner> stopFaultSimulationAsync(String resourceGroupName, String clusterName,
+        String nodeTypeName, FaultSimulationIdContent parameters) {
         return beginStopFaultSimulationAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3571,11 +2636,12 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
     }
 
     /**
@@ -3589,11 +2655,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
+    public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context) {
-        beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
+            .getFinalResult();
     }
 
     /**
@@ -3612,29 +2680,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FaultSimulationInner>> getFaultSimulationWithResponseAsync(String resourceGroupName,
         String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -3679,34 +2724,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FaultSimulationInner> getFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.getFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3748,24 +2765,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationSinglePageAsync(String resourceGroupName,
         String clusterName, String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listFaultSimulation(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3807,28 +2806,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName, String nodeTypeName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3852,28 +2829,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName, String nodeTypeName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (nodeTypeName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nodeTypeName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -3932,13 +2887,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NodeTypeInner>> listByManagedClustersNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3959,15 +2907,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListResult> res
             = service.listByManagedClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -3987,15 +2926,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<NodeTypeListResult> res
             = service.listByManagedClustersNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -4015,13 +2945,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FaultSimulationInner>> listFaultSimulationNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4042,15 +2965,6 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -4070,21 +2984,10 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FaultSimulationListResult> res
             = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NodeTypesClientImpl.class);
 }

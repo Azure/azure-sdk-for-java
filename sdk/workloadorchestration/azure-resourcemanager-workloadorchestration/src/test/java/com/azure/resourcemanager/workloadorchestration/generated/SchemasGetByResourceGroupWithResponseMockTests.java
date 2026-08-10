@@ -21,7 +21,7 @@ public final class SchemasGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"currentVersion\":\"dcdab\",\"provisioningState\":\"Canceled\"},\"eTag\":\"wyawbzasqbuc\",\"location\":\"gkyexaoguy\",\"tags\":{\"ault\":\"ids\"},\"id\":\"ijjumfq\",\"name\":\"azlnqnmcjngzqdqx\",\"type\":\"bjwgnyfus\"}";
+            = "{\"properties\":{\"currentVersion\":\"elyetndnbf\",\"provisioningState\":\"Canceled\"},\"eTag\":\"agfl\",\"location\":\"gm\",\"tags\":{\"r\":\"ahzjmucftb\",\"fusuckzmkwklsno\":\"lrohkpig\",\"hjnhgwydyynfsvk\":\"axmqeqal\",\"ta\":\"gbv\"},\"id\":\"arfdlpukhpyrnei\",\"name\":\"jcpeogkhnmg\",\"type\":\"ro\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SchemasGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Schema response = manager.schemas()
-            .getByResourceGroupWithResponse("kmfx", "pjwogqqno", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("p", "uuuybnchrsziz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gkyexaoguy", response.location());
-        Assertions.assertEquals("ids", response.tags().get("ault"));
+        Assertions.assertEquals("gm", response.location());
+        Assertions.assertEquals("ahzjmucftb", response.tags().get("r"));
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2025-08-01/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: PrivateLinkResources_Get.

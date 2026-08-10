@@ -22,6 +22,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
  * append more attributes value to an existing property. An enhanced JDBC URL can be
  * built from this enhancer.
  */
+@SuppressWarnings("deprecation")
 public final class JdbcConnectionStringEnhancer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcConnectionStringEnhancer.class);

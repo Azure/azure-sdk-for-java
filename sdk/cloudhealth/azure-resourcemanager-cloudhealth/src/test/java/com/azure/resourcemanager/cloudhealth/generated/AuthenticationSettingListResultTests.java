@@ -12,9 +12,9 @@ public final class AuthenticationSettingListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationSettingListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Canceled\",\"displayName\":\"v\"},\"id\":\"xmzsbbzogg\",\"name\":\"grxwbu\",\"type\":\"vjxxjnsp\"},{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Creating\",\"displayName\":\"oenkouknvudwti\"},\"id\":\"bldngkpoc\",\"name\":\"pazyxoegukg\",\"type\":\"npiucgygevqznty\"}],\"nextLink\":\"rbpizc\"}")
+            "{\"value\":[{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Failed\",\"displayName\":\"npc\"},\"id\":\"ocohslkevleg\",\"name\":\"zfbuhf\",\"type\":\"vfaxkffeiith\"}],\"nextLink\":\"m\"}")
             .toObject(AuthenticationSettingListResult.class);
-        Assertions.assertEquals("v", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("rbpizc", model.nextLink());
+        Assertions.assertEquals("npc", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("m", model.nextLink());
     }
 }

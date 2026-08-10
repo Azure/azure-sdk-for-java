@@ -22,7 +22,7 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
     @Test
     public void testListWorkloadProfileStates() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"minimumCount\":339111086,\"maximumCount\":111577311,\"currentCount\":1754193010},\"id\":\"ctzeyowmndc\",\"name\":\"v\",\"type\":\"wzqauxzanhmkvf\"}]}";
+            = "{\"value\":[{\"properties\":{\"minimumCount\":696818170,\"maximumCount\":2012943532,\"currentCount\":1699476003},\"id\":\"ilrgun\",\"name\":\"anlduwzorxsb\",\"type\":\"x\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadProfileStates> response
-            = manager.managedEnvironments().listWorkloadProfileStates("mdpv", "zgl", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadProfileStates> response = manager.managedEnvironments()
+            .listWorkloadProfileStates("oellnkkiiwvmt", "mxpymdjf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(339111086, response.iterator().next().properties().minimumCount());
-        Assertions.assertEquals(111577311, response.iterator().next().properties().maximumCount());
-        Assertions.assertEquals(1754193010, response.iterator().next().properties().currentCount());
+        Assertions.assertEquals(696818170, response.iterator().next().properties().minimumCount());
+        Assertions.assertEquals(2012943532, response.iterator().next().properties().maximumCount());
+        Assertions.assertEquals(1699476003, response.iterator().next().properties().currentCount());
     }
 }

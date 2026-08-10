@@ -16,6 +16,7 @@ import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -55,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests {@link RetryPolicy}.
  */
 public class RetryPolicyTests {
+    private static final HttpHeaderName MAGIC_RETRY_HEADER = HttpHeaderName.fromString("x-ms-magic-retry-header");
 
     @ParameterizedTest
     @ValueSource(ints = { 408, 429, 500, 502, 503 })
@@ -440,8 +443,8 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
     public void getWellKnownRetryDelay(HttpHeaders responseHeaders, RetryStrategy retryStrategy, Duration expected) {
-        assertEquals(expected,
-            RetryPolicy.getWellKnownRetryDelay(responseHeaders, 1, retryStrategy, OffsetDateTime::now));
+        HttpResponse response = new MockHttpResponse(null, 0, responseHeaders);
+        assertEquals(expected, RetryPolicy.getWellKnownRetryDelay(response, 1, retryStrategy, OffsetDateTime::now));
     }
 
     @Test
@@ -449,7 +452,8 @@ public class RetryPolicyTests {
         OffsetDateTime now = OffsetDateTime.now().withNano(0);
         HttpHeaders headers
             = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, new DateTimeRfc1123(now.plusSeconds(30)).toString());
-        Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null, () -> now);
+        HttpResponse response = new MockHttpResponse(null, 0, headers);
+        Duration actual = RetryPolicy.getWellKnownRetryDelay(response, 1, null, () -> now);
 
         assertEquals(Duration.ofSeconds(30), actual);
     }
@@ -801,5 +805,100 @@ public class RetryPolicyTests {
             .verifyError(TimeoutException.class);
 
         assertEquals(1, attemptCount.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("retryStrategyGetsExpectedBackoffBasedOnRetryConditionSupplier")
+    public void retryStrategyGetsExpectedBackoffBasedOnRetryCondition(RequestRetryCondition condition,
+        RetryStrategy retryStrategy, Duration expectedBackoff) {
+        assertEquals(expectedBackoff, retryStrategy.calculateRetryDelay(condition));
+    }
+
+    private static Stream<Arguments> retryStrategyGetsExpectedBackoffBasedOnRetryConditionSupplier() {
+        RetryStrategy retryStrategy = new RetryStrategy() {
+            @Override
+            public int getMaxRetries() {
+                return 0; //ignored
+            }
+
+            @Override
+            public Duration calculateRetryDelay(int retryAttempts) {
+                return Duration.ofSeconds(1); // fallback for complex scenarios
+            }
+
+            @Override
+            public Duration calculateRetryDelay(RequestRetryCondition requestRetryCondition) {
+                if (requestRetryCondition.getTryCount() > 5) {
+                    // Server has been unhealthy for too long, retry much later.
+                    return Duration.ofHours(1);
+                }
+
+                if (requestRetryCondition.getResponse().getStatusCode() == 418) {
+                    // Teapots take a few minutes to boil.
+                    return Duration.ofMinutes(6);
+                }
+
+                String magicValue = requestRetryCondition.getResponse().getHeaderValue(MAGIC_RETRY_HEADER);
+                if (!CoreUtils.isNullOrEmpty(magicValue)) {
+                    try {
+                        int magicDelay = Integer.parseInt(magicValue);
+                        if (magicDelay > 0) {
+                            // Magic servers return a delay that needs magic handling.
+                            return Duration.ofSeconds(magicDelay * 42L);
+                        }
+                    } catch (NumberFormatException e) {
+                        // Ignore and fallback to default.
+                    }
+                }
+
+                if (requestRetryCondition.getThrowable() instanceof SocketException) {
+                    // Network issues, backoff exponentially.
+                    return Duration.ofSeconds((long) Math.pow(2, requestRetryCondition.getTryCount()));
+                }
+
+                String contentLength
+                    = requestRetryCondition.getResponse().getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+                if (!CoreUtils.isNullOrEmpty(contentLength)) {
+                    try {
+                        long length = Long.parseLong(contentLength);
+                        if (length > 1024 * 1024) {
+                            // Large payloads, backoff linearly.
+                            return Duration.ofSeconds(requestRetryCondition.getTryCount() * 3L);
+                        }
+                    } catch (NumberFormatException e) {
+                        // Ignore and fallback to default.
+                    }
+                }
+
+                // All unique scenarios exhausted, fallback to simple retry logic.
+                return calculateRetryDelay(requestRetryCondition.getTryCount());
+            }
+        };
+
+        return Stream.of(
+            Arguments.of(new RequestRetryCondition(null, null, 6, null), retryStrategy, Duration.ofHours(1)),
+            Arguments.of(new RequestRetryCondition(new MockHttpResponse(null, 418), null, 0, null), retryStrategy,
+                Duration.ofMinutes(6)),
+            Arguments.of(
+                new RequestRetryCondition(
+                    new MockHttpResponse(null, 503, new HttpHeaders().set(MAGIC_RETRY_HEADER, "10")), null, 0, null),
+                retryStrategy, Duration.ofSeconds(420)),
+            Arguments.of(
+                new RequestRetryCondition(
+                    new MockHttpResponse(null, 503, new HttpHeaders().set(MAGIC_RETRY_HEADER, "-10")), null, 0, null),
+                retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new RequestRetryCondition(
+                new MockHttpResponse(null, 503, new HttpHeaders().set(MAGIC_RETRY_HEADER, "notanumber")), null, 0,
+                null), retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new RequestRetryCondition(new MockHttpResponse(null, 503), new SocketException(), 0, null),
+                retryStrategy, Duration.ofSeconds(1)),
+            Arguments.of(new RequestRetryCondition(new MockHttpResponse(null, 503), new SocketException(), 3, null),
+                retryStrategy, Duration.ofSeconds(8)),
+            Arguments.of(new RequestRetryCondition(
+                new MockHttpResponse(null, 503, new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "2097152")), null,
+                3, null), retryStrategy, Duration.ofSeconds(9)),
+            Arguments.of(new RequestRetryCondition(
+                new MockHttpResponse(null, 503, new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "notanumber")),
+                null, 0, null), retryStrategy, Duration.ofSeconds(1)));
     }
 }

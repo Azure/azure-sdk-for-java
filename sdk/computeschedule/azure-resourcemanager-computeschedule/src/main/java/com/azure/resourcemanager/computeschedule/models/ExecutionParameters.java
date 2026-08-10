@@ -73,17 +73,6 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (retryPolicy() != null) {
-            retryPolicy().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

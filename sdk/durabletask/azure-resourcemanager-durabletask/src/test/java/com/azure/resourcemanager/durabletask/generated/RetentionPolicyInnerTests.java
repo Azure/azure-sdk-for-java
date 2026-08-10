@@ -16,10 +16,10 @@ public final class RetentionPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":102076266,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":398629650,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":958772842,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1168655887,\"orchestrationState\":\"Completed\"}]},\"id\":\"f\",\"name\":\"dgmb\",\"type\":\"bexppb\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"retentionPolicies\":[{\"retentionPeriodInDays\":177141497,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1290040732,\"orchestrationState\":\"Failed\"},{\"retentionPeriodInDays\":1843167961,\"orchestrationState\":\"Canceled\"}]},\"id\":\"mkqsleyyv\",\"name\":\"yqjpkcatt\",\"type\":\"ngj\"}")
             .toObject(RetentionPolicyInner.class);
-        Assertions.assertEquals(102076266, model.properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(177141497, model.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             model.properties().retentionPolicies().get(0).orchestrationState());
     }
 
@@ -27,17 +27,15 @@ public final class RetentionPolicyInnerTests {
     public void testSerialize() throws Exception {
         RetentionPolicyInner model = new RetentionPolicyInner()
             .withProperties(new RetentionPolicyProperties().withRetentionPolicies(Arrays.asList(
-                new RetentionPolicyDetails().withRetentionPeriodInDays(102076266)
-                    .withOrchestrationState(PurgeableOrchestrationState.CANCELED),
-                new RetentionPolicyDetails().withRetentionPeriodInDays(398629650)
-                    .withOrchestrationState(PurgeableOrchestrationState.TERMINATED),
-                new RetentionPolicyDetails().withRetentionPeriodInDays(958772842)
+                new RetentionPolicyDetails().withRetentionPeriodInDays(177141497)
                     .withOrchestrationState(PurgeableOrchestrationState.COMPLETED),
-                new RetentionPolicyDetails().withRetentionPeriodInDays(1168655887)
-                    .withOrchestrationState(PurgeableOrchestrationState.COMPLETED))));
+                new RetentionPolicyDetails().withRetentionPeriodInDays(1290040732)
+                    .withOrchestrationState(PurgeableOrchestrationState.FAILED),
+                new RetentionPolicyDetails().withRetentionPeriodInDays(1843167961)
+                    .withOrchestrationState(PurgeableOrchestrationState.CANCELED))));
         model = BinaryData.fromObject(model).toObject(RetentionPolicyInner.class);
-        Assertions.assertEquals(102076266, model.properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(177141497, model.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             model.properties().retentionPolicies().get(0).orchestrationState());
     }
 }

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRule;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public final class DiscoveryRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"bfhjxakvvjgsl\",\"resourceGraphQuery\":\"r\",\"authenticationSetting\":\"il\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"deletionDate\":\"2021-09-07T03:23:04Z\",\"errorMessage\":\"gkxnyedabg\",\"numberOfDiscoveredEntities\":110774994,\"entityName\":\"dtj\"},\"id\":\"wbcihxuuwh\",\"name\":\"j\",\"type\":\"xccybvpa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"wefohecbvo\",\"authenticationSetting\":\"wndyqleallk\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"owkxxpv\",\"context\":[\"fjmzsyzfho\",\"lhikcyychunsj\",\"pjrtws\",\"hv\"]},\"entityName\":\"uic\"},\"id\":\"vtrrmhwrbfdpyflu\",\"name\":\"hvj\",\"type\":\"lrocuyzlwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +34,16 @@ public final class DiscoveryRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiscoveryRule response = manager.discoveryRules()
-            .getWithResponse("dmligovibrxk", "mloazuru", "cbgoor", com.azure.core.util.Context.NONE)
+            .getWithResponse("ksaoafcluqvox", "ycjimryvwgcwwpbm", "gwe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bfhjxakvvjgsl", response.properties().displayName());
-        Assertions.assertEquals("r", response.properties().resourceGraphQuery());
-        Assertions.assertEquals("il", response.properties().authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
+        Assertions.assertEquals("wefohecbvo", response.properties().displayName());
+        Assertions.assertEquals("wndyqleallk", response.properties().authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             response.properties().discoverRelationships());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
+        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
             response.properties().addRecommendedSignals());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            response.properties().addResourceHealthSignal());
     }
 }

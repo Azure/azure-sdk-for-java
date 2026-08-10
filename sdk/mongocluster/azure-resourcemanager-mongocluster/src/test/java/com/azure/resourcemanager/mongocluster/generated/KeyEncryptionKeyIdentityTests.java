@@ -13,19 +13,20 @@ public final class KeyEncryptionKeyIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyEncryptionKeyIdentity model = BinaryData
-            .fromString("{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"ufubl\"}")
+            .fromString(
+                "{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"cciqihnhungbwjz\"}")
             .toObject(KeyEncryptionKeyIdentity.class);
         Assertions.assertEquals(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
-        Assertions.assertEquals("ufubl", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("cciqihnhungbwjz", model.userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KeyEncryptionKeyIdentity model
             = new KeyEncryptionKeyIdentity().withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
-                .withUserAssignedIdentityResourceId("ufubl");
+                .withUserAssignedIdentityResourceId("cciqihnhungbwjz");
         model = BinaryData.fromObject(model).toObject(KeyEncryptionKeyIdentity.class);
         Assertions.assertEquals(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
-        Assertions.assertEquals("ufubl", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("cciqihnhungbwjz", model.userAssignedIdentityResourceId());
     }
 }

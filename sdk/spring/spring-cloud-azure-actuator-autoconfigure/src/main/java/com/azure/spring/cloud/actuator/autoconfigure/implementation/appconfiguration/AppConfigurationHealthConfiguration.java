@@ -6,8 +6,8 @@ package com.azure.spring.cloud.actuator.autoconfigure.implementation.appconfigur
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.spring.cloud.actuator.implementation.appconfiguration.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.health.autoconfigure.contributor.ConditionalOnEnabledHealthIndicator;
+import org.springframework.boot.health.contributor.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

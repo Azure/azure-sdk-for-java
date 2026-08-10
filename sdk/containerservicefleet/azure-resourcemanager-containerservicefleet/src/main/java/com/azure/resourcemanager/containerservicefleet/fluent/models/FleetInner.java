@@ -206,20 +206,6 @@ public final class FleetInner extends Resource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

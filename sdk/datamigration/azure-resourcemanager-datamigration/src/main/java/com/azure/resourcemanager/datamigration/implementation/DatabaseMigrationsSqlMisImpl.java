@@ -51,6 +51,27 @@ public final class DatabaseMigrationsSqlMisImpl implements DatabaseMigrationsSql
         }
     }
 
+    public DatabaseMigrationSqlMi delete(String resourceGroupName, String managedInstanceName, String targetDbName) {
+        DatabaseMigrationSqlMiInner inner
+            = this.serviceClient().delete(resourceGroupName, managedInstanceName, targetDbName);
+        if (inner != null) {
+            return new DatabaseMigrationSqlMiImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DatabaseMigrationSqlMi delete(String resourceGroupName, String managedInstanceName, String targetDbName,
+        Boolean force, Context context) {
+        DatabaseMigrationSqlMiInner inner
+            = this.serviceClient().delete(resourceGroupName, managedInstanceName, targetDbName, force, context);
+        if (inner != null) {
+            return new DatabaseMigrationSqlMiImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void cancel(String resourceGroupName, String managedInstanceName, String targetDbName,
         MigrationOperationInput parameters) {
         this.serviceClient().cancel(resourceGroupName, managedInstanceName, targetDbName, parameters);
@@ -114,6 +135,45 @@ public final class DatabaseMigrationsSqlMisImpl implements DatabaseMigrationsSql
         }
         return this.getWithResponse(resourceGroupName, managedInstanceName, targetDbName, migrationOperationId, expand,
             context);
+    }
+
+    public DatabaseMigrationSqlMi deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String managedInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "managedInstances");
+        if (managedInstanceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedInstances'.", id)));
+        }
+        String targetDbName = ResourceManagerUtils.getValueFromIdByName(id, "databaseMigrations");
+        if (targetDbName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'databaseMigrations'.", id)));
+        }
+        Boolean localForce = null;
+        return this.delete(resourceGroupName, managedInstanceName, targetDbName, localForce, Context.NONE);
+    }
+
+    public DatabaseMigrationSqlMi deleteByIdWithResponse(String id, Boolean force, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String managedInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "managedInstances");
+        if (managedInstanceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'managedInstances'.", id)));
+        }
+        String targetDbName = ResourceManagerUtils.getValueFromIdByName(id, "databaseMigrations");
+        if (targetDbName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'databaseMigrations'.", id)));
+        }
+        return this.delete(resourceGroupName, managedInstanceName, targetDbName, force, context);
     }
 
     private DatabaseMigrationsSqlMisClient serviceClient() {

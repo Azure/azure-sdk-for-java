@@ -14,18 +14,16 @@ public final class PrivateLinkResourceListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"vk\",\"requiredMembers\":[\"zunbixx\",\"ti\",\"vcpwpgclrc\",\"vtsoxf\"],\"requiredZoneNames\":[\"nxpmyyefrpmpdnq\",\"skawaoqvmmb\",\"pqfrtqlkz\"]},\"id\":\"gnitgvkxlzyq\",\"name\":\"rfe\",\"type\":\"cealzxwh\"},{\"properties\":{\"groupId\":\"symoyq\",\"requiredMembers\":[\"igdivbkbxg\",\"mf\"],\"requiredZoneNames\":[\"wasqvdaeyyg\",\"xakjsqzhzb\"]},\"id\":\"kgimsidxasic\",\"name\":\"dyvvjskgfmocwahp\",\"type\":\"gat\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"xilcbtgnhnzey\",\"requiredMembers\":[\"jjfzqlqhycavo\"],\"requiredZoneNames\":[\"xdbeesmieknl\",\"ariaawi\",\"agy\"]},\"id\":\"qfby\",\"name\":\"yr\",\"type\":\"giagtcojo\"}]}")
             .toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("nxpmyyefrpmpdnq", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("xdbeesmieknl", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkResourceListResultInner model = new PrivateLinkResourceListResultInner().withValue(Arrays.asList(
-            new PrivateLinkResourceInner()
-                .withRequiredZoneNames(Arrays.asList("nxpmyyefrpmpdnq", "skawaoqvmmb", "pqfrtqlkz")),
-            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("wasqvdaeyyg", "xakjsqzhzb"))));
+            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("xdbeesmieknl", "ariaawi", "agy"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResultInner.class);
-        Assertions.assertEquals("nxpmyyefrpmpdnq", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("xdbeesmieknl", model.value().get(0).requiredZoneNames().get(0));
     }
 }

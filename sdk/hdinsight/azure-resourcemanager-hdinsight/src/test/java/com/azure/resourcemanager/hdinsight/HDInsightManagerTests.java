@@ -35,6 +35,7 @@ import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -87,6 +88,7 @@ public class HDInsightManagerTests extends TestProxyTestBase {
         }
     }
 
+    @Disabled("No sufficient core to create the cluster resource")
     @Test
     @LiveOnly
     public void testCreateCluster() {

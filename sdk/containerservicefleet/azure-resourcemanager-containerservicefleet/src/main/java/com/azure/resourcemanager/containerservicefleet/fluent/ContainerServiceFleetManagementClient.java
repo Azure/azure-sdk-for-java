@@ -54,6 +54,13 @@ public interface ContainerServiceFleetManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the ClusterMeshProfilesClient object to access its operations.
+     * 
+     * @return the ClusterMeshProfilesClient object.
+     */
+    ClusterMeshProfilesClient getClusterMeshProfiles();
+
+    /**
      * Gets the FleetsClient object to access its operations.
      * 
      * @return the FleetsClient object.
@@ -66,6 +73,13 @@ public interface ContainerServiceFleetManagementClient {
      * @return the FleetMembersClient object.
      */
     FleetMembersClient getFleetMembers();
+
+    /**
+     * Gets the FleetManagedNamespacesClient object to access its operations.
+     * 
+     * @return the FleetManagedNamespacesClient object.
+     */
+    FleetManagedNamespacesClient getFleetManagedNamespaces();
 
     /**
      * Gets the GatesClient object to access its operations.

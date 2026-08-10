@@ -19,12 +19,6 @@ import java.util.Base64;
 @Fluent
 public final class FilesUploadRangeHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
@@ -37,10 +31,10 @@ public final class FilesUploadRangeHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-structured-body property.
+     * The Content-MD5 property.
      */
     @Generated
-    private String xMsStructuredBody;
+    private byte[] contentMD5;
 
     /*
      * The x-ms-request-id property.
@@ -49,10 +43,10 @@ public final class FilesUploadRangeHeaders {
     private String xMsRequestId;
 
     /*
-     * The x-ms-request-server-encrypted property.
+     * The x-ms-version property.
      */
     @Generated
-    private Boolean xMsRequestServerEncrypted;
+    private String xMsVersion;
 
     /*
      * The Date property.
@@ -61,26 +55,32 @@ public final class FilesUploadRangeHeaders {
     private DateTimeRfc1123 date;
 
     /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @Generated
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
      * The x-ms-file-last-write-time property.
      */
     @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
     /*
-     * The Content-MD5 property.
+     * The x-ms-structured-body property.
      */
     @Generated
-    private byte[] contentMD5;
+    private String xMsStructuredBody;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
 
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
         = HttpHeaderName.fromString("x-ms-file-last-write-time");
+
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -89,7 +89,6 @@ public final class FilesUploadRangeHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesUploadRangeHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -97,19 +96,25 @@ public final class FilesUploadRangeHeaders {
         } else {
             this.lastModified = null;
         }
-        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
-        if (xMsRequestServerEncrypted != null) {
-            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        if (contentMD5 != null) {
+            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         } else {
-            this.xMsRequestServerEncrypted = null;
+            this.contentMD5 = null;
         }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
+        }
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        if (xMsRequestServerEncrypted != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
         }
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
@@ -117,34 +122,7 @@ public final class FilesUploadRangeHeaders {
         } else {
             this.xMsFileLastWriteTime = null;
         }
-        String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
-        if (contentMD5 != null) {
-            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
-        } else {
-            this.contentMD5 = null;
-        }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FilesUploadRangeHeaders object itself.
-     */
-    @Generated
-    public FilesUploadRangeHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
     }
 
     /**
@@ -199,24 +177,24 @@ public final class FilesUploadRangeHeaders {
     }
 
     /**
-     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * Get the contentMD5 property: The Content-MD5 property.
      * 
-     * @return the xMsStructuredBody value.
+     * @return the contentMD5 value.
      */
     @Generated
-    public String getXMsStructuredBody() {
-        return this.xMsStructuredBody;
+    public byte[] getContentMD5() {
+        return CoreUtils.clone(this.contentMD5);
     }
 
     /**
-     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * Set the contentMD5 property: The Content-MD5 property.
      * 
-     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @param contentMD5 the contentMD5 value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
     @Generated
-    public FilesUploadRangeHeaders setXMsStructuredBody(String xMsStructuredBody) {
-        this.xMsStructuredBody = xMsStructuredBody;
+    public FilesUploadRangeHeaders setContentMD5(byte[] contentMD5) {
+        this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
     }
 
@@ -243,24 +221,24 @@ public final class FilesUploadRangeHeaders {
     }
 
     /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the xMsRequestServerEncrypted value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
     @Generated
-    public FilesUploadRangeHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+    public FilesUploadRangeHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -294,6 +272,28 @@ public final class FilesUploadRangeHeaders {
     }
 
     /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @return the xMsRequestServerEncrypted value.
+     */
+    @Generated
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the FilesUploadRangeHeaders object itself.
+     */
+    @Generated
+    public FilesUploadRangeHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+        return this;
+    }
+
+    /**
      * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
      * 
      * @return the xMsFileLastWriteTime value.
@@ -316,24 +316,24 @@ public final class FilesUploadRangeHeaders {
     }
 
     /**
-     * Get the contentMD5 property: The Content-MD5 property.
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @return the contentMD5 value.
+     * @return the xMsStructuredBody value.
      */
     @Generated
-    public byte[] getContentMD5() {
-        return CoreUtils.clone(this.contentMD5);
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
     }
 
     /**
-     * Set the contentMD5 property: The Content-MD5 property.
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @param contentMD5 the contentMD5 value to set.
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the FilesUploadRangeHeaders object itself.
      */
     @Generated
-    public FilesUploadRangeHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = CoreUtils.clone(contentMD5);
+    public FilesUploadRangeHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 }

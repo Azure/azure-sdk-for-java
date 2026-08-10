@@ -4,113 +4,75 @@
 
 package com.azure.resourcemanager.subscription.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 
 /**
- * Subscription policies.
+ * Resource collection API of SubscriptionPolicies.
  */
-@Immutable
-public final class SubscriptionPolicies implements JsonSerializable<SubscriptionPolicies> {
-    /*
-     * The subscription location placement ID. The ID indicates which regions are visible for a subscription. For
-     * example, a subscription with a location placement Id of Public_2014-09-01 has access to Azure public regions.
-     */
-    private String locationPlacementId;
-
-    /*
-     * The subscription quota ID.
-     */
-    private String quotaId;
-
-    /*
-     * The subscription spending limit.
-     */
-    private SpendingLimit spendingLimit;
-
+public interface SubscriptionPolicies {
     /**
-     * Creates an instance of SubscriptionPolicies class.
-     */
-    public SubscriptionPolicies() {
-    }
-
-    /**
-     * Get the locationPlacementId property: The subscription location placement ID. The ID indicates which regions are
-     * visible for a subscription. For example, a subscription with a location placement Id of Public_2014-09-01 has
-     * access to Azure public regions.
+     * Create or Update Subscription tenant policy for user's tenant.
      * 
-     * @return the locationPlacementId value.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant policy Information along with {@link Response}.
      */
-    public String locationPlacementId() {
-        return this.locationPlacementId;
-    }
+    Response<GetTenantPolicyResponse> addUpdatePolicyForTenantWithResponse(PutTenantPolicyRequestProperties body,
+        Context context);
 
     /**
-     * Get the quotaId property: The subscription quota ID.
+     * Create or Update Subscription tenant policy for user's tenant.
      * 
-     * @return the quotaId value.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant policy Information.
      */
-    public String quotaId() {
-        return this.quotaId;
-    }
+    GetTenantPolicyResponse addUpdatePolicyForTenant(PutTenantPolicyRequestProperties body);
 
     /**
-     * Get the spendingLimit property: The subscription spending limit.
+     * Get the subscription tenant policy for the user's tenant.
      * 
-     * @return the spendingLimit value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription tenant policy for the user's tenant along with {@link Response}.
      */
-    public SpendingLimit spendingLimit() {
-        return this.spendingLimit;
-    }
+    Response<GetTenantPolicyResponse> getPolicyForTenantWithResponse(Context context);
 
     /**
-     * Validates the instance.
+     * Get the subscription tenant policy for the user's tenant.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription tenant policy for the user's tenant.
      */
-    public void validate() {
-    }
+    GetTenantPolicyResponse getPolicyForTenant();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SubscriptionPolicies from the JsonReader.
+     * Get the subscription tenant policy for the user's tenant.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SubscriptionPolicies if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SubscriptionPolicies.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription tenant policy for the user's tenant as paginated response with {@link PagedIterable}.
      */
-    public static SubscriptionPolicies fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SubscriptionPolicies deserializedSubscriptionPolicies = new SubscriptionPolicies();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    PagedIterable<GetTenantPolicyResponse> listPolicyForTenant();
 
-                if ("locationPlacementId".equals(fieldName)) {
-                    deserializedSubscriptionPolicies.locationPlacementId = reader.getString();
-                } else if ("quotaId".equals(fieldName)) {
-                    deserializedSubscriptionPolicies.quotaId = reader.getString();
-                } else if ("spendingLimit".equals(fieldName)) {
-                    deserializedSubscriptionPolicies.spendingLimit = SpendingLimit.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSubscriptionPolicies;
-        });
-    }
+    /**
+     * Get the subscription tenant policy for the user's tenant.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription tenant policy for the user's tenant as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<GetTenantPolicyResponse> listPolicyForTenant(Context context);
 }

@@ -22,7 +22,7 @@ public final class DynamicSchemaVersionsListByDynamicSchemaMockTests {
     @Test
     public void testListByDynamicSchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"nynkbwet\",\"provisioningState\":\"Initialized\"},\"eTag\":\"p\",\"id\":\"rkzyaupia\",\"name\":\"cxnafbwqrooh\",\"type\":\"uovmaonurjt\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"mktp\",\"provisioningState\":\"InProgress\"},\"eTag\":\"csehchkhufm\",\"id\":\"umqy\",\"name\":\"gy\",\"type\":\"zulo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DynamicSchemaVersionsListByDynamicSchemaMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DynamicSchemaVersion> response = manager.dynamicSchemaVersions()
-            .listByDynamicSchema("avfqnvhnqoewdogi", "etesypvidbztjhqt", "b", com.azure.core.util.Context.NONE);
+            .listByDynamicSchema("minict", "eajohiyg", "pnbonhpcz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nynkbwet", response.iterator().next().properties().value());
+        Assertions.assertEquals("mktp", response.iterator().next().properties().value());
     }
 }

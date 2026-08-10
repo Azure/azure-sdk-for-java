@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionPropertiesSourceTargetMap;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Job definition properties.
@@ -102,6 +104,26 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
      * The provisioning state of this resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * List of connections associated to this job
+     */
+    private List<String> connections;
+
+    /*
+     * Schedule information for the Job Definition.
+     */
+    private ScheduleInfo schedule;
+
+    /*
+     * The checksum validation mode for the job definition.
+     */
+    private DataIntegrityValidation dataIntegrityValidation;
+
+    /*
+     * Boolean to preserve permissions or not.
+     */
+    private Boolean preservePermissions;
 
     /**
      * Creates an instance of JobDefinitionProperties class.
@@ -357,32 +379,84 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
     }
 
     /**
-     * Validates the instance.
+     * Get the connections property: List of connections associated to this job.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the connections value.
      */
-    public void validate() {
-        if (copyMode() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property copyMode in model JobDefinitionProperties"));
-        }
-        if (sourceName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceName in model JobDefinitionProperties"));
-        }
-        if (targetName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetName in model JobDefinitionProperties"));
-        }
-        if (sourceTargetMap() != null) {
-            sourceTargetMap().validate();
-        }
+    public List<String> connections() {
+        return this.connections;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(JobDefinitionProperties.class);
+    /**
+     * Set the connections property: List of connections associated to this job.
+     * 
+     * @param connections the connections value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withConnections(List<String> connections) {
+        this.connections = connections;
+        return this;
+    }
+
+    /**
+     * Get the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    public ScheduleInfo schedule() {
+        return this.schedule;
+    }
+
+    /**
+     * Set the schedule property: Schedule information for the Job Definition.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withSchedule(ScheduleInfo schedule) {
+        this.schedule = schedule;
+        return this;
+    }
+
+    /**
+     * Get the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.dataIntegrityValidation;
+    }
+
+    /**
+     * Set the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @param dataIntegrityValidation the dataIntegrityValidation value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        this.dataIntegrityValidation = dataIntegrityValidation;
+        return this;
+    }
+
+    /**
+     * Get the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @return the preservePermissions value.
+     */
+    public Boolean preservePermissions() {
+        return this.preservePermissions;
+    }
+
+    /**
+     * Set the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @param preservePermissions the preservePermissions value to set.
+     * @return the JobDefinitionProperties object itself.
+     */
+    public JobDefinitionProperties withPreservePermissions(Boolean preservePermissions) {
+        this.preservePermissions = preservePermissions;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -399,6 +473,11 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
         jsonWriter.writeStringField("targetSubpath", this.targetSubpath);
         jsonWriter.writeStringField("agentName", this.agentName);
         jsonWriter.writeJsonField("sourceTargetMap", this.sourceTargetMap);
+        jsonWriter.writeArrayField("connections", this.connections, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeStringField("dataIntegrityValidation",
+            this.dataIntegrityValidation == null ? null : this.dataIntegrityValidation.toString());
+        jsonWriter.writeBooleanField("preservePermissions", this.preservePermissions);
         return jsonWriter.writeEndObject();
     }
 
@@ -453,6 +532,17 @@ public final class JobDefinitionProperties implements JsonSerializable<JobDefini
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedJobDefinitionProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("connections".equals(fieldName)) {
+                    List<String> connections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobDefinitionProperties.connections = connections;
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.schedule = ScheduleInfo.fromJson(reader);
+                } else if ("dataIntegrityValidation".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.dataIntegrityValidation
+                        = DataIntegrityValidation.fromString(reader.getString());
+                } else if ("preservePermissions".equals(fieldName)) {
+                    deserializedJobDefinitionProperties.preservePermissions
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

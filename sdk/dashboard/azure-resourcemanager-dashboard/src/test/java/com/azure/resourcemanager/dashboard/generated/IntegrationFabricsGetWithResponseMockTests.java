@@ -21,7 +21,7 @@ public final class IntegrationFabricsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"targetResourceId\":\"dhbt\",\"dataSourceResourceId\":\"phywpnvj\",\"scenarios\":[\"nermcl\",\"plpho\",\"uscrpabgyepsb\",\"tazqugxywpmueefj\"]},\"location\":\"fqkquj\",\"tags\":{\"xtccmg\":\"uyonobglaoc\",\"wfudwpzntxhdzhl\":\"udxytlmoyrx\",\"hckfrlhrx\":\"qj\",\"ca\":\"bkyvp\"},\"id\":\"uzbpzkafku\",\"name\":\"b\",\"type\":\"rnwb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Creating\",\"targetResourceId\":\"wpn\",\"dataSourceResourceId\":\"t\",\"scenarios\":[\"ermclfplphoxuscr\",\"abgy\"]},\"location\":\"sbj\",\"tags\":{\"kqujidsuyono\":\"qugxywpmueefjzwf\"},\"id\":\"glaocq\",\"name\":\"tcc\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class IntegrationFabricsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationFabric response = manager.integrationFabrics()
-            .getWithResponse("cykvceo", "eil", "vnotyfjfcnj", com.azure.core.util.Context.NONE)
+            .getWithResponse("fcnj", "k", "nxdhbt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fqkquj", response.location());
-        Assertions.assertEquals("uyonobglaoc", response.tags().get("xtccmg"));
-        Assertions.assertEquals("dhbt", response.properties().targetResourceId());
-        Assertions.assertEquals("phywpnvj", response.properties().dataSourceResourceId());
-        Assertions.assertEquals("nermcl", response.properties().scenarios().get(0));
+        Assertions.assertEquals("sbj", response.location());
+        Assertions.assertEquals("qugxywpmueefjzwf", response.tags().get("kqujidsuyono"));
+        Assertions.assertEquals("wpn", response.properties().targetResourceId());
+        Assertions.assertEquals("t", response.properties().dataSourceResourceId());
+        Assertions.assertEquals("ermclfplphoxuscr", response.properties().scenarios().get(0));
     }
 }

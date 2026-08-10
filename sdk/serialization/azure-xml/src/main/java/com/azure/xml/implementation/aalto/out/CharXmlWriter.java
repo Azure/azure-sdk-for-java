@@ -547,52 +547,6 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     /**
-     * Method that will try to output the content as specified. If
-     * the content passed in has embedded "--" in it, it will either
-     * add an intervening space between consequtive hyphens (if content
-     * fixing is enabled), or return the offset of the first hyphen in
-     * multi-hyphen sequence.
-     */
-    @Override
-    public int writeComment(String data) throws IOException, XMLStreamException {
-        if (_out == null) {
-            return -1;
-        }
-
-        writeCommentStart();
-        /* Ok, let's just copy into a temporary buffer. While copying
-         * to the output buffer would be faster, it gets pretty
-         * complicated; so let's not bother (yet?)
-         */
-        int len = data.length();
-        int offset = 0;
-        int cix = -1;
-
-        while (len > 0) {
-            char[] buf = _copyBuffer;
-            int blen = buf.length;
-
-            // Can write all the rest?
-            if (blen > len) {
-                blen = len;
-            }
-            // Nope, can only do part
-            data.getChars(offset, offset + blen, buf, 0);
-            cix = writeCommentContents(buf, 0, blen);
-            if (cix >= 0) {
-                break;
-            }
-            offset += blen;
-            len -= blen;
-        }
-        if (cix >= 0) {
-            return (offset + cix);
-        }
-        writeCommentEnd();
-        return -1;
-    }
-
-    /**
      * Note: the only way to fix comment contents is to inject a space
      * to split up consequtive '--' (or '-' that ends a comment).
      */
@@ -659,19 +613,6 @@ public final class CharXmlWriter extends XmlWriter {
     }
 
     @Override
-    public void writeDTD(String data) throws IOException {
-        // !!! TBI: Check for char validity, similar to other methods?
-        writeRaw(data, 0, data.length());
-    }
-
-    @Override
-    public void writeEntityReference(WName name) throws IOException {
-        fastWriteRaw('&');
-        writeName(name);
-        fastWriteRaw(';');
-    }
-
-    @Override
     public void writeXmlDeclaration(String version, String encoding, String standalone) throws IOException {
         fastWriteRaw("<?xml version=\"");
         // !!! TBI: check validity
@@ -691,43 +632,6 @@ public final class CharXmlWriter extends XmlWriter {
             fastWriteRaw('"');
         }
         fastWriteRaw('?', '>');
-    }
-
-    @Override
-    public int writePI(WName target, String data) throws IOException, XMLStreamException {
-        fastWriteRaw('<', '?');
-        writeName(target);
-
-        if (data != null && !data.isEmpty()) {
-            int len = data.length();
-            int offset = 0;
-            int cix = -1;
-
-            fastWriteRaw(' ');
-
-            // !!! TODO: copy straight to output buffer
-            while (len > 0) {
-                char[] buf = _copyBuffer;
-                int blen = buf.length;
-
-                // Can write all the rest?
-                if (blen > len) {
-                    blen = len;
-                }
-                data.getChars(offset, offset + blen, buf, 0);
-                cix = writePIContents(buf, 0, blen);
-                if (cix >= 0) {
-                    break;
-                }
-                offset += blen;
-                len -= blen;
-            }
-            if (cix >= 0) {
-                return offset + cix;
-            }
-        }
-        fastWriteRaw('?', '>');
-        return -1;
     }
 
     private int writePIContents(char[] cbuf, int offset, int len) throws IOException, XMLStreamException {

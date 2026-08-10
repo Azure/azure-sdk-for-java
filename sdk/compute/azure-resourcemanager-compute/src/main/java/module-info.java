@@ -15,5 +15,6 @@ module com.azure.resourcemanager.compute {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.compute.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.compute.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.compute.models to com.azure.core;
 }

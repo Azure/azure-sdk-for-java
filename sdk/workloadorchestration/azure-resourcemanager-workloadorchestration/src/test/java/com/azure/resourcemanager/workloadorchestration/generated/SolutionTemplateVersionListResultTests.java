@@ -13,10 +13,10 @@ public final class SolutionTemplateVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"configurations\":\"ud\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"hzv\",\"id\":\"tdwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"},{\"properties\":{\"configurations\":\"r\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"yfxrx\",\"id\":\"eptra\",\"name\":\"xje\",\"type\":\"wlwnwxuqlcv\"},{\"properties\":{\"configurations\":\"ypatdooaojkniod\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"ujhemmsbvdkcrodt\",\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"},{\"properties\":{\"configurations\":\"ulpqblylsyxkqjn\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"agxsdszuemps\",\"id\":\"kfzbeyvpnqicvi\",\"name\":\"v\",\"type\":\"jjxd\"}],\"nextLink\":\"buukzclewyhml\"}")
+            "{\"value\":[{\"properties\":{\"configurations\":\"sfgytguslfead\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"hejhzisx\",\"id\":\"pelol\",\"name\":\"pv\",\"type\":\"srp\"},{\"properties\":{\"configurations\":\"ujzra\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Deleting\"},\"eTag\":\"ftswibyrcdlbhsh\",\"id\":\"p\",\"name\":\"acstwityk\",\"type\":\"evxccedcp\"},{\"properties\":{\"configurations\":\"dyodnwzxltj\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Initialized\"},\"eTag\":\"ugcxnavvwxq\",\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"}],\"nextLink\":\"daciz\"}")
             .toObject(SolutionTemplateVersionListResult.class);
-        Assertions.assertEquals("ud", model.value().get(0).properties().configurations());
+        Assertions.assertEquals("sfgytguslfead", model.value().get(0).properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.value().get(0).properties().orchestratorType());
-        Assertions.assertEquals("buukzclewyhml", model.nextLink());
+        Assertions.assertEquals("daciz", model.nextLink());
     }
 }

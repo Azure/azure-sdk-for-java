@@ -12,8 +12,10 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedcache.fluent.models.IspCacheNodeResourceInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeAutoUpdateHistoryInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeBgpCidrDetailsInner;
 import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeInstallDetailsInner;
+import com.azure.resourcemanager.connectedcache.fluent.models.MccCacheNodeIssueHistoryInner;
 import com.azure.resourcemanager.connectedcache.models.ConnectedCachePatchResource;
 
 /**
@@ -302,4 +304,66 @@ public interface IspCacheNodesOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     MccCacheNodeInstallDetailsInner getCacheNodeInstallDetails(String resourceGroupName, String customerResourceName,
         String cacheNodeResourceName);
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MccCacheNodeAutoUpdateHistoryInner> getCacheNodeAutoUpdateHistoryWithResponse(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName, Context context);
+
+    /**
+     * This api gets ispCacheNode resource auto update histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource auto update history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MccCacheNodeAutoUpdateHistoryInner getCacheNodeAutoUpdateHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName);
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MccCacheNodeIssueHistoryInner> getCacheNodeMccIssueDetailsHistoryWithResponse(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName, Context context);
+
+    /**
+     * This api gets ispCacheNode resource issues details histrory information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param customerResourceName Name of the Customer resource.
+     * @param cacheNodeResourceName Name of the ConnectedCache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mcc cache node resource issue history.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MccCacheNodeIssueHistoryInner getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
+        String customerResourceName, String cacheNodeResourceName);
 }

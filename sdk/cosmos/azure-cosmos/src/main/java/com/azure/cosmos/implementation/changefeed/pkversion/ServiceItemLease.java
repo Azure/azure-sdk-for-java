@@ -46,7 +46,7 @@ public class ServiceItemLease implements Lease {
 
     public ServiceItemLease() {
         ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of("UTC"));
-        this.timestamp = currentTime.toString();
+        this.timestamp = currentTime.toInstant().toString();
         this._ts = String.valueOf(currentTime.getSecond());
         this.properties = new HashMap<>();
     }

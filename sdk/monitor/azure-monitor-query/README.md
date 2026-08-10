@@ -3,8 +3,8 @@
 > This package is deprecated in favor of the new libraries [azure-monitor-query-metrics](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-metrics)
 and [azure-monitor-query-logs](https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs), available as of August 2025.
 While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. For transition support, read the migration
-guides for [migrating to azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-logs.md)
-and [migrating to azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/migration-guide-query-metrics.md).
+guides for [migrating to azure-monitor-query-logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/migration-guide.md)
+and [migrating to azure-monitor-query-metrics](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-metrics/migration-guide.md).
 
 The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
@@ -93,7 +93,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.18.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -620,7 +620,7 @@ comments.
 [package]: https://central.sonatype.com/artifact/com.azure/azure-monitor-query
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query/src
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#log-queries-and-language
 
 [cla]: https://cla.microsoft.com

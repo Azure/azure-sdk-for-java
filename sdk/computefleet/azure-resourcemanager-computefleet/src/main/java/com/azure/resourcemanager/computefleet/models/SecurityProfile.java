@@ -176,23 +176,6 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (uefiSettings() != null) {
-            uefiSettings().validate();
-        }
-        if (encryptionIdentity() != null) {
-            encryptionIdentity().validate();
-        }
-        if (proxyAgentSettings() != null) {
-            proxyAgentSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

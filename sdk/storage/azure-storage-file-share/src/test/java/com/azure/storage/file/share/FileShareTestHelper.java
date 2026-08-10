@@ -8,11 +8,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
@@ -42,8 +45,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
@@ -99,6 +104,34 @@ public class FileShareTestHelper {
             clearRanges.add(range);
         }
         return clearRanges;
+    }
+
+    protected static ShareFileRange rangeFromOffsetAndLength(long offset, long length) {
+        return new ShareFileRange(offset, offset + length - 1);
+    }
+
+    protected static ShareFileRange rangeFromLength(long length) {
+        return rangeFromOffsetAndLength(0, length);
+    }
+
+    protected static ClearRange clearRangeFromOffsetAndLength(long offset, long length) {
+        return new ClearRange().setStart(offset).setEnd(offset + length - 1);
+    }
+
+    protected static void assertFileRangeEquals(ShareFileRange expected, ShareFileRange actual) {
+        assertEquals(expected.getStart(), actual.getStart());
+        assertEquals(expected.getEnd(), actual.getEnd());
+    }
+
+    protected static void assertFileRangeItemEquals(ShareFileRange expected, ShareFileRangeItem actual) {
+        assertFalse(actual.isClear());
+        assertFileRangeEquals(expected, actual.getRange());
+    }
+
+    protected static void assertClearRangeItemEquals(ClearRange expected, ShareFileRangeItem actual) {
+        assertTrue(actual.isClear());
+        assertEquals(expected.getStart(), actual.getRange().getStart());
+        assertEquals(expected.getEnd(), actual.getRange().getEnd());
     }
 
     protected static InputStream getInputStream(byte[] data) {
@@ -381,5 +414,10 @@ public class FileShareTestHelper {
     protected static void assertSmbPropertiesNull(FileSmbProperties smbProperties) {
         assertNull(smbProperties.getFilePermissionKey());
         assertNull(smbProperties.getNtfsFileAttributes());
+    }
+
+    protected static Stream<Arguments> filePropertySemanticsSupplier() {
+        return Stream.of(Arguments.of(FilePropertySemantics.NEW), Arguments.of(FilePropertySemantics.RESTORE),
+            Arguments.of((Object) null));
     }
 }

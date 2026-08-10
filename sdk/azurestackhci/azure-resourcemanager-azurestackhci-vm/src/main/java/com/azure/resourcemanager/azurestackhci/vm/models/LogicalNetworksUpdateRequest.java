@@ -49,14 +49,6 @@ public final class LogicalNetworksUpdateRequest implements JsonSerializable<Logi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

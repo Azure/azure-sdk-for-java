@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Service Unavailable Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosServiceUnavailableException extends CosmosAccessException {
 
     /**

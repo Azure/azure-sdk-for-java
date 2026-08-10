@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkResourceListResult;
@@ -21,19 +21,19 @@ public final class PrivateLinkResourcesListByClusterWithResponseMockTests {
     @Test
     public void testListByClusterWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"pejtl\",\"requiredMembers\":[\"aonwivkcqhrxh\",\"knlccrmmkyup\",\"jubyqjfkakfq\"],\"requiredZoneNames\":[\"em\",\"il\"]},\"id\":\"dxjascowvfdj\",\"name\":\"pdxphlkksnmgzvyf\",\"type\":\"jd\"},{\"properties\":{\"groupId\":\"qnwsithuqolyah\",\"requiredMembers\":[\"wqulsutrjbhxykf\",\"y\"],\"requiredZoneNames\":[\"vqqugdrftbcv\",\"xreuquowtlj\",\"fwhreagkhyxv\",\"qtvbczsu\"]},\"id\":\"dgglmepjpfs\",\"name\":\"ykgsangpszng\",\"type\":\"fpgylkve\"},{\"properties\":{\"groupId\":\"jcngoadyed\",\"requiredMembers\":[\"gjfoknubnoitpkpz\",\"rgdg\",\"vcoqraswugyxpqi\"],\"requiredZoneNames\":[\"ialwv\",\"kbuhzaca\",\"ty\"]},\"id\":\"co\",\"name\":\"cujp\",\"type\":\"sxzakuejkm\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"dljdjuskb\",\"requiredMembers\":[\"qyn\"],\"requiredZoneNames\":[\"ysfaqegplwrysh\",\"ddkvbxgkqu\",\"ybwptda\"]},\"id\":\"rvv\",\"name\":\"f\",\"type\":\"tymtpoiwenazer\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listByClusterWithResponse("lnuwiguy", "lykwphvxz", com.azure.core.util.Context.NONE)
+            .listByClusterWithResponse("tehqpuvjmvq", "tdwckygr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("em", response.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("ysfaqegplwrysh", response.value().get(0).requiredZoneNames().get(0));
     }
 }

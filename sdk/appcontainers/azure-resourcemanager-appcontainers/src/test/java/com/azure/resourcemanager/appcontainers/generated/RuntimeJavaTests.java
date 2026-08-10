@@ -12,13 +12,13 @@ public final class RuntimeJavaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeJava model = BinaryData.fromString("{\"enableMetrics\":false}").toObject(RuntimeJava.class);
-        Assertions.assertEquals(false, model.enableMetrics());
+        Assertions.assertFalse(model.enableMetrics());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeJava model = new RuntimeJava().withEnableMetrics(false);
         model = BinaryData.fromObject(model).toObject(RuntimeJava.class);
-        Assertions.assertEquals(false, model.enableMetrics());
+        Assertions.assertFalse(model.enableMetrics());
     }
 }

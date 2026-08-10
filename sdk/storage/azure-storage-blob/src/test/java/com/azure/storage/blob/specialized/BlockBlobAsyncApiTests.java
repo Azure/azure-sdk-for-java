@@ -184,7 +184,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("stageBlockMinwithBinaryDataSupplier")
+    @MethodSource("stageBlockMinWithBinaryDataSupplier")
     public void stageBlockMinWithBinaryData(BinaryData binaryData) {
         assertAsyncResponseStatusCode(
             blockBlobAsyncClient.stageBlockWithResponse(new BlockBlobStageBlockOptions(getBlockID(), binaryData)), 201);
@@ -194,7 +194,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    private static Stream<Arguments> stageBlockMinwithBinaryDataSupplier() {
+    private static Stream<Arguments> stageBlockMinWithBinaryDataSupplier() {
         return Stream.of(Arguments.of(BinaryData.fromBytes(DATA.getDefaultBytes())),
             Arguments.of(BinaryData.fromString(DATA.getDefaultText())),
             Arguments.of(BinaryData.fromFile(DATA.getDefaultFile())),
@@ -250,7 +250,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
     private static Stream<Arguments> stageBlockIllegalArgumentsSupplier() {
         return Stream.of(
-            Arguments.of(false, DATA.getDefaultFlux(), DATA.getDefaultDataSize(), BlobStorageException.class),
+            Arguments.of(false, DATA.getDefaultFlux(), DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(true, null, DATA.getDefaultDataSize(), NullPointerException.class),
             Arguments.of(true, DATA.getDefaultFlux(), DATA.getDefaultDataSize() + 1, UnexpectedLengthException.class),
             Arguments.of(true, DATA.getDefaultFlux(), DATA.getDefaultDataSize() - 1, UnexpectedLengthException.class));
@@ -445,7 +445,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(),
             new BlobRange(0, (long) PageBlobClient.PAGE_BYTES))).verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getStatusCode() == 401);
+                assertEquals(401, e.getStatusCode());
                 assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
                 assertTrue(e.getServiceMessage()
                     .contains(
@@ -625,8 +625,28 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null, null))).assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 HttpHeaders headers = r.getHeaders();
+
                 validateBasicHeaders(headers);
                 assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void commitBlockListCrc64() {
+        String blockID = getBlockID();
+        List<String> ids = Collections.singletonList(blockID);
+
+        StepVerifier.create(blockBlobAsyncClient.stageBlock(blockID, DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+            .then(blockBlobAsyncClient.commitBlockListWithResponse(ids, null, null, null, null))).assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                HttpHeaders headers = r.getHeaders();
+                byte[] expectedCrc64Content = Base64.getDecoder().decode(headers.getValue(X_MS_CONTENT_CRC64));
+
+                validateBasicHeaders(headers);
+                assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+                TestUtils.assertArraysEqual(expectedCrc64Content, r.getValue().getContentCrc64());
                 assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
             }).verifyComplete();
     }
@@ -956,7 +976,31 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 validateBasicHeaders(r.getHeaders());
+
                 assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+                assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
+            .assertNext(r -> TestUtils.assertArraysEqual(r, DATA.getDefaultBytes()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadReturnsCrc64Content() {
+        StepVerifier
+            .create(blockBlobAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
+                null, null, null, null))
+            .assertNext(r -> {
+                assertResponseStatusCode(r, 201);
+                validateBasicHeaders(r.getHeaders());
+                byte[] expectedCrc64Content = Base64.getDecoder().decode(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+
+                assertNotNull(r.getHeaders().getValue(HttpHeaderName.CONTENT_MD5));
+                assertNotNull(r.getHeaders().getValue(X_MS_CONTENT_CRC64));
+                TestUtils.assertArraysEqual(expectedCrc64Content, r.getValue().getContentCrc64());
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
             })
             .verifyComplete();
@@ -1031,7 +1075,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         File outFile = new File(file.getPath() + "result");
         createdFiles.add(outFile);
-        outFile.createNewFile();
+        assertTrue(outFile.createNewFile());
         outFile.deleteOnExit();
         Files.deleteIfExists(outFile.toPath());
 
@@ -1140,7 +1184,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     }
 
     /*
-     * Reports the number of bytes sent when uploading a file. This is different than other reporters which track the
+     * Reports the number of bytes sent when uploading a file. This is different from other reporters which track the
      * number of reportings as upload from file hooks into the loading data from disk data stream which is a hard-coded
      * read size.
      */
@@ -1618,7 +1662,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .setMaxSingleUploadSizeLong(4L * Constants.MB);
         data.position(0);
 
-        // Due to memory issues, this check only runs on small to medium sized data sets.
+        // Due to memory issues, this check only runs on small to medium-sized data sets.
         if (dataSize < 100 * 1024 * 1024) {
             StepVerifier
                 .create(asyncClient.upload(Flux.just(data), parallelTransferOptions, true)
@@ -2256,7 +2300,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         createdFiles.add(smallFile);
 
         /*
-         * Setup the data stream to trigger a small upload upon subscription. This will happen once the upload method
+         * Set up the data stream to trigger a small upload upon subscription. This will happen once the upload method
          * has verified whether a blob with the given name already exists, so this will trigger once uploading begins.
          */
         Flux<ByteBuffer> data = Flux.just(getRandomData(Constants.MB))
@@ -2404,7 +2448,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl())).verifyErrorSatisfies(r -> {
             BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-            assertTrue(e.getStatusCode() == 401);
+            assertEquals(401, e.getStatusCode());
             assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
             assertTrue(e.getServiceMessage()
                 .contains(
@@ -2502,6 +2546,30 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blockBlobAsyncClient.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void uploadFromUrlMaxReturnsCrc64() throws NoSuchAlgorithmException {
+        BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
+            .getBlobAsyncClient(generateBlobName());
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options
+            = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setContentMd5(sourceBlobMD5);
+        Mono<Response<BlockBlobItem>> response = sourceBlob.upload(DATA.getDefaultFlux(), null)
+            .then(blockBlobAsyncClient.uploadFromUrlWithResponse(options));
+
+        StepVerifier.create(response).assertNext(r -> {
+            String contentCrc64 = r.getHeaders().getValue(X_MS_CONTENT_CRC64);
+            BlockBlobItem blockBlobItem = r.getValue();
+
+            assertNotNull(contentCrc64);
+            assertNotNull(blockBlobItem);
+            TestUtils.assertArraysEqual(Base64.getDecoder().decode(contentCrc64), blockBlobItem.getContentCrc64());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
@@ -2768,4 +2836,128 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         deleteFileShareWithoutDependency(shareName);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void stageBlockFromUriSourceCPK() {
+        // Create source block blob
+        BlockBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        String blockID = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions options
+            = new BlockBlobStageBlockFromUrlOptions(blockID, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        StepVerifier.create(sourceBlob.upload(DATA.getDefaultBinaryData())
+            .then(destBlob.stageBlockFromUrlWithResponse(options))
+            .then(destBlob
+                .commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(Collections.singletonList(blockID)))))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertEquals(destCustomerProvidedKey.getKeySha256(), r.getValue().getEncryptionKeySha256());
+            })
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void stageBlockFromUriSourceCPKFail() {
+        // Create source block blob
+        BlockBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        String blockID = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions options
+            = new BlockBlobStageBlockFromUrlOptions(blockID, sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        StepVerifier
+            .create(
+                sourceBlob.upload(DATA.getDefaultBinaryData()).then(destBlob.stageBlockFromUrlWithResponse(options)))
+            .verifyErrorSatisfies(e -> {
+                BlobStorageException ex = assertInstanceOf(BlobStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
+            });
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadFromUriSourceCPK() {
+        // Create source block blob
+        BlockBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        StepVerifier
+            .create(sourceBlob.upload(DATA.getDefaultBinaryData()).then(destBlob.uploadFromUrlWithResponse(options)))
+            .assertNext(r -> {
+                assertEquals(201, r.getStatusCode());
+                assertEquals(destCustomerProvidedKey.getKeySha256(), r.getValue().getEncryptionKeySha256());
+            })
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void uploadFromUriSourceCPKFail() {
+        // Create source block blob
+        BlockBlobAsyncClient sourceBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyAsyncClient(sourceCustomerProvidedKey);
+
+        // Create destination block blob
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyAsyncClient(destCustomerProvidedKey);
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        StepVerifier
+            .create(sourceBlob.upload(DATA.getDefaultBinaryData()).then(destBlob.uploadFromUrlWithResponse(options)))
+            .verifyErrorSatisfies(e -> {
+                BlobStorageException ex = assertInstanceOf(BlobStorageException.class, e);
+                assertEquals(409, ex.getStatusCode());
+                assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
+            });
+    }
 }

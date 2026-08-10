@@ -16,30 +16,26 @@ public final class ContextPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContextProperties model = BinaryData.fromString(
-            "{\"capabilities\":[{\"name\":\"texoqqpwc\",\"description\":\"yufmhruncuwmq\",\"state\":\"inactive\"},{\"name\":\"cdqzhlctddu\",\"description\":\"qn\",\"state\":\"active\"},{\"name\":\"pchrqbn\",\"description\":\"jrcg\",\"state\":\"inactive\"},{\"name\":\"dcwboxjum\",\"description\":\"qqoli\",\"state\":\"inactive\"}],\"hierarchies\":[{\"name\":\"iouaubrjt\",\"description\":\"oq\"},{\"name\":\"fuojrngif\",\"description\":\"rzpasccbiuimzdly\"},{\"name\":\"dfqwmkyoq\",\"description\":\"fdvruz\"}],\"provisioningState\":\"Initialized\"}")
+            "{\"capabilities\":[{\"name\":\"ggqowey\",\"description\":\"rdhlis\",\"state\":\"active\"}],\"hierarchies\":[{\"name\":\"lqqmpiz\",\"description\":\"uwnpqxpxiwfcng\"}],\"provisioningState\":\"Succeeded\"}")
             .toObject(ContextProperties.class);
-        Assertions.assertEquals("texoqqpwc", model.capabilities().get(0).name());
-        Assertions.assertEquals("yufmhruncuwmq", model.capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.INACTIVE, model.capabilities().get(0).state());
-        Assertions.assertEquals("iouaubrjt", model.hierarchies().get(0).name());
-        Assertions.assertEquals("oq", model.hierarchies().get(0).description());
+        Assertions.assertEquals("ggqowey", model.capabilities().get(0).name());
+        Assertions.assertEquals("rdhlis", model.capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.ACTIVE, model.capabilities().get(0).state());
+        Assertions.assertEquals("lqqmpiz", model.hierarchies().get(0).name());
+        Assertions.assertEquals("uwnpqxpxiwfcng", model.hierarchies().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContextProperties model = new ContextProperties().withCapabilities(Arrays.asList(
-            new Capability().withName("texoqqpwc").withDescription("yufmhruncuwmq").withState(ResourceState.INACTIVE),
-            new Capability().withName("cdqzhlctddu").withDescription("qn").withState(ResourceState.ACTIVE),
-            new Capability().withName("pchrqbn").withDescription("jrcg").withState(ResourceState.INACTIVE),
-            new Capability().withName("dcwboxjum").withDescription("qqoli").withState(ResourceState.INACTIVE)))
-            .withHierarchies(Arrays.asList(new Hierarchy().withName("iouaubrjt").withDescription("oq"),
-                new Hierarchy().withName("fuojrngif").withDescription("rzpasccbiuimzdly"),
-                new Hierarchy().withName("dfqwmkyoq").withDescription("fdvruz")));
+        ContextProperties model = new ContextProperties()
+            .withCapabilities(Arrays
+                .asList(new Capability().withName("ggqowey").withDescription("rdhlis").withState(ResourceState.ACTIVE)))
+            .withHierarchies(Arrays.asList(new Hierarchy().withName("lqqmpiz").withDescription("uwnpqxpxiwfcng")));
         model = BinaryData.fromObject(model).toObject(ContextProperties.class);
-        Assertions.assertEquals("texoqqpwc", model.capabilities().get(0).name());
-        Assertions.assertEquals("yufmhruncuwmq", model.capabilities().get(0).description());
-        Assertions.assertEquals(ResourceState.INACTIVE, model.capabilities().get(0).state());
-        Assertions.assertEquals("iouaubrjt", model.hierarchies().get(0).name());
-        Assertions.assertEquals("oq", model.hierarchies().get(0).description());
+        Assertions.assertEquals("ggqowey", model.capabilities().get(0).name());
+        Assertions.assertEquals("rdhlis", model.capabilities().get(0).description());
+        Assertions.assertEquals(ResourceState.ACTIVE, model.capabilities().get(0).state());
+        Assertions.assertEquals("lqqmpiz", model.hierarchies().get(0).name());
+        Assertions.assertEquals("uwnpqxpxiwfcng", model.hierarchies().get(0).description());
     }
 }

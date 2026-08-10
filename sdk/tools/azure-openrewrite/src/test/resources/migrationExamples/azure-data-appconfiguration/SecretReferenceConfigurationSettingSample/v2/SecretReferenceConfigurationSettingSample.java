@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SettingSelector;
+import io.clientcore.core.http.paging.PagedIterable;
 
 /**
  * Sample demonstrates how to add, get, list, and delete a secret reference configuration setting.
@@ -23,8 +23,8 @@ public class SecretReferenceConfigurationSettingSample {
         // and navigating to "Access Keys" page under the "Settings" section.
         String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
         final ConfigurationClient client = new ConfigurationClientBuilder()
-                                               .connectionString(connectionString)
-                                               .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
 
         // Name of the key to add to the configuration service.
         final String key = "hello";

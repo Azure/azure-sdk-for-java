@@ -203,20 +203,6 @@ public final class CacheNodeProperty implements JsonSerializable<CacheNodeProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (cacheNode() != null) {
-            cacheNode().validate();
-        }
-        if (additionalCacheNodeProperties() != null) {
-            additionalCacheNodeProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

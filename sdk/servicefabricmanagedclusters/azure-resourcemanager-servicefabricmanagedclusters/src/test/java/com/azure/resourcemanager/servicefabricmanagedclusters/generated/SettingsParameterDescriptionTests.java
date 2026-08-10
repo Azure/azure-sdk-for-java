@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsParameterDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsParameterDescription model
-            = BinaryData.fromString("{\"name\":\"z\",\"value\":\"v\"}").toObject(SettingsParameterDescription.class);
-        Assertions.assertEquals("z", model.name());
-        Assertions.assertEquals("v", model.value());
+        SettingsParameterDescription model = BinaryData.fromString("{\"name\":\"qnajxqugj\",\"value\":\"ky\"}")
+            .toObject(SettingsParameterDescription.class);
+        Assertions.assertEquals("qnajxqugj", model.name());
+        Assertions.assertEquals("ky", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsParameterDescription model = new SettingsParameterDescription().withName("z").withValue("v");
+        SettingsParameterDescription model = new SettingsParameterDescription().withName("qnajxqugj").withValue("ky");
         model = BinaryData.fromObject(model).toObject(SettingsParameterDescription.class);
-        Assertions.assertEquals("z", model.name());
-        Assertions.assertEquals("v", model.value());
+        Assertions.assertEquals("qnajxqugj", model.name());
+        Assertions.assertEquals("ky", model.value());
     }
 }

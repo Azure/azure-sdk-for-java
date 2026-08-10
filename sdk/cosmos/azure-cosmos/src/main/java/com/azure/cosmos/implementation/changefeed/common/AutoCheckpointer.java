@@ -54,7 +54,7 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     public Mono<Void> processChanges(ChangeFeedObserverContext<T> context, List<T> docs) {
         return this.observer.processChanges(context, docs)
             .doOnError(throwable -> {
-                logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
+                logger.warn("Unexpected exception from thread: " + Thread.currentThread().getId(), throwable);
             })
             .then(this.afterProcessChanges(context));
     }

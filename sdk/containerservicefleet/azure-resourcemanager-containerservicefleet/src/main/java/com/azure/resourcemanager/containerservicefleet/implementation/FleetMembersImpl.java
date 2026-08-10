@@ -31,12 +31,8 @@ public final class FleetMembersImpl implements FleetMembers {
         Context context) {
         Response<FleetMemberInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, fleetMemberName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FleetMemberImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FleetMemberImpl(inner.getValue(), this.manager()));
     }
 
     public FleetMember get(String resourceGroupName, String fleetName, String fleetMemberName) {
@@ -62,8 +58,10 @@ public final class FleetMembersImpl implements FleetMembers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetMemberImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FleetMember> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        PagedIterable<FleetMemberInner> inner = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+    public PagedIterable<FleetMember> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, String filter, Context context) {
+        PagedIterable<FleetMemberInner> inner
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, top, skipToken, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetMemberImpl(inner1, this.manager()));
     }
 

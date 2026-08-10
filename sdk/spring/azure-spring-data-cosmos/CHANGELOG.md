@@ -1,6 +1,6 @@
 ## Release History
 
-### 5.24.0-beta.1 (Unreleased)
+### 7.5.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,77 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 7.4.0 (2026-07-24)
+
+#### Bugs Fixed
+
+* Fixed a bug where using `azure-spring-data-cosmos` with OpenFeign on Spring Boot 4 failed at startup with `IllegalStateException: No bean found of type interface feign.codec.Encoder` by adding the `spring-boot-data-commons` dependency ([49441](https://github.com/Azure/azure-sdk-for-java/issues/49441)).
+
+### 6.4.0 (2026-06-01)
+
+#### Other Changes
+
+* regular release
+
+### 7.3.0 (2026-05-27)
+
+#### Other Changes
+
+* regular release
+
+### 6.3.0 (2026-04-29)
+
+#### Bugs Fixed
+
+* Fixed a bug where count and sum queries defined in a Java text block in `@Query` caused a class cast exception - See [Bug #47910](https://github.com/Azure/azure-sdk-for-java/issues/47910).
+
+### 7.2.0 (2026-04-17)
+
+#### Other Changes
+* regular release
+
+### 7.1.0 (2026-03-11)
+
+#### Bugs Fixed
+
+* Fixing bug where count query defined in a Java text block in `@Query` causes a class cast exception - See [Bug #47910](https://github.com/Azure/azure-sdk-for-java/issues/47910).
+* Also fixed the same bug for sum query.
+
+### 5.25.0 (2026-03-05)
+
+#### Other Changes
+* regular release
+
+### 7.0.0 (2026-02-03)
+
+#### Other Changes
+* regular release
+
+### 7.0.0-beta.1 (2025-12-23)
+
+#### Other Changes
+* regular release
+
+### 6.1.0 (2025-12-16)
+
+#### Other Changes
+* regular release
+
+### 5.24.1 (2025-12-09)
+
+#### Other Changes
+* regular release
+
+### 5.24.0 (2025-12-04)
+
+#### Other Changes
+* regular release
+
+### 6.0.0 (2025-09-22)
+
+#### Other Changes
+* regular release
 
 ### 5.23.0 (2025-08-05)
 

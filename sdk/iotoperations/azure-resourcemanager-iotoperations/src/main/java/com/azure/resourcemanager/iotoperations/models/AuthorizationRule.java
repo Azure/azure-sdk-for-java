@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -98,32 +97,6 @@ public final class AuthorizationRule implements JsonSerializable<AuthorizationRu
         this.stateStoreResources = stateStoreResources;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (brokerResources() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property brokerResources in model AuthorizationRule"));
-        } else {
-            brokerResources().forEach(e -> e.validate());
-        }
-        if (principals() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property principals in model AuthorizationRule"));
-        } else {
-            principals().validate();
-        }
-        if (stateStoreResources() != null) {
-            stateStoreResources().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationRule.class);
 
     /**
      * {@inheritDoc}

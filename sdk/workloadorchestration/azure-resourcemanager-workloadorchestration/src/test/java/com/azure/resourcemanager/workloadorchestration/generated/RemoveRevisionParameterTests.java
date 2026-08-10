@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RemoveRevisionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoveRevisionParameter model
-            = BinaryData.fromString("{\"solutionTemplateId\":\"txon\",\"solutionVersion\":\"mtsavjcbpwxqp\"}")
-                .toObject(RemoveRevisionParameter.class);
-        Assertions.assertEquals("txon", model.solutionTemplateId());
-        Assertions.assertEquals("mtsavjcbpwxqp", model.solutionVersion());
+        RemoveRevisionParameter model = BinaryData
+            .fromString("{\"solutionTemplateId\":\"syrsndsytgadgvra\",\"solutionVersion\":\"aeneqnzarrwl\"}")
+            .toObject(RemoveRevisionParameter.class);
+        Assertions.assertEquals("syrsndsytgadgvra", model.solutionTemplateId());
+        Assertions.assertEquals("aeneqnzarrwl", model.solutionVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemoveRevisionParameter model
-            = new RemoveRevisionParameter().withSolutionTemplateId("txon").withSolutionVersion("mtsavjcbpwxqp");
+        RemoveRevisionParameter model = new RemoveRevisionParameter().withSolutionTemplateId("syrsndsytgadgvra")
+            .withSolutionVersion("aeneqnzarrwl");
         model = BinaryData.fromObject(model).toObject(RemoveRevisionParameter.class);
-        Assertions.assertEquals("txon", model.solutionTemplateId());
-        Assertions.assertEquals("mtsavjcbpwxqp", model.solutionVersion());
+        Assertions.assertEquals("syrsndsytgadgvra", model.solutionTemplateId());
+        Assertions.assertEquals("aeneqnzarrwl", model.solutionVersion());
     }
 }

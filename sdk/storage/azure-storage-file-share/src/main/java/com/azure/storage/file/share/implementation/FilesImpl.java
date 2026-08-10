@@ -56,6 +56,7 @@ import com.azure.storage.file.share.implementation.models.SourceLeaseAccessCondi
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.OwnerCopyMode;
@@ -126,7 +127,13 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -151,7 +158,75 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Put("/{shareName}/{fileName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<FilesCreateHeaders, Void>> create(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength,
+            @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
+            @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-attributes") String fileAttributes,
+            @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+            @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+            @HeaderParam("x-ms-file-change-time") String fileChangeTime, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Put("/{shareName}/{fileName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @PathParam("fileName") String fileName,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-content-length") long fileContentLength,
+            @HeaderParam("x-ms-type") String fileTypeConstant, @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-cache-control") String cacheControl, @HeaderParam("x-ms-content-md5") String contentMd5,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-file-permission") String filePermission,
+            @HeaderParam("x-ms-file-permission-format") FilePermissionFormat filePermissionFormat,
+            @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @HeaderParam("x-ms-file-attributes") String fileAttributes,
+            @HeaderParam("x-ms-file-creation-time") String fileCreationTime,
+            @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
+            @HeaderParam("x-ms-file-change-time") String fileChangeTime, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -176,7 +251,13 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 201 })
@@ -201,7 +282,13 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
             @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("x-ms-file-file-type") NfsFileType nfsFileType,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Content-MD5") String contentMD5,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
+            @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200, 206 })
@@ -876,8 +963,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -890,8 +977,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -904,8 +991,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{fileName}")
         @ExpectedResponses({ 200 })
@@ -918,8 +1005,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-file-support-rename") Boolean supportRename, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{fileName}")
         @ExpectedResponses({ 202 })
@@ -1427,7 +1514,7 @@ public final class FilesImpl {
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1457,6 +1544,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1468,15 +1569,20 @@ public final class FilesImpl {
         long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
-        String group, String fileMode, NfsFileType nfsFileType, ShareFileHttpHeaders shareFileHttpHeaders) {
-        return FluxUtil.withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, timeout,
-            metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-            fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, shareFileHttpHeaders,
-            context)).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
+        return FluxUtil
+            .withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata,
+                filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5,
+                filePropertySemantics, contentLength, structuredBodyType, structuredContentLength, optionalbody,
+                shareFileHttpHeaders, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1506,6 +1612,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1518,7 +1638,9 @@ public final class FilesImpl {
         long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
-        String group, String fileMode, NfsFileType nfsFileType, ShareFileHttpHeaders shareFileHttpHeaders,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
@@ -1553,18 +1675,20 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .create(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
                 this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1594,6 +1718,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1605,16 +1743,18 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, shareFileHttpHeaders)
+            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1644,6 +1784,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1656,16 +1810,19 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, shareFileHttpHeaders, context)
+            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1695,6 +1852,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1706,17 +1877,20 @@ public final class FilesImpl {
         long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
-        String group, String fileMode, NfsFileType nfsFileType, ShareFileHttpHeaders shareFileHttpHeaders) {
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, fileName, fileContentLength,
                 timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType,
-                shareFileHttpHeaders, context))
+                contentMD5, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1746,6 +1920,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1758,7 +1946,9 @@ public final class FilesImpl {
         long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
-        String group, String fileMode, NfsFileType nfsFileType, ShareFileHttpHeaders shareFileHttpHeaders,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
@@ -1793,18 +1983,20 @@ public final class FilesImpl {
         }
         String contentDisposition = contentDispositionInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .createNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
                 this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1834,6 +2026,502 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
+        long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
+        return FluxUtil
+            .withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata,
+                filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5,
+                filePropertySemantics, contentLength, structuredBodyType, structuredContentLength, optionalbody,
+                shareFileHttpHeaders, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FilesCreateHeaders, Void>> createWithResponseAsync(String shareName, String fileName,
+        long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
+        final String fileTypeConstant = "file";
+        final String accept = "application/xml";
+        String contentTypeInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentTypeInternal = shareFileHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentEncodingInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String cacheControlInternal = null;
+        if (shareFileHttpHeaders != null) {
+            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        byte[] contentMd5Internal = null;
+        if (shareFileHttpHeaders != null) {
+            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String contentDispositionInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        return service
+            .create(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
+                this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
+                contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
+                filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, Integer timeout,
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
+        return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
+            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String shareName, String fileName, long fileContentLength, Integer timeout,
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
+        return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
+            filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders, context)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
+        return FluxUtil
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, fileName, fileContentLength,
+                timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
+                fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType,
+                contentMD5, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, shareFileHttpHeaders, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
+     * @param shareFileHttpHeaders Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
+        final String fileTypeConstant = "file";
+        final String accept = "application/xml";
+        String contentTypeInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentTypeInternal = shareFileHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentEncodingInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String cacheControlInternal = null;
+        if (shareFileHttpHeaders != null) {
+            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        byte[] contentMd5Internal = null;
+        if (shareFileHttpHeaders != null) {
+            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String contentDispositionInternal = null;
+        if (shareFileHttpHeaders != null) {
+            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
+        return service
+            .createNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
+                this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
+                contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
+                filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Creates a new file or replaces a file. Can also initialize the file with content.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param metadata A name-value pair to associate with a file storage object.
+     * @param filePermission If specified the permission (security descriptor) shall be set for the directory/file. This
+     * header can be used if Permission size is &lt;= 8KB, else x-ms-file-permission-key header shall be used. Default
+     * value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param filePermissionFormat Optional. Available for version 2023-06-01 and later. Specifies the format in which
+     * the permission is returned. Acceptable values are SDDL or binary. If x-ms-file-permission-format is unspecified
+     * or explicitly set to SDDL, the permission is returned in SDDL format. If x-ms-file-permission-format is
+     * explicitly set to binary, the permission is returned as a base64 string representing the binary encoding of the
+     * permission.
+     * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
+     * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileCreationTime Creation time for the file/directory. Default value: Now.
+     * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
+     * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1846,7 +2534,9 @@ public final class FilesImpl {
         long fileContentLength, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
-        String group, String fileMode, NfsFileType nfsFileType, ShareFileHttpHeaders shareFileHttpHeaders,
+        String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
         try {
             final String fileTypeConstant = "file";
@@ -1882,19 +2572,21 @@ public final class FilesImpl {
             }
             String contentDisposition = contentDispositionInternal;
             String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.createSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                accept, context);
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1924,6 +2616,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1934,14 +2640,17 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         createWithResponse(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, shareFileHttpHeaders, Context.NONE);
+            fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders,
+            Context.NONE);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1971,6 +2680,20 @@ public final class FilesImpl {
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param nfsFileType Optional, NFS only. Type of the file or directory.
+     * @param contentMD5 An MD5 hash of the content. This hash is used to verify the integrity of the data during
+     * transport. When the Content-MD5 header is specified, the File service compares the hash of the content that has
+     * arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error
+     * code 400 (Bad Request).
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
+     * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
+     * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
+     * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1983,7 +2706,9 @@ public final class FilesImpl {
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         try {
             final String fileTypeConstant = "file";
             final String accept = "application/xml";
@@ -2018,12 +2743,14 @@ public final class FilesImpl {
             }
             String contentDisposition = contentDispositionInternal;
             String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength,
                 fileTypeConstant, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted,
                 contentDisposition, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner,
-                group, fileMode, nfsFileType, accept, context);
+                group, fileMode, nfsFileType, contentMD5Converted, filePropertySemantics, contentLength,
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -5830,6 +6557,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5838,10 +6571,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
         String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename) {
+        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults) {
         return FluxUtil
             .withContext(context -> getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot,
-                timeout, range, leaseId, supportRename, context))
+                timeout, range, leaseId, supportRename, marker, maxresults, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5864,6 +6597,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -5873,13 +6612,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> getRangeListWithResponseAsync(
         String shareName, String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout,
-        String range, String leaseId, Boolean supportRename, Context context) {
+        String range, String leaseId, Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return service
             .getRangeList(this.client.getUrl(), shareName, fileName, comp, sharesnapshot, prevsharesnapshot, timeout,
                 this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context)
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5902,6 +6641,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5909,9 +6654,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename)
+            leaseId, supportRename, marker, maxresults)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -5935,6 +6681,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -5943,10 +6695,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> getRangeListAsync(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename,
-        Context context) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults, Context context) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-            leaseId, supportRename, context)
+            leaseId, supportRename, marker, maxresults, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -5970,6 +6722,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5978,10 +6736,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename) {
+        Boolean supportRename, String marker, Integer maxresults) {
         return FluxUtil
             .withContext(context -> getRangeListNoCustomHeadersWithResponseAsync(shareName, fileName, sharesnapshot,
-                prevsharesnapshot, timeout, range, leaseId, supportRename, context))
+                prevsharesnapshot, timeout, range, leaseId, supportRename, marker, maxresults, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6004,6 +6762,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6013,13 +6777,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> getRangeListNoCustomHeadersWithResponseAsync(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         final String comp = "rangelist";
         final String accept = "application/xml";
         return service
             .getRangeListNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context)
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -6042,6 +6806,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6051,13 +6821,13 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         try {
             final String comp = "rangelist";
             final String accept = "application/xml";
             return service.getRangeListSync(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), supportRename, accept, context);
+                this.client.getFileRequestIntent(), supportRename, marker, maxresults, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -6082,6 +6852,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6089,10 +6865,11 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileRangeList getRangeList(String shareName, String fileName, String sharesnapshot,
-        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
+        String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename, String marker,
+        Integer maxresults) {
         try {
             return getRangeListWithResponse(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
-                leaseId, supportRename, Context.NONE).getValue();
+                leaseId, supportRename, marker, maxresults, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -6117,6 +6894,12 @@ public final class FilesImpl {
      * file) and the previous snapshot should be listed. If the value is true, the valid changed ranges for the file
      * will be returned. If the value is false, the operation will result in a failure with 409 (Conflict) response. The
      * default value is false.
+     * @param marker A string value that identifies the portion of the list to be returned with the next list operation.
+     * The operation returns a marker value within the response body if the list returned was not complete. The marker
+     * value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to
+     * the client.
+     * @param maxresults Specifies the maximum number of entries to return. If the request does not specify maxresults,
+     * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -6126,13 +6909,14 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileRangeList> getRangeListNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
-        Boolean supportRename, Context context) {
+        Boolean supportRename, String marker, Integer maxresults, Context context) {
         try {
             final String comp = "rangelist";
             final String accept = "application/xml";
             return service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context);
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, marker, maxresults,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

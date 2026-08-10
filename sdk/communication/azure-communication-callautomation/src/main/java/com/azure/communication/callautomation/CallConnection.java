@@ -6,6 +6,9 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
 import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
+
+import java.util.List;
+
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -18,8 +21,8 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantResult;
+import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -27,7 +30,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.exception.HttpResponseException;
-import java.util.List;
 
 /**
  * CallConnection for mid-call actions
@@ -241,19 +243,6 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MoveParticipantsResult moveParticipants(List<CommunicationIdentifier> targetParticipants, String fromCall) {
         return callConnectionAsync.moveParticipants(targetParticipants, fromCall).block();
-    }
-
-    /**
-     * Move participants from one call to another.
-     *
-     * @param moveParticipantsOptions Options bag for moveParticipants
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result of moving participants to the call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MoveParticipantsResult moveParticipants(MoveParticipantsOptions moveParticipantsOptions) {
-        return callConnectionAsync.moveParticipants(moveParticipantsOptions).block();
     }
 
     /**

@@ -11,7 +11,7 @@ public final class TranscriptionOptions {
     /*
      * Transport URL for live transcription
      */
-    private final String transportUrl;
+    private String transportUrl;
 
     /*
      * The type of transport to be used for live transcription, eg. Websocket
@@ -26,7 +26,7 @@ public final class TranscriptionOptions {
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    private final boolean startTranscription;
+    private boolean startTranscription;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -39,7 +39,7 @@ public final class TranscriptionOptions {
     private Boolean enableIntermediateResults;
 
     /**
-     * Creates a new instance of MediaStreamingConfiguration
+     * Creates a new instance of TranscriptionOptions
      * @param transportUrl - The Transport URL
      * @param transportType - Transport type
      * @param locale - Locale
@@ -51,6 +51,28 @@ public final class TranscriptionOptions {
         this.transportType = transportType;
         this.locale = locale;
         this.startTranscription = startTranscription;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
+     * @param locale - Locale
+     */
+    public TranscriptionOptions(String locale) {
+        this.transportUrl = null;
+        this.transportType = TranscriptionTransport.WEBSOCKET;
+        this.locale = locale;
+        this.startTranscription = false;
+    }
+
+    /**
+     * Set the transportUrl property: Transport URL for live transcription.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
     }
 
     /**
@@ -87,6 +109,18 @@ public final class TranscriptionOptions {
      */
     public boolean getStartTranscription() {
         return this.startTranscription;
+    }
+
+    /**
+     * Set the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
+     *
+     * @param startTranscription the startTranscription value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setStartTranscription(Boolean startTranscription) {
+        this.startTranscription = startTranscription;
+        return this;
     }
 
     /**

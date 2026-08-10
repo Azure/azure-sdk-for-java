@@ -109,7 +109,7 @@ public class Allocation {
      * @param group the list of group allocations
      * @return the updated Allocation object
      */
-    public Allocation setGroups(List<GroupAllocation> group) {
+    public Allocation setGroup(List<GroupAllocation> group) {
         this.group = group;
         return this;
     }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.planetarycomputer.generated;
  */
 public final class GeoCatalogsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Delete.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Delete.json
      */
     /**
      * Sample code: GeoCatalogs_Delete.

@@ -25,7 +25,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     private String id;
 
     /*
-     * Transcription subscription state.
+     * Current state of transcription session
      */
     @Generated
     private TranscriptionSubscriptionStateInternal state;
@@ -35,6 +35,12 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
      */
     @Generated
     private List<TranscriptionResultTypeInternal> subscribedResultTypes;
+
+    /*
+     * Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     */
+    @Generated
+    private String locale;
 
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
@@ -66,7 +72,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
-     * Get the state property: Transcription subscription state.
+     * Get the state property: Current state of transcription session.
      * 
      * @return the state value.
      */
@@ -76,7 +82,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
-     * Set the state property: Transcription subscription state.
+     * Set the state property: Current state of transcription session.
      * 
      * @param state the state value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
@@ -111,6 +117,28 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
+     * Get the locale property: Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     * 
+     * @return the locale value.
+     */
+    @Generated
+    public String getLocale() {
+        return this.locale;
+    }
+
+    /**
+     * Set the locale property: Specifies the locale used for transcription, e.g., en-CA or en-AU.
+     * 
+     * @param locale the locale value to set.
+     * @return the TranscriptionSubscriptionInternal object itself.
+     */
+    @Generated
+    public TranscriptionSubscriptionInternal setLocale(String locale) {
+        this.locale = locale;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -121,6 +149,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeArrayField("subscribedResultTypes", this.subscribedResultTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("locale", this.locale);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +179,8 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
                     List<TranscriptionResultTypeInternal> subscribedResultTypes
                         = reader.readArray(reader1 -> TranscriptionResultTypeInternal.fromString(reader1.getString()));
                     deserializedTranscriptionSubscriptionInternal.subscribedResultTypes = subscribedResultTypes;
+                } else if ("locale".equals(fieldName)) {
+                    deserializedTranscriptionSubscriptionInternal.locale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -8,13 +8,15 @@ import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@ExtendWith(MockitoExtension.class)
 public class SimpleCosmosRepositoryIllegalTest {
     private SimpleCosmosRepository<Person, String> repository;
 
@@ -23,49 +25,49 @@ public class SimpleCosmosRepositoryIllegalTest {
     @Mock
     CosmosEntityInformation<Person, String> entityInformation;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("", new PartitionKeyDefinition());
         repository = new SimpleCosmosRepository<>(entityInformation, dbOperations);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void deleteNullShouldFail() {
-        repository.delete(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.delete(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void deleteIterableNullShouldFail() {
-        repository.deleteAll(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.deleteAll(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void deleteNullIdShouldFail() {
-        repository.deleteById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.deleteById(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void existsNullIdShouldFail() {
-        repository.existsById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.existsById(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void findNullIterableIdsShouldFail() {
-        repository.findAllById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.findAllById(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void findByNullIdShouldFail() {
-        repository.findById(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.findById(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void saveNullShouldFail() {
-        repository.save(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.save(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void saveNullIterableShouldFail() {
-        repository.saveAll(null);
+        assertThrows(IllegalArgumentException.class, () -> repository.saveAll(null));
     }
 }

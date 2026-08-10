@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -141,35 +140,6 @@ public final class SqlMiTargetProperties extends TargetProperties {
         super.withConnectionServerName(connectionServerName);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (sqlMiResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sqlMiResourceId in model SqlMiTargetProperties"));
-        }
-        if (targetAuthenticationType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetAuthenticationType in model SqlMiTargetProperties"));
-        }
-        if (targetVault() != null) {
-            targetVault().validate();
-        }
-        if (connectionServerName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectionServerName in model SqlMiTargetProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SqlMiTargetProperties.class);
 
     /**
      * {@inheritDoc}

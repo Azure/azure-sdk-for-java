@@ -198,7 +198,7 @@ public interface Solution {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(SolutionProperties properties);
+            Update withProperties(SolutionUpdateProperties properties);
         }
     }
 

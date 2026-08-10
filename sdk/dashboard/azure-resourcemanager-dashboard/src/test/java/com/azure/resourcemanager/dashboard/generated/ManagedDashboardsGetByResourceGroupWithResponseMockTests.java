@@ -21,7 +21,7 @@ public final class ManagedDashboardsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\"},\"location\":\"mcqibycnojv\",\"tags\":{\"qsgzvahapj\":\"e\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\"},\"location\":\"vah\",\"tags\":{\"hpvgqz\":\"y\",\"vxdjzlmwlxkvugf\":\"j\"},\"id\":\"zovawjvz\",\"name\":\"nluthnnp\",\"type\":\"nxipeil\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ManagedDashboardsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedDashboard response = manager.managedDashboards()
-            .getByResourceGroupWithResponse("rknftguvriuhprwm", "yvxqtayriwwroy", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("bycnojvkn", "e", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mcqibycnojv", response.location());
-        Assertions.assertEquals("e", response.tags().get("qsgzvahapj"));
+        Assertions.assertEquals("vah", response.location());
+        Assertions.assertEquals("y", response.tags().get("hpvgqz"));
     }
 }

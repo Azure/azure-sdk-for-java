@@ -6,18 +6,17 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class AzureStorageQueueMessagingAutoConfigurationTests {
 
@@ -25,13 +24,15 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
         .withConfiguration(AutoConfigurations.of(AzureStorageQueueMessagingAutoConfiguration.class));
 
     @Test
-    void withoutObjectMapperShouldNotConfigure() {
+    void withoutJacksonAutoConfigurationShouldUseDefaultConverter() {
         this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
-            .run(context -> assertThatIllegalStateException());
+            .run(context -> {
+                assertThat(context).hasBean("defaultStorageQueueMessageConverter");
+                assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
+                assertThat(context).doesNotHaveBean("storageQueueMessageConverter");
+            });
     }
 
     @Test
@@ -68,7 +69,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
-            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
+            .withBean("userObjectMapper", JsonMapper.class, () -> JsonMapper.builder().build())
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);

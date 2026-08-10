@@ -15,22 +15,22 @@ public final class SchemaVersionWithUpdateTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionWithUpdateTypeInner model = BinaryData.fromString(
-            "{\"updateType\":\"Minor\",\"version\":\"rkdtmlxh\",\"schemaVersion\":{\"properties\":{\"value\":\"uksjtxukcdmp\",\"provisioningState\":\"Deleting\"},\"eTag\":\"y\",\"id\":\"nzwuxzd\",\"name\":\"t\",\"type\":\"yrlhmwhfpmrqobm\"}}")
+            "{\"updateType\":\"Patch\",\"version\":\"nryrtihf\",\"schemaVersion\":{\"properties\":{\"value\":\"ijbpzvgnwzsymgl\",\"provisioningState\":\"Canceled\"},\"eTag\":\"yzkohdbihanuf\",\"id\":\"cbjy\",\"name\":\"a\",\"type\":\"ithxqhabifpi\"}}")
             .toObject(SchemaVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
-        Assertions.assertEquals("rkdtmlxh", model.version());
-        Assertions.assertEquals("uksjtxukcdmp", model.schemaVersion().properties().value());
+        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
+        Assertions.assertEquals("nryrtihf", model.version());
+        Assertions.assertEquals("ijbpzvgnwzsymgl", model.schemaVersion().properties().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionWithUpdateTypeInner model = new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.MINOR)
-            .withVersion("rkdtmlxh")
+        SchemaVersionWithUpdateTypeInner model = new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
+            .withVersion("nryrtihf")
             .withSchemaVersion(
-                new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("uksjtxukcdmp")));
+                new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("ijbpzvgnwzsymgl")));
         model = BinaryData.fromObject(model).toObject(SchemaVersionWithUpdateTypeInner.class);
-        Assertions.assertEquals(UpdateType.MINOR, model.updateType());
-        Assertions.assertEquals("rkdtmlxh", model.version());
-        Assertions.assertEquals("uksjtxukcdmp", model.schemaVersion().properties().value());
+        Assertions.assertEquals(UpdateType.PATCH, model.updateType());
+        Assertions.assertEquals("nryrtihf", model.version());
+        Assertions.assertEquals("ijbpzvgnwzsymgl", model.schemaVersion().properties().value());
     }
 }

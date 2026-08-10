@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
@@ -88,7 +87,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
         for (final RntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                final String message = lenientFormat("Required header not found on token stream: %s", token);
+                final String message = String.format("Required header not found on token stream: %s", token);
                 throw new CorruptedFrameException(message);
             }
         }

@@ -20,9 +20,11 @@ public class GroupRollout {
 
     /**
      * @param name the name to set
+     * @return the updated GroupRollout object
      */
-    public void setName(String name) {
+    public GroupRollout setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -34,9 +36,11 @@ public class GroupRollout {
 
     /**
      * @param rolloutPercentage the rolloutPercentage to set
+     * @return the updated GroupRollout object
      */
-    public void setRolloutPercentage(double rolloutPercentage) {
+    public GroupRollout setRolloutPercentage(double rolloutPercentage) {
         this.rolloutPercentage = rolloutPercentage;
+        return this;
     }
 
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties;
 
+import com.azure.spring.cloud.core.implementation.properties.AzurePasswordlessPropertiesMapping;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
@@ -10,6 +11,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Configuration properties for passwordless connections with Azure Redis.
@@ -43,11 +45,22 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
 
     /**
      * Get the scopes required for the access token.
+     * Returns null if scopes have not been explicitly set, so that the default
+     * scopes can be computed from the merged cloud type after property merging.
      *
-     * @return scopes required for the access token
+     * @return scopes required for the access token, or null if not explicitly set
      */
     @Override
     public String getScopes() {
+        return this.scopes;
+    }
+
+    /**
+     * Get the effective scopes, returning default cloud-specific scopes when not explicitly set.
+     *
+     * @return scopes required for the access token
+     */
+    public String getEffectiveScopes() {
         return this.scopes == null ? getDefaultScopes() : this.scopes;
     }
 
@@ -120,5 +133,26 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
      */
     public void setCredential(TokenCredentialProperties credential) {
         this.credential = credential;
+    }
+
+    /**
+     * Convert {@link AzureRedisPasswordlessProperties} to {@link Properties}.
+     * Uses the effective scopes (cloud-type-aware) rather than the raw scopes value,
+     * ensuring the correct default scope is used when scopes have not been explicitly set.
+     *
+     * @return converted {@link Properties} instance
+     */
+    @Override
+    public Properties toPasswordlessProperties() {
+        Properties properties = new Properties();
+        for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
+            String value = m == AzurePasswordlessPropertiesMapping.SCOPES
+                ? getEffectiveScopes()
+                : m.getGetter().apply(this);
+            if (value != null) {
+                m.getSetter().accept(properties, value);
+            }
+        }
+        return properties;
     }
 }

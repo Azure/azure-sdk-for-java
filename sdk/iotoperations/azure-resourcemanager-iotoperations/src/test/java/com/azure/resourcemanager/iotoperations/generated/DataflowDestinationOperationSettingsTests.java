@@ -5,25 +5,30 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.iotoperations.models.DataflowDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowDestinationOperationSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataflowDestinationOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowDestinationOperationSettings model
-            = BinaryData.fromString("{\"endpointRef\":\"pkhjwni\",\"dataDestination\":\"qsluicp\"}")
-                .toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("pkhjwni", model.endpointRef());
-        Assertions.assertEquals("qsluicp", model.dataDestination());
+        DataflowDestinationOperationSettings model = BinaryData.fromString(
+            "{\"endpointRef\":\"odkwobd\",\"dataDestination\":\"gxtibqdxbxw\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
+            .toObject(DataflowDestinationOperationSettings.class);
+        Assertions.assertEquals("odkwobd", model.endpointRef());
+        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowDestinationOperationSettings model
-            = new DataflowDestinationOperationSettings().withEndpointRef("pkhjwni").withDataDestination("qsluicp");
+            = new DataflowDestinationOperationSettings().withEndpointRef("odkwobd")
+                .withDataDestination("gxtibqdxbxw")
+                .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction(),
+                    new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("pkhjwni", model.endpointRef());
-        Assertions.assertEquals("qsluicp", model.dataDestination());
+        Assertions.assertEquals("odkwobd", model.endpointRef());
+        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
     }
 }

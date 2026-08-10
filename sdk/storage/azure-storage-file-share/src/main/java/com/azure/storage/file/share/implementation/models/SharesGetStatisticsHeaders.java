@@ -17,12 +17,6 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SharesGetStatisticsHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
@@ -41,6 +35,12 @@ public final class SharesGetStatisticsHeaders {
     private String xMsRequestId;
 
     /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
@@ -55,7 +55,6 @@ public final class SharesGetStatisticsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesGetStatisticsHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -64,34 +63,13 @@ public final class SharesGetStatisticsHeaders {
             this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the SharesGetStatisticsHeaders object itself.
-     */
-    @Generated
-    public SharesGetStatisticsHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
     }
 
     /**
@@ -164,6 +142,28 @@ public final class SharesGetStatisticsHeaders {
     @Generated
     public SharesGetStatisticsHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the SharesGetStatisticsHeaders object itself.
+     */
+    @Generated
+    public SharesGetStatisticsHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

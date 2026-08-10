@@ -14,9 +14,8 @@ import java.util.Arrays;
  */
 public final class DaprComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/DaprComponents_CreateOrUpdate_Secrets
-     * .json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * DaprComponents_CreateOrUpdate_Secrets.json
      */
     /**
      * Sample code: Create or update dapr component with secrets.
@@ -41,7 +40,7 @@ public final class DaprComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * DaprComponents_CreateOrUpdate_SecretStoreComponent.json
      */
     /**

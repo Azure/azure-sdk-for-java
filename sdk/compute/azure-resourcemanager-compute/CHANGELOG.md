@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.60.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,226 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.59.0 (2026-07-15)
+
+### Features Added
+
+* `models.ImmutabilityPolicyLockData` was added
+
+* `models.ImmutabilityPolicyData` was added
+
+* `models.ImmutabilityPolicyType` was added
+
+* `models.ConfidentialVMVersion` was added
+
+* `models.ImmutabilityPolicy` was added
+
+#### `models.RollingUpgradeStatusCode` was modified
+
+* `ROLLING_BACK` was added
+
+#### `models.DiskSecurityProfile` was modified
+
+* `confidentialVMVersion()` was added
+
+#### `models.UpgradeState` was modified
+
+* `ROLLING_BACK` was added
+
+### Other Changes
+
+- Updated `DiskRP api-version` to `2026-03-02`.
+
+## 2.58.2 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.3` to version `2.59.1`.
+
+## 2.58.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.58.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+
+* Deprecated unmanaged disk related methods on `VirtualMachine`, `VirtualMachineScaleSet` and `VirtualMachineScaleSetVM`, as unmanaged disks are being retired by Azure. Use managed disks instead.
+
+## 2.58.0 (2026-06-17)
+
+### Features Added
+
+* `models.InterconnectBlockProperties` was added
+
+* `models.InterconnectInstanceView` was added
+
+* `models.AutomaticSkuMigrationPolicy` was added
+
+* `models.InterconnectBlockProfile` was added
+
+* `models.InterconnectBlockUpdate` was added
+
+* `models.InterconnectBlockExpandTypes` was added
+
+* `models.InterconnectGroupProfile` was added
+
+* `models.InterconnectBlockInstanceView` was added
+
+#### `models.VirtualMachineScaleSetVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetVMNetworkProfileConfiguration` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.NetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetNetworkProfile` was modified
+
+* `interconnectGroupProfile()` was added
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateVMProfile` was modified
+
+* `interconnectBlockProfile()` was added
+* `withInterconnectBlockProfile(models.InterconnectBlockProfile)` was added
+
+#### `models.VirtualMachineScaleSetUpdateNetworkProfile` was modified
+
+* `withInterconnectGroupProfile(models.InterconnectGroupProfile)` was added
+* `interconnectGroupProfile()` was added
+
+#### `models.SkuProfile` was modified
+
+* `automaticSkuMigrationPolicy()` was added
+* `withAutomaticSkuMigrationPolicy(models.AutomaticSkuMigrationPolicy)` was added
+
+### Other Changes
+
+- Updated `ComputeRP api-version` to `2026-03-01`.
+
+## 2.57.1 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-network` from `2.58.1` to version `2.58.2`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.4` to version `2.55.5`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.8` to version `2.53.9`.
+
+## 2.57.0 (2026-04-21)
+
+### Breaking Changes
+
+#### Changes to `ComputeManagementClient` Class
+
+- Moved `ComputeManager.serviceClient().getCloudServiceRoleInstances()` to `ComputeManager.cloudServiceClient().getCloudServiceRoleInstances()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceRoles()` to `ComputeManager.cloudServiceClient().getCloudServiceRoles()`.
+- Moved `ComputeManager.serviceClient().getCloudServices()` to `ComputeManager.cloudServiceClient().getCloudServices()`.
+- Moved `ComputeManager.serviceClient().getCloudServicesUpdateDomains()` to `ComputeManager.cloudServiceClient().getCloudServicesUpdateDomains()`.
+- Moved `ComputeManager.serviceClient().getCloudServiceOperatingSystems()` to `ComputeManager.cloudServiceClient().getCloudServiceOperatingSystems()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `ComputeRP api-version` to `2025-11-01`.
+
+## 2.56.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.4`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.7`.
+- Upgraded `azure-resourcemanager-network` from `2.58.0` to version `2.58.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.53.6` to version `2.54.0`.
+
+## 2.56.2 (2026-02-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.56.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.56.0 (2026-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
+
+## 2.55.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.55.0 (2025-11-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-09-30)
+
+### Other Changes
+
+- Deprecated `KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER`. 
+  Refer [New options for Windows Server 2012/R2 end of support from Azure](https://www.microsoft.com/windows-server/blog/2023/07/18/new-options-for-windows-server-2012-r2-end-of-support-from-azure).
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-04-01`.
+
+## 2.53.3 (2025-09-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.2 (2025-08-27)
 

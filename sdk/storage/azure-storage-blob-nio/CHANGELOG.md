@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.33 (Unreleased)
+## 12.0.0-beta.41 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,56 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.0.0-beta.40 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+## 12.0.0-beta.39 (2026-06-11)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.0.0-beta.38 (2026-05-14)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.0.0-beta.37 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+## 12.0.0-beta.36 (2026-02-19)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.0.0-beta.35 (2026-01-15)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+## 12.0.0-beta.34 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Bugs Fixed
+- Fixed an issue where the copy file operation would fail when using SAS token credentials.
+
+## 12.0.0-beta.33 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
 
 ## 12.0.0-beta.32 (2025-07-16)
 

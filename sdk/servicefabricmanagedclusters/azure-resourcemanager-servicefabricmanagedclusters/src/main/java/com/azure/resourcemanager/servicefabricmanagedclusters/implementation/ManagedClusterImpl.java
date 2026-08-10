@@ -296,6 +296,10 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return this.innerModel().enableOutboundOnlyNodeTypes();
     }
 
+    public Boolean skipManagedNsgAssignment() {
+        return this.innerModel().skipManagedNsgAssignment();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -356,16 +360,14 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
     public ManagedCluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public ManagedCluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getManagedClusters()
-            .updateWithResponse(resourceGroupName, clusterName, updateParameters, context)
-            .getValue();
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 
@@ -411,20 +413,22 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
         return serviceManager.managedClusters().listFaultSimulation(resourceGroupName, clusterName, context);
     }
 
-    public void startFaultSimulation(FaultSimulationContentWrapper parameters) {
-        serviceManager.managedClusters().startFaultSimulation(resourceGroupName, clusterName, parameters);
+    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters) {
+        return serviceManager.managedClusters().startFaultSimulation(resourceGroupName, clusterName, parameters);
     }
 
-    public void startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
-        serviceManager.managedClusters().startFaultSimulation(resourceGroupName, clusterName, parameters, context);
+    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
+        return serviceManager.managedClusters()
+            .startFaultSimulation(resourceGroupName, clusterName, parameters, context);
     }
 
-    public void stopFaultSimulation(FaultSimulationIdContent parameters) {
-        serviceManager.managedClusters().stopFaultSimulation(resourceGroupName, clusterName, parameters);
+    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters) {
+        return serviceManager.managedClusters().stopFaultSimulation(resourceGroupName, clusterName, parameters);
     }
 
-    public void stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
-        serviceManager.managedClusters().stopFaultSimulation(resourceGroupName, clusterName, parameters, context);
+    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
+        return serviceManager.managedClusters()
+            .stopFaultSimulation(resourceGroupName, clusterName, parameters, context);
     }
 
     public ManagedClusterImpl withRegion(Region location) {
@@ -631,6 +635,11 @@ public final class ManagedClusterImpl implements ManagedCluster, ManagedCluster.
 
     public ManagedClusterImpl withEnableOutboundOnlyNodeTypes(Boolean enableOutboundOnlyNodeTypes) {
         this.innerModel().withEnableOutboundOnlyNodeTypes(enableOutboundOnlyNodeTypes);
+        return this;
+    }
+
+    public ManagedClusterImpl withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        this.innerModel().withSkipManagedNsgAssignment(skipManagedNsgAssignment);
         return this;
     }
 

@@ -49,9 +49,24 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     private BrokerMemoryProfile memoryProfile;
 
     /*
+     * The persistence settings of the Broker.
+     */
+    private BrokerPersistence persistence;
+
+    /*
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The status for the broker.
+     */
+    private BrokerStatus status;
+
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
 
     /**
      * Creates an instance of BrokerProperties class.
@@ -184,6 +199,26 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
+     * Get the persistence property: The persistence settings of the Broker.
+     * 
+     * @return the persistence value.
+     */
+    public BrokerPersistence persistence() {
+        return this.persistence;
+    }
+
+    /**
+     * Set the persistence property: The persistence settings of the Broker.
+     * 
+     * @param persistence the persistence value to set.
+     * @return the BrokerProperties object itself.
+     */
+    public BrokerProperties withPersistence(BrokerPersistence persistence) {
+        this.persistence = persistence;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -193,26 +228,21 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the status property: The status for the broker.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the status value.
      */
-    public void validate() {
-        if (advanced() != null) {
-            advanced().validate();
-        }
-        if (cardinality() != null) {
-            cardinality().validate();
-        }
-        if (diagnostics() != null) {
-            diagnostics().validate();
-        }
-        if (diskBackedMessageBuffer() != null) {
-            diskBackedMessageBuffer().validate();
-        }
-        if (generateResourceLimits() != null) {
-            generateResourceLimits().validate();
-        }
+    public BrokerStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
     }
 
     /**
@@ -227,6 +257,7 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
         jsonWriter.writeJsonField("diskBackedMessageBuffer", this.diskBackedMessageBuffer);
         jsonWriter.writeJsonField("generateResourceLimits", this.generateResourceLimits);
         jsonWriter.writeStringField("memoryProfile", this.memoryProfile == null ? null : this.memoryProfile.toString());
+        jsonWriter.writeJsonField("persistence", this.persistence);
         return jsonWriter.writeEndObject();
     }
 
@@ -257,8 +288,14 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
                     deserializedBrokerProperties.generateResourceLimits = GenerateResourceLimits.fromJson(reader);
                 } else if ("memoryProfile".equals(fieldName)) {
                     deserializedBrokerProperties.memoryProfile = BrokerMemoryProfile.fromString(reader.getString());
+                } else if ("persistence".equals(fieldName)) {
+                    deserializedBrokerProperties.persistence = BrokerPersistence.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedBrokerProperties.status = BrokerStatus.fromJson(reader);
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedBrokerProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

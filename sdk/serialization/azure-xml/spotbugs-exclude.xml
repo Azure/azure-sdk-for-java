@@ -34,7 +34,7 @@
     </Or>
   </Match>
   <Match>
-    <Bug pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD" />
+    <Bug pattern="NP_UNWRITTEN_FIELD" />
     <Class name="com.azure.xml.implementation.aalto.in.Utf32Reader" />
   </Match>
   <Match>
@@ -45,7 +45,7 @@
     <Bug pattern="SF_SWITCH_FALLTHROUGH" />
     <Or>
       <Class name="com.azure.xml.implementation.aalto.in.ReaderScanner" />
-      <Class name="com.azure.xml.implementation.aalto.in.Utf8Scanner" />
+      <Class name="com.azure.xml.implementation.aalto.in.StreamScanner" />
       <Class name="com.azure.xml.implementation.aalto.out.ByteXmlWriter" />
       <Class name="com.azure.xml.implementation.aalto.out.CharXmlWriter" />
     </Or>
@@ -54,7 +54,7 @@
     <Bug pattern="SF_SWITCH_NO_DEFAULT" />
     <Or>
       <Class name="com.azure.xml.implementation.aalto.in.ReaderScanner" />
-      <Class name="com.azure.xml.implementation.aalto.in.Utf8Scanner" />
+      <Class name="com.azure.xml.implementation.aalto.in.StreamScanner" />
       <Class name="com.azure.xml.implementation.aalto.out.CharXmlWriter" />
     </Or>
   </Match>

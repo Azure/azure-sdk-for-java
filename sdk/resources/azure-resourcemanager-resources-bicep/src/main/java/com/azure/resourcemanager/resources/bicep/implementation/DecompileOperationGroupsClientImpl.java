@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.bicep.fluent.DecompileOperationGroupsClient;
 import com.azure.resourcemanager.resources.bicep.fluent.models.DecompileOperationSuccessResponseInner;
 import com.azure.resourcemanager.resources.bicep.models.DecompileOperationRequest;
@@ -89,20 +88,6 @@ public final class DecompileOperationGroupsClientImpl implements DecompileOperat
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DecompileOperationSuccessResponseInner>>
         bicepWithResponseAsync(DecompileOperationRequest decompileOperationRequest) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (decompileOperationRequest == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter decompileOperationRequest is required and cannot be null."));
-        } else {
-            decompileOperationRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -139,23 +124,6 @@ public final class DecompileOperationGroupsClientImpl implements DecompileOperat
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DecompileOperationSuccessResponseInner>
         bicepWithResponse(DecompileOperationRequest decompileOperationRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (decompileOperationRequest == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter decompileOperationRequest is required and cannot be null."));
-        } else {
-            decompileOperationRequest.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.bicepSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -175,6 +143,4 @@ public final class DecompileOperationGroupsClientImpl implements DecompileOperat
     public DecompileOperationSuccessResponseInner bicep(DecompileOperationRequest decompileOperationRequest) {
         return bicepWithResponse(decompileOperationRequest, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DecompileOperationGroupsClientImpl.class);
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.onlineexperimentation.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_OperationsList.json
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_OperationsList.json
      */
     /**
      * Sample code: List Online Experimentation Workspaces operations.

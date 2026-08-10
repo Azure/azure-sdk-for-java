@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class IntegrationFabricsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_List.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_List.json
      */
     /**
      * Sample code: IntegrationFabrics_List.

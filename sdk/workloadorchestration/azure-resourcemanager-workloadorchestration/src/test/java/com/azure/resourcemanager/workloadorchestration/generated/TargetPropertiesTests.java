@@ -16,35 +16,35 @@ public final class TargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetProperties model = BinaryData.fromString(
-            "{\"description\":\"xibxujwbhqwalm\",\"displayName\":\"zyoxaepdkzjan\",\"contextId\":\"ux\",\"targetSpecification\":{},\"capabilities\":[\"wbavxbniwdj\"],\"hierarchyLevel\":\"wz\",\"status\":{\"lastModified\":\"2021-08-07T21:53:51Z\",\"deployed\":806707414,\"expectedRunningJobId\":421443987,\"runningJobId\":862771413,\"status\":\"hpzxbzpfzab\",\"statusDetails\":\"cuh\",\"generation\":1070511980,\"targetStatuses\":[{\"name\":\"qik\",\"status\":\"bovpl\",\"componentStatuses\":[{\"name\":\"vgyuguos\",\"status\":\"kfssxqukkf\"},{\"name\":\"gmgsxnkjzkde\",\"status\":\"pvlopwiyighxpkd\"}]}]},\"solutionScope\":\"baiuebbaumny\",\"state\":\"active\",\"provisioningState\":\"Succeeded\"}")
+            "{\"description\":\"nalaulppg\",\"displayName\":\"dtpnapnyiropuhp\",\"contextId\":\"gvpgy\",\"targetSpecification\":{},\"capabilities\":[\"git\",\"medjvcslynqwwncw\"],\"hierarchyLevel\":\"zhxgktrmgucn\",\"status\":{\"lastModified\":\"2021-09-22T11:03:56Z\",\"deployed\":1588610928,\"expectedRunningJobId\":1950925712,\"runningJobId\":1409884239,\"status\":\"tfdygpfqb\",\"statusDetails\":\"ceopzfqrhhuaopp\",\"generation\":1290719044,\"targetStatuses\":[{\"name\":\"ol\",\"status\":\"ahzxctobgbk\",\"componentStatuses\":[{\"name\":\"zpostmgrcfbu\",\"status\":\"mfqjhhkxbp\"},{\"name\":\"ymjhxxjyngudivkr\",\"status\":\"wbxqzvszjfau\"},{\"name\":\"fdxxivetvtcqaqtd\",\"status\":\"mcbxvwvxysl\"},{\"name\":\"hsfxoblytkb\",\"status\":\"pe\"}]},{\"name\":\"wfbkrvrns\",\"status\":\"hqjohxcrsbfova\",\"componentStatuses\":[{\"name\":\"v\",\"status\":\"hsqfsubcgjbirxbp\"}]},{\"name\":\"srfbjfdtwss\",\"status\":\"ftpvjzbexil\",\"componentStatuses\":[{\"name\":\"qqnvwpmq\",\"status\":\"ruoujmk\"},{\"name\":\"hwqytj\",\"status\":\"bnw\"}]}]},\"solutionScope\":\"wgdrjervnaenqp\",\"state\":\"inactive\",\"provisioningState\":\"Deleting\"}")
             .toObject(TargetProperties.class);
-        Assertions.assertEquals("xibxujwbhqwalm", model.description());
-        Assertions.assertEquals("zyoxaepdkzjan", model.displayName());
-        Assertions.assertEquals("ux", model.contextId());
-        Assertions.assertEquals("wbavxbniwdj", model.capabilities().get(0));
-        Assertions.assertEquals("wz", model.hierarchyLevel());
-        Assertions.assertEquals("baiuebbaumny", model.solutionScope());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.state());
+        Assertions.assertEquals("nalaulppg", model.description());
+        Assertions.assertEquals("dtpnapnyiropuhp", model.displayName());
+        Assertions.assertEquals("gvpgy", model.contextId());
+        Assertions.assertEquals("git", model.capabilities().get(0));
+        Assertions.assertEquals("zhxgktrmgucn", model.hierarchyLevel());
+        Assertions.assertEquals("wgdrjervnaenqp", model.solutionScope());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetProperties model = new TargetProperties().withDescription("xibxujwbhqwalm")
-            .withDisplayName("zyoxaepdkzjan")
-            .withContextId("ux")
+        TargetProperties model = new TargetProperties().withDescription("nalaulppg")
+            .withDisplayName("dtpnapnyiropuhp")
+            .withContextId("gvpgy")
             .withTargetSpecification(mapOf())
-            .withCapabilities(Arrays.asList("wbavxbniwdj"))
-            .withHierarchyLevel("wz")
-            .withSolutionScope("baiuebbaumny")
-            .withState(ResourceState.ACTIVE);
+            .withCapabilities(Arrays.asList("git", "medjvcslynqwwncw"))
+            .withHierarchyLevel("zhxgktrmgucn")
+            .withSolutionScope("wgdrjervnaenqp")
+            .withState(ResourceState.INACTIVE);
         model = BinaryData.fromObject(model).toObject(TargetProperties.class);
-        Assertions.assertEquals("xibxujwbhqwalm", model.description());
-        Assertions.assertEquals("zyoxaepdkzjan", model.displayName());
-        Assertions.assertEquals("ux", model.contextId());
-        Assertions.assertEquals("wbavxbniwdj", model.capabilities().get(0));
-        Assertions.assertEquals("wz", model.hierarchyLevel());
-        Assertions.assertEquals("baiuebbaumny", model.solutionScope());
-        Assertions.assertEquals(ResourceState.ACTIVE, model.state());
+        Assertions.assertEquals("nalaulppg", model.description());
+        Assertions.assertEquals("dtpnapnyiropuhp", model.displayName());
+        Assertions.assertEquals("gvpgy", model.contextId());
+        Assertions.assertEquals("git", model.capabilities().get(0));
+        Assertions.assertEquals("zhxgktrmgucn", model.hierarchyLevel());
+        Assertions.assertEquals("wgdrjervnaenqp", model.solutionScope());
+        Assertions.assertEquals(ResourceState.INACTIVE, model.state());
     }
 
     // Use "Map.of" if available

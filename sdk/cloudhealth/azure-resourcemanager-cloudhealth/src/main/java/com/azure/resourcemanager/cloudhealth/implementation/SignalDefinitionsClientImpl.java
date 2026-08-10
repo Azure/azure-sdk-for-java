@@ -26,13 +26,18 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cloudhealth.fluent.SignalDefinitionsClient;
 import com.azure.resourcemanager.cloudhealth.fluent.models.SignalDefinitionInner;
 import com.azure.resourcemanager.cloudhealth.implementation.models.SignalDefinitionListResult;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -92,7 +97,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SignalDefinitionInner>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -103,7 +108,7 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<SignalDefinitionInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -113,9 +118,9 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
@@ -123,10 +128,10 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}")
-        @ExpectedResponses({ 200, 204 })
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("healthModelName") String healthModelName,
             @PathParam("signalDefinitionName") String signalDefinitionName, Context context);
@@ -182,26 +187,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SignalDefinitionInner>> getWithResponseAsync(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, accept, context))
@@ -241,28 +226,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SignalDefinitionInner> getWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, healthModelName, signalDefinitionName, accept, context);
@@ -298,33 +261,8 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SignalDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String healthModelName, String signalDefinitionName, SignalDefinitionInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -344,13 +282,16 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a signal definition in a health model on successful completion of {@link Mono}.
+     * @return a signal definition in a health model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SignalDefinitionInner> createOrUpdateAsync(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, signalDefinitionName, resource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, contentType,
+            accept, resource, Context.NONE);
     }
 
     /**
@@ -367,36 +308,8 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @return a signal definition in a health model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SignalDefinitionInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -414,13 +327,117 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a signal definition in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SignalDefinitionInner>, SignalDefinitionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String healthModelName, String signalDefinitionName, SignalDefinitionInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, healthModelName, signalDefinitionName, resource);
+        return this.client.<SignalDefinitionInner, SignalDefinitionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SignalDefinitionInner.class, SignalDefinitionInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Create a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a signal definition in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SignalDefinitionInner>, SignalDefinitionInner> beginCreateOrUpdate(
+        String resourceGroupName, String healthModelName, String signalDefinitionName, SignalDefinitionInner resource) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, resource);
+        return this.client.<SignalDefinitionInner, SignalDefinitionInner>getLroResult(response,
+            SignalDefinitionInner.class, SignalDefinitionInner.class, Context.NONE);
+    }
+
+    /**
+     * Create a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a signal definition in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SignalDefinitionInner>, SignalDefinitionInner> beginCreateOrUpdate(
+        String resourceGroupName, String healthModelName, String signalDefinitionName, SignalDefinitionInner resource,
+        Context context) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, resource, context);
+        return this.client.<SignalDefinitionInner, SignalDefinitionInner>getLroResult(response,
+            SignalDefinitionInner.class, SignalDefinitionInner.class, context);
+    }
+
+    /**
+     * Create a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a signal definition in a health model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SignalDefinitionInner> createOrUpdateAsync(String resourceGroupName, String healthModelName,
+        String signalDefinitionName, SignalDefinitionInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, healthModelName, signalDefinitionName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a signal definition in a health model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignalDefinitionInner createOrUpdate(String resourceGroupName, String healthModelName,
         String signalDefinitionName, SignalDefinitionInner resource) {
-        return createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, resource,
-            Context.NONE).getValue();
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource).getFinalResult();
+    }
+
+    /**
+     * Create a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a signal definition in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignalDefinitionInner createOrUpdate(String resourceGroupName, String healthModelName,
+        String signalDefinitionName, SignalDefinitionInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -435,28 +452,8 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String healthModelName,
         String signalDefinitionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, context))
@@ -472,12 +469,13 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String signalDefinitionName) {
-        return deleteWithResponseAsync(resourceGroupName, healthModelName, signalDefinitionName)
-            .flatMap(ignored -> Mono.empty());
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
+        String signalDefinitionName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
     }
 
     /**
@@ -490,35 +488,88 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String healthModelName,
         String signalDefinitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
-        if (signalDefinitionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter signalDefinitionName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, healthModelName, signalDefinitionName, context);
+    }
+
+    /**
+     * Delete a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String healthModelName,
+        String signalDefinitionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, healthModelName, signalDefinitionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String signalDefinitionName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Delete a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String signalDefinitionName, Context context) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Delete a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String healthModelName, String signalDefinitionName) {
+        return beginDeleteAsync(resourceGroupName, healthModelName, signalDefinitionName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -533,7 +584,23 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName) {
-        deleteWithResponse(resourceGroupName, healthModelName, signalDefinitionName, Context.NONE);
+        beginDelete(resourceGroupName, healthModelName, signalDefinitionName).getFinalResult();
+    }
+
+    /**
+     * Delete a SignalDefinition.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param signalDefinitionName Name of the signal definition. Must be unique within a health model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String healthModelName, String signalDefinitionName, Context context) {
+        beginDelete(resourceGroupName, healthModelName, signalDefinitionName, context).getFinalResult();
     }
 
     /**
@@ -552,22 +619,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalDefinitionInner>> listByHealthModelSinglePageAsync(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModel(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -628,24 +679,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -670,24 +703,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelSinglePage(String resourceGroupName,
         String healthModelName, OffsetDateTime timestamp, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (healthModelName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter healthModelName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -746,13 +761,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalDefinitionInner>> listByHealthModelNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHealthModelNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -772,15 +780,6 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -800,21 +799,10 @@ public final class SignalDefinitionsClientImpl implements SignalDefinitionsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SignalDefinitionInner> listByHealthModelNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SignalDefinitionListResult> res
             = service.listByHealthModelNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SignalDefinitionsClientImpl.class);
 }

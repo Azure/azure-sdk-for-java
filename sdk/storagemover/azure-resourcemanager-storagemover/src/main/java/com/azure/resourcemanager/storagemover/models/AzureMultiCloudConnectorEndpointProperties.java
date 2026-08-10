@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -97,25 +96,13 @@ public final class AzureMultiCloudConnectorEndpointProperties extends EndpointBa
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (multiCloudConnectorId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property multiCloudConnectorId in model AzureMultiCloudConnectorEndpointProperties"));
-        }
-        if (awsS3BucketId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property awsS3BucketId in model AzureMultiCloudConnectorEndpointProperties"));
-        }
+    public AzureMultiCloudConnectorEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMultiCloudConnectorEndpointProperties.class);
 
     /**
      * {@inheritDoc}
@@ -124,6 +111,7 @@ public final class AzureMultiCloudConnectorEndpointProperties extends EndpointBa
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("multiCloudConnectorId", this.multiCloudConnectorId);
         jsonWriter.writeStringField("awsS3BucketId", this.awsS3BucketId);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -149,6 +137,9 @@ public final class AzureMultiCloudConnectorEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureMultiCloudConnectorEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureMultiCloudConnectorEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureMultiCloudConnectorEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

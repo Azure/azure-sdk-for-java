@@ -13,6 +13,10 @@ import com.azure.cosmos.implementation.OverridableRequestOptions;
  */
 public final class CosmosOperationDetails {
 
+    private static ImplementationBridgeHelpers.CosmosRequestContextHelper.CosmosRequestContextAccessor requestContextAccessor() {
+        return ImplementationBridgeHelpers.CosmosRequestContextHelper.getCosmosRequestContextAccessor();
+    }
+
     private final OverridableRequestOptions requestOptions;
     private final CosmosDiagnosticsContext cosmosDiagnosticsContext;
 
@@ -36,7 +40,7 @@ public final class CosmosOperationDetails {
      * @return the request context.
      */
     public CosmosRequestContext getRequestContext() {
-        return ImplementationBridgeHelpers.CosmosRequestContextHelper.getCosmosRequestContextAccessor().create(requestOptions);
+        return requestContextAccessor().create(requestOptions);
     }
 
     /**
@@ -52,8 +56,9 @@ public final class CosmosOperationDetails {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
-        ImplementationBridgeHelpers.CosmosOperationDetailsHelper
-            .setCosmosOperationDetailsAccessor(
+        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.setCosmosOperationDetailsAccessor(
                     CosmosOperationDetails::new);
     }
+
+    static { initialize(); }
 }

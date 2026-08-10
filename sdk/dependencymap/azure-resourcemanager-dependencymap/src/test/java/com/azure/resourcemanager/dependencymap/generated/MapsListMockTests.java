@@ -22,7 +22,7 @@ public final class MapsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\"},\"location\":\"newmdwzjeiachbo\",\"tags\":{\"eeh\":\"lnrosfqp\",\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"qkwpyeicxmqc\",\"tags\":{\"gdtopbobjogh\":\"vhkhixu\"},\"id\":\"e\",\"name\":\"u\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class MapsListMockTests {
 
         PagedIterable<MapsResource> response = manager.maps().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("newmdwzjeiachbo", response.iterator().next().location());
-        Assertions.assertEquals("lnrosfqp", response.iterator().next().tags().get("eeh"));
+        Assertions.assertEquals("qkwpyeicxmqc", response.iterator().next().location());
+        Assertions.assertEquals("vhkhixu", response.iterator().next().tags().get("gdtopbobjogh"));
     }
 }

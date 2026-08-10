@@ -14,29 +14,29 @@ public final class PerformanceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Performance model = BinaryData.fromString(
-            "{\"metricName\":\"xaolth\",\"expected\":84.89547912335365,\"actual\":14.134109255164462,\"expectedValueRange\":{\"min\":3.243842052228818,\"max\":95.85514226537904},\"unit\":\"Count\"}")
+            "{\"metricName\":\"bpf\",\"expected\":5.98797419739574,\"actual\":52.25217379811007,\"expectedValueRange\":{\"min\":2.4924813165921322,\"max\":37.14829971385317},\"unit\":\"MilliCores\"}")
             .toObject(Performance.class);
-        Assertions.assertEquals("xaolth", model.metricName());
-        Assertions.assertEquals(84.89547912335365D, model.expected());
-        Assertions.assertEquals(14.134109255164462D, model.actual());
-        Assertions.assertEquals(3.243842052228818, model.expectedValueRange().min());
-        Assertions.assertEquals(95.85514226537904, model.expectedValueRange().max());
-        Assertions.assertEquals(MetricUnit.COUNT, model.unit());
+        Assertions.assertEquals("bpf", model.metricName());
+        Assertions.assertEquals(5.98797419739574D, model.expected());
+        Assertions.assertEquals(52.25217379811007D, model.actual());
+        Assertions.assertEquals(2.4924813165921322, model.expectedValueRange().min());
+        Assertions.assertEquals(37.14829971385317, model.expectedValueRange().max());
+        Assertions.assertEquals(MetricUnit.MILLI_CORES, model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Performance model = new Performance().withMetricName("xaolth")
-            .withExpected(84.89547912335365D)
-            .withActual(14.134109255164462D)
-            .withExpectedValueRange(new ExpectedValueRange().withMin(3.243842052228818).withMax(95.85514226537904))
-            .withUnit(MetricUnit.COUNT);
+        Performance model = new Performance().withMetricName("bpf")
+            .withExpected(5.98797419739574D)
+            .withActual(52.25217379811007D)
+            .withExpectedValueRange(new ExpectedValueRange().withMin(2.4924813165921322).withMax(37.14829971385317))
+            .withUnit(MetricUnit.MILLI_CORES);
         model = BinaryData.fromObject(model).toObject(Performance.class);
-        Assertions.assertEquals("xaolth", model.metricName());
-        Assertions.assertEquals(84.89547912335365D, model.expected());
-        Assertions.assertEquals(14.134109255164462D, model.actual());
-        Assertions.assertEquals(3.243842052228818, model.expectedValueRange().min());
-        Assertions.assertEquals(95.85514226537904, model.expectedValueRange().max());
-        Assertions.assertEquals(MetricUnit.COUNT, model.unit());
+        Assertions.assertEquals("bpf", model.metricName());
+        Assertions.assertEquals(5.98797419739574D, model.expected());
+        Assertions.assertEquals(52.25217379811007D, model.actual());
+        Assertions.assertEquals(2.4924813165921322, model.expectedValueRange().min());
+        Assertions.assertEquals(37.14829971385317, model.expectedValueRange().max());
+        Assertions.assertEquals(MetricUnit.MILLI_CORES, model.unit());
     }
 }

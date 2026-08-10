@@ -28,8 +28,12 @@ import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentat
 import com.azure.resourcemanager.onlineexperimentation.implementation.OnlineExperimentationMgmtClientBuilder;
 import com.azure.resourcemanager.onlineexperimentation.implementation.OnlineExperimentationWorkspacesImpl;
 import com.azure.resourcemanager.onlineexperimentation.implementation.OperationsImpl;
+import com.azure.resourcemanager.onlineexperimentation.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.onlineexperimentation.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaces;
 import com.azure.resourcemanager.onlineexperimentation.models.Operations;
+import com.azure.resourcemanager.onlineexperimentation.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.onlineexperimentation.models.PrivateLinkResources;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -46,6 +50,10 @@ public final class OnlineExperimentationManager {
     private Operations operations;
 
     private OnlineExperimentationWorkspaces onlineExperimentationWorkspaces;
+
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
 
     private final OnlineExperimentationMgmtClient clientObject;
 
@@ -286,6 +294,31 @@ public final class OnlineExperimentationManager {
                 = new OnlineExperimentationWorkspacesImpl(clientObject.getOnlineExperimentationWorkspaces(), this);
         }
         return onlineExperimentationWorkspaces;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     * 
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     * 
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /**

@@ -99,17 +99,6 @@ public final class AvsStorageContainerProperties implements JsonSerializable<Avs
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (space() != null) {
-            space().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

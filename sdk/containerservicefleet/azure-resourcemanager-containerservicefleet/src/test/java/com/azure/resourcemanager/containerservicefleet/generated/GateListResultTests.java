@@ -15,13 +15,13 @@ public final class GateListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"kftutqxlngxlefg\",\"gateType\":\"Approval\",\"target\":{\"id\":\"nxkrx\",\"updateRunProperties\":{\"name\":\"mi\",\"stage\":\"thz\",\"group\":\"qdrabhjybigehoqf\",\"timing\":\"After\"}},\"state\":\"Skipped\"},\"eTag\":\"kanyktzlcuiywg\",\"id\":\"wgndrvynhzgpp\",\"name\":\"rcgyn\",\"type\":\"ocpecfvmmco\"}],\"nextLink\":\"sxlzevgbmqj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"zka\",\"gateType\":\"Approval\",\"target\":{\"id\":\"uwbc\",\"updateRunProperties\":{\"name\":\"wbme\",\"stage\":\"seyvj\",\"group\":\"rts\",\"timing\":\"After\"}},\"state\":\"Completed\"},\"eTag\":\"kdeemaofmxagkvtm\",\"id\":\"mqkrhahvljuahaqu\",\"name\":\"c\",\"type\":\"hmdua\"}],\"nextLink\":\"exq\"}")
             .toObject(GateListResult.class);
-        Assertions.assertEquals("kftutqxlngxlefg", model.value().get(0).displayName());
+        Assertions.assertEquals("zka", model.value().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.value().get(0).gateType());
-        Assertions.assertEquals("nxkrx", model.value().get(0).target().id());
+        Assertions.assertEquals("uwbc", model.value().get(0).target().id());
         Assertions.assertEquals(Timing.AFTER, model.value().get(0).target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.SKIPPED, model.value().get(0).state());
-        Assertions.assertEquals("sxlzevgbmqj", model.nextLink());
+        Assertions.assertEquals(GateState.COMPLETED, model.value().get(0).state());
+        Assertions.assertEquals("exq", model.nextLink());
     }
 }

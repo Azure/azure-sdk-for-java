@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Partition Key Range Gone Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosPartitionKeyRangeGoneException extends CosmosAccessException {
 
     /**

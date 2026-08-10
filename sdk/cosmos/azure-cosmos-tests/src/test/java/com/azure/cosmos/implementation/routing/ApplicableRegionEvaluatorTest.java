@@ -24,7 +24,9 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -207,9 +209,9 @@ public class ApplicableRegionEvaluatorTest {
                 globalEndpointManager,
                 true,
                 new ThrottlingRetryOptions(),
-                null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                globalPartitionEndpointManagerForPerPartitionAutomaticFailover);
+                globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                false);
 
             for (int i = 0; i < expectedApplicableRegionalRoutingContexts.size(); i++) {
                 Assertions.assertThat(actualApplicableRegionalRoutingContexts.get(i)).isEqualTo(expectedApplicableRegionalRoutingContexts.get(i));
@@ -299,8 +301,10 @@ public class ApplicableRegionEvaluatorTest {
                         true,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(true, false)
-                ));
+                    new AvailabilityStrategyContext(true, false),
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         } else {
             request.requestContext.setCrossRegionAvailabilityContext(
                 new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
@@ -310,8 +314,10 @@ public class ApplicableRegionEvaluatorTest {
                         false,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(false, false)
-                ));
+                    new AvailabilityStrategyContext(false, false),
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         }
 
         return request;
@@ -2372,6 +2378,99 @@ public class ApplicableRegionEvaluatorTest {
             for (URI applicableEndpoint : applicableGatewayRegionalEndpoint) {
                 applicableRegionalRoutingContexts.add(new RegionalRoutingContext(applicableEndpoint));
             }
+        }
+    }
+
+    // ========================================================================
+    // Regression test for PPCB reevaluate List.contains() bug fix
+    // Validates that when user excludes a region in non-canonical form (e.g., "eastus")
+    // and PPCB internally excludes the same region in server form (e.g., "east us"),
+    // the reevaluate path does NOT re-add the user-excluded region as a retry target.
+    // ========================================================================
+
+    @Test(groups = "unit")
+    public void reevaluate_nonCanonicalUserExclude_shouldNotReAddPpcbExcludedRegion() {
+
+        // Setup: multi-write 3-region account with non-canonical user exclude for first region
+        DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
+
+        List<DatabaseAccountLocation> readableLocations = Arrays.asList(
+            createDatabaseAccountLocation(EastUsLocation, TestAccountEastUsEndpoint.toString()),
+            createDatabaseAccountLocation(WestUsLocation, TestAccountWestUsEndpoint.toString()),
+            createDatabaseAccountLocation(CentralUsLocation, TestAccountCentralUsEndpoint.toString()));
+
+        List<DatabaseAccountLocation> writeableLocations = Arrays.asList(
+            createDatabaseAccountLocation(EastUsLocation, TestAccountEastUsEndpoint.toString()),
+            createDatabaseAccountLocation(WestUsLocation, TestAccountWestUsEndpoint.toString()),
+            createDatabaseAccountLocation(CentralUsLocation, TestAccountCentralUsEndpoint.toString()));
+
+        DatabaseAccount databaseAccount = new DatabaseAccount();
+        databaseAccount.setWritableLocations(writeableLocations);
+        databaseAccount.setReadableLocations(readableLocations);
+        databaseAccount.setEnableMultipleWriteLocations(true);
+        databaseAccount.setId(AccountId);
+
+        // Use non-canonical preferred regions (space-stripped)
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        connectionPolicy.setPreferredRegions(Arrays.asList("eastus", "westus", "centralus"));
+
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any())).thenReturn(Flux.just(databaseAccount));
+        Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(TestAccountEndpoint);
+        Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
+
+        GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
+        LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+        locationCache.onDatabaseAccountRead(databaseAccount);
+
+        try {
+            // Reaching the user-exclude membership guard inside reevaluate requires that path to
+            // enter its PPCB-internal-exclude inner loop, which only happens when
+            // applicableRegionalRoutingContexts.size() < 2 (early-return at LocationCache:440).
+            // Exclude 2 of 3 regions so only Central US remains applicable; then PPCB excludes
+            // "east us" - reevaluate iterates internalExcludeRegions and consults the pre-built
+            // normalizedExcludes Set ({"eastus","westus"}). Pre-fix string-equal check
+            // ("east us".equals("eastus") -> false) would silently re-add East US to the retry
+            // list; the normalized check correctly recognises the match and blocks it.
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
+            request.requestContext.setExcludeRegions(Arrays.asList("eastus", "westus"));
+            request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(Arrays.asList("east us"));
+
+            request.requestContext.setCrossRegionAvailabilityContext(
+                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+                    null,
+                    new PointOperationContextForCircuitBreaker(
+                        new AtomicBoolean(false),
+                        true,
+                        "coll1",
+                        new SerializationDiagnosticsContext()),
+                    new AvailabilityStrategyContext(false, false),
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
+
+            List<RegionalRoutingContext> applicableEndpoints =
+                globalEndpointManager.getApplicableReadRegionalRoutingContexts(request);
+
+            // East US is in both user-exclude and PPCB-internal-exclude lists. Without the
+            // normalized-Set membership check the reevaluate loop would silently re-add East US;
+            // with the fix the only applicable endpoint is Central US.
+            for (RegionalRoutingContext endpoint : applicableEndpoints) {
+                Assertions.assertThat(endpoint.getGatewayRegionalEndpoint())
+                    .as("East US endpoint should not be re-added by reevaluate when user excluded 'eastus' and PPCB excluded 'east us'")
+                    .isNotEqualTo(TestAccountEastUsEndpoint);
+                Assertions.assertThat(endpoint.getGatewayRegionalEndpoint())
+                    .as("West US endpoint should remain excluded by the user-exclude main loop")
+                    .isNotEqualTo(TestAccountWestUsEndpoint);
+            }
+
+            Assertions.assertThat(applicableEndpoints).hasSize(1);
+            Assertions.assertThat(applicableEndpoints.get(0).getGatewayRegionalEndpoint())
+                .isEqualTo(TestAccountCentralUsEndpoint);
+        } finally {
+            globalEndpointManager.close();
         }
     }
 }

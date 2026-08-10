@@ -18,8 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     /*
-     * Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -30,6 +31,13 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     @Generated
     private String operationContext;
 
+    /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    @Generated
+    private String operationCallbackUri;
+
     /**
      * Creates an instance of UnholdRequest class.
      */
@@ -38,8 +46,9 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     }
 
     /**
-     * Get the targetParticipant property: Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @return the targetParticipant value.
      */
@@ -49,8 +58,9 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     }
 
     /**
-     * Set the targetParticipant property: Participants to be hold from the call.
-     * Only ACS Users are supported.
+     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
+     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
+     * at most one further property may be set which must match the kind enum value.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the UnholdRequest object itself.
@@ -86,6 +96,32 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
     }
 
     /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @return the operationCallbackUri value.
+     */
+    @Generated
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the UnholdRequest object itself.
+     */
+    @Generated
+    public UnholdRequest setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -94,6 +130,7 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
         jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +155,8 @@ public final class UnholdRequest implements JsonSerializable<UnholdRequest> {
                     deserializedUnholdRequest.targetParticipant = CommunicationIdentifierModel.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedUnholdRequest.operationContext = reader.getString();
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedUnholdRequest.operationCallbackUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -11,7 +11,7 @@ public final class PlaywrightWorkspaceQuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceQuotaInner model = BinaryData.fromString(
-            "{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-10-24T16:59:12Z\",\"expiryAt\":\"2021-03-09T00:46:41Z\",\"allocatedValue\":1999845889,\"usedValue\":71.48999643489715,\"percentageUsed\":15.72140906109526},\"provisioningState\":\"Creating\"},\"id\":\"dzevndhkrw\",\"name\":\"d\",\"type\":\"ppdsbdkvwrwj\"}")
+            "{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-03-10T01:57:51Z\",\"expiryAt\":\"2021-11-01T19:43:22Z\",\"allocatedValue\":885958486,\"usedValue\":85.42693977152645,\"percentageUsed\":7.296201749655973},\"provisioningState\":\"Accepted\"},\"id\":\"asxazjpqyegualhb\",\"name\":\"xhejjzzvdud\",\"type\":\"wdslfhotwmcy\"}")
             .toObject(PlaywrightWorkspaceQuotaInner.class);
     }
 }

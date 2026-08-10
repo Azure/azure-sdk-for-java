@@ -13,6 +13,8 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersi
 import com.azure.resourcemanager.workloadorchestration.models.RemoveVersionResponse;
 import com.azure.resourcemanager.workloadorchestration.models.Schema;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersion;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.util.Collections;
@@ -84,6 +86,8 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
 
     private String schemaName;
 
+    private SchemaUpdate updateProperties;
+
     public SchemaImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -111,13 +115,14 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     }
 
     public SchemaImpl update() {
+        this.updateProperties = new SchemaUpdate();
         return this;
     }
 
     public Schema apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSchemas()
-            .updateWithResponse(resourceGroupName, schemaName, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, schemaName, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -125,7 +130,7 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     public Schema apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSchemas()
-            .updateWithResponse(resourceGroupName, schemaName, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, schemaName, updateProperties, context)
             .getValue();
         return this;
     }
@@ -181,12 +186,26 @@ public final class SchemaImpl implements Schema, Schema.Definition, Schema.Updat
     }
 
     public SchemaImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public SchemaImpl withProperties(SchemaProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public SchemaImpl withProperties(SchemaUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

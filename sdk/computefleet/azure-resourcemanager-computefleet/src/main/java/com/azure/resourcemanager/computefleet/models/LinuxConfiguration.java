@@ -164,20 +164,6 @@ public final class LinuxConfiguration implements JsonSerializable<LinuxConfigura
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (ssh() != null) {
-            ssh().validate();
-        }
-        if (patchSettings() != null) {
-            patchSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

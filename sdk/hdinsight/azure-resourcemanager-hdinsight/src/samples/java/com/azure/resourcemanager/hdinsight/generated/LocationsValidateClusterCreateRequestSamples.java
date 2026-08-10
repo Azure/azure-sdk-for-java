@@ -12,8 +12,8 @@ import com.azure.resourcemanager.hdinsight.models.ClusterDefinition;
 import com.azure.resourcemanager.hdinsight.models.ComputeProfile;
 import com.azure.resourcemanager.hdinsight.models.HardwareProfile;
 import com.azure.resourcemanager.hdinsight.models.LinuxOperatingSystemProfile;
-import com.azure.resourcemanager.hdinsight.models.OsProfile;
 import com.azure.resourcemanager.hdinsight.models.OSType;
+import com.azure.resourcemanager.hdinsight.models.OsProfile;
 import com.azure.resourcemanager.hdinsight.models.Role;
 import com.azure.resourcemanager.hdinsight.models.StorageAccount;
 import com.azure.resourcemanager.hdinsight.models.StorageProfile;
@@ -29,7 +29,7 @@ import java.util.Map;
 public final class LocationsValidateClusterCreateRequestSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * HDI_Locations_ValidateClusterCreateRequest.json
      */
     /**

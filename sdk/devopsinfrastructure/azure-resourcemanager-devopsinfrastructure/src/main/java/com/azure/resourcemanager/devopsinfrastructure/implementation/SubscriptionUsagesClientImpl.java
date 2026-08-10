@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.SubscriptionUsagesClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.models.PagedQuota;
@@ -106,17 +105,6 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> usagesSinglePageAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.usages(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
@@ -151,20 +139,6 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.usagesSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             location, this.client.getApiVersion(), accept, Context.NONE);
@@ -184,20 +158,6 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesSinglePage(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.usagesSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
             location, this.client.getApiVersion(), accept, context);
@@ -247,13 +207,6 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> usagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.usagesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<QuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -272,15 +225,6 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.usagesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -299,20 +243,9 @@ public final class SubscriptionUsagesClientImpl implements SubscriptionUsagesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> usagesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.usagesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionUsagesClientImpl.class);
 }

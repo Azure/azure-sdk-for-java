@@ -7,8 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.compute.fluent.CloudServiceManagementClient;
 import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
 import com.azure.resourcemanager.compute.implementation.AvailabilitySetsImpl;
+import com.azure.resourcemanager.compute.implementation.CloudServiceManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.ComputeManagementClientBuilder;
 import com.azure.resourcemanager.compute.implementation.ComputeSkusImpl;
 import com.azure.resourcemanager.compute.implementation.ComputeUsagesImpl;
@@ -53,6 +55,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final AuthorizationManager authorizationManager;
+    private final CloudServiceManagementClient cloudServiceClient;
 
     // The collections
     private AvailabilitySets availabilitySets;
@@ -95,6 +98,15 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
      */
     public AuthorizationManager authorizationManager() {
         return authorizationManager;
+    }
+
+    /**
+     * Gets the cloud service client.
+     *
+     * @return the cloud service client
+     */
+    public CloudServiceManagementClient cloudServiceClient() {
+        return cloudServiceClient;
     }
 
     /**
@@ -161,6 +173,10 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         storageManager = StorageManager.authenticate(httpPipeline, profile);
         networkManager = NetworkManager.authenticate(httpPipeline, profile);
         authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        cloudServiceClient = new CloudServiceManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
     }
 
     /**

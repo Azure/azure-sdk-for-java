@@ -14,25 +14,25 @@ public final class VersionSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VersionSpec model = BinaryData.fromString(
-            "{\"friendlyName\":\"lvkgju\",\"displayName\":\"dknnqvsazn\",\"isDefault\":false,\"componentVersions\":{\"hmk\":\"udsgs\",\"rauwjuetaebu\":\"c\"}}")
+            "{\"friendlyName\":\"wnujhemmsbvdk\",\"displayName\":\"odtji\",\"isDefault\":false,\"componentVersions\":{\"f\":\"fltkacjv\",\"gaowpulpqblylsyx\":\"dlfoakggkfp\"}}")
             .toObject(VersionSpec.class);
-        Assertions.assertEquals("lvkgju", model.friendlyName());
-        Assertions.assertEquals("dknnqvsazn", model.displayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
+        Assertions.assertEquals("wnujhemmsbvdk", model.friendlyName());
+        Assertions.assertEquals("odtji", model.displayName());
+        Assertions.assertFalse(model.isDefault());
+        Assertions.assertEquals("fltkacjv", model.componentVersions().get("f"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionSpec model = new VersionSpec().withFriendlyName("lvkgju")
-            .withDisplayName("dknnqvsazn")
+        VersionSpec model = new VersionSpec().withFriendlyName("wnujhemmsbvdk")
+            .withDisplayName("odtji")
             .withIsDefault(false)
-            .withComponentVersions(mapOf("hmk", "udsgs", "rauwjuetaebu", "c"));
+            .withComponentVersions(mapOf("f", "fltkacjv", "gaowpulpqblylsyx", "dlfoakggkfp"));
         model = BinaryData.fromObject(model).toObject(VersionSpec.class);
-        Assertions.assertEquals("lvkgju", model.friendlyName());
-        Assertions.assertEquals("dknnqvsazn", model.displayName());
-        Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
+        Assertions.assertEquals("wnujhemmsbvdk", model.friendlyName());
+        Assertions.assertEquals("odtji", model.displayName());
+        Assertions.assertFalse(model.isDefault());
+        Assertions.assertEquals("fltkacjv", model.componentVersions().get("f"));
     }
 
     // Use "Map.of" if available

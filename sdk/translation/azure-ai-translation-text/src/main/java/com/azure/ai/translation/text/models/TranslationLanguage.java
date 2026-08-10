@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The value of the translation property is a dictionary of (key, value) pairs. Each key is a BCP 47 language tag.
@@ -109,6 +110,7 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
             String name = null;
             String nativeName = null;
             LanguageDirectionality directionality = null;
+            List<String> models = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -118,11 +120,32 @@ public final class TranslationLanguage implements JsonSerializable<TranslationLa
                     nativeName = reader.getString();
                 } else if ("dir".equals(fieldName)) {
                     directionality = LanguageDirectionality.fromString(reader.getString());
+                } else if ("models".equals(fieldName)) {
+                    models = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new TranslationLanguage(name, nativeName, directionality);
+            TranslationLanguage deserializedTranslationLanguage
+                = new TranslationLanguage(name, nativeName, directionality);
+            deserializedTranslationLanguage.models = models;
+            return deserializedTranslationLanguage;
         });
+    }
+
+    /*
+     * LLM models supported for translation.
+     */
+    @Generated
+    private List<String> models;
+
+    /**
+     * Get the models property: LLM models supported for translation.
+     *
+     * @return the models value.
+     */
+    @Generated
+    public List<String> getModels() {
+        return this.models;
     }
 }

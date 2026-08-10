@@ -15,12 +15,12 @@ public final class GateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"maajrmvdjwzrlo\",\"gateType\":\"Approval\",\"target\":{\"id\":\"clwhijcoejctbz\",\"updateRunProperties\":{\"name\":\"s\",\"stage\":\"y\",\"group\":\"kbfkg\",\"timing\":\"Before\"}},\"state\":\"Pending\"},\"eTag\":\"exxppofmxaxcfjp\",\"id\":\"dtocj\",\"name\":\"xhvpmoue\",\"type\":\"hd\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"pesapskrdqmhjj\",\"gateType\":\"Approval\",\"target\":{\"id\":\"tldwkyzxuutk\",\"updateRunProperties\":{\"name\":\"ws\",\"stage\":\"svlxotogtwrup\",\"group\":\"xvnmicykvceov\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"vnotyfjfcnj\",\"id\":\"cn\",\"name\":\"dhbt\",\"type\":\"kphywpnvjto\"}")
             .toObject(GateInner.class);
-        Assertions.assertEquals("maajrmvdjwzrlo", model.displayName());
+        Assertions.assertEquals("pesapskrdqmhjj", model.displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.gateType());
-        Assertions.assertEquals("clwhijcoejctbz", model.target().id());
+        Assertions.assertEquals("tldwkyzxuutk", model.target().id());
         Assertions.assertEquals(Timing.BEFORE, model.target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, model.state());
+        Assertions.assertEquals(GateState.COMPLETED, model.state());
     }
 }

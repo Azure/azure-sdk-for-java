@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class ProvisionedNetworksGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProvisionedNetworks_Get.json
+     * x-ms-original-file: 2025-09-01/ProvisionedNetworks_Get.json
      */
     /**
      * Sample code: ProvisionedNetworks_Get.

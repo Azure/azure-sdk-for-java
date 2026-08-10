@@ -20,7 +20,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterRestoreStatusClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.RestoreResultInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterRestoreStatusGetResponse;
@@ -93,25 +92,6 @@ public final class CloudHsmClusterRestoreStatusClientImpl implements CloudHsmClu
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudHsmClusterRestoreStatusGetResponse> getWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, String jobId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (jobId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -151,27 +131,6 @@ public final class CloudHsmClusterRestoreStatusClientImpl implements CloudHsmClu
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterRestoreStatusGetResponse getWithResponse(String resourceGroupName, String cloudHsmClusterName,
         String jobId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (jobId == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, cloudHsmClusterName, jobId, accept, context);
@@ -192,6 +151,4 @@ public final class CloudHsmClusterRestoreStatusClientImpl implements CloudHsmClu
     public RestoreResultInner get(String resourceGroupName, String cloudHsmClusterName, String jobId) {
         return getWithResponse(resourceGroupName, cloudHsmClusterName, jobId, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClusterRestoreStatusClientImpl.class);
 }

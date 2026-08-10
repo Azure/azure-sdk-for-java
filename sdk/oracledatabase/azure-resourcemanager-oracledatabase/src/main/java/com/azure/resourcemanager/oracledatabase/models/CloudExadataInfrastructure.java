@@ -302,7 +302,7 @@ public interface CloudExadataInfrastructure {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     CloudExadataInfrastructure addStorageCapacity();
 
@@ -313,7 +313,31 @@ public interface CloudExadataInfrastructure {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     CloudExadataInfrastructure addStorageCapacity(Context context);
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cloudExadataInfrastructure resource definition.
+     */
+    CloudExadataInfrastructure configureExascale(ConfigureExascaleCloudExadataInfrastructureDetails body);
+
+    /**
+     * Configures Exascale on Cloud exadata infrastructure resource.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cloudExadataInfrastructure resource definition.
+     */
+    CloudExadataInfrastructure configureExascale(ConfigureExascaleCloudExadataInfrastructureDetails body,
+        Context context);
 }

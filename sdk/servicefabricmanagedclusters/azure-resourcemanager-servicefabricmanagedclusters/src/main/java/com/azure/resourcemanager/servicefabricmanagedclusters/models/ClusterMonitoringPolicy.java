@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -166,41 +165,6 @@ public final class ClusterMonitoringPolicy implements JsonSerializable<ClusterMo
         this.upgradeDomainTimeout = upgradeDomainTimeout;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (healthCheckWaitDuration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckWaitDuration in model ClusterMonitoringPolicy"));
-        }
-        if (healthCheckStableDuration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckStableDuration in model ClusterMonitoringPolicy"));
-        }
-        if (healthCheckRetryTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckRetryTimeout in model ClusterMonitoringPolicy"));
-        }
-        if (upgradeTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property upgradeTimeout in model ClusterMonitoringPolicy"));
-        }
-        if (upgradeDomainTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property upgradeDomainTimeout in model ClusterMonitoringPolicy"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ClusterMonitoringPolicy.class);
 
     /**
      * {@inheritDoc}

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
@@ -16,6 +17,10 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
@@ -23,42 +28,105 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private final int responsePayloadSize;
     private final JsonNode jsonValue;
 
-    public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes) {
+    public JsonNodeStorePayload(ByteBufInputStream bufferStream, int readableBytes, Map<String, String> responseHeaders) {
         if (readableBytes > 0) {
             this.responsePayloadSize = readableBytes;
-            this.jsonValue = fromJson(bufferStream, readableBytes);
+            this.jsonValue = parseJson(bufferStream, readableBytes, () -> responseHeaders);
         } else {
             this.responsePayloadSize = 0;
             this.jsonValue = null;
         }
     }
 
-    private static JsonNode fromJson(ByteBufInputStream bufferStream, int readableBytes) {
+    /**
+     * Creates a JsonNodeStorePayload using pre-populated header arrays instead of a Map.
+     * The Map is constructed lazily only if needed for error reporting.
+     */
+    public JsonNodeStorePayload(
+        ByteBufInputStream bufferStream,
+        int readableBytes,
+        String[] headerNames,
+        String[] headerValues) {
+
+        if (readableBytes > 0) {
+            this.responsePayloadSize = readableBytes;
+            this.jsonValue = parseJson(bufferStream, readableBytes, () -> buildHeaderMap(headerNames, headerValues));
+        } else {
+            this.responsePayloadSize = 0;
+            this.jsonValue = null;
+        }
+    }
+
+    private static JsonNode parseJson(
+        ByteBufInputStream bufferStream,
+        int readableBytes,
+        Supplier<Map<String, String>> headersSupplier) {
+
         byte[] bytes = new byte[readableBytes];
         try {
             bufferStream.read(bytes);
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
+            Map<String, String> responseHeaders = headersSupplier.get();
             if (fallbackCharsetDecoder != null) {
                 logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
-                return fromJsonWithFallbackCharsetDecoder(bytes);
+                return fromJsonWithFallbackCharsetDecoder(bytes, responseHeaders);
             } else {
-                throw new IllegalStateException("Unable to parse JSON.", e);
+                String baseErrorMessage = "Failed to parse JSON document. No fallback charset decoder configured.";
+
+                if (Configs.isNonParseableDocumentLoggingEnabled()) {
+                    String documentSample = Base64.getEncoder().encodeToString(bytes);
+                    logger.error(baseErrorMessage + " " + "Document in Base64 format: [" + documentSample + "]", e);
+                } else {
+                    logger.error(baseErrorMessage);
+                }
+
+                IllegalStateException innerException = new IllegalStateException("Unable to parse JSON.", e);
+
+                throw Utils.createCosmosException(
+                    HttpConstants.StatusCodes.BADREQUEST,
+                    HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                    innerException,
+                    responseHeaders);
             }
         }
     }
 
-    private static JsonNode fromJsonWithFallbackCharsetDecoder(byte[] bytes) {
+    private static Map<String, String> buildHeaderMap(String[] headerNames, String[] headerValues) {
+        Map<String, String> map = new HashMap<>(HttpUtils.mapCapacityForSize(headerNames.length));
+        for (int i = 0; i < headerNames.length; i++) {
+            map.put(headerNames[i], headerValues[i]);
+        }
+        return map;
+    }
+
+    private static JsonNode fromJsonWithFallbackCharsetDecoder(byte[] bytes, Map<String, String> responseHeaders) {
         try {
             String sanitizedJson = fallbackCharsetDecoder.decode(ByteBuffer.wrap(bytes)).toString();
             return Utils.getSimpleObjectMapper().readTree(sanitizedJson);
         } catch (IOException e) {
-            throw new IllegalStateException(
+
+            String baseErrorMessage = "Failed to parse JSON document even after applying fallback charset decoder.";
+
+            if (Configs.isNonParseableDocumentLoggingEnabled()) {
+                String documentSample = Base64.getEncoder().encodeToString(bytes);
+                logger.error(baseErrorMessage + " " + "Document in Base64 format: [" + documentSample + "]", e);
+            } else {
+                logger.error(baseErrorMessage);
+            }
+
+            Exception nestedException = new IllegalStateException(
                 String.format(
                     "Unable to parse JSON with fallback charset decoder[OnMalformedInput %s, OnUnmappedCharacter %s]",
                     Configs.getCharsetDecoderErrorActionOnMalformedInput(),
                     Configs.getCharsetDecoderErrorActionOnUnmappedCharacter()),
                 e);
+
+            throw Utils.createCosmosException(
+                HttpConstants.StatusCodes.BADREQUEST,
+                HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE,
+                nestedException,
+                responseHeaders);
         }
     }
 

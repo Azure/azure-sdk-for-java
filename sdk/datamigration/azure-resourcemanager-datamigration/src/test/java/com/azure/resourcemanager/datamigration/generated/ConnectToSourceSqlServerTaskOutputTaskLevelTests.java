@@ -11,7 +11,7 @@ public final class ConnectToSourceSqlServerTaskOutputTaskLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourceSqlServerTaskOutputTaskLevel model = BinaryData.fromString(
-            "{\"resultType\":\"TaskLevelOutput\",\"databases\":\"vibrxkpmloazuruo\",\"logins\":\"goorbteo\",\"agentJobs\":\"fhjxakvvjgs\",\"databaseTdeCertificateMapping\":\"r\",\"sourceServerVersion\":\"lmywwtkgkxnyed\",\"sourceServerBrandVersion\":\"gyvudtjuewbc\",\"validationErrors\":[{\"message\":\"uwhcjyxccybv\",\"actionableMessage\":\"yakk\",\"filePath\":\"zp\",\"lineNumber\":\"wjplma\",\"hResult\":625665728,\"stackTrace\":\"yohpfkyrkdbdgiog\"},{\"message\":\"kmnwqjnobaiyhddv\",\"actionableMessage\":\"cegfnmntfp\",\"filePath\":\"memfnczdwvvbalxl\",\"lineNumber\":\"chp\",\"hResult\":1628077523,\"stackTrace\":\"evwrdnhfuk\"}],\"id\":\"sjcswsmystuluqyp\"}")
+            "{\"resultType\":\"TaskLevelOutput\",\"databases\":\"zjb\",\"logins\":\"zsxjrkambtrneg\",\"agentJobs\":\"nvuqeqvldspa\",\"databaseTdeCertificateMapping\":\"jbkkdmflvestmjl\",\"sourceServerVersion\":\"ril\",\"sourceServerBrandVersion\":\"apeewchpxlkt\",\"validationErrors\":[{\"message\":\"iycslevuf\",\"actionableMessage\":\"tcktyhjtqedcgzu\",\"filePath\":\"mmrqz\",\"lineNumber\":\"rjvpglydzgkrvqee\",\"hResult\":1251506139,\"stackTrace\":\"pryu\"},{\"message\":\"wytpzdmovz\",\"actionableMessage\":\"va\",\"filePath\":\"zqadf\",\"lineNumber\":\"z\",\"hResult\":1869010035,\"stackTrace\":\"laecxndticok\"}],\"id\":\"zmlqtmldgxo\"}")
             .toObject(ConnectToSourceSqlServerTaskOutputTaskLevel.class);
     }
 

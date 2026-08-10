@@ -202,17 +202,6 @@ public final class ManagedPrivateEndpointModelProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (connectionState() != null) {
-            connectionState().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

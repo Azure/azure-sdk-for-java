@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -234,50 +233,6 @@ public final class FabricAgentModelProperties implements JsonSerializable<Fabric
         this.customProperties = customProperties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (machineId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property machineId in model FabricAgentModelProperties"));
-        }
-        if (machineName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property machineName in model FabricAgentModelProperties"));
-        }
-        if (authenticationIdentity() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property authenticationIdentity in model FabricAgentModelProperties"));
-        } else {
-            authenticationIdentity().validate();
-        }
-        if (resourceAccessIdentity() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceAccessIdentity in model FabricAgentModelProperties"));
-        } else {
-            resourceAccessIdentity().validate();
-        }
-        if (healthErrors() != null) {
-            healthErrors().forEach(e -> e.validate());
-        }
-        if (customProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customProperties in model FabricAgentModelProperties"));
-        } else {
-            customProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FabricAgentModelProperties.class);
 
     /**
      * {@inheritDoc}

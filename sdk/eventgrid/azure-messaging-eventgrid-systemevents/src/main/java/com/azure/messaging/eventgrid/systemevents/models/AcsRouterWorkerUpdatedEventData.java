@@ -47,13 +47,13 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
      * Router Worker Updated Labels
      */
     @Generated
-    private final Map<String, String> labels;
+    private Map<String, String> labels;
 
     /*
      * Router Worker Updated Tags
      */
     @Generated
-    private final Map<String, String> tags;
+    private Map<String, String> tags;
 
     /*
      * Router Worker Properties Updated
@@ -63,14 +63,9 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
 
     /**
      * Creates an instance of AcsRouterWorkerUpdatedEventData class.
-     *
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      */
     @Generated
-    private AcsRouterWorkerUpdatedEventData(Map<String, String> labels, Map<String, String> tags) {
-        this.labels = labels;
-        this.tags = tags;
+    private AcsRouterWorkerUpdatedEventData() {
     }
 
     /**
@@ -150,8 +145,6 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("workerId", this.workerId);
         jsonWriter.writeNumberField("totalCapacity", this.totalCapacity);
         return jsonWriter.writeEndObject();
@@ -169,43 +162,37 @@ public final class AcsRouterWorkerUpdatedEventData implements JsonSerializable<A
     @Generated
     public static AcsRouterWorkerUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<AcsRouterQueueDetails> queueAssignments = null;
-            List<AcsRouterChannelConfiguration> channelConfigurations = null;
-            Map<String, String> labels = null;
-            Map<String, String> tags = null;
-            List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties = null;
-            String workerId = null;
-            Integer totalCapacity = null;
+            AcsRouterWorkerUpdatedEventData deserializedAcsRouterWorkerUpdatedEventData
+                = new AcsRouterWorkerUpdatedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("queueAssignments".equals(fieldName)) {
-                    queueAssignments = reader.readArray(reader1 -> AcsRouterQueueDetails.fromJson(reader1));
+                    List<AcsRouterQueueDetails> queueAssignments
+                        = reader.readArray(reader1 -> AcsRouterQueueDetails.fromJson(reader1));
+                    deserializedAcsRouterWorkerUpdatedEventData.queueAssignments = queueAssignments;
                 } else if ("channelConfigurations".equals(fieldName)) {
-                    channelConfigurations
+                    List<AcsRouterChannelConfiguration> channelConfigurations
                         = reader.readArray(reader1 -> AcsRouterChannelConfiguration.fromJson(reader1));
+                    deserializedAcsRouterWorkerUpdatedEventData.channelConfigurations = channelConfigurations;
                 } else if ("labels".equals(fieldName)) {
-                    labels = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterWorkerUpdatedEventData.labels = labels;
                 } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(reader1 -> reader1.getString());
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterWorkerUpdatedEventData.tags = tags;
                 } else if ("updatedWorkerProperties".equals(fieldName)) {
-                    updatedWorkerProperties
+                    List<AcsRouterUpdatedWorkerProperty> updatedWorkerProperties
                         = reader.readArray(reader1 -> AcsRouterUpdatedWorkerProperty.fromString(reader1.getString()));
+                    deserializedAcsRouterWorkerUpdatedEventData.updatedWorkerProperties = updatedWorkerProperties;
                 } else if ("workerId".equals(fieldName)) {
-                    workerId = reader.getString();
+                    deserializedAcsRouterWorkerUpdatedEventData.workerId = reader.getString();
                 } else if ("totalCapacity".equals(fieldName)) {
-                    totalCapacity = reader.getNullable(JsonReader::getInt);
+                    deserializedAcsRouterWorkerUpdatedEventData.totalCapacity = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsRouterWorkerUpdatedEventData deserializedAcsRouterWorkerUpdatedEventData
-                = new AcsRouterWorkerUpdatedEventData(labels, tags);
-            deserializedAcsRouterWorkerUpdatedEventData.queueAssignments = queueAssignments;
-            deserializedAcsRouterWorkerUpdatedEventData.channelConfigurations = channelConfigurations;
-            deserializedAcsRouterWorkerUpdatedEventData.updatedWorkerProperties = updatedWorkerProperties;
-            deserializedAcsRouterWorkerUpdatedEventData.workerId = workerId;
-            deserializedAcsRouterWorkerUpdatedEventData.totalCapacity = totalCapacity;
             return deserializedAcsRouterWorkerUpdatedEventData;
         });
     }

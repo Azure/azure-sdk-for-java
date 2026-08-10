@@ -3,12 +3,12 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /**
  * The TranscriptionStarted model.
@@ -17,9 +17,9 @@ import java.io.IOException;
 public final class TranscriptionStarted extends CallAutomationEventBase {
 
     /*
-     * Defines the result for TranscriptionUpdate with the current status and the details about the status
+     * Defines the result for TranscriptionUpdateResult with the current status and the details about the status
      */
-    private TranscriptionUpdate transcriptionUpdateResult;
+    private TranscriptionUpdateResult transcriptionUpdateResult;
 
     /**
      * Creates an instance of TranscriptionStarted class.
@@ -29,12 +29,12 @@ public final class TranscriptionStarted extends CallAutomationEventBase {
     }
 
     /**
-     * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdate with the current status
+     * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdateResult with the current status
      * and the details about the status.
      *
      * @return the transcriptionUpdateResult value.
      */
-    public TranscriptionUpdate getTranscriptionUpdateResult() {
+    public TranscriptionUpdateResult getTranscriptionUpdateResult() {
         return this.transcriptionUpdateResult;
     }
 
@@ -64,7 +64,7 @@ public final class TranscriptionStarted extends CallAutomationEventBase {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("transcriptionUpdate".equals(fieldName)) {
-                    event.transcriptionUpdateResult = TranscriptionUpdate.fromJson(reader);
+                    event.transcriptionUpdateResult = TranscriptionUpdateResult.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

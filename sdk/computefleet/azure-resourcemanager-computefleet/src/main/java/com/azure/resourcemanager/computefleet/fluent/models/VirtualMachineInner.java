@@ -14,10 +14,15 @@ import com.azure.resourcemanager.computefleet.models.VMOperationStatus;
 import java.io.IOException;
 
 /**
- * An instant Fleet's virtual machine.
+ * A Launch mode Fleet's virtual machine.
  */
 @Immutable
 public final class VirtualMachineInner implements JsonSerializable<VirtualMachineInner> {
+    /*
+     * The name of the virtual machine.
+     */
+    private String name;
+
     /*
      * The compute RP resource id of the virtual machine.
      * subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}
@@ -25,7 +30,7 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
     private String id;
 
     /*
-     * Type of the virtual machine
+     * ARM resource type - virtual machine
      */
     private String type;
 
@@ -40,10 +45,34 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
      */
     private ApiError error;
 
+    /*
+     * The VM size of the virtual machine.
+     */
+    private String vmSize;
+
+    /*
+     * The availability zone of the virtual machine.
+     */
+    private String zone;
+
+    /*
+     * The priority of the virtual machine.
+     */
+    private String priority;
+
     /**
      * Creates an instance of VirtualMachineInner class.
      */
     private VirtualMachineInner() {
+    }
+
+    /**
+     * Get the name property: The name of the virtual machine.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -57,7 +86,7 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
     }
 
     /**
-     * Get the type property: Type of the virtual machine.
+     * Get the type property: ARM resource type - virtual machine.
      * 
      * @return the type value.
      */
@@ -85,14 +114,30 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
     }
 
     /**
-     * Validates the instance.
+     * Get the vmSize property: The VM size of the virtual machine.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the vmSize value.
      */
-    public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Get the zone property: The availability zone of the virtual machine.
+     * 
+     * @return the zone value.
+     */
+    public String zone() {
+        return this.zone;
+    }
+
+    /**
+     * Get the priority property: The priority of the virtual machine.
+     * 
+     * @return the priority value.
+     */
+    public String priority() {
+        return this.priority;
     }
 
     /**
@@ -120,7 +165,9 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("id".equals(fieldName)) {
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
                     deserializedVirtualMachineInner.id = reader.getString();
                 } else if ("operationStatus".equals(fieldName)) {
                     deserializedVirtualMachineInner.operationStatus = VMOperationStatus.fromString(reader.getString());
@@ -128,6 +175,12 @@ public final class VirtualMachineInner implements JsonSerializable<VirtualMachin
                     deserializedVirtualMachineInner.type = reader.getString();
                 } else if ("error".equals(fieldName)) {
                     deserializedVirtualMachineInner.error = ApiError.fromJson(reader);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedVirtualMachineInner.vmSize = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedVirtualMachineInner.zone = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVirtualMachineInner.priority = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -10,6 +10,16 @@
     }
   },
   {
+    "extension": "revapi.java.filter.annotated",
+    "configuration": {
+      "exclude": [
+        "@com.azure.ai.projects.implementation.utils.Beta",
+        "@com.azure.ai.agents.implementation.utils.Beta"
+
+      ]
+    }
+  },
+  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
@@ -238,7 +248,7 @@
           "code": "java.method.addedToInterface",
           "new": {
             "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform|appservice|authorization|cdn|compute|containerinstance|containerregistry|containerservice|cosmos|dns|eventhubs|keyvault|monitor|msi|network|privatedns|redis|resources|search|servicebus|sql|storage|trafficmanager).*"
+            "match": "method .* com\\.azure\\.resourcemanager\\.(?!appplatform\\.|appservice\\.|authorization\\.|cdn\\.|compute\\.|containerinstance\\.|containerregistry\\.|containerservice\\.|cosmos\\.|dns\\.|eventhubs\\.|keyvault\\.|monitor\\.|msi\\.|network\\.|privatedns\\.|redis\\.|resources\\.|search\\.|servicebus\\.|sql\\.|storage\\.|trafficmanager\\.).*"
           },
           "justification": "resourcemanager interfaces are allowed to add methods, except for the 24 specific premium libraries."
         },
@@ -302,7 +312,7 @@
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
-          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client|ClientBuilder)",
           "justification": "These are SDK metadata annotations and don't affect runtime behavior."
         },
         {
@@ -312,12 +322,11 @@
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
         },
         {
-          "code": "java.annotation.removed",
-          "new": {
-            "matcher": "regex",
-            "match": "(class|interface|method|parameter) com\\.azure\\.cosmos\\..*"
-          },
-          "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
+          "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
+          "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
         },
         {
           "code": "java.method.removed",
@@ -339,6 +348,42 @@
           "code" : "java.class.removed",
           "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
           "justification" : "Remove deprecated method"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
+          "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
+          "justification" : "Replace deprecated parameterType"
+        },
+        {
+          "code" : "java.field.typeChanged",
+          "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.OBJECT_MAPPER",
+          "justification" : "Jackson 2 to Jackson 3 migration to align with Spring Boot 4: the field type changed from com.fasterxml.jackson.databind.ObjectMapper to tools.jackson.databind.ObjectMapper. This is an intentional breaking change for these beta Spring libraries (see issue 49538)."
         },
         {
           "code": "java.method.numberOfParametersChanged",
@@ -580,12 +625,12 @@
           "justification": "Migration to azure-json."
         },
         {
-          "code": "java.class.nowFinal",
+          "code": "java.method.removed",
           "old": {
             "matcher": "regex",
-            "match": "class com.azure.resourcemanager.(eventhubs|servicebus).models.(Identity|UserAssignedIdentity)"
+            "match": "method void com\\.azure\\.resourcemanager\\..*\\.models.*::validate\\(\\)"
           },
-          "justification": "Class is now final."
+          "justification": "Do not include client-side validation for SDK generated from TypeSpec."
         },
         {
           "code": "java.method.returnTypeErasureChanged",
@@ -598,116 +643,6 @@
           "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.DeviceCodeCredentialBuilder",
           "new": "method com.azure.identity.DeviceCodeCredentialBuilder com.azure.identity.DeviceCodeCredentialBuilder::clientId(java.lang.String)",
           "justification": "Override flags this as a potential binary breaking change, but it isn't."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "code": "java.class.nowFinal",
-          "old": {
-            "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.sql\\.models\\.(DatabaseIdentity|DatabaseUserIdentity|ResourceIdentity|UserIdentity)"
-          },
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
-          "justification": "Service changed the property to readOnly."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.field.addedStaticField",
-          "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
-          "justification": "Additional protocols are supported by Web PubSub."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
         },
         {
           "ignore": true,
@@ -747,12 +682,22 @@
           "justification": "Non-breaking change in Search 05-01-2025 preview to package-private api."
         },
         {
-          "code": "java.field.enumConstantOrderChanged",
-          "old": {
-            "matcher": "regex",
-            "match": "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)"
-          },
-          "justification": "Add Accepted to ProvisioningState."
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Long com.azure.search.documents.util.SearchPagedResponse::getCount()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.lang.Double com.azure.search.documents.util.SearchPagedResponse::getCoverage()",
+          "justification": "Non-breaking change as class is final."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": "method java.util.Map<java.lang.String, java.util.List<com.azure.search.documents.models.FacetResult>> com.azure.search.documents.util.SearchPagedResponse::getFacets()",
+          "justification": "Non-breaking change as class is final."
         },
         {
           "code": "java.method.varargOverloadsOnlyDifferInVarargParameter",
@@ -764,8 +709,1441 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.search.models.CheckNameAvailabilityInput com.azure.resourcemanager.search.models.CheckNameAvailabilityInput::withType(java.lang.String)",
-          "justification": "Bug fix. type property is a constant."
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "justification": "Not a break, same method exists on its parent class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
+          },
+          "justification": "Pageable models moved to implementation package."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "new" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\.UserAssignedIdentity\\:\\:with.*\\(.*\\) @ com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ManagedClusterAddonProfileIdentity"
+          },
+          "justification": "ManagedClusterAddonProfileIdentity covariant overrides removed, inherited methods return parent type."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.eventhubs\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.eventhubs\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.eventhubs\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.eventhubs\\.models\\..*(ListResult|List)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
+          },
+          "justification": "Read-only properties' getter/setter removed in TypeSpec migration."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
+          "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
+          "oldVisibility": "public",
+          "newVisibility": "private",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AlertSeverity com.azure.resourcemanager.monitor.models.AlertSeverity::fromLong(long)",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "new": "class com.azure.resourcemanager.monitor.models.AlertSeverity",
+          "superClass": "com.azure.core.util.ExpandableStringEnum<com.azure.resourcemanager.monitor.models.AlertSeverity>",
+          "justification": "Changed due to stream-style serialization."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.monitor.models.AutoscaleNotification com.azure.resourcemanager.monitor.models.AutoscaleNotification::withOperation(java.lang.String)",
+          "justification": "The property is a constant, and hence not settable."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.compute\\.models\\.RollingUpgradeStatusCode\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "ignore": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "field com\\.azure\\.resourcemanager\\.compute\\.models\\.UpgradeState\\..*"
+          },
+          "justification": "Enum constant order change is not a breaking change."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*Resource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.keyvault.models.ProxyResourceWithoutSystemData",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
+          "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.keyvault.models.ManagedHsmResource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::location()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::tags()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.dns\\.models\\.(RecordSetListResult|ZoneListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.dns\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.dns\\.models\\.DnsResourceReference\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.ApplicationGatewayWafRuleSensitivityTypes.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.SensitivityType.NONE",
+          "justification": "Remove NonSensitivity for DDoS ruleset."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.ADVANCED",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.BASIC",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.removed",
+          "old": "field com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType.STANDARD",
+          "justification": "Service no longer defines this intrusion detection profile type; enum values were removed during TypeSpec/Swagger alignment and are not supported by the backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.CreatedByType",
+          "justification": "CreatedByType was a duplicate of com.azure.core.management.CreatedByType; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.SecurityPerimeterSystemData",
+          "justification": "SecurityPerimeterSystemData was a duplicate of com.azure.core.management.SystemData; removed during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.network.models.SecurityPerimeterSystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "new": "method com.azure.core.management.SystemData com.azure.resourcemanager.network.models.SecurityPerimeterResource::systemData()",
+          "justification": "Return type changed from duplicate SecurityPerimeterSystemData to com.azure.core.management.SystemData during codegen alignment."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.ExecutedValidation com.azure.resourcemanager.compute.models.ExecutedValidation::withStatus(com.azure.resourcemanager.compute.models.ValidationStatus)",
+          "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::autoGeneratedDomainNameLabelScope()",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::resourceGroupName()",
+          "justification": "Fix by service: the feature only exists in preview api-version."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*(List|Result)$"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:typeName\\(\\)"
+          },
+          "justification": "TypeSpec uses proper enum types for discriminator fields instead of raw strings."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:withTypeName\\(.*\\)"
+          },
+          "justification": "TypeSpec uses proper enum types for discriminator fields instead of raw strings."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode::fromInt(int)",
+          "justification": "ExpandableStringEnum changed to ExpandableEnum<Integer>. Use fromValue(Integer) instead."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*Collection"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.appservice.models.CertificatePatchResource com.azure.resourcemanager.appservice.models.CertificatePatchResource::withPassword(java.lang.String)",
+          "justification": "Bug fix, password is read-only."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\.(WorkflowOutputParameter|RemotePrivateEndpointConnection|StaticSiteUserProvidedFunctionApp|VnetValidationTestFailure)::with.*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource",
+          "justification": "Model not used."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ExpressionTraces",
+          "justification": "Model not used."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ListClusters|ListDataCenters|PartitionUsagesResult|UsagesResult)"
+          },
+          "justification": "Pageable/List models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ExtendedResourceProperties|ManagedCassandraArmResourceProperties)"
+          },
+          "justification": "Models removed as part of TypeSpec migration. Base types consolidated."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Setter return type changed from GetPropertiesResource to Resource in TypeSpec migration."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.search\\.models\\..*Result$"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com\\.azure\\.resourcemanager\\.search\\.models\\.(IdentityType|PublicNetworkAccess|SharedPrivateLinkResourceProvisioningState|SharedPrivateLinkResourceStatus|SkuName).*",
+          "justification": "Enum changed from sealed to expandable (ExpandableStringEnum) during TypeSpec migration."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters visibility reduced."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileServiceUsages|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|LocalUsers|NetworkSecurityPerimeterConfigurationList|ObjectReplicationPolicies|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobContainers.*Headers|FileSharesLeaseHeaders)\\:\\:with.*\\(.*\\)"
+          },
+          "justification": "Header model setters removed in TypeSpec migration.",
+          "code": "java.method.removed"
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.containerinstance\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerinstance\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerinstance\\.models\\.(CachedImagesListResult|CapabilitiesListResult|ContainerGroupListResult|OperationListResult|UsageListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "new" : "method void com.azure.resourcemanager.containerservice.models.MachineProperties::<init>()",
+          "justification": "Output-only immutable model's constructor visibility increased."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(.*(Result|List)(s)?|ApplicationGatewayAvailableSslPredefinedPolicies)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.TrackedResource"
+          },
+          "justification": "Common types now sourced from azure-core or ARM common types."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.network\\.models\\.EffectiveNetworkSecurityGroup\\:\\:tagMap\\(\\)"
+          },
+          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models setters are now package-private if being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.compute\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(AvailabilitySetListResult|CapacityReservationGroupListResult|CapacityReservationListResult|CloudServiceListResult|CloudServiceRoleListResult|DedicatedHostGroupListResult|DedicatedHostListResult|DedicatedHostSizeListResult|ImageListResult|ListUsagesResult|OSFamilyListResult|OSVersionListResult|OperationListResult|PrivateEndpointConnectionListResult|ProximityPlacementGroupListResult|ResourceSkusResult|RestorePointCollectionListResult|RoleInstanceListResult|RunCommandListResult|SshPublicKeysGroupListResult|UpdateDomainListResult|VirtualMachineListResult|VirtualMachineRunCommandsListResult|VirtualMachineScaleSetExtensionListResult|VirtualMachineScaleSetListResult|VirtualMachineScaleSetListSkusResult|VirtualMachineScaleSetListWithLinkResult|VirtualMachineScaleSetVMListResult|VirtualMachineSizeListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.compute\\.models\\.(CommunityGalleryImageList|CommunityGalleryImageVersionList|DiskAccessList|DiskEncryptionSetList|DiskList|DiskRestorePointList|GalleryApplicationList|GalleryApplicationVersionList|GalleryImageList|GalleryImageVersionList|GalleryInVMAccessControlProfileList|GalleryInVMAccessControlProfileVersionList|GalleryList|GalleryScriptList|GalleryScriptVersionList|GallerySoftDeletedResourceList|ResourceUriList|SharedGalleryImageList|SharedGalleryImageVersionList|SharedGalleryList|SnapshotList|VirtualMachineScaleSetListOSUpgradeHistory)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationDisplay|RedisInstanceDetails|RedisLinkedServer)::\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.redis\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.redis\\.models\\.OperationStatusResult\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.redis\\.models\\.(OperationListResult|RedisListResult|RedisCacheAccessPolicyAssignmentList|RedisFirewallRuleListResult|RedisPatchScheduleListResult|RedisCacheAccessPolicyList|PrivateLinkResourceListResult|NotificationListResponse|PrivateEndpointConnectionListResult|RedisLinkedServerWithPropertiesList)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.sql\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.sql\\.models\\.(AdministratorListResult|AzureADOnlyAuthListResult|BackupShortTermRetentionPolicyListResult|DatabaseAdvancedThreatProtectionListResult|DatabaseBlobAuditingPolicyListResult|DatabaseColumnListResult|DatabaseListResult|DatabaseOperationListResult|DatabaseSchemaListResult|DatabaseSecurityAlertListResult|DatabaseTableListResult|DatabaseUsageListResult|DatabaseVulnerabilityAssessmentListResult|DatabaseVulnerabilityAssessmentListResultAutoGenerated|DataMaskingRuleListResult|DataWarehouseUserActivitiesListResult|DeletedServerListResult|DistributedAvailabilityGroupsListResult|ElasticPoolListResult|ElasticPoolOperationListResult|EncryptionProtectorListResult|EndpointCertificateListResult|ExtendedDatabaseBlobAuditingPolicyListResult|ExtendedServerBlobAuditingPolicyListResult|FailoverGroupListResult|FirewallRuleListResult|GeoBackupPolicyListResult|ImportExportExtensionsOperationListResult|InstanceFailoverGroupListResult|InstancePoolListResult|IPv6FirewallRuleListResult|JobAgentListResult|JobCredentialListResult|JobExecutionListResult|JobListResult|JobStepListResult|JobTargetGroupListResult|JobVersionListResult|LedgerDigestUploadsListResult|LogicalDatabaseTransparentDataEncryptionListResult|LogicalServerAdvancedThreatProtectionListResult|LogicalServerSecurityAlertPolicyListResult|LongTermRetentionBackupListResult|LongTermRetentionPolicyListResult|ManagedBackupShortTermRetentionPolicyListResult|ManagedDatabaseListResult|ManagedDatabaseSecurityAlertPolicyListResult|ManagedInstanceAdministratorListResult|ManagedInstanceAzureADOnlyAuthListResult|ManagedInstanceEncryptionProtectorListResult|ManagedInstanceKeyListResult|ManagedInstanceListResult|ManagedInstanceLongTermRetentionBackupListResult|ManagedInstanceLongTermRetentionPolicyListResult|ManagedInstanceOperationListResult|ManagedInstancePrivateEndpointConnectionListResult|ManagedInstancePrivateLinkListResult|ManagedInstanceQueryStatistics|ManagedInstanceVulnerabilityAssessmentListResult|ManagedServerDnsAliasListResult|ManagedServerSecurityAlertPolicyListResult|ManagedTransparentDataEncryptionListResult|OperationListResult|OutboundEnvironmentEndpointCollection|OutboundFirewallRuleListResult|PrivateEndpointConnectionListResult|PrivateLinkResourceListResult|RecoverableDatabaseListResult|RecoverableManagedDatabaseListResult|ReplicationLinkListResult|RestorableDroppedDatabaseListResult|RestorableDroppedManagedDatabaseListResult|RestorePointListResult|SecurityEventCollection|SensitivityLabelListResult|ServerBlobAuditingPolicyListResult|ServerConnectionPolicyListResult|ServerDevOpsAuditSettingsListResult|ServerDnsAliasListResult|ServerKeyListResult|ServerListResult|ServerOperationListResult|ServerTrustCertificatesListResult|ServerTrustGroupListResult|ServerUsageListResult|ServerVulnerabilityAssessmentListResult|SubscriptionUsageListResult|SyncAgentLinkedDatabaseListResult|SyncAgentListResult|SyncDatabaseIdListResult|SyncFullSchemaPropertiesListResult|SyncGroupListResult|SyncGroupLogListResult|SyncMemberListResult|TimeZoneListResult|TopQueriesListResult|UsageListResult|VirtualClusterListResult|VirtualNetworkRuleListResult|VulnerabilityAssessmentScanRecordListResult|WorkloadClassifierListResult|WorkloadGroupListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.sql.models.SecurityAlertPolicyNameAutoGenerated",
+          "justification": "Renamed to SecurityAlertPolicyName."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old": "class com\\.azure\\.resourcemanager\\.sql\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
+          "code": "java\\.field\\.enumConstantOrderChanged",
+          "old": "field com\\.azure\\.resourcemanager\\.sql\\.models\\.SecurityAlertPolicyState\\.(DISABLED|ENABLED)",
+          "justification": "Enum constant order changed due to TypeSpec generation."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours::fromInt(int)",
+          "justification": "Custom factory method removed in TypeSpec migration."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.Boolean com.azure.resourcemanager.sql.models.ManagedInstanceEditionCapability::zoneRedundant()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState",
+          "justification": "Replaced by ProvisioningState."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState com.azure.resourcemanager.sql.models.ManagedInstanceUpdate::provisioningState()",
+          "justification": "ManagedInstancePropertiesProvisioningState replaced by ProvisioningState."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.sql.models.VirtualClusterUpdate::family()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.sql.models.VirtualClusterUpdate::maintenanceConfigurationId()",
+          "justification": "Property removed from API spec."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.authorization\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.authorization\\.models\\.(ClassicAdministratorListResult|DenyAssignmentListResult|EligibleChildResourcesListResult|PermissionGetResult|ProviderOperationsMetadataListResult|RoleAssignmentListResult|RoleAssignmentScheduleInstanceListResult|RoleAssignmentScheduleListResult|RoleAssignmentScheduleRequestListResult|RoleDefinitionListResult|RoleEligibilityScheduleInstanceListResult|RoleEligibilityScheduleListResult|RoleEligibilityScheduleRequestListResult|RoleManagementPolicyAssignmentListResult|RoleManagementPolicyListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.servicebus\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.servicebus\\.models\\.PrivateLinkResource\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.servicebus\\.models\\.(SBNamespaceListResult|SBTopicListResult|ArmDisasterRecoveryListResult|SBSubscriptionListResult|SBAuthorizationRuleListResult|PrivateEndpointConnectionListResult|RuleListResult|OperationListResult|MigrationConfigListResult|NetworkRuleSetListResult|SBQueueListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.servicebus.models.Action",
+          "justification": "Action no longer has subclass after TypeSpec migration. SqlRuleAction was a redundant allOf wrapper with identical fields."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.servicebus.models.SqlRuleAction",
+          "justification": "SqlRuleAction was a redundant Swagger allOf wrapper around Action with no extra properties. TypeSpec correctly simplified to single Action model."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.msi\\.models\\..*(ListResult|List)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.msi\\.models\\.OperationDisplay\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.privatedns\\.models\\.(PrivateZoneListResult|RecordSetListResult|VirtualNetworkLinkListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.monitor\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method java.util.List<com.azure.resourcemanager.monitor.models.AlertRuleLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition::anyOf()",
+          "justification": "ActivityLogAlertLeafCondition replaced by AlertRuleAnyOfOrLeafCondition in TypeSpec migration."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.ConditionOperator.*"
+          },
+          "justification": "ConditionOperator changed from enum to ExpandableStringEnum; enum-specific methods removed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.monitor.models.MetricAlertAction::webhookProperties()",
+          "justification": "webhookProperties() removed in TypeSpec migration."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\..*(List|ListResult|Collection|Response)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\.(DataContainer|DataStatus|OnboardingStatus|WorkspaceInfo|MetricAlertStatus|Operation|OperationDisplay|AlertRuleLeafCondition)"
+          },
+          "justification": "Classes only present in preview API versions not included in current TypeSpec scope."
+        },
+        {
+          "code": "java.class.kindChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.class.noLongerImplementsInterface",
+          "old" : {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: enum changed to ExpandableStringEnum."
+        },
+        {
+          "code": "java.class.noLongerInheritsFromClass",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: base class changed."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old" : {
+            "matcher": "regex",
+            "match": "(enum|class) com\\.azure\\.resourcemanager\\.monitor\\.models\\..*"
+          },
+          "justification": "TypeSpec migration: super type changed."
+        },
+        {
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition> com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::allOf()",
+          "justification": "TypeSpec migration: allOf() return type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
+        },
+        {
+          "code": "java.method.parameterTypeParameterChanged",
+          "old" : "parameter com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition::withAllOf(===java.util.List<com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition>===)",
+          "justification": "TypeSpec migration: withAllOf() parameter type element changed from ActivityLogAlertLeafCondition to AlertRuleAnyOfOrLeafCondition."
+        },
+
+        {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.monitor.models.ConditionOperator::<init>(java.lang.String)",
+          "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, constructor visibility increased."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.monitor.models.ConditionOperator[] com.azure.resourcemanager.monitor.models.ConditionOperator::values()",
+          "justification": "TypeSpec migration: ConditionOperator changed from enum to ExpandableStringEnum, values() return type changed."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.monitor\\.models\\.CategoryType.*"
+          },
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum; enum-specific methods removed. Matches swagger x-ms-enum modelAsString:true intent."
+        },
+        {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.monitor.models.CategoryType::<init>(java.lang.String)",
+          "new" : "method void com.azure.resourcemanager.monitor.models.CategoryType::<init>()",
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum, constructor visibility increased."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.monitor.models.CategoryType[] com.azure.resourcemanager.monitor.models.CategoryType::values()",
+          "justification": "TypeSpec migration: CategoryType changed from enum to ExpandableStringEnum, values() return type changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.enumConstantOrderChanged",
+          "old": "field com.azure.search.documents.SearchServiceVersion.V2026_04_01",
+          "justification": "Non-breaking change: new API version V2026_05_01_PREVIEW inserted before existing version."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityIncreased",
+          "old": {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\..*::<init>\\(.*\\)"
+          },
+          "justification": "Non-breaking change: constructor visibility increased on final classes in knowledgebases preview package."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieve\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieve() signature restructured, knowledgeBaseName removed from parameters."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.KnowledgeBaseRetrieval(Async)?Client::retrieveWithResponse\\(.*\\)"
+          },
+          "justification": "Intentional breaking change in knowledgebases preview: retrieveWithResponse() signature restructured."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.search.documents.knowledgebases.models.AIServices",
+          "justification": "Intentional rename in knowledgebases preview: AIServices renamed to AiServices per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeBaseModelWebSummarizationActivityRecord::get(Input|Output)Tokens\\(\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getInputTokens()/getOutputTokens() renamed to getInputTokensCount()/getOutputTokensCount() per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.search\\.documents\\.knowledgebases\\.models\\.KnowledgeSourceIngestionParameters::(get|set)AIServices\\(.*\\)"
+          },
+          "justification": "Intentional rename in knowledgebases preview: getAIServices()/setAIServices() renamed to getAiServices()/setAiServices() following AIServices to AiServices rename per archboard guidance."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.AgentsPagedResultOptimizationCandidate",
+          "justification": "Fixed issue with spec causing bad generation of pageable model. This class is no longer needed."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.DeleteMemoryResponse",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.ai.agents.models.OptimizationCandidate::getEvalId()",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.ai.agents.models.OptimizationCandidate::getEvalRunId()",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.agents.models.OptimizationTaskResult::getTokens()",
+          "new": "method long com.azure.ai.agents.models.OptimizationTaskResult::getTokens()",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.PromoteCandidateRequest",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.PromoteCandidateResponse",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.SessionFileWriteResponse",
+          "justification": "Beta operation assocatied change."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter void com.azure.ai.projects.models.EvaluationScheduleTask::<init>(java.lang.String, ===com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun===)",
+          "justification": "Breaking change in beta operation: EvaluationScheduleTask constructor parameter type changed from EvaluationScheduleTaskEvalRun to Map."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun com.azure.ai.projects.models.EvaluationScheduleTask::getEvalRun()",
+          "justification": "Breaking change in beta operation: getEvalRun() return type changed from EvaluationScheduleTaskEvalRun to Map."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EvaluationScheduleTaskEvalRun",
+          "justification": "Breaking change in beta operation: EvaluationScheduleTaskEvalRun class removed, replaced by Map<String, BinaryData>."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.projects.models.ModelSamplingParams::getMaxCompletionTokens()",
+          "justification": "Breaking change in beta operation: return type changed from primitive int to boxed Integer to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method int com.azure.ai.projects.models.ModelSamplingParams::getSeed()",
+          "justification": "Breaking change in beta operation: return type changed from primitive int to boxed Integer to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTemperature()",
+          "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "old": "method double com.azure.ai.projects.models.ModelSamplingParams::getTopP()",
+          "justification": "Breaking change in beta operation: return type changed from primitive double to boxed Double to support optional values."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeParameterChanged",
+          "old": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.FilesFileDetails>===)",
+          "new": "parameter void com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::<init>(===java.util.List<com.azure.ai.projects.models.SkillFileDetails>===)",
+          "parameterIndex": "0",
+          "justification": "Breaking change in beta operations."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeTypeParametersChanged",
+          "old": "method java.util.List<com.azure.ai.projects.models.FilesFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "new": "method java.util.List<com.azure.ai.projects.models.SkillFileDetails> com.azure.ai.projects.models.CreateSkillVersionFromFilesBody::getFiles()",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.DispatchRoutineResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.EvaluatorCredentialRequest",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.FilesFileDetails",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelCredentialRequest",
+          "justification": "ADD YOUR EXPLANATION FOR THE NECESSITY OF THIS CHANGE"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadRequest",
+          "justification": "Breaking change in beta operation."
+
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.ModelPendingUploadResponse",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.UpdateModelVersionRequest",
+          "justification": "Breaking change in beta operation."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.agents\\.(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client"
+          },
+          "justification": "Beta operations were moved out of the main agents client into dedicated beta clients: the AgentSessionFiles, MemoryStores and Toolboxes sub-clients are removed and their operations now live on BetaAgentsClient/BetaAgentsAsyncClient, BetaMemoryStoresClient/BetaMemoryStoresAsyncClient and BetaToolboxesClient/BetaToolboxesAsyncClient."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.ai\\.agents\\.(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client com\\.azure\\.ai\\.agents\\.AgentsClientBuilder::build(AgentSessionFiles|MemoryStores|Toolboxes)(Async)?Client\\(\\)"
+          },
+          "justification": "Beta operations were moved into dedicated beta clients: the AgentsClientBuilder factory methods for the AgentSessionFiles, MemoryStores and Toolboxes sub-clients are removed and replaced by buildBetaAgentsClient/buildBetaMemoryStoresClient/buildBetaToolboxesClient (and their async variants)."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::(createSession|getSession|listSessions|deleteSession|stopSession|getSessionLogStream|cancelOptimizationJob|createOptimizationJob|deleteOptimizationJob|getOptimizationJob|listOptimizationJobs|getOptimizationCandidate|listOptimizationCandidates|promoteOptimizationCandidate|createAgentVersionFromCode|updateAgentDetails|updateAgentFromCode|downloadAgentCode)\\w*\\(.*\\)"
+          },
+          "justification": "Beta operations were moved out of AgentsClient/AgentsAsyncClient into the dedicated beta clients: session, optimization-job/candidate and agent-version/code operations were removed from the main client and now live on BetaAgentsClient/BetaAgentsAsyncClient."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.numberOfParametersChanged",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::createAgentVersion\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: createAgentVersion is retained on AgentsClient/AgentsAsyncClient but the AgentDefinitionOptInKeys parameter was dropped from its signature. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.agents\\.Agents(Async)?Client::createAgentVersion\\(.*\\)"
+          },
+          "justification": "Breaking change in beta operation: the createAgentVersion overload taking AgentDefinitionOptInKeys (and AgentBlueprintReference) was removed from AgentsClient/AgentsAsyncClient. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly; callers that need to set a blueprint reference should supply the blueprint reference via the CreateAgentVersionInput model instead."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "enum com\\.azure\\.ai\\.agents\\.models\\.(AgentDefinitionOptInKeys|FoundryFeaturesOptInKeys)"
+          },
+          "justification": "Breaking change in beta operation: the AgentDefinitionOptInKeys and FoundryFeaturesOptInKeys opt-in enums were removed from the public models package and relocated to implementation.models (made internal). The opt-in key is now sent implicitly, so users are no longer meant to use the opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.agents.models.OptimizationCandidatePagedResult",
+          "justification": "Breaking change in beta operation: OptimizationCandidatePagedResult was removed; listOptimizationCandidates now returns standard PagedIterable<OptimizationCandidate> instead of a custom paged-result wrapper."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.ai\\.projects\\.(DataGenerationJobs|EvaluationTaxonomies|Evaluators|Insights|Models|RedTeams|Routines|Schedules|Skills)(Async)?Client"
+          },
+          "justification": "Beta operations were moved out of the AI Projects client into dedicated beta clients: these sub-clients are removed and their operations now live on the matching BetaEvaluationTaxonomies/BetaEvaluators/BetaInsights/BetaModels/BetaRedTeams/BetaRoutines/BetaSchedules/BetaSkills clients (data generation job operations moved onto BetaDatasetsClient)."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method com\\.azure\\.ai\\.projects\\.\\w+ com\\.azure\\.ai\\.projects\\.AIProjectClientBuilder::build(DataGenerationJobs|EvaluationTaxonomies|Evaluators|Insights|Models|RedTeams|Routines|Schedules|Skills)(Async)?Client\\(\\)"
+          },
+          "justification": "Beta operations were moved into dedicated beta clients: the AIProjectClientBuilder factory methods for these sub-clients are removed and replaced by the corresponding buildBeta*Client factory methods (and their async variants)."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "enum com.azure.ai.projects.models.FoundryFeaturesOptInKeys",
+          "justification": "Breaking change in beta operation: the FoundryFeaturesOptInKeys opt-in enum was removed from the public models package and relocated to implementation.models (made internal). The opt-in key is now sent implicitly, so users are no longer meant to use the opt-in keys directly."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.Skill",
+          "justification": "Breaking change in beta operation: the Skill model was removed and replaced by the restructured SkillDetails/SkillVersion (and related) models."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.ai\\.projects\\.EvaluationRules(Async)?Client::createOrUpdateEvaluationRule\\(.*FoundryFeaturesOptInKeys\\)"
+          },
+          "justification": "Breaking change in beta operation: EvaluationRulesClient/EvaluationRulesAsyncClient are retained; only the overload of createOrUpdateEvaluationRule that took FoundryFeaturesOptInKeys was removed. The opt-in key is now sent implicitly, so users are no longer meant to pass opt-in keys directly."
         }
       ]
     }

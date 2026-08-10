@@ -91,40 +91,120 @@ public abstract class ChangeFeedState extends JsonSerializable {
     public abstract void populateRequest(RxDocumentServiceRequest request, int maxItemCount);
 
     public List<CompositeContinuationToken> extractContinuationTokens() {
-        return extractContinuationTokens(PartitionKeyInternalHelper.FullRange).getLeft();
+        return getSortedContinuationTokens();
     }
 
-    private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokens(
-        Range<String> effectiveRange) {
-
+    /**
+     * Extracts a {@link ChangeFeedState} for a single effective range.
+     * <p>
+     * For callers that need to extract states for multiple ranges from the same
+     * continuation, prefer {@link #extractForEffectiveRanges(List)} which sorts
+     * the continuation tokens once and reuses the sorted list across all ranges.
+     *
+     * @param effectiveRange the partition range to extract for
+     * @return a new {@link ChangeFeedState} scoped to the given range
+     */
+    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
         checkNotNull(effectiveRange);
+        return extractForEffectiveRanges(Collections.singletonList(effectiveRange)).get(0);
+    }
 
-        List<CompositeContinuationToken> extractedContinuationTokens = new ArrayList<>();
+    /**
+     * Extracts a list of {@link ChangeFeedState} instances, one per input effective range.
+     * <p>
+     * Continuation tokens are sorted once (O(T log T)) and then each range lookup uses
+     * binary search (O(log T)) to find the starting position, followed by a forward scan
+     * through contiguous overlapping tokens. This follows the same binary search pattern as
+     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}
+     * and assumes non-overlapping, contiguous partition ranges (Cosmos DB contract).
+     * <p>
+     * The returned list preserves the input order: result.get(i) corresponds to
+     * effectiveRanges.get(i).
+     *
+     * @param effectiveRanges the list of partition ranges to extract for
+     * @return a list of {@link ChangeFeedState}, one per input range, in the same order
+     */
+    public List<ChangeFeedState> extractForEffectiveRanges(List<Range<String>> effectiveRanges) {
+        checkNotNull(effectiveRanges, "Argument 'effectiveRanges' must not be null.");
+        checkArgument(!effectiveRanges.isEmpty(), "Argument 'effectiveRanges' must not be empty.");
+
+        List<CompositeContinuationToken> sortedTokens = getSortedContinuationTokens();
+
+        List<ChangeFeedState> results = new ArrayList<>(effectiveRanges.size());
+        for (Range<String> effectiveRange : effectiveRanges) {
+            checkNotNull(effectiveRange, "Effective range must not be null.");
+
+            Pair<List<CompositeContinuationToken>, Range<String>> extracted =
+                extractContinuationTokensForRange(effectiveRange, sortedTokens);
+
+            List<CompositeContinuationToken> tokens = extracted.getLeft();
+            Range<String> totalRange = extracted.getRight();
+
+            FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
+
+            results.add(new ChangeFeedStateV1(
+                this.getContainerRid(),
+                feedRange,
+                this.getMode(),
+                this.getStartFromSettings(),
+                FeedRangeContinuation.create(
+                    this.getContainerRid(),
+                    feedRange,
+                    tokens
+                )
+            ));
+        }
+
+        return results;
+    }
+
+    private List<CompositeContinuationToken> getSortedContinuationTokens() {
         FeedRangeContinuation continuation = this.getContinuation();
+        if (continuation == null) {
+            return Collections.emptyList();
+        }
+
+        List<CompositeContinuationToken> sortedTokens = new ArrayList<>();
+        Collections.addAll(sortedTokens, continuation.getCurrentContinuationTokens());
+        sortedTokens.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
+        return sortedTokens;
+    }
+
+    /**
+     * Finds overlapping continuation tokens for an effective range using binary search
+     * to locate the starting position, then scanning forward through contiguous overlapping
+     * tokens. Follows the same pattern as
+     * {@link com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap#getOverlappingRanges}.
+     */
+    private Pair<List<CompositeContinuationToken>, Range<String>> extractContinuationTokensForRange(
+        Range<String> effectiveRange,
+        List<CompositeContinuationToken> sortedTokens) {
+
+        List<CompositeContinuationToken> extractedTokens = new ArrayList<>();
         String min = null;
         String max = null;
-        if (continuation != null) {
-            List<CompositeContinuationToken> continuationTokensSnapshot = new ArrayList<>();
-            Collections.addAll(continuationTokensSnapshot, continuation.getCurrentContinuationTokens());
-            continuationTokensSnapshot.sort(ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
 
-            for (CompositeContinuationToken compositeContinuationToken : continuationTokensSnapshot) {
-                if (Range.checkOverlapping(effectiveRange, compositeContinuationToken.getRange())) {
-                    Range<String> overlappingRange =
-                        getOverlappingRange(effectiveRange, compositeContinuationToken.getRange());
+        if (!sortedTokens.isEmpty()) {
+            int startIndex = Collections.binarySearch(
+                sortedTokens,
+                new CompositeContinuationToken(null, effectiveRange),
+                ContinuationTokenRangeComparator.SINGLETON_INSTANCE);
+            if (startIndex < 0) {
+                startIndex = Math.max(0, -startIndex - 2);
+            }
 
-                    extractedContinuationTokens.add(
-                        new CompositeContinuationToken(compositeContinuationToken.getToken(),
-                            overlappingRange));
-
+            for (int i = startIndex; i < sortedTokens.size(); i++) {
+                CompositeContinuationToken token = sortedTokens.get(i);
+                if (Range.checkOverlapping(effectiveRange, token.getRange())) {
+                    Range<String> overlappingRange = getOverlappingRange(effectiveRange, token.getRange());
+                    extractedTokens.add(new CompositeContinuationToken(
+                        token.getToken(), overlappingRange));
                     if (min == null) {
                         min = overlappingRange.getMin();
                     }
                     max = overlappingRange.getMax();
-                } else {
-                    if (extractedContinuationTokens.size() > 0) {
-                        break;
-                    }
+                } else if (!extractedTokens.isEmpty()) {
+                    break;
                 }
             }
         }
@@ -135,31 +215,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
             true,
             false);
 
-        return Pair.of(extractedContinuationTokens, totalRange);
-    }
-
-    public ChangeFeedState extractForEffectiveRange(Range<String> effectiveRange) {
-        checkNotNull(effectiveRange);
-
-        Pair<List<CompositeContinuationToken>, Range<String>> effectiveTokensAndMinMax =
-            this.extractContinuationTokens(effectiveRange);
-
-        List<CompositeContinuationToken> extractedContinuationTokens = effectiveTokensAndMinMax.getLeft();
-        Range<String> totalRange = effectiveTokensAndMinMax.getRight();
-
-        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(totalRange);
-
-        return new ChangeFeedStateV1(
-            this.getContainerRid(),
-            feedRange,
-            this.getMode(),
-            this.getStartFromSettings(),
-            FeedRangeContinuation.create(
-                this.getContainerRid(),
-                feedRange,
-                extractedContinuationTokens
-            )
-        );
+        return Pair.of(extractedTokens, totalRange);
     }
 
     private Range<String> getOverlappingRange(Range<String> left, Range<String> right) {

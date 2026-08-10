@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The Analytics query. Learn more about the [Analytics query
- * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
+ * The Analytics query. Learn more about the
+ * [Analytics query syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
  */
 @Fluent
 public final class QueryBody implements JsonSerializable<QueryBody> {

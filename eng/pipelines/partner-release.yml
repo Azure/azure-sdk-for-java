@@ -33,15 +33,9 @@ extends:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
 
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipCheckoutNone: true
-              Repositories:
-                - Name: Azure/azure-sdk-for-java
-                  Commitish: $(Build.SourceVersion)
-                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+          - checkout: self
+            fetchDepth: 1
+            path: azure-sdk-for-java
 
           - task: AzurePowerShell@5
             displayName: 'Copy from azuresdkpartnerdrops'
@@ -76,6 +70,11 @@ extends:
           - download: current
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
+
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed

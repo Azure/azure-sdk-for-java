@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -24,6 +25,7 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
@@ -53,7 +55,6 @@ import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -668,14 +669,16 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
         assertThat(sourceConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sourceConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sourceConfig.getThroughputControlConfig()).isInstanceOf(CosmosSDKThroughputControlConfig.class);
+        CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) sourceConfig.getThroughputControlConfig();
+        assertThat(sdkConfig.getThroughputControlAccountConfig()).isNull();
         assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
-        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
-        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+        assertThat(sdkConfig.getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sdkConfig.getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sdkConfig.getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sdkConfig.getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sdkConfig.getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sdkConfig.getGlobalThroughputControlExpireInterval()).isNull();
     }
 
     @Test(groups = { "unit" })
@@ -1044,6 +1047,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughput", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.priorityLevel", "None", true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.throughputBucket", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),

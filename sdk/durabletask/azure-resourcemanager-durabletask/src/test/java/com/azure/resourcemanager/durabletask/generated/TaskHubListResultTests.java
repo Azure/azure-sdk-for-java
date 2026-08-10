@@ -12,8 +12,8 @@ public final class TaskHubListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskHubListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dashboardUrl\":\"zndlikwy\"},\"id\":\"gfgibm\",\"name\":\"dgak\",\"type\":\"qsrxybzqqed\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"iqfouflmmnkz\"},\"id\":\"odmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"}],\"nextLink\":\"gcue\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"zj\"},\"id\":\"yegu\",\"name\":\"lhbxxhejjzzvdud\",\"type\":\"wdslfhotwmcy\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"jnpg\"},\"id\":\"ftadehxnltyfs\",\"name\":\"ppusuesnzwdejba\",\"type\":\"orxzdmohctbqvud\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"nvowgujju\"},\"id\":\"dkcglhsl\",\"name\":\"zj\",\"type\":\"yggdtjixh\"},{\"properties\":{\"provisioningState\":\"Provisioning\",\"dashboardUrl\":\"qweykhmenev\"},\"id\":\"exfwhy\",\"name\":\"cibvyvdcsitynn\",\"type\":\"amdecte\"}],\"nextLink\":\"iqscjeypv\"}")
             .toObject(TaskHubListResult.class);
-        Assertions.assertEquals("gcue", model.nextLink());
+        Assertions.assertEquals("iqscjeypv", model.nextLink());
     }
 }

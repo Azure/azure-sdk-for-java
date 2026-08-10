@@ -21,7 +21,7 @@ public final class ScheduledActionResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledActionResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Hibernate\",\"startTime\":\"2020-12-28T00:18:51Z\",\"endTime\":\"2021-09-16T11:30:17Z\",\"schedule\":{\"scheduledTime\":\"ytxhp\",\"timeZone\":\"xbzpfzab\",\"requestedWeekDays\":[\"Tuesday\",\"All\",\"Tuesday\",\"All\"],\"requestedMonths\":[\"October\",\"July\"],\"requestedDaysOfTheMonth\":[1557005906],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"vplwzbhv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"osvmk\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Succeeded\"},\"id\":\"l\",\"name\":\"mg\",\"type\":\"xnkjzkdesl\"}],\"nextLink\":\"lopwiyig\"}")
+            "{\"value\":[{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Hibernate\",\"startTime\":\"2020-12-28T00:18:51Z\",\"endTime\":\"2021-09-16T11:30:17Z\",\"schedule\":{\"scheduledTime\":\"ytxhp\",\"timeZone\":\"xbzpfzab\",\"requestedWeekDays\":[\"Tuesday\",\"All\",\"Tuesday\",\"All\"],\"requestedMonths\":[\"October\",\"July\"],\"requestedDaysOfTheMonth\":[1557005906],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"vplwzbhv\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"osvmk\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Succeeded\",\"resourceNotificationSettings\":[{\"destination\":\"gmgsxnkjzkde\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]},\"id\":\"pwiyig\",\"name\":\"xpkd\",\"type\":\"zb\"}],\"nextLink\":\"uebbaumnyqup\"}")
             .toObject(ScheduledActionResourcesListResult.class);
         Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, model.value().get(0).properties().resourceType());
         Assertions.assertEquals(ScheduledActionType.HIBERNATE, model.value().get(0).properties().actionType());
@@ -47,6 +47,6 @@ public final class ScheduledActionResourcesListResultTests {
             model.value().get(0).properties().notificationSettings().get(0).language());
         Assertions.assertTrue(model.value().get(0).properties().notificationSettings().get(0).disabled());
         Assertions.assertFalse(model.value().get(0).properties().disabled());
-        Assertions.assertEquals("lopwiyig", model.nextLink());
+        Assertions.assertEquals("uebbaumnyqup", model.nextLink());
     }
 }

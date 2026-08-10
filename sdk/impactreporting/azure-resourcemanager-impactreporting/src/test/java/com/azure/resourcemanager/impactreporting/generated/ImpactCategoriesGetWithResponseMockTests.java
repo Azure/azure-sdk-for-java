@@ -21,7 +21,7 @@ public final class ImpactCategoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"categoryId\":\"mnyyazt\",\"parentCategoryId\":\"twwrqp\",\"description\":\"dckzywbiexz\",\"requiredImpactProperties\":[{\"name\":\"ue\",\"allowedValues\":[\"bxu\"]},{\"name\":\"wbhqwal\",\"allowedValues\":[\"yoxa\",\"pdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"]},{\"name\":\"dbpgnxytxhp\",\"allowedValues\":[\"zpfzabglc\",\"hxw\"]}]},\"id\":\"tyq\",\"name\":\"klbb\",\"type\":\"vplwzbhv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"categoryId\":\"qftiy\",\"parentCategoryId\":\"rnkcqvyxlw\",\"description\":\"lsicohoqqnwv\",\"requiredImpactProperties\":[{\"name\":\"avwhheunm\",\"allowedValues\":[\"gyxzk\",\"noc\",\"koklya\"]}]},\"id\":\"conuqszfkbeype\",\"name\":\"rmjmwvvjektc\",\"type\":\"senhwlrs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,13 @@ public final class ImpactCategoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImpactCategory response
-            = manager.impactCategories().getWithResponse("qlfktsths", com.azure.core.util.Context.NONE).getValue();
+            = manager.impactCategories().getWithResponse("tmryw", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mnyyazt", response.properties().categoryId());
-        Assertions.assertEquals("twwrqp", response.properties().parentCategoryId());
-        Assertions.assertEquals("dckzywbiexz", response.properties().description());
-        Assertions.assertEquals("ue", response.properties().requiredImpactProperties().get(0).name());
-        Assertions.assertEquals("bxu", response.properties().requiredImpactProperties().get(0).allowedValues().get(0));
+        Assertions.assertEquals("qftiy", response.properties().categoryId());
+        Assertions.assertEquals("rnkcqvyxlw", response.properties().parentCategoryId());
+        Assertions.assertEquals("lsicohoqqnwv", response.properties().description());
+        Assertions.assertEquals("avwhheunm", response.properties().requiredImpactProperties().get(0).name());
+        Assertions.assertEquals("gyxzk",
+            response.properties().requiredImpactProperties().get(0).allowedValues().get(0));
     }
 }

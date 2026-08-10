@@ -69,17 +69,6 @@ public final class StandbyContainerGroupPoolPrediction
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (forecastValues() != null) {
-            forecastValues().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

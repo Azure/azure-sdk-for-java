@@ -184,6 +184,97 @@ public interface Applications {
     void startRollback(String resourceGroupName, String clusterName, String applicationName, Context context);
 
     /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for updating an application upgrade.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters, Context context);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters, Context context);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param parameters The parameters for restarting a deployed code package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters, Context context);
+
+    /**
      * Get a Service Fabric managed application resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 

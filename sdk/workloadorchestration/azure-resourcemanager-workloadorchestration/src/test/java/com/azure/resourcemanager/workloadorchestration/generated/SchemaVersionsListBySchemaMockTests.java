@@ -22,7 +22,7 @@ public final class SchemaVersionsListBySchemaMockTests {
     @Test
     public void testListBySchema() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"lfcldu\",\"provisioningState\":\"Canceled\"},\"eTag\":\"rds\",\"id\":\"wcobie\",\"name\":\"stmninwjizcilng\",\"type\":\"gshejjtbxqmulux\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"efqyhqotoihiqaky\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"brkwpzdqt\",\"id\":\"cspodaqax\",\"name\":\"ipietgbe\",\"type\":\"jfulbmoic\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class SchemaVersionsListBySchemaMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SchemaVersion> response
-            = manager.schemaVersions().listBySchema("epqw", "ixmonstshiyxg", com.azure.core.util.Context.NONE);
+        PagedIterable<SchemaVersion> response = manager.schemaVersions()
+            .listBySchema("jylmbkzudnigr", "ihotjewlpxuzzjg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lfcldu", response.iterator().next().properties().value());
+        Assertions.assertEquals("efqyhqotoihiqaky", response.iterator().next().properties().value());
     }
 }

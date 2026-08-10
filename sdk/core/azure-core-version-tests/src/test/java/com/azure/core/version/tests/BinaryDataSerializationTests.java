@@ -242,7 +242,7 @@ public class BinaryDataSerializationTests {
                 return true;
             } else if (listProperty != null && other.listProperty == null) {
                 return false;
-            } else if (listProperty == null && other.listProperty != null) {
+            } else if (listProperty == null) {
                 return false;
             }
 
@@ -291,7 +291,7 @@ public class BinaryDataSerializationTests {
                 return true;
             } else if (mapProperty != null && other.mapProperty == null) {
                 return false;
-            } else if (mapProperty == null && other.mapProperty != null) {
+            } else if (mapProperty == null) {
                 return false;
             }
 

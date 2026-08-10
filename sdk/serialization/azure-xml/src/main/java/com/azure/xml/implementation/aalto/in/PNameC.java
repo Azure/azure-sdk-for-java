@@ -27,16 +27,8 @@ import com.azure.xml.implementation.aalto.impl.ErrorConsts;
  * work as expected. As such, these should only be used as temporary names.
  */
 public final class PNameC extends PName {
-    /**
-     * Since the hash may be calculated different from the way eventual
-     * String's hash will be (right now it is not), we better store
-     * "our" hash here.
-     */
-    private final int mHash;
-
     public PNameC(String pname, String prefix, String ln, int hash) {
-        super(pname, prefix, ln);
-        mHash = hash;
+        super(pname, prefix, ln, hash);
     }
 
     @Override
@@ -119,19 +111,23 @@ public final class PNameC extends PName {
         return 0; // never gets here
     }
 
-    /*
-    //////////////////////////////////////////////////////////
-    // Redefined standard methods
-    //////////////////////////////////////////////////////////
-     */
-
-    /**
-     * Whether we should use internal hash, or the hash of prefixed
-     * name string itself is an open question. For now, let's use
-     * former.
-     */
     @Override
-    public int hashCode() {
-        return mHash;
+    public boolean equals(int quad1, int quad2) {
+        return false;
+    }
+
+    @Override
+    public boolean equals(int[] quads, int qlen) {
+        return false;
+    }
+
+    @Override
+    public boolean hashEquals(int h, int quad1, int quad2) {
+        return false;
+    }
+
+    @Override
+    public boolean hashEquals(int h, int[] quads, int qlen) {
+        return false;
     }
 }

@@ -59,7 +59,9 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
             CosmosAsyncContainer testContainer =
                 createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), 18000);
 
-            List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                testContainer,
+                "get feed ranges for change feed continuation token test container");
             assertThat(feedRanges.size()).isEqualTo(3);
 
             // create few items into the container
@@ -159,7 +161,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
     @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
-        safeCloseAsync(this.client);
+        safeClose(this.client);
     }
 
     private static class TestItem {

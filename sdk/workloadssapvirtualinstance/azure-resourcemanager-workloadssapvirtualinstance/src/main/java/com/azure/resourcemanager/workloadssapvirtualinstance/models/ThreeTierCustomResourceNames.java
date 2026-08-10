@@ -38,14 +38,6 @@ public class ThreeTierCustomResourceNames implements JsonSerializable<ThreeTierC
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -28,6 +28,12 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     private String name;
 
     /*
+     * The max number of upgrades that can run concurrently across all groups in this stage, resolved from the
+     * UpdateStrategy.UpdateStage.maxConcurrency value.
+     */
+    private Integer maxConcurrency;
+
+    /*
      * The list of groups to be updated as part of this UpdateStage.
      */
     private List<UpdateGroupStatus> groups;
@@ -72,6 +78,16 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     }
 
     /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency value.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public Integer maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
      * Get the groups property: The list of groups to be updated as part of this UpdateStage.
      * 
      * @return the groups value.
@@ -108,29 +124,6 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (groups() != null) {
-            groups().forEach(e -> e.validate());
-        }
-        if (beforeGates() != null) {
-            beforeGates().forEach(e -> e.validate());
-        }
-        if (afterGates() != null) {
-            afterGates().forEach(e -> e.validate());
-        }
-        if (afterStageWaitStatus() != null) {
-            afterStageWaitStatus().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -158,6 +151,8 @@ public final class UpdateStageStatus implements JsonSerializable<UpdateStageStat
                     deserializedUpdateStageStatus.status = UpdateStatus.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedUpdateStageStatus.name = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateStageStatus.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else if ("groups".equals(fieldName)) {
                     List<UpdateGroupStatus> groups = reader.readArray(reader1 -> UpdateGroupStatus.fromJson(reader1));
                     deserializedUpdateStageStatus.groups = groups;

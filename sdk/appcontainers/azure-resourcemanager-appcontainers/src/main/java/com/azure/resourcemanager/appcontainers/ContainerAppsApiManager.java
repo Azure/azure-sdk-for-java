@@ -41,11 +41,16 @@ import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsRevis
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsSessionPoolsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ContainerAppsSourceControlsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.DaprComponentsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.HttpRouteConfigsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JavaComponentsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsExecutionsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.JobsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.LogicAppsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.MaintenanceConfigurationsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedCertificatesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentDiagnosticsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentPrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentPrivateLinkResourcesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentUsagesImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsDiagnosticsImpl;
 import com.azure.resourcemanager.appcontainers.implementation.ManagedEnvironmentsImpl;
@@ -69,11 +74,16 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppsRevisions;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsSessionPools;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppsSourceControls;
 import com.azure.resourcemanager.appcontainers.models.DaprComponents;
+import com.azure.resourcemanager.appcontainers.models.HttpRouteConfigs;
 import com.azure.resourcemanager.appcontainers.models.JavaComponents;
 import com.azure.resourcemanager.appcontainers.models.Jobs;
 import com.azure.resourcemanager.appcontainers.models.JobsExecutions;
+import com.azure.resourcemanager.appcontainers.models.LogicApps;
+import com.azure.resourcemanager.appcontainers.models.MaintenanceConfigurations;
 import com.azure.resourcemanager.appcontainers.models.ManagedCertificates;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentDiagnostics;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPrivateEndpointConnections;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPrivateLinkResources;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentUsages;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironments;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsDiagnostics;
@@ -92,6 +102,8 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to ContainerAppsApiManager.
+ * Logic app is an extension resource on container app and the extension resource enables logic specific operations on
+ * the container app through the APIs listed.
  */
 public final class ContainerAppsApiManager {
     private ContainerAppsAuthConfigs containerAppsAuthConfigs;
@@ -138,7 +150,15 @@ public final class ContainerAppsApiManager {
 
     private Namespaces namespaces;
 
+    private ManagedEnvironmentPrivateEndpointConnections managedEnvironmentPrivateEndpointConnections;
+
+    private ManagedEnvironmentPrivateLinkResources managedEnvironmentPrivateLinkResources;
+
     private DaprComponents daprComponents;
+
+    private HttpRouteConfigs httpRouteConfigs;
+
+    private MaintenanceConfigurations maintenanceConfigurations;
 
     private ManagedEnvironmentsStorages managedEnvironmentsStorages;
 
@@ -149,6 +169,8 @@ public final class ContainerAppsApiManager {
     private Usages usages;
 
     private ManagedEnvironmentUsages managedEnvironmentUsages;
+
+    private LogicApps logicApps;
 
     private final ContainerAppsApiClient clientObject;
 
@@ -640,6 +662,33 @@ public final class ContainerAppsApiManager {
     }
 
     /**
+     * Gets the resource collection API of ManagedEnvironmentPrivateEndpointConnections. It manages
+     * PrivateEndpointConnection.
+     * 
+     * @return Resource collection API of ManagedEnvironmentPrivateEndpointConnections.
+     */
+    public ManagedEnvironmentPrivateEndpointConnections managedEnvironmentPrivateEndpointConnections() {
+        if (this.managedEnvironmentPrivateEndpointConnections == null) {
+            this.managedEnvironmentPrivateEndpointConnections = new ManagedEnvironmentPrivateEndpointConnectionsImpl(
+                clientObject.getManagedEnvironmentPrivateEndpointConnections(), this);
+        }
+        return managedEnvironmentPrivateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of ManagedEnvironmentPrivateLinkResources.
+     * 
+     * @return Resource collection API of ManagedEnvironmentPrivateLinkResources.
+     */
+    public ManagedEnvironmentPrivateLinkResources managedEnvironmentPrivateLinkResources() {
+        if (this.managedEnvironmentPrivateLinkResources == null) {
+            this.managedEnvironmentPrivateLinkResources = new ManagedEnvironmentPrivateLinkResourcesImpl(
+                clientObject.getManagedEnvironmentPrivateLinkResources(), this);
+        }
+        return managedEnvironmentPrivateLinkResources;
+    }
+
+    /**
      * Gets the resource collection API of DaprComponents.
      * 
      * @return Resource collection API of DaprComponents.
@@ -649,6 +698,31 @@ public final class ContainerAppsApiManager {
             this.daprComponents = new DaprComponentsImpl(clientObject.getDaprComponents(), this);
         }
         return daprComponents;
+    }
+
+    /**
+     * Gets the resource collection API of HttpRouteConfigs. It manages HttpRouteConfig.
+     * 
+     * @return Resource collection API of HttpRouteConfigs.
+     */
+    public HttpRouteConfigs httpRouteConfigs() {
+        if (this.httpRouteConfigs == null) {
+            this.httpRouteConfigs = new HttpRouteConfigsImpl(clientObject.getHttpRouteConfigs(), this);
+        }
+        return httpRouteConfigs;
+    }
+
+    /**
+     * Gets the resource collection API of MaintenanceConfigurations. It manages MaintenanceConfigurationResource.
+     * 
+     * @return Resource collection API of MaintenanceConfigurations.
+     */
+    public MaintenanceConfigurations maintenanceConfigurations() {
+        if (this.maintenanceConfigurations == null) {
+            this.maintenanceConfigurations
+                = new MaintenanceConfigurationsImpl(clientObject.getMaintenanceConfigurations(), this);
+        }
+        return maintenanceConfigurations;
     }
 
     /**
@@ -713,6 +787,18 @@ public final class ContainerAppsApiManager {
                 = new ManagedEnvironmentUsagesImpl(clientObject.getManagedEnvironmentUsages(), this);
         }
         return managedEnvironmentUsages;
+    }
+
+    /**
+     * Gets the resource collection API of LogicApps. It manages LogicApp.
+     * 
+     * @return Resource collection API of LogicApps.
+     */
+    public LogicApps logicApps() {
+        if (this.logicApps == null) {
+            this.logicApps = new LogicAppsImpl(clientObject.getLogicApps(), this);
+        }
+        return logicApps;
     }
 
     /**

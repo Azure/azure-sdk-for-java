@@ -20,7 +20,7 @@ public final class ConnectedEnvironmentsDaprComponentsListSecretsWithResponseMoc
     @Test
     public void testListSecretsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"avp\",\"value\":\"brbqgvgovp\"},{\"name\":\"ttefjoknssq\",\"value\":\"qedikdfrd\"},{\"name\":\"qmrjg\",\"value\":\"hfqlgg\"}]}";
+            = "{\"value\":[{\"name\":\"brlc\",\"value\":\"duczkgof\"},{\"name\":\"fsrucv\",\"value\":\"rpcjttbstvjeaqnr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class ConnectedEnvironmentsDaprComponentsListSecretsWithResponseMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DaprSecretsCollection response = manager.connectedEnvironmentsDaprComponents()
-            .listSecretsWithResponse("gniiprglvaw", "wzdufypivlsbb", "pmcubkmifoxxkub",
-                com.azure.core.util.Context.NONE)
+            .listSecretsWithResponse("fulopmjnlexwhcb", "pibkephuu", "erctatoyin", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
