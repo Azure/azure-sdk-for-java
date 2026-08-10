@@ -64,7 +64,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
         }
 
         byte[] certificateBytes;
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/authorizationLiveTest.cer")) {
+        try (InputStream inputStream = this.getClass().getResourceAsStream("/myTest.cer")) {
             X509Certificate certificate
                 = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(inputStream);
             certificateBytes = certificate.getEncoded();
