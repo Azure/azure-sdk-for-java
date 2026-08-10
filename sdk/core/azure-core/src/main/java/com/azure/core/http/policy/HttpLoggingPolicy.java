@@ -21,6 +21,7 @@ import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -338,7 +339,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
-                if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                if (shouldResponseBodyBeLogged(loggingOptions, contentTypeHeader, contentLength)) {
                     // Make sure we buffer the response body to avoid keeping the connection open.
                     final HttpResponse bufferedResponse = response.buffer();
 
@@ -389,7 +390,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
-                if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                if (shouldResponseBodyBeLogged(loggingOptions, contentTypeHeader, contentLength)) {
                     // Make sure we buffer the response body to avoid keeping the connection open.
                     response = response.buffer();
 
@@ -520,6 +521,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             && !ContentType.APPLICATION_OCTET_STREAM.equalsIgnoreCase(contentTypeHeader)
             && contentLength != 0
             && contentLength < MAX_BODY_LOG_SIZE;
+    }
+
+    private static boolean shouldResponseBodyBeLogged(HttpResponseLoggingContext loggingOptions,
+        String contentTypeHeader, Long contentLength) {
+        return !HttpUtils.shouldPreserveResponseBodyAsStream(loggingOptions.getContext())
+            && !HttpUtils.isTextEventStreamContentType(contentTypeHeader)
+            && shouldBodyBeLogged(contentTypeHeader, contentLength);
     }
 
     /*
