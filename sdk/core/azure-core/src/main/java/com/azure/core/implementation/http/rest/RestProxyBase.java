@@ -28,6 +28,7 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.util.HttpUtils;
+import com.azure.core.implementation.util.ServerSentEventStream;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -36,12 +37,14 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.Exceptions;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -149,6 +152,16 @@ public abstract class RestProxyBase {
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
         HttpRequest request, Context context);
 
+    final Context updateRequestContext(HttpRequest request, Context context) {
+        ServerSentEventStream.applyReconnectContext(request, context);
+
+        if (HttpUtils.acceptsTextEventStream(request.getHeaders().getValue(HttpHeaderName.ACCEPT))) {
+            return context.addData(HttpUtils.AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM, true);
+        }
+
+        return context;
+    }
+
     /**
      * Update the request with the provided configuration.
      *
@@ -172,6 +185,23 @@ public abstract class RestProxyBase {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
         Object bodyAsObject) {
+        return createResponse(response, entityType, bodyAsObject, false);
+    }
+
+    /**
+     * Creates a {@link Response} from the provided decoded response.
+     *
+     * @param response the decoded response
+     * @param entityType the type of the response entity
+     * @param bodyAsObject the response body as an object
+     * @param responseBodyStreaming whether the response owns an unconsumed streaming body
+     * @return the {@link Response}
+     * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
+     * Page.
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+        Object bodyAsObject, boolean responseBodyStreaming) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -185,6 +215,10 @@ public abstract class RestProxyBase {
         // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
+            if (responseBodyStreaming) {
+                return cls.cast(new CloseableResponse<>(httpResponse, bodyAsObject, decodedHeaders));
+            }
+
             // For Response return a new instance of ResponseBase cast to the class.
             return cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject, decodedHeaders));
         } else if (cls.equals(PagedResponse.class)) {
@@ -211,6 +245,23 @@ public abstract class RestProxyBase {
         // body as an Object.
         ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
+    }
+
+    private static final class CloseableResponse<T> extends ResponseBase<Object, T> implements Closeable {
+        private final AtomicBoolean closed = new AtomicBoolean();
+        private final HttpResponse response;
+
+        private CloseableResponse(HttpResponse response, T value, Object decodedHeaders) {
+            super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value, decodedHeaders);
+            this.response = response;
+        }
+
+        @Override
+        public void close() {
+            if (closed.compareAndSet(false, true)) {
+                response.close();
+            }
+        }
     }
 
     /**
