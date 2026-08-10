@@ -33,10 +33,8 @@ steps:
   # script being inlined PowerShell.
   - checkout: self
     clean: false
-    fetchDepth: 1
+    fetchDepth: 2
     fetchTags: false
-    sparseCheckoutDirectories: eng/common/pipelines/scripts
-    displayName: "Sparse checkout eng/common/pipelines/scripts"
 
   - task: PowerShell@2
     ${{ if eq(length(parameters.Repositories), 1) }}:

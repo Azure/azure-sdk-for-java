@@ -47,7 +47,7 @@ extends:
         steps:
         - checkout: self
           clean: false
-          fetchDepth: 1
+          fetchDepth: 2
           fetchTags: false
 
         - task: AzureCLI@2
