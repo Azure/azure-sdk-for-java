@@ -29,6 +29,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -105,7 +106,7 @@ public class SessionTokenCredentialPolicyTest {
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
 
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure))
-            .thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+            .thenReturn(Mono.just(credentialWithToken()));
         when(firstNext.process()).thenReturn(Mono.just(mock(HttpResponse.class)));
         when(cooldownNext.process()).thenReturn(Mono.just(mock(HttpResponse.class)));
         when(expiredNext.clone()).thenReturn(expiredNext);
@@ -125,16 +126,17 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
         try (HttpResponse actualResponse = policy.process(context, next).block()) {
             assertEquals(response, actualResponse);
-            assertTrue(
-                context.getHttpRequest().getHeaders().getValue("Authorization").startsWith("Session " + FIRST_TOKEN),
-                "Expected request to be signed with a session credential.");
+            assertTrue(context.getHttpRequest()
+                .getHeaders()
+                .getValue(HttpHeaderName.AUTHORIZATION)
+                .startsWith("Session " + FIRST_TOKEN), "Expected request to be signed with a session credential.");
             verify(next, times(1)).process();
         }
     }
@@ -147,7 +149,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse initialResponse = mock(HttpResponse.class);
         HttpResponse retriedResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(initialResponse));
         when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
@@ -158,7 +160,7 @@ public class SessionTokenCredentialPolicyTest {
 
         try (HttpResponse actualResponse = policy.process(context, next).block()) {
             assertEquals(retriedResponse, actualResponse);
-            assertNull(context.getHttpRequest().getHeaders().getValue("Authorization"));
+            assertNull(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
             verify(initialResponse, times(1)).close();
             verify(next, times(1)).process();
             verify(retryNext, times(1)).process();
@@ -175,7 +177,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse initialResponse = mock(HttpResponse.class);
         HttpResponse retriedResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         when(next.clone()).thenReturn(retryNext);
         when(next.processSync()).thenReturn(initialResponse);
         when(retryNext.processSync()).thenReturn(retriedResponse);
@@ -186,7 +188,7 @@ public class SessionTokenCredentialPolicyTest {
 
         try (HttpResponse actualResponse = policy.processSync(context, next)) {
             assertEquals(retriedResponse, actualResponse);
-            assertNull(context.getHttpRequest().getHeaders().getValue("Authorization"));
+            assertNull(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
             verify(initialResponse, times(1)).close();
             verify(next, times(1)).processSync();
             verify(retryNext, times(1)).processSync();
@@ -201,7 +203,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse initialResponse = mock(HttpResponse.class);
         HttpResponse retriedResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(initialResponse));
         when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
@@ -224,7 +226,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse forbiddenResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(forbiddenResponse));
         when(forbiddenResponse.getStatusCode()).thenReturn(403);
@@ -246,7 +248,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse unauthorizedResponse = mock(HttpResponse.class);
         HttpResponse retriedResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(unauthorizedResponse));
         when(retryNext.process()).thenReturn(Mono.just(retriedResponse));
@@ -255,7 +257,7 @@ public class SessionTokenCredentialPolicyTest {
 
         try (HttpResponse actualResponse = policy.process(context, next).block()) {
             assertEquals(retriedResponse, actualResponse);
-            assertNull(context.getHttpRequest().getHeaders().getValue("Authorization"));
+            assertNull(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
             verify(unauthorizedResponse, times(1)).close();
             verify(next, times(1)).process();
             verify(retryNext, times(1)).process();
@@ -270,7 +272,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse unavailableResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(unavailableResponse));
         when(unavailableResponse.getStatusCode()).thenReturn(503);
@@ -291,7 +293,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse badRequestResponse = mock(HttpResponse.class);
         HttpResponse bearerResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(badRequestResponse));
         when(retryNext.process()).thenReturn(Mono.just(bearerResponse));
@@ -302,7 +304,7 @@ public class SessionTokenCredentialPolicyTest {
             assertEquals(bearerResponse, actualResponse);
             verify(badRequestResponse, times(1)).close();
             verify(bearerPolicy, times(1)).process(any(), any());
-            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            String authHeader = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),
                 "Session auth should have been stripped but was: " + authHeader);
         }
@@ -315,7 +317,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
         HttpResponse unavailableResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         when(next.clone()).thenReturn(retryNext);
         when(next.processSync()).thenReturn(unavailableResponse);
         when(unavailableResponse.getStatusCode()).thenReturn(503);
@@ -336,7 +338,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse badRequestResponse = mock(HttpResponse.class);
         HttpResponse bearerResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken(FIRST_TOKEN));
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
         when(next.clone()).thenReturn(retryNext);
         when(next.processSync()).thenReturn(badRequestResponse);
         when(retryNext.processSync()).thenReturn(bearerResponse);
@@ -347,7 +349,7 @@ public class SessionTokenCredentialPolicyTest {
             assertEquals(bearerResponse, actualResponse);
             verify(badRequestResponse, times(1)).close();
             verify(bearerPolicy, times(1)).processSync(any(), any());
-            String authHeader = context.getHttpRequest().getHeaders().getValue("Authorization");
+            String authHeader = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),
                 "Session auth should have been stripped but was: " + authHeader);
         }
@@ -360,7 +362,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy retryNext = mock(HttpPipelineNextPolicy.class);
         HttpResponse busyResponse = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(retryNext);
         when(next.process()).thenReturn(Mono.just(busyResponse));
         when(busyResponse.getStatusCode()).thenReturn(503);
@@ -417,12 +419,12 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block().close();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "));
         verify(sessionProvider, times(1)).getSessionAsync(any());
@@ -435,7 +437,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpResponse response = mock(HttpResponse.class);
 
         // Fresh session far from expiry, so the client's own jittered refresh timer is NOT due.
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
@@ -443,7 +445,7 @@ public class SessionTokenCredentialPolicyTest {
         // being honored — for example, just before its network-context binding rotates.
         when(response.getHeaderValue(HttpHeaderName.fromString("x-ms-auth-info"))).thenReturn("session_expiring");
 
-        policy.process(context, next).block().close();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         // The service hint must trigger a proactive background refresh call, even though the client's
         // own refresh timer had not yet elapsed. Dropping the hint here is what previously let the session
@@ -460,14 +462,14 @@ public class SessionTokenCredentialPolicyTest {
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
         // No x-ms-auth-info hint on the response.
         when(response.getHeaderValue(HttpHeaderName.fromString("x-ms-auth-info"))).thenReturn(null);
 
-        policy.process(context, next).block().close();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         // Without the hint and with a fresh session, only the initial session is created and no refresh
         // hint is forwarded to the provider.
@@ -484,21 +486,21 @@ public class SessionTokenCredentialPolicyTest {
         return new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, options, clock);
     }
 
-    private static SessionCredential credentialWithToken(String token) {
-        return credentialWithToken(token, OffsetDateTime.now().plusHours(1));
+    private static SessionCredential credentialWithToken() {
+        return credentialWithToken(OffsetDateTime.now().plusHours(1));
     }
 
-    private static SessionCredential credentialWithToken(String token, OffsetDateTime expiration) {
-        return new SessionCredential(token, SessionTestHelper.TEST_SESSION_KEY, expiration,
+    private static SessionCredential credentialWithToken(OffsetDateTime expiration) {
+        return new SessionCredential(SessionTokenCredentialPolicyTest.FIRST_TOKEN, SessionTestHelper.TEST_SESSION_KEY, expiration,
             SessionTestHelper.TEST_ACCOUNT_NAME);
     }
 
     private static HttpPipelineCallContext createContext() {
-        return createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        return createContextForUrl();
     }
 
-    private static HttpPipelineCallContext createContextForUrl(String url) {
-        return createContextForRequest(new HttpRequest(HttpMethod.GET, url));
+    private static HttpPipelineCallContext createContextForUrl() {
+        return createContextForRequest(new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
     }
 
     private static HttpPipelineCallContext createContextForRequest(HttpRequest request) {
@@ -519,16 +521,16 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void getBlobRequestUsesSessionAuth() {
         HttpPipelineCallContext context
-            = createContextForUrl("https://myaccount.blob.core.windows.net/mycontainer/myblob");
+            = createContextForUrl();
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
 
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block().close();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         assertTrue(context.getHttpRequest().getHeaders().getValue(authHeaderName).startsWith("Session "),
             "GetBlob request should be signed with session auth");
@@ -536,7 +538,7 @@ public class SessionTokenCredentialPolicyTest {
 
     @Test
     public void getBlobRequestProducesWellFormedSessionAuthHeader() {
-        SessionCredential cred = credentialWithToken(FIRST_TOKEN);
+        SessionCredential cred = credentialWithToken();
         HttpRequest request
             = new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
         request.getHeaders()
@@ -553,7 +555,7 @@ public class SessionTokenCredentialPolicyTest {
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
 
-        policy.process(context, next).block().close();
+        Objects.requireNonNull(policy.process(context, next).block()).close();
 
         // The policy adapts Shared Key signing to the Session authorization scheme.
         String actual = request.getHeaders().getValue(authHeaderName);
@@ -613,11 +615,11 @@ public class SessionTokenCredentialPolicyTest {
     private void signRequestWithPolicy(HttpRequest request) {
         HttpPipelineNextPolicy next = mock(HttpPipelineNextPolicy.class);
         HttpResponse response = mock(HttpResponse.class);
-        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken(FIRST_TOKEN)));
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
         when(next.clone()).thenReturn(next);
         when(next.process()).thenReturn(Mono.just(response));
         when(response.getStatusCode()).thenReturn(200);
-        policy.process(createContextForRequest(request), next).block().close();
+        Objects.requireNonNull(policy.process(createContextForRequest(request), next).block()).close();
     }
 
     private static final class MutableClock extends Clock {
