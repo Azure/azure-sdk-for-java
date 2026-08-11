@@ -72,7 +72,7 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
         AtomicInteger downloadCallCount = new AtomicInteger(0);
         ShareFileClient client
-            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, "fakeurl", null, false, false, null), "testshare",
                 "testpath", null, null, null, null) {
                 @Override
                 public ShareFileDownloadResponse downloadWithResponse(OutputStream stream,

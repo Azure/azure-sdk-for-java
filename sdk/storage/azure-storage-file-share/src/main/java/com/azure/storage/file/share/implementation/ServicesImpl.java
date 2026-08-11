@@ -1008,12 +1008,8 @@ public final class ServicesImpl {
     public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
-            try {
-                return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
-            } catch (ShareStorageExceptionInternal internalException) {
-                throw ModelHelper.mapToShareStorageException(internalException);
-            }
+            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1025,7 +1021,6 @@ public final class ServicesImpl {
             .withContext(
                 context -> service.listSharesSegment(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }

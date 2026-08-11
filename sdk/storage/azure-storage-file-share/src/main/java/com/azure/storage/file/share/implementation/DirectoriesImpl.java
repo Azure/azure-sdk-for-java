@@ -1453,13 +1453,9 @@ public final class DirectoriesImpl {
     public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
         try {
             final String accept = "application/xml";
-            try {
-                return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
-                    Context.NONE);
-            } catch (ShareStorageExceptionInternal internalException) {
-                throw ModelHelper.mapToShareStorageException(internalException);
-            }
+            return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
+                Context.NONE);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1471,7 +1467,6 @@ public final class DirectoriesImpl {
             .withContext(context -> service.listHandles(this.client.getUrl(),
                 this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }
