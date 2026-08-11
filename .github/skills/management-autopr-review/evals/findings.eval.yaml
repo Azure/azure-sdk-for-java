@@ -90,6 +90,14 @@ stimuli:
         name: "version mismatch is blocking"
         config:
           pattern: "(?s)### Blocking.*\\[MGMT-VERSION\\]"
+      - type: output-matches
+        name: "blocking concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-VERSION\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "blocking concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-VERSION\\] (?:New|Carried forward|Resolved)\\b"
       - type: prompt
     rubric:
       - The stable 2.1.0 package targets a preview API and must be flagged with MGMT-VERSION.
@@ -117,6 +125,14 @@ stimuli:
         name: "old API version not carried forward"
         config:
           pattern: "(?i)\\[MGMT-API-VERSION\\].*Carried forward.*2026-07-01-preview"
+      - type: output-matches
+        name: "informational concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-API-VERSION\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "informational concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-API-VERSION\\] (?:New|Carried forward|Resolved)\\b"
       - type: prompt
     rubric:
       - The effective API version changed from 2026-07-01-preview to 2026-09-01-preview.
@@ -333,6 +349,14 @@ stimuli:
         name: "breaking concern is warning"
         config:
           pattern: "(?s)### Warning.*\\[MGMT-BREAKING\\]"
+      - type: output-matches
+        name: "warning concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-BREAKING\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "warning concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-BREAKING\\] (?:New|Carried forward|Resolved)\\b"
       - type: prompt
     rubric:
       - The GA CHANGELOG is authoritative even though the break entered main during an earlier beta.
