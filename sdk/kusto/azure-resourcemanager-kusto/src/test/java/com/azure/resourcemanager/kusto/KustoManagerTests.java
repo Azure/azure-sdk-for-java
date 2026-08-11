@@ -77,7 +77,7 @@ public class KustoManagerTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new AzureSku().withName(AzureSkuName.STANDARD_E2ADS_V5)
-                    .withCapacity(1)
+                    .withCapacity(2)
                     .withTier(AzureSkuTier.STANDARD))
                 .create();
             // @embedmeEnd

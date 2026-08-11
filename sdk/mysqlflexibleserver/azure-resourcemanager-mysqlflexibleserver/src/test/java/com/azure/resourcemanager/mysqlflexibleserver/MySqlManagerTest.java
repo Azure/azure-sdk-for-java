@@ -21,6 +21,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -68,6 +69,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("The test subscription does not have regional access to provision MySQL Flexible Server.")
     public void testCreateServer() {
         Server server = null;
         String randomPadding = randomPadding();
@@ -95,6 +97,12 @@ public class MySqlManagerTest extends TestProxyTestBase {
                 mysqlManager.servers().deleteById(server.id());
             }
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void testListServers() {
+        mysqlManager.servers().list().stream().findFirst();
     }
 
     private static String randomPadding() {
