@@ -15,6 +15,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
+import com.azure.resourcemanager.mysqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import io.netty.util.internal.StringUtil;
@@ -81,6 +83,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withAdministratorLogin(adminName)
                 .withAdministratorLoginPassword(adminPwd)
+                .withSku(new Sku().withName("Standard_B1ms").withTier(SkuTier.BURSTABLE))
                 .create();
             // @embedmeEnd
             server.refresh();
