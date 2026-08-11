@@ -13,17 +13,17 @@ public final class IotDpsSkuInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IotDpsSkuInfo model
-            = BinaryData.fromString("{\"name\":\"S1\",\"tier\":\"hijco\",\"capacity\":6404750437930204033}")
+            = BinaryData.fromString("{\"name\":\"S1\",\"tier\":\"zrlovmclwhijcoej\",\"capacity\":6803198672364242047}")
                 .toObject(IotDpsSkuInfo.class);
         Assertions.assertEquals(IotDpsSku.S1, model.name());
-        Assertions.assertEquals(6404750437930204033L, model.capacity());
+        Assertions.assertEquals(6803198672364242047L, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotDpsSkuInfo model = new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(6404750437930204033L);
+        IotDpsSkuInfo model = new IotDpsSkuInfo().withName(IotDpsSku.S1).withCapacity(6803198672364242047L);
         model = BinaryData.fromObject(model).toObject(IotDpsSkuInfo.class);
         Assertions.assertEquals(IotDpsSku.S1, model.name());
-        Assertions.assertEquals(6404750437930204033L, model.capacity());
+        Assertions.assertEquals(6803198672364242047L, model.capacity());
     }
 }

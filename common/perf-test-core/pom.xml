@@ -48,15 +48,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
                 <!-- Special allowance for performance libraries as they aren't shipped. -->
                 <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
-                <include>io.vertx:vertx-codegen:[4.5.27]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.7.18]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.vertx:vertx-codegen:[4.5.32]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.7.19]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
-      <version>4.5.27</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
+      <version>4.5.32</version> <!-- {x-version-update;io.vertx:vertx-codegen;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>

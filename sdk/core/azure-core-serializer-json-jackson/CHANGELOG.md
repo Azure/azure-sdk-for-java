@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.7` to `2.18.9`.
+
 ## 1.6.5 (2026-06-08)
 
 ### Other Changes
