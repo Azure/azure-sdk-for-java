@@ -189,12 +189,7 @@ public class ShareStorageCustomization extends Customization {
      */
     private static void exposeRawListHandles(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
-        String path = PKG_ROOT + "implementation/DirectoriesImpl.java";
-        String content = editor.getFileContent(path);
         String anchor = "    public PagedIterable<BinaryData> listHandles(RequestOptions requestOptions) {";
-        if (content.contains("listHandlesWithResponse(RequestOptions") || !content.contains(anchor)) {
-            return;
-        }
         String rawMethods = "    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {\n"
             + "        final String accept = \"application/xml\";\n"
             + "        try {\n"
@@ -213,8 +208,15 @@ public class ShareStorageCustomization extends Customization {
             + "                this.client.getFileRequestIntent(), accept, requestOptions, context))\n"
             + "            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);\n"
             + "    }\n\n";
-        editor.replaceFile(path, content.replace(anchor, rawMethods + anchor));
-        logger.info("Exposed raw listHandlesWithResponse methods in {}", path);
+        for (String implName : Arrays.asList("DirectoriesImpl", "FilesImpl")) {
+            String path = PKG_ROOT + "implementation/" + implName + ".java";
+            String content = editor.getFileContent(path);
+            if (content.contains("listHandlesWithResponse(RequestOptions") || !content.contains(anchor)) {
+                continue;
+            }
+            editor.replaceFile(path, content.replace(anchor, rawMethods + anchor));
+            logger.info("Exposed raw listHandlesWithResponse methods in {}", path);
+        }
     }
 
     /**

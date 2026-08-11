@@ -19,14 +19,17 @@ import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.FilePropertySemantics;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 
 import java.util.List;
+import java.util.Base64;
 import java.util.Map;
 
 /**
@@ -57,6 +60,35 @@ public final class RequestOptionsHelper {
     private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
     private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+    private static final HttpHeaderName X_MS_CONTENT_LENGTH = HttpHeaderName.fromString("x-ms-content-length");
+    private static final HttpHeaderName X_MS_CONTENT_TYPE = HttpHeaderName.fromString("x-ms-content-type");
+    private static final HttpHeaderName X_MS_CONTENT_ENCODING = HttpHeaderName.fromString("x-ms-content-encoding");
+    private static final HttpHeaderName X_MS_CONTENT_LANGUAGE = HttpHeaderName.fromString("x-ms-content-language");
+    private static final HttpHeaderName X_MS_CACHE_CONTROL = HttpHeaderName.fromString("x-ms-cache-control");
+    private static final HttpHeaderName X_MS_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-content-md5");
+    private static final HttpHeaderName X_MS_CONTENT_DISPOSITION
+        = HttpHeaderName.fromString("x-ms-content-disposition");
+    private static final HttpHeaderName X_MS_FILE_FILE_TYPE = HttpHeaderName.fromString("x-ms-file-file-type");
+    private static final HttpHeaderName X_MS_FILE_SUPPORT_RENAME
+        = HttpHeaderName.fromString("x-ms-file-support-rename");
+    private static final HttpHeaderName X_MS_SOURCE_RANGE = HttpHeaderName.fromString("x-ms-source-range");
+    private static final HttpHeaderName X_MS_SOURCE_CONTENT_CRC64
+        = HttpHeaderName.fromString("x-ms-source-content-crc64");
+    private static final HttpHeaderName X_MS_COPY_SOURCE_AUTHORIZATION
+        = HttpHeaderName.fromString("x-ms-copy-source-authorization");
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_COPY_MODE
+        = HttpHeaderName.fromString("x-ms-file-permission-copy-mode");
+    private static final HttpHeaderName X_MS_FILE_COPY_IGNORE_READONLY
+        = HttpHeaderName.fromString("x-ms-file-copy-ignore-readonly");
+    private static final HttpHeaderName X_MS_FILE_COPY_SET_ARCHIVE
+        = HttpHeaderName.fromString("x-ms-file-copy-set-archive");
+    private static final HttpHeaderName X_MS_FILE_MODE_COPY_MODE
+        = HttpHeaderName.fromString("x-ms-file-mode-copy-mode");
+    private static final HttpHeaderName X_MS_FILE_OWNER_COPY_MODE
+        = HttpHeaderName.fromString("x-ms-file-owner-copy-mode");
+    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
+    private static final HttpHeaderName X_MS_RANGE_GET_CONTENT_MD5
+        = HttpHeaderName.fromString("x-ms-range-get-content-md5");
     private static final HttpHeaderName X_MS_FILE_PROPERTY_SEMANTICS
         = HttpHeaderName.fromString("x-ms-file-property-semantics");
     private static final HttpHeaderName X_MS_RECURSIVE = HttpHeaderName.fromString("x-ms-recursive");
@@ -378,6 +410,39 @@ public final class RequestOptionsHelper {
     }
 
     /**
+     * Builds the {@link RequestOptions} for {@code File.listHandles}: the marker, maxresults and snapshot query
+     * parameters, scoped to the file resource. File handle operations have no recursive header.
+     */
+    public static RequestOptions listFileHandlesRequestOptions(String resourcePath, String marker, Integer maxResults,
+        String snapshot, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxResults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxResults), false);
+        }
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.forceCloseHandles}: the marker and snapshot query parameters,
+     * scoped to the file resource. The handle id is passed to the protocol method as an explicit parameter.
+     */
+    public static RequestOptions forceCloseFileHandlesRequestOptions(String resourcePath, String marker,
+        String snapshot, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
      * Builds the {@link RequestOptions} for {@code Directory.forceCloseHandles}: the marker and snapshot query
      * parameters plus the recursive header, scoped to the directory resource. The handle id is passed to the protocol
      * method as an explicit parameter.
@@ -422,6 +487,230 @@ public final class RequestOptionsHelper {
             addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, smbInfo.getFileLastWriteTime());
             addHeader(requestOptions, X_MS_FILE_CHANGE_TIME, smbInfo.getFileChangeTime());
         }
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /** Builds a {@link RequestOptions} with only the lease id header, scoped to the resource. */
+    public static RequestOptions addLeaseIdRequestOptions(String resourcePath, String leaseId, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addLeaseId(requestOptions, leaseId);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /** Builds a {@link RequestOptions} with only the sharesnapshot query parameter, scoped to the resource. */
+    public static RequestOptions snapshotRequestOptions(String resourcePath, String snapshot, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /** Adds the file HTTP content headers ({@code x-ms-content-*}, {@code x-ms-cache-control}). */
+    public static void addFileHttpHeaders(RequestOptions requestOptions, ShareFileHttpHeaders httpHeaders) {
+        if (httpHeaders != null) {
+            addHeader(requestOptions, X_MS_CONTENT_TYPE, httpHeaders.getContentType());
+            addHeader(requestOptions, X_MS_CONTENT_ENCODING, httpHeaders.getContentEncoding());
+            addHeader(requestOptions, X_MS_CONTENT_LANGUAGE, httpHeaders.getContentLanguage());
+            addHeader(requestOptions, X_MS_CACHE_CONTROL, httpHeaders.getCacheControl());
+            if (httpHeaders.getContentMd5() != null) {
+                addHeader(requestOptions, X_MS_CONTENT_MD5,
+                    Base64.getEncoder().encodeToString(httpHeaders.getContentMd5()));
+            }
+            addHeader(requestOptions, X_MS_CONTENT_DISPOSITION, httpHeaders.getContentDisposition());
+        }
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.setHttpHeaders}: content-length, HTTP content headers, file
+     * permission, SMB and POSIX properties plus lease, scoped to the file resource.
+     */
+    public static RequestOptions setFileHttpHeadersRequestOptions(String resourcePath, Long fileContentLength,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String ntfsFileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, FilePosixProperties posixProperties, ShareFileHttpHeaders httpHeaders, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_CONTENT_LENGTH, fileContentLength);
+        addFileHttpHeaders(requestOptions, httpHeaders);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addSmbProperties(requestOptions, filePermissionKey, ntfsFileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime);
+        addLeaseId(requestOptions, leaseId);
+        addPosixProperties(requestOptions, posixProperties);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.createSymbolicLink}: metadata, creation/last-write times,
+     * lease and NFS owner/group, scoped to the file resource. The link text is passed to the protocol method as an
+     * explicit parameter.
+     */
+    public static RequestOptions createSymbolicLinkRequestOptions(String resourcePath, Map<String, String> metadata,
+        String fileCreationTime, String fileLastWriteTime, String leaseId, String owner, String group,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addMetadata(requestOptions, metadata);
+        addHeader(requestOptions, X_MS_FILE_CREATION_TIME, fileCreationTime);
+        addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, fileLastWriteTime);
+        addLeaseId(requestOptions, leaseId);
+        addHeader(requestOptions, X_MS_OWNER, owner);
+        addHeader(requestOptions, X_MS_GROUP, group);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.rename}: the directory rename headers plus the file HTTP
+     * content headers, scoped to the destination file resource.
+     */
+    public static RequestOptions renameFileRequestOptions(String resourcePath, Boolean replaceIfExists,
+        Boolean ignoreReadOnly, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceConditions,
+        DestinationLeaseAccessConditions destinationConditions, CopyFileSmbInfo smbInfo,
+        ShareFileHttpHeaders httpHeaders, Context context) {
+        RequestOptions requestOptions = renameDirectoryRequestOptions(resourcePath, replaceIfExists, ignoreReadOnly,
+            filePermission, filePermissionFormat, filePermissionKey, metadata, sourceConditions, destinationConditions,
+            smbInfo, context);
+        addFileHttpHeaders(requestOptions, httpHeaders);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.getRangeList}: the snapshot/previous-snapshot query parameters,
+     * the range and support-rename headers plus lease, scoped to the file resource.
+     */
+    public static RequestOptions getRangeListRequestOptions(String resourcePath, String snapshot,
+        String previousSnapshot, String range, String leaseId, Boolean supportRename, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addSnapshot(requestOptions, snapshot);
+        if (previousSnapshot != null) {
+            requestOptions.addQueryParam("prevsharesnapshot", previousSnapshot, false);
+        }
+        if (range != null) {
+            requestOptions.setHeader(HttpHeaderName.RANGE, range);
+        }
+        addLeaseId(requestOptions, leaseId);
+        addHeader(requestOptions, X_MS_FILE_SUPPORT_RENAME, supportRename);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.uploadRangeFromUrl}: the source range, lease, copy-source
+     * authorization and last-written mode headers, scoped to the file resource. The destination range, copy source,
+     * write mode and content length are passed to the protocol method as explicit parameters.
+     */
+    public static RequestOptions uploadRangeFromUrlRequestOptions(String resourcePath, String sourceRange,
+        String leaseId, String sourceAuthorization, FileLastWrittenMode lastWrittenMode, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_SOURCE_RANGE, sourceRange);
+        addLeaseId(requestOptions, leaseId);
+        addHeader(requestOptions, X_MS_COPY_SOURCE_AUTHORIZATION, sourceAuthorization);
+        addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, lastWrittenMode);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.create}: content headers, metadata, file permission, SMB and
+     * POSIX properties, content MD5, file-property semantics and the optional request body, scoped to the file
+     * resource. The target file content length is passed to the protocol method as an explicit parameter.
+     */
+    public static RequestOptions createFileRequestOptions(String resourcePath, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String ntfsFileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        String leaseId, FilePosixProperties posixProperties, byte[] contentMd5,
+        FilePropertySemantics filePropertySemantics, ShareFileHttpHeaders httpHeaders, BinaryData data,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addMetadata(requestOptions, metadata);
+        addFileHttpHeaders(requestOptions, httpHeaders);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addSmbProperties(requestOptions, filePermissionKey, ntfsFileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime);
+        addLeaseId(requestOptions, leaseId);
+        addPosixProperties(requestOptions, posixProperties);
+        if (posixProperties != null) {
+            addHeader(requestOptions, X_MS_FILE_FILE_TYPE, posixProperties.getFileType());
+        }
+        if (contentMd5 != null) {
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, Base64.getEncoder().encodeToString(contentMd5));
+        }
+        addHeader(requestOptions, X_MS_FILE_PROPERTY_SEMANTICS, filePropertySemantics);
+        if (data != null) {
+            requestOptions.setBody(data);
+        }
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.startCopy}: metadata, permission, lease, POSIX properties, the
+     * mode/owner copy modes and the copy SMB info headers, scoped to the file resource. The copy source is passed to
+     * the protocol method as an explicit parameter.
+     */
+    public static RequestOptions startCopyRequestOptions(String resourcePath, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey, String leaseId,
+        String owner, String group, Object fileMode, Object modeCopyMode, Object ownerCopyMode,
+        CopyFileSmbInfo copyFileSmbInfo, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addMetadata(requestOptions, metadata);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION_KEY, filePermissionKey);
+        addLeaseId(requestOptions, leaseId);
+        addHeader(requestOptions, X_MS_OWNER, owner);
+        addHeader(requestOptions, X_MS_GROUP, group);
+        addHeader(requestOptions, X_MS_MODE, fileMode);
+        addHeader(requestOptions, X_MS_FILE_MODE_COPY_MODE, modeCopyMode);
+        addHeader(requestOptions, X_MS_FILE_OWNER_COPY_MODE, ownerCopyMode);
+        if (copyFileSmbInfo != null) {
+            addHeader(requestOptions, X_MS_FILE_PERMISSION_COPY_MODE, copyFileSmbInfo.getFilePermissionCopyMode());
+            addHeader(requestOptions, X_MS_FILE_ATTRIBUTES, copyFileSmbInfo.getFileAttributes());
+            addHeader(requestOptions, X_MS_FILE_CREATION_TIME, copyFileSmbInfo.getFileCreationTime());
+            addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, copyFileSmbInfo.getFileLastWriteTime());
+            addHeader(requestOptions, X_MS_FILE_CHANGE_TIME, copyFileSmbInfo.getFileChangeTime());
+            addHeader(requestOptions, X_MS_FILE_COPY_IGNORE_READONLY, copyFileSmbInfo.isIgnoreReadOnly());
+            addHeader(requestOptions, X_MS_FILE_COPY_SET_ARCHIVE, copyFileSmbInfo.isSetArchiveAttribute());
+        }
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.uploadRange}: the lease, last-written mode and optional content
+     * MD5 headers plus the request body, scoped to the file resource. The range, write mode and content length are
+     * passed to the protocol method as explicit parameters.
+     */
+    public static RequestOptions uploadRangeRequestOptions(String resourcePath, String leaseId,
+        FileLastWrittenMode lastWrittenMode, byte[] contentMd5, BinaryData data, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addLeaseId(requestOptions, leaseId);
+        addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, lastWrittenMode);
+        if (contentMd5 != null) {
+            requestOptions.setHeader(HttpHeaderName.CONTENT_MD5, Base64.getEncoder().encodeToString(contentMd5));
+        }
+        if (data != null) {
+            requestOptions.setBody(data);
+        }
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code File.download}: the range, range-get-content-md5 and lease headers,
+     * scoped to the file resource.
+     */
+    public static RequestOptions downloadRequestOptions(String resourcePath, String range, Boolean rangeGetContentMd5,
+        String leaseId, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_RANGE, range);
+        addHeader(requestOptions, X_MS_RANGE_GET_CONTENT_MD5, rangeGetContentMd5);
+        addLeaseId(requestOptions, leaseId);
         scopeRequestToResourcePath(requestOptions, resourcePath);
         return requestOptions;
     }

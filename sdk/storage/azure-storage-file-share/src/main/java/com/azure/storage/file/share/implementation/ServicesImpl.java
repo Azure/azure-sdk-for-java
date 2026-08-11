@@ -784,11 +784,16 @@ public final class ServicesImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/xml";
         try {
-            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
+            final String accept = "application/xml";
+            try {
+                return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
+            } catch (ShareStorageExceptionInternal internalException) {
+                throw ModelHelper.mapToShareStorageException(internalException);
+            }
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -800,10 +805,10 @@ public final class ServicesImpl {
             .withContext(
                 context -> service.listSharesSegment(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
                     this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSharesSegment(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listSharesSegmentSinglePage(requestOptions));
     }
