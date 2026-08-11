@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.test.shared.session.SessionTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
