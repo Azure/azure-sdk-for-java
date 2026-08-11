@@ -50,6 +50,7 @@ import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.validateUri;
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -408,7 +409,9 @@ public class KeyVaultClient {
      *
      * @param alias The alias.
      *
-     * @return The certificate chain, or an empty array if not found.
+    * @return The certificate chain, or an empty array if there is no resolved certificate version, no versioned
+    * secret, or no certificate in the decoded secret.
+    * @throws IllegalStateException If the certificate chain response cannot be loaded, parsed, or decoded.
      */
     public Certificate[] getCertificateChain(String alias) {
         return getCertificateChainForVersion(resolveCertificateVersion(alias));
@@ -418,14 +421,21 @@ public class KeyVaultClient {
      * Gets the certificate chain from a resolved certificate version.
      *
      * @param certificateVersion The resolved certificate version.
-     * @return The certificate chain, or an empty array if not found.
+    * @return The certificate chain, or an empty array if there is no resolved certificate version, no versioned
+    * secret, or no certificate in the decoded secret.
+    * @throws IllegalStateException If the certificate chain response cannot be loaded, parsed, or decoded.
      */
     public Certificate[] getCertificateChainForVersion(CertificateVersion certificateVersion) {
         String alias = certificateVersion == null ? null : certificateVersion.getAlias();
         LOGGER.entering("KeyVaultClient", "getCertificateChainForVersion", alias);
-        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
 
-        if (certificateVersion == null || certificateVersion.getSecretId() == null) {
+        if (certificateVersion == null) {
+            LOGGER.log(FINE, "No resolved certificate version is available for certificate chain.");
+            return new Certificate[0];
+        }
+        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
+        if (certificateVersion.getSecretId() == null) {
+            LOGGER.log(FINE, "No certificate chain secret is available for alias: {0}", alias);
             return new Certificate[0];
         }
 
@@ -436,29 +446,31 @@ public class KeyVaultClient {
         String response = HttpUtil.get(certificateVersion.getSecretId() + API_VERSION_POSTFIX, headers);
 
         if (response == null) {
-            throw new NullPointerException();
+            throw new IllegalStateException("Failed to load certificate chain response for alias: " + alias);
         }
 
-        SecretBundle secretBundle = null;
+        SecretBundle secretBundle;
 
         try {
             secretBundle = JsonConverterUtil.fromJson(SecretBundle::fromJson, response);
-        } catch (IOException e) {
-            LOGGER.log(WARNING, "Failed to parse secret bundle response", e);
+        } catch (IOException exception) {
+            throw new IllegalStateException("Failed to parse certificate chain response for alias: " + alias,
+                exception);
         }
 
-        Certificate[] certificates = new Certificate[0];
+        String secretValue = secretBundle == null ? null : secretBundle.getValue();
+        if (secretValue == null || secretValue.trim().isEmpty()) {
+            throw new IllegalStateException("Certificate chain response has no secret value for alias: " + alias);
+        }
 
         try {
-            certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
+            Certificate[] certificates = loadCertificatesFromSecretBundleValue(secretValue);
+            LOGGER.exiting("KeyVaultClient", "getCertificateChainForVersion", alias);
+            return certificates;
         } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
-            | NoSuchProviderException | PKCSException e) {
-            LOGGER.log(WARNING, "Unable to decode certificate chain", e);
+            | NoSuchProviderException | PKCSException | IllegalArgumentException exception) {
+            throw new IllegalStateException("Failed to decode certificate chain for alias: " + alias, exception);
         }
-
-        LOGGER.exiting("KeyVaultClient", "getCertificateChainForVersion", alias);
-
-        return certificates;
     }
 
     /**
