@@ -5,7 +5,7 @@ paths:
 suites:
   all:
     description: "Full management AutoPR reviewer evaluation suite"
-    evals: ["eval.yaml", "orchestration.yaml", "true-negatives.yaml"]
+    evals: ["findings.eval.yaml", "orchestration.eval.yaml", "true-negatives.eval.yaml"]
   true-negatives:
     description: "False-positive resistance gate"
-    evals: ["true-negatives.yaml"]
+    evals: ["true-negatives.eval.yaml"]
