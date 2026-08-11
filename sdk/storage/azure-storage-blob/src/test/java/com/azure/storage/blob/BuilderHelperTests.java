@@ -23,6 +23,7 @@ import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.SessionCredential;
+import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.models.SessionRequestContext;
@@ -697,6 +698,27 @@ public class BuilderHelperTests {
 
         assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
             "Pipeline without service-level session options should not contain SessionTokenCredentialPolicy");
+    }
+
+    @Test
+    public void buildPipelineWithSessionsDisabledUsesBearerAuthentication() {
+        AtomicReference<String> authorization = new AtomicReference<>();
+        HttpClient httpClient = request -> {
+            authorization.set(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.DISABLED);
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), httpClient,
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
+            sessionOptions, BlobServiceVersion.getLatest());
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"));
+        assertTrue(authorization.get().startsWith("Bearer "));
     }
 
     @Test

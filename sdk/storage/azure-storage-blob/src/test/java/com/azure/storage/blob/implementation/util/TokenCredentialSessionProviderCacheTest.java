@@ -117,7 +117,7 @@ public class TokenCredentialSessionProviderCacheTest {
         // Third request: the background refresh has swapped in the new token, which is now served. The
         // refresh runs on a background subscription, so poll briefly rather than asserting immediately.
         assertEquals(SECOND_TOKEN,
-            waitForToken(() -> provider.getSession(contextFor(CONTAINER_A)), SECOND_TOKEN).getSessionToken());
+            waitForToken(() -> provider.getSession(contextFor(CONTAINER_A))).getSessionToken());
         // Still only one inline creation and one background refresh overall (no over-eager churn).
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
     }
@@ -148,7 +148,7 @@ public class TokenCredentialSessionProviderCacheTest {
         // Touching container A triggers its background refresh. The refresh runs on a background
         // subscription, so poll briefly rather than asserting the call count immediately.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        waitForCallCount(httpClient, CONTAINER_A, 2);
+        waitForCallCount(httpClient);
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
 
         // Container B has not been touched since the clock advanced, so it must not have refreshed - proving
@@ -233,7 +233,7 @@ public class TokenCredentialSessionProviderCacheTest {
     public void creationFailurePropagatesAndAllowsRetryAsync() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         ControllableHttpClient httpClient = new ControllableHttpClient();
-        httpClient.enqueueFailure(CONTAINER_A);
+        httpClient.enqueueFailure();
         httpClient.enqueue(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
         TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
 
@@ -277,7 +277,7 @@ public class TokenCredentialSessionProviderCacheTest {
 
         SessionCredential first = provider.getSession(context);
         provider.refreshSession(context);
-        SessionCredential second = waitForToken(() -> provider.getSession(context), SECOND_TOKEN);
+        SessionCredential second = waitForToken(() -> provider.getSession(context));
 
         assertFalse(provider.invalidateSession(context, first));
         assertTrue(provider.invalidateSession(context, second));
@@ -317,7 +317,7 @@ public class TokenCredentialSessionProviderCacheTest {
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
 
         pendingResponse
-            .tryEmitValue(httpClient.buildResponseFor(CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME)));
+            .tryEmitValue(httpClient.buildResponseFor(now(clock).plus(SESSION_LIFETIME)));
 
         awaitLatch(firstLatch);
         awaitLatch(secondLatch);
@@ -342,12 +342,12 @@ public class TokenCredentialSessionProviderCacheTest {
      * Background refreshes complete on a separate subscription from the caller that triggered them, so
      * asserting on the very next call without allowing for that latency would be flaky.
      */
-    private static SessionCredential waitForToken(Supplier<SessionCredential> supplier, String expectedToken) {
+    private static SessionCredential waitForToken(Supplier<SessionCredential> supplier) {
         long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
         SessionCredential last;
         do {
             last = supplier.get();
-            if (expectedToken.equals(last.getSessionToken())) {
+            if (TokenCredentialSessionProviderCacheTest.SECOND_TOKEN.equals(last.getSessionToken())) {
                 return last;
             }
             sleepBriefly();
@@ -355,9 +355,9 @@ public class TokenCredentialSessionProviderCacheTest {
         return last;
     }
 
-    private static void waitForCallCount(ControllableHttpClient httpClient, String container, int expectedCount) {
+    private static void waitForCallCount(ControllableHttpClient httpClient) {
         long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
-        while (httpClient.getCallCount(container) < expectedCount && System.nanoTime() < deadline) {
+        while (httpClient.getCallCount(TokenCredentialSessionProviderCacheTest.CONTAINER_A) < 2 && System.nanoTime() < deadline) {
             sleepBriefly();
         }
     }
@@ -399,12 +399,13 @@ public class TokenCredentialSessionProviderCacheTest {
         private final Map<String, HttpRequest> lastRequestByContainer = new ConcurrentHashMap<>();
 
         void enqueue(String container, String token, OffsetDateTime expiresAt) {
-            queuedByContainer.computeIfAbsent(normalize(container), k -> new ArrayDeque<>())
+            queuedByContainer.computeIfAbsent(container, k -> new ArrayDeque<>())
                 .add(new CredentialConfig(token, expiresAt, false));
         }
 
-        void enqueueFailure(String container) {
-            queuedByContainer.computeIfAbsent(normalize(container), k -> new ArrayDeque<>())
+        void enqueueFailure() {
+            queuedByContainer.computeIfAbsent(TokenCredentialSessionProviderCacheTest.CONTAINER_A,
+                k -> new ArrayDeque<>())
                 .add(new CredentialConfig(null, null, true));
         }
 
@@ -415,7 +416,7 @@ public class TokenCredentialSessionProviderCacheTest {
          */
         Sinks.One<HttpResponse> preparePendingResponse(String container) {
             Sinks.One<HttpResponse> sink = Sinks.one();
-            pendingByContainer.put(normalize(container), sink);
+            pendingByContainer.put(container, sink);
             return sink;
         }
 
@@ -423,30 +424,29 @@ public class TokenCredentialSessionProviderCacheTest {
          * Builds a CreateSession success response for the most recent pending request captured for the
          * given container, for use with {@link #preparePendingResponse(String)}.
          */
-        HttpResponse buildResponseFor(String container, String token, OffsetDateTime expiresAt) {
-            HttpRequest request = lastRequestByContainer.get(normalize(container));
-            return buildResponse(request, token, expiresAt);
+        HttpResponse buildResponseFor(OffsetDateTime expiresAt) {
+            HttpRequest request = lastRequestByContainer.get(TokenCredentialSessionProviderCacheTest.CONTAINER_A);
+            return buildResponse(request, TokenCredentialSessionProviderCacheTest.FIRST_TOKEN, expiresAt);
         }
 
         int getCallCount(String container) {
-            return callCountByContainer.getOrDefault(normalize(container), 0);
+            return callCountByContainer.getOrDefault(container, 0);
         }
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             String path = request.getUrl().getPath();
             String container = path.startsWith("/") ? path.substring(1) : path;
-            String key = normalize(container);
 
-            callCountByContainer.merge(key, 1, Integer::sum);
+            callCountByContainer.merge(container, 1, Integer::sum);
 
-            Sinks.One<HttpResponse> pending = pendingByContainer.remove(key);
+            Sinks.One<HttpResponse> pending = pendingByContainer.remove(container);
             if (pending != null) {
-                lastRequestByContainer.put(key, request);
+                lastRequestByContainer.put(container, request);
                 return pending.asMono();
             }
 
-            Deque<CredentialConfig> queue = queuedByContainer.get(key);
+            Deque<CredentialConfig> queue = queuedByContainer.get(container);
             CredentialConfig config = queue == null || queue.isEmpty() ? null : queue.poll();
             if (config == null) {
                 return Mono.error(new IllegalStateException("No queued CreateSession response for " + container));
@@ -468,10 +468,6 @@ public class TokenCredentialSessionProviderCacheTest {
 
             return new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8)).addHeader("Content-Type",
                 "application/xml");
-        }
-
-        private static String normalize(String name) {
-            return name == null ? "" : name.trim().toLowerCase(Locale.ROOT);
         }
 
         private static final class CredentialConfig {
