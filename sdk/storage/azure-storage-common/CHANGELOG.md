@@ -3,6 +3,11 @@
 ## 12.35.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `Request100ContinueOptions` and `Request100ContinueMode`, which configure when the HTTP header
+  `Expect: 100-continue` is applied to requests that carry a body. By default the header is applied only for a
+  period after the service responds 429, 500, or 503, so that a body is not uploaded just to be rejected again.
+  The header can also be turned off without a code change by setting the system property or environment variable
+  `AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER` to `true`.
 
 ### Breaking Changes
 

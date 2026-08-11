@@ -38,6 +38,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
+import com.azure.storage.common.policy.Request100ContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
@@ -92,6 +93,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private Request100ContinueOptions expectContinueOptions;
     private boolean anonymousAccess;
 
     /**
@@ -151,7 +153,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+                perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER);
     }
 
     /**
@@ -585,6 +587,20 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      */
     public BlobServiceClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the behavior for applying the HTTP header {@code Expect: 100-continue} to requests that carry a body.
+     * <p>
+     * By default the header is applied only for a period after the service has indicated it is under load, so that
+     * a body is not uploaded just to be rejected again.
+     *
+     * @param expectContinueOptions {@link Request100ContinueOptions} to be used when sending requests with a body.
+     * @return the updated BlobServiceClientBuilder object
+     */
+    public BlobServiceClientBuilder request100ContinueOptions(Request100ContinueOptions expectContinueOptions) {
+        this.expectContinueOptions = expectContinueOptions;
         return this;
     }
 }

@@ -3,6 +3,8 @@
 ## 12.31.0-beta.1 (Unreleased)
 
 ### Features Added
+- Requests that carry a body now apply the HTTP header `Expect: 100-continue` for a period after the service
+  responds 429, 500, or 503, so that a body is not uploaded just to be rejected again.
 
 ### Breaking Changes
 

@@ -3,10 +3,16 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.policy.ExpectContinueOnThrottlePolicy;
+import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.Request100ContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
+
+import java.util.List;
 
 /**
  * This class provides helper methods for client builders.
@@ -30,5 +36,35 @@ public final class BuilderUtils {
             retryOptions = new RequestRetryOptions();
         }
         return new RequestRetryPolicy(retryOptions);
+    }
+
+    /**
+     * Adds the policy applying HTTP header {@code Expect: 100-continue}, if the given options call for one.
+     * <p>
+     * This must be called after the retry policy has been added so that the policy is evaluated on every retry
+     * attempt, and before the credential policies as headers may affect the string to sign of the request.
+     *
+     * @param policies The pipeline policies being built up.
+     * @param expectContinueOptions The options, or null to use the default behavior.
+     */
+    public static void addExpectContinuePolicy(List<HttpPipelinePolicy> policies,
+        Request100ContinueOptions expectContinueOptions) {
+        Request100ContinueOptions options
+            = expectContinueOptions == null ? new Request100ContinueOptions() : expectContinueOptions;
+        Long threshold = options.getContentLengthThreshold();
+
+        switch (options.getMode()) {
+            case ALWAYS:
+                policies.add(new ExpectContinuePolicy(threshold));
+                break;
+
+            case NEVER:
+                break;
+
+            case AUTO:
+            default:
+                policies.add(new ExpectContinueOnThrottlePolicy(options.getAutoInterval(), threshold));
+                break;
+        }
     }
 }
