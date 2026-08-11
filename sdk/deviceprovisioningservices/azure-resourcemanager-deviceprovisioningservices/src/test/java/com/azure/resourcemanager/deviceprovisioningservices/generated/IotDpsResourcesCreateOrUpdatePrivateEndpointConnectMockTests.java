@@ -25,7 +25,7 @@ public final class IotDpsResourcesCreateOrUpdatePrivateEndpointConnectMockTests 
     @Test
     public void testCreateOrUpdatePrivateEndpointConnection() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"ox\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"suiizynkedyat\",\"actionsRequired\":\"yhqmibzyhwi\"}},\"id\":\"mypyynpcdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"yxbaaabjyvayf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"m\",\"actionsRequired\":\"rtuzqogs\"}},\"id\":\"nevfdnw\",\"name\":\"wmewzsyy\",\"type\":\"euzsoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,19 @@ public final class IotDpsResourcesCreateOrUpdatePrivateEndpointConnectMockTests 
 
         PrivateEndpointConnection response
             = manager.iotDpsResources()
-                .definePrivateEndpointConnection("iipfpubj")
-                .withExistingProvisioningService("nzar", "wlquuijfqkace")
+                .definePrivateEndpointConnection("yc")
+                .withExistingProvisioningService("dmjsjqb", "hhyxxrw")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                        .withDescription("kvpuvksgplsaknyn")
-                        .withActionsRequired("ynl")))
+                        .withDescription("kgymareqnajxqug")
+                        .withActionsRequired("ky")))
                 .create();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("suiizynkedyat",
-            response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("yhqmibzyhwi",
+        Assertions.assertEquals("m", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rtuzqogs",
             response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

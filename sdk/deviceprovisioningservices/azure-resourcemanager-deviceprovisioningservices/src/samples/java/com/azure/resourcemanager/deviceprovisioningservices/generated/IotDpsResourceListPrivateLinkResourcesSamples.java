@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceListPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSListPrivateLinkResources.json
+     * x-ms-original-file: 2026-03-01-preview/DPSListPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -19,7 +19,7 @@ public final class IotDpsResourceListPrivateLinkResourcesSamples {
     public static void
         privateLinkResourcesList(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .listPrivateLinkResources("myResourceGroup", "myFirstProvisioningService",
+            .listPrivateLinkResourcesWithResponse("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);
     }
 }

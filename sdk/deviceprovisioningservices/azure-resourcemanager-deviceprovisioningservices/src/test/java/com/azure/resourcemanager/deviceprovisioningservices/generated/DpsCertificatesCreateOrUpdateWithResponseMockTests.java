@@ -22,7 +22,7 @@ public final class DpsCertificatesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"iarbutrcvpna\",\"expiry\":\"Wed, 17 Mar 2021 12:33:19 GMT\",\"thumbprint\":\"jrunmpxtt\",\"isVerified\":true,\"created\":\"Wed, 21 Apr 2021 20:03:01 GMT\",\"updated\":\"Wed, 27 Oct 2021 21:49:11 GMT\"},\"etag\":\"kx\",\"id\":\"skpbhenbtkcxywn\",\"name\":\"tnrsyn\",\"type\":\"qidybyx\"}";
+            = "{\"properties\":{\"subject\":\"oty\",\"expiry\":\"Sun, 24 Oct 2021 21:54:25 GMT\",\"thumbprint\":\"njbkcnxdhbttkph\",\"isVerified\":true,\"created\":\"Mon, 22 Nov 2021 00:13:21 GMT\",\"updated\":\"Sat, 31 Jul 2021 09:48:45 GMT\"},\"etag\":\"nermcl\",\"id\":\"lphox\",\"name\":\"scrpabgyepsbjt\",\"type\":\"zq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class DpsCertificatesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateResponse response = manager.dpsCertificates()
-            .define("mpvecxgodebfqk")
-            .withExistingProvisioningService("bgsncghkjeszzhb", "jhtxfvgxbfsmxne")
+            .define("baumnyqupedeoj")
+            .withExistingProvisioningService("ighxpk", "wzbaiue")
             .withProperties(new CertificateProperties().withIsVerified(true))
-            .withIfMatch("ynhijggme")
+            .withIfMatch("eil")
             .create();
 
         Assertions.assertTrue(response.properties().isVerified());

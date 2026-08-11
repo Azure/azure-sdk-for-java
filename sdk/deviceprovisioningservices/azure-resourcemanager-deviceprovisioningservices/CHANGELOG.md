@@ -1,14 +1,49 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2026-08-11)
 
-### Features Added
+- Azure Resource Manager IotDps client library for Java. This package contains Microsoft Azure SDK for IotDps Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DpsCertificates` was modified
 
-### Other Changes
+* `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)` -> `models.CertificateListDescription list(java.lang.String,java.lang.String)`
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `com.azure.core.http.rest.PagedIterable listPrivateLinkResources(java.lang.String,java.lang.String)` -> `models.PrivateLinkResources listPrivateLinkResources(java.lang.String,java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+### Features Added
+
+* `models.PrivateLinkResources` was added
+
+* `models.CertificateListDescription` was added
+
+* `models.IotHubAuthenticationType` was added
+
+#### `models.IotHubDefinitionDescription` was modified
+
+* `authenticationType()` was added
+* `hostName()` was added
+* `withAuthenticationType(models.IotHubAuthenticationType)` was added
+* `selectedUserAssignedIdentityResourceId()` was added
+* `withHostName(java.lang.String)` was added
+* `withSelectedUserAssignedIdentityResourceId(java.lang.String)` was added
+
+#### `models.DpsCertificates` was modified
+
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.IotDpsResources` was modified
+
+* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.2.0-beta.1 (2025-10-20)
 

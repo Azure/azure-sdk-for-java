@@ -22,7 +22,7 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithRespMockTests 
     @Test
     public void testGetPrivateEndpointConnectionWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"lbg\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"duiertgcc\",\"actionsRequired\":\"vaolpsslqlf\"}},\"id\":\"dnbbglzps\",\"name\":\"iydmcwyhzdxs\",\"type\":\"adbzmnvdfznud\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"sipqii\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"yuq\",\"actionsRequired\":\"pqlpq\"}},\"id\":\"ciuqgbdb\",\"name\":\"t\",\"type\":\"uvfbtkuwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,13 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithRespMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.iotDpsResources()
-            .getPrivateEndpointConnectionWithResponse("nzdndslgna", "qig", "nduhavhqlkthum",
+            .getPrivateEndpointConnectionWithResponse("nwashrtd", "kcnqxwbpo", "ulpiuj",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("duiertgcc", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("vaolpsslqlf",
-            response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("yuq", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("pqlpq", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

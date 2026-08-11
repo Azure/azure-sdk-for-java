@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.time.OffsetDateTime;
@@ -90,27 +89,28 @@ public interface DpsCertificates {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param provisioningServiceName Name of the provisioning service to retrieve.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
+     * @return all the certificates tied to the provisioning service along with {@link Response}.
      */
-    PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName);
+    Response<CertificateListDescription> listWithResponse(String resourceGroupName, String provisioningServiceName,
+        Context context);
 
     /**
      * Get all the certificates tied to the provisioning service.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param provisioningServiceName Name of the provisioning service to retrieve.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
+     * @return all the certificates tied to the provisioning service.
      */
-    PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName, Context context);
+    CertificateListDescription list(String resourceGroupName, String provisioningServiceName);
 
     /**
      * Generate verification code for Proof of Possession.

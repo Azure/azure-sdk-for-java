@@ -27,7 +27,7 @@ public final class IotDpsResourcesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.iotDpsResources().delete("svlxotogtwrup", "sx", com.azure.core.util.Context.NONE);
+        manager.iotDpsResources().delete("wfvovbv", "euecivyhzceuoj", com.azure.core.util.Context.NONE);
 
     }
 }

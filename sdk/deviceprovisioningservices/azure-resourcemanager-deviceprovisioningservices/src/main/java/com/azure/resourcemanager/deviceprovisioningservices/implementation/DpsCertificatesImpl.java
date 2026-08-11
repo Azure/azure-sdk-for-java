@@ -4,14 +4,15 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.DpsCertificatesClient;
+import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
+import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateListDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePurpose;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateResponse;
 import com.azure.resourcemanager.deviceprovisioningservices.models.DpsCertificates;
@@ -65,17 +66,21 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         this.serviceClient().delete(resourceGroupName, ifMatch, provisioningServiceName, certificateName);
     }
 
-    public PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName) {
-        PagedIterable<CertificateResponseInner> inner
-            = this.serviceClient().list(resourceGroupName, provisioningServiceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateResponseImpl(inner1, this.manager()));
+    public Response<CertificateListDescription> listWithResponse(String resourceGroupName,
+        String provisioningServiceName, Context context) {
+        Response<CertificateListDescriptionInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, provisioningServiceName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CertificateListDescriptionImpl(inner.getValue(), this.manager()));
     }
 
-    public PagedIterable<CertificateResponse> list(String resourceGroupName, String provisioningServiceName,
-        Context context) {
-        PagedIterable<CertificateResponseInner> inner
-            = this.serviceClient().list(resourceGroupName, provisioningServiceName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateResponseImpl(inner1, this.manager()));
+    public CertificateListDescription list(String resourceGroupName, String provisioningServiceName) {
+        CertificateListDescriptionInner inner = this.serviceClient().list(resourceGroupName, provisioningServiceName);
+        if (inner != null) {
+            return new CertificateListDescriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<VerificationCodeResponse> generateVerificationCodeWithResponse(String certificateName,
