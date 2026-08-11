@@ -43,6 +43,9 @@ import java.util.Map;
 public final class RequestOptionsHelper {
 
     private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+    private static final HttpHeaderName X_MS_PROPOSED_LEASE_ID = HttpHeaderName.fromString("x-ms-proposed-lease-id");
+    private static final HttpHeaderName X_MS_LEASE_BREAK_PERIOD = HttpHeaderName.fromString("x-ms-lease-break-period");
     private static final HttpHeaderName X_MS_DELETE_SNAPSHOTS = HttpHeaderName.fromString("x-ms-delete-snapshots");
     private static final HttpHeaderName X_MS_DELETED_SHARE_NAME = HttpHeaderName.fromString("x-ms-deleted-share-name");
     private static final HttpHeaderName X_MS_DELETED_SHARE_VERSION
@@ -502,6 +505,47 @@ public final class RequestOptionsHelper {
     /** Builds a {@link RequestOptions} with only the sharesnapshot query parameter, scoped to the resource. */
     public static RequestOptions snapshotRequestOptions(String resourcePath, String snapshot, Context context) {
         RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code acquireLease}: the lease-duration and proposed-lease-id headers plus
+     * the optional snapshot query parameter, scoped to the resource.
+     */
+    public static RequestOptions acquireLeaseRequestOptions(String resourcePath, Integer duration,
+        String proposedLeaseId, String snapshot, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_LEASE_DURATION, duration);
+        addHeader(requestOptions, X_MS_PROPOSED_LEASE_ID, proposedLeaseId);
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code changeLease}: the proposed-lease-id header plus the optional snapshot
+     * query parameter, scoped to the resource. The current lease id is passed to the protocol method as an explicit
+     * parameter.
+     */
+    public static RequestOptions changeLeaseRequestOptions(String resourcePath, String proposedLeaseId, String snapshot,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_PROPOSED_LEASE_ID, proposedLeaseId);
+        addSnapshot(requestOptions, snapshot);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code breakLease}: the lease-break-period header plus the optional snapshot
+     * query parameter, scoped to the resource.
+     */
+    public static RequestOptions breakLeaseRequestOptions(String resourcePath, Integer breakPeriod, String snapshot,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_LEASE_BREAK_PERIOD, breakPeriod);
         addSnapshot(requestOptions, snapshot);
         scopeRequestToResourcePath(requestOptions, resourcePath);
         return requestOptions;

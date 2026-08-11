@@ -217,7 +217,7 @@ public class ModelHelper {
         item.setSnapshot(shareItemInternal.getSnapshot());
         item.setDeleted(shareItemInternal.isDeleted());
         item.setVersion(shareItemInternal.getVersion());
-        item.setProperties(populateShareProperties(shareItemInternal.getProperties()));
+        item.setProperties(populateShareProperties(shareItemInternal.getProperties(), shareItemInternal.getMetadata()));
         item.setMetadata(shareItemInternal.getMetadata());
         return item;
     }
@@ -226,9 +226,11 @@ public class ModelHelper {
      * Transforms {@link SharePropertiesInternal} into a public {@link ShareProperties}.
      *
      * @param sharePropertiesInternal {@link SharePropertiesInternal}
+     * @param metadata the share metadata (carried on the parent {@code ShareItemInternal}).
      * @return {@link ShareProperties}
      */
-    public static ShareProperties populateShareProperties(SharePropertiesInternal sharePropertiesInternal) {
+    public static ShareProperties populateShareProperties(SharePropertiesInternal sharePropertiesInternal,
+        Map<String, String> metadata) {
         ShareProperties properties = new ShareProperties();
         properties.setLastModified(sharePropertiesInternal.getLastModified());
         properties.setETag(sharePropertiesInternal.getETag());
@@ -247,7 +249,7 @@ public class ModelHelper {
         properties.setLeaseDuration(sharePropertiesInternal.getLeaseDuration());
         properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
-        properties.setMetadata(sharePropertiesInternal.getMetadata());
+        properties.setMetadata(metadata);
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
         properties
             .setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
@@ -320,7 +322,7 @@ public class ModelHelper {
             return null;
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
-            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
+            property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getETag());
     }
 
     public static HandleItem
@@ -733,6 +735,13 @@ public class ModelHelper {
     public static Response<ShareFileRangeList> mapGetRangeListResponse(Response<BinaryData> response) {
         ShareFileRangeList rangeList = deserializeXml(response.getValue(), ShareFileRangeList::fromXml);
         return new SimpleResponse<>(response, rangeList);
+    }
+
+    private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+
+    /** Maps a lease response into the {@code x-ms-lease-id} header value. */
+    public static Response<String> mapLeaseIdResponse(Response<Void> response) {
+        return new SimpleResponse<>(response, response.getHeaders().getValue(X_MS_LEASE_ID));
     }
 
     /** Maps a file Force Close Handles response into the closed/failed handle counts. */

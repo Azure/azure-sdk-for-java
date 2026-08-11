@@ -83,6 +83,8 @@ public class ShareStorageCustomization extends Customization {
 
         exposeRawListHandles(customization, logger);
 
+        fixXmlSerializerRedundantCast(customization, logger);
+
         restoreFluentModels(customization, logger);
 
         customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
@@ -136,6 +138,26 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
         }
+    }
+
+    /**
+     * Removes the redundant {@code (Class<T>)} cast the emitter generates in {@code XmlSerializer.deserialize}. The
+     * current azure-core {@code TypeReference#getJavaClass()} already returns {@code Class<T>}, so the cast triggers a
+     * javac "redundant cast" warning which fails the {@code -Werror} build.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void fixXmlSerializerRedundantCast(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String path = PKG_ROOT + "implementation/XmlSerializer.java";
+        String content = editor.getFileContent(path);
+        String redundant = "Class<T> clazz = (Class<T>) typeReference.getJavaClass();";
+        if (!content.contains(redundant)) {
+            return;
+        }
+        editor.replaceFile(path, content.replace(redundant, "Class<T> clazz = typeReference.getJavaClass();"));
+        logger.info("Removed redundant Class<T> cast in {}", path);
     }
 
     /**
