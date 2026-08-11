@@ -28,9 +28,14 @@ import java.nio.file.Paths;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -635,6 +640,85 @@ public class KeyVaultClientTest {
             assertTrue(key instanceof KeyVaultPrivateKey);
             assertEquals(VERSIONED_KEY_ID, ((KeyVaultPrivateKey) key).getKid());
         }
+    }
+
+    @Test
+    void getKeyDoesNotLogPrivateKeyPem() throws Exception {
+        String alias = "pem-certificate";
+        String certificateSecretUri = KEY_VAULT_TEST_URI_GLOBAL + "secrets/" + alias;
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/downloaded-from-portal/pem-exportable-key.pem")),
+            StandardCharsets.UTF_8);
+
+        KeyProperties keyProperties = new KeyProperties();
+        keyProperties.setExportable(true);
+        keyProperties.setKty("RSA");
+        CertificatePolicy certificatePolicy = new CertificatePolicy();
+        certificatePolicy.setKeyProperties(keyProperties);
+        CertificateBundle certificateBundle = new CertificateBundle();
+        certificateBundle.setPolicy(certificatePolicy);
+        certificateBundle.setSid(certificateSecretUri);
+
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setContentType("application/x-pem-file");
+        secretBundle.setValue(pemString);
+
+        List<String> loggedValues = new ArrayList<>();
+        Handler collector = new Handler() {
+            @Override
+            public void publish(LogRecord logRecord) {
+                loggedValues.add(logRecord.getMessage());
+                if (logRecord.getParameters() != null) {
+                    for (Object parameter : logRecord.getParameters()) {
+                        loggedValues.add(String.valueOf(parameter));
+                    }
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
+
+        Logger logger = Logger.getLogger(KeyVaultClient.class.getName());
+        Level originalLevel = logger.getLevel();
+        boolean originalUseParentHandlers = logger.getUseParentHandlers();
+        logger.addHandler(collector);
+        logger.setLevel(Level.ALL);
+        logger.setUseParentHandlers(false);
+
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class)) {
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+            httpUtilMockedStatic
+                .when(() -> HttpUtil.get(
+                    eq(KEY_VAULT_TEST_URI_GLOBAL + "certificates/" + alias + HttpUtil.API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(certificateBundle));
+            httpUtilMockedStatic
+                .when(() -> HttpUtil.get(eq(certificateSecretUri + HttpUtil.API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, "bearer-token", false);
+            Key key = keyVaultClient.getKey(alias, null);
+
+            assertNotNull(key);
+            assertEquals("RSA", key.getAlgorithm());
+        } finally {
+            logger.removeHandler(collector);
+            logger.setLevel(originalLevel);
+            logger.setUseParentHandlers(originalUseParentHandlers);
+        }
+
+        assertFalse(loggedValues.contains(pemString), "The private-key PEM must never be logged");
+        assertTrue(loggedValues.stream().noneMatch(value -> value.contains("BEGIN PRIVATE KEY")),
+            "No fragment of the private-key PEM may be logged");
+        assertTrue(loggedValues.contains("RSA"), "The non-secret key type stays available for diagnostics");
     }
 
     private static CertificateBundle createCertificateBundle(boolean exportable) {

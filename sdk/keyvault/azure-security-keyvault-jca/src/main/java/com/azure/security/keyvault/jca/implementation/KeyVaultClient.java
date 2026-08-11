@@ -642,7 +642,8 @@ public class KeyVaultClient {
     private PrivateKey createPrivateKeyFromPem(String pemString, String keyType)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", new Object[] { pemString, keyType });
+        // The PEM string holds the private key, so it must stay out of the log.
+        LOGGER.entering("KeyVaultClient", "createPrivateKeyFromPem", keyType);
 
         StringBuilder builder = new StringBuilder();
 
