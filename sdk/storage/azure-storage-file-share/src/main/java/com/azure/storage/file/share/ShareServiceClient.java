@@ -12,9 +12,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,6 +33,7 @@ import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
@@ -226,18 +229,13 @@ public final class ShareServiceClient {
         }
 
         BiFunction<String, Integer, PagedResponse<ShareItem>> retriever = (nextMarker, pageSize) -> {
-            Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
-                .listSharesSegmentNoCustomHeadersSinglePage(prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
+            RequestOptions requestOptions = RequestOptionsHelper.listSharesRequestOptions(prefix, nextMarker,
+                pageSize == null ? maxResultsPerPage : pageSize, include, finalContext);
+            Callable<Response<BinaryData>> operation
+                = () -> this.azureFileStorageClient.getServices().listSharesSegmentWithResponse(requestOptions);
 
-            PagedResponse<ShareItemInternal> response = sendRequest(operation, timeout, ShareStorageException.class);
-
-            List<ShareItem> value = response.getValue() == null
-                ? Collections.emptyList()
-                : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
-
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getContinuationToken(), ModelHelper.transformListSharesHeaders(response.getHeaders()));
+            Response<BinaryData> response = sendRequest(operation, timeout, ShareStorageException.class);
+            return ModelHelper.mapListSharesResponse(response);
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
@@ -301,11 +299,12 @@ public final class ShareServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<ShareServiceProperties>> operation = () -> this.azureFileStorageClient.getServices()
-            .getPropertiesNoCustomHeadersWithResponse(null, finalContext);
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        Callable<Response<BinaryData>> operation
+            = () -> this.azureFileStorageClient.getServices().getPropertiesWithResponse(requestOptions);
 
-        Response<ShareServiceProperties> response = sendRequest(operation, timeout, ShareStorageException.class);
-        return new SimpleResponse<>(response, response.getValue());
+        Response<BinaryData> response = sendRequest(operation, timeout, ShareStorageException.class);
+        return ModelHelper.mapGetServicePropertiesResponse(response);
     }
 
     /**
@@ -433,8 +432,9 @@ public final class ShareServiceClient {
     public Response<Void> setPropertiesWithResponse(ShareServiceProperties properties, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
         Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getServices()
-            .setPropertiesNoCustomHeadersWithResponse(properties, null, finalContext);
+            .setPropertiesWithResponse(RequestOptionsHelper.serializeToXml(properties), requestOptions);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -601,8 +601,12 @@ public final class ShareServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         DeleteSnapshotsOptionType deleteSnapshots
             = CoreUtils.isNullOrEmpty(snapshot) ? DeleteSnapshotsOptionType.INCLUDE : null;
-        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponse(shareName, snapshot, null, deleteSnapshots, null, finalContext);
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        RequestOptionsHelper.addSnapshot(requestOptions, snapshot);
+        RequestOptionsHelper.addDeleteSnapshotsHeader(requestOptions, deleteSnapshots);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        Callable<Response<Void>> operation
+            = () -> this.azureFileStorageClient.getShares().deleteWithResponse(requestOptions);
 
         return sendRequest(operation, timeout, ShareStorageException.class);
     }
@@ -793,9 +797,11 @@ public final class ShareServiceClient {
     public Response<ShareClient> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getShares()
-            .restoreNoCustomHeadersWithResponse(deletedShareName, null, null, deletedShareName, deletedShareVersion,
-                finalContext);
+        RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+        RequestOptionsHelper.addUndeleteShareHeaders(requestOptions, deletedShareName, deletedShareVersion);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, deletedShareName);
+        Callable<Response<Void>> operation
+            = () -> this.azureFileStorageClient.getShares().restoreWithResponse(requestOptions);
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             getShareClient(deletedShareName));
@@ -851,17 +857,18 @@ public final class ShareServiceClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
-        Callable<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> operation
-            = () -> this.azureFileStorageClient.getServices()
-                .getUserDelegationKeyWithResponse(new KeyInfo()
-                    .setStart(options.getStartsOn() == null
-                        ? ""
-                        : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
-                    .setDelegatedUserTenantId(options.getDelegatedUserTenantId()), null, null, finalContext);
+        Callable<Response<BinaryData>> operation = () -> {
+            KeyInfo keyInfo = new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getExpiresOn()))
+                .setStart(options.getStartsOn() == null
+                    ? ""
+                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(options.getStartsOn()))
+                .setDelegatedUserTenantId(options.getDelegatedUserTenantId());
+            RequestOptions requestOptions = new RequestOptions().setContext(finalContext);
+            return this.azureFileStorageClient.getServices()
+                .getUserDelegationKeyWithResponse(RequestOptionsHelper.serializeToXml(keyInfo), requestOptions);
+        };
 
-        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> response
-            = sendRequest(operation, timeout, ShareStorageException.class);
-        return new SimpleResponse<>(response, response.getValue());
+        Response<BinaryData> response = sendRequest(operation, timeout, ShareStorageException.class);
+        return ModelHelper.mapGetUserDelegationKeyResponse(response);
     }
 }

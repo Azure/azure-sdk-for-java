@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -29,6 +30,7 @@ import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionT
 import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.RequestOptionsHelper;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareItem;
@@ -257,17 +259,9 @@ public final class ShareServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever = (nextMarker,
             pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
-                .listSharesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                    include, null, context)
-                .map(response -> {
-                    List<ShareItem> value = response.getValue() == null
-                        ? Collections.emptyList()
-                        : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
-
-                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, response.getContinuationToken(),
-                        ModelHelper.transformListSharesHeaders(response.getHeaders()));
-                }), timeout);
+                .listSharesSegmentWithResponseAsync(RequestOptionsHelper.listSharesRequestOptions(prefix, nextMarker,
+                    pageSize == null ? maxResultsPerPage : pageSize, include, context))
+                .map(ModelHelper::mapListSharesResponse), timeout);
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
@@ -334,9 +328,10 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
         return azureFileStorageClient.getServices()
-            .getPropertiesWithResponseAsync(null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .getPropertiesWithResponseAsync(requestOptions)
+            .map(ModelHelper::mapGetServicePropertiesResponse);
     }
 
     /**
@@ -456,8 +451,9 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
         return azureFileStorageClient.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(properties, null, context);
+            .setPropertiesWithResponseAsync(RequestOptionsHelper.serializeToXml(properties), requestOptions);
     }
 
     /**
@@ -657,8 +653,11 @@ public final class ShareServiceAsyncClient {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context);
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        RequestOptionsHelper.addSnapshot(requestOptions, snapshot);
+        RequestOptionsHelper.addDeleteSnapshotsHeader(requestOptions, deleteSnapshots);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, shareName);
+        return azureFileStorageClient.getShares().deleteWithResponseAsync(requestOptions);
     }
 
     /**
@@ -853,8 +852,11 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
         Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context == null ? Context.NONE : context);
+        RequestOptionsHelper.addUndeleteShareHeaders(requestOptions, deletedShareName, deletedShareVersion);
+        RequestOptionsHelper.scopeRequestToResourcePath(requestOptions, deletedShareName);
         return this.azureFileStorageClient.getShares()
-            .restoreWithResponseAsync(deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
+            .restoreWithResponseAsync(requestOptions)
             .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 
@@ -930,12 +932,12 @@ public final class ShareServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
+        KeyInfo keyInfo = new KeyInfo(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
+            .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
+            .setDelegatedUserTenantId(delegatedUserTenantId);
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
         return this.azureFileStorageClient.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId),
-                null, null, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+            .getUserDelegationKeyWithResponseAsync(RequestOptionsHelper.serializeToXml(keyInfo), requestOptions)
+            .map(ModelHelper::mapGetUserDelegationKeyResponse);
     }
 }
