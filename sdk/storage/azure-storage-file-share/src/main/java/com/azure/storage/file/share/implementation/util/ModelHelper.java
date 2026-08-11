@@ -46,6 +46,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
@@ -86,11 +87,13 @@ import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.xml.XmlReader;
 
@@ -555,6 +558,31 @@ public class ModelHelper {
 
     public static Response<String> mapGetPermissionResponse(Response<BinaryData> response) {
         return new SimpleResponse<>(response, response.getValue().toObject(SharePermission.class).getPermission());
+    }
+
+    public static Response<ShareServiceProperties> mapGetServicePropertiesResponse(Response<BinaryData> response) {
+        return new SimpleResponse<>(response, deserializeXml(response.getValue(), ShareServiceProperties::fromXml));
+    }
+
+    public static Response<UserDelegationKey> mapGetUserDelegationKeyResponse(Response<BinaryData> response) {
+        return new SimpleResponse<>(response, deserializeXml(response.getValue(), UserDelegationKey::fromXml));
+    }
+
+    /**
+     * Deserializes a List Shares Segment response envelope into a {@link PagedResponse} of {@link ShareItem}, carrying
+     * the {@code NextMarker} as the continuation token. The protocol paging helpers discard {@code NextMarker}, so the
+     * hand-written {@code ShareServiceClient#listShares} deserializes the full {@code ListSharesResponse} envelope here.
+     */
+    public static PagedResponse<ShareItem> mapListSharesResponse(Response<BinaryData> response) {
+        ListSharesResponse listSharesResponse = deserializeXml(response.getValue(), ListSharesResponse::fromXml);
+        List<ShareItem> value = listSharesResponse.getShareItems() == null
+            ? Collections.emptyList()
+            : listSharesResponse.getShareItems()
+                .stream()
+                .map(ModelHelper::populateShareItem)
+                .collect(java.util.stream.Collectors.toList());
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value,
+            listSharesResponse.getNextMarker(), transformListSharesHeaders(response.getHeaders()));
     }
 
     /** Deserializes an XML response body via the model's {@code fromXml}. */

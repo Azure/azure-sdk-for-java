@@ -79,6 +79,8 @@ public class ShareStorageCustomization extends Customization {
 
         retypeServiceVersionToShareServiceVersion(customization, logger);
 
+        exposeRawListSharesSegment(customization, logger);
+
         restoreFluentModels(customization, logger);
 
         customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
@@ -132,6 +134,46 @@ public class ShareStorageCustomization extends Customization {
                 logger.info("Retyped FileServiceVersion -> ShareServiceVersion in {}", path);
             }
         }
+    }
+
+    /**
+     * Exposes raw {@code Response<BinaryData>} accessors for the List Shares Segment operation. The generated
+     * {@code listSharesSegmentSinglePage} paging helpers deserialize only the per-item {@code ShareItemInternal}
+     * elements and discard the {@code NextMarker} from the XML envelope, but the hand-written
+     * {@code ShareServiceClient#listShares} manages continuation itself. These methods return the full response body so
+     * the client can deserialize {@code ListSharesResponse} (items + {@code NextMarker}).
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void exposeRawListSharesSegment(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String path = PKG_ROOT + "implementation/ServicesImpl.java";
+        String content = editor.getFileContent(path);
+        String anchor = "    public PagedIterable<BinaryData> listSharesSegment(RequestOptions requestOptions) {";
+        if (content.contains("listSharesSegmentWithResponse(") || !content.contains(anchor)) {
+            return;
+        }
+        String rawMethods
+            = "    public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {\n"
+                + "        final String accept = \"application/xml\";\n"
+                + "        try {\n"
+                + "            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
+                + "                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);\n"
+                + "        } catch (ShareStorageExceptionInternal internalException) {\n"
+                + "            throw ModelHelper.mapToShareStorageException(internalException);\n"
+                + "        }\n"
+                + "    }\n\n"
+                + "    public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {\n"
+                + "        final String accept = \"application/xml\";\n"
+                + "        return FluxUtil\n"
+                + "            .withContext(context -> service.listSharesSegment(this.client.getUrl(),\n"
+                + "                this.client.getServiceVersion().getVersion(), this.client.getFileRequestIntent(), accept,\n"
+                + "                requestOptions, context))\n"
+                + "            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);\n"
+                + "    }\n\n";
+        editor.replaceFile(path, content.replace(anchor, rawMethods + anchor));
+        logger.info("Exposed raw listSharesSegmentWithResponse methods in {}", path);
     }
 
     /**

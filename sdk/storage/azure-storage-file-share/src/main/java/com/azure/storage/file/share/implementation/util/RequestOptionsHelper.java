@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.implementation.XmlSerializer;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -34,6 +35,9 @@ public final class RequestOptionsHelper {
 
     private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
     private static final HttpHeaderName X_MS_DELETE_SNAPSHOTS = HttpHeaderName.fromString("x-ms-delete-snapshots");
+    private static final HttpHeaderName X_MS_DELETED_SHARE_NAME = HttpHeaderName.fromString("x-ms-deleted-share-name");
+    private static final HttpHeaderName X_MS_DELETED_SHARE_VERSION
+        = HttpHeaderName.fromString("x-ms-deleted-share-version");
     private static final HttpHeaderName X_MS_FILE_PERMISSION_FORMAT
         = HttpHeaderName.fromString("x-ms-file-permission-format");
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
@@ -54,6 +58,48 @@ public final class RequestOptionsHelper {
         = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
 
     private static final ObjectSerializer XML_SERIALIZER = new XmlSerializer();
+
+    /**
+     * Serializes an XML request body model (e.g. {@link com.azure.storage.file.share.models.ShareServiceProperties} or
+     * {@code KeyInfo}) to {@link BinaryData} for protocol methods that accept the body as an explicit parameter.
+     *
+     * @param xmlSerializable the XML-serializable model to serialize.
+     * @return the serialized request body.
+     */
+    public static BinaryData serializeToXml(Object xmlSerializable) {
+        return BinaryData.fromObject(xmlSerializable, XML_SERIALIZER);
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for the List Shares Segment operation, wiring the {@code prefix},
+     * {@code marker}, {@code maxresults} and {@code include} query parameters onto the account-scoped request.
+     *
+     * @param prefix filters results to share names beginning with this prefix; may be {@code null}.
+     * @param marker continuation token identifying the page to return; may be {@code null}.
+     * @param maxResults maximum number of shares to return per page; may be {@code null}.
+     * @param include datasets to include in the response; may be {@code null} or empty.
+     * @param context the request context.
+     * @return the configured request options.
+     */
+    public static RequestOptions listSharesRequestOptions(String prefix, String marker, Integer maxResults,
+        List<ListSharesIncludeType> include, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxResults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxResults), false);
+        }
+        if (include != null && !include.isEmpty()) {
+            requestOptions.addQueryParam("include",
+                include.stream().map(ListSharesIncludeType::toString).collect(java.util.stream.Collectors.joining(",")),
+                false);
+        }
+        return requestOptions;
+    }
 
     /**
      * The generated protocol methods target the account-scoped service URL; this appends the resource path (e.g.
@@ -110,6 +156,33 @@ public final class RequestOptionsHelper {
         if (deleteSnapshots != null) {
             requestOptions.setHeader(X_MS_DELETE_SNAPSHOTS, deleteSnapshots.toString());
         }
+    }
+
+    /**
+     * Sets the {@code x-ms-delete-snapshots} header from the wire {@link DeleteSnapshotsOptionType} used by the
+     * service-level {@code deleteShare} convenience.
+     *
+     * @param requestOptions the request options to mutate.
+     * @param option the delete-snapshots option; a no-op when {@code null}.
+     */
+    public static void addDeleteSnapshotsHeader(RequestOptions requestOptions, DeleteSnapshotsOptionType option) {
+        if (option != null) {
+            requestOptions.setHeader(X_MS_DELETE_SNAPSHOTS, option.toString());
+        }
+    }
+
+    /**
+     * Sets the {@code x-ms-deleted-share-name} and {@code x-ms-deleted-share-version} headers for the
+     * {@code undeleteShare} (restore) operation.
+     *
+     * @param requestOptions the request options to mutate.
+     * @param deletedShareName the name of the previously deleted share to restore.
+     * @param deletedShareVersion the version of the previously deleted share to restore.
+     */
+    public static void addUndeleteShareHeaders(RequestOptions requestOptions, String deletedShareName,
+        String deletedShareVersion) {
+        requestOptions.setHeader(X_MS_DELETED_SHARE_NAME, deletedShareName);
+        requestOptions.setHeader(X_MS_DELETED_SHARE_VERSION, deletedShareVersion);
     }
 
     /**

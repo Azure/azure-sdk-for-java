@@ -784,6 +784,25 @@ public final class ServicesImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an enumeration of shares as paginated response with {@link PagedIterable}.
      */
+    public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        try {
+            return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(
+                context -> service.listSharesSegment(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSharesSegment(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listSharesSegmentSinglePage(requestOptions));
