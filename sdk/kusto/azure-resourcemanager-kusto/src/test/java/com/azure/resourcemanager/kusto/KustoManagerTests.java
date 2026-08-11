@@ -76,9 +76,9 @@ public class KustoManagerTests extends TestProxyTestBase {
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new AzureSku().withName(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4)
+                .withSku(new AzureSku().withName(AzureSkuName.STANDARD_E2ADS_V5)
                     .withCapacity(1)
-                    .withTier(AzureSkuTier.BASIC))
+                    .withTier(AzureSkuTier.STANDARD))
                 .create();
             // @embedmeEnd
             cluster.refresh();
