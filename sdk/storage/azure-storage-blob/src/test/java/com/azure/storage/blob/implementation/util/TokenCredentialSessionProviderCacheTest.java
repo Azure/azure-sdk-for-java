@@ -116,8 +116,7 @@ public class TokenCredentialSessionProviderCacheTest {
 
         // Third request: the background refresh has swapped in the new token, which is now served. The
         // refresh runs on a background subscription, so poll briefly rather than asserting immediately.
-        assertEquals(SECOND_TOKEN,
-            waitForToken(() -> provider.getSession(contextFor(CONTAINER_A))).getSessionToken());
+        assertEquals(SECOND_TOKEN, waitForToken(() -> provider.getSession(contextFor(CONTAINER_A))).getSessionToken());
         // Still only one inline creation and one background refresh overall (no over-eager churn).
         assertEquals(2, httpClient.getCallCount(CONTAINER_A));
     }
@@ -316,8 +315,7 @@ public class TokenCredentialSessionProviderCacheTest {
         // Only one CreateSession call was made even though two callers subscribed.
         assertEquals(1, httpClient.getCallCount(CONTAINER_A));
 
-        pendingResponse
-            .tryEmitValue(httpClient.buildResponseFor(now(clock).plus(SESSION_LIFETIME)));
+        pendingResponse.tryEmitValue(httpClient.buildResponseFor(now(clock).plus(SESSION_LIFETIME)));
 
         awaitLatch(firstLatch);
         awaitLatch(secondLatch);
@@ -357,7 +355,8 @@ public class TokenCredentialSessionProviderCacheTest {
 
     private static void waitForCallCount(ControllableHttpClient httpClient) {
         long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
-        while (httpClient.getCallCount(TokenCredentialSessionProviderCacheTest.CONTAINER_A) < 2 && System.nanoTime() < deadline) {
+        while (httpClient.getCallCount(TokenCredentialSessionProviderCacheTest.CONTAINER_A) < 2
+            && System.nanoTime() < deadline) {
             sleepBriefly();
         }
     }
@@ -404,8 +403,8 @@ public class TokenCredentialSessionProviderCacheTest {
         }
 
         void enqueueFailure() {
-            queuedByContainer.computeIfAbsent(TokenCredentialSessionProviderCacheTest.CONTAINER_A,
-                k -> new ArrayDeque<>())
+            queuedByContainer
+                .computeIfAbsent(TokenCredentialSessionProviderCacheTest.CONTAINER_A, k -> new ArrayDeque<>())
                 .add(new CredentialConfig(null, null, true));
         }
 

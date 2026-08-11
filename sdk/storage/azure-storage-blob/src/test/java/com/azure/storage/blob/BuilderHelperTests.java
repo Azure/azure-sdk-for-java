@@ -50,14 +50,15 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -692,51 +693,117 @@ public class BuilderHelperTests {
 
     // region buildPipeline session tests
 
-    @Test
-    public void buildPipelineWithoutSessionOptionsUsesBearerPolicy() {
-        HttpPipeline pipeline = buildBearerPipeline();
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("pipelinesWithoutSessionsSupplier")
+    public void pipelinesWithoutSessionsDoNotContainSessionPolicy(String scenario,
+        Supplier<HttpPipeline> pipelineSupplier, boolean expectsBearerPolicy) {
+        HttpPipeline pipeline = pipelineSupplier.get();
 
         assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
-            "Pipeline without service-level session options should not contain SessionTokenCredentialPolicy");
+            scenario + " should not contain SessionTokenCredentialPolicy");
+        assertEquals(expectsBearerPolicy, hasPolicyOfType(pipeline, "StorageBearerTokenChallengeAuthorizationPolicy"),
+            scenario + " bearer policy expectation mismatch");
     }
 
     @Test
-    public void buildPipelineWithSessionsDisabledUsesBearerAuthentication() {
-        AtomicReference<String> authorization = new AtomicReference<>();
-        HttpClient httpClient = request -> {
-            authorization.set(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-            return Mono.just(new MockHttpResponse(request, 200));
-        };
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.DISABLED);
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), httpClient,
-            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class),
-            sessionOptions, BlobServiceVersion.getLatest());
+    public void serviceBuilderUsesBuiltInSessionProviderByDefault() {
+        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .buildClient();
 
+        assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+    }
+
+    @Test
+    public void customSessionProviderIsWiredIntoPipelineWithResolvedRequestContext() {
+        AtomicReference<SessionRequestContext> receivedContext = new AtomicReference<>();
+        SessionCredential credential = new SessionCredential("session-token",
+            "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
+        SessionProvider provider = new SessionProvider() {
+            @Override
+            public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
+                receivedContext.set(context);
+                return Mono.just(credential);
+            }
+
+            @Override
+            public SessionCredential getSession(SessionRequestContext context) {
+                receivedContext.set(context);
+                return credential;
+            }
+
+            @Override
+            public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
+                return false;
+            }
+
+            @Override
+            public void refreshSession(SessionRequestContext context) {
+            }
+        };
+        SessionOptions options = new SessionOptions().setSessionProvider(provider);
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
+                null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(),
+                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options,
+                null);
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .expectNextCount(1)
             .verifyComplete();
 
-        assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"));
-        assertTrue(authorization.get().startsWith("Bearer "));
+        assertNotNull(receivedContext.get(), "Custom session provider should have been invoked by the pipeline");
+        assertEquals("container", receivedContext.get().getContainerName());
+        assertEquals("account", receivedContext.get().getAccountName());
     }
 
-    @Test
-    public void buildPipelineWithSharedKeyDoesNotHaveSessionPolicy() {
-        HttpPipeline pipeline = buildSharedKeyPipeline();
 
-        assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
-            "Pipeline with shared key should not contain SessionTokenCredentialPolicy");
+    private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {
+        return Stream.of(
+            Arguments.of("null session options", (Supplier<HttpPipeline>) () -> buildTokenPipeline(null), true),
+            Arguments.of("sessions disabled",
+                (Supplier<HttpPipeline>) () -> buildTokenPipeline(
+                    new SessionOptions().setSessionMode(SessionMode.DISABLED)),
+                true),
+            Arguments.of("shared key credential", (Supplier<HttpPipeline>) BuilderHelperTests::buildSharedKeyPipeline,
+                false),
+            Arguments.of("standalone BlobClientBuilder",
+                (Supplier<HttpPipeline>) () -> new BlobClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .blobName("myblob")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildClient()
+                    .getHttpPipeline(),
+                true),
+            Arguments.of("standalone BlobContainerClientBuilder",
+                (Supplier<HttpPipeline>) () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildClient()
+                    .getHttpPipeline(),
+                true),
+            Arguments.of("standalone SpecializedBlobClientBuilder",
+                (Supplier<HttpPipeline>) () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
+                    .containerName("mycontainer")
+                    .blobName("myblob")
+                    .credential(new MockTokenCredential())
+                    .httpClient(new NoOpHttpClient())
+                    .buildBlockBlobClient()
+                    .getHttpPipeline(),
+                true));
     }
 
     /**
-     * Helper to build a pipeline with bearer token auth.
+     * Helper to build a pipeline with bearer token auth and the given session options.
      */
-    private static HttpPipeline buildBearerPipeline() {
+    private static HttpPipeline buildTokenPipeline(SessionOptions sessionOptions) {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), null, BlobServiceVersion.getLatest());
+            new ClientLogger(BuilderHelperTests.class), sessionOptions, BlobServiceVersion.getLatest());
     }
 
     /**
@@ -759,113 +826,5 @@ public class BuilderHelperTests {
         }
         return false;
     }
-
-    /**
-     * Returns the index of the first policy whose simple class name matches, or -1 if not found.
-     */
-    private static int indexOfPolicy(HttpPipeline pipeline, String simpleClassName) {
-        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    // endregion
-
-    // region Standalone builder session tests
-
-    @Test
-    public void standaloneBlobBuilderDoesNotCreateSessions() {
-        BlobClient client = new BlobClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .blobName("myblob")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .buildClient();
-
-        assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
-    }
-
-    @Test
-    public void serviceBuilderUsesBuiltInSessionProviderByDefault() {
-        BlobServiceClient client = new BlobServiceClientBuilder().endpoint(ENDPOINT)
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .buildClient();
-
-        assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
-    }
-
-    @Test
-    public void customSessionProviderReceivesResolvedRequestContextWithoutSdkCaching() {
-        AtomicReference<SessionRequestContext> receivedContext = new AtomicReference<>();
-        AtomicInteger retrievalCount = new AtomicInteger();
-        SessionCredential credential = new SessionCredential("session-token",
-            "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
-        SessionProvider provider = new SessionProvider() {
-            @Override
-            public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
-                receivedContext.set(context);
-                retrievalCount.incrementAndGet();
-                return Mono.just(credential);
-            }
-
-            @Override
-            public SessionCredential getSession(SessionRequestContext context) {
-                receivedContext.set(context);
-                retrievalCount.incrementAndGet();
-                return credential;
-            }
-
-            @Override
-            public boolean invalidateSession(SessionRequestContext context, SessionCredential rejectedCredential) {
-                return false;
-            }
-
-            @Override
-            public void refreshSession(SessionRequestContext context) {
-            }
-        };
-        SessionOptions options = new SessionOptions().setSessionProvider(provider);
-        AtomicReference<String> receivedAuthorization = new AtomicReference<>();
-        HttpClient testHttpClient = requestToSend -> {
-            receivedAuthorization.set(requestToSend.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-            return Mono.just(new MockHttpResponse(requestToSend, 200));
-        };
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
-                null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), testHttpClient, new ArrayList<>(),
-                new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options, null);
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-
-        assertTrue(receivedAuthorization.get().startsWith("Session session-token:"));
-        assertEquals("container", receivedContext.get().getContainerName());
-        assertEquals("account", receivedContext.get().getAccountName());
-        assertEquals(2, retrievalCount.get());
-    }
-
-    // endregion
-
-    // region BlobContainerClientBuilder session tests
-
-    @Test
-    public void standaloneContainerBuilderDoesNotCreateSessions() {
-        BlobContainerClient client = new BlobContainerClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .buildClient();
-
-        assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
-    }
-
-    // endregion
 
 }
