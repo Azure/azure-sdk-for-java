@@ -2593,7 +2593,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
     private WorkIQKnowledgeSource createWorkIQKnowledgeSource(String name) {
         WorkIQKnowledgeSourceParameters parameters = new WorkIQKnowledgeSourceParameters(
-            new EntraAppAuthentication("00000000-0000-0000-0000-000000000000", "test-federated-credential"));
+            new EntraAppAuthentication("00000000-0000-0000-0000-000000000000", "44444444-4444-4444-4444-444444444444"));
         return new WorkIQKnowledgeSource(name, parameters);
     }
 

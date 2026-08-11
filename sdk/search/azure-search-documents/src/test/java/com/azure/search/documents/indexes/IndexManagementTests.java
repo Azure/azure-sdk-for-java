@@ -23,6 +23,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexPermissionFilterOption;
+import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.SharePointConnectorAppRegistration;
@@ -1148,6 +1149,193 @@ public class IndexManagementTests extends SearchTestBase {
         }
     }
 
+    // --- Pagination Tests (Serverless MVP: top/skip/count) ---
+
+    @Test
+    @Disabled("TODO: Replace top with a service-side pageSize option")
+    public void canListIndexesWithSelectedPropertiesAndTopSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        // TODO: The replacement overload currently exposes select but not pageSize.
+        List<SearchIndexResponse> indexes
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name")).stream().collect(Collectors.toList());
+
+        assertNotNull(indexes);
+        assertTrue(indexes.size() >= 1);
+        for (SearchIndexResponse idx : indexes) {
+            assertNotNull(idx.getName());
+        }
+    }
+
+    @Test
+    @Disabled("TODO: Replace top with a service-side pageSize option")
+    public void canListIndexesWithSelectedPropertiesAndTopAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        // TODO: The replacement overload currently exposes select but not pageSize.
+        StepVerifier.create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).collectList())
+            .assertNext(indexes -> {
+                assertNotNull(indexes);
+                assertTrue(indexes.size() >= 1);
+                for (SearchIndexResponse idx : indexes) {
+                    assertNotNull(idx.getName());
+                }
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace numeric skip with service continuation-token pagination")
+    public void canListIndexesWithSelectedPropertiesAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        List<SearchIndexResponse> allIndexes
+            = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
+        // TODO: Replace this client-side skip with a test that forces and follows @odata.nextLink.
+        List<SearchIndexResponse> skippedIndexes
+            = client.listIndexesWithSelectedProperties().stream().skip(1).collect(Collectors.toList());
+
+        if (allIndexes.size() > 1) {
+            assertEquals(allIndexes.size() - 1, skippedIndexes.size());
+        }
+    }
+
+    @Test
+    @Disabled("TODO: Replace numeric skip with service continuation-token pagination")
+    public void canListIndexesWithSelectedPropertiesAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        // TODO: Replace the client-side skip with a test that forces and follows @odata.nextLink.
+        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono
+            = asyncClient.listIndexesWithSelectedProperties()
+                .collectList()
+                .zipWith(asyncClient.listIndexesWithSelectedProperties().skip(1).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<SearchIndexResponse> allIndexes = tuple.getT1();
+            List<SearchIndexResponse> skippedIndexes = tuple.getT2();
+            if (allIndexes.size() > 1) {
+                assertEquals(allIndexes.size() - 1, skippedIndexes.size());
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
+    public void canListIndexesWithSelectedPropertiesAndCountSync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        // TODO: SearchIndexResponse remains the item model, but there is no replacement total-count property.
+        List<SearchIndexResponse> indexes
+            = client.listIndexesWithSelectedProperties(Arrays.asList("name")).stream().collect(Collectors.toList());
+
+        assertNotNull(indexes);
+        assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
+    }
+
+    @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
+    public void canListIndexesWithSelectedPropertiesAndCountAsync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        // TODO: SearchIndexResponse remains the item model, but there is no replacement total-count property.
+        StepVerifier.create(asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).collectList())
+            .assertNext(indexes -> {
+                assertNotNull(indexes);
+                assertTrue(indexes.stream().anyMatch(idx -> index.getName().equals(idx.getName())));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
+    public void canListIndexesWithSelectedPropertiesTopAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        List<SearchIndexResponse> allIndexes
+            = client.listIndexesWithSelectedProperties().stream().collect(Collectors.toList());
+
+        // TODO: Replace client-side skip/limit with pageSize and @odata.nextLink traversal.
+        List<SearchIndexResponse> pagedIndexes = client.listIndexesWithSelectedProperties(Arrays.asList("name"))
+            .stream()
+            .skip(1)
+            .limit(1)
+            .collect(Collectors.toList());
+
+        assertNotNull(pagedIndexes);
+        if (allIndexes.size() > 1) {
+            assertTrue(pagedIndexes.size() >= 1);
+        }
+    }
+
+    @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
+    public void canListIndexesWithSelectedPropertiesTopAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        // TODO: Replace client-side skip/take with pageSize and @odata.nextLink traversal.
+        Mono<Tuple2<List<SearchIndexResponse>, List<SearchIndexResponse>>> resultMono
+            = asyncClient.listIndexesWithSelectedProperties()
+                .collectList()
+                .zipWith(
+                    asyncClient.listIndexesWithSelectedProperties(Arrays.asList("name")).skip(1).take(1).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<SearchIndexResponse> allIndexes = tuple.getT1();
+            List<SearchIndexResponse> pagedIndexes = tuple.getT2();
+            assertNotNull(pagedIndexes);
+            if (allIndexes.size() > 1) {
+                assertTrue(pagedIndexes.size() >= 1);
+            }
+        }).verifyComplete();
+    }
+
     // --- Stats summary page-size tests ---
 
     @Test
@@ -1191,6 +1379,127 @@ public class IndexManagementTests extends SearchTestBase {
                 assertTrue(stat.getDocumentCount() >= 0);
                 assertTrue(stat.getStorageSize() >= 0);
                 assertTrue(stat.getVectorIndexSize() >= 0);
+            }
+        }).verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace numeric skip with search or continuation-token pagination")
+    public void canListIndexStatsSummaryWithSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        // TODO: Replace the client-side skip with search/ListingSearchType or @odata.nextLink traversal.
+        List<IndexStatisticsSummary> skippedStats
+            = client.listIndexStatsSummary().stream().skip(1).collect(Collectors.toList());
+
+        assertNotNull(skippedStats);
+        assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
+    }
+
+    @Test
+    @Disabled("TODO: Replace numeric skip with search or continuation-token pagination")
+    public void canListIndexStatsSummaryWithSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+
+        // TODO: Replace the client-side skip with search/ListingSearchType or @odata.nextLink traversal.
+        StepVerifier.create(asyncClient.listIndexStatsSummary().skip(1).collectList()).assertNext(skippedStats -> {
+            assertNotNull(skippedStats);
+            assertTrue(skippedStats.size() >= 1, "Skipped list should still contain at least one index");
+        }).verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
+    public void canListIndexStatsSummaryWithCountSync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        // TODO: IndexStatisticsSummary remains the item model, but there is no replacement total-count property.
+        List<IndexStatisticsSummary> stats = client.listIndexStatsSummary().stream().collect(Collectors.toList());
+
+        assertNotNull(stats);
+        assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
+    }
+
+    @Test
+    @Disabled("TODO: Replace count when the service exposes a total-count contract")
+    public void canListIndexStatsSummaryWithCountAsync() {
+        SearchIndex index = createTestIndex(null);
+        client.createIndex(index);
+        indexesToDelete.add(index.getName());
+
+        // TODO: IndexStatisticsSummary remains the item model, but there is no replacement total-count property.
+        StepVerifier.create(asyncClient.listIndexStatsSummary().collectList()).assertNext(stats -> {
+            assertNotNull(stats);
+            assertTrue(stats.stream().anyMatch(s -> index.getName().equals(s.getName())));
+        }).verifyComplete();
+    }
+
+    @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
+    public void canListIndexStatsSummaryWithTopAndSkipSync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        List<IndexStatisticsSummary> allStats = client.listIndexStatsSummary().stream().collect(Collectors.toList());
+
+        // TODO: Replace client-side skip with @odata.nextLink traversal; top is now pageSize.
+        List<IndexStatisticsSummary> pagedStats
+            = client.listIndexStatsSummary(null, 1, null).stream().skip(1).limit(1).collect(Collectors.toList());
+
+        assertNotNull(pagedStats);
+        if (allStats.size() > 1) {
+            assertTrue(pagedStats.size() >= 1);
+        }
+    }
+
+    @Test
+    @Disabled("TODO: Replace top and skip with pageSize and continuation-token pagination")
+    public void canListIndexStatsSummaryWithTopAndSkipAsync() {
+        SearchIndex index1 = createTestIndex("a" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index2 = createTestIndex("b" + randomIndexName(HOTEL_INDEX_NAME));
+        SearchIndex index3 = createTestIndex("c" + randomIndexName(HOTEL_INDEX_NAME));
+
+        client.createIndex(index1);
+        indexesToDelete.add(index1.getName());
+        client.createIndex(index2);
+        indexesToDelete.add(index2.getName());
+        client.createIndex(index3);
+        indexesToDelete.add(index3.getName());
+
+        // TODO: Replace client-side skip with @odata.nextLink traversal; top is now pageSize.
+        Mono<Tuple2<List<IndexStatisticsSummary>, List<IndexStatisticsSummary>>> resultMono
+            = asyncClient.listIndexStatsSummary()
+                .collectList()
+                .zipWith(asyncClient.listIndexStatsSummary(null, 1, null).skip(1).take(1).collectList());
+
+        StepVerifier.create(resultMono).assertNext(tuple -> {
+            List<IndexStatisticsSummary> allStats = tuple.getT1();
+            List<IndexStatisticsSummary> pagedStats = tuple.getT2();
+            assertNotNull(pagedStats);
+            if (allStats.size() > 1) {
+                assertTrue(pagedStats.size() >= 1);
             }
         }).verifyComplete();
     }
