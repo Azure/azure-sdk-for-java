@@ -125,8 +125,8 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testListOperations() {
-        providerHubManager.operations().list().stream().findFirst();
+    public void testListProviderRegistrations() {
+        providerHubManager.providerRegistrations().list().stream().findFirst();
     }
 
     private static String randomPadding() {
