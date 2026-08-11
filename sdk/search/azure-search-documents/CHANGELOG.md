@@ -28,6 +28,8 @@
 - Changed the `KnowledgeBaseRetrievalClient`/`KnowledgeBaseRetrievalAsyncClient` `retrieve` overload from
   `retrieve(KnowledgeBaseRetrievalOptions, String)` to
   `retrieve(KnowledgeBaseRetrievalOptions, String querySourceAuthorization, String queryWorkIQSourceAuthorization)`.
+- Replaced `getModelName()` with `getModel().getModelName()` on `KnowledgeBaseModelAnswerSynthesisActivityRecord`,
+  `KnowledgeBaseModelQueryPlanningActivityRecord`, and `KnowledgeBaseModelWebSummarizationActivityRecord`.
 - Removed the `McpServerToolInclusionMode` and `WorkIQAttribution` models.
 
 ### Bugs Fixed
