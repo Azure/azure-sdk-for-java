@@ -21,7 +21,7 @@ public final class RansomwareReportsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-08-13T22:15:03Z\",\"state\":\"Active\",\"severity\":\"None\",\"clearedCount\":1510283924,\"reportedCount\":115970163,\"suspects\":[{\"extension\":\"flrmymyi\",\"resolution\":\"PotentialThreat\",\"fileCount\":521943782,\"suspectFiles\":[{}]},{\"extension\":\"wslmiiiovgqcg\",\"resolution\":\"FalsePositive\",\"fileCount\":1331750565,\"suspectFiles\":[{},{},{}]},{\"extension\":\"otiowlxteqd\",\"resolution\":\"FalsePositive\",\"fileCount\":857680137,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ukranblw\",\"resolution\":\"FalsePositive\",\"fileCount\":1668357779,\"suspectFiles\":[{}]}],\"provisioningState\":\"zgygqwahoiulwgni\"},\"id\":\"rglvaw\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}]}";
+            = "{\"value\":[{\"properties\":{\"eventTime\":\"2021-03-25T11:59:34Z\",\"state\":\"Active\",\"severity\":\"Low\",\"clearedCount\":665890978,\"reportedCount\":72207954,\"suspects\":[{\"extension\":\"jts\",\"resolution\":\"FalsePositive\",\"fileCount\":120239759,\"suspectFiles\":[{}]},{\"extension\":\"zarpzeqacdldt\",\"resolution\":\"FalsePositive\",\"fileCount\":1809146245,\"suspectFiles\":[{},{},{},{}]}],\"provisioningState\":\"pc\"},\"id\":\"hnuqndaizu\",\"name\":\"fkhuytu\",\"type\":\"zx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RansomwareReportsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RansomwareReport> response = manager.ransomwareReports()
-            .list("utznabaobns", "ujdjltymkmvg", "ihywartspph", "ixkykxd", com.azure.core.util.Context.NONE);
+            .list("odacpunettepdjxq", "skoynuiylpc", "aewse", "vesk", com.azure.core.util.Context.NONE);
 
     }
 }
