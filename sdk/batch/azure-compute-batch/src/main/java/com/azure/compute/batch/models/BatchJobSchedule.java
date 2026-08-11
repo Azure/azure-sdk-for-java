@@ -111,14 +111,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * meaning to metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
-
-    /*
-     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The
-     * Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     */
-    @Generated
-    private BatchJobScheduleStatistics stats;
+    private List<BatchMetadataItem> metadata;
 
     /**
      * Creates an instance of BatchJobSchedule class.
@@ -288,7 +281,7 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -300,21 +293,9 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
      * @return the BatchJobSchedule object itself.
      */
     @Generated
-    public BatchJobSchedule setMetadata(List<MetadataItem> metadata) {
+    public BatchJobSchedule setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    /**
-     * Get the stats property: The lifetime resource usage statistics for the Job Schedule. The statistics may not be
-     * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
-     * minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchJobScheduleStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -342,30 +323,26 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     @Generated
     public static BatchJobSchedule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchJobSpecification jobSpecification = null;
             String id = null;
-            String displayName = null;
             String url = null;
             String eTag = null;
             OffsetDateTime lastModified = null;
             OffsetDateTime creationTime = null;
             BatchJobScheduleState state = null;
             OffsetDateTime stateTransitionTime = null;
+            BatchJobSpecification jobSpecification = null;
+            BatchJobScheduleExecutionInfo executionInfo = null;
+            String displayName = null;
             BatchJobScheduleState previousState = null;
             OffsetDateTime previousStateTransitionTime = null;
             BatchJobScheduleConfiguration schedule = null;
-            BatchJobScheduleExecutionInfo executionInfo = null;
-            List<MetadataItem> metadata = null;
-            BatchJobScheduleStatistics stats = null;
+            List<BatchMetadataItem> metadata = null;
+            BatchJobScheduleStatistics jobScheduleStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("jobSpecification".equals(fieldName)) {
-                    jobSpecification = BatchJobSpecification.fromJson(reader);
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    displayName = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -381,6 +358,12 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("jobSpecification".equals(fieldName)) {
+                    jobSpecification = BatchJobSpecification.fromJson(reader);
+                } else if ("executionInfo".equals(fieldName)) {
+                    executionInfo = BatchJobScheduleExecutionInfo.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    displayName = reader.getString();
                 } else if ("previousState".equals(fieldName)) {
                     previousState = BatchJobScheduleState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
@@ -388,32 +371,49 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("schedule".equals(fieldName)) {
                     schedule = BatchJobScheduleConfiguration.fromJson(reader);
-                } else if ("executionInfo".equals(fieldName)) {
-                    executionInfo = BatchJobScheduleExecutionInfo.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("stats".equals(fieldName)) {
-                    stats = BatchJobScheduleStatistics.fromJson(reader);
+                    jobScheduleStatistics = BatchJobScheduleStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             BatchJobSchedule deserializedBatchJobSchedule = new BatchJobSchedule(jobSpecification);
             deserializedBatchJobSchedule.id = id;
-            deserializedBatchJobSchedule.displayName = displayName;
             deserializedBatchJobSchedule.url = url;
             deserializedBatchJobSchedule.eTag = eTag;
             deserializedBatchJobSchedule.lastModified = lastModified;
             deserializedBatchJobSchedule.creationTime = creationTime;
             deserializedBatchJobSchedule.state = state;
             deserializedBatchJobSchedule.stateTransitionTime = stateTransitionTime;
+            deserializedBatchJobSchedule.executionInfo = executionInfo;
+            deserializedBatchJobSchedule.displayName = displayName;
             deserializedBatchJobSchedule.previousState = previousState;
             deserializedBatchJobSchedule.previousStateTransitionTime = previousStateTransitionTime;
             deserializedBatchJobSchedule.schedule = schedule;
-            deserializedBatchJobSchedule.executionInfo = executionInfo;
             deserializedBatchJobSchedule.metadata = metadata;
-            deserializedBatchJobSchedule.stats = stats;
+            deserializedBatchJobSchedule.jobScheduleStatistics = jobScheduleStatistics;
             return deserializedBatchJobSchedule;
         });
+    }
+
+    /*
+     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The
+     * Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     */
+    @Generated
+    private BatchJobScheduleStatistics jobScheduleStatistics;
+
+    /**
+     * Get the jobScheduleStatistics property: The lifetime resource usage statistics for the Job Schedule. The
+     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
+     * typical delay is about 30 minutes.
+     *
+     * @return the jobScheduleStatistics value.
+     */
+    @Generated
+    public BatchJobScheduleStatistics getJobScheduleStatistics() {
+        return this.jobScheduleStatistics;
     }
 }

@@ -12,9 +12,9 @@ public final class MccCacheNodeBgpCidrDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccCacheNodeBgpCidrDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"bgpCidrs\":[\"t\",\"pnpulexxbczwtru\"]},\"location\":\"qzbqjvsov\",\"tags\":{\"hzdobpxjmflbvvnc\":\"kacspkw\",\"rsa\":\"rkcciwwzjuqk\"},\"id\":\"iwkuofos\",\"name\":\"ghsauuimjmvxied\",\"type\":\"ugidyjrr\"}")
+            "{\"properties\":{\"bgpCidrs\":[\"zb\",\"iuebbaumny\"]},\"location\":\"ped\",\"tags\":{\"siebtfhvpesapskr\":\"nabckhsmtx\"},\"id\":\"qmhjjdhtld\",\"name\":\"kyzxuutk\",\"type\":\"cwscwsvlx\"}")
             .toObject(MccCacheNodeBgpCidrDetailsInner.class);
-        Assertions.assertEquals("qzbqjvsov", model.location());
-        Assertions.assertEquals("kacspkw", model.tags().get("hzdobpxjmflbvvnc"));
+        Assertions.assertEquals("ped", model.location());
+        Assertions.assertEquals("nabckhsmtx", model.tags().get("siebtfhvpesapskr"));
     }
 }

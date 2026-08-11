@@ -78,17 +78,6 @@ public final class FrontendProperties implements JsonSerializable<FrontendProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (securityPolicyConfigurations() != null) {
-            securityPolicyConfigurations().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

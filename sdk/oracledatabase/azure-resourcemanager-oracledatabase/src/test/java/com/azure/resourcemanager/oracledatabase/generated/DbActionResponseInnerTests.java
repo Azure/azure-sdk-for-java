@@ -13,7 +13,7 @@ public final class DbActionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbActionResponseInner model
-            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}").toObject(DbActionResponseInner.class);
-        Assertions.assertEquals(AzureResourceProvisioningState.SUCCEEDED, model.provisioningState());
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\"}").toObject(DbActionResponseInner.class);
+        Assertions.assertEquals(AzureResourceProvisioningState.FAILED, model.provisioningState());
     }
 }

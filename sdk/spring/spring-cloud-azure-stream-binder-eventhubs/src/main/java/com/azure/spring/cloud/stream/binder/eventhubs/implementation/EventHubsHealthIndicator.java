@@ -5,8 +5,8 @@ package com.azure.spring.cloud.stream.binder.eventhubs.implementation;
 
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
-import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.health.contributor.AbstractHealthIndicator;
+import org.springframework.boot.health.contributor.Health;
 
 /**
  * Health indicator for Event Hubs.

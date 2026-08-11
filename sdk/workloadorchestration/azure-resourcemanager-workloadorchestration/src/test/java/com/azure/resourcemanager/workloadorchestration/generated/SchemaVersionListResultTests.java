@@ -12,9 +12,9 @@ public final class SchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"xth\",\"provisioningState\":\"InProgress\"},\"eTag\":\"si\",\"id\":\"evcciqihnhun\",\"name\":\"bwjzr\",\"type\":\"fygxgispemvtzfk\"},{\"properties\":{\"value\":\"ubljofxqe\",\"provisioningState\":\"Initialized\"},\"eTag\":\"e\",\"id\":\"hqjbasvmsmj\",\"name\":\"ulngsntn\",\"type\":\"ybkzgcwr\"}],\"nextLink\":\"lxxwrljdouskc\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"lxxwrljdouskc\",\"provisioningState\":\"Initialized\"},\"eTag\":\"cr\",\"id\":\"dkwt\",\"name\":\"hxbnjbiksqrg\",\"type\":\"ssainqpjwnzll\"},{\"properties\":{\"value\":\"mppeebvmgxs\",\"provisioningState\":\"Deleting\"},\"eTag\":\"qduujitcjczdz\",\"id\":\"ndhkrw\",\"name\":\"d\",\"type\":\"ppdsbdkvwrwj\"}],\"nextLink\":\"usnhutje\"}")
             .toObject(SchemaVersionListResult.class);
-        Assertions.assertEquals("xth", model.value().get(0).properties().value());
-        Assertions.assertEquals("lxxwrljdouskc", model.nextLink());
+        Assertions.assertEquals("lxxwrljdouskc", model.value().get(0).properties().value());
+        Assertions.assertEquals("usnhutje", model.nextLink());
     }
 }

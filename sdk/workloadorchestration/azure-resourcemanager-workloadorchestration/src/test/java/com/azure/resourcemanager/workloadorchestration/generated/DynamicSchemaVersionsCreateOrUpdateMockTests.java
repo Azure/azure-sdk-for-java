@@ -22,7 +22,7 @@ public final class DynamicSchemaVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"weftkwq\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"vssehaepw\",\"id\":\"cxtczhupeukn\",\"name\":\"jduyyespydjfb\",\"type\":\"c\"}";
+            = "{\"properties\":{\"value\":\"bewreswmowegmmut\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"yguqigijiitns\",\"id\":\"lz\",\"name\":\"es\",\"type\":\"grijwaiufanrayb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DynamicSchemaVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DynamicSchemaVersion response = manager.dynamicSchemaVersions()
-            .define("bsjuscvsfx")
-            .withExistingDynamicSchema("mghihp", "ecmslclbl", "jxl")
-            .withProperties(new SchemaVersionProperties().withValue("ctmgxuupbezqccy"))
+            .define("fwbeqrkuorh")
+            .withExistingDynamicSchema("saeuzanhsfnhsenw", "hpzfngqj", "lidftujwjj")
+            .withProperties(new SchemaVersionProperties().withValue("sruqnmdvha"))
             .create();
 
-        Assertions.assertEquals("weftkwq", response.properties().value());
+        Assertions.assertEquals("bewreswmowegmmut", response.properties().value());
     }
 }

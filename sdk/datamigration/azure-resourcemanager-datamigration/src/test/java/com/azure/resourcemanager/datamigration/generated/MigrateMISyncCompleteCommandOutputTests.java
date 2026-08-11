@@ -14,31 +14,49 @@ public final class MigrateMISyncCompleteCommandOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMISyncCompleteCommandOutput model = BinaryData.fromString(
-            "{\"errors\":[{\"message\":\"ql\",\"actionableMessage\":\"x\",\"filePath\":\"czheyd\",\"lineNumber\":\"dshmkxmaehvbbx\",\"hResult\":870827030,\"stackTrace\":\"ltfnhtbaxkgx\"}]}")
+            "{\"errors\":[{\"message\":\"slesjcbhernnt\",\"actionableMessage\":\"w\",\"filePath\":\"cv\",\"lineNumber\":\"uwrbehwagoh\",\"hResult\":57804333,\"stackTrace\":\"kmr\"},{\"message\":\"mvvhmxtdrjfuta\",\"actionableMessage\":\"ebjvewzcjzn\",\"filePath\":\"cpmguaadraufact\",\"lineNumber\":\"hzovaj\",\"hResult\":1614999854,\"stackTrace\":\"xxpshneeku\"},{\"message\":\"gs\",\"actionableMessage\":\"ubkwdle\",\"filePath\":\"d\",\"lineNumber\":\"tujbazpju\",\"hResult\":657916731,\"stackTrace\":\"nyfln\"},{\"message\":\"wmd\",\"actionableMessage\":\"wpklvxw\",\"filePath\":\"gdxpg\",\"lineNumber\":\"chisze\",\"hResult\":511466566,\"stackTrace\":\"jcrxgibbdaxcon\"}]}")
             .toObject(MigrateMISyncCompleteCommandOutput.class);
-        Assertions.assertEquals("ql", model.errors().get(0).message());
-        Assertions.assertEquals("x", model.errors().get(0).actionableMessage());
-        Assertions.assertEquals("czheyd", model.errors().get(0).filePath());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.errors().get(0).lineNumber());
-        Assertions.assertEquals(870827030, model.errors().get(0).hResult());
-        Assertions.assertEquals("ltfnhtbaxkgx", model.errors().get(0).stackTrace());
+        Assertions.assertEquals("slesjcbhernnt", model.errors().get(0).message());
+        Assertions.assertEquals("w", model.errors().get(0).actionableMessage());
+        Assertions.assertEquals("cv", model.errors().get(0).filePath());
+        Assertions.assertEquals("uwrbehwagoh", model.errors().get(0).lineNumber());
+        Assertions.assertEquals(57804333, model.errors().get(0).hResult());
+        Assertions.assertEquals("kmr", model.errors().get(0).stackTrace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateMISyncCompleteCommandOutput model = new MigrateMISyncCompleteCommandOutput()
-            .withErrors(Arrays.asList(new ReportableException().withMessage("ql")
-                .withActionableMessage("x")
-                .withFilePath("czheyd")
-                .withLineNumber("dshmkxmaehvbbx")
-                .withHResult(870827030)
-                .withStackTrace("ltfnhtbaxkgx")));
+        MigrateMISyncCompleteCommandOutput model = new MigrateMISyncCompleteCommandOutput().withErrors(Arrays.asList(
+            new ReportableException().withMessage("slesjcbhernnt")
+                .withActionableMessage("w")
+                .withFilePath("cv")
+                .withLineNumber("uwrbehwagoh")
+                .withHResult(57804333)
+                .withStackTrace("kmr"),
+            new ReportableException().withMessage("mvvhmxtdrjfuta")
+                .withActionableMessage("ebjvewzcjzn")
+                .withFilePath("cpmguaadraufact")
+                .withLineNumber("hzovaj")
+                .withHResult(1614999854)
+                .withStackTrace("xxpshneeku"),
+            new ReportableException().withMessage("gs")
+                .withActionableMessage("ubkwdle")
+                .withFilePath("d")
+                .withLineNumber("tujbazpju")
+                .withHResult(657916731)
+                .withStackTrace("nyfln"),
+            new ReportableException().withMessage("wmd")
+                .withActionableMessage("wpklvxw")
+                .withFilePath("gdxpg")
+                .withLineNumber("chisze")
+                .withHResult(511466566)
+                .withStackTrace("jcrxgibbdaxcon")));
         model = BinaryData.fromObject(model).toObject(MigrateMISyncCompleteCommandOutput.class);
-        Assertions.assertEquals("ql", model.errors().get(0).message());
-        Assertions.assertEquals("x", model.errors().get(0).actionableMessage());
-        Assertions.assertEquals("czheyd", model.errors().get(0).filePath());
-        Assertions.assertEquals("dshmkxmaehvbbx", model.errors().get(0).lineNumber());
-        Assertions.assertEquals(870827030, model.errors().get(0).hResult());
-        Assertions.assertEquals("ltfnhtbaxkgx", model.errors().get(0).stackTrace());
+        Assertions.assertEquals("slesjcbhernnt", model.errors().get(0).message());
+        Assertions.assertEquals("w", model.errors().get(0).actionableMessage());
+        Assertions.assertEquals("cv", model.errors().get(0).filePath());
+        Assertions.assertEquals("uwrbehwagoh", model.errors().get(0).lineNumber());
+        Assertions.assertEquals(57804333, model.errors().get(0).hResult());
+        Assertions.assertEquals("kmr", model.errors().get(0).stackTrace());
     }
 }

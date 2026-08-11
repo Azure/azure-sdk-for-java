@@ -168,6 +168,15 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_PRIORITY_LEVEL_DISPLAY = "Throughput control group priority level. The value can be None, High or Low.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_PRIORITY_LEVEL = CosmosPriorityLevel.NONE.getName();
 
+    private static final String THROUGHPUT_CONTROL_THROUGHPUT_BUCKET = "azure.cosmos.throughputControl.throughputBucket";
+    private static final String THROUGHPUT_CONTROL_THROUGHPUT_BUCKET_DOC =
+        "Throughput bucket value. When set to a value greater than 0, server-side throughput bucket control is used. "
+            + "Cannot be combined with targetThroughput, "
+            + "targetThroughputThreshold, or globalControl settings. "
+            + "Please refer here for full context: https://learn.microsoft.com/azure/cosmos-db/throughput-buckets";
+    private static final String THROUGHPUT_CONTROL_THROUGHPUT_BUCKET_DISPLAY = "Throughput control throughput bucket value.";
+    private static final int DEFAULT_THROUGHPUT_CONTROL_THROUGHPUT_BUCKET = -1;
+
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE = "azure.cosmos.throughputControl.globalControl.database.name";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE_DOC = "Database which will be used for throughput global control.";
     private static final String THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE_DISPLAY = "Database which will be used for throughput global control.";
@@ -285,8 +294,19 @@ public class KafkaCosmosConfig extends AbstractConfig {
 
     private CosmosThroughputControlConfig parseThroughputControlConfig() {
         boolean enabled = this.getBoolean(THROUGHPUT_CONTROL_ENABLED);
-        String accountEndpoint = this.getString(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT);
+        String throughputControlGroupName = this.getString(THROUGHPUT_CONTROL_GROUP_NAME);
+        CosmosPriorityLevel priorityLevel = this.parsePriorityLevel();
+        int throughputBucket = this.getInt(THROUGHPUT_CONTROL_THROUGHPUT_BUCKET);
 
+        if (enabled && throughputBucket > 0) {
+            return new CosmosServerThroughputControlConfig(
+                enabled,
+                throughputControlGroupName,
+                priorityLevel,
+                throughputBucket);
+        }
+
+        String accountEndpoint = this.getString(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT);
         CosmosAccountConfig throughputControlAccountConfig = null;
         if (enabled && StringUtils.isNotEmpty(accountEndpoint)) {
             throughputControlAccountConfig = parseAccountConfigCore(
@@ -303,22 +323,20 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST);
         }
 
-        String throughputControlGroupName = this.getString(THROUGHPUT_CONTROL_GROUP_NAME);
         int targetThroughput = this.getInt(THROUGHPUT_CONTROL_TARGET_THROUGHPUT);
         double targetThroughputThreshold = this.getDouble(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD);
-        CosmosPriorityLevel priorityLevel = this.parsePriorityLevel();
         String globalControlDatabaseName = this.getString(THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE);
         String globalControlContainerName = this.getString(THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER);
         int globalThroughputControlRenewInterval = this.getInt(THROUGHPUT_CONTROL_GLOBAL_CONTROL_RENEW_INTERVAL_IN_MS);
         int globalThroughputControlExpireInterval = this.getInt(THROUGHPUT_CONTROL_GLOBAL_CONTROL_EXPIRE_INTERVAL_IN_MS);
 
-        return new CosmosThroughputControlConfig(
+        return new CosmosSDKThroughputControlConfig(
             enabled,
-            throughputControlAccountConfig,
             throughputControlGroupName,
+            priorityLevel,
+            throughputControlAccountConfig,
             targetThroughput,
             targetThroughputThreshold,
-            priorityLevel,
             globalControlDatabaseName,
             globalControlContainerName,
             globalThroughputControlRenewInterval,
@@ -660,6 +678,17 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_PRIORITY_LEVEL_DISPLAY
             )
             .define(
+                THROUGHPUT_CONTROL_THROUGHPUT_BUCKET,
+                ConfigDef.Type.INT,
+                DEFAULT_THROUGHPUT_CONTROL_THROUGHPUT_BUCKET,
+                ConfigDef.Importance.MEDIUM,
+                THROUGHPUT_CONTROL_THROUGHPUT_BUCKET_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                THROUGHPUT_CONTROL_THROUGHPUT_BUCKET_DISPLAY
+            )
+            .define(
                 THROUGHPUT_CONTROL_GLOBAL_CONTROL_RENEW_INTERVAL_IN_MS,
                 ConfigDef.Type.INT,
                 DEFAULT_THROUGHPUT_CONTROL_GLOBAL_CONTROL_RENEW_INTERVAL_IN_MS,
@@ -719,6 +748,41 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 .addErrorMessage("ThroughputControl is enabled, group name can not be null or empty");
         }
 
+        int throughputBucket = Integer.parseInt(configValueMap.get(THROUGHPUT_CONTROL_THROUGHPUT_BUCKET).value().toString());
+
+        if (throughputBucket > 0) {
+            // Using server-side throughput bucket control
+            // Validate that SDK-level throughput control configs are not set
+            int targetThroughput = Integer.parseInt(configValueMap.get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT).value().toString());
+            double targetThroughputThreshold = Double.parseDouble(configValueMap.get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD).value().toString());
+            String throughputControlAccountEndpoint = configValueMap.get(THROUGHPUT_CONTROL_ACCOUNT_ENDPOINT).value().toString();
+            String globalControlDatabase = configValueMap.get(THROUGHPUT_CONTROL_GLOBAL_CONTROL_DATABASE).value().toString();
+            String globalControlContainer = configValueMap.get(THROUGHPUT_CONTROL_GLOBAL_CONTROL_CONTAINER).value().toString();
+
+            if (targetThroughput > 0 || targetThroughputThreshold > 0
+                || StringUtils.isNotEmpty(throughputControlAccountEndpoint)
+                || StringUtils.isNotEmpty(globalControlDatabase)
+                || StringUtils.isNotEmpty(globalControlContainer)) {
+                configValueMap
+                    .get(THROUGHPUT_CONTROL_THROUGHPUT_BUCKET)
+                    .addErrorMessage(
+                        "Mixed throughput control configuration detected: 'throughputBucket' cannot be used together with "
+                            + "['targetThroughput', 'targetThroughputThreshold', 'throughputControl.account.endpoint', "
+                            + "'throughputControl.globalControl.database.name', 'throughputControl.globalControl.container.name']");
+            }
+            return;
+        }
+
+        if (throughputBucket != DEFAULT_THROUGHPUT_CONTROL_THROUGHPUT_BUCKET && throughputBucket <= 0) {
+            configValueMap
+                .get(THROUGHPUT_CONTROL_THROUGHPUT_BUCKET)
+                .addErrorMessage(
+                    "Invalid '" + THROUGHPUT_CONTROL_THROUGHPUT_BUCKET + "' value '" + throughputBucket
+                        + "'. It must be greater than 0 or omitted.");
+            return;
+        }
+
+        // SDK-level throughput control validation
         // one of targetThroughput, targetThroughputThreshold, priorityLevel should be defined
         int targetThroughput = Integer.parseInt(configValueMap.get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT).value().toString());
         double targetThroughputThreshold = Double.parseDouble(configValueMap.get(THROUGHPUT_CONTROL_TARGET_THROUGHPUT_THRESHOLD).value().toString());

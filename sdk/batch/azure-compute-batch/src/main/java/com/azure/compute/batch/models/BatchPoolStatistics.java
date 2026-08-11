@@ -39,18 +39,6 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
     @Generated
     private final OffsetDateTime lastUpdateTime;
 
-    /*
-     * Statistics related to Pool usage, such as the amount of core-time used.
-     */
-    @Generated
-    private BatchPoolUsageStatistics usageStats;
-
-    /*
-     * Statistics related to resource consumption by Compute Nodes in the Pool.
-     */
-    @Generated
-    private BatchPoolResourceStatistics resourceStats;
-
     /**
      * Creates an instance of BatchPoolStatistics class.
      *
@@ -97,26 +85,6 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
     }
 
     /**
-     * Get the usageStats property: Statistics related to Pool usage, such as the amount of core-time used.
-     *
-     * @return the usageStats value.
-     */
-    @Generated
-    public BatchPoolUsageStatistics getUsageStats() {
-        return this.usageStats;
-    }
-
-    /**
-     * Get the resourceStats property: Statistics related to resource consumption by Compute Nodes in the Pool.
-     *
-     * @return the resourceStats value.
-     */
-    @Generated
-    public BatchPoolResourceStatistics getResourceStats() {
-        return this.resourceStats;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -128,8 +96,8 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("lastUpdateTime",
             this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
-        jsonWriter.writeJsonField("usageStats", this.usageStats);
-        jsonWriter.writeJsonField("resourceStats", this.resourceStats);
+        jsonWriter.writeJsonField("usageStats", this.usageStatistics);
+        jsonWriter.writeJsonField("resourceStats", this.resourceStatistics);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,8 +116,8 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
             String url = null;
             OffsetDateTime startTime = null;
             OffsetDateTime lastUpdateTime = null;
-            BatchPoolUsageStatistics usageStats = null;
-            BatchPoolResourceStatistics resourceStats = null;
+            BatchPoolUsageStatistics usageStatistics = null;
+            BatchPoolResourceStatistics resourceStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -162,18 +130,50 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
                     lastUpdateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("usageStats".equals(fieldName)) {
-                    usageStats = BatchPoolUsageStatistics.fromJson(reader);
+                    usageStatistics = BatchPoolUsageStatistics.fromJson(reader);
                 } else if ("resourceStats".equals(fieldName)) {
-                    resourceStats = BatchPoolResourceStatistics.fromJson(reader);
+                    resourceStatistics = BatchPoolResourceStatistics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             BatchPoolStatistics deserializedBatchPoolStatistics
                 = new BatchPoolStatistics(url, startTime, lastUpdateTime);
-            deserializedBatchPoolStatistics.usageStats = usageStats;
-            deserializedBatchPoolStatistics.resourceStats = resourceStats;
+            deserializedBatchPoolStatistics.usageStatistics = usageStatistics;
+            deserializedBatchPoolStatistics.resourceStatistics = resourceStatistics;
             return deserializedBatchPoolStatistics;
         });
+    }
+
+    /*
+     * Statistics related to Pool usage, such as the amount of core-time used.
+     */
+    @Generated
+    private BatchPoolUsageStatistics usageStatistics;
+
+    /*
+     * Statistics related to resource consumption by Compute Nodes in the Pool.
+     */
+    @Generated
+    private BatchPoolResourceStatistics resourceStatistics;
+
+    /**
+     * Get the usageStatistics property: Statistics related to Pool usage, such as the amount of core-time used.
+     *
+     * @return the usageStatistics value.
+     */
+    @Generated
+    public BatchPoolUsageStatistics getUsageStatistics() {
+        return this.usageStatistics;
+    }
+
+    /**
+     * Get the resourceStatistics property: Statistics related to resource consumption by Compute Nodes in the Pool.
+     *
+     * @return the resourceStatistics value.
+     */
+    @Generated
+    public BatchPoolResourceStatistics getResourceStatistics() {
+        return this.resourceStatistics;
     }
 }

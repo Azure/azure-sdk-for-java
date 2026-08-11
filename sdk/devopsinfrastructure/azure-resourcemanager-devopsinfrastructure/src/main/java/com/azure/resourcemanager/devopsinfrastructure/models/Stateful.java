@@ -108,21 +108,6 @@ public final class Stateful extends AgentProfile {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (resourcePredictions() != null) {
-            resourcePredictions().validate();
-        }
-        if (resourcePredictionsProfile() != null) {
-            resourcePredictionsProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

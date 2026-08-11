@@ -58,7 +58,7 @@ You may want to run the `New-TestResources.ps1` or `Remove-TestResources.ps1` sc
 
 ### Samples and building
 
-As your code changes, the samples inside the `samples` folder should also change. The README file extracts code from the samples to avoid duplicated code. For a more in-depth look on how to extract the code from the samples into the README file, check this [guide](https://github.com/Azure/azure-sdk-for-java/wiki/Building#code-snippets-in-readme)
+As your code changes, the samples inside the `samples` folder should also change. The README file extracts code from the samples to avoid duplicated code. For a more in-depth look on how to extract the code from the samples into the README file, check this [guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md#code-snippets-in-readme-files)
 
 That guide also serves as a great starting point for ideas on how to run the code locally to avoid problems on the pipeline whenever you upload your changes. Make sure to give that document a read too.
 

@@ -31,7 +31,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagemover.fluent.EndpointsClient;
@@ -203,25 +202,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
         String endpointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -261,28 +241,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> getWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, storageMoverName, endpointName, accept, context);
@@ -320,30 +278,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String storageMoverName, String endpointName, EndpointInner endpointParam) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (endpointParam == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
-        } else {
-            endpointParam.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -390,34 +324,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, EndpointInner endpointParam, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (endpointParam == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
-        } else {
-            endpointParam.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -460,30 +366,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
         String endpointName, EndpointBaseUpdateParameters endpointParam) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (endpointParam == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
-        } else {
-            endpointParam.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -530,34 +412,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointInner> updateWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, EndpointBaseUpdateParameters endpointParam, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
-        if (endpointParam == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
-        } else {
-            endpointParam.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -598,25 +452,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
         String endpointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, storageMoverName, endpointName, context))
@@ -637,28 +472,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageMoverName, endpointName, Context.NONE);
     }
@@ -678,28 +491,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageMoverName,
         String endpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
-        if (endpointName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageMoverName, endpointName, context);
     }
@@ -821,22 +612,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -874,24 +649,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listSinglePage(String resourceGroupName, String storageMoverName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EndpointList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, Context.NONE);
@@ -913,24 +670,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listSinglePage(String resourceGroupName, String storageMoverName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageMoverName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter storageMoverName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EndpointList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageMoverName, accept, context);
@@ -982,13 +721,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -1007,15 +739,6 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EndpointList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -1034,20 +757,9 @@ public final class EndpointsClientImpl implements EndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EndpointInner> listNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<EndpointList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(EndpointsClientImpl.class);
 }

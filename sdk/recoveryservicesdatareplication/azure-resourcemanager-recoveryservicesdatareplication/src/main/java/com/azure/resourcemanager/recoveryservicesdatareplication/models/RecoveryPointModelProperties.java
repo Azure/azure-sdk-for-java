@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,33 +80,6 @@ public final class RecoveryPointModelProperties implements JsonSerializable<Reco
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (recoveryPointTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property recoveryPointTime in model RecoveryPointModelProperties"));
-        }
-        if (recoveryPointType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property recoveryPointType in model RecoveryPointModelProperties"));
-        }
-        if (customProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customProperties in model RecoveryPointModelProperties"));
-        } else {
-            customProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointModelProperties.class);
 
     /**
      * {@inheritDoc}

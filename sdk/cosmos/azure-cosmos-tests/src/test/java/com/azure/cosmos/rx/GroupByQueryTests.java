@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -145,7 +146,7 @@ public class GroupByQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData(INSERT_DOCUMENTS_CNT);
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData(int documentCnt) {
@@ -186,6 +187,119 @@ public class GroupByQueryTests extends TestSuiteBase {
         return new Person(name, city, income, people, age, pet, guid);
     }
 
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    public void querySelectValueCountGroupBy() {
+        String query = "SELECT VALUE COUNT(1) FROM c GROUP BY c.city";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
+
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        Map<City, Long> expectedCounts = personList.stream()
+            .collect(Collectors.groupingBy(Person::getCity, Collectors.counting()));
+
+        assertThat(queryResults.size()).isEqualTo(expectedCounts.size());
+
+        List<Long> expectedCountValues = expectedCounts.values()
+            .stream()
+            .sorted()
+            .collect(Collectors.toList());
+
+        List<Long> actualCountValues = queryResults.stream()
+            .map(JsonNode::asLong)
+            .sorted()
+            .collect(Collectors.toList());
+
+        assertThat(actualCountValues).isEqualTo(expectedCountValues);
+
+        double totalRequestCharge = queryResultPages.stream()
+            .collect(Collectors.summingDouble(FeedResponse::getRequestCharge));
+        assertThat(totalRequestCharge).isGreaterThan(0);
+    }
+
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    public void querySelectValueSumGroupBy() {
+        String query = "SELECT VALUE SUM(c.age) FROM c GROUP BY c.city";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
+
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        long distinctCities = personList.stream().map(Person::getCity).distinct().count();
+        assertThat(queryResults.size()).isEqualTo((int) distinctCities);
+
+        Map<City, Integer> expectedSums = personList.stream()
+            .collect(Collectors.groupingBy(Person::getCity, Collectors.summingInt(Person::getAge)));
+
+        List<Long> expectedSumValues = expectedSums.values()
+            .stream()
+            .map(Integer::longValue)
+            .sorted()
+            .collect(Collectors.toList());
+
+        List<Long> actualSumValues = queryResults.stream()
+            .map(JsonNode::asLong)
+            .sorted()
+            .collect(Collectors.toList());
+
+        assertThat(actualSumValues).isEqualTo(expectedSumValues);
+    }
+
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    public void querySelectValueFieldGroupBy() {
+        String query = "SELECT VALUE c.city FROM c GROUP BY c.city";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
+
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        // Should return one row per distinct city
+        long distinctCities = personList.stream().map(Person::getCity).distinct().count();
+        assertThat(queryResults.size()).isEqualTo((int) distinctCities);
+
+        for (JsonNode result : queryResults) {
+            assertThat(result.isTextual()).isTrue();
+        }
+
+        Set<String> expectedCities = personList.stream()
+            .map(p -> p.getCity().toString())
+            .collect(Collectors.toSet());
+
+        Set<String> actualCities = queryResults.stream()
+            .map(JsonNode::asText)
+            .collect(Collectors.toSet());
+
+        assertThat(actualCities).isEqualTo(expectedCities);
+    }
+
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    public void querySelectValueUndefinedFieldGroupBy() {
+        String query = "SELECT VALUE SUM(c.doesNotExist) FROM c GROUP BY c.city";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
+
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        long distinctCities = personList.stream().map(Person::getCity).distinct().count();
+        assertThat(queryResults.size()).isEqualTo((int) distinctCities);
+    }
+
     @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
@@ -195,7 +309,7 @@ public class GroupByQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
         bulkInsert();
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }

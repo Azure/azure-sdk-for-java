@@ -31,6 +31,9 @@ parameters:
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
+  # Authenticate with Azure Artifacts
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
   - task: Maven@4
     displayName: 'Build for non-From Source run'
     inputs:
@@ -93,7 +96,7 @@ steps:
       javaHomeOption: 'Path'
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       publishJUnitResults: false
-    env:  ${{ parameters.TestEnvVars }}
+    env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@4

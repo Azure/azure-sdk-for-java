@@ -267,23 +267,6 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (component() != null) {
-            component().validate();
-        }
-        if (cvssScores() != null) {
-            cvssScores().forEach(e -> e.validate());
-        }
-        if (links() != null) {
-            links().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

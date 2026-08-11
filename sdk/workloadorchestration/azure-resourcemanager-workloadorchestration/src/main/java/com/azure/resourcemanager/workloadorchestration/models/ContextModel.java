@@ -244,7 +244,7 @@ public interface ContextModel {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(ContextProperties properties);
+            Update withProperties(ContextUpdateProperties properties);
         }
     }
 

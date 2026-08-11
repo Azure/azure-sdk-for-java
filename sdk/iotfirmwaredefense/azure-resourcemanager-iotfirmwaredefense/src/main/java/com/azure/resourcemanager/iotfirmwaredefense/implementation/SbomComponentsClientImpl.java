@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.SbomComponentsClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.SbomComponentResourceInner;
 import com.azure.resourcemanager.iotfirmwaredefense.implementation.models.SbomComponentResourceListResult;
@@ -113,24 +112,6 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SbomComponentResourceInner>> listByFirmwareSinglePageAsync(String resourceGroupName,
         String workspaceName, String firmwareId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (firmwareId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter firmwareId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFirmware(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -172,28 +153,6 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SbomComponentResourceInner> listByFirmwareSinglePage(String resourceGroupName,
         String workspaceName, String firmwareId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (firmwareId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter firmwareId is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SbomComponentResourceListResult> res
             = service.listByFirmwareSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -217,28 +176,6 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SbomComponentResourceInner> listByFirmwareSinglePage(String resourceGroupName,
         String workspaceName, String firmwareId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (workspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
-        }
-        if (firmwareId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter firmwareId is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SbomComponentResourceListResult> res
             = service.listByFirmwareSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -297,13 +234,6 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SbomComponentResourceInner>> listByFirmwareNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFirmwareNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -323,15 +253,6 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SbomComponentResourceInner> listByFirmwareNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SbomComponentResourceListResult> res
             = service.listByFirmwareNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -351,21 +272,10 @@ public final class SbomComponentsClientImpl implements SbomComponentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SbomComponentResourceInner> listByFirmwareNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<SbomComponentResourceListResult> res
             = service.listByFirmwareNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SbomComponentsClientImpl.class);
 }

@@ -121,17 +121,6 @@ public final class DiskDetails implements JsonSerializable<DiskDetails> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

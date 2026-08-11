@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import java.util.List;
 
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
@@ -121,6 +120,7 @@ public final class Constants {
         public static final String ORDER = "order";
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
+        public static final String QUANTIZER_TYPE = "quantizerType";
 
         // Full text search
         public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
@@ -155,6 +155,14 @@ public final class Constants {
         public static final String VECTOR_QUANTIZATION_SIZE_IN_BYTES = "quantizationByteSize";
         public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
         public static final String VECTOR_INDEX_SHARD_KEYS = "vectorIndexShardKeys";
+
+        // Global Secondary Index Definition
+        public static final String MATERIALIZED_VIEW_DEFINITION = "materializedViewDefinition";
+        public static final String GLOBAL_SECONDARY_INDEX_DEFINITION = "globalSecondaryIndexDefinition";
+        public static final String GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_ID = "sourceCollectionId";
+        public static final String GLOBAL_SECONDARY_INDEX_SOURCE_COLLECTION_RID = "sourceCollectionRid";
+        public static final String GLOBAL_SECONDARY_INDEX_QUERY_DEFINITION = "definition";
+        public static final String GLOBAL_SECONDARY_INDEX_STATUS = "status";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
@@ -205,6 +213,7 @@ public final class Constants {
         public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
         public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
+        public static final String ENABLE_N_REGION_SYNCHRONOUS_COMMIT = "enableNRegionSynchronousCommit";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";
@@ -292,4 +301,5 @@ public final class Constants {
     }
 
     public static final int QUERYPLAN_CACHE_SIZE = 5000;
+    public static final String AAD_DEFAULT_SCOPE = "https://cosmos.azure.com/.default";
 }

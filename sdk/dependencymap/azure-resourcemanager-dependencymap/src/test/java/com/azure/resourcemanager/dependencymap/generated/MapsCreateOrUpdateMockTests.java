@@ -24,7 +24,7 @@ public final class MapsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"cbkbfkg\",\"tags\":{\"xaxcfjpgddtocjjx\":\"kexxppof\",\"eojnxqbzvddn\":\"vpmouexhdzxib\",\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"jnpg\",\"tags\":{\"suesnzw\":\"tadehxnltyfsopp\",\"avo\":\"ej\",\"vudwx\":\"xzdmohctb\",\"gujjugwdkcglh\":\"ndnvo\"},\"id\":\"lazjdyggdtjixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,15 @@ public final class MapsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MapsResource response = manager.maps()
-            .define("yulpkudjkr")
-            .withRegion("hfepgzgqex")
-            .withExistingResourceGroup("bqidtqaj")
-            .withTags(
-                mapOf("scpai", "c", "l", "rhhbcs", "bnbdxkqpxokajion", "mmajtjaodx", "jrmvdjwzrlo", "imexgstxgcpodgma"))
+            .define("zscxaqwo")
+            .withRegion("onq")
+            .withExistingResourceGroup("ubisnjampmng")
+            .withTags(mapOf("oflokey", "fakeTokenPlaceholder", "pdjpjumasxazjp", "ienjbdlwtgr"))
             .withProperties(new MapsResourceProperties())
             .create();
 
-        Assertions.assertEquals("cbkbfkg", response.location());
-        Assertions.assertEquals("kexxppof", response.tags().get("xaxcfjpgddtocjjx"));
+        Assertions.assertEquals("jnpg", response.location());
+        Assertions.assertEquals("tadehxnltyfsopp", response.tags().get("suesnzw"));
     }
 
     // Use "Map.of" if available

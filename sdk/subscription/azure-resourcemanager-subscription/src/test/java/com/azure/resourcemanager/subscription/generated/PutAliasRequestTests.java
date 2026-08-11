@@ -6,36 +6,63 @@ package com.azure.resourcemanager.subscription.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.subscription.models.PutAliasRequest;
+import com.azure.resourcemanager.subscription.models.PutAliasRequestAdditionalProperties;
 import com.azure.resourcemanager.subscription.models.PutAliasRequestProperties;
 import com.azure.resourcemanager.subscription.models.Workload;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class PutAliasRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PutAliasRequest model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"wckbasyypnd\",\"workload\":\"Production\",\"billingScope\":\"cbacphejkotynqg\",\"subscriptionId\":\"l\",\"resellerId\":\"dlikwyqkgfgibma\"}}")
+            "{\"properties\":{\"displayName\":\"ewnwreitjzyfl\",\"workload\":\"DevTest\",\"billingScope\":\"hmofc\",\"subscriptionId\":\"smy\",\"resellerId\":\"kdtmlxhekuk\",\"additionalProperties\":{\"managementGroupId\":\"xukcdmpar\",\"subscriptionTenantId\":\"y\",\"subscriptionOwnerId\":\"nzwuxzd\",\"tags\":{\"u\":\"yrlhmwhfpmrqobm\"}}}}")
             .toObject(PutAliasRequest.class);
-        Assertions.assertEquals("wckbasyypnd", model.properties().displayName());
-        Assertions.assertEquals(Workload.PRODUCTION, model.properties().workload());
-        Assertions.assertEquals("cbacphejkotynqg", model.properties().billingScope());
-        Assertions.assertEquals("l", model.properties().subscriptionId());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.properties().resellerId());
+        Assertions.assertEquals("ewnwreitjzyfl", model.properties().displayName());
+        Assertions.assertEquals(Workload.DEV_TEST, model.properties().workload());
+        Assertions.assertEquals("hmofc", model.properties().billingScope());
+        Assertions.assertEquals("smy", model.properties().subscriptionId());
+        Assertions.assertEquals("kdtmlxhekuk", model.properties().resellerId());
+        Assertions.assertEquals("xukcdmpar", model.properties().additionalProperties().managementGroupId());
+        Assertions.assertEquals("y", model.properties().additionalProperties().subscriptionTenantId());
+        Assertions.assertEquals("nzwuxzd", model.properties().additionalProperties().subscriptionOwnerId());
+        Assertions.assertEquals("yrlhmwhfpmrqobm", model.properties().additionalProperties().tags().get("u"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PutAliasRequest model
-            = new PutAliasRequest().withProperties(new PutAliasRequestProperties().withDisplayName("wckbasyypnd")
-                .withWorkload(Workload.PRODUCTION)
-                .withBillingScope("cbacphejkotynqg")
-                .withSubscriptionId("l")
-                .withResellerId("dlikwyqkgfgibma"));
+            = new PutAliasRequest().withProperties(new PutAliasRequestProperties().withDisplayName("ewnwreitjzyfl")
+                .withWorkload(Workload.DEV_TEST)
+                .withBillingScope("hmofc")
+                .withSubscriptionId("smy")
+                .withResellerId("kdtmlxhekuk")
+                .withAdditionalProperties(new PutAliasRequestAdditionalProperties().withManagementGroupId("xukcdmpar")
+                    .withSubscriptionTenantId("y")
+                    .withSubscriptionOwnerId("nzwuxzd")
+                    .withTags(mapOf("u", "yrlhmwhfpmrqobm"))));
         model = BinaryData.fromObject(model).toObject(PutAliasRequest.class);
-        Assertions.assertEquals("wckbasyypnd", model.properties().displayName());
-        Assertions.assertEquals(Workload.PRODUCTION, model.properties().workload());
-        Assertions.assertEquals("cbacphejkotynqg", model.properties().billingScope());
-        Assertions.assertEquals("l", model.properties().subscriptionId());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.properties().resellerId());
+        Assertions.assertEquals("ewnwreitjzyfl", model.properties().displayName());
+        Assertions.assertEquals(Workload.DEV_TEST, model.properties().workload());
+        Assertions.assertEquals("hmofc", model.properties().billingScope());
+        Assertions.assertEquals("smy", model.properties().subscriptionId());
+        Assertions.assertEquals("kdtmlxhekuk", model.properties().resellerId());
+        Assertions.assertEquals("xukcdmpar", model.properties().additionalProperties().managementGroupId());
+        Assertions.assertEquals("y", model.properties().additionalProperties().subscriptionTenantId());
+        Assertions.assertEquals("nzwuxzd", model.properties().additionalProperties().subscriptionOwnerId());
+        Assertions.assertEquals("yrlhmwhfpmrqobm", model.properties().additionalProperties().tags().get("u"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -100,31 +99,6 @@ public final class DataflowEndpointDataLakeStorage implements JsonSerializable<D
         this.batching = batching;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (authentication() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property authentication in model DataflowEndpointDataLakeStorage"));
-        } else {
-            authentication().validate();
-        }
-        if (host() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property host in model DataflowEndpointDataLakeStorage"));
-        }
-        if (batching() != null) {
-            batching().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowEndpointDataLakeStorage.class);
 
     /**
      * {@inheritDoc}

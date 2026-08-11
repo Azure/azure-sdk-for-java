@@ -11,7 +11,7 @@ public final class ManagedAzResiliencyStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedAzResiliencyStatusInner model = BinaryData.fromString(
-            "{\"baseResourceStatus\":[{\"resourceName\":\"vtpuqujmqlgk\",\"resourceType\":\"tndoaongbjc\",\"isZoneResilient\":true,\"details\":\"i\"},{\"resourceName\":\"jed\",\"resourceType\":\"wwa\",\"isZoneResilient\":false,\"details\":\"jvdcpzfoqouic\"}],\"isClusterZoneResilient\":true}")
+            "{\"baseResourceStatus\":[{\"resourceName\":\"p\",\"resourceType\":\"ksrpqv\",\"isZoneResilient\":false,\"details\":\"aehtwd\"},{\"resourceName\":\"ftswibyrcdlbhsh\",\"resourceType\":\"p\",\"isZoneResilient\":false,\"details\":\"twitykhev\"},{\"resourceName\":\"cedcpnmdy\",\"resourceType\":\"nwzxltjcv\",\"isZoneResilient\":true,\"details\":\"iugcxnavvwxq\"},{\"resourceName\":\"y\",\"resourceType\":\"nyowxwlmdjrkvfg\",\"isZoneResilient\":false,\"details\":\"p\"}],\"isClusterZoneResilient\":false}")
             .toObject(ManagedAzResiliencyStatusInner.class);
     }
 }

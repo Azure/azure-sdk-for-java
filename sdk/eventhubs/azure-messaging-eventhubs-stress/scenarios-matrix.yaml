@@ -1,6 +1,5 @@
 matrix:
-  imageBuildDir: ..\..\..\
-  useV2: [ true, false ]
+  imageBuildDir: .\
   scenarios:
     processor:
       senderTestClass: EventSender

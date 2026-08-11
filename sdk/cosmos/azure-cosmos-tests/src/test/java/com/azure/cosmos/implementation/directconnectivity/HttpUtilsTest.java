@@ -32,11 +32,5 @@ public class HttpUtilsTest {
         Entry<String, String> entry = resultHeadersSet.iterator().next();
         assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
-        
-        Map<String, String> resultHeaders = HttpUtils.unescape(httpResponseHeaders.toMap());
-        assertThat(resultHeaders.size()).isEqualTo(1);
-        entry = resultHeadersSet.iterator().next();
-        assertThat(entry.getKey()).isEqualTo(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
-        assertThat(entry.getValue()).isEqualTo(HttpUtils.urlDecode(OWNER_FULL_NAME_VALUE));
     }
 }

@@ -20,6 +20,7 @@ public class HttpRequest {
     private HttpHeaders headers;
     private Flux<byte[]> body;
     private ReactorNettyRequestRecord reactorNettyRequestRecord;
+    private boolean isThinClientRequest;
 
     /**
      * Create a new HttpRequest instance.
@@ -212,6 +213,28 @@ public class HttpRequest {
      */
     public HttpRequest withReactorNettyRequestRecord(ReactorNettyRequestRecord reactorNettyRequestRecord) {
         this.reactorNettyRequestRecord = reactorNettyRequestRecord;
+        return this;
+    }
+
+    /**
+     * Gets whether this request targets the thin client proxy.
+     * Set by {@link com.azure.cosmos.implementation.ThinClientStoreModel} during request construction.
+     *
+     * @return true if this is a thin client request, false for standard gateway requests
+     */
+    public boolean isThinClientRequest() {
+        return this.isThinClientRequest;
+    }
+
+    /**
+     * Marks this request as targeting the thin client proxy.
+     * This is used to apply thin-client-specific transport settings (e.g., connect timeout).
+     *
+     * @param isThinClientRequest true if this request targets the thin client proxy
+     * @return this HttpRequest
+     */
+    public HttpRequest withThinClientRequest(boolean isThinClientRequest) {
+        this.isThinClientRequest = isThinClientRequest;
         return this;
     }
 

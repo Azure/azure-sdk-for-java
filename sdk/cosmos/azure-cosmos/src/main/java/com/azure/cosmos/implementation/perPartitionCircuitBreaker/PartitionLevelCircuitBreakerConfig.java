@@ -76,4 +76,20 @@ public class PartitionLevelCircuitBreakerConfig {
             throw new RuntimeException("Unable to convert from Json String", e);
         }
     }
+
+    public static PartitionLevelCircuitBreakerConfig fromExplicitArgs(
+        Boolean isPartitionLevelCircuitBreakerEnabled) {
+
+        PartitionLevelCircuitBreakerConfig config = new PartitionLevelCircuitBreakerConfig();
+
+        if (isPartitionLevelCircuitBreakerEnabled != null) {
+            config.isPartitionLevelCircuitBreakerEnabled = isPartitionLevelCircuitBreakerEnabled;
+        }
+
+        config.circuitBreakerType = DEFAULT.getCircuitBreakerType();
+        config.consecutiveExceptionCountToleratedForReads = DEFAULT.getConsecutiveExceptionCountToleratedForReads();
+        config.consecutiveExceptionCountToleratedForWrites = DEFAULT.getConsecutiveExceptionCountToleratedForWrites();
+
+        return config;
+    }
 }

@@ -11,7 +11,7 @@ public final class CanceledSubscriptionIdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CanceledSubscriptionIdInner model
-            = BinaryData.fromString("{\"subscriptionId\":\"xth\"}").toObject(CanceledSubscriptionIdInner.class);
+            = BinaryData.fromString("{\"subscriptionId\":\"mhquvgjxp\"}").toObject(CanceledSubscriptionIdInner.class);
     }
 
     @org.junit.jupiter.api.Test

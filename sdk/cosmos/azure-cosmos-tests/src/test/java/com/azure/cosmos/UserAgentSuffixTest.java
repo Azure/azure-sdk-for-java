@@ -6,12 +6,17 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.UserAgentFeatureFlags;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,69 +46,99 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithoutSpecialCharacter() {
-        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+        try (CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TestUserAgent")
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainerResponse response =
-            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+            CosmosContainerResponse response =
+                clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getProperties()).isNotNull();
-        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent");
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertThat(response.getProperties()).isNotNull();
+            assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+            assertThat(response.getDiagnostics()).isNotNull();
+            validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "TestUserAgent");
+        }
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithSpecialCharacter() {
-        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+        try (CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("TéstUserAgent's")
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainerResponse response =
-            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+            CosmosContainerResponse response =
+                clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getProperties()).isNotNull();
-        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent's");
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertThat(response.getProperties()).isNotNull();
+            assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+            assertThat(response.getDiagnostics()).isNotNull();
+            validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "TestUserAgent's");
+        }
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithUnicodeCharacter() {
-        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+        try (CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UnicodeChar鱀InUserAgent")
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainerResponse response =
-            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+            CosmosContainerResponse response =
+                clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getProperties()).isNotNull();
-        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UnicodeChar_InUserAgent");
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertThat(response.getProperties()).isNotNull();
+            assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+            assertThat(response.getDiagnostics()).isNotNull();
+            validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "UnicodeChar_InUserAgent");
+        }
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void userAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
-        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+        try (CosmosClient clientWithUserAgentSuffix = getClientBuilder()
             .userAgentSuffix("UserAgent with space$%_^()*&")
-            .buildClient();
+            .buildClient()) {
 
-        CosmosContainerResponse response =
-            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+            CosmosContainerResponse response =
+                clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
 
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(200);
-        assertThat(response.getProperties()).isNotNull();
-        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UserAgent with space$%_^()*&");
+            assertThat(response).isNotNull();
+            assertThat(response.getStatusCode()).isEqualTo(200);
+            assertThat(response.getProperties()).isNotNull();
+            assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+            assertThat(response.getDiagnostics()).isNotNull();
+            validateUserAgentSuffix(response.getDiagnostics().getUserAgent(), "UserAgent with space$%_^()*&");
+        }
+    }
+
+    private void validateUserAgentSuffix(String actualUserAgent, String expectedUserAgentSuffix) {
+
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix.
+        int featureValue = 0;
+
+        // ThinClient is advertised unless it is explicitly disabled (default null => enabled).
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
+
+        // When HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        if (Configs.isHttp2Enabled()) {
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
+            if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
+                featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
+            }
+        }
+
+        if (featureValue != 0) {
+            expectedUserAgentSuffix = expectedUserAgentSuffix + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
+        }
+
+        assertThat(actualUserAgent).endsWith(expectedUserAgentSuffix);
     }
 }

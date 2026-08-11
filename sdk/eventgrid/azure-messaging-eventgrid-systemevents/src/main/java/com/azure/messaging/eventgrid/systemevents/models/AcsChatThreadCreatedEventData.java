@@ -47,6 +47,12 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
     private List<AcsChatThreadParticipantProperties> participants;
 
     /*
+     * The retention policy for the chat.
+     */
+    @Generated
+    private AcsChatThreadRetentionPolicy retentionPolicy;
+
+    /*
      * The version of the thread
      */
     @Generated
@@ -116,6 +122,16 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
     }
 
     /**
+     * Get the retentionPolicy property: The retention policy for the chat.
+     *
+     * @return the retentionPolicy value.
+     */
+    @Generated
+    public AcsChatThreadRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
      * Get the version property: The version of the thread.
      *
      * @return the version value.
@@ -150,9 +166,14 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeNumberField("version", getVersion());
         jsonWriter.writeJsonField("createdByCommunicationIdentifier", this.createdByCommunicationIdentifier);
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -176,6 +197,7 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
             Map<String, BinaryData> properties = null;
             List<AcsChatThreadParticipantProperties> participants = null;
             Map<String, String> metadata = null;
+            AcsChatThreadRetentionPolicy retentionPolicy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -197,6 +219,8 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
                     participants = reader.readArray(reader1 -> AcsChatThreadParticipantProperties.fromJson(reader1));
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    retentionPolicy = AcsChatThreadRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -207,6 +231,7 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
             deserializedAcsChatThreadCreatedEventData.version = version;
             deserializedAcsChatThreadCreatedEventData.participants = participants;
             deserializedAcsChatThreadCreatedEventData.metadata = metadata;
+            deserializedAcsChatThreadCreatedEventData.retentionPolicy = retentionPolicy;
             return deserializedAcsChatThreadCreatedEventData;
         });
     }

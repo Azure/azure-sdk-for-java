@@ -151,7 +151,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private AffinityInfo affinityInfo;
+    private BatchAffinityInfo affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
@@ -192,12 +192,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      */
     @Generated
     private MultiInstanceSettings multiInstanceSettings;
-
-    /*
-     * Resource usage statistics for the Task.
-     */
-    @Generated
-    private BatchTaskStatistics stats;
 
     /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
@@ -429,7 +423,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the affinityInfo value.
      */
     @Generated
-    public AffinityInfo getAffinityInfo() {
+    public BatchAffinityInfo getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -510,16 +504,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     }
 
     /**
-     * Get the stats property: Resource usage statistics for the Task.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchTaskStatistics getStats() {
-        return this.stats;
-    }
-
-    /**
      * Get the dependsOn property: The Tasks that this Task depends on. This Task will not be scheduled until all Tasks
      * that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this
      * Task will never be scheduled.
@@ -577,6 +561,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchTask if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchTask.
      */
     @Generated
@@ -588,8 +573,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedBatchTask.id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedBatchTask.displayName = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     deserializedBatchTask.url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -600,20 +583,22 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("creationTime".equals(fieldName)) {
                     deserializedBatchTask.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("exitConditions".equals(fieldName)) {
-                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchTask.state = BatchTaskState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("commandLine".equals(fieldName)) {
+                    deserializedBatchTask.commandLine = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBatchTask.displayName = reader.getString();
+                } else if ("exitConditions".equals(fieldName)) {
+                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("previousState".equals(fieldName)) {
                     deserializedBatchTask.previousState = BatchTaskState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.previousStateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("commandLine".equals(fieldName)) {
-                    deserializedBatchTask.commandLine = reader.getString();
                 } else if ("containerSettings".equals(fieldName)) {
                     deserializedBatchTask.containerSettings = BatchTaskContainerSettings.fromJson(reader);
                 } else if ("resourceFiles".equals(fieldName)) {
@@ -627,7 +612,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                         = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                     deserializedBatchTask.environmentSettings = environmentSettings;
                 } else if ("affinityInfo".equals(fieldName)) {
-                    deserializedBatchTask.affinityInfo = AffinityInfo.fromJson(reader);
+                    deserializedBatchTask.affinityInfo = BatchAffinityInfo.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchTask.constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -641,7 +626,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("multiInstanceSettings".equals(fieldName)) {
                     deserializedBatchTask.multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchTask.stats = BatchTaskStatistics.fromJson(reader);
+                    deserializedBatchTask.taskStatistics = BatchTaskStatistics.fromJson(reader);
                 } else if ("dependsOn".equals(fieldName)) {
                     deserializedBatchTask.dependsOn = BatchTaskDependencies.fromJson(reader);
                 } else if ("applicationPackageReferences".equals(fieldName)) {
@@ -656,5 +641,21 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
             }
             return deserializedBatchTask;
         });
+    }
+
+    /*
+     * Resource usage statistics for the Task.
+     */
+    @Generated
+    private BatchTaskStatistics taskStatistics;
+
+    /**
+     * Get the taskStatistics property: Resource usage statistics for the Task.
+     *
+     * @return the taskStatistics value.
+     */
+    @Generated
+    public BatchTaskStatistics getTaskStatistics() {
+        return this.taskStatistics;
     }
 }

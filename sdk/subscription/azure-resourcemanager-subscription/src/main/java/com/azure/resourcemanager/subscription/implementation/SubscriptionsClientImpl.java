@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.subscription.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,25 +12,31 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.subscription.fluent.SubscriptionsClient;
-import com.azure.resourcemanager.subscription.fluent.models.LocationInner;
-import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
-import com.azure.resourcemanager.subscription.models.LocationListResult;
-import com.azure.resourcemanager.subscription.models.SubscriptionListResult;
+import com.azure.resourcemanager.subscription.fluent.models.AcceptOwnershipStatusResponseInner;
+import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.models.AcceptOwnershipRequest;
+import com.azure.resourcemanager.subscription.models.SubscriptionName;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,54 +69,104 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SubscriptionClientSu")
+    @ServiceInterface(name = "SubscriptionClientSubscriptions")
     public interface SubscriptionsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/locations")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocationListResult>> listLocations(@HostParam("$host") String endpoint,
+        Mono<Response<CanceledSubscriptionIdInner>> cancel(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/cancel")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionInner>> get(@HostParam("$host") String endpoint,
+        Response<CanceledSubscriptionIdInner> cancelSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/rename")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResult>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RenamedSubscriptionIdInner>> rename(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubscriptionName body, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/rename")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Response<RenamedSubscriptionIdInner> renameSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SubscriptionName body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/enable")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EnabledSubscriptionIdInner>> enable(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/enable")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EnabledSubscriptionIdInner> enableSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnership")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> acceptOwnership(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AcceptOwnershipRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnership")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> acceptOwnershipSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AcceptOwnershipRequest body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnershipStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AcceptOwnershipStatusResponseInner>> acceptOwnershipStatus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Subscription/subscriptions/{subscriptionId}/acceptOwnershipStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AcceptOwnershipStatusResponseInner> acceptOwnershipStatusSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets all available geo-locations.
+     * The operation to cancel a subscription.
      * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the ID of the canceled subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
+    private Mono<Response<CanceledSubscriptionIdInner>> cancelWithResponseAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -117,155 +174,81 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
-        final String apiVersion = "2016-06-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listLocations(this.client.getEndpoint(), subscriptionId, apiVersion, accept, context))
-            .<PagedResponse<LocationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), null, null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (subscriptionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
-        }
-        final String apiVersion = "2016-06-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listLocations(this.client.getEndpoint(), subscriptionId, apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocationInner> listLocationsAsync(String subscriptionId) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId));
-    }
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, context));
-    }
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocationInner> listLocations(String subscriptionId) {
-        return new PagedIterable<>(listLocationsAsync(subscriptionId));
-    }
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocationInner> listLocations(String subscriptionId, Context context) {
-        return new PagedIterable<>(listLocationsAsync(subscriptionId, context));
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (subscriptionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
-        }
-        final String apiVersion = "2016-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), subscriptionId, apiVersion, accept, context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), subscriptionId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets details about a specified subscription.
+     * The operation to cancel a subscription.
      * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the canceled subscription on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CanceledSubscriptionIdInner> cancelAsync(String subscriptionId) {
+        return cancelWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The operation to cancel a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription along with {@link Response} on successful completion of
+     * @return the ID of the canceled subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CanceledSubscriptionIdInner> cancelWithResponse(String subscriptionId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.cancelSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept,
+            context);
+    }
+
+    /**
+     * The operation to cancel a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the canceled subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CanceledSubscriptionIdInner cancel(String subscriptionId) {
+        return cancelWithResponse(subscriptionId, Context.NONE).getValue();
+    }
+
+    /**
+     * The operation to rename a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being renamed along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId, Context context) {
+    private Mono<Response<RenamedSubscriptionIdInner>> renameWithResponseAsync(String subscriptionId,
+        SubscriptionName body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -273,202 +256,434 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
         }
-        final String apiVersion = "2016-06-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), subscriptionId, apiVersion, accept, context);
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionInner> getAsync(String subscriptionId) {
-        return getWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context) {
-        return getWithResponseAsync(subscriptionId, context).block();
-    }
-
-    /**
-     * Gets details about a specified subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionInner get(String subscriptionId) {
-        return getWithResponse(subscriptionId, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets all subscriptions for a tenant.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
         }
-        final String apiVersion = "2016-06-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .<PagedResponse<SubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.rename(this.client.getEndpoint(), subscriptionId,
+                this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets all subscriptions for a tenant.
+     * The operation to rename a subscription.
      * 
-     * @param context The context to associate with this operation.
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the ID of the subscriptions that is being renamed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync(Context context) {
+    private Mono<RenamedSubscriptionIdInner> renameAsync(String subscriptionId, SubscriptionName body) {
+        return renameWithResponseAsync(subscriptionId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The operation to rename a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being renamed along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RenamedSubscriptionIdInner> renameWithResponse(String subscriptionId, SubscriptionName body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2016-06-01";
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return service.renameSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), body, accept,
+            context);
     }
 
     /**
-     * Gets all subscriptions for a tenant.
+     * The operation to rename a subscription.
      * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all subscriptions for a tenant.
-     * 
-     * @param context The context to associate with this operation.
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
+     * @return the ID of the subscriptions that is being renamed.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RenamedSubscriptionIdInner rename(String subscriptionId, SubscriptionName body) {
+        return renameWithResponse(subscriptionId, body, Context.NONE).getValue();
     }
 
     /**
-     * Gets all subscriptions for a tenant.
+     * The operation to enable a subscription.
      * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionInner> list() {
-        return new PagedIterable<>(listAsync());
-    }
-
-    /**
-     * Gets all subscriptions for a tenant.
-     * 
-     * @param context The context to associate with this operation.
+     * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response along with {@link PagedResponse} on successful completion of
+     * @return the ID of the subscriptions that is being enabled along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
+    private Mono<Response<EnabledSubscriptionIdInner>> enableWithResponseAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+        return FluxUtil
+            .withContext(context -> service.enable(this.client.getEndpoint(), subscriptionId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the next page of items.
+     * The operation to enable a subscription.
      * 
-     * @param nextLink The URL to get the next list of items.
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being enabled on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<EnabledSubscriptionIdInner> enableAsync(String subscriptionId) {
+        return enableWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The operation to enable a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the ID of the subscriptions that is being enabled along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+    public Response<EnabledSubscriptionIdInner> enableWithResponse(String subscriptionId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.enableSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept,
+            context);
+    }
+
+    /**
+     * The operation to enable a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being enabled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnabledSubscriptionIdInner enable(String subscriptionId) {
+        return enableWithResponse(subscriptionId, Context.NONE).getValue();
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> acceptOwnershipWithResponseAsync(String subscriptionId,
+        AcceptOwnershipRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        return FluxUtil
+            .withContext(context -> service.acceptOwnership(this.client.getEndpoint(), subscriptionId,
+                this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> acceptOwnershipWithResponse(String subscriptionId, AcceptOwnershipRequest body) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.acceptOwnershipSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), body,
+            accept, Context.NONE);
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> acceptOwnershipWithResponse(String subscriptionId, AcceptOwnershipRequest body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (body == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.acceptOwnershipSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), body,
+            accept, context);
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAcceptOwnershipAsync(String subscriptionId,
+        AcceptOwnershipRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = acceptOwnershipWithResponseAsync(subscriptionId, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAcceptOwnership(String subscriptionId, AcceptOwnershipRequest body) {
+        Response<BinaryData> response = acceptOwnershipWithResponse(subscriptionId, body);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAcceptOwnership(String subscriptionId, AcceptOwnershipRequest body,
+        Context context) {
+        Response<BinaryData> response = acceptOwnershipWithResponse(subscriptionId, body, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> acceptOwnershipAsync(String subscriptionId, AcceptOwnershipRequest body) {
+        return beginAcceptOwnershipAsync(subscriptionId, body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body) {
+        beginAcceptOwnership(subscriptionId, body).getFinalResult();
+    }
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body, Context context) {
+        beginAcceptOwnership(subscriptionId, body, context).getFinalResult();
+    }
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AcceptOwnershipStatusResponseInner>>
+        acceptOwnershipStatusWithResponseAsync(String subscriptionId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.acceptOwnershipStatus(this.client.getEndpoint(), subscriptionId,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AcceptOwnershipStatusResponseInner> acceptOwnershipStatusAsync(String subscriptionId) {
+        return acceptOwnershipStatusWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AcceptOwnershipStatusResponseInner> acceptOwnershipStatusWithResponse(String subscriptionId,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.acceptOwnershipStatusSync(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(),
+            accept, context);
+    }
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AcceptOwnershipStatusResponseInner acceptOwnershipStatus(String subscriptionId) {
+        return acceptOwnershipStatusWithResponse(subscriptionId, Context.NONE).getValue();
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionsClientImpl.class);
 }

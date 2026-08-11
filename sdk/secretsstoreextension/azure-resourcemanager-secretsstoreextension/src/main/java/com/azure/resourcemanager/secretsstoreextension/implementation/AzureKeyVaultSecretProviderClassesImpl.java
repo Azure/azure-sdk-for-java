@@ -31,12 +31,8 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
         String azureKeyVaultSecretProviderClassName, Context context) {
         Response<AzureKeyVaultSecretProviderClassInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureKeyVaultSecretProviderClassImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureKeyVaultSecretProviderClassImpl(inner.getValue(), this.manager()));
     }
 
     public AzureKeyVaultSecretProviderClass getByResourceGroup(String resourceGroupName,

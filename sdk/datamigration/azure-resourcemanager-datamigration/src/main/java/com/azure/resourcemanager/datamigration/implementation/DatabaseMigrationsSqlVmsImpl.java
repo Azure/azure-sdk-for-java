@@ -51,6 +51,27 @@ public final class DatabaseMigrationsSqlVmsImpl implements DatabaseMigrationsSql
         }
     }
 
+    public DatabaseMigrationSqlVm delete(String resourceGroupName, String sqlVirtualMachineName, String targetDbName) {
+        DatabaseMigrationSqlVmInner inner
+            = this.serviceClient().delete(resourceGroupName, sqlVirtualMachineName, targetDbName);
+        if (inner != null) {
+            return new DatabaseMigrationSqlVmImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public DatabaseMigrationSqlVm delete(String resourceGroupName, String sqlVirtualMachineName, String targetDbName,
+        Boolean force, Context context) {
+        DatabaseMigrationSqlVmInner inner
+            = this.serviceClient().delete(resourceGroupName, sqlVirtualMachineName, targetDbName, force, context);
+        if (inner != null) {
+            return new DatabaseMigrationSqlVmImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void cancel(String resourceGroupName, String sqlVirtualMachineName, String targetDbName,
         MigrationOperationInput parameters) {
         this.serviceClient().cancel(resourceGroupName, sqlVirtualMachineName, targetDbName, parameters);
@@ -114,6 +135,45 @@ public final class DatabaseMigrationsSqlVmsImpl implements DatabaseMigrationsSql
         }
         return this.getWithResponse(resourceGroupName, sqlVirtualMachineName, targetDbName, migrationOperationId,
             expand, context);
+    }
+
+    public DatabaseMigrationSqlVm deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String sqlVirtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachines");
+        if (sqlVirtualMachineName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachines'.", id)));
+        }
+        String targetDbName = ResourceManagerUtils.getValueFromIdByName(id, "databaseMigrations");
+        if (targetDbName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'databaseMigrations'.", id)));
+        }
+        Boolean localForce = null;
+        return this.delete(resourceGroupName, sqlVirtualMachineName, targetDbName, localForce, Context.NONE);
+    }
+
+    public DatabaseMigrationSqlVm deleteByIdWithResponse(String id, Boolean force, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String sqlVirtualMachineName = ResourceManagerUtils.getValueFromIdByName(id, "sqlVirtualMachines");
+        if (sqlVirtualMachineName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlVirtualMachines'.", id)));
+        }
+        String targetDbName = ResourceManagerUtils.getValueFromIdByName(id, "databaseMigrations");
+        if (targetDbName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'databaseMigrations'.", id)));
+        }
+        return this.delete(resourceGroupName, sqlVirtualMachineName, targetDbName, force, context);
     }
 
     private DatabaseMigrationsSqlVmsClient serviceClient() {

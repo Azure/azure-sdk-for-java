@@ -54,20 +54,6 @@ public final class EnterpriseDetailsInner implements JsonSerializable<Enterprise
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (saasSubscriptionDetails() != null) {
-            saasSubscriptionDetails().validate();
-        }
-        if (marketplaceTrialQuota() != null) {
-            marketplaceTrialQuota().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

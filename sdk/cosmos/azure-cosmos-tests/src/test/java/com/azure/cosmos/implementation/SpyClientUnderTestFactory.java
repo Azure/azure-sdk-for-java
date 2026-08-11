@@ -25,6 +25,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -126,7 +127,8 @@ public class SpyClientUnderTestFactory {
                                                  UserAgentContainer userAgentContainer,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
-                                                 ApiType apiType) {
+                                                 ApiType apiType,
+                                                 Map<String, String> additionalHeaders) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,
@@ -134,7 +136,8 @@ public class SpyClientUnderTestFactory {
                 userAgentContainer,
                 globalEndpointManager,
                 rxClient,
-                apiType);
+                apiType,
+                additionalHeaders);
             this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
             this.initRequestCapture();

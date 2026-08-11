@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_Update.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Update.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Update.
@@ -28,7 +28,8 @@ public final class PlaywrightWorkspacesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("Team", "Dev Exp", "Division", "LT"))
-            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED))
+            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.DISABLED))
             .apply();
     }
 

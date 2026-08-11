@@ -12,8 +12,8 @@ public final class WorkloadNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"nbkfezzxscy\",\"name\":\"wzdgirujbzbo\",\"type\":\"vzzbtdcq\"}],\"nextLink\":\"niyujv\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"hpxlktwkuziycs\",\"name\":\"evufuztck\",\"type\":\"yhjtqedcgzu\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"qzz\",\"name\":\"rjvpglydzgkrvqee\",\"type\":\"toepryu\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"pzdm\",\"name\":\"vzvfvaawzqadfl\",\"type\":\"z\"}],\"nextLink\":\"iglaecx\"}")
             .toObject(WorkloadNetworkList.class);
-        Assertions.assertEquals("niyujv", model.nextLink());
+        Assertions.assertEquals("iglaecx", model.nextLink());
     }
 }

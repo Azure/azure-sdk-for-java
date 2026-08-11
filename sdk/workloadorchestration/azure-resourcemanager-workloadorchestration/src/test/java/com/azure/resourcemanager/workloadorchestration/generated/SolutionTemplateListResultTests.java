@@ -13,14 +13,14 @@ public final class SolutionTemplateListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"ndxdigrjguufzdm\",\"capabilities\":[\"qtfihwhbotzinga\",\"vppho\"],\"latestVersion\":\"qzudphq\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"Initialized\"},\"eTag\":\"nwcvtbvkayhmtnv\",\"location\":\"iatkzwpcnp\",\"tags\":{\"g\":\"jaesgvvsccya\",\"lvdnkfx\":\"qfhwyg\",\"apfcqdpsq\":\"semdwzrmu\"},\"id\":\"qvpsvuoymg\",\"name\":\"celve\",\"type\":\"rypqlmfeo\"},{\"properties\":{\"description\":\"rqwky\",\"capabilities\":[\"ob\",\"pg\",\"edkowepbqpcrfk\"],\"latestVersion\":\"ccsnjvcdwxlpq\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"InProgress\"},\"eTag\":\"jsyingwfqatm\",\"location\":\"htmdvy\",\"tags\":{\"uzhlhkjoqrv\":\"kdgszywkbirr\",\"oupmfii\":\"qaatjinrv\",\"x\":\"fggjioolvr\"},\"id\":\"v\",\"name\":\"kkgll\",\"type\":\"wjygvjayvblmhvk\"},{\"properties\":{\"description\":\"hbxvvyhgsopbyrqu\",\"capabilities\":[\"g\",\"uvwzfbnh\"],\"latestVersion\":\"ctlpdngitvgb\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"Succeeded\"},\"eTag\":\"yijejvegrhbpnaix\",\"location\":\"ccbdre\",\"tags\":{\"qkghtpwijnhy\":\"cexdrrvqa\",\"owvrvmtgjqppyos\":\"svfycxzbfv\",\"sxkm\":\"ronzmyhgfip\"},\"id\":\"waekrrjreafxtsgu\",\"name\":\"hjglikk\",\"type\":\"wslolbqp\"}],\"nextLink\":\"zlmvfelfktgp\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"c\",\"capabilities\":[\"upkvipmdsc\",\"xqupevzhf\",\"totxhojujb\",\"pelmcuvhixbjxyf\"],\"latestVersion\":\"yl\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Succeeded\"},\"eTag\":\"p\",\"location\":\"w\",\"tags\":{\"fpncurdo\":\"nujrywvtyl\",\"cbihwqk\":\"wiithtywub\",\"umwctondz\":\"fdntwjchrdgoih\",\"tov\":\"luudfdlwggytsb\"},\"id\":\"tgseinqfiufxqkn\",\"name\":\"irgne\",\"type\":\"ttwqmsni\"},{\"properties\":{\"description\":\"cdm\",\"capabilities\":[\"r\",\"jlpijnkrx\",\"rddh\"],\"latestVersion\":\"atiz\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"Canceled\"},\"eTag\":\"ft\",\"location\":\"qyzhf\",\"tags\":{\"lgnyhmo\":\"sgogczhonnxk\",\"h\":\"sxkkg\"},\"id\":\"rghxjb\",\"name\":\"hqxvcxgfrpdsofbs\",\"type\":\"rnsvbuswd\"},{\"properties\":{\"description\":\"yybyc\",\"capabilities\":[\"nvjsrtkfa\",\"nopqgikyzirtx\",\"yuxzejntpsewgi\",\"ilqu\"],\"latestVersion\":\"ydxtqm\",\"state\":\"active\",\"enableExternalValidation\":false,\"provisioningState\":\"Deleting\"},\"eTag\":\"ufhyaomtbgh\",\"location\":\"vgrvkffo\",\"tags\":{\"jmfxumvf\":\"hpjbib\"},\"id\":\"luyovwxnbkfezzx\",\"name\":\"cy\",\"type\":\"wzdgirujbzbo\"}],\"nextLink\":\"zzbtdcqvpniyujvi\"}")
             .toObject(SolutionTemplateListResult.class);
-        Assertions.assertEquals("iatkzwpcnp", model.value().get(0).location());
-        Assertions.assertEquals("jaesgvvsccya", model.value().get(0).tags().get("g"));
-        Assertions.assertEquals("ndxdigrjguufzdm", model.value().get(0).properties().description());
-        Assertions.assertEquals("qtfihwhbotzinga", model.value().get(0).properties().capabilities().get(0));
-        Assertions.assertEquals(ResourceState.INACTIVE, model.value().get(0).properties().state());
-        Assertions.assertFalse(model.value().get(0).properties().enableExternalValidation());
-        Assertions.assertEquals("zlmvfelfktgp", model.nextLink());
+        Assertions.assertEquals("w", model.value().get(0).location());
+        Assertions.assertEquals("nujrywvtyl", model.value().get(0).tags().get("fpncurdo"));
+        Assertions.assertEquals("c", model.value().get(0).properties().description());
+        Assertions.assertEquals("upkvipmdsc", model.value().get(0).properties().capabilities().get(0));
+        Assertions.assertEquals(ResourceState.ACTIVE, model.value().get(0).properties().state());
+        Assertions.assertTrue(model.value().get(0).properties().enableExternalValidation());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.nextLink());
     }
 }

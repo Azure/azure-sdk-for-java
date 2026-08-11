@@ -133,17 +133,6 @@ public final class VirtualMachineInstancePropertiesOsProfileLinuxConfiguration
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (ssh() != null) {
-            ssh().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

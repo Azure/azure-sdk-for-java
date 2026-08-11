@@ -36,21 +36,7 @@ public final class TransliterationLanguage implements JsonSerializable<Translite
      * List of scripts to convert from.
      */
     @Generated
-    private final List<TransliterableScript> scripts;
-
-    /**
-     * Creates an instance of TransliterationLanguage class.
-     *
-     * @param name the name value to set.
-     * @param nativeName the nativeName value to set.
-     * @param scripts the scripts value to set.
-     */
-    @Generated
-    private TransliterationLanguage(String name, String nativeName, List<TransliterableScript> scripts) {
-        this.name = name;
-        this.nativeName = nativeName;
-        this.scripts = scripts;
-    }
+    private List<TransliterableScript> scripts;
 
     /**
      * Get the name property: Display name of the language in the locale requested via Accept-Language header.
@@ -91,7 +77,6 @@ public final class TransliterationLanguage implements JsonSerializable<Translite
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("nativeName", this.nativeName);
-        jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -123,7 +108,21 @@ public final class TransliterationLanguage implements JsonSerializable<Translite
                     reader.skipChildren();
                 }
             }
-            return new TransliterationLanguage(name, nativeName, scripts);
+            TransliterationLanguage deserializedTransliterationLanguage = new TransliterationLanguage(name, nativeName);
+            deserializedTransliterationLanguage.scripts = scripts;
+            return deserializedTransliterationLanguage;
         });
+    }
+
+    /**
+     * Creates an instance of TransliterationLanguage class.
+     *
+     * @param name the name value to set.
+     * @param nativeName the nativeName value to set.
+     */
+    @Generated
+    private TransliterationLanguage(String name, String nativeName) {
+        this.name = name;
+        this.nativeName = nativeName;
     }
 }

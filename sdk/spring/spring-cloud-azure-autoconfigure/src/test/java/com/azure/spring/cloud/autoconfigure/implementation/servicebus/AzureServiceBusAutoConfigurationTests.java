@@ -5,9 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
@@ -81,7 +85,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
         azureProperties.getCredential().setClientSecret("azure-client-secret");
         azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(2));
 
-        this.contextRunner
+        this.getMinimalContextRunner()
             .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.credential.client-id=servicebus-client-id",
@@ -104,7 +108,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
-        this.contextRunner
+        this.getMinimalContextRunner()
                 .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
                 .withPropertyValues(
                         "spring.cloud.azure.servicebus.domain-name=servicebus.chinacloudapi.cn"
@@ -120,7 +124,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
 
     @Test
     void configureAmqpTransportTypeShouldApply() {
-        this.contextRunner
+        this.getMinimalContextRunner()
             .withBean("azureProperties", AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues("spring.cloud.azure.servicebus.client.transport-type=AmqpWebSockets")
             .run(context -> {
@@ -132,7 +136,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
 
     @Test
     void configureRetryShouldApply() {
-        this.contextRunner
+        this.getMinimalContextRunner()
             .withBean("azureProperties", AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.retry.mode=fixed",
@@ -154,6 +158,100 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
                 assertEquals(6, properties.getRetry().getFixed().getMaxRetries());
                 assertEquals(Duration.ofSeconds(30), properties.getRetry().getFixed().getDelay());
                 assertEquals(Duration.ofSeconds(40), properties.getRetry().getTryTimeout());
+            });
+    }
+
+    @Test
+    void producerDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.producer.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "producer-namespace"),
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusSenderClient.class);
+            });
+    }
+
+    @Test
+    void producerDedicatedNamespaceShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.producer.namespace=producer-namespace",
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusSenderClient.class);
+            });
+    }
+
+    @Test
+    void consumerDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "consumer-namespace"),
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusReceiverClient.class);
+            });
+    }
+
+    @Test
+    void consumerDedicatedNamespaceShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.namespace=consumer-namespace",
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusReceiverClient.class);
+            });
+    }
+
+    @Test
+    void processorDedicatedConnectionStringShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "processor-namespace"),
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
+            });
+    }
+
+    @Test
+    void processorDedicatedNamespaceShouldConfigureWithoutTopLevelConnectionInfo() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.namespace=processor-namespace",
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
             });
     }
 
@@ -295,6 +393,22 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class);
                 assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
+            });
+    }
+
+    @Test
+    void connectionDetailsHasHigherPriority() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "property-namespace");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + connectionString
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureServiceBusConnectionDetails.class, CustomAzureServiceBusConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
+                AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
+                assertEquals(CustomAzureServiceBusConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
             });
     }
 }

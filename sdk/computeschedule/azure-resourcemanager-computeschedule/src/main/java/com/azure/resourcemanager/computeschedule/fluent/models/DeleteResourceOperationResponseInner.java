@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -81,34 +80,6 @@ public final class DeleteResourceOperationResponseInner
     public List<ResourceOperation> results() {
         return this.results;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property description in model DeleteResourceOperationResponseInner"));
-        }
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property type in model DeleteResourceOperationResponseInner"));
-        }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property location in model DeleteResourceOperationResponseInner"));
-        }
-        if (results() != null) {
-            results().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DeleteResourceOperationResponseInner.class);
 
     /**
      * {@inheritDoc}

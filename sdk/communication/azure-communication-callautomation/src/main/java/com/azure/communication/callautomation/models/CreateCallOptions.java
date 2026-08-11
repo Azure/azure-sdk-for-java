@@ -3,8 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 
 /**
  * The options for creating a p2p call.
@@ -41,10 +41,8 @@ public final class CreateCallOptions {
      */
     private TranscriptionOptions transcriptionOptions;
 
-    /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
+    /*
+     * The identifier of the source for creating call with Teams resource account ID.
      */
     private MicrosoftTeamsAppIdentifier teamsAppSource;
 
@@ -156,20 +154,18 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the TeamsAppSource property: it overrides default client source by a MicrosoftTeamsAppIdentifier type source.
+     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
      *
-     * @return the teamsAppSource.
+     * @return the teamsAppSource value.
      */
     public MicrosoftTeamsAppIdentifier getTeamsAppSource() {
-        return teamsAppSource;
+        return this.teamsAppSource;
     }
 
     /**
-     * Overrides default client source by a MicrosoftTeamsAppIdentifier type source.
-     * Required for creating call with Teams resource account ID.
-     * This is per-operation setting and does not change the client's default source.
+     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
      *
-     * @param teamsAppSource The MicrosoftTeamsAppIdentifier type source for overriding default client source.
+     * @param teamsAppSource the teamsAppSource value to set.
      * @return the CreateCallOptions object itself.
      */
     public CreateCallOptions setTeamsAppSource(MicrosoftTeamsAppIdentifier teamsAppSource) {

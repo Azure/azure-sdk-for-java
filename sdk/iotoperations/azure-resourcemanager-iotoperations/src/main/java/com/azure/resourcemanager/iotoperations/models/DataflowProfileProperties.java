@@ -31,6 +31,16 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * The status for the dataflow profile.
+     */
+    private DataflowProfileStatus status;
+
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of DataflowProfileProperties class.
      */
@@ -89,14 +99,21 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
     }
 
     /**
-     * Validates the instance.
+     * Get the status property: The status for the dataflow profile.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the status value.
      */
-    public void validate() {
-        if (diagnostics() != null) {
-            diagnostics().validate();
-        }
+    public DataflowProfileStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
     }
 
     /**
@@ -132,6 +149,11 @@ public final class DataflowProfileProperties implements JsonSerializable<Dataflo
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowProfileProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataflowProfileProperties.status = DataflowProfileStatus.fromJson(reader);
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedDataflowProfileProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

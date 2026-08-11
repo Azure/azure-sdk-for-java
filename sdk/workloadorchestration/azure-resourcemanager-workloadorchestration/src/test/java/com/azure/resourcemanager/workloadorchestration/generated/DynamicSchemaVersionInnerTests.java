@@ -13,16 +13,16 @@ public final class DynamicSchemaVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicSchemaVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"jxgciqibrh\",\"provisioningState\":\"InProgress\"},\"eTag\":\"dqrhzoymib\",\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"}")
+            "{\"properties\":{\"value\":\"kgymareqnajxqug\",\"provisioningState\":\"Initialized\"},\"eTag\":\"cubeddgssofw\",\"id\":\"zqalkrmnjijpx\",\"name\":\"cqqudf\",\"type\":\"byxbaaabjy\"}")
             .toObject(DynamicSchemaVersionInner.class);
-        Assertions.assertEquals("jxgciqibrh", model.properties().value());
+        Assertions.assertEquals("kgymareqnajxqug", model.properties().value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicSchemaVersionInner model
-            = new DynamicSchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("jxgciqibrh"));
+        DynamicSchemaVersionInner model = new DynamicSchemaVersionInner()
+            .withProperties(new SchemaVersionProperties().withValue("kgymareqnajxqug"));
         model = BinaryData.fromObject(model).toObject(DynamicSchemaVersionInner.class);
-        Assertions.assertEquals("jxgciqibrh", model.properties().value());
+        Assertions.assertEquals("kgymareqnajxqug", model.properties().value());
     }
 }

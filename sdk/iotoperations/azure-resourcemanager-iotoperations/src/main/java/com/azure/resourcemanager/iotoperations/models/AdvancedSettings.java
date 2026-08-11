@@ -98,20 +98,6 @@ public final class AdvancedSettings implements JsonSerializable<AdvancedSettings
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (clients() != null) {
-            clients().validate();
-        }
-        if (internalCerts() != null) {
-            internalCerts().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

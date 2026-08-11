@@ -76,6 +76,8 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
@@ -84,6 +86,7 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -91,6 +94,7 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -307,7 +311,8 @@ public class BlobClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
+        String blobUrl
+            = azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
@@ -499,6 +504,7 @@ public class BlobClientBase {
     public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
         Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
+        final ContentValidationAlgorithm contentValidationAlgorithm = options.getContentValidationAlgorithm();
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG
             : options.getConsistentReadControl();
@@ -510,8 +516,9 @@ public class BlobClientBase {
 
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (chunkRange,
-            conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
+            = (chunkRange, conditions) -> client.downloadStreamWithResponseInternal(chunkRange, null, conditions, false,
+                contentValidationAlgorithm, contextFinal);
         return ChunkedDownloadUtils
             .downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
@@ -587,8 +594,12 @@ public class BlobClientBase {
         BlobDownloadResponse response;
         try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
             response = this.downloadStreamWithResponse(dstStream,
-                new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
-                options.getRequestConditions(), false, null, context);
+                new BlobDownloadStreamOptions()
+                    .setRange(new BlobRange(initialPosition, (long) initialRange.remaining()))
+                    .setRequestConditions(options.getRequestConditions())
+                    .setRetrieveContentRangeMd5(false)
+                    .setContentValidationAlgorithm(options.getContentValidationAlgorithm()),
+                null, context);
             properties = ModelHelper.buildBlobPropertiesResponse(response).getValue();
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
@@ -1266,11 +1277,34 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream,
+            new BlobDownloadStreamOptions().setRange(range)
+                .setDownloadRetryOptions(options)
+                .setRequestConditions(requestConditions)
+                .setRetrieveContentRangeMd5(getRangeContentMd5),
+            timeout, context);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream with options.
+     *
+     * @param stream The output stream where the downloaded data will be written.
+     * @param options {@link BlobDownloadStreamOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobDownloadStreamOptions options,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
-        Mono<BlobDownloadResponse> download
-            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-                .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                    .thenReturn(new BlobDownloadResponse(response)));
+        options = options == null ? new BlobDownloadStreamOptions() : options;
+        Mono<BlobDownloadResponse> download = client
+            .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
+                options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
+                options.getContentValidationAlgorithm(), context)
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -1309,14 +1343,9 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<BlobDownloadContentResponse> download
-            = client.downloadStreamWithResponse(null, options, requestConditions, false, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders())))
-                .map(BlobDownloadContentResponse::new);
-
-        return blockWithOptionalTimeout(download, timeout);
+        return downloadContentWithResponse(
+            new BlobDownloadContentOptions().setDownloadRetryOptions(options).setRequestConditions(requestConditions),
+            timeout, context);
     }
 
     /**
@@ -1357,12 +1386,32 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
         BlobRequestConditions requestConditions, BlobRange range, boolean getRangeContentMd5, Duration timeout,
         Context context) {
-        Mono<BlobDownloadContentResponse> download
-            = client.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-                .flatMap(r -> BinaryData.fromFlux(r.getValue())
-                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        data, r.getDeserializedHeaders())))
-                .map(BlobDownloadContentResponse::new);
+        return downloadContentWithResponse(new BlobDownloadContentOptions().setDownloadRetryOptions(options)
+            .setRequestConditions(requestConditions)
+            .setRange(range)
+            .setRetrieveContentRangeMd5(getRangeContentMd5), timeout, context);
+    }
+
+    /**
+     * Downloads blob content (full blob or range) with options.
+     *
+     * @param options {@link BlobDownloadContentOptions}
+     * @param timeout An optional timeout value.
+     * @param context Additional context.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
+        Context context) {
+        options = options == null ? new BlobDownloadContentOptions() : options;
+        Mono<BlobDownloadContentResponse> download = client
+            .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
+                options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
+                options.getContentValidationAlgorithm(), context)
+            .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                    data, r.getDeserializedHeaders())))
+            .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -1623,7 +1672,9 @@ public class BlobClientBase {
                 finalRequestConditions.getLeaseId(), deleteBlobSnapshotOptions,
                 finalRequestConditions.getIfModifiedSince(), finalRequestConditions.getIfUnmodifiedSince(),
                 finalRequestConditions.getIfMatch(), finalRequestConditions.getIfNoneMatch(),
-                finalRequestConditions.getTagsConditions(), null, null, finalContext);
+                finalRequestConditions.getTagsConditions(), null, null,
+                finalRequestConditions.getAccessTierIfModifiedSince(),
+                finalRequestConditions.getAccessTierIfUnmodifiedSince(), finalContext);
 
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
@@ -1953,7 +2004,9 @@ public class BlobClientBase {
 
         Callable<ResponseBase<BlobsGetTagsHeaders, BlobTags>> operation = () -> this.azureBlobStorage.getBlobs()
             .getTagsWithResponse(containerName, blobName, null, null, snapshot, versionId,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), finalContext);
 
         ResponseBase<BlobsGetTagsHeaders, BlobTags> response
             = sendRequest(operation, timeout, BlobStorageException.class);
@@ -2026,7 +2079,9 @@ public class BlobClientBase {
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         Callable<Response<Void>> operation = () -> this.azureBlobStorage.getBlobs()
             .setTagsNoCustomHeadersWithResponse(containerName, blobName, null, versionId, null, null, null,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, finalContext);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), t, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 

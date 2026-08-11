@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -14,32 +15,25 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.cosmos.implementation.caches.AsyncCache.SerializableAsyncCache;
-import static com.azure.cosmos.implementation.caches.AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unchecked")
 public class SerializableAsyncCacheTest {
 
     @Test(groups = { "unit" }, dataProvider = "numberOfCollections")
-    public void serialize_Deserialize_AsyncCache(int cnt) throws Exception {
+    public void serialize_Deserialize_AsyncCache_ViaJson(int cnt) throws Exception {
+        // This test exercises the full production serialization/deserialization path
+        // through CosmosClientMetadataCachesSnapshot, which now uses JSON.
         AsyncCache<String, DocumentCollection> collectionInfoByNameCache = new AsyncCache<>();
 
         for (int i = 0; i < cnt; i++) {
             DocumentCollection collectionDef = generateDocumentCollectionDefinition();
             String collectionLink = "db/mydb/colls/" + collectionDef.getId();
-
-            // populate the cache
             collectionInfoByNameCache.getAsync(collectionLink, null,
                 () -> Mono.just(collectionDef)).block();
         }
@@ -47,14 +41,14 @@ public class SerializableAsyncCacheTest {
         ConcurrentHashMap<String, AsyncLazy<DocumentCollection>> originalInternalCache =
             getInternalCache(collectionInfoByNameCache);
 
-        // serialize
-        SerializableAsyncCache<String, DocumentCollection> serializableAsyncCache =
-            SerializableAsyncCollectionCache.from(collectionInfoByNameCache, String.class, DocumentCollection.class);
-        byte[] bytes = serializeObject(serializableAsyncCache);
+        // Serialize through CosmosClientMetadataCachesSnapshot (now uses JSON)
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.serializeCollectionInfoByNameCache(collectionInfoByNameCache);
 
-        // deserialize
-        SerializableAsyncCollectionCache serializableAsyncCollectionCache = deserializeObject(bytes);
-        AsyncCache<String, DocumentCollection> newAsyncCache = serializableAsyncCollectionCache.toAsyncCache();
+        // Deserialize through CosmosClientMetadataCachesSnapshot (JSON parsing + validation)
+        AsyncCache<String, DocumentCollection> newAsyncCache = snapshot.getCollectionInfoByNameCache();
+        assertThat(newAsyncCache).isNotNull();
+
         ConcurrentHashMap<String, AsyncLazy<DocumentCollection>> newInternalCache =
             getInternalCache(newAsyncCache);
 
@@ -71,28 +65,104 @@ public class SerializableAsyncCacheTest {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void deserialize_InvalidJson_ReturnsNull() {
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.collectionInfoByNameCache = "not valid json {{{".getBytes();
+
+        AsyncCache<String, DocumentCollection> result = snapshot.getCollectionInfoByNameCache();
+        assertThat(result).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void deserialize_WrongVersion_ReturnsNull() {
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.collectionInfoByNameCache = "{\"version\":999,\"entries\":{}}".getBytes();
+
+        AsyncCache<String, DocumentCollection> result = snapshot.getCollectionInfoByNameCache();
+        assertThat(result).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void deserialize_MissingEntries_ReturnsNull() {
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.collectionInfoByNameCache = "{\"version\":1}".getBytes();
+
+        AsyncCache<String, DocumentCollection> result = snapshot.getCollectionInfoByNameCache();
+        assertThat(result).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void deserialize_NullBytes_ReturnsNull() {
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.collectionInfoByNameCache = null;
+
+        AsyncCache<String, DocumentCollection> result = snapshot.getCollectionInfoByNameCache();
+        assertThat(result).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void deserialize_OldJavaSerializationFormat_ReturnsNull() {
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        // Java serialization magic bytes (0xACED) are not valid JSON
+        snapshot.collectionInfoByNameCache = new byte[] { (byte) 0xAC, (byte) 0xED, 0x00, 0x05 };
+
+        AsyncCache<String, DocumentCollection> result = snapshot.getCollectionInfoByNameCache();
+        assertThat(result).isNull();
+    }
+
+    @Test(groups = { "unit" }, dataProvider = "numberOfCollections")
+    public void serialize_Deserialize_PreservesCollectionRidComparer(int cnt) throws Exception {
+        // Verify that after JSON round-trip, the cache uses CollectionRidComparer
+        AsyncCache<String, DocumentCollection> cache = new AsyncCache<>(
+            new RxCollectionCache.CollectionRidComparer());
+
+        List<String> keys = new ArrayList<>();
+        for (int i = 0; i < cnt; i++) {
+            DocumentCollection collectionDef = generateDocumentCollectionDefinition();
+            collectionDef.setResourceId("rid-" + i);
+            String collectionLink = "db/mydb/colls/" + collectionDef.getId();
+            keys.add(collectionLink);
+            cache.getAsync(collectionLink, null, () -> Mono.just(collectionDef)).block();
+        }
+
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.serializeCollectionInfoByNameCache(cache);
+
+        AsyncCache<String, DocumentCollection> newCache = snapshot.getCollectionInfoByNameCache();
+        assertThat(newCache).isNotNull();
+
+        if (cnt > 0) {
+            String firstKey = keys.get(0);
+            DocumentCollection fromNewCache = newCache.getAsync(firstKey, null,
+                () -> Mono.error(new RuntimeException("not expected"))).block();
+
+            // Create a collection with the same resourceId but different content
+            DocumentCollection sameRid = new DocumentCollection();
+            sameRid.setResourceId(fromNewCache.getResourceId());
+            sameRid.setId("completely-different-id");
+
+            // CollectionRidComparer: same resourceId = equal → triggers refresh
+            DocumentCollection refreshed = generateDocumentCollectionDefinition();
+            refreshed.setResourceId("new-rid");
+            final boolean[] initCalled = { false };
+            newCache.getAsync(firstKey, sameRid, () -> {
+                initCalled[0] = true;
+                return Mono.just(refreshed);
+            }).block();
+
+            assertThat(initCalled[0])
+                .as("CollectionRidComparer should treat same-resourceId as equal, triggering refresh")
+                .isTrue();
+        }
+    }
+
     @DataProvider
     public static Object[][] numberOfCollections() {
         return new Object[][] {
             { 0 },
             { 1 },
             { 100 } };
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> T deserializeObject(byte[] objectSerializedAsBytes) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream bais = new ByteArrayInputStream(objectSerializedAsBytes);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-
-        return (T) ois.readObject();
-    }
-
-    private byte[] serializeObject(Object object) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(baos);
-        objectOutputStream.writeObject(object);
-
-        return baos.toByteArray();
     }
 
     @SuppressWarnings("unchecked")
@@ -117,5 +187,3 @@ public class SerializableAsyncCacheTest {
         return collection;
     }
 }
-
-

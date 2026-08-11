@@ -13,6 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.computefleet.models.FleetUpdate;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.computefleet.models.ApiEntityReference;
 import com.azure.resourcemanager.computefleet.models.BaseVirtualMachineProfile;
@@ -60,7 +61,7 @@ import java.util.UUID;
 
 public class ComputeFleetManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private ResourceManager resourceManager = null;
     private ComputeFleetManager computeFleetManager = null;
@@ -108,6 +109,9 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void testCreateComputeFleet() {
+        // trigger the auth, to mitigate https://github.com/Azure/azure-sdk-for-java/issues/46858
+        resourceManager.providers().getByName("Microsoft.AzureFleet");
+
         Fleet fleet = null;
         try {
             String fleetName = "fleet" + randomPadding();
@@ -206,6 +210,16 @@ public class ComputeFleetManagerTests extends TestProxyTestBase {
             Assertions.assertEquals(fleetName, computeFleetManager.fleets().getById(fleet.id()).name());
             Assertions.assertTrue(
                 computeFleetManager.fleets().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+
+            // test update, use serviceClient API to do a minimal PATCH
+            computeFleetManager.serviceClient()
+                .getFleets()
+                .update(resourceGroupName, fleetName,
+                    new FleetUpdate()
+                        .withProperties(new FleetProperties().withRegularPriorityProfile(new RegularPriorityProfile()
+                            .withAllocationStrategy(RegularPriorityAllocationStrategy.LOWEST_PRICE)
+                            .withMinCapacity(1)
+                            .withCapacity(3))));
         } finally {
             if (fleet != null) {
                 computeFleetManager.fleets().deleteById(fleet.id());

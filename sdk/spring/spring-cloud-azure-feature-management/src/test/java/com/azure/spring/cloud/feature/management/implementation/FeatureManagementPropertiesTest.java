@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 
 public class FeatureManagementPropertiesTest {
     
@@ -17,11 +17,11 @@ public class FeatureManagementPropertiesTest {
     @Test
     public void setFeatureFlagsTest() {
         FeatureManagementProperties properties = new FeatureManagementProperties();
-        List<Feature> featureFlags = new ArrayList<>();
+        List<FeatureDefinition> featureFlags = new ArrayList<>();
         properties.setFeatureFlags(featureFlags);
         assertEquals(0, properties.getFeatureFlags().size());
         
-        Feature alphaFeatureFlag = new Feature();
+        FeatureDefinition alphaFeatureFlag = new FeatureDefinition();
         alphaFeatureFlag.setId("alpha");
         alphaFeatureFlag.setEnabled(true);
         featureFlags.add(alphaFeatureFlag);

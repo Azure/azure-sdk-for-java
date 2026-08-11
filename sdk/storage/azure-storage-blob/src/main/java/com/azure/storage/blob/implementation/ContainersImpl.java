@@ -37,7 +37,9 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseHeaders;
 import com.azure.storage.blob.implementation.models.ContainersRenameHeaders;
@@ -814,9 +816,10 @@ public final class ContainersImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -825,9 +828,9 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -836,9 +839,10 @@ public final class ContainersImpl {
             @HostParam("url") String url, @PathParam("containerName") String containerName,
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -847,8 +851,58 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+            listBlobFlatSegmentApacheArrow(@HostParam("url") String url,
+                @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp, @HeaderParam("Accept") String accept,
+                @QueryParam("prefix") String prefix, @QueryParam("marker") String marker,
+                @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
+                @QueryParam("timeout") Integer timeout, @QueryParam("startFrom") String startFrom,
+                @QueryParam("endBefore") String endBefore, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<StreamResponse> listBlobFlatSegmentApacheArrowNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, @QueryParam("prefix") String prefix,
+            @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+            @QueryParam("startFrom") String startFrom, @QueryParam("endBefore") String endBefore,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> listBlobFlatSegmentApacheArrowSync(
+            @HostParam("url") String url, @PathParam("containerName") String containerName,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @HeaderParam("Accept") String accept, @QueryParam("prefix") String prefix,
+            @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+            @QueryParam("startFrom") String startFrom, @QueryParam("endBefore") String endBefore,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Response<InputStream> listBlobFlatSegmentApacheArrowNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, @QueryParam("prefix") String prefix,
+            @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+            @QueryParam("startFrom") String startFrom, @QueryParam("endBefore") String endBefore,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             Context context);
 
         @Get("/{containerName}")
@@ -859,9 +913,10 @@ public final class ContainersImpl {
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept, Context context);
+                @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
+                @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -871,9 +926,9 @@ public final class ContainersImpl {
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -883,9 +938,10 @@ public final class ContainersImpl {
                 @QueryParam("restype") String restype, @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
-                @HeaderParam("Accept") String accept, Context context);
+                @QueryParam("include") String include, @QueryParam("startFrom") String startFrom,
+                @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -895,9 +951,61 @@ public final class ContainersImpl {
             @QueryParam("restype") String restype, @QueryParam("comp") String comp, @QueryParam("prefix") String prefix,
             @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
             @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
-            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
-            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startFrom") String startFrom, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+            listBlobHierarchySegmentApacheArrow(@HostParam("url") String url,
+                @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp, @HeaderParam("Accept") String accept,
+                @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
+                @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+                @QueryParam("startFrom") String startFrom, @QueryParam("endBefore") String endBefore,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<StreamResponse> listBlobHierarchySegmentApacheArrowNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, @QueryParam("prefix") String prefix,
+            @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
+            @QueryParam("timeout") Integer timeout, @QueryParam("startFrom") String startFrom,
+            @QueryParam("endBefore") String endBefore, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>
+            listBlobHierarchySegmentApacheArrowSync(@HostParam("url") String url,
+                @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp, @HeaderParam("Accept") String accept,
+                @QueryParam("prefix") String prefix, @QueryParam("delimiter") String delimiter,
+                @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults,
+                @QueryParam("include") String include, @QueryParam("timeout") Integer timeout,
+                @QueryParam("startFrom") String startFrom, @QueryParam("endBefore") String endBefore,
+                @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+                Context context);
+
+        @Get("/{containerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Response<InputStream> listBlobHierarchySegmentApacheArrowNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @HeaderParam("Accept") String accept, @QueryParam("prefix") String prefix,
+            @QueryParam("delimiter") String delimiter, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include,
+            @QueryParam("timeout") Integer timeout, @QueryParam("startFrom") String startFrom,
+            @QueryParam("endBefore") String endBefore, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
@@ -5700,6 +5808,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5713,10 +5823,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
         listBlobFlatSegmentWithResponseAsync(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults,
-                include, timeout, requestId, context))
+                include, startFrom, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5736,6 +5846,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5750,7 +5862,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>>
         listBlobFlatSegmentWithResponseAsync(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
+            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -5761,7 +5873,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobFlatSegment(this.client.getUrl(), containerName, restype, comp, prefix, marker, maxresults,
-                includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
+                includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5781,6 +5893,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5793,9 +5907,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(String containerName, String prefix,
-        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
-        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
-            requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
+        String requestId) {
+        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, startFrom,
+            timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5815,6 +5930,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5828,10 +5945,11 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsFlatSegmentResponse> listBlobFlatSegmentAsync(String containerName, String prefix,
-        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
-        Context context) {
-        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
-            requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
+        String requestId, Context context) {
+        return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, startFrom,
+            timeout, requestId, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -5851,6 +5969,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5864,10 +5984,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsFlatSegmentResponse>> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(
         String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
-        Integer timeout, String requestId) {
+        String startFrom, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(containerName, prefix, marker,
-                maxresults, include, timeout, requestId, context))
+                maxresults, include, startFrom, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5887,6 +6007,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5901,7 +6023,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsFlatSegmentResponse>> listBlobFlatSegmentNoCustomHeadersWithResponseAsync(
         String containerName, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
-        Integer timeout, String requestId, Context context) {
+        String startFrom, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -5912,7 +6034,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobFlatSegmentNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
+                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -5932,6 +6054,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5946,7 +6070,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>
         listBlobFlatSegmentWithResponse(String containerName, String prefix, String marker, Integer maxresults,
-            List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
+            List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -5957,7 +6081,7 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentSync(this.client.getUrl(), containerName, restype, comp, prefix, marker,
-                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
+                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -5979,6 +6103,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -5991,10 +6117,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsFlatSegmentResponse listBlobFlatSegment(String containerName, String prefix, String marker,
-        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+        Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
         try {
-            return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, timeout,
-                requestId, Context.NONE).getValue();
+            return listBlobFlatSegmentWithResponse(containerName, prefix, marker, maxresults, include, startFrom,
+                timeout, requestId, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6016,6 +6142,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6029,8 +6157,8 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentNoCustomHeadersWithResponse(String containerName,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
-        String requestId, Context context) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
+        Integer timeout, String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -6041,8 +6169,418 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-                context);
+                prefix, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId,
+                accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+        listBlobFlatSegmentApacheArrowWithResponseAsync(String containerName, String prefix, String marker,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+            String requestId) {
+        return FluxUtil
+            .withContext(context -> listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, prefix, marker,
+                maxresults, include, timeout, startFrom, endBefore, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+        listBlobFlatSegmentApacheArrowWithResponseAsync(String containerName, String prefix, String marker,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+            String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .listBlobFlatSegmentApacheArrow(this.client.getUrl(), containerName, restype, comp, accept, prefix, marker,
+                maxresults, includeConverted, timeout, startFrom, endBefore, this.client.getVersion(), requestId,
+                context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> listBlobFlatSegmentApacheArrowAsync(String containerName, String prefix, String marker,
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+        String requestId) {
+        return listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, prefix, marker, maxresults, include,
+            timeout, startFrom, endBefore, requestId)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> listBlobFlatSegmentApacheArrowAsync(String containerName, String prefix, String marker,
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+        String requestId, Context context) {
+        return listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, prefix, marker, maxresults, include,
+            timeout, startFrom, endBefore, requestId, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> listBlobFlatSegmentApacheArrowNoCustomHeadersWithResponseAsync(String containerName,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String startFrom, String endBefore, String requestId) {
+        return FluxUtil
+            .withContext(context -> listBlobFlatSegmentApacheArrowNoCustomHeadersWithResponseAsync(containerName,
+                prefix, marker, maxresults, include, timeout, startFrom, endBefore, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> listBlobFlatSegmentApacheArrowNoCustomHeadersWithResponseAsync(String containerName,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String startFrom, String endBefore, String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .listBlobFlatSegmentApacheArrowNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, accept,
+                prefix, marker, maxresults, includeConverted, timeout, startFrom, endBefore, this.client.getVersion(),
+                requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>
+        listBlobFlatSegmentApacheArrowWithResponse(String containerName, String prefix, String marker,
+            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+            String requestId, Context context) {
+        try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            return service.listBlobFlatSegmentApacheArrowSync(this.client.getUrl(), containerName, restype, comp,
+                accept, prefix, marker, maxresults, includeConverted, timeout, startFrom, endBefore,
+                this.client.getVersion(), requestId, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputStream listBlobFlatSegmentApacheArrow(String containerName, String prefix, String marker,
+        Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore,
+        String requestId) {
+        try {
+            return listBlobFlatSegmentApacheArrowWithResponse(containerName, prefix, marker, maxresults, include,
+                timeout, startFrom, endBefore, requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container. This operation is for Apache
+     * Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InputStream> listBlobFlatSegmentApacheArrowNoCustomHeadersWithResponse(String containerName,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String startFrom, String endBefore, String requestId, Context context) {
+        try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            return service.listBlobFlatSegmentApacheArrowNoCustomHeadersSync(this.client.getUrl(), containerName,
+                restype, comp, accept, prefix, marker, maxresults, includeConverted, timeout, startFrom, endBefore,
+                this.client.getVersion(), requestId, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6067,6 +6605,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6080,10 +6620,11 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout,
+            String requestId) {
         return FluxUtil
             .withContext(context -> listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker,
-                maxresults, include, timeout, requestId, context))
+                maxresults, include, startFrom, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6106,6 +6647,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6120,7 +6663,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
         listBlobHierarchySegmentWithResponseAsync(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
+            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId,
             Context context) {
         final String restype = "container";
         final String comp = "list";
@@ -6132,7 +6675,7 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobHierarchySegment(this.client.getUrl(), containerName, restype, comp, prefix, delimiter, marker,
-                maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context)
+                maxresults, includeConverted, startFrom, timeout, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6155,6 +6698,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6167,49 +6712,10 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
-        String requestId) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
+        Integer timeout, String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
-            timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
-     *
-     * @param containerName The container name.
-     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
-     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
-     * appearance of the delimiter character. The delimiter may be a single character or a string.
-     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
-     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
-     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
-     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
-     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
-     * is opaque to the client.
-     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
-     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
-     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
-     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
-     * specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify one or more datasets to include in the response.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
-     * Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
-     * analytics logs when storage analytics logging is enabled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an enumeration of blobs on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
-        String requestId, Context context) {
-        return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
-            timeout, requestId, context)
+            startFrom, timeout, requestId)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -6233,6 +6739,50 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(String containerName, String delimiter,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
+        Integer timeout, String requestId, Context context) {
+        return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
+            startFrom, timeout, requestId, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6246,10 +6796,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId) {
         return FluxUtil
             .withContext(context -> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(containerName, delimiter,
-                prefix, marker, maxresults, include, timeout, requestId, context))
+                prefix, marker, maxresults, include, startFrom, timeout, requestId, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6272,6 +6822,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6286,7 +6838,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
+        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
@@ -6297,8 +6849,8 @@ public final class ContainersImpl {
                 .collect(Collectors.joining(","));
         return service
             .listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, prefix,
-                delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-                context)
+                delimiter, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(),
+                requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6321,6 +6873,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6335,7 +6889,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>
         listBlobHierarchySegmentWithResponse(String containerName, String delimiter, String prefix, String marker,
-            Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
+            Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId,
             Context context) {
         try {
             final String restype = "container";
@@ -6347,8 +6901,8 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentSync(this.client.getUrl(), containerName, restype, comp, prefix,
-                delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
-                context);
+                delimiter, marker, maxresults, includeConverted, startFrom, timeout, this.client.getVersion(),
+                requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6373,6 +6927,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6385,11 +6941,11 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListBlobsHierarchySegmentResponse listBlobHierarchySegment(String containerName, String delimiter,
-        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
-        String requestId) {
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, String startFrom,
+        Integer timeout, String requestId) {
         try {
             return listBlobHierarchySegmentWithResponse(containerName, delimiter, prefix, marker, maxresults, include,
-                timeout, requestId, Context.NONE).getValue();
+                startFrom, timeout, requestId, Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6414,6 +6970,8 @@ public final class ContainersImpl {
      * the remainder of the results. For this reason, it is possible that the service will return fewer results than
      * specified by maxresults, or than the default of 5000.
      * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
@@ -6428,7 +6986,7 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersWithResponse(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
-        List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
+        List<ListBlobsIncludeItem> include, String startFrom, Integer timeout, String requestId, Context context) {
         try {
             final String restype = "container";
             final String comp = "list";
@@ -6439,8 +6997,446 @@ public final class ContainersImpl {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype,
-                comp, prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-                requestId, accept, context);
+                comp, prefix, delimiter, marker, maxresults, includeConverted, startFrom, timeout,
+                this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+        listBlobHierarchySegmentApacheArrowWithResponseAsync(String containerName, String delimiter, String prefix,
+            String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom,
+            String endBefore, String requestId) {
+        return FluxUtil
+            .withContext(context -> listBlobHierarchySegmentApacheArrowWithResponseAsync(containerName, delimiter,
+                prefix, marker, maxresults, include, timeout, startFrom, endBefore, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, Flux<ByteBuffer>>>
+        listBlobHierarchySegmentApacheArrowWithResponseAsync(String containerName, String delimiter, String prefix,
+            String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom,
+            String endBefore, String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .listBlobHierarchySegmentApacheArrow(this.client.getUrl(), containerName, restype, comp, accept, prefix,
+                delimiter, marker, maxresults, includeConverted, timeout, startFrom, endBefore,
+                this.client.getVersion(), requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> listBlobHierarchySegmentApacheArrowAsync(String containerName, String delimiter,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String startFrom, String endBefore, String requestId) {
+        return listBlobHierarchySegmentApacheArrowWithResponseAsync(containerName, delimiter, prefix, marker,
+            maxresults, include, timeout, startFrom, endBefore, requestId)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> listBlobHierarchySegmentApacheArrowAsync(String containerName, String delimiter,
+        String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
+        String startFrom, String endBefore, String requestId, Context context) {
+        return listBlobHierarchySegmentApacheArrowWithResponseAsync(containerName, delimiter, prefix, marker,
+            maxresults, include, timeout, startFrom, endBefore, requestId, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> listBlobHierarchySegmentApacheArrowNoCustomHeadersWithResponseAsync(
+        String containerName, String delimiter, String prefix, String marker, Integer maxresults,
+        List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore, String requestId) {
+        return FluxUtil
+            .withContext(context -> listBlobHierarchySegmentApacheArrowNoCustomHeadersWithResponseAsync(containerName,
+                delimiter, prefix, marker, maxresults, include, timeout, startFrom, endBefore, requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> listBlobHierarchySegmentApacheArrowNoCustomHeadersWithResponseAsync(
+        String containerName, String delimiter, String prefix, String marker, Integer maxresults,
+        List<ListBlobsIncludeItem> include, Integer timeout, String startFrom, String endBefore, String requestId,
+        Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/vnd.apache.arrow.stream,application/xml";
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service
+            .listBlobHierarchySegmentApacheArrowNoCustomHeaders(this.client.getUrl(), containerName, restype, comp,
+                accept, prefix, delimiter, marker, maxresults, includeConverted, timeout, startFrom, endBefore,
+                this.client.getVersion(), requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ContainersListBlobHierarchySegmentApacheArrowHeaders, InputStream>
+        listBlobHierarchySegmentApacheArrowWithResponse(String containerName, String delimiter, String prefix,
+            String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom,
+            String endBefore, String requestId, Context context) {
+        try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            return service.listBlobHierarchySegmentApacheArrowSync(this.client.getUrl(), containerName, restype, comp,
+                accept, prefix, delimiter, marker, maxresults, includeConverted, timeout, startFrom, endBefore,
+                this.client.getVersion(), requestId, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputStream listBlobHierarchySegmentApacheArrow(String containerName, String delimiter, String prefix,
+        String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String startFrom,
+        String endBefore, String requestId) {
+        try {
+            return listBlobHierarchySegmentApacheArrowWithResponse(containerName, delimiter, prefix, marker, maxresults,
+                include, timeout, startFrom, endBefore, requestId, Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * [Update] The List Blobs operation returns a list of the blobs under the specified container. This operation is
+     * for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+     *
+     * @param containerName The container name.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     * response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     * appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param startFrom Specifies the relative path to list paths from. For non-recursive list, only one entity level is
+     * supported; For recursive list, multiple entity levels are supported. (Inclusive).
+     * @param endBefore Specifies the relative path to end before list paths. (Exclusive).
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InputStream> listBlobHierarchySegmentApacheArrowNoCustomHeadersWithResponse(String containerName,
+        String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include,
+        Integer timeout, String startFrom, String endBefore, String requestId, Context context) {
+        try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/vnd.apache.arrow.stream,application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            return service.listBlobHierarchySegmentApacheArrowNoCustomHeadersSync(this.client.getUrl(), containerName,
+                restype, comp, accept, prefix, delimiter, marker, maxresults, includeConverted, timeout, startFrom,
+                endBefore, this.client.getVersion(), requestId, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

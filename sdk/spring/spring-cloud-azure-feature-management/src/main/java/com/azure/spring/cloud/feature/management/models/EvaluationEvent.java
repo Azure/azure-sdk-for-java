@@ -13,7 +13,7 @@ public class EvaluationEvent {
      * The feature flag that was evaluated. This contains information such as the
      * feature flag name, its conditions, and other associated metadata.
      */
-    private final Feature feature;
+    private final FeatureDefinition feature;
 
     /**
      * The identifier for the user who evaluated the feature flag. 
@@ -47,7 +47,7 @@ public class EvaluationEvent {
      * 
      * @param feature The feature flag that is being evaluated
      */
-    public EvaluationEvent(Feature feature) {
+    public EvaluationEvent(FeatureDefinition feature) {
         this.feature = feature;
     }
 
@@ -56,7 +56,7 @@ public class EvaluationEvent {
      * 
      * @return the feature flag associated with this evaluation event
      */
-    public Feature getFeature() {
+    public FeatureDefinition getFeature() {
         return feature;
     }
 

@@ -13,5 +13,6 @@ module com.azure.resourcemanager.authorization {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.authorization.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.authorization.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.authorization.models to com.azure.core;
 }

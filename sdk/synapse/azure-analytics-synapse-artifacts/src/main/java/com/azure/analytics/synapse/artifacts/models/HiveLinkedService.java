@@ -99,6 +99,13 @@ public class HiveLinkedService extends LinkedService {
     private Object enableSsl;
 
     /*
+     * Specifies whether the connections to the server will validate server certificate, the default value is True. Only
+     * used for Version 2.0
+     */
+    @Generated
+    private Object enableServerCertificateValidation;
+
+    /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
@@ -422,6 +429,30 @@ public class HiveLinkedService extends LinkedService {
     }
 
     /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    @Generated
+    public Object getEnableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the HiveLinkedService object itself.
+     */
+    @Generated
+    public HiveLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
+        return this;
+    }
+
+    /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
      * value is the cacerts.pem file installed with the IR.
@@ -618,6 +649,7 @@ public class HiveLinkedService extends LinkedService {
             || password != null
             || httpPath != null
             || enableSsl != null
+            || enableServerCertificateValidation != null
             || trustedCertPath != null
             || useSystemTrustStore != null
             || allowHostNameCNMismatch != null
@@ -651,6 +683,10 @@ public class HiveLinkedService extends LinkedService {
             }
             if (this.enableSsl != null) {
                 jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
             }
             if (this.trustedCertPath != null) {
                 jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
@@ -741,6 +777,8 @@ public class HiveLinkedService extends LinkedService {
                             deserializedHiveLinkedService.httpPath = reader.readUntyped();
                         } else if ("enableSsl".equals(fieldName)) {
                             deserializedHiveLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                            deserializedHiveLinkedService.enableServerCertificateValidation = reader.readUntyped();
                         } else if ("trustedCertPath".equals(fieldName)) {
                             deserializedHiveLinkedService.trustedCertPath = reader.readUntyped();
                         } else if ("useSystemTrustStore".equals(fieldName)) {

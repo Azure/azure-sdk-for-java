@@ -25,7 +25,7 @@ public final class SchemasCreateVersionMockTests {
     @Test
     public void testCreateVersion() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"gjkskyrioov\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"xwaabzmifrygznmm\",\"id\":\"ri\",\"name\":\"kzobgopxlhsln\",\"type\":\"lxieixynllxecwcr\"}";
+            = "{\"properties\":{\"value\":\"lvhhtklnvn\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"kyfede\",\"id\":\"bo\",\"name\":\"lcqxypokk\",\"type\":\"minqcym\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class SchemasCreateVersionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemas()
-            .createVersion("zsvtuikzhajqgl", "fh",
-                new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.PATCH)
-                    .withVersion("ryxynqnzrd")
+            .createVersion("xddbhfhpfpaz", "zoyw",
+                new SchemaVersionWithUpdateTypeInner().withUpdateType(UpdateType.MAJOR)
+                    .withVersion("dulontacn")
                     .withSchemaVersion(
-                        new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("ovw"))),
+                        new SchemaVersionInner().withProperties(new SchemaVersionProperties().withValue("w"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gjkskyrioov", response.properties().value());
+        Assertions.assertEquals("lvhhtklnvn", response.properties().value());
     }
 }

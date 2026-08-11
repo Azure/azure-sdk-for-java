@@ -62,3 +62,8 @@ extends:
           TimeoutInMinutes: 90
           TestName: Spring_Data_Cosmos_Integration
           TestOptions: '$(ProfileFlag)'
+          # -Denforcer.skip=true is needed because it's the default BuildOptions in the template;
+          # overriding BuildOptions replaces the entire default, so we must include it explicitly.
+          # -U forces Maven to re-check remote repositories for failed artifact downloads,
+          # preventing cached "Connection reset" errors from blocking the From Source build.
+          BuildOptions: '-Denforcer.skip=true -U'

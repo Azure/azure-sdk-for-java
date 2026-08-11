@@ -21,68 +21,66 @@ public final class CloudExadataInfrastructurePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudExadataInfrastructureProperties model = BinaryData.fromString(
-            "{\"definedFileSystemConfiguration\":[{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":2044584540,\"mountPoint\":\"dagfuaxbezyiuok\"},{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":291798162,\"mountPoint\":\"zywqsmbsu\"},{\"isBackupPartition\":false,\"isResizable\":true,\"minSizeGb\":1115871957,\"mountPoint\":\"ocfs\"}],\"ocid\":\"s\",\"computeCount\":1143177413,\"storageCount\":376493890,\"totalStorageSizeInGbs\":666664165,\"availableStorageSizeInGbs\":30564685,\"timeCreated\":\"uxh\",\"lifecycleDetails\":\"udxorrqn\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"December\"},{\"name\":\"January\"},{\"name\":\"January\"},{\"name\":\"April\"}],\"weeksOfMonth\":[1661944066],\"daysOfWeek\":[{\"name\":\"Wednesday\"},{\"name\":\"Monday\"},{\"name\":\"Monday\"}],\"hoursOfDay\":[952204067],\"leadTimeInWeeks\":31465947,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":1391003633,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":608072417,\"estimatedNetworkSwitchesPatchingTime\":1948903121,\"estimatedStorageServerPatchingTime\":825397815,\"totalEstimatedPatchingTime\":2143826704},\"customerContacts\":[{\"email\":\"ruwiqzbqjvsov\"},{\"email\":\"yokacspkw\"}],\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Terminating\",\"shape\":\"bpxjmfl\",\"ociUrl\":\"vnchrkcci\",\"cpuCount\":480188509,\"maxCpuCount\":970071122,\"memorySizeInGbs\":962380204,\"maxMemoryInGbs\":734048187,\"dbNodeStorageSizeInGbs\":1786560396,\"maxDbNodeStorageSizeInGbs\":2114864042,\"dataStorageSizeInTbs\":6.714905965653417,\"maxDataStorageInTbs\":77.08143476611616,\"dbServerVersion\":\"kg\",\"storageServerVersion\":\"auu\",\"activatedStorageCount\":1525008184,\"additionalStorageCount\":981074224,\"displayName\":\"xieduugidyjrr\",\"lastMaintenanceRunId\":\"y\",\"nextMaintenanceRunId\":\"svexcsonpclhoco\",\"monthlyDbServerVersion\":\"lkevle\",\"monthlyStorageServerVersion\":\"zfbuhf\",\"databaseServerType\":\"faxkffeii\",\"storageServerType\":\"lvmezyvshxmzsbbz\",\"computeModel\":\"ECPU\"}")
+            "{\"definedFileSystemConfiguration\":[{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":432282678,\"mountPoint\":\"flbvvnchrkcciwwz\"},{\"isBackupPartition\":false,\"isResizable\":true,\"minSizeGb\":330822059,\"mountPoint\":\"jiwkuofoskghsau\"},{\"isBackupPartition\":true,\"isResizable\":false,\"minSizeGb\":1194326763,\"mountPoint\":\"eduugi\"},{\"isBackupPartition\":true,\"isResizable\":true,\"minSizeGb\":857489891,\"mountPoint\":\"aos\"}],\"ocid\":\"xc\",\"computeCount\":635298433,\"storageCount\":66931546,\"totalStorageSizeInGbs\":316608134,\"availableStorageSizeInGbs\":1879062252,\"timeCreated\":\"hslkevleggzf\",\"lifecycleDetails\":\"hfmvfaxkffe\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"February\"},{\"name\":\"November\"}],\"weeksOfMonth\":[72720177,2122365511],\"daysOfWeek\":[{\"name\":\"Monday\"},{\"name\":\"Friday\"},{\"name\":\"Tuesday\"}],\"hoursOfDay\":[2042967034,820071175,681165656],\"leadTimeInWeeks\":1542879301,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":2011180934,\"isCustomActionTimeoutEnabled\":false,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1552581674,\"estimatedNetworkSwitchesPatchingTime\":2030028307,\"estimatedStorageServerPatchingTime\":1875025396,\"totalEstimatedPatchingTime\":655244901},\"customerContacts\":[{\"email\":\"koen\"}],\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Provisioning\",\"shape\":\"vudwtiukbldng\",\"ociUrl\":\"ocipazyxoeg\",\"cpuCount\":245724981,\"maxCpuCount\":1764023919,\"memorySizeInGbs\":799434019,\"maxMemoryInGbs\":1445231933,\"dbNodeStorageSizeInGbs\":2007054909,\"maxDbNodeStorageSizeInGbs\":846419016,\"dataStorageSizeInTbs\":39.61017052503307,\"maxDataStorageInTbs\":96.58484617586141,\"dbServerVersion\":\"mrbpizcdrqj\",\"storageServerVersion\":\"pyd\",\"activatedStorageCount\":1305817330,\"additionalStorageCount\":229483686,\"displayName\":\"de\",\"lastMaintenanceRunId\":\"jzicwifsjt\",\"nextMaintenanceRunId\":\"zfbishcbkhaj\",\"monthlyDbServerVersion\":\"yeamdphagalpb\",\"monthlyStorageServerVersion\":\"wgipwhono\",\"databaseServerType\":\"gshwankixz\",\"storageServerType\":\"njeputtmrywn\",\"computeModel\":\"OCPU\",\"exascaleConfig\":{\"totalStorageInGbs\":643142457,\"availableStorageInGbs\":1790198839}}")
             .toObject(CloudExadataInfrastructureProperties.class);
-        Assertions.assertEquals(1143177413, model.computeCount());
-        Assertions.assertEquals(376493890, model.storageCount());
+        Assertions.assertEquals(635298433, model.computeCount());
+        Assertions.assertEquals(66931546, model.storageCount());
         Assertions.assertEquals(Preference.NO_PREFERENCE, model.maintenanceWindow().preference());
-        Assertions.assertEquals(MonthName.DECEMBER, model.maintenanceWindow().months().get(0).name());
-        Assertions.assertEquals(1661944066, model.maintenanceWindow().weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.WEDNESDAY, model.maintenanceWindow().daysOfWeek().get(0).name());
-        Assertions.assertEquals(952204067, model.maintenanceWindow().hoursOfDay().get(0));
-        Assertions.assertEquals(31465947, model.maintenanceWindow().leadTimeInWeeks());
+        Assertions.assertEquals(MonthName.FEBRUARY, model.maintenanceWindow().months().get(0).name());
+        Assertions.assertEquals(72720177, model.maintenanceWindow().weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.maintenanceWindow().daysOfWeek().get(0).name());
+        Assertions.assertEquals(2042967034, model.maintenanceWindow().hoursOfDay().get(0));
+        Assertions.assertEquals(1542879301, model.maintenanceWindow().leadTimeInWeeks());
         Assertions.assertEquals(PatchingMode.ROLLING, model.maintenanceWindow().patchingMode());
-        Assertions.assertEquals(1391003633, model.maintenanceWindow().customActionTimeoutInMins());
-        Assertions.assertTrue(model.maintenanceWindow().isCustomActionTimeoutEnabled());
+        Assertions.assertEquals(2011180934, model.maintenanceWindow().customActionTimeoutInMins());
+        Assertions.assertFalse(model.maintenanceWindow().isCustomActionTimeoutEnabled());
         Assertions.assertFalse(model.maintenanceWindow().isMonthlyPatchingEnabled());
-        Assertions.assertEquals("ruwiqzbqjvsov", model.customerContacts().get(0).email());
-        Assertions.assertEquals("bpxjmfl", model.shape());
-        Assertions.assertEquals("xieduugidyjrr", model.displayName());
-        Assertions.assertEquals("faxkffeii", model.databaseServerType());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.storageServerType());
+        Assertions.assertEquals("koen", model.customerContacts().get(0).email());
+        Assertions.assertEquals("vudwtiukbldng", model.shape());
+        Assertions.assertEquals("de", model.displayName());
+        Assertions.assertEquals("gshwankixz", model.databaseServerType());
+        Assertions.assertEquals("njeputtmrywn", model.storageServerType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudExadataInfrastructureProperties model
-            = new CloudExadataInfrastructureProperties().withComputeCount(1143177413)
-                .withStorageCount(376493890)
-                .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.NO_PREFERENCE)
-                    .withMonths(
-                        Arrays.asList(new Month().withName(MonthName.DECEMBER), new Month().withName(MonthName.JANUARY),
-                            new Month().withName(MonthName.JANUARY), new Month().withName(MonthName.APRIL)))
-                    .withWeeksOfMonth(Arrays.asList(1661944066))
-                    .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.WEDNESDAY),
-                        new DayOfWeek().withName(DayOfWeekName.MONDAY), new DayOfWeek().withName(DayOfWeekName.MONDAY)))
-                    .withHoursOfDay(Arrays.asList(952204067))
-                    .withLeadTimeInWeeks(31465947)
-                    .withPatchingMode(PatchingMode.ROLLING)
-                    .withCustomActionTimeoutInMins(1391003633)
-                    .withIsCustomActionTimeoutEnabled(true)
-                    .withIsMonthlyPatchingEnabled(false))
-                .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("ruwiqzbqjvsov"),
-                    new CustomerContact().withEmail("yokacspkw")))
-                .withShape("bpxjmfl")
-                .withDisplayName("xieduugidyjrr")
-                .withDatabaseServerType("faxkffeii")
-                .withStorageServerType("lvmezyvshxmzsbbz");
+        CloudExadataInfrastructureProperties model = new CloudExadataInfrastructureProperties()
+            .withComputeCount(635298433)
+            .withStorageCount(66931546)
+            .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.NO_PREFERENCE)
+                .withMonths(
+                    Arrays.asList(new Month().withName(MonthName.FEBRUARY), new Month().withName(MonthName.NOVEMBER)))
+                .withWeeksOfMonth(Arrays.asList(72720177, 2122365511))
+                .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.MONDAY),
+                    new DayOfWeek().withName(DayOfWeekName.FRIDAY), new DayOfWeek().withName(DayOfWeekName.TUESDAY)))
+                .withHoursOfDay(Arrays.asList(2042967034, 820071175, 681165656))
+                .withLeadTimeInWeeks(1542879301)
+                .withPatchingMode(PatchingMode.ROLLING)
+                .withCustomActionTimeoutInMins(2011180934)
+                .withIsCustomActionTimeoutEnabled(false)
+                .withIsMonthlyPatchingEnabled(false))
+            .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("koen")))
+            .withShape("vudwtiukbldng")
+            .withDisplayName("de")
+            .withDatabaseServerType("gshwankixz")
+            .withStorageServerType("njeputtmrywn");
         model = BinaryData.fromObject(model).toObject(CloudExadataInfrastructureProperties.class);
-        Assertions.assertEquals(1143177413, model.computeCount());
-        Assertions.assertEquals(376493890, model.storageCount());
+        Assertions.assertEquals(635298433, model.computeCount());
+        Assertions.assertEquals(66931546, model.storageCount());
         Assertions.assertEquals(Preference.NO_PREFERENCE, model.maintenanceWindow().preference());
-        Assertions.assertEquals(MonthName.DECEMBER, model.maintenanceWindow().months().get(0).name());
-        Assertions.assertEquals(1661944066, model.maintenanceWindow().weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.WEDNESDAY, model.maintenanceWindow().daysOfWeek().get(0).name());
-        Assertions.assertEquals(952204067, model.maintenanceWindow().hoursOfDay().get(0));
-        Assertions.assertEquals(31465947, model.maintenanceWindow().leadTimeInWeeks());
+        Assertions.assertEquals(MonthName.FEBRUARY, model.maintenanceWindow().months().get(0).name());
+        Assertions.assertEquals(72720177, model.maintenanceWindow().weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.maintenanceWindow().daysOfWeek().get(0).name());
+        Assertions.assertEquals(2042967034, model.maintenanceWindow().hoursOfDay().get(0));
+        Assertions.assertEquals(1542879301, model.maintenanceWindow().leadTimeInWeeks());
         Assertions.assertEquals(PatchingMode.ROLLING, model.maintenanceWindow().patchingMode());
-        Assertions.assertEquals(1391003633, model.maintenanceWindow().customActionTimeoutInMins());
-        Assertions.assertTrue(model.maintenanceWindow().isCustomActionTimeoutEnabled());
+        Assertions.assertEquals(2011180934, model.maintenanceWindow().customActionTimeoutInMins());
+        Assertions.assertFalse(model.maintenanceWindow().isCustomActionTimeoutEnabled());
         Assertions.assertFalse(model.maintenanceWindow().isMonthlyPatchingEnabled());
-        Assertions.assertEquals("ruwiqzbqjvsov", model.customerContacts().get(0).email());
-        Assertions.assertEquals("bpxjmfl", model.shape());
-        Assertions.assertEquals("xieduugidyjrr", model.displayName());
-        Assertions.assertEquals("faxkffeii", model.databaseServerType());
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.storageServerType());
+        Assertions.assertEquals("koen", model.customerContacts().get(0).email());
+        Assertions.assertEquals("vudwtiukbldng", model.shape());
+        Assertions.assertEquals("de", model.displayName());
+        Assertions.assertEquals("gshwankixz", model.databaseServerType());
+        Assertions.assertEquals("njeputtmrywn", model.storageServerType());
     }
 }

@@ -28,6 +28,12 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
     private String name;
 
     /*
+     * The max number of upgrades that can run concurrently in this group, resolved from the
+     * UpdateStrategy.UpdateGroup.maxConcurrency value. If no value was provided, this value defaults to "1".
+     */
+    private Integer maxConcurrency;
+
+    /*
      * The list of member this UpdateGroup updates.
      */
     private List<MemberUpdateStatus> members;
@@ -67,6 +73,16 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
     }
 
     /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently in this group, resolved
+     * from the UpdateStrategy.UpdateGroup.maxConcurrency value. If no value was provided, this value defaults to "1".
+     * 
+     * @return the maxConcurrency value.
+     */
+    public Integer maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
      * Get the members property: The list of member this UpdateGroup updates.
      * 
      * @return the members value.
@@ -91,26 +107,6 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
      */
     public List<UpdateRunGateStatus> afterGates() {
         return this.afterGates;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
-        if (members() != null) {
-            members().forEach(e -> e.validate());
-        }
-        if (beforeGates() != null) {
-            beforeGates().forEach(e -> e.validate());
-        }
-        if (afterGates() != null) {
-            afterGates().forEach(e -> e.validate());
-        }
     }
 
     /**
@@ -141,6 +137,8 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
                     deserializedUpdateGroupStatus.status = UpdateStatus.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedUpdateGroupStatus.name = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateGroupStatus.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else if ("members".equals(fieldName)) {
                     List<MemberUpdateStatus> members
                         = reader.readArray(reader1 -> MemberUpdateStatus.fromJson(reader1));

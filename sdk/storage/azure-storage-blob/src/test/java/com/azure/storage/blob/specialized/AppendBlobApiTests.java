@@ -28,6 +28,7 @@ import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -53,6 +54,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -96,7 +98,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("createHeadersSupplier")
     public void createHeaders(String cacheControl, String contentDisposition, String contentEncoding,
-        String contentLanguage, byte[] contentMD5, String contentType) throws Exception {
+        String contentLanguage, byte[] contentMD5, String contentType) {
 
         BlobHttpHeaders headers = new BlobHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
@@ -357,6 +359,26 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertEquals(1, bc.getProperties().getCommittedBlockCount());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void appendBlockDefaultsWithCrc64() {
+        Response<AppendBlobItem> appendResponse = bc.appendBlockWithResponse(DATA.getDefaultInputStream(),
+            DATA.getDefaultDataSize(), null, null, null, null);
+
+        ByteArrayOutputStream downloadStream = new ByteArrayOutputStream();
+        bc.downloadStream(downloadStream);
+        TestUtils.assertArraysEqual(DATA.getDefaultBytes(), downloadStream.toByteArray());
+
+        validateBasicHeaders(appendResponse.getHeaders());
+        assertNotNull(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        byte[] expectedContentCrc64
+            = Base64.getDecoder().decode(appendResponse.getHeaders().getValue(X_MS_CONTENT_CRC64));
+        TestUtils.assertArraysEqual(expectedContentCrc64, appendResponse.getValue().getContentCrc64());
+        assertNotNull(appendResponse.getValue().getBlobAppendOffset());
+        assertNotNull(appendResponse.getValue().getBlobCommittedBlockCount());
+        assertEquals(1, bc.getProperties().getCommittedBlockCount());
+    }
+
     @Test
     public void appendBlockMin() {
         assertResponseStatusCode(
@@ -534,7 +556,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
 
-        assertTrue(e.getStatusCode() == 401);
+        assertEquals(401, e.getStatusCode());
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage()
             .contains(
@@ -572,6 +594,29 @@ public class AppendBlobApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
             MessageDigest.getInstance("MD5").digest(data), null, null, null, Context.NONE));
 
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
+    @Test
+    public void appendBlockFromUrlMd5Crc64() throws NoSuchAlgorithmException {
+        byte[] data = getRandomByteArray(1024);
+        byte[] expectedContentMd5 = MessageDigest.getInstance("MD5").digest(data);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+            expectedContentMd5, null, null, null, Context.NONE);
+
+        assertResponseStatusCode(response, 201);
+        validateBasicHeaders(response.getHeaders());
+        assertArrayEquals(expectedContentMd5, response.getValue().getContentMd5());
+        String contentCrc64 = response.getHeaders().getValue(X_MS_CONTENT_CRC64);
+        assertNotNull(contentCrc64);
+        assertArrayEquals(Base64.getDecoder().decode(contentCrc64), response.getValue().getContentCrc64());
     }
 
     @Test
@@ -926,5 +971,67 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void appendBlockFromUriSourceCPK() {
+        // Create source append blob
+        AppendBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+        sourceBlob.createIfNotExists();
+
+        // Create destination append blob
+        AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+        destBlob.createIfNotExists();
+
+        sourceBlob.appendBlock(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        AppendBlobAppendBlockFromUrlOptions options
+            = new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
+
+        Response<AppendBlobItem> response = destBlob.appendBlockFromUrlWithResponse(options, null, null);
+
+        assertEquals(destCustomerProvidedKey.getKeySha256(), response.getValue().getEncryptionKeySha256());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    @LiveOnly // Encryption key cannot be stored in recordings
+    @Test
+    public void appendBlockFromUriSourceCPKFail() {
+        // Create source append blob
+        AppendBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
+        sourceBlob.createIfNotExists();
+
+        // Create destination append blob
+        AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
+        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
+        destBlob.createIfNotExists();
+
+        sourceBlob.appendBlock(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setReadPermission(true)));
+
+        AppendBlobAppendBlockFromUrlOptions options
+            = new AppendBlobAppendBlockFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+                .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
+
+        AppendBlobClient finalDestBlob = destBlob;
+        BlobStorageException ex = assertThrows(BlobStorageException.class,
+            () -> finalDestBlob.appendBlockFromUrlWithResponse(options, null, null));
+        assertEquals(409, ex.getStatusCode());
+        assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
     }
 }

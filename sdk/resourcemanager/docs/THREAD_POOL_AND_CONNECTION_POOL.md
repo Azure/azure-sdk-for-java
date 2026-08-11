@@ -73,7 +73,7 @@ By default, Azure Identity uses `ForkJoinPool.commonPool()` for token acquisitio
 
 There are known issues with this approach:
  - [[BUG] ClientSecretCredential.getToken().block() will hang when parallelism is high](https://github.com/Azure/azure-sdk-for-java/issues/39676)
- - [[FAQ] My app uses Java's Security Manager and I have granted it all Permissions, yet it tells me it doesn't have the permission to do something](https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#my-app-uses-javas-security-manager-and-i-have-granted-it-all-permissions-yet-it-tells-me-it-doesnt-have-the-permission-to-do-something)
+ - [[FAQ] My app uses Java's Security Manager and I have granted it all Permissions, yet it tells me it doesn't have the permission to do something](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/faq.md#my-app-uses-javas-security-manager-and-i-have-all-permissions-but-still-get-denied)
 
 Simplest solution for above issues is to use a dedicated `ExecutorService` for the `TokenCredential` e.g. `Executors.newCachedThreadPool()`:
 ```java readme-sample-azureIdentityThreadpool

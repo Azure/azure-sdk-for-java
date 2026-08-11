@@ -173,7 +173,9 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();

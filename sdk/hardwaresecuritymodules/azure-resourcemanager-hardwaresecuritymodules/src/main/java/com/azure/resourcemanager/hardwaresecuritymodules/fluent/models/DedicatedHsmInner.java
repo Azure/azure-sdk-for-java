@@ -7,7 +7,6 @@ package com.azure.resourcemanager.hardwaresecuritymodules.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -179,28 +178,6 @@ public final class DedicatedHsmInner extends Resource {
         super.withTags(tags);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property properties in model DedicatedHsmInner"));
-        } else {
-            properties().validate();
-        }
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model DedicatedHsmInner"));
-        } else {
-            sku().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DedicatedHsmInner.class);
 
     /**
      * {@inheritDoc}

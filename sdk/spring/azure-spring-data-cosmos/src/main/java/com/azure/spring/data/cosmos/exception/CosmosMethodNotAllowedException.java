@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Method Not Allowed Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosMethodNotAllowedException extends CosmosAccessException {
 
     /**

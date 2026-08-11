@@ -55,9 +55,9 @@ public final class FolderDatasetVersion extends DatasetVersion {
      */
     @Generated
     @Override
-    public FolderDatasetVersion setDataUri(String dataUri) {
-        super.setDataUri(dataUri);
-        this.updatedProperties.add("dataUri");
+    public FolderDatasetVersion setConnectionName(String connectionName) {
+        super.setConnectionName(connectionName);
+        this.updatedProperties.add("connectionName");
         return this;
     }
 
@@ -93,7 +93,7 @@ public final class FolderDatasetVersion extends DatasetVersion {
             return toJsonMergePatch(jsonWriter);
         } else {
             jsonWriter.writeStartObject();
-            jsonWriter.writeStringField("dataUri", getDataUri());
+            jsonWriter.writeStringField("dataUri", getDataUrl());
             jsonWriter.writeStringField("connectionName", getConnectionName());
             jsonWriter.writeStringField("description", getDescription());
             jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
@@ -105,11 +105,11 @@ public final class FolderDatasetVersion extends DatasetVersion {
     @Generated
     private JsonWriter toJsonMergePatch(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        if (updatedProperties.contains("dataUri")) {
-            if (getDataUri() == null) {
+        if (updatedProperties.contains("dataUrl")) {
+            if (getDataUrl() == null) {
                 jsonWriter.writeNullField("dataUri");
             } else {
-                jsonWriter.writeStringField("dataUri", getDataUri());
+                jsonWriter.writeStringField("dataUri", getDataUrl());
             }
         }
         if (updatedProperties.contains("connectionName")) {
@@ -167,7 +167,7 @@ public final class FolderDatasetVersion extends DatasetVersion {
                         .setVersion(deserializedFolderDatasetVersion, reader.getString());
                 } else if ("dataUri".equals(fieldName)) {
                     JsonMergePatchHelper.getDatasetVersionAccessor()
-                        .setDataUri(deserializedFolderDatasetVersion, reader.getString());
+                        .setDataUrl(deserializedFolderDatasetVersion, reader.getString());
                 } else if ("isReference".equals(fieldName)) {
                     JsonMergePatchHelper.getDatasetVersionAccessor()
                         .setIsReference(deserializedFolderDatasetVersion, reader.getNullable(JsonReader::getBoolean));
@@ -198,9 +198,9 @@ public final class FolderDatasetVersion extends DatasetVersion {
      */
     @Generated
     @Override
-    public FolderDatasetVersion setConnectionName(String connectionName) {
-        super.setConnectionName(connectionName);
-        this.updatedProperties.add("connectionName");
+    public FolderDatasetVersion setDataUrl(String dataUrl) {
+        super.setDataUrl(dataUrl);
+        this.updatedProperties.add("dataUrl");
         return this;
     }
 }

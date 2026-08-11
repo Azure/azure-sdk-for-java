@@ -9,7 +9,7 @@ package com.azure.resourcemanager.onlineexperimentation.generated;
  */
 public final class OnlineExperimentationWorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-31-preview/OnlineExperimentationWorkspaces_Get.json
+     * x-ms-original-file: 2025-08-01-preview/OnlineExperimentationWorkspaces_Get.json
      */
     /**
      * Sample code: Get a single OnlineExperimentationWorkspace.

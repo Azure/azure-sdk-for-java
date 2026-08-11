@@ -172,7 +172,7 @@ public final class DellStorageMgmtClientImpl implements DellStorageMgmtClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-21-preview";
+        this.apiVersion = "2025-03-21";
         this.operations = new OperationsClientImpl(this);
         this.fileSystems = new FileSystemsClientImpl(this);
     }
@@ -288,7 +288,7 @@ public final class DellStorageMgmtClientImpl implements DellStorageMgmtClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

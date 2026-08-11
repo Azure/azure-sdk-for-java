@@ -230,6 +230,23 @@ public final class OptionalLoadTestConfiguration implements JsonSerializable<Opt
     }
 
     /**
+     * Set the duration property: Test run duration in seconds.
+     *
+     * @param duration the duration value to set.
+     * @return the OptionalLoadTestConfiguration object itself.
+     */
+    @Generated
+    public OptionalLoadTestConfiguration setDuration(Duration duration) {
+        if (duration == null) {
+            this.duration = null;
+        } else {
+            this.duration = duration.getSeconds();
+        }
+        this.updatedProperties.add("duration");
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -333,22 +350,5 @@ public final class OptionalLoadTestConfiguration implements JsonSerializable<Opt
             }
             return deserializedOptionalLoadTestConfiguration;
         });
-    }
-
-    /**
-     * Set the duration property: Test run duration in seconds.
-     *
-     * @param duration the duration value to set.
-     * @return the OptionalLoadTestConfiguration object itself.
-     */
-    @Generated
-    public OptionalLoadTestConfiguration setDuration(Duration duration) {
-        if (duration == null) {
-            this.duration = null;
-        } else {
-            this.duration = duration.getSeconds();
-        }
-        this.updatedProperties.add("duration");
-        return this;
     }
 }

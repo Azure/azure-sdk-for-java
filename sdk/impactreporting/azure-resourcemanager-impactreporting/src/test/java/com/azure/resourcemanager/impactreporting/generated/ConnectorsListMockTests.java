@@ -23,7 +23,7 @@ public final class ConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"connectorId\":\"prnxipeil\",\"tenantId\":\"jzuaejxdultskzbb\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-08-12T02:58:19Z\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"connectorId\":\"mzlfmisgwb\",\"tenantId\":\"b\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-11-15T23:08:14Z\"},\"id\":\"awkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

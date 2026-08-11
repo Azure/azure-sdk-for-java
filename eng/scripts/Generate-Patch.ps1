@@ -19,6 +19,9 @@
 #
 # 7. CreateNewBranch        - Whether to create a new branch or use an existing branch. You would want to use an existing branch if you are using the same release tag for multiple libraries.
 #
+# 8. UseCurrentBranch       - When set, creates patch branches from the current branch instead of remote main.
+#                             Useful for local testing and dry-runs without requiring changes to be merged first. This is not a required parameter.
+#
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
 
@@ -29,7 +32,9 @@ param(
   [Parameter(Mandatory=$false)][string]$PatchVersion,
   [Parameter(Mandatory=$false)][string]$BranchName,
   [Parameter(Mandatory=$false)][boolean]$PushToRemote,
-  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true
+  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true,
+  # When set, creates patch branches from the current branch instead of remote main.
+  [Parameter(Mandatory=$false)][switch]$UseCurrentBranch
 )
 
 function TestPathThrow($Path, $PathName) {
@@ -44,7 +49,8 @@ Write-Information "ArtifactName is: $ArtifactName"
 Write-Information "ReleaseVersion is: $ReleaseVersion"
 Write-Information "ServiceDirectoryName is: $ServiceDirectoryName"
 
-$MainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
+$MainRemoteHttpsUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
+$MainRemoteSshUrl = 'git@github.com:Azure/azure-sdk-for-java.git'
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
 $EngDir = Join-Path $RepoRoot "eng"
 $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
@@ -57,6 +63,7 @@ $GroupId = "com.azure"
 TestPathThrow -Path $RepoRoot -PathName 'RepoRoot'
 
 . (Join-Path $EngCommonScriptsDir common.ps1)
+. (Join-Path $PSScriptRoot bomhelpers.ps1)
 
 function GetPatchVersion($ReleaseVersion) {
   $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($ReleaseVersion)
@@ -72,18 +79,18 @@ function GetPatchVersion($ReleaseVersion) {
   return $null
 }
 
-function GetRemoteName($MainRemoteUrl) {
+function GetRemoteName($MainRemoteHttpsUrl, $MainRemoteSshUrl) {
   foreach($Remote in git remote show) {
     $RemoteUrl = git remote get-url $Remote
-    if($RemoteUrl -eq $MainRemoteUrl) {
+    if(($RemoteUrl -eq $MainRemoteHttpsUrl) -or ($RemoteUrl -eq $MainRemoteSshUrl)) {
       return $Remote
     }
   }
   return $null
 }
 
-function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
-  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName, $GroupId = "com.azure") {
+  $ReleaseTag = "${GroupId}+${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   $SdkDirPath = Join-Path $RepoRoot "sdk"
@@ -92,7 +99,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
   TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
 
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $currentPackageVersion = $pkgProperties.Version
   if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
@@ -108,11 +115,20 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not restore the tags for release tag $ReleaseTag"
-    exit 1
+    # Fall back to old tag format: <artifactName>_<version>
+    $OldReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+    Write-Information "Failed to fetch new tag format. Trying old tag format: $OldReleaseTag"
+    $CmdOutput = git fetch $RemoteName $OldReleaseTag
+    
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not restore the tags for release tag $ReleaseTag or $OldReleaseTag"
+      exit 1
+    }
+    
+    $ReleaseTag = $OldReleaseTag
   }
 
-  $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
+  $cmdOutput = git restore --source $ReleaseTag -W -S -- $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
     exit 1
@@ -162,7 +178,8 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $EngVersioningDir = Join-Path $EngDir "versioning"
   $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
   $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $VersionClientPath = Join-Path $EngVersioningDir "version_client.txt"
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
 
@@ -187,8 +204,11 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
 
-  $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
-  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
+  # Resolve new dependency versions for the changelog.
+  # Reuses GetResolvedDependencyVersions from bomhelpers.ps1 which substitutes
+  # prerelease versions with version_client.txt column 2 (GA/released version)
+  # to avoid showing beta versions in the changelog.
+  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $PomFilePath -VersionClientPath $VersionClientPath
 
 
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
@@ -202,12 +222,19 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $Content += "#### Dependency Updates"
   $Content += ""
 
+  $hasUpgrades = $false
   foreach($key in $oldDependenciesToVersion.Keys) {
     $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
     $newVersion = $($newDependenciesToVersion[$key]).Trim()
     if($oldVersion -ne $newVersion) {
       $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
+      $hasUpgrades = $true
     }
+  }
+
+  # If no specific dependency changes detected, add a generic message
+  if (-not $hasUpgrades) {
+    $Content += "- Upgraded core dependencies."
   }
 
   $Content += ""
@@ -237,9 +264,9 @@ if(!$PatchVersion) {
 }
 Write-Information "PatchVersion is: $PatchVersion"
 
-$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
+$RemoteName = GetRemoteName -MainRemoteHttpsUrl $MainRemoteHttpsUrl -MainRemoteSshUrl $MainRemoteSshUrl
 if(!$RemoteName) {
-    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exiting ..."
+    LogError "Could not fetch the remote name for the URL $MainRemoteHttpsUrl or $MainRemoteSshUrl. Exiting ..."
     exit 1
 }
 Write-Information "RemoteName is: $RemoteName"
@@ -252,7 +279,8 @@ if(!$BranchName) {
 try {
   ## Creating a new branch
   if($CreateNewBranch) {
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    $cmdOutput = git checkout -b $BranchName $base
   }
   else {
     $cmdOutput = git checkout $BranchName
@@ -264,7 +292,7 @@ try {
 
   ## Hard resetting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
-  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
+  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName -GroupId $GroupId
   CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {

@@ -35,7 +35,7 @@ public final class PrivateCloudInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    private PrivateCloudProperties innerProperties;
+    private PrivateCloudPropertiesInner innerProperties;
 
     /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
@@ -83,7 +83,7 @@ public final class PrivateCloudInner extends Resource {
      * 
      * @return the innerProperties value.
      */
-    private PrivateCloudProperties innerProperties() {
+    private PrivateCloudPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -221,7 +221,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withManagementCluster(ManagementCluster managementCluster) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withManagementCluster(managementCluster);
         return this;
@@ -244,7 +244,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withInternet(InternetEnum internet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withInternet(internet);
         return this;
@@ -267,7 +267,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withIdentitySources(List<IdentitySource> identitySources) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withIdentitySources(identitySources);
         return this;
@@ -290,7 +290,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withAvailability(AvailabilityProperties availability) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withAvailability(availability);
         return this;
@@ -313,7 +313,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withEncryption(Encryption encryption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withEncryption(encryption);
         return this;
@@ -344,7 +344,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withExtendedNetworkBlocks(extendedNetworkBlocks);
         return this;
@@ -376,7 +376,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withCircuit(Circuit circuit) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withCircuit(circuit);
         return this;
@@ -412,7 +412,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withNetworkBlock(String networkBlock) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withNetworkBlock(networkBlock);
         return this;
@@ -462,7 +462,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withVcenterPassword(String vcenterPassword) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withVcenterPassword(vcenterPassword);
         return this;
@@ -485,7 +485,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withNsxtPassword(String nsxtPassword) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withNsxtPassword(nsxtPassword);
         return this;
@@ -537,7 +537,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withSecondaryCircuit(Circuit secondaryCircuit) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withSecondaryCircuit(secondaryCircuit);
         return this;
@@ -571,7 +571,7 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withVirtualNetworkId(String virtualNetworkId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withVirtualNetworkId(virtualNetworkId);
         return this;
@@ -594,9 +594,32 @@ public final class PrivateCloudInner extends Resource {
      */
     public PrivateCloudInner withDnsZoneType(DnsZoneType dnsZoneType) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateCloudProperties();
+            this.innerProperties = new PrivateCloudPropertiesInner();
         }
         this.innerProperties().withDnsZoneType(dnsZoneType);
+        return this;
+    }
+
+    /**
+     * Get the vcfLicense property: The private cloud license.
+     * 
+     * @return the vcfLicense value.
+     */
+    public VcfLicenseInner vcfLicense() {
+        return this.innerProperties() == null ? null : this.innerProperties().vcfLicense();
+    }
+
+    /**
+     * Set the vcfLicense property: The private cloud license.
+     * 
+     * @param vcfLicense the vcfLicense value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withVcfLicense(VcfLicenseInner vcfLicense) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudPropertiesInner();
+        }
+        this.innerProperties().withVcfLicense(vcfLicense);
         return this;
     }
 
@@ -667,7 +690,7 @@ public final class PrivateCloudInner extends Resource {
                 } else if ("sku".equals(fieldName)) {
                     deserializedPrivateCloudInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateCloudInner.innerProperties = PrivateCloudProperties.fromJson(reader);
+                    deserializedPrivateCloudInner.innerProperties = PrivateCloudPropertiesInner.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedPrivateCloudInner.identity = PrivateCloudIdentity.fromJson(reader);
                 } else if ("zones".equals(fieldName)) {

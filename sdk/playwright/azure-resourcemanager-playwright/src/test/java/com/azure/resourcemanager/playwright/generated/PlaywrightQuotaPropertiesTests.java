@@ -12,7 +12,7 @@ public final class PlaywrightQuotaPropertiesTests {
     public void testDeserialize() throws Exception {
         PlaywrightQuotaProperties model = BinaryData
             .fromString(
-                "{\"freeTrial\":{\"workspaceId\":\"j\",\"state\":\"Expired\"},\"provisioningState\":\"Canceled\"}")
+                "{\"freeTrial\":{\"workspaceId\":\"igeho\",\"state\":\"Expired\"},\"provisioningState\":\"Creating\"}")
             .toObject(PlaywrightQuotaProperties.class);
     }
 }

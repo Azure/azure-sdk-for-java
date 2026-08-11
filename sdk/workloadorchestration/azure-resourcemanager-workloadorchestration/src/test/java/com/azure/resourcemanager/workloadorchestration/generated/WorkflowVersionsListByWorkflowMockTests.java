@@ -23,7 +23,7 @@ public final class WorkflowVersionsListByWorkflowMockTests {
     @Test
     public void testListByWorkflow() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"revision\":1995657676,\"configuration\":\"saetgzdgvpyig\",\"stageSpec\":[{\"name\":\"qqil\",\"specification\":{},\"tasks\":[{\"name\":\"wjoe\",\"specification\":{}},{\"name\":\"xngucaifpaurwwgi\",\"specification\":{}},{\"name\":\"fjqq\",\"specification\":{}}],\"taskOption\":{\"concurrency\":2083533019,\"errorAction\":{}}},{\"name\":\"xwxdcvjwc\",\"specification\":{},\"tasks\":[{\"name\":\"eciqchxr\",\"specification\":{}},{\"name\":\"uicdsiwdfmmpzhzz\",\"specification\":{}},{\"name\":\"vywrgyngydgr\",\"specification\":{}},{\"name\":\"x\",\"specification\":{}}],\"taskOption\":{\"concurrency\":84373044,\"errorAction\":{}}},{\"name\":\"qao\",\"specification\":{},\"tasks\":[{\"name\":\"clamgglvlmfejdoq\",\"specification\":{}},{\"name\":\"ykglt\",\"specification\":{}},{\"name\":\"gxhqfgqkayejs\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1396514650,\"errorAction\":{}}},{\"name\":\"lwfgziiu\",\"specification\":{},\"tasks\":[{\"name\":\"eatlijjjrtvamcas\",\"specification\":{}},{\"name\":\"knxkvccxetyvkunm\",\"specification\":{}},{\"name\":\"gno\",\"specification\":{}},{\"name\":\"ikkgqo\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1080786088,\"errorAction\":{}}}],\"reviewId\":\"dedvabbxbhme\",\"state\":\"Deploying\",\"specification\":{},\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"fcfxzirzzihvwy\",\"type\":\"EdgeZone\"},\"eTag\":\"u\",\"id\":\"slczwciidjsllf\",\"name\":\"yvdmvx\",\"type\":\"dqacfrgnawbabgf\"}]}";
+            = "{\"value\":[{\"properties\":{\"revision\":1765036901,\"configuration\":\"fsbw\",\"stageSpec\":[{\"name\":\"ivbvzi\",\"specification\":{},\"tasks\":[{\"name\":\"oooxzpradmskxk\",\"specification\":{}},{\"name\":\"pdgzigjsugswhg\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1295634213,\"errorAction\":{}}},{\"name\":\"wwnbafoctohz\",\"specification\":{},\"tasks\":[{\"name\":\"wsxbgnvkervqc\",\"specification\":{}}],\"taskOption\":{\"concurrency\":690805625,\"errorAction\":{}}}],\"reviewId\":\"sxqvzvspabdsrg\",\"state\":\"Undeployed\",\"specification\":{},\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"ubklrxhj\",\"type\":\"CustomLocation\"},\"eTag\":\"cetjdvq\",\"id\":\"ie\",\"name\":\"qkwaruwd\",\"type\":\"vqzxoebwg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class WorkflowVersionsListByWorkflowMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<WorkflowVersion> response = manager.workflowVersions()
-            .listByWorkflow("bhdvafjrqpjiy", "qjcrgaxwmzwdf", "bnrzorpdltbqctq", com.azure.core.util.Context.NONE);
+            .listByWorkflow("hzdue", "ihapfjiiknjdiq", "liejhpc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qqil", response.iterator().next().properties().stageSpec().get(0).name());
-        Assertions.assertEquals("wjoe",
+        Assertions.assertEquals("ivbvzi", response.iterator().next().properties().stageSpec().get(0).name());
+        Assertions.assertEquals("oooxzpradmskxk",
             response.iterator().next().properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals(2083533019,
+        Assertions.assertEquals(1295634213,
             response.iterator().next().properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals("fcfxzirzzihvwy", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("ubklrxhj", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
+            response.iterator().next().extendedLocation().type());
     }
 }

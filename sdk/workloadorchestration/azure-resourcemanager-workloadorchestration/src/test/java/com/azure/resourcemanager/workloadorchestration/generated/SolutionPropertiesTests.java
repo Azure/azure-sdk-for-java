@@ -11,7 +11,7 @@ public final class SolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionProperties model = BinaryData.fromString(
-            "{\"solutionTemplateId\":\"oqreyfkzikfjawn\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"vxwc\",\"latestConfigRevision\":\"elpcirelsfeaenwa\",\"isConfigured\":false}],\"provisioningState\":\"Canceled\"}")
+            "{\"solutionTemplateId\":\"mz\",\"availableSolutionTemplateVersions\":[{\"solutionTemplateVersion\":\"ab\",\"latestConfigRevision\":\"q\",\"isConfigured\":false}],\"provisioningState\":\"Failed\"}")
             .toObject(SolutionProperties.class);
     }
 

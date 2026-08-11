@@ -6,8 +6,8 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.SenderUsernameResource;
@@ -21,23 +21,23 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dataLocation\":\"vqtmnub\",\"username\":\"xkp\",\"displayName\":\"smond\",\"provisioningState\":\"Creating\"},\"id\":\"xvy\",\"name\":\"omgkopkwho\",\"type\":\"v\"}";
+            = "{\"properties\":{\"dataLocation\":\"ofwq\",\"username\":\"zqalkrmnjijpx\",\"displayName\":\"q\",\"provisioningState\":\"Succeeded\"},\"id\":\"nbyxbaaabjyv\",\"name\":\"yffimrzrtuzqogs\",\"type\":\"xnevfdnwn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SenderUsernameResource response = manager.senderUsernames()
-            .define("opcjwvnhd")
-            .withExistingDomain("cvkcvqvpkeqdcv", "rhvoods", "tbobz")
-            .withUsername("twuoegrpkhjwni")
-            .withDisplayName("sluicpdggkzz")
+            .define("dunyg")
+            .withExistingDomain("zikhl", "fjhdg", "gge")
+            .withUsername("fatpxllrxcyjmoa")
+            .withDisplayName("uvarmywdmjsjq")
             .create();
 
-        Assertions.assertEquals("xkp", response.username());
-        Assertions.assertEquals("smond", response.displayName());
+        Assertions.assertEquals("zqalkrmnjijpx", response.username());
+        Assertions.assertEquals("q", response.displayName());
     }
 }

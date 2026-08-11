@@ -199,4 +199,32 @@ public interface OracleDatabaseManagementClient {
      * @return the ExascaleDbStorageVaultsClient object.
      */
     ExascaleDbStorageVaultsClient getExascaleDbStorageVaults();
+
+    /**
+     * Gets the NetworkAnchorsClient object to access its operations.
+     * 
+     * @return the NetworkAnchorsClient object.
+     */
+    NetworkAnchorsClient getNetworkAnchors();
+
+    /**
+     * Gets the ResourceAnchorsClient object to access its operations.
+     * 
+     * @return the ResourceAnchorsClient object.
+     */
+    ResourceAnchorsClient getResourceAnchors();
+
+    /**
+     * Gets the DbSystemsClient object to access its operations.
+     * 
+     * @return the DbSystemsClient object.
+     */
+    DbSystemsClient getDbSystems();
+
+    /**
+     * Gets the DbVersionsClient object to access its operations.
+     * 
+     * @return the DbVersionsClient object.
+     */
+    DbVersionsClient getDbVersions();
 }

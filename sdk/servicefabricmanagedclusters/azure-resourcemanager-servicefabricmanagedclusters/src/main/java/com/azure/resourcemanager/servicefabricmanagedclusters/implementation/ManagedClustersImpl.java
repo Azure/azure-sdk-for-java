@@ -35,12 +35,8 @@ public final class ManagedClustersImpl implements ManagedClusters {
         Context context) {
         Response<ManagedClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedClusterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedClusterImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedCluster getByResourceGroup(String resourceGroupName, String clusterName) {
@@ -84,12 +80,8 @@ public final class ManagedClustersImpl implements ManagedClusters {
         FaultSimulationIdContent parameters, Context context) {
         Response<FaultSimulationInner> inner
             = this.serviceClient().getFaultSimulationWithResponse(resourceGroupName, clusterName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FaultSimulationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FaultSimulationImpl(inner.getValue(), this.manager()));
     }
 
     public FaultSimulation getFaultSimulation(String resourceGroupName, String clusterName,
@@ -116,23 +108,48 @@ public final class ManagedClustersImpl implements ManagedClusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FaultSimulationImpl(inner1, this.manager()));
     }
 
-    public void startFaultSimulation(String resourceGroupName, String clusterName,
+    public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters) {
-        this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, parameters);
+        FaultSimulationInner inner
+            = this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, parameters);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void startFaultSimulation(String resourceGroupName, String clusterName,
+    public FaultSimulation startFaultSimulation(String resourceGroupName, String clusterName,
         FaultSimulationContentWrapper parameters, Context context) {
-        this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, parameters, context);
+        FaultSimulationInner inner
+            = this.serviceClient().startFaultSimulation(resourceGroupName, clusterName, parameters, context);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters) {
-        this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, parameters);
+    public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters) {
+        FaultSimulationInner inner
+            = this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, parameters);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void stopFaultSimulation(String resourceGroupName, String clusterName, FaultSimulationIdContent parameters,
-        Context context) {
-        this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, parameters, context);
+    public FaultSimulation stopFaultSimulation(String resourceGroupName, String clusterName,
+        FaultSimulationIdContent parameters, Context context) {
+        FaultSimulationInner inner
+            = this.serviceClient().stopFaultSimulation(resourceGroupName, clusterName, parameters, context);
+        if (inner != null) {
+            return new FaultSimulationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ManagedCluster getById(String id) {

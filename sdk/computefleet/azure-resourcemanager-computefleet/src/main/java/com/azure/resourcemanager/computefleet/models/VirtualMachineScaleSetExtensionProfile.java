@@ -84,17 +84,6 @@ public final class VirtualMachineScaleSetExtensionProfile
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (extensions() != null) {
-            extensions().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

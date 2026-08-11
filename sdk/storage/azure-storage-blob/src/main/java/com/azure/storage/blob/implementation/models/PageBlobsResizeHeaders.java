@@ -17,22 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PageBlobsResizeHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The x-ms-blob-sequence-number property.
-     */
-    @Generated
-    private Long xMsBlobSequenceNumber;
 
     /*
      * The Last-Modified property.
@@ -41,10 +29,10 @@ public final class PageBlobsResizeHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-blob-sequence-number property.
      */
     @Generated
-    private String xMsRequestId;
+    private Long xMsBlobSequenceNumber;
 
     /*
      * The x-ms-client-request-id property.
@@ -53,15 +41,27 @@ public final class PageBlobsResizeHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER
         = HttpHeaderName.fromString("x-ms-blob-sequence-number");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -70,50 +70,28 @@ public final class PageBlobsResizeHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PageBlobsResizeHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String xMsBlobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
-        if (xMsBlobSequenceNumber != null) {
-            this.xMsBlobSequenceNumber = Long.parseLong(xMsBlobSequenceNumber);
-        } else {
-            this.xMsBlobSequenceNumber = null;
-        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String xMsBlobSequenceNumber = rawHeaders.getValue(X_MS_BLOB_SEQUENCE_NUMBER);
+        if (xMsBlobSequenceNumber != null) {
+            this.xMsBlobSequenceNumber = Long.parseLong(xMsBlobSequenceNumber);
+        } else {
+            this.xMsBlobSequenceNumber = null;
+        }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the PageBlobsResizeHeaders object itself.
-     */
-    @Generated
-    public PageBlobsResizeHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
     }
 
     /**
@@ -135,28 +113,6 @@ public final class PageBlobsResizeHeaders {
     @Generated
     public PageBlobsResizeHeaders setETag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
-     * @return the xMsBlobSequenceNumber value.
-     */
-    @Generated
-    public Long getXMsBlobSequenceNumber() {
-        return this.xMsBlobSequenceNumber;
-    }
-
-    /**
-     * Set the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
-     * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
-     * @return the PageBlobsResizeHeaders object itself.
-     */
-    @Generated
-    public PageBlobsResizeHeaders setXMsBlobSequenceNumber(Long xMsBlobSequenceNumber) {
-        this.xMsBlobSequenceNumber = xMsBlobSequenceNumber;
         return this;
     }
 
@@ -190,24 +146,24 @@ public final class PageBlobsResizeHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsBlobSequenceNumber value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public Long getXMsBlobSequenceNumber() {
+        return this.xMsBlobSequenceNumber;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
      * @return the PageBlobsResizeHeaders object itself.
      */
     @Generated
-    public PageBlobsResizeHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public PageBlobsResizeHeaders setXMsBlobSequenceNumber(Long xMsBlobSequenceNumber) {
+        this.xMsBlobSequenceNumber = xMsBlobSequenceNumber;
         return this;
     }
 
@@ -230,6 +186,50 @@ public final class PageBlobsResizeHeaders {
     @Generated
     public PageBlobsResizeHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the PageBlobsResizeHeaders object itself.
+     */
+    @Generated
+    public PageBlobsResizeHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the PageBlobsResizeHeaders object itself.
+     */
+    @Generated
+    public PageBlobsResizeHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

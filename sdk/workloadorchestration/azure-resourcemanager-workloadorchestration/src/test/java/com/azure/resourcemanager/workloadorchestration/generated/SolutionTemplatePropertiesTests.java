@@ -14,24 +14,24 @@ public final class SolutionTemplatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateProperties model = BinaryData.fromString(
-            "{\"description\":\"gpikpzimejza\",\"capabilities\":[\"fzxiavrmb\",\"onok\",\"xrjqcirgzpfrlazs\",\"rnwoiindfp\"],\"latestVersion\":\"jylwbtlhflsj\",\"state\":\"active\",\"enableExternalValidation\":true,\"provisioningState\":\"Failed\"}")
+            "{\"description\":\"l\",\"capabilities\":[\"ngitvgbmhrixkwm\"],\"latestVersion\":\"jejveg\",\"state\":\"inactive\",\"enableExternalValidation\":false,\"provisioningState\":\"InProgress\"}")
             .toObject(SolutionTemplateProperties.class);
-        Assertions.assertEquals("gpikpzimejza", model.description());
-        Assertions.assertEquals("fzxiavrmb", model.capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.state());
-        Assertions.assertTrue(model.enableExternalValidation());
+        Assertions.assertEquals("l", model.description());
+        Assertions.assertEquals("ngitvgbmhrixkwm", model.capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.state());
+        Assertions.assertFalse(model.enableExternalValidation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateProperties model = new SolutionTemplateProperties().withDescription("gpikpzimejza")
-            .withCapabilities(Arrays.asList("fzxiavrmb", "onok", "xrjqcirgzpfrlazs", "rnwoiindfp"))
-            .withState(ResourceState.ACTIVE)
-            .withEnableExternalValidation(true);
+        SolutionTemplateProperties model = new SolutionTemplateProperties().withDescription("l")
+            .withCapabilities(Arrays.asList("ngitvgbmhrixkwm"))
+            .withState(ResourceState.INACTIVE)
+            .withEnableExternalValidation(false);
         model = BinaryData.fromObject(model).toObject(SolutionTemplateProperties.class);
-        Assertions.assertEquals("gpikpzimejza", model.description());
-        Assertions.assertEquals("fzxiavrmb", model.capabilities().get(0));
-        Assertions.assertEquals(ResourceState.ACTIVE, model.state());
-        Assertions.assertTrue(model.enableExternalValidation());
+        Assertions.assertEquals("l", model.description());
+        Assertions.assertEquals("ngitvgbmhrixkwm", model.capabilities().get(0));
+        Assertions.assertEquals(ResourceState.INACTIVE, model.state());
+        Assertions.assertFalse(model.enableExternalValidation());
     }
 }

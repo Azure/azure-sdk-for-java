@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentitySettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentitySetting model = BinaryData.fromString("{\"identity\":\"lzhcoxovnekh\",\"lifecycle\":\"All\"}")
+        ManagedIdentitySetting model = BinaryData.fromString("{\"identity\":\"agfl\",\"lifecycle\":\"Init\"}")
             .toObject(ManagedIdentitySetting.class);
-        Assertions.assertEquals("lzhcoxovnekh", model.identity());
-        Assertions.assertEquals(IdentitySettingsLifeCycle.ALL, model.lifecycle());
+        Assertions.assertEquals("agfl", model.identity());
+        Assertions.assertEquals(IdentitySettingsLifeCycle.INIT, model.lifecycle());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedIdentitySetting model
-            = new ManagedIdentitySetting().withIdentity("lzhcoxovnekh").withLifecycle(IdentitySettingsLifeCycle.ALL);
+            = new ManagedIdentitySetting().withIdentity("agfl").withLifecycle(IdentitySettingsLifeCycle.INIT);
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySetting.class);
-        Assertions.assertEquals("lzhcoxovnekh", model.identity());
-        Assertions.assertEquals(IdentitySettingsLifeCycle.ALL, model.lifecycle());
+        Assertions.assertEquals("agfl", model.identity());
+        Assertions.assertEquals(IdentitySettingsLifeCycle.INIT, model.lifecycle());
     }
 }

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity Azure PostgreSQL source.
+ * A copy activity Azure Database for PostgreSQL source.
  */
 @Fluent
 public final class AzurePostgreSqlSource extends TabularSource {

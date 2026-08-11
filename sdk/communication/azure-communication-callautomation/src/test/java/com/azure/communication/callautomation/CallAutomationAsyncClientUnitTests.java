@@ -15,8 +15,10 @@ import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.ConnectCallOptions;
 import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.common.CommunicationCloudEnvironment;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
 
@@ -113,25 +115,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
     }
 
     @Test
-    public void answerCallWithResponseAndCustomContext() {
-        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
-            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
-                CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
-                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200))));
-
-        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
-        answerCallOptions.getCustomCallingContext().addSipUui("OBOuuivalue");
-        answerCallOptions.getCustomCallingContext().addSipX("XheaderOBO", "value");
-
-        Response<AnswerCallResult> answerCallResult
-            = callAutomationAsyncClient.answerCallWithResponse(answerCallOptions).block();
-
-        assertNotNull(answerCallResult);
-        assertEquals(200, answerCallResult.getStatusCode());
-        assertNotNull(answerCallResult.getValue());
-    }
-
-    @Test
     public void answerCallWithResponse() {
         CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
@@ -194,6 +177,67 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(rejectCallResponse);
         assertEquals(204, rejectCallResponse.getStatusCode());
+    }
+
+    @Test
+    public void createCallWithMicrosoftTeamsAppIdentifier() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
+                CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201))));
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite callInvite = new CallInvite(teamsAppIdentifier);
+
+        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callInvite, CALL_CALLBACK_URL).block();
+        assertNotNull(createCallResult);
+    }
+
+    @Test
+    public void createCallWithResponseMicrosoftTeamsAppIdentifier() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
+                CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201))));
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite callInvite = new CallInvite(teamsAppIdentifier);
+        CreateCallOptions callOptions = new CreateCallOptions(callInvite, CALL_CALLBACK_URL);
+        callOptions.setOperationContext(CALL_SUBJECT);
+
+        Response<CreateCallResult> createCallResult
+            = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
+
+        assertNotNull(createCallResult);
+        assertEquals(201, createCallResult.getStatusCode());
+        assertNotNull(createCallResult.getValue());
+    }
+
+    @Test
+    public void redirectCallWithMicrosoftTeamsAppIdentifier() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204))));
+
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite target = new CallInvite(teamsAppIdentifier);
+
+        callAutomationAsyncClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
+    }
+
+    @Test
+    public void redirectCallWithResponseMicrosoftTeamsAppIdentifier() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(
+            new ArrayList<>(Collections.singletonList(new AbstractMap.SimpleEntry<>("", 204))));
+        MicrosoftTeamsAppIdentifier teamsAppIdentifier
+            = new MicrosoftTeamsAppIdentifier(CALL_TARGET_ID, CommunicationCloudEnvironment.PUBLIC);
+        CallInvite target = new CallInvite(teamsAppIdentifier);
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
+        Response<Void> redirectCallResponse
+            = callAutomationAsyncClient.redirectCallWithResponse(redirectCallOptions).block();
+
+        assertNotNull(redirectCallResponse);
+        assertEquals(204, redirectCallResponse.getStatusCode());
     }
 
     @Test

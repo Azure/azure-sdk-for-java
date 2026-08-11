@@ -43,7 +43,13 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      * The thread metadata
      */
     @Generated
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
+
+    /*
+     * The retention policy for the chat.
+     */
+    @Generated
+    private AcsChatThreadRetentionPolicy retentionPolicy;
 
     /*
      * The version of the thread
@@ -65,17 +71,15 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @param editTime the editTime value to set.
      * @param properties the properties value to set.
-     * @param metadata the metadata value to set.
      */
     @Generated
     private AcsChatThreadPropertiesUpdatedEventData(String threadId, OffsetDateTime createTime,
         CommunicationIdentifierModel editedByCommunicationIdentifier, OffsetDateTime editTime,
-        Map<String, BinaryData> properties, Map<String, String> metadata) {
+        Map<String, BinaryData> properties) {
         super(threadId, createTime);
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         this.editTime = editTime;
         this.properties = properties;
-        this.metadata = metadata;
     }
 
     /**
@@ -120,6 +124,16 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     }
 
     /**
+     * Get the retentionPolicy property: The retention policy for the chat.
+     *
+     * @return the retentionPolicy value.
+     */
+    @Generated
+    public AcsChatThreadRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
      * Get the version property: The version of the thread.
      *
      * @return the version value.
@@ -156,9 +170,14 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -182,6 +201,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
             OffsetDateTime editTime = null;
             Map<String, BinaryData> properties = null;
             Map<String, String> metadata = null;
+            AcsChatThreadRetentionPolicy retentionPolicy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -204,15 +224,19 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    retentionPolicy = AcsChatThreadRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             AcsChatThreadPropertiesUpdatedEventData deserializedAcsChatThreadPropertiesUpdatedEventData
                 = new AcsChatThreadPropertiesUpdatedEventData(threadId, createTime, editedByCommunicationIdentifier,
-                    editTime, properties, metadata);
+                    editTime, properties);
             deserializedAcsChatThreadPropertiesUpdatedEventData.transactionId = transactionId;
             deserializedAcsChatThreadPropertiesUpdatedEventData.version = version;
+            deserializedAcsChatThreadPropertiesUpdatedEventData.metadata = metadata;
+            deserializedAcsChatThreadPropertiesUpdatedEventData.retentionPolicy = retentionPolicy;
             return deserializedAcsChatThreadPropertiesUpdatedEventData;
         });
     }

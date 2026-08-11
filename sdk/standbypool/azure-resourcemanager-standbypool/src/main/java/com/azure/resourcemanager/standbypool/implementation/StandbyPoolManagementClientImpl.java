@@ -232,7 +232,7 @@ public final class StandbyPoolManagementClientImpl implements StandbyPoolManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01";
+        this.apiVersion = "2025-10-01";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);
@@ -352,7 +352,7 @@ public final class StandbyPoolManagementClientImpl implements StandbyPoolManagem
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

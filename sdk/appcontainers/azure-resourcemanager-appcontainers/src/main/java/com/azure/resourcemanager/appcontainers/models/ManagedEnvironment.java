@@ -198,6 +198,28 @@ public interface ManagedEnvironment {
     ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration();
 
     /**
+     * Gets the ingressConfiguration property: Ingress configuration for the Managed Environment.
+     * 
+     * @return the ingressConfiguration value.
+     */
+    IngressConfiguration ingressConfiguration();
+
+    /**
+     * Gets the privateEndpointConnections property: Private endpoint connections to the resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * Gets the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -287,7 +309,8 @@ public interface ManagedEnvironment {
             DefinitionStages.WithZoneRedundant, DefinitionStages.WithCustomDomainConfiguration,
             DefinitionStages.WithWorkloadProfiles, DefinitionStages.WithKedaConfiguration,
             DefinitionStages.WithDaprConfiguration, DefinitionStages.WithInfrastructureResourceGroup,
-            DefinitionStages.WithPeerAuthentication, DefinitionStages.WithPeerTrafficConfiguration {
+            DefinitionStages.WithPeerAuthentication, DefinitionStages.WithPeerTrafficConfiguration,
+            DefinitionStages.WithIngressConfiguration, DefinitionStages.WithPublicNetworkAccess {
             /**
              * Executes the create request.
              * 
@@ -511,6 +534,34 @@ public interface ManagedEnvironment {
             WithCreate withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
         }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify ingressConfiguration.
+         */
+        interface WithIngressConfiguration {
+            /**
+             * Specifies the ingressConfiguration property: Ingress configuration for the Managed Environment..
+             * 
+             * @param ingressConfiguration Ingress configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withIngressConfiguration(IngressConfiguration ingressConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment definition allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
     }
 
     /**
@@ -528,7 +579,8 @@ public interface ManagedEnvironment {
         UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration,
         UpdateStages.WithCustomDomainConfiguration, UpdateStages.WithWorkloadProfiles,
         UpdateStages.WithKedaConfiguration, UpdateStages.WithDaprConfiguration, UpdateStages.WithPeerAuthentication,
-        UpdateStages.WithPeerTrafficConfiguration {
+        UpdateStages.WithPeerTrafficConfiguration, UpdateStages.WithIngressConfiguration,
+        UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          * 
@@ -725,6 +777,34 @@ public interface ManagedEnvironment {
              */
             Update withPeerTrafficConfiguration(
                 ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify ingressConfiguration.
+         */
+        interface WithIngressConfiguration {
+            /**
+             * Specifies the ingressConfiguration property: Ingress configuration for the Managed Environment..
+             * 
+             * @param ingressConfiguration Ingress configuration for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withIngressConfiguration(IngressConfiguration ingressConfiguration);
+        }
+
+        /**
+         * The stage of the ManagedEnvironment update allowing to specify publicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Property to allow or block all public traffic. Allowed
+             * Values: 'Enabled', 'Disabled'..
+             * 
+             * @param publicNetworkAccess Property to allow or block all public traffic. Allowed Values: 'Enabled',
+             * 'Disabled'.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
 

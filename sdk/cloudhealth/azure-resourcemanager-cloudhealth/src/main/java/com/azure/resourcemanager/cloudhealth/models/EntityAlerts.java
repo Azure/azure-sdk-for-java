@@ -73,20 +73,6 @@ public final class EntityAlerts implements JsonSerializable<EntityAlerts> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (unhealthy() != null) {
-            unhealthy().validate();
-        }
-        if (degraded() != null) {
-            degraded().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

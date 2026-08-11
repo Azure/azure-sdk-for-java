@@ -22,6 +22,11 @@ public final class BindingType extends ExpandableStringEnum<BindingType> {
     public static final BindingType SNI_ENABLED = fromString("SniEnabled");
 
     /**
+     * Static value Auto for BindingType.
+     */
+    public static final BindingType AUTO = fromString("Auto");
+
+    /**
      * Creates a new instance of BindingType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

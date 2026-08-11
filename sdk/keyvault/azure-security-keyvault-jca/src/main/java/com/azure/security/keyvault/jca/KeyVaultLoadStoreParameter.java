@@ -37,6 +37,11 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     private final String managedIdentity;
 
     /**
+     * Stores the access token.
+     */
+    private String accessToken;
+
+    /**
      * Stores a flag indicating if challenge resource verification shall be disabled.
      */
     private boolean disableChallengeResourceVerification = false;
@@ -83,7 +88,6 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
-
         this.keyVaultUri = keyVaultUri;
         this.tenantId = tenantId;
         this.clientId = clientId;
@@ -126,6 +130,27 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public String getManagedIdentity() {
         return managedIdentity;
+    }
+
+    /**
+     * Set the access token.
+     *
+     * @param accessToken The access token.
+     *
+     * @return The KeyVaultLoadStoreParameter.
+     */
+    public KeyVaultLoadStoreParameter setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
+    }
+
+    /**
+     * Get the access token.
+     *
+     * @return The access token.
+     */
+    public String getAccessToken() {
+        return accessToken;
     }
 
     /**

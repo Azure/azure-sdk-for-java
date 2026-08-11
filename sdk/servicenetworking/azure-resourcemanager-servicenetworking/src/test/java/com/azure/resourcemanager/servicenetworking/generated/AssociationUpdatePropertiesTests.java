@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationUpdateProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class AssociationUpdatePropertiesTests {

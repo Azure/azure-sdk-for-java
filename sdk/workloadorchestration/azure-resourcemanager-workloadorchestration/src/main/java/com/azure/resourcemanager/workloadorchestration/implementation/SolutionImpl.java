@@ -10,6 +10,8 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionInn
 import com.azure.resourcemanager.workloadorchestration.models.ExtendedLocation;
 import com.azure.resourcemanager.workloadorchestration.models.Solution;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionUpdateProperties;
 
 public final class SolutionImpl implements Solution, Solution.Definition, Solution.Update {
     private SolutionInner innerObject;
@@ -62,6 +64,8 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
 
     private String solutionName;
 
+    private SolutionUpdate updateProperties;
+
     public SolutionImpl withExistingTarget(String resourceGroupName, String targetName) {
         this.resourceGroupName = resourceGroupName;
         this.targetName = targetName;
@@ -90,20 +94,21 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
     }
 
     public SolutionImpl update() {
+        this.updateProperties = new SolutionUpdate();
         return this;
     }
 
     public Solution apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSolutions()
-            .update(resourceGroupName, targetName, solutionName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, targetName, solutionName, updateProperties, Context.NONE);
         return this;
     }
 
     public Solution apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSolutions()
-            .update(resourceGroupName, targetName, solutionName, this.innerModel(), context);
+            .update(resourceGroupName, targetName, solutionName, updateProperties, context);
         return this;
     }
 
@@ -139,6 +144,11 @@ public final class SolutionImpl implements Solution, Solution.Definition, Soluti
 
     public SolutionImpl withExtendedLocation(ExtendedLocation extendedLocation) {
         this.innerModel().withExtendedLocation(extendedLocation);
+        return this;
+    }
+
+    public SolutionImpl withProperties(SolutionUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

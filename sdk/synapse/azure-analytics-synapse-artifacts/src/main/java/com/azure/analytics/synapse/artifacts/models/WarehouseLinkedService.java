@@ -44,6 +44,12 @@ public class WarehouseLinkedService extends LinkedService {
     private Object workspaceId;
 
     /*
+     * The authentication type to use.
+     */
+    @Generated
+    private WarehouseAuthenticationType authenticationType;
+
+    /*
      * The ID of the application used to authenticate against Microsoft Fabric Warehouse. Type: string (or Expression
      * with resultType string).
      */
@@ -85,6 +91,12 @@ public class WarehouseLinkedService extends LinkedService {
      */
     @Generated
     private SecretBase servicePrincipalCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @Generated
+    private CredentialReference credential;
 
     /**
      * Creates an instance of WarehouseLinkedService class.
@@ -173,6 +185,28 @@ public class WarehouseLinkedService extends LinkedService {
     @Generated
     public WarehouseLinkedService setWorkspaceId(Object workspaceId) {
         this.workspaceId = workspaceId;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use.
+     * 
+     * @return the authenticationType value.
+     */
+    @Generated
+    public WarehouseAuthenticationType getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the WarehouseLinkedService object itself.
+     */
+    @Generated
+    public WarehouseLinkedService setAuthenticationType(WarehouseAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -327,6 +361,28 @@ public class WarehouseLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    @Generated
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the WarehouseLinkedService object itself.
+     */
+    @Generated
+    public WarehouseLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -392,18 +448,22 @@ public class WarehouseLinkedService extends LinkedService {
         if (artifactId != null
             || endpoint != null
             || workspaceId != null
+            || authenticationType != null
             || servicePrincipalId != null
             || servicePrincipalKey != null
             || tenant != null
             || encryptedCredential != null
             || servicePrincipalCredentialType != null
-            || servicePrincipalCredential != null) {
+            || servicePrincipalCredential != null
+            || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("artifactId", this.artifactId);
             jsonWriter.writeUntypedField("endpoint", this.endpoint);
             if (this.workspaceId != null) {
                 jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
             }
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
             if (this.servicePrincipalId != null) {
                 jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
             }
@@ -416,6 +476,7 @@ public class WarehouseLinkedService extends LinkedService {
                 jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
             }
             jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -470,6 +531,9 @@ public class WarehouseLinkedService extends LinkedService {
                             deserializedWarehouseLinkedService.endpoint = reader.readUntyped();
                         } else if ("workspaceId".equals(fieldName)) {
                             deserializedWarehouseLinkedService.workspaceId = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.authenticationType
+                                = WarehouseAuthenticationType.fromString(reader.getString());
                         } else if ("servicePrincipalId".equals(fieldName)) {
                             deserializedWarehouseLinkedService.servicePrincipalId = reader.readUntyped();
                         } else if ("servicePrincipalKey".equals(fieldName)) {
@@ -482,6 +546,8 @@ public class WarehouseLinkedService extends LinkedService {
                             deserializedWarehouseLinkedService.servicePrincipalCredentialType = reader.readUntyped();
                         } else if ("servicePrincipalCredential".equals(fieldName)) {
                             deserializedWarehouseLinkedService.servicePrincipalCredential = SecretBase.fromJson(reader);
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedWarehouseLinkedService.credential = CredentialReference.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

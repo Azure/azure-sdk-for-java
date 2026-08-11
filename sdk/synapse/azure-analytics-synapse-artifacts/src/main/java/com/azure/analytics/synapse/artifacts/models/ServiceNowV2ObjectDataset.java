@@ -31,6 +31,12 @@ public class ServiceNowV2ObjectDataset extends Dataset {
     @Generated
     private Object tableName;
 
+    /*
+     * Type of value copied from source.
+     */
+    @Generated
+    private ValueType valueType;
+
     /**
      * Creates an instance of ServiceNowV2ObjectDataset class.
      */
@@ -68,6 +74,28 @@ public class ServiceNowV2ObjectDataset extends Dataset {
     @Generated
     public ServiceNowV2ObjectDataset setTableName(Object tableName) {
         this.tableName = tableName;
+        return this;
+    }
+
+    /**
+     * Get the valueType property: Type of value copied from source.
+     * 
+     * @return the valueType value.
+     */
+    @Generated
+    public ValueType getValueType() {
+        return this.valueType;
+    }
+
+    /**
+     * Set the valueType property: Type of value copied from source.
+     * 
+     * @param valueType the valueType value to set.
+     * @return the ServiceNowV2ObjectDataset object itself.
+     */
+    @Generated
+    public ServiceNowV2ObjectDataset setValueType(ValueType valueType) {
+        this.valueType = valueType;
         return this;
     }
 
@@ -160,11 +188,12 @@ public class ServiceNowV2ObjectDataset extends Dataset {
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
-        if (tableName != null) {
+        if (tableName != null || valueType != null) {
             jsonWriter.writeStartObject("typeProperties");
             if (this.tableName != null) {
                 jsonWriter.writeUntypedField("tableName", this.tableName);
             }
+            jsonWriter.writeStringField("valueType", this.valueType == null ? null : this.valueType.toString());
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -219,6 +248,8 @@ public class ServiceNowV2ObjectDataset extends Dataset {
 
                         if ("tableName".equals(fieldName)) {
                             deserializedServiceNowV2ObjectDataset.tableName = reader.readUntyped();
+                        } else if ("valueType".equals(fieldName)) {
+                            deserializedServiceNowV2ObjectDataset.valueType = ValueType.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

@@ -15,27 +15,36 @@ public final class FileListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileList model = BinaryData.fromString(
-            "{\"value\":[{\"etag\":\"lwuenvrkp\",\"properties\":{\"extension\":\"aibrebqaaysjkixq\",\"filePath\":\"qttezlwfffiakpjp\",\"lastModified\":\"2021-08-03T03:37:12Z\",\"mediaType\":\"edltmmjihyeozp\",\"size\":2963358602242054360},\"systemData\":{\"createdBy\":\"qncygupkvi\",\"createdByType\":\"Key\",\"createdAt\":\"2021-11-26T01:54:54Z\",\"lastModifiedBy\":\"xqupevzhf\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-11-14T07:44:57Z\"},\"id\":\"hojujbypelmcuv\",\"name\":\"ixbjx\",\"type\":\"fw\"}],\"nextLink\":\"lrcoolsttpki\"}")
+            "{\"value\":[{\"etag\":\"h\",\"properties\":{\"extension\":\"nfdn\",\"filePath\":\"jchrdgoihxumw\",\"lastModified\":\"2021-12-07T13:58:09Z\",\"mediaType\":\"dzjlu\",\"size\":5498945404155028999},\"id\":\"wggytsbwtovvt\",\"name\":\"seinqfiuf\",\"type\":\"qknp\"},{\"etag\":\"gnepttwqmsni\",\"properties\":{\"extension\":\"dmqnrojlpij\",\"filePath\":\"rxfrddhc\",\"lastModified\":\"2021-06-05T19:19:34Z\",\"mediaType\":\"zzronasx\",\"size\":6179205416301149482},\"id\":\"qyzhf\",\"name\":\"wesgogczh\",\"type\":\"nnxk\"},{\"etag\":\"gnyhmossxkkg\",\"properties\":{\"extension\":\"rghxjb\",\"filePath\":\"qxvcxgfrpdsofb\",\"lastModified\":\"2021-11-10T10:23:55Z\",\"mediaType\":\"svbuswdvzyy\",\"size\":9049331973830942528},\"id\":\"nvjsrtkfa\",\"name\":\"nopqgikyzirtx\",\"type\":\"yuxzejntpsewgi\"}],\"nextLink\":\"l\"}")
             .toObject(FileList.class);
-        Assertions.assertEquals("lwuenvrkp", model.value().get(0).etag());
-        Assertions.assertEquals("aibrebqaaysjkixq", model.value().get(0).properties().extension());
-        Assertions.assertEquals("qttezlwfffiakpjp", model.value().get(0).properties().filePath());
-        Assertions.assertEquals("edltmmjihyeozp", model.value().get(0).properties().mediaType());
-        Assertions.assertEquals("lrcoolsttpki", model.nextLink());
+        Assertions.assertEquals("h", model.value().get(0).etag());
+        Assertions.assertEquals("nfdn", model.value().get(0).properties().extension());
+        Assertions.assertEquals("jchrdgoihxumw", model.value().get(0).properties().filePath());
+        Assertions.assertEquals("dzjlu", model.value().get(0).properties().mediaType());
+        Assertions.assertEquals("l", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileList model = new FileList().withValue(Arrays.asList(new ProjectFileInner().withEtag("lwuenvrkp")
-            .withProperties(new ProjectFileProperties().withExtension("aibrebqaaysjkixq")
-                .withFilePath("qttezlwfffiakpjp")
-                .withMediaType("edltmmjihyeozp"))))
-            .withNextLink("lrcoolsttpki");
+        FileList model = new FileList().withValue(Arrays.asList(
+            new ProjectFileInner().withEtag("h")
+                .withProperties(new ProjectFileProperties().withExtension("nfdn")
+                    .withFilePath("jchrdgoihxumw")
+                    .withMediaType("dzjlu")),
+            new ProjectFileInner().withEtag("gnepttwqmsni")
+                .withProperties(new ProjectFileProperties().withExtension("dmqnrojlpij")
+                    .withFilePath("rxfrddhc")
+                    .withMediaType("zzronasx")),
+            new ProjectFileInner().withEtag("gnyhmossxkkg")
+                .withProperties(new ProjectFileProperties().withExtension("rghxjb")
+                    .withFilePath("qxvcxgfrpdsofb")
+                    .withMediaType("svbuswdvzyy"))))
+            .withNextLink("l");
         model = BinaryData.fromObject(model).toObject(FileList.class);
-        Assertions.assertEquals("lwuenvrkp", model.value().get(0).etag());
-        Assertions.assertEquals("aibrebqaaysjkixq", model.value().get(0).properties().extension());
-        Assertions.assertEquals("qttezlwfffiakpjp", model.value().get(0).properties().filePath());
-        Assertions.assertEquals("edltmmjihyeozp", model.value().get(0).properties().mediaType());
-        Assertions.assertEquals("lrcoolsttpki", model.nextLink());
+        Assertions.assertEquals("h", model.value().get(0).etag());
+        Assertions.assertEquals("nfdn", model.value().get(0).properties().extension());
+        Assertions.assertEquals("jchrdgoihxumw", model.value().get(0).properties().filePath());
+        Assertions.assertEquals("dzjlu", model.value().get(0).properties().mediaType());
+        Assertions.assertEquals("l", model.nextLink());
     }
 }

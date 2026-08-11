@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dell.storage.generated;
  */
 public final class FileSystemsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MaximumSet_Gen.
@@ -22,7 +22,7 @@ public final class FileSystemsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/FileSystems_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/FileSystems_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MinimumSet_Gen.

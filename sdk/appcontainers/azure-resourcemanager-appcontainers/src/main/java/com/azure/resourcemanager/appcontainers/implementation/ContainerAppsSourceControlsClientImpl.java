@@ -26,8 +26,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsSourceControlsClient;
@@ -68,7 +70,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientContainerAppsSourceControls")
     public interface ContainerAppsSourceControlsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols")
@@ -81,10 +83,31 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<SourceControlCollection> listByContainerAppSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName,
+            @PathParam("sourceControlName") String sourceControlName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<SourceControlInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
@@ -104,6 +127,18 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName,
+            @PathParam("sourceControlName") String sourceControlName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SourceControlInner sourceControlEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -115,10 +150,29 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerAppName") String containerAppName,
+            @PathParam("sourceControlName") String sourceControlName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SourceControlCollection>> listByContainerAppNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<SourceControlCollection> listByContainerAppNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -168,46 +222,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SourceControlInner>> listByContainerAppSinglePageAsync(String resourceGroupName,
-        String containerAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByContainerApp(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                containerAppName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the Container App SourceControls in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,17 +238,78 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SourceControlInner> listByContainerAppSinglePage(String resourceGroupName,
+        String containerAppName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SourceControlCollection> res
+            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, containerAppName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the Container App SourceControls in a given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Container App SourceControls in a given resource group as paginated response with {@link PagedFlux}.
+     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SourceControlInner> listByContainerAppAsync(String resourceGroupName, String containerAppName,
-        Context context) {
-        return new PagedFlux<>(() -> listByContainerAppSinglePageAsync(resourceGroupName, containerAppName, context),
-            nextLink -> listByContainerAppNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SourceControlInner> listByContainerAppSinglePage(String resourceGroupName,
+        String containerAppName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SourceControlCollection> res
+            = service.listByContainerAppSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, containerAppName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -250,7 +325,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> listByContainerApp(String resourceGroupName, String containerAppName) {
-        return new PagedIterable<>(listByContainerAppAsync(resourceGroupName, containerAppName));
+        return new PagedIterable<>(() -> listByContainerAppSinglePage(resourceGroupName, containerAppName),
+            nextLink -> listByContainerAppNextSinglePage(nextLink));
     }
 
     /**
@@ -268,7 +344,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SourceControlInner> listByContainerApp(String resourceGroupName, String containerAppName,
         Context context) {
-        return new PagedIterable<>(listByContainerAppAsync(resourceGroupName, containerAppName, context));
+        return new PagedIterable<>(() -> listByContainerAppSinglePage(resourceGroupName, containerAppName, context),
+            nextLink -> listByContainerAppNextSinglePage(nextLink, context));
     }
 
     /**
@@ -318,47 +395,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SourceControl of a Container App along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> getWithResponseAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
-        }
-        if (sourceControlName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, sourceControlName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a SourceControl of a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -386,7 +422,31 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SourceControlInner> getWithResponse(String resourceGroupName, String containerAppName,
         String sourceControlName, Context context) {
-        return getWithResponseAsync(resourceGroupName, containerAppName, sourceControlName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (sourceControlName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, sourceControlName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -461,44 +521,94 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App SourceControl along with {@link Response} on successful completion of {@link Mono}.
+     * @return container App SourceControl along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
+        String sourceControlName, SourceControlInner sourceControlEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
         if (sourceControlName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (sourceControlEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter sourceControlEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlEnvelope is required and cannot be null."));
         } else {
             sourceControlEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, sourceControlName, this.client.getApiVersion(), sourceControlEnvelope, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Create or update the SourceControl for a Container App.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param sourceControlName Name of the Container App SourceControl.
+     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App SourceControl along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String containerAppName,
+        String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (sourceControlName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
+        }
+        if (sourceControlEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlEnvelope is required and cannot be null."));
+        } else {
+            sourceControlEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             containerAppName, sourceControlName, this.client.getApiVersion(), sourceControlEnvelope, accept, context);
     }
 
@@ -531,30 +641,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App SourceControl.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String containerAppName, String sourceControlName,
-        SourceControlInner sourceControlEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, sourceControlEnvelope, context);
-        return this.client.<SourceControlInner, SourceControlInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SourceControlInner.class, SourceControlInner.class, context);
-    }
-
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -563,9 +649,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope);
+        return this.client.<SourceControlInner, SourceControlInner>getLroResult(response, SourceControlInner.class,
+            SourceControlInner.class, Context.NONE);
     }
 
     /**
@@ -584,10 +671,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, containerAppName,
+            sourceControlName, sourceControlEnvelope, context);
+        return this.client.<SourceControlInner, SourceControlInner>getLroResult(response, SourceControlInner.class,
+            SourceControlInner.class, context);
     }
 
     /**
@@ -617,26 +704,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App SourceControl on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SourceControlInner> createOrUpdateAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -645,8 +712,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        return createOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
+            .getFinalResult();
     }
 
     /**
@@ -665,8 +732,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
-        return createOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            context).block();
+        return beginCreateOrUpdate(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
+            context).getFinalResult();
     }
 
     /**
@@ -716,38 +783,80 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName,
+        String sourceControlName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (containerAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+        }
+        if (sourceControlName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            containerAppName, sourceControlName, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Delete a Container App SourceControl.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param containerAppName Name of the Container App.
+     * @param sourceControlName Name of the Container App SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerAppName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String containerAppName,
         String sourceControlName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (containerAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter containerAppName is required and cannot be null."));
         }
         if (sourceControlName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             containerAppName, sourceControlName, this.client.getApiVersion(), accept, context);
     }
 
@@ -777,28 +886,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, containerAppName, sourceControlName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -807,7 +894,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String sourceControlName) {
-        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, containerAppName, sourceControlName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -825,7 +913,9 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String sourceControlName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, containerAppName, sourceControlName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -851,32 +941,13 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String sourceControlName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName) {
-        deleteAsync(resourceGroupName, containerAppName, sourceControlName).block();
+        beginDelete(resourceGroupName, containerAppName, sourceControlName).getFinalResult();
     }
 
     /**
@@ -892,18 +963,20 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
-        deleteAsync(resourceGroupName, containerAppName, sourceControlName, context).block();
+        beginDelete(resourceGroupName, containerAppName, sourceControlName, context).getFinalResult();
     }
 
     /**
+     * Get the Container App SourceControls in a given resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sourceControl collection ARM resource along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlInner>> listByContainerAppNextSinglePageAsync(String nextLink) {
@@ -924,6 +997,37 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     }
 
     /**
+     * Get the Container App SourceControls in a given resource group.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<SourceControlInner> listByContainerAppNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<SourceControlCollection> res
+            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the Container App SourceControls in a given resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -931,23 +1035,25 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sourceControl collection ARM resource along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the Container App SourceControls in a given resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SourceControlInner>> listByContainerAppNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<SourceControlInner> listByContainerAppNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByContainerAppNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<SourceControlCollection> res
+            = service.listByContainerAppNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerAppsSourceControlsClientImpl.class);
 }

@@ -3192,24 +3192,6 @@ public class FileApiTest extends DataLakeTestBase {
         });
     }
 
-    private void liveTestScenarioWithRetry(Runnable runnable) {
-        if (!interceptorManager.isLiveMode()) {
-            runnable.run();
-            return;
-        }
-
-        int retry = 0;
-        while (retry < 5) {
-            try {
-                runnable.run();
-                break;
-            } catch (Exception ex) {
-                retry++;
-                sleepIfRunningAgainstService(5000);
-            }
-        }
-    }
-
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
@@ -3616,5 +3598,12 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void pathGetSystemPropertiesFileMin() {
         assertNotNull(fc.getSystemProperties());
+    }
+
+    @Test
+    public void fileNameEncodingOnGetPathUrl() {
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("my file");
+        String expectedName = "my%20file";
+        assertTrue(fileClient.getPathUrl().contains(expectedName));
     }
 }

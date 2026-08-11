@@ -10,7 +10,6 @@ import static com.azure.ai.openai.implementation.AudioTranslationValidator.valid
 import static com.azure.ai.openai.implementation.EmbeddingsUtils.addEncodingFormat;
 import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 import static com.azure.ai.openai.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
-
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;

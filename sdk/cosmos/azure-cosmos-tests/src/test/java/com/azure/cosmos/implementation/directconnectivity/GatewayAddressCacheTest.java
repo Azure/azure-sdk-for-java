@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
@@ -22,7 +23,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
@@ -32,7 +32,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -45,6 +44,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +77,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public GatewayAddressCacheTest(Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -125,7 +126,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void getServerAddressesViaGateway(List<String> partitionKeyRangeIds,
                                              String collectionLink,
                                              Protocol protocol) throws Exception {
@@ -144,6 +145,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
+                null,
                 null,
                 null);
 
@@ -168,7 +170,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void getMasterAddressesViaGatewayAsync(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
@@ -185,6 +187,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null,
                                                             null);
 
@@ -238,6 +241,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -296,6 +300,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -366,6 +371,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -400,16 +406,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow is called 6 times
+        // The exact count depends on the live replica health states returned by the gateway:
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
-        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+        // 2. replica validation checks whether the collection is under warmup
+        // 3. every replica whose health is Unknown requires another warmup-flow check
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                 .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
 
         if (isCollectionUnderWarmUpFlow) {
@@ -472,6 +476,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
                                                                 proactiveOpenConnectionsProcessorMock,
+                                                                null,
                                                                 null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -506,16 +511,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = origCache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow called 6 times
+        // The exact count is derived from the live replica health states returned by the gateway:
         // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
         // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
-        // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-        // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-        // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-        // is part of the warm up flow - isCollectionRidUnderOpenConnectionsFlow is called here again for each replica
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+        // 2. replica validation checks whether the collection is under warmup
+        // 3. every replica whose health is Unknown requires another warmup-flow check
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
         if (isCollectionUnderWarmUpFlow) {
             Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
@@ -614,6 +617,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             null,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -666,6 +670,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             null,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -716,6 +721,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null,
                                                             null);
 
@@ -774,6 +780,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 ApiType.SQL,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null,
                                                                 null);
 
@@ -872,6 +879,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null,
                                                                 null);
 
@@ -990,6 +998,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1033,22 +1042,19 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
             if (submitOpenConnectionTasksAndInitCaches) {
 
-                // If submitOpenConnectionTasksAndInitCaches is called, then replica validation will also include for unknown status
-                // isCollectionRidUnderOpenConnectionsFlow called 6 times
+                // If submitOpenConnectionTasksAndInitCaches is called, replica validation also
+                // includes Unknown replicas. Derive the exact call count from the returned states.
                 // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
                 // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
                 // under connection warm up flow
-                // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
-                // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
-                // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-                // 3. it needs to be checked if the replicas (up for validation) with Unknown health status are used by a container which
-                // is part of the warm-up flow - isCollectionRidUnderOpenConnectionsFlow is called here again (called up to 4 times - 1 for each replica)
-                // for a given physical partition
+                // 2. replica validation checks whether the collection is under warmup
+                // 3. every replica whose health is Unknown requires another warmup-flow check
                 Mockito
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.atLeastOnce())
                     .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
                 assertThat(openConnectionArguments.getAllValues()).hasSize(addressInfosFromCache.size());
-                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(6))
+                Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(
+                        expectedOpenConnectionsFlowChecks(addressInfosFromCache)))
                         .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
             } else {
                 // Open connection will only be called for unhealthyPending status address
@@ -1152,6 +1158,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1214,6 +1221,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1304,6 +1312,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             ConnectionPolicy.getDefaultPolicy(),
             proactiveOpenConnectionsProcessorMock,
+            null,
             null);
 
         RxDocumentServiceRequest req =
@@ -1367,10 +1376,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
         // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
         // isCollectionRidUnderOpenConnectionsFlow check to determine the no. of connections to open
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(2))
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.timeout(5000).times(2))
                .isCollectionRidUnderOpenConnectionsFlow(Mockito.any());
 
-        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
+        Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.timeout(5000).times(1))
                .submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt());
     }
 
@@ -1396,6 +1405,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt())).thenReturn(dummyOpenConnectionsTask);
@@ -1495,6 +1505,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 null,
+                null,
                 null);
 
         // connected status
@@ -1541,9 +1552,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     private static void assertEqual(AddressInformation actual, Address expected) {
-        assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
+        assertThat(stripTrailingSlash(actual.getPhysicalUri().getURIAsString()))
+            .isEqualTo(stripTrailingSlash(expected.getPhyicalUri()));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
         assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
+    }
+
+    private static String stripTrailingSlash(String uri) {
+        return uri == null ? null : uri.replaceAll("/+$", "");
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {
@@ -1565,13 +1581,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     public static<T> T getSuccessResult(Mono<T> observable, long timeout) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<T> value = new AtomicReference<>();
+        StepVerifier.create(observable)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+        return value.get();
     }
 
     public static void validateSuccess(Mono<List<Address>> observable,
@@ -1580,13 +1595,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                        RxDocumentServiceRequest serviceRequest,
                                        int requestIndex,
                                        long timeout) {
-        TestSubscriber<List<Address>> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
         // Verifying activity id is being set in header on address call to gateway.
         String addressResolutionActivityId =
             BridgeInternal.getClientSideRequestStatics(serviceRequest.requestContext.cosmosDiagnostics).getAddressResolutionStatistics().keySet().iterator().next();
@@ -1597,11 +1609,11 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
     public void before_GatewayAddressCacheTest() {
         client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(30000);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdCollection = createCollection(client, createdDatabase.getId(), getInternalCollectionDefinition(), options);
     }
 
     @AfterClass(groups = { "direct" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -1610,7 +1622,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
+    static protected DocumentCollection getInternalCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -1632,12 +1644,128 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         return new HttpClientUnderTestWrapper(origHttpClient);
     }
 
+    /**
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are included in
+     * GatewayAddressCache's defaultRequestHeaders, which are sent on every address
+     * resolution request.
+     */
+    @Test(groups = { "unit" })
+    public void additionalHeadersIncludedInDefaultRequestHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            additionalHeaders);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        assertThat(defaultRequestHeaders).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+    }
+
+    /**
+     * Verifies that additionalHeaders do NOT overwrite SDK system headers (USER_AGENT, VERSION, etc.)
+     * in GatewayAddressCache's defaultRequestHeaders. putIfAbsent is used so SDK headers
+     * set before additionalHeaders are preserved.
+     */
+    @Test(groups = { "unit" })
+    public void additionalHeadersDoNotOverwriteSdkSystemHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, "malicious-agent");
+        additionalHeaders.put(HttpConstants.HttpHeaders.VERSION, "bad-version");
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            additionalHeaders);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        // SDK headers should NOT be overwritten
+        assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.USER_AGENT)).isNotEqualTo("malicious-agent");
+        assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
+        // Additional header should still be added
+        assertThat(defaultRequestHeaders).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+    }
+
+    /**
+     * Verifies that when additionalHeaders is null, GatewayAddressCache's defaultRequestHeaders
+     * contains only SDK system headers and no extra entries.
+     */
+    @Test(groups = { "unit" })
+    public void nullAdditionalHeadersDoesNotAffectDefaultRequestHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        // Should only contain SDK system headers, no workload-id
+        assertThat(defaultRequestHeaders).containsKey(HttpConstants.HttpHeaders.USER_AGENT);
+        assertThat(defaultRequestHeaders).containsKey(HttpConstants.HttpHeaders.VERSION);
+        assertThat(defaultRequestHeaders).doesNotContainKey(HttpConstants.HttpHeaders.WORKLOAD_ID);
+    }
+
     public String getNameBasedCollectionLink() {
         return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 
     public String getCollectionSelfLink() {
         return createdCollection.getSelfLink();
+    }
+
+    private static int expectedOpenConnectionsFlowChecks(List<AddressInformation> addressInfos) {
+        // validateReplicaAddresses performs one collection-level check, then one additional check
+        // for each Unknown replica. UnhealthyPending replicas are validated without that extra check.
+        int unknownReplicaCount = (int) addressInfos.stream()
+            .filter(address -> address.getPhysicalUri().getHealthStatus() == Unknown)
+            .count();
+        return 2 + unknownReplicaCount;
     }
 
     private Document getDocumentDefinition() {

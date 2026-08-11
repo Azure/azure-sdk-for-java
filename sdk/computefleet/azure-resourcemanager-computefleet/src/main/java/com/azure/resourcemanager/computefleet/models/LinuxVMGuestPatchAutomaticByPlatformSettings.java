@@ -19,6 +19,7 @@ import java.io.IOException;
 public final class LinuxVMGuestPatchAutomaticByPlatformSettings
     implements JsonSerializable<LinuxVMGuestPatchAutomaticByPlatformSettings> {
     /*
+     * 
      * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      */
@@ -36,7 +37,8 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
     }
 
     /**
-     * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
+     * Get the rebootSetting property:
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      * 
      * @return the rebootSetting value.
@@ -46,7 +48,8 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
     }
 
     /**
-     * Set the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
+     * Set the rebootSetting property:
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      * 
      * @param rebootSetting the rebootSetting value to set.
@@ -79,14 +82,6 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings
         withBypassPlatformSafetyChecksOnUserSchedule(Boolean bypassPlatformSafetyChecksOnUserSchedule) {
         this.bypassPlatformSafetyChecksOnUserSchedule = bypassPlatformSafetyChecksOnUserSchedule;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

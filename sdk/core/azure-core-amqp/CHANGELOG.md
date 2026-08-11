@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,61 @@
 
 ### Bugs Fixed
 
+- Fixed a memory leak in `RequestResponseChannel` (used by management/request-response operations such as
+  lock renewal, peek, schedule, and session state). The channel's `SendLinkHandler` emits a link-credit value
+  on every AMQP flow frame into a unicast, unbounded-buffer sink, but the channel never subscribed to it, so the
+  credits buffered indefinitely and the heap grew steadily for long-lived, cached channels. The channel now drains
+  the credit flux. ([#47261](https://github.com/Azure/azure-sdk-for-java/issues/47261))
+
 ### Other Changes
+
+## 2.12.0 (2026-06-08)
+
+### Features Added
+
+- Added support for reading the `com.microsoft:max-message-batch-size` AMQP vendor property from
+  sender link remote properties, with fallback to `max-message-size` when the property is absent.
+  Allows downstream messaging packages to size message batches against the broker-enforced batch
+  limit, which can be smaller than `max-message-size` on Premium large-message entities.
+  ([#48214](https://github.com/Azure/azure-sdk-for-java/pull/48214))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+
+## 2.11.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
+
+## 2.11.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed memory leak in azure-core-amqp `ReactorConnection` caused by redundant `cache()` operator. ([#44228](https://github.com/Azure/azure-sdk-for-java/issues/44228), [#47508](https://github.com/Azure/azure-sdk-for-java/issues/47508))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
+## 2.11.2 (2025-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
 
 ## 2.11.1 (2025-09-05)
 

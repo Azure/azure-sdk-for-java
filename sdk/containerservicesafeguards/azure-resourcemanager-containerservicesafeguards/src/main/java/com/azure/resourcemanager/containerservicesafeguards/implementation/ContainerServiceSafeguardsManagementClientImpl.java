@@ -157,7 +157,7 @@ public final class ContainerServiceSafeguardsManagementClientImpl
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-05-02-preview";
+        this.apiVersion = "2025-07-01";
         this.operations = new OperationsClientImpl(this);
         this.deploymentSafeguards = new DeploymentSafeguardsClientImpl(this);
     }
@@ -273,7 +273,7 @@ public final class ContainerServiceSafeguardsManagementClientImpl
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

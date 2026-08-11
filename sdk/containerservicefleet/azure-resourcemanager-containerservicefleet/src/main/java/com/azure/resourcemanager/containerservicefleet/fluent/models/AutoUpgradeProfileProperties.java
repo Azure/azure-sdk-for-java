@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -56,8 +55,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     private AutoUpgradeProfileStatus autoUpgradeProfileStatus;
 
     /*
-     * This is the target Kubernetes version for auto-upgrade. The format must be `{major version}.{minor version}`. For
-     * example, "1.30".
+     * This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
      * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
@@ -65,7 +64,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     private String targetKubernetesVersion;
 
     /*
-     * If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * If upgrade channel is not
+     * TargetKubernetesVersion, this field must be False.
      * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
      * N-2
      * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
@@ -201,8 +201,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Get the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
-     * be `{major version}.{minor version}`. For example, "1.30".
+     * Get the targetKubernetesVersion property: This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
      * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
@@ -214,8 +214,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Set the targetKubernetesVersion property: This is the target Kubernetes version for auto-upgrade. The format must
-     * be `{major version}.{minor version}`. For example, "1.30".
+     * Set the targetKubernetesVersion property: This is the target Kubernetes version
+     * for auto-upgrade. The format must be `{major version}.{minor version}`. For example, "1.30".
      * By default, this is empty.
      * If upgrade channel is set to TargetKubernetesVersion, this field must not be empty.
      * If upgrade channel is Rapid, Stable or NodeImage, this field must be empty.
@@ -229,7 +229,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Get the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * Get the longTermSupport property: If upgrade channel is not
+     * TargetKubernetesVersion, this field must be False.
      * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
      * N-2
      * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
@@ -243,7 +244,8 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
     }
 
     /**
-     * Set the longTermSupport property: If upgrade channel is not TargetKubernetesVersion, this field must be False.
+     * Set the longTermSupport property: If upgrade channel is not
+     * TargetKubernetesVersion, this field must be False.
      * If set to True: Fleet auto upgrade will continue generate update runs for patches of minor versions earlier than
      * N-2
      * (where N is the latest supported minor version) if those minor versions support Long-Term Support (LTS).
@@ -257,27 +259,6 @@ public final class AutoUpgradeProfileProperties implements JsonSerializable<Auto
         this.longTermSupport = longTermSupport;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (channel() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property channel in model AutoUpgradeProfileProperties"));
-        }
-        if (nodeImageSelection() != null) {
-            nodeImageSelection().validate();
-        }
-        if (autoUpgradeProfileStatus() != null) {
-            autoUpgradeProfileStatus().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AutoUpgradeProfileProperties.class);
 
     /**
      * {@inheritDoc}

@@ -37,7 +37,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The state of the call connection.
+     * The states of a call connection.
      */
     @Generated
     private CallConnectionStateModelInternal callConnectionState;
@@ -49,8 +49,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private String callbackUri;
 
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
-     * Required only when calling a PSTN callee.
+     * A phone number.
      */
     @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
@@ -62,7 +61,9 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private String sourceDisplayName;
 
     /*
-     * Source identity.
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel source;
@@ -74,38 +75,25 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private String correlationId;
 
     /*
-     * Identity of the answering entity. Only populated when identity is provided in the request.
+     * A user that got created with an Azure Communication Services resource.
      */
     @Generated
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * SubscriptionId for media streaming
-     */
-    @Generated
-    private String mediaSubscriptionId;
-
-    /*
-     * SubscriptionId for transcription
-     */
-    @Generated
-    private String dataSubscriptionId;
-
-    /*
-     * The state of media streaming subscription for the call
+     * Media streaming Subscription Object.
      */
     @Generated
     private MediaStreamingSubscriptionInternal mediaStreamingSubscription;
 
     /*
-     * Transcription Subscription.
+     * Transcription Subscription Object.
      */
     @Generated
     private TranscriptionSubscriptionInternal transcriptionSubscription;
 
     /*
-     * Identity of the original Pstn target of an incoming Call. Only populated when the original target is a Pstn
-     * number.
+     * A phone number.
      */
     @Generated
     private PhoneNumberIdentifierModel answeredFor;
@@ -184,7 +172,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the callConnectionState property: The state of the call connection.
+     * Get the callConnectionState property: The states of a call connection.
      * 
      * @return the callConnectionState value.
      */
@@ -194,7 +182,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the callConnectionState property: The state of the call connection.
+     * Set the callConnectionState property: The states of a call connection.
      * 
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -229,9 +217,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when calling a PSTN callee.
+     * Get the sourceCallerIdNumber property: A phone number.
      * 
      * @return the sourceCallerIdNumber value.
      */
@@ -241,9 +227,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when calling a PSTN callee.
+     * Set the sourceCallerIdNumber property: A phone number.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -277,7 +261,9 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the source property: Source identity.
+     * Get the source property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @return the source value.
      */
@@ -287,7 +273,9 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the source property: Source identity.
+     * Set the source property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -321,8 +309,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
-     * request.
+     * Get the answeredBy property: A user that got created with an Azure Communication Services resource.
      * 
      * @return the answeredBy value.
      */
@@ -332,8 +319,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
-     * request.
+     * Set the answeredBy property: A user that got created with an Azure Communication Services resource.
      * 
      * @param answeredBy the answeredBy value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -345,51 +331,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @return the mediaSubscriptionId value.
-     */
-    @Generated
-    public String getMediaSubscriptionId() {
-        return this.mediaSubscriptionId;
-    }
-
-    /**
-     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     * 
-     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    @Generated
-    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
-        this.mediaSubscriptionId = mediaSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @return the dataSubscriptionId value.
-     */
-    @Generated
-    public String getDataSubscriptionId() {
-        return this.dataSubscriptionId;
-    }
-
-    /**
-     * Set the dataSubscriptionId property: SubscriptionId for transcription.
-     * 
-     * @param dataSubscriptionId the dataSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    @Generated
-    public CallConnectionPropertiesInternal setDataSubscriptionId(String dataSubscriptionId) {
-        this.dataSubscriptionId = dataSubscriptionId;
-        return this;
-    }
-
-    /**
-     * Get the mediaStreamingSubscription property: The state of media streaming subscription for the call.
+     * Get the mediaStreamingSubscription property: Media streaming Subscription Object.
      * 
      * @return the mediaStreamingSubscription value.
      */
@@ -399,7 +341,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the mediaStreamingSubscription property: The state of media streaming subscription for the call.
+     * Set the mediaStreamingSubscription property: Media streaming Subscription Object.
      * 
      * @param mediaStreamingSubscription the mediaStreamingSubscription value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -412,7 +354,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the transcriptionSubscription property: Transcription Subscription.
+     * Get the transcriptionSubscription property: Transcription Subscription Object.
      * 
      * @return the transcriptionSubscription value.
      */
@@ -422,7 +364,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the transcriptionSubscription property: Transcription Subscription.
+     * Set the transcriptionSubscription property: Transcription Subscription Object.
      * 
      * @param transcriptionSubscription the transcriptionSubscription value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -435,8 +377,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
+     * Get the answeredFor property: A phone number.
      * 
      * @return the answeredFor value.
      */
@@ -446,8 +387,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
-     * original target is a Pstn number.
+     * Set the answeredFor property: A phone number.
      * 
      * @param answeredFor the answeredFor value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -476,8 +416,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeStringField("correlationId", this.correlationId);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
-        jsonWriter.writeStringField("mediaSubscriptionId", this.mediaSubscriptionId);
-        jsonWriter.writeStringField("dataSubscriptionId", this.dataSubscriptionId);
         jsonWriter.writeJsonField("mediaStreamingSubscription", this.mediaStreamingSubscription);
         jsonWriter.writeJsonField("transcriptionSubscription", this.transcriptionSubscription);
         jsonWriter.writeJsonField("answeredFor", this.answeredFor);
@@ -526,10 +464,6 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
                 } else if ("answeredBy".equals(fieldName)) {
                     deserializedCallConnectionPropertiesInternal.answeredBy
                         = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("mediaSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.mediaSubscriptionId = reader.getString();
-                } else if ("dataSubscriptionId".equals(fieldName)) {
-                    deserializedCallConnectionPropertiesInternal.dataSubscriptionId = reader.getString();
                 } else if ("mediaStreamingSubscription".equals(fieldName)) {
                     deserializedCallConnectionPropertiesInternal.mediaStreamingSubscription
                         = MediaStreamingSubscriptionInternal.fromJson(reader);

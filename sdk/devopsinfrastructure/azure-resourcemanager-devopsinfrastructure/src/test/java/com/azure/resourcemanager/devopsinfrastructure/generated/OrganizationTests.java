@@ -18,7 +18,7 @@ public final class OrganizationTests {
         Assertions.assertEquals("cciqihnhungbwjz", model.url());
         Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
         Assertions.assertEquals(171596164, model.parallelism());
-        Assertions.assertEquals(true, model.openAccess());
+        Assertions.assertTrue(model.openAccess());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,6 +31,6 @@ public final class OrganizationTests {
         Assertions.assertEquals("cciqihnhungbwjz", model.url());
         Assertions.assertEquals("ygxgispemvtz", model.projects().get(0));
         Assertions.assertEquals(171596164, model.parallelism());
-        Assertions.assertEquals(true, model.openAccess());
+        Assertions.assertTrue(model.openAccess());
     }
 }

@@ -22,7 +22,7 @@ public final class JobsExecutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"nyttzgix\",\"id\":\"rihl\",\"type\":\"gbehlqtxnr\",\"properties\":{\"status\":\"Stopped\",\"startTime\":\"2021-09-25T09:53:37Z\",\"endTime\":\"2021-03-19T08:09:23Z\",\"template\":{\"containers\":[{\"image\":\"dhdaqotwfhipx\",\"name\":\"sabvcip\",\"command\":[\"afcz\",\"umljcirvpef\",\"cdveititj\"],\"args\":[\"zaj\",\"nsjhwjuyxxb\",\"qvmvuaytuadxkxe\",\"bwpntghy\"],\"env\":[{}],\"resources\":{}},{\"image\":\"drnxsluvlzla\",\"name\":\"t\",\"command\":[\"bqhvfdqqjwkr\",\"wzdanojisgglmvo\",\"atuztjct\",\"bpvbkaehxsmzygd\"],\"args\":[\"kwseivmakxhyso\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"lkbectvtfjmskd\",\"name\":\"maiubavlzwp\",\"command\":[\"falkzazm\",\"oke\",\"gjqafkmkrokzr\"],\"args\":[\"etw\",\"qrtvaoznqni\",\"iezeagm\",\"eituugedhfpjs\"],\"env\":[{},{},{}],\"resources\":{}},{\"image\":\"lsyj\",\"name\":\"olctae\",\"command\":[\"yrle\",\"jcustbvtq\"],\"args\":[\"xzvsgeafgf\"],\"env\":[{},{},{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"sxezppkkwaa\",\"name\":\"k\",\"command\":[\"lp\",\"eqtoyrpl\",\"xlaj\"],\"args\":[\"pq\",\"evhamfowg\",\"btmkekxpkzwaq\"],\"env\":[{},{}],\"resources\":{}},{\"image\":\"vchiqbpl\",\"name\":\"idu\",\"command\":[\"ekxbyjg\",\"sfepxyihpq\",\"dagrhrdicxdw\"],\"args\":[\"owxwyovcxjsgbip\",\"ukdveksbuhoduc\",\"v\",\"scrdp\"],\"env\":[{},{}],\"resources\":{}},{\"image\":\"jdusspyszekb\",\"name\":\"lkaaggkr\",\"command\":[\"frnuybffljfi\",\"mreoagsqtaad\",\"srexxfavs\",\"wudohzilfm\"],\"args\":[\"kpsimsfeypofqp\",\"bh\",\"qgsdr\",\"mttjxophgerh\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
+            = "{\"value\":[{\"name\":\"fiijrykwlefksxqc\",\"id\":\"zfpxgnmqvzvluy\",\"type\":\"aiossscyvaifp\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-06-18T06:17:35Z\",\"endTime\":\"2021-10-04T22:51:20Z\",\"template\":{\"containers\":[{\"image\":\"fxtjdhsoym\",\"name\":\"v\",\"command\":[\"ftteh\",\"pboujs\",\"kfvvdshxcde\",\"suenyg\"],\"args\":[\"g\",\"tfrnquk\",\"rf\",\"s\"],\"env\":[{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"ylt\",\"name\":\"ntf\",\"command\":[\"g\",\"jdxwnazkurrdre\",\"zjwhsetwwjwz\"],\"args\":[\"e\",\"zuukykcyqhyqq\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,21 @@ public final class JobsExecutionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<JobExecution> response
-            = manager.jobsExecutions().list("zgczeu", "tgxdncaqt", "iekoif", com.azure.core.util.Context.NONE);
+        PagedIterable<JobExecution> response = manager.jobsExecutions()
+            .list("nkbtlwljss", "ctsnldkpwol", "isubxbteog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nyttzgix", response.iterator().next().name());
-        Assertions.assertEquals("rihl", response.iterator().next().id());
-        Assertions.assertEquals("gbehlqtxnr", response.iterator().next().type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T09:53:37Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-19T08:09:23Z"), response.iterator().next().endTime());
-        Assertions.assertEquals("dhdaqotwfhipx", response.iterator().next().template().containers().get(0).image());
-        Assertions.assertEquals("sabvcip", response.iterator().next().template().containers().get(0).name());
-        Assertions.assertEquals("afcz", response.iterator().next().template().containers().get(0).command().get(0));
-        Assertions.assertEquals("zaj", response.iterator().next().template().containers().get(0).args().get(0));
-        Assertions.assertEquals("sxezppkkwaa", response.iterator().next().template().initContainers().get(0).image());
-        Assertions.assertEquals("k", response.iterator().next().template().initContainers().get(0).name());
-        Assertions.assertEquals("lp", response.iterator().next().template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("pq", response.iterator().next().template().initContainers().get(0).args().get(0));
+        Assertions.assertEquals("fiijrykwlefksxqc", response.iterator().next().name());
+        Assertions.assertEquals("zfpxgnmqvzvluy", response.iterator().next().id());
+        Assertions.assertEquals("aiossscyvaifp", response.iterator().next().type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T06:17:35Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T22:51:20Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("fxtjdhsoym", response.iterator().next().template().containers().get(0).image());
+        Assertions.assertEquals("v", response.iterator().next().template().containers().get(0).name());
+        Assertions.assertEquals("ftteh", response.iterator().next().template().containers().get(0).command().get(0));
+        Assertions.assertEquals("g", response.iterator().next().template().containers().get(0).args().get(0));
+        Assertions.assertEquals("ylt", response.iterator().next().template().initContainers().get(0).image());
+        Assertions.assertEquals("ntf", response.iterator().next().template().initContainers().get(0).name());
+        Assertions.assertEquals("g", response.iterator().next().template().initContainers().get(0).command().get(0));
+        Assertions.assertEquals("e", response.iterator().next().template().initContainers().get(0).args().get(0));
     }
 }

@@ -122,11 +122,11 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(
-                        "Lease with token {}: Failed to update lease with concurrency token '{}', owner '{}', continuationToken '{}'.",
-                        cachedLease.getLeaseToken(),
-                        cachedLease.getConcurrencyToken(),
-                        cachedLease.getOwner(),
-                        cachedLease.getReadableContinuationToken(), throwable);
+                        "Lease with token " + cachedLease.getLeaseToken() +
+                            ": Failed to update lease with concurrency token '" + cachedLease.getConcurrencyToken() +
+                            "', owner '" + cachedLease.getOwner() +
+                            "', continuationToken '" + cachedLease.getReadableContinuationToken() + "'.",
+                        throwable);
 
                     return Mono.just(cachedLease);
                 }

@@ -284,4 +284,18 @@ public class TestProxyPlaybackClient implements HttpClient {
     public String getRecordingFileLocation() {
         return xRecordingFileLocation;
     }
+
+    /**
+     * Redirects the provided {@link HttpRequest} to the test proxy to retrieve the playback response.
+     * This method is invoked during playback mode to simulate the expected response for a request.
+     *
+     * @param request The {@link HttpRequest} to be sent.
+     * @param context The {@link Context} associated with the operation.
+     * @return A {@link Mono} of {@link HttpResponse} containing the playback response.
+     */
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        beforeSendingRequest(request);
+        return client.send(request, context).map(this::afterReceivedResponse);
+    }
 }

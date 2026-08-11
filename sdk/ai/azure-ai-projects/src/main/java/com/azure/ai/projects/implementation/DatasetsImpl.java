@@ -4,7 +4,7 @@
 
 package com.azure.ai.projects.implementation;
 
-import com.azure.ai.projects.ProjectsServiceVersion;
+import com.azure.ai.projects.AIProjectsServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -68,7 +68,7 @@ public final class DatasetsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public ProjectsServiceVersion getServiceVersion() {
+    public AIProjectsServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
@@ -273,6 +273,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -315,6 +317,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -354,6 +358,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -393,6 +399,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * List all versions of the given DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -432,6 +440,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -472,6 +482,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -510,6 +522,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -548,6 +562,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * List the latest version of each DatasetVersion.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -586,7 +602,10 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get a version
+     * 
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -614,7 +633,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response} on successful completion of
+     * @return a version
+     * 
+     * Get the specific version of the DatasetVersion along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -626,7 +647,10 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the specific version of the DatasetVersion.
+     * Get a version
+     * 
+     * Get the specific version of the DatasetVersion. The service returns 404 Not Found error if the DatasetVersion
+     * does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -654,7 +678,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the DatasetVersion along with {@link Response}.
+     * @return a version
+     * 
+     * Get the specific version of the DatasetVersion along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDatasetVersionWithResponse(String name, String version,
@@ -665,7 +691,10 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete a version
+     * 
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      * 
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -684,7 +713,10 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Delete the specific version of the DatasetVersion.
+     * Delete a version
+     * 
+     * Delete the specific version of the DatasetVersion. The service returns 204 No Content if the DatasetVersion was
+     * deleted successfully or if the DatasetVersion does not exist.
      * 
      * @param name The name of the resource.
      * @param version The version of the DatasetVersion to delete.
@@ -702,6 +734,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing DatasetVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -764,6 +798,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Create or update a version
+     * 
      * Create a new or update an existing DatasetVersion with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -826,7 +862,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -834,7 +872,7 @@ public final class DatasetsImpl {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -849,12 +887,12 @@ public final class DatasetsImpl {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -881,7 +919,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Start a new or get an existing pending upload of a dataset for a specific version.
+     * Start a pending upload
+     * 
+     * Initiates a new pending upload or retrieves an existing one for the specified dataset version.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -889,7 +929,7 @@ public final class DatasetsImpl {
      * {
      *     pendingUploadId: String (Optional)
      *     connectionName: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -904,12 +944,12 @@ public final class DatasetsImpl {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      *     pendingUploadId: String (Required)
      *     version: String (Optional)
-     *     pendingUploadType: String(None/BlobReference) (Required)
+     *     pendingUploadType: String(None/BlobReference/TemporaryBlobReference) (Required)
      * }
      * }
      * </pre>
@@ -934,7 +974,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     * 
+     * Gets the SAS credential to access the storage account associated with a Dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -945,7 +987,7 @@ public final class DatasetsImpl {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      * }
@@ -959,7 +1001,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * @return dataset credentials
+     * 
+     * Gets the SAS credential to access the storage account associated with a Dataset version along with
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -971,7 +1015,9 @@ public final class DatasetsImpl {
     }
 
     /**
-     * Get the SAS credential to access the storage account associated with a Dataset version.
+     * Get dataset credentials
+     * 
+     * Gets the SAS credential to access the storage account associated with a Dataset version.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -982,7 +1028,7 @@ public final class DatasetsImpl {
      *         storageAccountArmId: String (Required)
      *         credential (Required): {
      *             sasUri: String (Required)
-     *             type: String (Required)
+     *             type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *         }
      *     }
      * }
@@ -996,7 +1042,9 @@ public final class DatasetsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the SAS credential to access the storage account associated with a Dataset version along with
+     * @return dataset credentials
+     * 
+     * Gets the SAS credential to access the storage account associated with a Dataset version along with
      * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1007,6 +1055,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1049,6 +1099,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1089,6 +1141,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -1131,6 +1185,8 @@ public final class DatasetsImpl {
     }
 
     /**
+     * List latest versions
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

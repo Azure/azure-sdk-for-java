@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationReportResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationReportResult model = BinaryData.fromString("{\"id\":\"macl\",\"reportUrl\":\"vxnqmhrpqpd\"}")
+        MigrationReportResult model = BinaryData.fromString("{\"id\":\"bfihw\",\"reportUrl\":\"vctafsrb\"}")
             .toObject(MigrationReportResult.class);
-        Assertions.assertEquals("macl", model.id());
-        Assertions.assertEquals("vxnqmhrpqpd", model.reportUrl());
+        Assertions.assertEquals("bfihw", model.id());
+        Assertions.assertEquals("vctafsrb", model.reportUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationReportResult model = new MigrationReportResult().withId("macl").withReportUrl("vxnqmhrpqpd");
+        MigrationReportResult model = new MigrationReportResult().withId("bfihw").withReportUrl("vctafsrb");
         model = BinaryData.fromObject(model).toObject(MigrationReportResult.class);
-        Assertions.assertEquals("macl", model.id());
-        Assertions.assertEquals("vxnqmhrpqpd", model.reportUrl());
+        Assertions.assertEquals("bfihw", model.id());
+        Assertions.assertEquals("vctafsrb", model.reportUrl());
     }
 }

@@ -27,7 +27,7 @@ public final class ProjectsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.projects().deleteWithResponse("ymc", "m", "upyvqyvliq", com.azure.core.util.Context.NONE);
+        manager.projects().deleteWithResponse("kwmnfeub", "zjy", "kwfugiphrrkuu", com.azure.core.util.Context.NONE);
 
     }
 }

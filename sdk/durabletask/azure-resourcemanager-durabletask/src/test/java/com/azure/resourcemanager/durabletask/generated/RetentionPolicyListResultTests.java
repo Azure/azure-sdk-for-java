@@ -13,12 +13,12 @@ public final class RetentionPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1939362977,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":917498996,\"orchestrationState\":\"Terminated\"}]},\"id\":\"aoyfhrtxilnerkuj\",\"name\":\"s\",\"type\":\"l\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1398747720,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1479576759,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1113809263,\"orchestrationState\":\"Failed\"}]},\"id\":\"prbnwbxgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"}],\"nextLink\":\"rwzwbng\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"retentionPolicies\":[{\"retentionPeriodInDays\":904416760,\"orchestrationState\":\"Completed\"}]},\"id\":\"upfh\",\"name\":\"hltrpmopjmcmatuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1447641859,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":466984415,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":402102325,\"orchestrationState\":\"Canceled\"}]},\"id\":\"xbezyiuokktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":908271116,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1510965337,\"orchestrationState\":\"Canceled\"}]},\"id\":\"ys\",\"name\":\"kiiuxhqyudxor\",\"type\":\"qn\"}],\"nextLink\":\"oczvy\"}")
             .toObject(RetentionPolicyListResult.class);
-        Assertions.assertEquals(1939362977,
+        Assertions.assertEquals(904416760,
             model.value().get(0).properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             model.value().get(0).properties().retentionPolicies().get(0).orchestrationState());
-        Assertions.assertEquals("rwzwbng", model.nextLink());
+        Assertions.assertEquals("oczvy", model.nextLink());
     }
 }

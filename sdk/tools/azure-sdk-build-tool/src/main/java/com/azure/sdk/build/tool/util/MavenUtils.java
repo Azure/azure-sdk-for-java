@@ -61,6 +61,8 @@ public class MavenUtils {
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("accept", "application/xml");
+            connection.setRequestProperty("Content-signal", "search=yes,ai-train=no");
+            connection.setRequestProperty("User-Agent", "azure-sdk-for-java");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             int responseCode = connection.getResponseCode();

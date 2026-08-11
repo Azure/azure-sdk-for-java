@@ -37,7 +37,7 @@ public interface ScheduledActionResources {
      * 
      * @return the properties value.
      */
-    ScheduledActionProperties properties();
+    ScheduledActionsExtensionProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

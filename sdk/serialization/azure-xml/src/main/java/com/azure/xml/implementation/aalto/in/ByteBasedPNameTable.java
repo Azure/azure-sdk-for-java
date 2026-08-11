@@ -20,9 +20,9 @@ import com.azure.xml.implementation.aalto.util.NameTable;
 
 /**
  * This is a symbol table implementation used for storing byte-based
- * <code>PNames</code>, specifically, instances of ({@link ByteBasedPName}).
+ * <code>PNames</code>, specifically, instances of ({@link PName}).
  */
-public final class ByteBasedPNameTable extends NameTable {
+public final class ByteBasedPNameTable implements NameTable {
     final static int MIN_HASH_SIZE = 16;
 
     final static int INITIAL_COLLISION_LEN = 32;
@@ -69,7 +69,7 @@ public final class ByteBasedPNameTable extends NameTable {
      * entries in <code>mMainHash</code>. Contains nulls for unused
      * entries.
      */
-    private ByteBasedPName[] mMainNames;
+    private PName[] mMainNames;
 
     // // // Then the collision/spill-over area info
 
@@ -163,7 +163,7 @@ public final class ByteBasedPNameTable extends NameTable {
         mMainNamesShared = false;
         mMainHashMask = hashSize - 1;
         mMainHash = new int[hashSize];
-        mMainNames = new ByteBasedPName[hashSize];
+        mMainNames = new PName[hashSize];
 
         mCollListShared = true; // just since it'll need to be allocated
         mCollList = null;
@@ -258,7 +258,7 @@ public final class ByteBasedPNameTable extends NameTable {
      * @return PName matching the symbol passed (or constructed for
      *   it)
      */
-    public ByteBasedPName findSymbol(int hash, int firstQuad, int secondQuad) {
+    public PName findSymbol(int hash, int firstQuad, int secondQuad) {
 
         int ix = (hash & mMainHashMask);
         int val = mMainHash[ix];
@@ -268,7 +268,7 @@ public final class ByteBasedPNameTable extends NameTable {
          */
         if ((((val >> 8) ^ hash) << 8) == 0) { // match
             // Ok, but do we have an actual match?
-            ByteBasedPName pname = mMainNames[ix];
+            PName pname = mMainNames[ix];
             if (pname == null) { // main slot empty; can't find
                 return null;
             }
@@ -309,7 +309,7 @@ public final class ByteBasedPNameTable extends NameTable {
      * @return PName matching the symbol passed (or constructed for
      *   it)
      */
-    public ByteBasedPName findSymbol(int hash, int[] quads, int qlen) {
+    public PName findSymbol(int hash, int[] quads, int qlen) {
         if (qlen < 3) { // another sanity check
             return findSymbol(hash, quads[0], (qlen < 2) ? 0 : quads[1]);
         }
@@ -317,7 +317,7 @@ public final class ByteBasedPNameTable extends NameTable {
         int ix = (hash & mMainHashMask);
         int val = mMainHash[ix];
         if ((((val >> 8) ^ hash) << 8) == 0) {
-            ByteBasedPName pname = mMainNames[ix];
+            PName pname = mMainNames[ix];
             if (pname == null) { // main slot empty; no collision list then either
                 return null;
             }
@@ -344,9 +344,8 @@ public final class ByteBasedPNameTable extends NameTable {
     /**********************************************************************
      */
 
-    public ByteBasedPName addSymbol(int hash, String symbolStr, int colonIx, int[] quads, int qlen) {
-        ByteBasedPName symbol
-            = ByteBasedPNameFactory.getInstance().constructPName(hash, symbolStr, colonIx, quads, qlen);
+    public PName addSymbol(int hash, String symbolStr, int colonIx, int[] quads, int qlen) {
+        PName symbol = ByteBasedPNameFactory.getInstance().constructPName(hash, symbolStr, colonIx, quads, qlen);
         doAddSymbol(hash, symbol);
         return symbol;
     }
@@ -430,7 +429,7 @@ public final class ByteBasedPNameTable extends NameTable {
     /**********************************************************************
      */
 
-    private void doAddSymbol(int hash, ByteBasedPName symbol) {
+    private void doAddSymbol(int hash, PName symbol) {
         if (mMainHashShared) { // always have to modify main entry
             unshareMain();
         }
@@ -516,10 +515,10 @@ public final class ByteBasedPNameTable extends NameTable {
         int len = oldMainHash.length;
         mMainHash = new int[len + len];
         mMainHashMask = (len + len - 1);
-        ByteBasedPName[] oldNames = mMainNames;
-        mMainNames = new ByteBasedPName[len + len];
+        PName[] oldNames = mMainNames;
+        mMainNames = new PName[len + len];
         for (int i = 0; i < len; ++i) {
-            ByteBasedPName symbol = oldNames[i];
+            PName symbol = oldNames[i];
             if (symbol != null) {
                 ++symbolsSeen;
                 int hash = symbol.hashCode();
@@ -547,7 +546,7 @@ public final class ByteBasedPNameTable extends NameTable {
         for (int i = 0; i < oldEnd; ++i) {
             for (Bucket curr = oldBuckets[i]; curr != null; curr = curr.mNext) {
                 ++symbolsSeen;
-                ByteBasedPName symbol = curr.mName;
+                PName symbol = curr.mName;
                 int hash = symbol.hashCode();
                 int ix = (hash & mMainHashMask);
                 int val = mMainHash[ix];
@@ -635,9 +634,9 @@ public final class ByteBasedPNameTable extends NameTable {
     }
 
     private void unshareNames() {
-        ByteBasedPName[] old = mMainNames;
+        PName[] old = mMainNames;
         int len = old.length;
-        mMainNames = new ByteBasedPName[len];
+        mMainNames = new PName[len];
         System.arraycopy(old, 0, mMainNames, 0, len);
         mMainNamesShared = false;
     }
@@ -656,10 +655,10 @@ public final class ByteBasedPNameTable extends NameTable {
      */
 
     final static class Bucket {
-        final ByteBasedPName mName;
+        final PName mName;
         final Bucket mNext;
 
-        Bucket(ByteBasedPName name, Bucket next) {
+        Bucket(PName name, Bucket next) {
             mName = name;
             mNext = next;
         }
@@ -672,12 +671,12 @@ public final class ByteBasedPNameTable extends NameTable {
             return len;
         }
 
-        public ByteBasedPName find(int hash, int firstQuad, int secondQuad) {
+        public PName find(int hash, int firstQuad, int secondQuad) {
             if (mName.hashEquals(hash, firstQuad, secondQuad)) {
                 return mName;
             }
             for (Bucket curr = mNext; curr != null; curr = curr.mNext) {
-                ByteBasedPName currName = curr.mName;
+                PName currName = curr.mName;
                 if (currName.hashEquals(hash, firstQuad, secondQuad)) {
                     return currName;
                 }
@@ -685,12 +684,12 @@ public final class ByteBasedPNameTable extends NameTable {
             return null;
         }
 
-        public ByteBasedPName find(int hash, int[] quads, int qlen) {
+        public PName find(int hash, int[] quads, int qlen) {
             if (mName.hashEquals(hash, quads, qlen)) {
                 return mName;
             }
             for (Bucket curr = mNext; curr != null; curr = curr.mNext) {
-                ByteBasedPName currName = curr.mName;
+                PName currName = curr.mName;
                 if (currName.hashEquals(hash, quads, qlen)) {
                     return currName;
                 }

@@ -33,18 +33,6 @@ public abstract class SingleByteXmlWriter extends ByteXmlWriter {
 
     /*
     /**********************************************************************
-    /* Abstract methods for sub-classes
-    /**********************************************************************
-     */
-
-    @Override
-    public abstract int getHighestEncodable();
-
-    @Override
-    public abstract void writeRaw(char[] cbuf, int offset, int len) throws IOException, XMLStreamException;
-
-    /*
-    /**********************************************************************
     /* Internal methods, low-level writes
     /**********************************************************************
      */

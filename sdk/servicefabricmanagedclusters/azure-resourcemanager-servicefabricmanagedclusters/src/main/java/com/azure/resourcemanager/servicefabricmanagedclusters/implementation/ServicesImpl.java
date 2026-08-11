@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServicesClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ServiceResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartReplicaRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceResource;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.Services;
 
@@ -31,12 +32,8 @@ public final class ServicesImpl implements Services {
         String applicationName, String serviceName, Context context) {
         Response<ServiceResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServiceResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ServiceResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ServiceResource get(String resourceGroupName, String clusterName, String applicationName,
@@ -71,6 +68,17 @@ public final class ServicesImpl implements Services {
         PagedIterable<ServiceResourceInner> inner
             = this.serviceClient().listByApplications(resourceGroupName, clusterName, applicationName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceResourceImpl(inner1, this.manager()));
+    }
+
+    public void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters) {
+        this.serviceClient().restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters);
+    }
+
+    public void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters, Context context) {
+        this.serviceClient()
+            .restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters, context);
     }
 
     public ServiceResource getById(String id) {

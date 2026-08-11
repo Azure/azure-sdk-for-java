@@ -12,10 +12,10 @@ public final class DeployJobStepStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeployJobStepStatistics model = BinaryData.fromString(
-            "{\"statisticsType\":\"deploy\",\"totalCount\":720121920,\"successCount\":798441434,\"failedCount\":1495315655}")
+            "{\"statisticsType\":\"deploy\",\"totalCount\":1405822792,\"successCount\":224847160,\"failedCount\":38783234}")
             .toObject(DeployJobStepStatistics.class);
-        Assertions.assertEquals(720121920, model.totalCount());
-        Assertions.assertEquals(798441434, model.successCount());
-        Assertions.assertEquals(1495315655, model.failedCount());
+        Assertions.assertEquals(1405822792, model.totalCount());
+        Assertions.assertEquals(224847160, model.successCount());
+        Assertions.assertEquals(38783234, model.failedCount());
     }
 }

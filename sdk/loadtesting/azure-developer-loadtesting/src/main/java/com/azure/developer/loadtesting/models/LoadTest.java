@@ -152,6 +152,18 @@ public final class LoadTest implements JsonSerializable<LoadTest> {
     private List<String> engineBuiltInIdentityIds;
 
     /*
+     * Estimated virtual user hours for the test.
+     */
+    @Generated
+    private Double estimatedVirtualUserHours;
+
+    /*
+     * Preferences for the test.
+     */
+    @Generated
+    private TestPreferences preferences;
+
+    /*
      * The creation datetime(RFC 3339 literal format).
      */
     @Generated
@@ -664,6 +676,39 @@ public final class LoadTest implements JsonSerializable<LoadTest> {
     }
 
     /**
+     * Get the estimatedVirtualUserHours property: Estimated virtual user hours for the test.
+     *
+     * @return the estimatedVirtualUserHours value.
+     */
+    @Generated
+    public Double getEstimatedVirtualUserHours() {
+        return this.estimatedVirtualUserHours;
+    }
+
+    /**
+     * Get the preferences property: Preferences for the test.
+     *
+     * @return the preferences value.
+     */
+    @Generated
+    public TestPreferences getPreferences() {
+        return this.preferences;
+    }
+
+    /**
+     * Set the preferences property: Preferences for the test.
+     *
+     * @param preferences the preferences value to set.
+     * @return the LoadTest object itself.
+     */
+    @Generated
+    public LoadTest setPreferences(TestPreferences preferences) {
+        this.preferences = preferences;
+        this.updatedProperties.add("preferences");
+        return this;
+    }
+
+    /**
      * Get the createdDateTime property: The creation datetime(RFC 3339 literal format).
      *
      * @return the createdDateTime value.
@@ -735,6 +780,7 @@ public final class LoadTest implements JsonSerializable<LoadTest> {
                 this.engineBuiltInIdentityType == null ? null : this.engineBuiltInIdentityType.toString());
             jsonWriter.writeArrayField("engineBuiltInIdentityIds", this.engineBuiltInIdentityIds,
                 (writer, element) -> writer.writeString(element));
+            jsonWriter.writeJsonField("preferences", this.preferences);
             return jsonWriter.writeEndObject();
         }
     }
@@ -899,6 +945,16 @@ public final class LoadTest implements JsonSerializable<LoadTest> {
                     (writer, element) -> writer.writeString(element));
             }
         }
+        if (updatedProperties.contains("preferences")) {
+            if (this.preferences == null) {
+                jsonWriter.writeNullField("preferences");
+            } else {
+                JsonMergePatchHelper.getTestPreferencesAccessor().prepareModelForJsonMergePatch(this.preferences, true);
+                jsonWriter.writeJsonField("preferences", this.preferences);
+                JsonMergePatchHelper.getTestPreferencesAccessor()
+                    .prepareModelForJsonMergePatch(this.preferences, false);
+            }
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -963,6 +1019,10 @@ public final class LoadTest implements JsonSerializable<LoadTest> {
                 } else if ("engineBuiltInIdentityIds".equals(fieldName)) {
                     List<String> engineBuiltInIdentityIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedLoadTest.engineBuiltInIdentityIds = engineBuiltInIdentityIds;
+                } else if ("estimatedVirtualUserHours".equals(fieldName)) {
+                    deserializedLoadTest.estimatedVirtualUserHours = reader.getNullable(JsonReader::getDouble);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedLoadTest.preferences = TestPreferences.fromJson(reader);
                 } else if ("createdDateTime".equals(fieldName)) {
                     deserializedLoadTest.createdDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

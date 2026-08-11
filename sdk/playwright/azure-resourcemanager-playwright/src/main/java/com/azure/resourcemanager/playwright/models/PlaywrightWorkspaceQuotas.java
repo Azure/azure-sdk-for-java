@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface PlaywrightWorkspaceQuotas {
     /**
+<<<<<<<< HEAD:sdk/playwright/azure-resourcemanager-playwright/src/main/java/com/azure/resourcemanager/playwright/models/PlaywrightWorkspaceQuotas.java
      * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -29,6 +30,9 @@ public interface PlaywrightWorkspaceQuotas {
 
     /**
      * Gets a Playwright workspace quota resource by name.
+========
+     * Get the default, current and usages account quota limit.
+>>>>>>>> main:sdk/netapp/azure-resourcemanager-netapp/src/main/java/com/azure/resourcemanager/netapp/models/NetAppResourceQuotaLimitsAccounts.java
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -66,6 +70,51 @@ public interface PlaywrightWorkspaceQuotas {
      * @return the response of a PlaywrightWorkspaceQuota list operation as paginated response with
      * {@link PagedIterable}.
      */
+<<<<<<<< HEAD:sdk/playwright/azure-resourcemanager-playwright/src/main/java/com/azure/resourcemanager/playwright/models/PlaywrightWorkspaceQuotas.java
     PagedIterable<PlaywrightWorkspaceQuota> listByPlaywrightWorkspace(String resourceGroupName,
         String playwrightWorkspaceName, Context context);
+========
+    Response<SubscriptionQuotaItem> getWithResponse(String resourceGroupName, String accountName, String quotaLimitName,
+        Context context);
+
+    /**
+     * Get the default, current and usages account quota limit.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param quotaLimitName The name of the Quota Limit.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default, current and usages account quota limit.
+     */
+    SubscriptionQuotaItem get(String resourceGroupName, String accountName, String quotaLimitName);
+
+    /**
+     * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of quota limits for all quotas that are under account as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName);
+
+    /**
+     * Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only one.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of quota limits for all quotas that are under account as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SubscriptionQuotaItem> list(String resourceGroupName, String accountName, Context context);
+>>>>>>>> main:sdk/netapp/azure-resourcemanager-netapp/src/main/java/com/azure/resourcemanager/netapp/models/NetAppResourceQuotaLimitsAccounts.java
 }

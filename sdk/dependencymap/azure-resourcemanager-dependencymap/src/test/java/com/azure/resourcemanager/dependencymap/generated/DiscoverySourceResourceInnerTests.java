@@ -15,22 +15,22 @@ public final class DiscoverySourceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoverySourceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Provisioning\",\"sourceId\":\"xgispemvtzfkufu\"},\"location\":\"jofxqe\",\"tags\":{\"jqul\":\"aeqjhqjbasvms\"},\"id\":\"gsntnbybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}")
+            "{\"properties\":{\"sourceType\":\"DiscoverySourceResourceProperties\",\"provisioningState\":\"Updating\",\"sourceId\":\"biksq\"},\"location\":\"lssai\",\"tags\":{\"eebvmgxsab\":\"jwnzlljfmp\"},\"id\":\"yqduujit\",\"name\":\"jczdzevndh\",\"type\":\"rwpdappdsbdkvwrw\"}")
             .toObject(DiscoverySourceResourceInner.class);
-        Assertions.assertEquals("jofxqe", model.location());
-        Assertions.assertEquals("aeqjhqjbasvms", model.tags().get("jqul"));
-        Assertions.assertEquals("xgispemvtzfkufu", model.properties().sourceId());
+        Assertions.assertEquals("lssai", model.location());
+        Assertions.assertEquals("jwnzlljfmp", model.tags().get("eebvmgxsab"));
+        Assertions.assertEquals("biksq", model.properties().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoverySourceResourceInner model = new DiscoverySourceResourceInner().withLocation("jofxqe")
-            .withTags(mapOf("jqul", "aeqjhqjbasvms"))
-            .withProperties(new DiscoverySourceResourceProperties().withSourceId("xgispemvtzfkufu"));
+        DiscoverySourceResourceInner model = new DiscoverySourceResourceInner().withLocation("lssai")
+            .withTags(mapOf("eebvmgxsab", "jwnzlljfmp"))
+            .withProperties(new DiscoverySourceResourceProperties().withSourceId("biksq"));
         model = BinaryData.fromObject(model).toObject(DiscoverySourceResourceInner.class);
-        Assertions.assertEquals("jofxqe", model.location());
-        Assertions.assertEquals("aeqjhqjbasvms", model.tags().get("jqul"));
-        Assertions.assertEquals("xgispemvtzfkufu", model.properties().sourceId());
+        Assertions.assertEquals("lssai", model.location());
+        Assertions.assertEquals("jwnzlljfmp", model.tags().get("eebvmgxsab"));
+        Assertions.assertEquals("biksq", model.properties().sourceId());
     }
 
     // Use "Map.of" if available

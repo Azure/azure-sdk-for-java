@@ -11,7 +11,7 @@ import com.azure.resourcemanager.avs.models.PureStoragePolicyProperties;
  */
 public final class PureStoragePoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/PureStoragePolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/PureStoragePolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: PureStoragePolicies_CreateOrUpdate.

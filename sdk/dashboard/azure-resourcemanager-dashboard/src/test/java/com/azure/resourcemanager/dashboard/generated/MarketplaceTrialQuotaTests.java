@@ -14,11 +14,11 @@ public final class MarketplaceTrialQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MarketplaceTrialQuota model = BinaryData.fromString(
-            "{\"availablePromotion\":\"None\",\"grafanaResourceId\":\"thfuiuaodsfcpkvx\",\"trialStartAt\":\"2021-07-31T05:00:25Z\",\"trialEndAt\":\"2021-06-07T12:26:40Z\"}")
+            "{\"availablePromotion\":\"None\",\"grafanaResourceId\":\"ynnaam\",\"trialStartAt\":\"2021-01-19T03:02:26Z\",\"trialEndAt\":\"2021-07-20T06:26:03Z\"}")
             .toObject(MarketplaceTrialQuota.class);
         Assertions.assertEquals(AvailablePromotion.NONE, model.availablePromotion());
-        Assertions.assertEquals("thfuiuaodsfcpkvx", model.grafanaResourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T05:00:25Z"), model.trialStartAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-07T12:26:40Z"), model.trialEndAt());
+        Assertions.assertEquals("ynnaam", model.grafanaResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T03:02:26Z"), model.trialStartAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T06:26:03Z"), model.trialEndAt());
     }
 }

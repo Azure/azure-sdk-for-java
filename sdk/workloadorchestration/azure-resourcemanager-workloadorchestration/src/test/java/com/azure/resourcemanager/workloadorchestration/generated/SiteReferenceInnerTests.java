@@ -13,16 +13,16 @@ public final class SiteReferenceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteReferenceInner model = BinaryData.fromString(
-            "{\"properties\":{\"siteId\":\"ybnnustg\",\"provisioningState\":\"Initialized\"},\"id\":\"nmgixh\",\"name\":\"mavmq\",\"type\":\"oudorhcgyyp\"}")
+            "{\"properties\":{\"siteId\":\"xjg\",\"provisioningState\":\"Canceled\"},\"id\":\"bgdlfgtdysna\",\"name\":\"uflqbctq\",\"type\":\"amz\"}")
             .toObject(SiteReferenceInner.class);
-        Assertions.assertEquals("ybnnustg", model.properties().siteId());
+        Assertions.assertEquals("xjg", model.properties().siteId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SiteReferenceInner model
-            = new SiteReferenceInner().withProperties(new SiteReferenceProperties().withSiteId("ybnnustg"));
+            = new SiteReferenceInner().withProperties(new SiteReferenceProperties().withSiteId("xjg"));
         model = BinaryData.fromObject(model).toObject(SiteReferenceInner.class);
-        Assertions.assertEquals("ybnnustg", model.properties().siteId());
+        Assertions.assertEquals("xjg", model.properties().siteId());
     }
 }

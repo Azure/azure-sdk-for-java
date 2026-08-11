@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.52'
+tag: package-2026-03-12
+use: '@autorest/java@4.1.62'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/1a08384511e96c42aaf18edd646baf01e5e5fc84/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/036005023a17c36a14acbab2d7d31d6ce3fb3e84/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -158,11 +158,17 @@ directive:
     from: MediaStreamingOptions
     to: MediaStreamingOptionsInternal
 - rename-model:
+    from: WebSocketMediaStreamingOptions
+    to: WebSocketMediaStreamingOptionsInternal
+- rename-model:
     from: MediaStreamingSubscription
     to: MediaStreamingSubscriptionInternal
 - rename-model:
     from: TranscriptionSubscription
     to: TranscriptionSubscriptionInternal
+- rename-model:
+    from: WebSocketTranscriptionOptions
+    to: WebSocketTranscriptionOptionsInternal
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
@@ -215,17 +221,17 @@ directive:
     from: UpdateTranscriptionRequest
     to: UpdateTranscriptionRequestInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
-- rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
 - rename-model:
-    from: CallSessionEndReason
-    to: CallSessionEndReasonInternal
+    from: TeamsPhoneCallDetails
+    to: TeamsPhoneCallDetailsInternal
 - rename-model:
-    from: RecordingStorageInfo
-    to: RecordingStorageInfoInternal
+    from: TeamsPhoneCallerDetails
+    to: TeamsPhoneCallerDetailsInternal
+- rename-model:
+    from: TeamsPhoneSourceDetails
+    to: TeamsPhoneSourceDetailsInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -254,15 +260,6 @@ directive:
 - remove-model: SpeechResult
 - remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
 - remove-model: TeamsComplianceRecordingStateChanged
 - remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted
@@ -284,7 +281,6 @@ directive:
 - remove-model: PlayPaused
 - remove-model: PlayResumed
 - remove-model: IncomingCall
-- remove-model: CallSessionEndReason
 
 ```
 
@@ -418,24 +414,14 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
+### Rename StreamingTransportType to StreamingTransportTypeInternal
 
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  where: $.definitions.StreamingTransportType["x-ms-enum"]
   transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
-```
-
-### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
-  transform: >
-    $.name = "TranscriptionTransportTypeInternal";
+    $.name = "StreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal

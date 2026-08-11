@@ -31,7 +31,7 @@ public final class WorkflowVersionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"revision\":1589873134,\"configuration\":\"cm\",\"stageSpec\":[{\"name\":\"rndb\",\"specification\":{},\"tasks\":[{\"name\":\"fltfnnxr\",\"specification\":{}},{\"name\":\"adj\",\"specification\":{}},{\"name\":\"ynnfmuiii\",\"specification\":{}},{\"name\":\"ipfohykfkx\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1232113097,\"errorAction\":{}}},{\"name\":\"wjiutgnjiz\",\"specification\":{},\"tasks\":[{\"name\":\"iy\",\"specification\":{}},{\"name\":\"rvzb\",\"specification\":{}},{\"name\":\"uyrsrziuctix\",\"specification\":{}},{\"name\":\"bdsuifr\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1996304749,\"errorAction\":{}}},{\"name\":\"pezkis\",\"specification\":{},\"tasks\":[{\"name\":\"g\",\"specification\":{}},{\"name\":\"syparybjufp\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1317353251,\"errorAction\":{}}},{\"name\":\"jnciui\",\"specification\":{},\"tasks\":[{\"name\":\"aswvppis\",\"specification\":{}},{\"name\":\"qzlgcndhzxrrfcfs\",\"specification\":{}}],\"taskOption\":{\"concurrency\":809769529,\"errorAction\":{}}}],\"reviewId\":\"nxu\",\"state\":\"UpgradeInReview\",\"specification\":{},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"sbzxl\",\"type\":\"CustomLocation\"},\"eTag\":\"omeikjcl\",\"id\":\"acnmwpfsuqtaaz\",\"name\":\"qbxyxoyfpuqqi\",\"type\":\"ezxlhdjzqdca\"}";
+            = "{\"properties\":{\"revision\":497820595,\"configuration\":\"ovribq\",\"stageSpec\":[{\"name\":\"tokhtvwtaznkcqw\",\"specification\":{},\"tasks\":[{\"name\":\"ofgwh\",\"specification\":{}},{\"name\":\"kbtlwljssm\",\"specification\":{}},{\"name\":\"tsnld\",\"specification\":{}},{\"name\":\"pwolgisubxb\",\"specification\":{}}],\"taskOption\":{\"concurrency\":813923997,\"errorAction\":{}}},{\"name\":\"gfii\",\"specification\":{},\"tasks\":[{\"name\":\"lefksxq\",\"specification\":{}},{\"name\":\"eazfpxgnmqvzvlu\",\"specification\":{}},{\"name\":\"q\",\"specification\":{}},{\"name\":\"aiossscyvaifp\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1974468005,\"errorAction\":{}}},{\"name\":\"fye\",\"specification\":{},\"tasks\":[{\"name\":\"x\",\"specification\":{}},{\"name\":\"jdhsoy\",\"specification\":{}},{\"name\":\"hpvtyqftteh\",\"specification\":{}}],\"taskOption\":{\"concurrency\":456494066,\"errorAction\":{}}},{\"name\":\"jstkfvvdshxcd\",\"specification\":{},\"tasks\":[{\"name\":\"nygnxcgjtfrnquk\",\"specification\":{}},{\"name\":\"rf\",\"specification\":{}},{\"name\":\"s\",\"specification\":{}},{\"name\":\"nlrxsmyltrwntfmt\",\"specification\":{}}],\"taskOption\":{\"concurrency\":1421181653,\"errorAction\":{}}}],\"reviewId\":\"wnaz\",\"state\":\"Undeployed\",\"specification\":{},\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"zjwhsetwwjwz\",\"type\":\"CustomLocation\"},\"eTag\":\"e\",\"id\":\"uukykcyqh\",\"name\":\"qqzzdc\",\"type\":\"keys\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,29 +41,34 @@ public final class WorkflowVersionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkflowVersion response = manager.workflowVersions()
-            .define("jcx")
-            .withExistingWorkflow("ktyjmf", "zlfsyqkfrbzgowo", "qmje")
+            .define("tttk")
+            .withExistingWorkflow("xbibanbaupw", "zvpaklozkxbzrpej", "lssan")
             .withProperties(new WorkflowVersionProperties()
-                .withStageSpec(Arrays.asList(new StageSpec()
-                    .withName("ceagbjqvlsumywz")
-                    .withSpecification(mapOf())
-                    .withTasks(Arrays.asList(new TaskSpec().withName("onoyjf").withSpecification(mapOf())))
-                    .withTaskOption(new TaskOption().withConcurrency(1141136911).withErrorAction(new ErrorAction())),
-                    new StageSpec().withName("yznclkfkee")
+                .withStageSpec(Arrays.asList(
+                    new StageSpec().withName("huhkslgwlok")
                         .withSpecification(mapOf())
-                        .withTasks(Arrays.asList(new TaskSpec().withName("e").withSpecification(mapOf()),
-                            new TaskSpec().withName("tuoqujlyegqavni").withSpecification(mapOf())))
+                        .withTasks(Arrays.asList(new TaskSpec().withName("jy").withSpecification(mapOf()),
+                            new TaskSpec().withName("cqypz").withSpecification(mapOf()),
+                            new TaskSpec().withName("zufgs").withSpecification(mapOf()),
+                            new TaskSpec().withName("fejyvdwtfxptpqa").withSpecification(mapOf())))
+                        .withTaskOption(new TaskOption().withConcurrency(235281356).withErrorAction(new ErrorAction())),
+                    new StageSpec().withName("cf")
+                        .withSpecification(mapOf())
+                        .withTasks(Arrays.asList(new TaskSpec().withName("snxoc").withSpecification(mapOf()),
+                            new TaskSpec().withName("ullojk").withSpecification(mapOf()),
+                            new TaskSpec().withName("oy").withSpecification(mapOf()),
+                            new TaskSpec().withName("g").withSpecification(mapOf())))
                         .withTaskOption(
-                            new TaskOption().withConcurrency(1510649527).withErrorAction(new ErrorAction()))))
+                            new TaskOption().withConcurrency(117635238).withErrorAction(new ErrorAction()))))
                 .withSpecification(mapOf()))
             .withExtendedLocation(
-                new ExtendedLocation().withName("vabm").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("bsgzl").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("rndb", response.properties().stageSpec().get(0).name());
-        Assertions.assertEquals("fltfnnxr", response.properties().stageSpec().get(0).tasks().get(0).name());
-        Assertions.assertEquals(1232113097, response.properties().stageSpec().get(0).taskOption().concurrency());
-        Assertions.assertEquals("sbzxl", response.extendedLocation().name());
+        Assertions.assertEquals("tokhtvwtaznkcqw", response.properties().stageSpec().get(0).name());
+        Assertions.assertEquals("ofgwh", response.properties().stageSpec().get(0).tasks().get(0).name());
+        Assertions.assertEquals(813923997, response.properties().stageSpec().get(0).taskOption().concurrency());
+        Assertions.assertEquals("zjwhsetwwjwz", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 

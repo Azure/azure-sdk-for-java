@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -77,24 +76,6 @@ public final class ServiceCorrelation implements JsonSerializable<ServiceCorrela
         this.serviceName = serviceName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (scheme() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property scheme in model ServiceCorrelation"));
-        }
-        if (serviceName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property serviceName in model ServiceCorrelation"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceCorrelation.class);
 
     /**
      * {@inheritDoc}

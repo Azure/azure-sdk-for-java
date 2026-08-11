@@ -137,7 +137,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     public void before_TriggerQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
         createdTriggers.clear();
 
         for(int i = 0; i < 5; i++) {

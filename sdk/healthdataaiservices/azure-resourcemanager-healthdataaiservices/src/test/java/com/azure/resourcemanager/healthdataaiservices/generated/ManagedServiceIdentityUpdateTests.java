@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentityUpdate model = BinaryData.fromString(
-            "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ndei\":{\"clientId\":\"dzxibqeojnxqbzvd\",\"principalId\":\"t\"},\"glmjth\":{\"clientId\":\"twnpzaoqvuhrhcf\",\"principalId\":\"yd\"},\"uigdtopbobjog\":{\"clientId\":\"kw\",\"principalId\":\"eicxmqciwqvhkhi\"},\"a\":{\"clientId\":\"e\",\"principalId\":\"a\"}}}")
+            "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ndei\":{\"principalId\":\"dzxibqeojnxqbzvd\",\"clientId\":\"t\"},\"glmjth\":{\"principalId\":\"twnpzaoqvuhrhcf\",\"clientId\":\"yd\"},\"uigdtopbobjog\":{\"principalId\":\"kw\",\"clientId\":\"eicxmqciwqvhkhi\"},\"a\":{\"principalId\":\"e\",\"clientId\":\"a\"}}}")
             .toObject(ManagedServiceIdentityUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
  * Model for a method Azure listener endpoint.
  *
  */
+@SuppressWarnings("deprecation")
 public interface MethodAzureListenerEndpoint extends BeanFactoryAware, AzureListenerEndpoint {
 
     /**

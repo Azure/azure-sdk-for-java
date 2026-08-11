@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PgVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PgVersion model = BinaryData.fromString("{\"version\":318971885}").toObject(PgVersion.class);
-        Assertions.assertEquals(318971885, model.version());
+        PgVersion model = BinaryData.fromString("{\"version\":1200516828}").toObject(PgVersion.class);
+        Assertions.assertEquals(1200516828, model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PgVersion model = new PgVersion().withVersion(318971885);
+        PgVersion model = new PgVersion().withVersion(1200516828);
         model = BinaryData.fromObject(model).toObject(PgVersion.class);
-        Assertions.assertEquals(318971885, model.version());
+        Assertions.assertEquals(1200516828, model.version());
     }
 }

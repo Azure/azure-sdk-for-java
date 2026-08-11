@@ -224,6 +224,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
         final int actualNicCount
             = TestUtilities.getSize(networkManager.networkInterfaces().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualNicCount);
+        //
         final int actualNetworkCount
             = TestUtilities.getSize(networkManager.networks().listByResourceGroup(resourceGroupName));
         Assertions.assertEquals(successfulVMCount, actualNetworkCount);

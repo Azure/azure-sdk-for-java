@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computeschedule.fluent.OccurrencesClient;
@@ -225,25 +224,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OccurrenceInner>> getWithResponseAsync(String resourceGroupName, String scheduledActionName,
         String occurrenceId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -283,28 +263,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OccurrenceInner> getWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, scheduledActionName, occurrenceId, accept, context);
@@ -340,22 +298,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceInner>> listByScheduledActionSinglePageAsync(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -396,24 +338,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionSinglePage(String resourceGroupName,
         String scheduledActionName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceListResult> res
             = service.listByScheduledActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -436,24 +360,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionSinglePage(String resourceGroupName,
         String scheduledActionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceListResult> res
             = service.listByScheduledActionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -512,25 +418,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesSinglePageAsync(String resourceGroupName,
         String scheduledActionName, String occurrenceId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listResources(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -572,28 +459,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName, String occurrenceId) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceResourceListResponse> res = service.listResourcesSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, scheduledActionName,
@@ -617,28 +482,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesSinglePage(String resourceGroupName,
         String scheduledActionName, String occurrenceId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceResourceListResponse> res
             = service.listResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -701,30 +544,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecurringActionsResourceOperationResultInner>> cancelWithResponseAsync(
         String resourceGroupName, String scheduledActionName, String occurrenceId, CancelOccurrenceRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -771,33 +590,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecurringActionsResourceOperationResultInner> cancelWithResponse(String resourceGroupName,
         String scheduledActionName, String occurrenceId, CancelOccurrenceRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -824,7 +616,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -833,35 +625,12 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> delayWithResponseAsync(String resourceGroupName,
         String scheduledActionName, String occurrenceId, DelayRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -872,7 +641,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -881,38 +650,12 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.delaySync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -921,7 +664,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -931,38 +674,12 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (scheduledActionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter scheduledActionName is required and cannot be null."));
-        }
-        if (occurrenceId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter occurrenceId is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.delaySync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -971,7 +688,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -980,7 +697,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -995,7 +713,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -1004,7 +722,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1018,7 +737,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -1028,7 +747,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -1044,7 +764,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -1053,7 +773,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecurringActionsResourceOperationResultInner> delayAsync(String resourceGroupName,
@@ -1063,7 +784,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -1072,7 +793,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,
@@ -1081,7 +802,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -1091,7 +812,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,
@@ -1111,13 +832,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceInner>> listByScheduledActionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1138,15 +852,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceListResult> res
             = service.listByScheduledActionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1166,15 +871,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceInner> listByScheduledActionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceListResult> res
             = service.listByScheduledActionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -1194,13 +890,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OccurrenceResourceInner>> listResourcesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -1220,15 +909,6 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceResourceListResponse> res
             = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -1248,21 +928,10 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OccurrenceResourceInner> listResourcesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OccurrenceResourceListResponse> res
             = service.listResourcesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OccurrencesClientImpl.class);
 }

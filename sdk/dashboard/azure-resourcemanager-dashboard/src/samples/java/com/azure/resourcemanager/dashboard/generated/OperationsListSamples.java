@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-08-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

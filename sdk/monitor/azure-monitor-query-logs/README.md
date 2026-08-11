@@ -85,7 +85,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.15.3</version>
+    <version>1.18.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -434,7 +434,7 @@ comments.
 [package]: https://central.sonatype.com/artifact/com.azure/azure-monitor-query-logs
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query-logs/src/samples/README.md
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-logs/src
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#log-queries-and-language
 
 [cla]: https://cla.microsoft.com

@@ -107,20 +107,6 @@ public final class SecurityPolicyProperties implements JsonSerializable<Security
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (wafPolicy() != null) {
-            wafPolicy().validate();
-        }
-        if (ipAccessRulesPolicy() != null) {
-            ipAccessRulesPolicy().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

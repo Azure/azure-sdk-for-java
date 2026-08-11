@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
-        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2025-11-05");
+        = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2026-10-06");
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
@@ -220,7 +220,7 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2025-11-05";
+        public static final String TARGET_STORAGE_VERSION = "2026-10-06";
 
         /**
          * Error code returned from the service.
@@ -250,6 +250,30 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String CONTENT_CRC64 = "x-ms-content-crc64";
+
+        public static final HttpHeaderName CONTENT_CRC64_HEADER_NAME = HttpHeaderName.fromString(CONTENT_CRC64);
+
+        public static final String STRUCTURED_BODY_TYPE = "x-ms-structured-body";
+
+        public static final HttpHeaderName STRUCTURED_BODY_TYPE_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_BODY_TYPE);
+
+        public static final String STRUCTURED_CONTENT_LENGTH = "x-ms-structured-content-length";
+
+        public static final HttpHeaderName STRUCTURED_CONTENT_LENGTH_HEADER_NAME
+            = HttpHeaderName.fromString(STRUCTURED_CONTENT_LENGTH);
+
+        /**
+         * Metadata key ("hdi_isfolder") used to mark virtual directories in Azure Blob Storage.
+         *
+         * <p>Azure Blob Storage has a flat namespace and doesn't inherently support directories.
+         * To implement directory-like organization, the Azure Storage client libraries use
+         * the convention of empty blobs with this metadata key set to "true".
+         *
+         * <p>When this metadata is present on a zero-length blob without extension, it should
+         * be treated as a directory marker rather than a regular blob.
+         */
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
 
         public static final String X_MS_META = "x-ms-meta";
@@ -267,12 +291,45 @@ public final class Constants {
         }
     }
 
+    public static final class ContentTypeConstants {
+        public static final String APPLICATION_VND_APACHE_ARROW_STREAM = "application/vnd.apache.arrow.stream";
+
+        private ContentTypeConstants() {
+            // Private to prevent construction.
+        }
+    }
+
     /**
      * Defines constants for use with URLs.
      *
      * RESERVED FOR INTERNAL USE.
      */
     public static final class UrlConstants {
+
+        /**
+         * DNS subdomain label for the Blob service ({@code account}.blob.{suffix}).
+         */
+        public static final String BLOB_URI_SUBDOMAIN = "blob";
+
+        /**
+         * DNS subdomain label for the Azure Files service ({@code account}.file.{suffix}).
+         */
+        public static final String FILE_URI_SUBDOMAIN = "file";
+
+        /**
+         * DNS subdomain label for the Queue service ({@code account}.queue.{suffix}).
+         */
+        public static final String QUEUE_URI_SUBDOMAIN = "queue";
+
+        /**
+         * DNS subdomain label for the Table service ({@code account}.table.{suffix}).
+         */
+        public static final String TABLE_URI_SUBDOMAIN = "table";
+
+        /**
+         * DNS subdomain label for Data Lake Storage ({@code account}.dfs.{suffix}).
+         */
+        public static final String DFS_URI_SUBDOMAIN = "dfs";
 
         /**
          * The snapshot parameters.
@@ -345,9 +402,24 @@ public final class Constants {
         public static final String SAS_SIGNATURE = "sig";
 
         /**
+         * The SAS delegated user object id parameter.
+         */
+        public static final String SAS_DELEGATED_USER_OBJECT_ID = "sduoid";
+
+        /**
          * The SAS encryption scope parameter.
          */
         public static final String SAS_ENCRYPTION_SCOPE = "ses";
+
+        /**
+         * The SAS request headers parameter.
+         */
+        public static final String SAS_REQUEST_HEADERS = "srh";
+
+        /**
+         * The SAS request query parameters parameter.
+         */
+        public static final String SAS_REQUEST_QUERY_PARAMETERS = "srq";
 
         /**
          * The SAS cache control parameter.
@@ -405,6 +477,11 @@ public final class Constants {
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
 
         /**
+         * The SAS signed delegated user tenant id parameter for user delegation SAS.
+         */
+        public static final String SAS_SIGNED_KEY_DELEGATED_USER_TENANT_ID = "skdutid";
+
+        /**
          * The SAS preauthorized agent object id parameter for user delegation SAS.
          */
         public static final String SAS_PREAUTHORIZED_AGENT_OBJECT_ID = "saoid";
@@ -433,4 +510,5 @@ public final class Constants {
             // Private to prevent construction.
         }
     }
+
 }

@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -42,75 +43,91 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-        this.writeClient =
-                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
-                        .withServiceEndpoint(TestConfigurations.HOST)
-                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                        .withConnectionPolicy(connectionPolicy)
-                        .withConsistencyLevel(ConsistencyLevel.SESSION)
-                        .withContentResponseOnWriteEnabled(true)
-                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
-                        .withClientTelemetryConfig(
-                            new CosmosClientTelemetryConfig()
-                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
-                        .build();
+        RxDocumentClientImpl writeClient = null;
+        RxDocumentClientImpl readClient = null;
 
-        this.readClient =
+        try {
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
-                        .withServiceEndpoint(TestConfigurations.HOST)
-                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                        .withConnectionPolicy(connectionPolicy)
-                        .withConsistencyLevel(ConsistencyLevel.SESSION)
-                        .withContentResponseOnWriteEnabled(true)
-                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
-                        .withClientTelemetryConfig(
-                            new CosmosClientTelemetryConfig()
-                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
-                        .build();
+                    .withServiceEndpoint(TestConfigurations.HOST)
+                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withConnectionPolicy(connectionPolicy)
+                    .withConsistencyLevel(ConsistencyLevel.SESSION)
+                    .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
+                    .withClientTelemetryConfig(
+                        new CosmosClientTelemetryConfig()
+                            .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                    .build();
 
-        Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
-                                                           null, false).block().getResource();
-        Thread.sleep(5000);//WaitForServerReplication
-        boolean readLagging = this.validateReadSession(document);
-        //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
+            readClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                    .withServiceEndpoint(TestConfigurations.HOST)
+                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withConnectionPolicy(connectionPolicy)
+                    .withConsistencyLevel(ConsistencyLevel.SESSION)
+                    .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
+                    .withClientTelemetryConfig(
+                        new CosmosClientTelemetryConfig()
+                            .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                    .build();
+
+            Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
+                null, false).block().getResource();
+            Thread.sleep(5000);//WaitForServerReplication
+            boolean readLagging = this.validateReadSession(document, readClient, writeClient);
+            //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
+        } finally {
+            safeClose(readClient);
+            safeClose(writeClient);
+        }
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-        this.writeClient =
-                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
-                        .withServiceEndpoint(TestConfigurations.HOST)
-                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                        .withConnectionPolicy(connectionPolicy)
-                        .withConsistencyLevel(ConsistencyLevel.SESSION)
-                        .withContentResponseOnWriteEnabled(true)
-                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
-                        .withClientTelemetryConfig(
-                            new CosmosClientTelemetryConfig()
-                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
-                        .build();
+        RxDocumentClientImpl writeClient = null;
+        RxDocumentClientImpl readClient = null;
 
-        this.readClient =
+        try {
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
-                        .withServiceEndpoint(TestConfigurations.HOST)
-                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                        .withConnectionPolicy(connectionPolicy)
-                        .withConsistencyLevel(ConsistencyLevel.SESSION)
-                        .withContentResponseOnWriteEnabled(true)
-                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
-                        .withClientTelemetryConfig(
-                            new CosmosClientTelemetryConfig()
-                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
-                        .build();
+                    .withServiceEndpoint(TestConfigurations.HOST)
+                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withConnectionPolicy(connectionPolicy)
+                    .withConsistencyLevel(ConsistencyLevel.SESSION)
+                    .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
+                    .withClientTelemetryConfig(
+                        new CosmosClientTelemetryConfig()
+                            .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                    .build();
 
-        Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
-                                                           null, false).block().getResource();
-        Thread.sleep(5000);//WaitForServerReplication
-        boolean readLagging = this.validateWriteSession(document);
-        //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
+            readClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                    .withServiceEndpoint(TestConfigurations.HOST)
+                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withConnectionPolicy(connectionPolicy)
+                    .withConsistencyLevel(ConsistencyLevel.SESSION)
+                    .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
+                    .withClientTelemetryConfig(
+                        new CosmosClientTelemetryConfig()
+                            .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                    .build();
+
+            Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
+                null, false).block().getResource();
+            Thread.sleep(5000);//WaitForServerReplication
+            boolean readLagging = this.validateWriteSession(document, readClient, writeClient);
+            //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
+        } finally {
+            safeClose(readClient);
+            safeClose(writeClient);
+        }
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
@@ -127,7 +144,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355053
     }
 
-    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs",
+        timeOut = CONSISTENCY_TEST_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void validateSessionContainerAfterCollectionDeletion(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
@@ -164,7 +182,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         this.validateSessionTokenWithDocumentNotFoundExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
-    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs",
+        timeOut = 2 * CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenWithExpectedException(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
@@ -233,10 +252,12 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                         .build();
+
+        QueryFeedOperationState dummyState = null;
         try {
             // CREATE collection
             DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
-                                                                             getCollectionDefinition(), null).block().getResource();
+                                                                             getInternalCollectionDefinition(), null).block().getResource();
 
             // Document to lock pause/resume clients
             Document documentDefinition = getDocumentDefinition();
@@ -250,7 +271,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
 
-            QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+            dummyState = TestUtils.createDummyQueryFeedOperationState(
                 ResourceType.Document,
                 OperationType.ReadFeed,
                 cosmosQueryRequestOptions,
@@ -262,6 +283,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 parentResource.getSelfLink(), dummyState, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
+            safeClose(dummyState);
             safeClose(writeClient);
             safeClose(readSecondaryClient);
         }

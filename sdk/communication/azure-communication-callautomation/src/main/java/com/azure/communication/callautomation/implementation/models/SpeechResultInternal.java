@@ -24,7 +24,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     private String speech;
 
     /*
-     * The confidence of the recognized speech.
+     * The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      */
     @Generated
     private Double confidence;
@@ -59,7 +59,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     }
 
     /**
-     * Get the confidence property: The confidence of the recognized speech.
+     * Get the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      * 
      * @return the confidence value.
      */
@@ -69,7 +69,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     }
 
     /**
-     * Set the confidence property: The confidence of the recognized speech.
+     * Set the confidence property: The confidence level of the recognized speech, if available, ranges from 0.0 to 1.0.
      * 
      * @param confidence the confidence value to set.
      * @return the SpeechResultInternal object itself.

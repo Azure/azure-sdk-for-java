@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthdataaiservices.fluent.PrivateLinksClient;
 import com.azure.resourcemanager.healthdataaiservices.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.healthdataaiservices.implementation.models.PrivateLinkResourceListResult;
@@ -114,22 +113,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByDeidServiceSinglePageAsync(String resourceGroupName,
         String deidServiceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deidServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDeidService(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -169,24 +152,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceSinglePage(String resourceGroupName,
         String deidServiceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deidServiceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByDeidServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -209,24 +174,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceSinglePage(String resourceGroupName,
         String deidServiceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deidServiceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter deidServiceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByDeidServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -281,13 +228,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByDeidServiceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDeidServiceNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -307,15 +247,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByDeidServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -335,21 +266,10 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateLinkResourceInner> listByDeidServiceNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PrivateLinkResourceListResult> res
             = service.listByDeidServiceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinksClientImpl.class);
 }

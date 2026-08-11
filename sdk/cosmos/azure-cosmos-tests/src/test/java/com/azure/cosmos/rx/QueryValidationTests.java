@@ -38,13 +38,13 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -57,6 +57,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -83,7 +84,7 @@ public class QueryValidationTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdContainer);
+        cleanUpContainer(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
@@ -99,7 +100,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare
@@ -115,16 +116,14 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT *2)
+    @Test(groups = {"query"}, timeOut = TIMEOUT *2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
             containerProperties,
-            ThroughputProperties.createManualThroughput(100000), // Create container with large number physical partitions
-            new CosmosContainerRequestOptions()
-        ).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+            new CosmosContainerRequestOptions(),
+            100000); // Create container with large number physical partitions
 
         int partitionDocCount = 5;
         int pageSize = partitionDocCount + 1;
@@ -156,7 +155,7 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryOptionNullValidation() {
         String query = "Select top 1 * from c";
 
@@ -274,7 +273,7 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionCorrectness(String query) {
 
         String pk1 = "pk1";
@@ -309,7 +308,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         sqlQuerySpec.setQueryText("select * from c where c.id = @id");
@@ -356,7 +355,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
         // group by should not be cached
-        sqlQuerySpec.setQueryText("select max(c.id) from c order by c.name group by c.name");
+        sqlQuerySpec.setQueryText("select max(c.id) from c group by c.name order by c.name");
         values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
@@ -378,8 +377,10 @@ public class QueryValidationTests extends TestSuiteBase {
 
         //Create container
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
 
         //Insert some documents
@@ -481,16 +482,17 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderbyContinuationOnUndefinedAndNull() throws Exception {
         /*
         Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
         and make sure all the records are obtained
          */
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
-
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         CosmosContainerResponse containerResponse = container.read().block();
         assert (containerResponse != null);
         CosmosContainerProperties properties = containerResponse.getProperties();
@@ -569,15 +571,17 @@ public class QueryValidationTests extends TestSuiteBase {
             }
             docsToInsert.add(objectNode);
         }
-        return bulkInsertBlocking(container, docsToInsert);
+        return insertAllItemsBlocking(container, docsToInsert, true);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
         //id as partitionkey > 100bytes
         String itemID1 = "cosmosdb" +
                              "-drWarm4Z60GkknMfHLo5BwuiH7w6AffzSb9jKbvwAQwaRZd10oxnLeCueuyZ5gbm9dwVVAqJLdzrB38Dk73Q6xMErv-0";
@@ -596,6 +600,11 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
+    @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT)
+    public void afterClass() {
+        safeClose(this.client);
+    }
+
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, AsyncDocumentClient asyncDocumentClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
@@ -610,10 +619,12 @@ public class QueryValidationTests extends TestSuiteBase {
 
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
         CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        queryPagedFlux.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-        return testSubscriber.values();
+        AtomicReference<List<T>> value = new AtomicReference<>();
+        StepVerifier.create(queryPagedFlux.collectList())
+            .consumeNextWith(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(TIMEOUT));
+        return value.get();
     }
 
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {
@@ -660,7 +671,7 @@ public class QueryValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

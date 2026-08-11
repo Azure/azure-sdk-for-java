@@ -32,7 +32,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.fabric.fluent.FabricCapacitiesClient;
@@ -388,21 +387,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FabricCapacityInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -442,24 +426,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FabricCapacityInner> getByResourceGroupWithResponse(String resourceGroupName, String capacityName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, accept, context);
@@ -496,26 +462,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String capacityName, FabricCapacityInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -540,30 +486,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityInner resource) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -587,30 +509,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (resource == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -750,26 +648,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String capacityName,
         FabricCapacityUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -792,30 +670,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -839,30 +693,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String capacityName,
         FabricCapacityUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
-        if (properties == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -998,21 +828,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
@@ -1032,24 +847,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
@@ -1068,24 +865,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String capacityName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
@@ -1203,18 +982,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricCapacityInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1250,20 +1017,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
@@ -1284,20 +1037,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupSinglePage(String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
@@ -1346,14 +1085,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricCapacityInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1385,16 +1116,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -1413,16 +1134,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -1470,21 +1181,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.resume(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
@@ -1504,24 +1200,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
@@ -1540,24 +1218,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> resumeWithResponse(String resourceGroupName, String capacityName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.resumeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
@@ -1676,21 +1336,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> suspendWithResponseAsync(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return FluxUtil
             .withContext(context -> service.suspend(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, capacityName, context))
@@ -1710,24 +1355,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, Context.NONE);
     }
@@ -1746,24 +1373,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> suspendWithResponse(String resourceGroupName, String capacityName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         return service.suspendSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, capacityName, context);
     }
@@ -1882,22 +1491,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(String location,
         CheckNameAvailabilityRequest body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1937,25 +1530,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String location,
         CheckNameAvailabilityRequest body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.checkNameAvailabilitySync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1982,7 +1556,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1992,21 +1567,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RpSkuDetailsForExistingResourceInner>>
         listSkusForCapacitySinglePageAsync(String resourceGroupName, String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkusForCapacity(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2020,7 +1580,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2038,7 +1599,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2047,24 +1609,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacitySinglePage(String resourceGroupName,
         String capacityName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForExistingResourceResult> res
             = service.listSkusForCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2077,7 +1621,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2087,24 +1632,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacitySinglePage(String resourceGroupName,
         String capacityName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (capacityName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter capacityName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForExistingResourceResult> res
             = service.listSkusForCapacitySync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2117,7 +1644,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2135,7 +1663,8 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2160,14 +1689,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RpSkuDetailsForNewResourceInner>> listSkusSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2199,16 +1720,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForNewResourceResult> res = service.listSkusSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
@@ -2227,16 +1738,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusSinglePage(Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForNewResourceResult> res = service.listSkusSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
@@ -2285,17 +1786,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listUsagesSinglePageAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsages(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2331,20 +1821,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesSinglePage(String location) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, accept, Context.NONE);
@@ -2364,20 +1840,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesSinglePage(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.listUsagesSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, accept, context);
@@ -2428,13 +1890,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricCapacityInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2455,15 +1910,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2483,15 +1929,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res
             = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2511,13 +1948,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricCapacityInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2538,15 +1968,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2566,15 +1987,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FabricCapacityInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<FabricCapacityListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2595,13 +2007,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RpSkuDetailsForExistingResourceInner>>
         listSkusForCapacityNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2622,15 +2027,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacityNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForExistingResourceResult> res
             = service.listSkusForCapacityNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2651,15 +2047,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForExistingResourceInner> listSkusForCapacityNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForExistingResourceResult> res
             = service.listSkusForCapacityNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2679,13 +2066,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RpSkuDetailsForNewResourceInner>> listSkusNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkusNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2705,15 +2085,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForNewResourceResult> res
             = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2733,15 +2104,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RpSkuDetailsForNewResourceInner> listSkusNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<RpSkuEnumerationForNewResourceResult> res
             = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, context);
@@ -2761,13 +2123,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QuotaInner>> listUsagesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsagesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2787,15 +2142,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res
             = service.listUsagesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -2815,20 +2161,9 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<QuotaInner> listUsagesNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PagedQuota> res = service.listUsagesNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FabricCapacitiesClientImpl.class);
 }

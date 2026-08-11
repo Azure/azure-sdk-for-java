@@ -27,6 +27,11 @@ public final class AzureFileProperties implements JsonSerializable<AzureFileProp
     private String accountKey;
 
     /*
+     * Storage account key stored as an Azure Key Vault secret.
+     */
+    private SecretKeyVaultProperties accountKeyVaultProperties;
+
+    /*
      * Access mode for storage
      */
     private AccessMode accessMode;
@@ -83,6 +88,26 @@ public final class AzureFileProperties implements JsonSerializable<AzureFileProp
     }
 
     /**
+     * Get the accountKeyVaultProperties property: Storage account key stored as an Azure Key Vault secret.
+     * 
+     * @return the accountKeyVaultProperties value.
+     */
+    public SecretKeyVaultProperties accountKeyVaultProperties() {
+        return this.accountKeyVaultProperties;
+    }
+
+    /**
+     * Set the accountKeyVaultProperties property: Storage account key stored as an Azure Key Vault secret.
+     * 
+     * @param accountKeyVaultProperties the accountKeyVaultProperties value to set.
+     * @return the AzureFileProperties object itself.
+     */
+    public AzureFileProperties withAccountKeyVaultProperties(SecretKeyVaultProperties accountKeyVaultProperties) {
+        this.accountKeyVaultProperties = accountKeyVaultProperties;
+        return this;
+    }
+
+    /**
      * Get the accessMode property: Access mode for storage.
      * 
      * @return the accessMode value.
@@ -128,6 +153,9 @@ public final class AzureFileProperties implements JsonSerializable<AzureFileProp
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (accountKeyVaultProperties() != null) {
+            accountKeyVaultProperties().validate();
+        }
     }
 
     /**
@@ -138,6 +166,7 @@ public final class AzureFileProperties implements JsonSerializable<AzureFileProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accountName", this.accountName);
         jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeJsonField("accountKeyVaultProperties", this.accountKeyVaultProperties);
         jsonWriter.writeStringField("accessMode", this.accessMode == null ? null : this.accessMode.toString());
         jsonWriter.writeStringField("shareName", this.shareName);
         return jsonWriter.writeEndObject();
@@ -162,6 +191,9 @@ public final class AzureFileProperties implements JsonSerializable<AzureFileProp
                     deserializedAzureFileProperties.accountName = reader.getString();
                 } else if ("accountKey".equals(fieldName)) {
                     deserializedAzureFileProperties.accountKey = reader.getString();
+                } else if ("accountKeyVaultProperties".equals(fieldName)) {
+                    deserializedAzureFileProperties.accountKeyVaultProperties
+                        = SecretKeyVaultProperties.fromJson(reader);
                 } else if ("accessMode".equals(fieldName)) {
                     deserializedAzureFileProperties.accessMode = AccessMode.fromString(reader.getString());
                 } else if ("shareName".equals(fieldName)) {

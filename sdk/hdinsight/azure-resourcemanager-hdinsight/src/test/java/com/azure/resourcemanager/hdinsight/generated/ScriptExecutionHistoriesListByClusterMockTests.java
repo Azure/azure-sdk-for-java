@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
@@ -22,21 +22,21 @@ public final class ScriptExecutionHistoriesListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"scriptExecutionId\":6880850551293493350,\"startTime\":\"xee\",\"endTime\":\"xiqhzlraymezxlsk\",\"status\":\"mxrfdsa\",\"operation\":\"ednwyyshtu\",\"executionSummary\":[{\"status\":\"vuafpwzyifr\",\"instanceCount\":2115372469},{\"status\":\"txeqi\",\"instanceCount\":1298920970},{\"status\":\"dyimsfay\",\"instanceCount\":771634222}],\"debugInformation\":\"avkjog\",\"name\":\"sl\",\"uri\":\"bnsmjkwynqxaek\",\"parameters\":\"ykvwjtqpkevmyltj\",\"roles\":[\"spxklu\",\"cclfgxannn\"],\"applicationName\":\"t\"}]}";
+            = "{\"value\":[{\"scriptExecutionId\":1782956154841144799,\"startTime\":\"bxsjybvitvqkj\",\"endTime\":\"znumtggmuwdchoz\",\"status\":\"kfexlv\",\"operation\":\"oakizvoai\",\"executionSummary\":[{\"status\":\"lnuwiguy\",\"instanceCount\":1872372943}],\"debugInformation\":\"wphvxz\",\"name\":\"wxh\",\"uri\":\"pejtl\",\"parameters\":\"xaonwivkcqh\",\"roles\":[\"hxknlccrmmkyupi\",\"ubyqj\"],\"applicationName\":\"akfqfrkemyildud\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RuntimeScriptActionDetail> response = manager.scriptExecutionHistories()
-            .listByCluster("tfvpndpmiljpn", "ynudqllzsa", com.azure.core.util.Context.NONE);
+            .listByCluster("bmairrhvhfnracwn", "qigtuujwouhdaws", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sl", response.iterator().next().name());
-        Assertions.assertEquals("bnsmjkwynqxaek", response.iterator().next().uri());
-        Assertions.assertEquals("ykvwjtqpkevmyltj", response.iterator().next().parameters());
-        Assertions.assertEquals("spxklu", response.iterator().next().roles().get(0));
+        Assertions.assertEquals("wxh", response.iterator().next().name());
+        Assertions.assertEquals("pejtl", response.iterator().next().uri());
+        Assertions.assertEquals("xaonwivkcqh", response.iterator().next().parameters());
+        Assertions.assertEquals("hxknlccrmmkyupi", response.iterator().next().roles().get(0));
     }
 }

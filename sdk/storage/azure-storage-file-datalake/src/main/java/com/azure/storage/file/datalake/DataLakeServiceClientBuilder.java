@@ -189,6 +189,10 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     public DataLakeServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.tokenCredential != null || this.azureSasCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "StorageSharedKeyCredential");
+        }
         this.tokenCredential = null;
         this.azureSasCredential = null;
         return this;
@@ -220,8 +224,11 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     public DataLakeServiceClientBuilder credential(TokenCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
+        }
         this.storageSharedKeyCredential = null;
-        this.azureSasCredential = null;
         return this;
     }
 
@@ -237,8 +244,11 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
         blobServiceClientBuilder.sasToken(sasToken);
         this.azureSasCredential
             = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "sasToken");
+        }
         this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 

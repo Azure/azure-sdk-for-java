@@ -17,6 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class WinRMListener implements JsonSerializable<WinRMListener> {
     /*
+     * 
      * Specifies the protocol of WinRM listener. Possible values are: **http,**
      * **https.**
      */
@@ -46,7 +47,8 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
     }
 
     /**
-     * Get the protocol property: Specifies the protocol of WinRM listener. Possible values are: **http,**
+     * Get the protocol property:
+     * Specifies the protocol of WinRM listener. Possible values are: **http,**
      * **https.**.
      * 
      * @return the protocol value.
@@ -56,7 +58,8 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
     }
 
     /**
-     * Set the protocol property: Specifies the protocol of WinRM listener. Possible values are: **http,**
+     * Set the protocol property:
+     * Specifies the protocol of WinRM listener. Possible values are: **http,**
      * **https.**.
      * 
      * @param protocol the protocol value to set.
@@ -109,14 +112,6 @@ public final class WinRMListener implements JsonSerializable<WinRMListener> {
     public WinRMListener withCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

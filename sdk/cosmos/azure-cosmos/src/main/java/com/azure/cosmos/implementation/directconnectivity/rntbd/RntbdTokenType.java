@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 enum RntbdTokenType {
 
@@ -111,14 +110,14 @@ enum RntbdTokenType {
 
             if (length > maxLength) {
                 throw new CorruptedFrameException(
-                    lenientFormat("value length (%s) is greater than maxLength (%s)", length, maxLength));
+                    java.lang.String.format("value length (%s) is greater than maxLength (%s)", length, maxLength));
             }
 
             final int readableBytes = in.readableBytes();
 
             if (length != readableBytes) {
                 throw new CorruptedFrameException(
-                    lenientFormat("readableBytes (%s) does not match value length (%s)", readableBytes, length));
+                    java.lang.String.format("readableBytes (%s) does not match value length (%s)", readableBytes, length));
             }
         }
     }
@@ -719,7 +718,7 @@ enum RntbdTokenType {
                 final byte[] string = (byte[])value;
 
                 if (!Utf8.isWellFormed(string)) {
-                    final String reason = lenientFormat("UTF-8 byte string is ill-formed: %s", ByteBufUtil.hexDump(string));
+                    final String reason = java.lang.String.format("UTF-8 byte string is ill-formed: %s", ByteBufUtil.hexDump(string));
                     throw new CorruptedFrameException(reason);
                 }
 
@@ -727,7 +726,7 @@ enum RntbdTokenType {
             }
 
             if (length > maxLength) {
-                final String reason = lenientFormat("UTF-8 byte string exceeds %s bytes: %s bytes", maxLength, length);
+                final String reason = java.lang.String.format("UTF-8 byte string exceeds %s bytes: %s bytes", maxLength, length);
                 throw new CorruptedFrameException(reason);
             }
 

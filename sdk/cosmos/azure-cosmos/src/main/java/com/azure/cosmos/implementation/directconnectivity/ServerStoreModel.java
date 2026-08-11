@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
@@ -18,6 +17,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
@@ -26,6 +26,10 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public class ServerStoreModel implements RxStoreModel {
+    private static ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor() {
+        return ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+    }
+
     private final StoreClient storeClient;
 
     public ServerStoreModel(StoreClient storeClient) {
@@ -56,9 +60,7 @@ public class ServerStoreModel implements RxStoreModel {
 
         if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
             ReadConsistencyStrategy requestReadConsistencyStrategy;
-            if ((requestReadConsistencyStrategy = ImplementationBridgeHelpers
-                .ReadConsistencyStrategyHelper
-                .getReadConsistencyStrategyAccessor()
+            if ((requestReadConsistencyStrategy = readConsistencyStrategyAccessor()
                 .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue)) == null) {
 
                 return Mono.error(new BadRequestException(
@@ -100,5 +102,10 @@ public class ServerStoreModel implements RxStoreModel {
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.storeClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeClient.registerTransportClientInterceptor(transportClientInterceptor);
     }
 }

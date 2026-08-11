@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,15 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
      * https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
      */
     private Map<String, String> requests;
+
+    /*
+     * Claims lists the names of resources, defined in spec.resourceClaims, that are used by this container.
+     * 
+     * This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.
+     * 
+     * This field is immutable. It can only be set for containers.
+     */
+    private List<VolumeClaimResourceRequirementsClaims> claims;
 
     /**
      * Creates an instance of VolumeClaimResourceRequirements class.
@@ -85,11 +95,33 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
     }
 
     /**
-     * Validates the instance.
+     * Get the claims property: Claims lists the names of resources, defined in spec.resourceClaims, that are used by
+     * this container.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.
+     * 
+     * This field is immutable. It can only be set for containers.
+     * 
+     * @return the claims value.
      */
-    public void validate() {
+    public List<VolumeClaimResourceRequirementsClaims> claims() {
+        return this.claims;
+    }
+
+    /**
+     * Set the claims property: Claims lists the names of resources, defined in spec.resourceClaims, that are used by
+     * this container.
+     * 
+     * This is an alpha field and requires enabling the DynamicResourceAllocation feature gate.
+     * 
+     * This field is immutable. It can only be set for containers.
+     * 
+     * @param claims the claims value to set.
+     * @return the VolumeClaimResourceRequirements object itself.
+     */
+    public VolumeClaimResourceRequirements withClaims(List<VolumeClaimResourceRequirementsClaims> claims) {
+        this.claims = claims;
+        return this;
     }
 
     /**
@@ -100,6 +132,7 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("limits", this.limits, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("requests", this.requests, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("claims", this.claims, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -125,6 +158,10 @@ public final class VolumeClaimResourceRequirements implements JsonSerializable<V
                 } else if ("requests".equals(fieldName)) {
                     Map<String, String> requests = reader.readMap(reader1 -> reader1.getString());
                     deserializedVolumeClaimResourceRequirements.requests = requests;
+                } else if ("claims".equals(fieldName)) {
+                    List<VolumeClaimResourceRequirementsClaims> claims
+                        = reader.readArray(reader1 -> VolumeClaimResourceRequirementsClaims.fromJson(reader1));
+                    deserializedVolumeClaimResourceRequirements.claims = claims;
                 } else {
                     reader.skipChildren();
                 }

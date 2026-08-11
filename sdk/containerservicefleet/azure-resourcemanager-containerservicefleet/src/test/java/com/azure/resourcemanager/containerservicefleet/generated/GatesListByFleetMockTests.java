@@ -25,7 +25,7 @@ public final class GatesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"khnvpam\",\"gateType\":\"Approval\",\"target\":{\"id\":\"x\",\"updateRunProperties\":{\"name\":\"u\",\"stage\":\"ik\",\"group\":\"ggxkallatmelwuip\",\"timing\":\"After\"}},\"state\":\"Skipped\"},\"eTag\":\"zkzivgvvcnay\",\"id\":\"yrnxxmueedn\",\"name\":\"rdvstkwqqtch\",\"type\":\"alm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"ejqgw\",\"gateType\":\"Approval\",\"target\":{\"id\":\"nfqn\",\"updateRunProperties\":{\"name\":\"ypsxjvfoim\",\"stage\":\"slirciz\",\"group\":\"vydfceacvlhvygdy\",\"timing\":\"Before\"}},\"state\":\"Pending\"},\"eTag\":\"rtwnawjslbi\",\"id\":\"ojgcyzt\",\"name\":\"fmznba\",\"type\":\"qphchqnrnrpxehuw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class GatesListByFleetMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Gate> response
-            = manager.gates().listByFleet("gsyocogj", "tdtbnnhadooc", com.azure.core.util.Context.NONE);
+        PagedIterable<Gate> response = manager.gates()
+            .listByFleet("fq", "zgxmr", "ublwpcesutrg", 1362962970, "pauutpw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("khnvpam", response.iterator().next().displayName());
+        Assertions.assertEquals("ejqgw", response.iterator().next().displayName());
         Assertions.assertEquals(GateType.APPROVAL, response.iterator().next().gateType());
-        Assertions.assertEquals("x", response.iterator().next().target().id());
-        Assertions.assertEquals(Timing.AFTER, response.iterator().next().target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.SKIPPED, response.iterator().next().state());
+        Assertions.assertEquals("nfqn", response.iterator().next().target().id());
+        Assertions.assertEquals(Timing.BEFORE, response.iterator().next().target().updateRunProperties().timing());
+        Assertions.assertEquals(GateState.PENDING, response.iterator().next().state());
     }
 }

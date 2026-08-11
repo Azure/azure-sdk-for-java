@@ -9,7 +9,7 @@ package com.azure.resourcemanager.connectedcache.generated;
  */
 public final class EnterpriseMccCustomersListSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCustomers_ListBySubscription.

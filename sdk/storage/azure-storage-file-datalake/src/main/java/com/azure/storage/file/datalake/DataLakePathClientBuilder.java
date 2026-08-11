@@ -276,6 +276,10 @@ public final class DataLakePathClientBuilder
     public DataLakePathClientBuilder credential(StorageSharedKeyCredential credential) {
         blobClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.tokenCredential != null || this.azureSasCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "StorageSharedKeyCredential");
+        }
         this.tokenCredential = null;
         this.azureSasCredential = null;
         return this;
@@ -307,8 +311,11 @@ public final class DataLakePathClientBuilder
     public DataLakePathClientBuilder credential(TokenCredential credential) {
         blobClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
+        }
         this.storageSharedKeyCredential = null;
-        this.azureSasCredential = null;
         return this;
     }
 
@@ -324,8 +331,11 @@ public final class DataLakePathClientBuilder
         blobClientBuilder.sasToken(sasToken);
         this.azureSasCredential
             = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "sasToken");
+        }
         this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 

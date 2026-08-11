@@ -24,7 +24,7 @@ public final class InstancesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionVersionId\":\"s\",\"targetId\":\"grbjbxsjybvitvqk\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"umtggmuwdchozfn\"},\"solutionScope\":\"exlvxnoakiz\",\"status\":{\"lastModified\":\"2021-09-09T07:48:02Z\",\"deployed\":1220529720,\"expectedRunningJobId\":106818765,\"runningJobId\":1377558622,\"status\":\"wiguyxlyk\",\"statusDetails\":\"hvxzcwxhmp\",\"generation\":338411027,\"targetStatuses\":[{\"name\":\"xaonwivkcqh\",\"status\":\"hxknlccrmmkyupi\",\"componentStatuses\":[{},{},{},{}]}]},\"deploymentTimestampEpoch\":7739164189837902113,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"kfq\",\"type\":\"EdgeZone\"},\"eTag\":\"em\",\"id\":\"ldudxjascowv\",\"name\":\"djkpdxph\",\"type\":\"kk\"}";
+            = "{\"properties\":{\"solutionVersionId\":\"ddacbcbgydlqidy\",\"targetId\":\"mhmpty\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"inactive\",\"interval\":\"bnrqq\"},\"solutionScope\":\"ztpb\",\"status\":{\"lastModified\":\"2021-08-20T03:01:03Z\",\"deployed\":602199119,\"expectedRunningJobId\":462746510,\"runningJobId\":222029368,\"status\":\"lswbnf\",\"statusDetails\":\"epl\",\"generation\":571315048,\"targetStatuses\":[{\"name\":\"f\",\"status\":\"gl\",\"componentStatuses\":[{}]}]},\"deploymentTimestampEpoch\":7089584992073086055,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"hsbrcary\",\"type\":\"CustomLocation\"},\"eTag\":\"j\",\"id\":\"voaqajuvehzptdmk\",\"name\":\"rbhmpfulubef\",\"type\":\"ybpmf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,16 @@ public final class InstancesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Instance response = manager.instances()
-            .getWithResponse("wrso", "pl", "dbmairrhvhfnr", "cwnpqigtuujwouhd", com.azure.core.util.Context.NONE)
-            .getValue();
+        Instance response
+            = manager.instances().getWithResponse("rra", "eek", "s", "eh", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("s", response.properties().solutionVersionId());
-        Assertions.assertEquals("grbjbxsjybvitvqk", response.properties().targetId());
-        Assertions.assertEquals(ActiveState.ACTIVE, response.properties().activeState());
+        Assertions.assertEquals("ddacbcbgydlqidy", response.properties().solutionVersionId());
+        Assertions.assertEquals("mhmpty", response.properties().targetId());
+        Assertions.assertEquals(ActiveState.INACTIVE, response.properties().activeState());
         Assertions.assertEquals(ReconciliationState.INACTIVE, response.properties().reconciliationPolicy().state());
-        Assertions.assertEquals("umtggmuwdchozfn", response.properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("exlvxnoakiz", response.properties().solutionScope());
-        Assertions.assertEquals("kfq", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
+        Assertions.assertEquals("bnrqq", response.properties().reconciliationPolicy().interval());
+        Assertions.assertEquals("ztpb", response.properties().solutionScope());
+        Assertions.assertEquals("hsbrcary", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

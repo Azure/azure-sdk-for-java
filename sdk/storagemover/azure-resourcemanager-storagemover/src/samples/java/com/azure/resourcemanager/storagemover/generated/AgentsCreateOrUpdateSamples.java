@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class AgentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_MaximumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_MaximumSet.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_MaximumSet.
@@ -41,7 +41,7 @@ public final class AgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_UploadLimitSchedule_Overnight.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_WithOvernightUploadLimitSchedule.
@@ -71,7 +71,7 @@ public final class AgentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Agents_CreateOrUpdate_MinimumSet.json
+     * x-ms-original-file: 2025-12-01/Agents_CreateOrUpdate_MinimumSet.json
      */
     /**
      * Sample code: Agents_CreateOrUpdate_MinimumSet.

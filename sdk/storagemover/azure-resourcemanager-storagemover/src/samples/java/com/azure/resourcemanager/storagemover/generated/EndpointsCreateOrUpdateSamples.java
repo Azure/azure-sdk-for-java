@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storagemover.models.EndpointBaseProperties;
  */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageNfsFileShare.
@@ -28,7 +28,24 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureMultiCloudConnector.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_S3WithHMAC.json
+     */
+    /**
+     * Sample code: Endpoints_CreateOrUpdate_S3WithHmac.
+     * 
+     * @param manager Entry point to StorageMoverManager.
+     */
+    public static void
+        endpointsCreateOrUpdateS3WithHmac(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
+        manager.endpoints()
+            .define("examples-endpointName")
+            .withExistingStorageMover("examples-rg", "examples-storageMoverName")
+            .withProperties((EndpointBaseProperties) null)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureMultiCloudConnector.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureMultiCloudConnector.
@@ -45,7 +62,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageBlobContainer.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageBlobContainer.
@@ -62,7 +79,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_NfsMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_NfsMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_NfsMount.
@@ -79,7 +96,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_AzureStorageSmbFileShare.
@@ -96,7 +113,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/Endpoints_CreateOrUpdate_SmbMount.json
+     * x-ms-original-file: 2025-12-01/Endpoints_CreateOrUpdate_SmbMount.json
      */
     /**
      * Sample code: Endpoints_CreateOrUpdate_SmbMount.

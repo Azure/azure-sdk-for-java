@@ -14,21 +14,21 @@ public final class TaskOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskOption model = BinaryData.fromString(
-            "{\"concurrency\":1774852320,\"errorAction\":{\"mode\":\"stopOnNFailures\",\"maxToleratedFailures\":1188867128}}")
+            "{\"concurrency\":1233794469,\"errorAction\":{\"mode\":\"silentlyContinue\",\"maxToleratedFailures\":601956231}}")
             .toObject(TaskOption.class);
-        Assertions.assertEquals(1774852320, model.concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES, model.errorAction().mode());
-        Assertions.assertEquals(1188867128, model.errorAction().maxToleratedFailures());
+        Assertions.assertEquals(1233794469, model.concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE, model.errorAction().mode());
+        Assertions.assertEquals(601956231, model.errorAction().maxToleratedFailures());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskOption model = new TaskOption().withConcurrency(1774852320)
+        TaskOption model = new TaskOption().withConcurrency(1233794469)
             .withErrorAction(
-                new ErrorAction().withMode(ErrorActionMode.STOP_ON_NFAILURES).withMaxToleratedFailures(1188867128));
+                new ErrorAction().withMode(ErrorActionMode.SILENTLY_CONTINUE).withMaxToleratedFailures(601956231));
         model = BinaryData.fromObject(model).toObject(TaskOption.class);
-        Assertions.assertEquals(1774852320, model.concurrency());
-        Assertions.assertEquals(ErrorActionMode.STOP_ON_NFAILURES, model.errorAction().mode());
-        Assertions.assertEquals(1188867128, model.errorAction().maxToleratedFailures());
+        Assertions.assertEquals(1233794469, model.concurrency());
+        Assertions.assertEquals(ErrorActionMode.SILENTLY_CONTINUE, model.errorAction().mode());
+        Assertions.assertEquals(601956231, model.errorAction().maxToleratedFailures());
     }
 }

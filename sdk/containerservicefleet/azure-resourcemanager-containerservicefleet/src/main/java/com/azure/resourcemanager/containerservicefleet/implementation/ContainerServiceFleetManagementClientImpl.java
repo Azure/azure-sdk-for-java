@@ -28,7 +28,9 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfileOperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.ClusterMeshProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.FleetManagedNamespacesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
@@ -148,6 +150,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The ClusterMeshProfilesClient object to access its operations.
+     */
+    private final ClusterMeshProfilesClient clusterMeshProfiles;
+
+    /**
+     * Gets the ClusterMeshProfilesClient object to access its operations.
+     * 
+     * @return the ClusterMeshProfilesClient object.
+     */
+    public ClusterMeshProfilesClient getClusterMeshProfiles() {
+        return this.clusterMeshProfiles;
+    }
+
+    /**
      * The FleetsClient object to access its operations.
      */
     private final FleetsClient fleets;
@@ -173,6 +189,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      */
     public FleetMembersClient getFleetMembers() {
         return this.fleetMembers;
+    }
+
+    /**
+     * The FleetManagedNamespacesClient object to access its operations.
+     */
+    private final FleetManagedNamespacesClient fleetManagedNamespaces;
+
+    /**
+     * Gets the FleetManagedNamespacesClient object to access its operations.
+     * 
+     * @return the FleetManagedNamespacesClient object.
+     */
+    public FleetManagedNamespacesClient getFleetManagedNamespaces() {
+        return this.fleetManagedNamespaces;
     }
 
     /**
@@ -262,10 +292,12 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2026-03-02-preview";
         this.operations = new OperationsClientImpl(this);
+        this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
+        this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
         this.gates = new GatesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
@@ -384,7 +416,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

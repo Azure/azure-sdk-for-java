@@ -27,7 +27,10 @@ external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 
 # External dependency versions do not have to match semver format and the semver regular expressions
 # will partially match and produce some hilarious results.
-external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
+# Matches any XML element pair on a single line (e.g. <version>X</version> or <netty.version>X</netty.version>),
+# capturing the tag name in group 1 and the value in group 2 so the value can be substituted while preserving
+# the surrounding tags. This allows external_dependency markers placed on Maven property tags to be updated.
+external_dependency_version_regex = re.compile(r'<([\w.-]+)>([^<]+)</\1>')
 
 # This is the original regular expression for semver. This differs from the
 # previous one in that start of line and end of line anchors are left in place.

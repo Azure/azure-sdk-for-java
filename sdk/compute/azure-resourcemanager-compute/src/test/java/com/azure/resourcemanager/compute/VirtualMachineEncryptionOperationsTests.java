@@ -95,7 +95,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))    // ADE need 8GB
+            .withSize(generalPurposeVMSize())    // ADE need 8GB
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 

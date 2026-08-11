@@ -22,16 +22,13 @@ package com.azure.xml.implementation.aalto.util;
  * reused. Most of actual use functionality is in sub-classes, since
  * access details depend on how symbols are handled at low level.
  */
-public abstract class NameTable {
-    protected NameTable() {
-    }
-
-    public abstract int size();
+public interface NameTable {
+    int size();
 
     /**
      * Method called to check to quickly see if a child symbol table
      * may have gotten additional entries. Used for checking to see
      * if a child table should be merged into shared table.
      */
-    public abstract boolean maybeDirty();
+    boolean maybeDirty();
 }

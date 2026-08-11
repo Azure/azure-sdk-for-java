@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorag
  */
 public final class ConnectedEnvironmentsStoragesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ConnectedEnvironmentsStorages_CreateOrUpdate.json
      */
     /**

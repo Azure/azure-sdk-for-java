@@ -14,14 +14,14 @@ public final class DnsPrivateViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewProperties model = BinaryData.fromString(
-            "{\"ocid\":\"amvdkfwynwcvtbv\",\"displayName\":\"ayhmtnvyqiatkz\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"npwzcjaes\",\"timeCreated\":\"2021-02-13T02:39:36Z\",\"timeUpdated\":\"2021-09-24T01:03:33Z\",\"provisioningState\":\"Canceled\"}")
+            "{\"ocid\":\"nrvgoupmfiibfgg\",\"displayName\":\"ioolvrwxkvtkkgll\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"ygvjayvblmh\",\"timeCreated\":\"2021-03-17T12:51:03Z\",\"timeUpdated\":\"2021-07-26T11:14:50Z\",\"provisioningState\":\"Succeeded\"}")
             .toObject(DnsPrivateViewProperties.class);
-        Assertions.assertEquals("amvdkfwynwcvtbv", model.ocid());
-        Assertions.assertEquals("ayhmtnvyqiatkz", model.displayName());
-        Assertions.assertFalse(model.isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.UPDATING, model.lifecycleState());
-        Assertions.assertEquals("npwzcjaes", model.self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-13T02:39:36Z"), model.timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T01:03:33Z"), model.timeUpdated());
+        Assertions.assertEquals("nrvgoupmfiibfgg", model.ocid());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.displayName());
+        Assertions.assertTrue(model.isProtected());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, model.lifecycleState());
+        Assertions.assertEquals("ygvjayvblmh", model.self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T12:51:03Z"), model.timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:14:50Z"), model.timeUpdated());
     }
 }

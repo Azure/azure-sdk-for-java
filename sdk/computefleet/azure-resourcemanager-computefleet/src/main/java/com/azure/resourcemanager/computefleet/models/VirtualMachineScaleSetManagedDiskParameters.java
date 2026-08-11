@@ -110,20 +110,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (diskEncryptionSet() != null) {
-            diskEncryptionSet().validate();
-        }
-        if (securityProfile() != null) {
-            securityProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

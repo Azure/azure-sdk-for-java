@@ -23,7 +23,7 @@ public final class DiagnosticsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"InProgress\"},\"extendedLocation\":{\"name\":\"dexyionofninbdb\",\"type\":\"EdgeZone\"},\"eTag\":\"cw\",\"location\":\"rsmpcbbprtuga\",\"tags\":{\"tbfcm\":\"bcyksivmfogd\",\"mb\":\"rftsjcwjjxs\"},\"id\":\"wvif\",\"name\":\"xkecifhocj\",\"type\":\"wkloozr\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"hzcgkrepdqhqyhwq\",\"type\":\"EdgeZone\"},\"eTag\":\"vx\",\"location\":\"bckmzeoxinhgr\",\"tags\":{\"znzangprbfaxy\":\"twhlpuzjpce\"},\"id\":\"zlbciphmse\",\"name\":\"roqr\",\"type\":\"dktxfv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class DiagnosticsListMockTests {
 
         PagedIterable<Diagnostic> response = manager.diagnostics().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rsmpcbbprtuga", response.iterator().next().location());
-        Assertions.assertEquals("bcyksivmfogd", response.iterator().next().tags().get("tbfcm"));
-        Assertions.assertEquals("dexyionofninbdb", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("bckmzeoxinhgr", response.iterator().next().location());
+        Assertions.assertEquals("twhlpuzjpce", response.iterator().next().tags().get("znzangprbfaxy"));
+        Assertions.assertEquals("hzcgkrepdqhqyhwq", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
     }
 }

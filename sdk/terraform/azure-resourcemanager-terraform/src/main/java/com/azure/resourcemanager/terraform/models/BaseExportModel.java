@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The base export parameter.
@@ -22,20 +23,42 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     private Type type = Type.fromString("BaseExportModel");
 
     /*
-     * The target Azure Terraform Provider
+     * The target Azure Terraform provider. Defaults to `azurerm`.
      */
     private TargetProvider targetProvider;
 
     /*
-     * Whether to output all non-computed properties in the generated Terraform configuration? This probably needs
-     * manual modifications to make it valid
+     * Whether to output all non-computed properties in the generated Terraform configuration. If set to `false`
+     * empty-valued properties will be omitted from the configuration. Defaults to `true`.
      */
     private Boolean fullProperties;
 
     /*
-     * Mask sensitive attributes in the Terraform configuration
+     * Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
      */
     private Boolean maskSensitive;
+
+    /*
+     * Whether to include RBAC role assignments assigned to the resources exported. Only resource-scoped role
+     * assignments are supported. Defaults to `false`.
+     */
+    private Boolean includeRoleAssignment;
+
+    /*
+     * Whether to include internal resources managed by Azure in the exported configuration. Defaults to `false`.
+     */
+    private Boolean includeManagedResource;
+
+    /*
+     * Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID regular expression. Example:
+     * `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+     */
+    private List<String> excludeAzureResource;
+
+    /*
+     * Excludes specified Terraform resource types. Example: `["azurerm_virtual_network"]`.
+     */
+    private List<String> excludeTerraformResource;
 
     /**
      * Creates an instance of BaseExportModel class.
@@ -53,7 +76,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Get the targetProvider property: The target Azure Terraform Provider.
+     * Get the targetProvider property: The target Azure Terraform provider. Defaults to `azurerm`.
      * 
      * @return the targetProvider value.
      */
@@ -62,7 +85,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Set the targetProvider property: The target Azure Terraform Provider.
+     * Set the targetProvider property: The target Azure Terraform provider. Defaults to `azurerm`.
      * 
      * @param targetProvider the targetProvider value to set.
      * @return the BaseExportModel object itself.
@@ -74,7 +97,8 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
 
     /**
      * Get the fullProperties property: Whether to output all non-computed properties in the generated Terraform
-     * configuration? This probably needs manual modifications to make it valid.
+     * configuration. If set to `false` empty-valued properties will be omitted from the configuration. Defaults to
+     * `true`.
      * 
      * @return the fullProperties value.
      */
@@ -84,7 +108,8 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
 
     /**
      * Set the fullProperties property: Whether to output all non-computed properties in the generated Terraform
-     * configuration? This probably needs manual modifications to make it valid.
+     * configuration. If set to `false` empty-valued properties will be omitted from the configuration. Defaults to
+     * `true`.
      * 
      * @param fullProperties the fullProperties value to set.
      * @return the BaseExportModel object itself.
@@ -95,7 +120,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Get the maskSensitive property: Mask sensitive attributes in the Terraform configuration.
+     * Get the maskSensitive property: Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
      * 
      * @return the maskSensitive value.
      */
@@ -104,7 +129,7 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Set the maskSensitive property: Mask sensitive attributes in the Terraform configuration.
+     * Set the maskSensitive property: Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
      * 
      * @param maskSensitive the maskSensitive value to set.
      * @return the BaseExportModel object itself.
@@ -115,11 +140,91 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
     }
 
     /**
-     * Validates the instance.
+     * Get the includeRoleAssignment property: Whether to include RBAC role assignments assigned to the resources
+     * exported. Only resource-scoped role assignments are supported. Defaults to `false`.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the includeRoleAssignment value.
      */
-    public void validate() {
+    public Boolean includeRoleAssignment() {
+        return this.includeRoleAssignment;
+    }
+
+    /**
+     * Set the includeRoleAssignment property: Whether to include RBAC role assignments assigned to the resources
+     * exported. Only resource-scoped role assignments are supported. Defaults to `false`.
+     * 
+     * @param includeRoleAssignment the includeRoleAssignment value to set.
+     * @return the BaseExportModel object itself.
+     */
+    public BaseExportModel withIncludeRoleAssignment(Boolean includeRoleAssignment) {
+        this.includeRoleAssignment = includeRoleAssignment;
+        return this;
+    }
+
+    /**
+     * Get the includeManagedResource property: Whether to include internal resources managed by Azure in the exported
+     * configuration. Defaults to `false`.
+     * 
+     * @return the includeManagedResource value.
+     */
+    public Boolean includeManagedResource() {
+        return this.includeManagedResource;
+    }
+
+    /**
+     * Set the includeManagedResource property: Whether to include internal resources managed by Azure in the exported
+     * configuration. Defaults to `false`.
+     * 
+     * @param includeManagedResource the includeManagedResource value to set.
+     * @return the BaseExportModel object itself.
+     */
+    public BaseExportModel withIncludeManagedResource(Boolean includeManagedResource) {
+        this.includeManagedResource = includeManagedResource;
+        return this;
+    }
+
+    /**
+     * Get the excludeAzureResource property: Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID
+     * regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+     * 
+     * @return the excludeAzureResource value.
+     */
+    public List<String> excludeAzureResource() {
+        return this.excludeAzureResource;
+    }
+
+    /**
+     * Set the excludeAzureResource property: Excludes specified Azure Resource Ids. Case-insensitive Azure Resource ID
+     * regular expression. Example: `["/subscriptions/[0-9a-f-]+/resourceGroups/my-rg.*"]`.
+     * 
+     * @param excludeAzureResource the excludeAzureResource value to set.
+     * @return the BaseExportModel object itself.
+     */
+    public BaseExportModel withExcludeAzureResource(List<String> excludeAzureResource) {
+        this.excludeAzureResource = excludeAzureResource;
+        return this;
+    }
+
+    /**
+     * Get the excludeTerraformResource property: Excludes specified Terraform resource types. Example:
+     * `["azurerm_virtual_network"]`.
+     * 
+     * @return the excludeTerraformResource value.
+     */
+    public List<String> excludeTerraformResource() {
+        return this.excludeTerraformResource;
+    }
+
+    /**
+     * Set the excludeTerraformResource property: Excludes specified Terraform resource types. Example:
+     * `["azurerm_virtual_network"]`.
+     * 
+     * @param excludeTerraformResource the excludeTerraformResource value to set.
+     * @return the BaseExportModel object itself.
+     */
+    public BaseExportModel withExcludeTerraformResource(List<String> excludeTerraformResource) {
+        this.excludeTerraformResource = excludeTerraformResource;
+        return this;
     }
 
     /**
@@ -133,6 +238,12 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
             this.targetProvider == null ? null : this.targetProvider.toString());
         jsonWriter.writeBooleanField("fullProperties", this.fullProperties);
         jsonWriter.writeBooleanField("maskSensitive", this.maskSensitive);
+        jsonWriter.writeBooleanField("includeRoleAssignment", this.includeRoleAssignment);
+        jsonWriter.writeBooleanField("includeManagedResource", this.includeManagedResource);
+        jsonWriter.writeArrayField("excludeAzureResource", this.excludeAzureResource,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("excludeTerraformResource", this.excludeTerraformResource,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -188,6 +299,16 @@ public class BaseExportModel implements JsonSerializable<BaseExportModel> {
                     deserializedBaseExportModel.fullProperties = reader.getNullable(JsonReader::getBoolean);
                 } else if ("maskSensitive".equals(fieldName)) {
                     deserializedBaseExportModel.maskSensitive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeRoleAssignment".equals(fieldName)) {
+                    deserializedBaseExportModel.includeRoleAssignment = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeManagedResource".equals(fieldName)) {
+                    deserializedBaseExportModel.includeManagedResource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("excludeAzureResource".equals(fieldName)) {
+                    List<String> excludeAzureResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBaseExportModel.excludeAzureResource = excludeAzureResource;
+                } else if ("excludeTerraformResource".equals(fieldName)) {
+                    List<String> excludeTerraformResource = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBaseExportModel.excludeTerraformResource = excludeTerraformResource;
                 } else {
                     reader.skipChildren();
                 }

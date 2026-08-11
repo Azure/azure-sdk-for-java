@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -215,45 +214,6 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (resourceType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceType in model ScheduledActionProperties"));
-        }
-        if (actionType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property actionType in model ScheduledActionProperties"));
-        }
-        if (startTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property startTime in model ScheduledActionProperties"));
-        }
-        if (schedule() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property schedule in model ScheduledActionProperties"));
-        } else {
-            schedule().validate();
-        }
-        if (notificationSettings() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property notificationSettings in model ScheduledActionProperties"));
-        } else {
-            notificationSettings().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionProperties.class);
 
     /**
      * {@inheritDoc}

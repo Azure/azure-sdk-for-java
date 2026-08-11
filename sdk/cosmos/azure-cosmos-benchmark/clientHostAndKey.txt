@@ -1,2 +1,0 @@
-AccountEndpoint=<Host1>;AccountKey=<Key1>;
-AccountEndpoint=<Host2>;AccountKey=<Key2>;

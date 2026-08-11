@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.9.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,72 @@
 
 ### Other Changes
 
+## 4.9.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added support for service version `2026-01-01-preview`
+- Added support for External Key Management (EKM) features using clients `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`
+
+## 4.8.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
+## 4.8.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
+
+## 4.7.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 4.7.6 (2026-03-23)
+
+### Bugs Fixed
+
+- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+
+## 4.7.5 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 4.7.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 4.7.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
 ## 4.7.2 (2025-08-21)
 
 ### Other Changes
@@ -18,7 +84,6 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
-
 
 ## 4.7.1 (2025-08-01)
 

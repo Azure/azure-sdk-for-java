@@ -27,14 +27,6 @@ public class IOContext {
     protected final ContentReference _contentReference;
 
     /**
-     * Old, deprecated "raw" reference to input source.
-     *
-     * @deprecated Since 2.13, use {@link #_contentReference} instead
-     */
-    @Deprecated
-    protected final Object _sourceRef;
-
-    /**
      * Encoding used by the underlying stream, if known.
      */
     protected JsonEncoding _encoding;
@@ -71,12 +63,6 @@ public class IOContext {
      * encoding-related buffering.
      */
     protected byte[] _writeEncodingBuffer;
-
-    /**
-     * Reference to the buffer allocated for temporary use with
-     * base64 encoding or decoding.
-     */
-    protected byte[] _base64Buffer;
 
     /**
      * Reference to the buffer allocated for tokenization purposes,
@@ -118,13 +104,7 @@ public class IOContext {
     public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
         _bufferRecycler = br;
         _contentReference = contentRef;
-        _sourceRef = contentRef.getRawContent();
         _managedResource = managedResource;
-    }
-
-    @Deprecated // since 2.13
-    public IOContext(BufferRecycler br, Object rawContent, boolean managedResource) {
-        this(br, ContentReference.rawReference(rawContent), managedResource);
     }
 
     public void setEncoding(JsonEncoding enc) {
@@ -155,15 +135,6 @@ public class IOContext {
      */
     public ContentReference contentReference() {
         return _contentReference;
-    }
-
-    /**
-     * @deprecated Since 2.13, use {@link #contentReference()} instead
-     * @return "Raw" source reference
-     */
-    @Deprecated
-    public Object getSourceReference() {
-        return _sourceRef;
     }
 
     /*
@@ -202,19 +173,6 @@ public class IOContext {
         return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
     }
 
-    /**
-     * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocBase64Buffer() {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
     public char[] allocTokenBuffer() {
         _verifyAlloc(_tokenCBuffer);
         return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER));
@@ -229,11 +187,6 @@ public class IOContext {
     public char[] allocConcatBuffer() {
         _verifyAlloc(_concatCBuffer);
         return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
-    }
-
-    public char[] allocNameCopyBuffer(int minSize) {
-        _verifyAlloc(_nameCopyBuffer);
-        return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
     }
 
     /**
@@ -259,14 +212,6 @@ public class IOContext {
             _verifyRelease(buf, _writeEncodingBuffer);
             _writeEncodingBuffer = null;
             _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
-        }
-    }
-
-    public void releaseBase64Buffer(byte[] buf) {
-        if (buf != null) { // sanity checks, release once-and-only-once, must be one owned
-            _verifyRelease(buf, _base64Buffer);
-            _base64Buffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
         }
     }
 

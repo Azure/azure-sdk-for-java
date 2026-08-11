@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-30-preview/Operations_List.json
+     * x-ms-original-file: 2025-10-13/Operations_List.json
      */
     /**
      * Sample code: List trusted signing account operations.

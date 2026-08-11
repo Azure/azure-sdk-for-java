@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -37,6 +36,11 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
 
     /**
      * Creates an instance of BrokerListenerProperties class.
@@ -114,20 +118,13 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
     }
 
     /**
-     * Validates the instance.
+     * Get the healthState property: The health state of the resource.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the healthState value.
      */
-    public void validate() {
-        if (ports() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property ports in model BrokerListenerProperties"));
-        } else {
-            ports().forEach(e -> e.validate());
-        }
+    public ResourceHealthState healthState() {
+        return this.healthState;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(BrokerListenerProperties.class);
 
     /**
      * {@inheritDoc}
@@ -167,6 +164,9 @@ public final class BrokerListenerProperties implements JsonSerializable<BrokerLi
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerListenerProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedBrokerListenerProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

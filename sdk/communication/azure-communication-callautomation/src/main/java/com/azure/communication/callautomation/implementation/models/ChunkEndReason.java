@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,31 +14,26 @@ public final class ChunkEndReason extends ExpandableStringEnum<ChunkEndReason> {
     /**
      * Static value chunkIsBeingRecorded for ChunkEndReason.
      */
-    @Generated
     public static final ChunkEndReason CHUNK_IS_BEING_RECORDED = fromString("chunkIsBeingRecorded");
 
     /**
      * Static value sessionEnded for ChunkEndReason.
      */
-    @Generated
     public static final ChunkEndReason SESSION_ENDED = fromString("sessionEnded");
 
     /**
      * Static value chunkMaximumSizeExceeded for ChunkEndReason.
      */
-    @Generated
     public static final ChunkEndReason CHUNK_MAXIMUM_SIZE_EXCEEDED = fromString("chunkMaximumSizeExceeded");
 
     /**
      * Static value chunkMaximumTimeExceeded for ChunkEndReason.
      */
-    @Generated
     public static final ChunkEndReason CHUNK_MAXIMUM_TIME_EXCEEDED = fromString("chunkMaximumTimeExceeded");
 
     /**
      * Static value chunkUploadFailure for ChunkEndReason.
      */
-    @Generated
     public static final ChunkEndReason CHUNK_UPLOAD_FAILURE = fromString("chunkUploadFailure");
 
     /**
@@ -47,7 +41,6 @@ public final class ChunkEndReason extends ExpandableStringEnum<ChunkEndReason> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public ChunkEndReason() {
     }
@@ -58,7 +51,6 @@ public final class ChunkEndReason extends ExpandableStringEnum<ChunkEndReason> {
      * @param name a name to look for.
      * @return the corresponding ChunkEndReason.
      */
-    @Generated
     public static ChunkEndReason fromString(String name) {
         return fromString(name, ChunkEndReason.class);
     }
@@ -68,7 +60,6 @@ public final class ChunkEndReason extends ExpandableStringEnum<ChunkEndReason> {
      * 
      * @return known ChunkEndReason values.
      */
-    @Generated
     public static Collection<ChunkEndReason> values() {
         return values(ChunkEndReason.class);
     }

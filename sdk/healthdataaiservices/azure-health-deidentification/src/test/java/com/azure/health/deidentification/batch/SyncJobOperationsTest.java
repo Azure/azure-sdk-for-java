@@ -5,7 +5,6 @@ package com.azure.health.deidentification.batch;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.DeidentificationClient;
@@ -29,19 +28,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SyncJobOperationsTest extends BatchOperationTestBase {
     protected DeidentificationClient deidentificationClient;
-    private static final String OUTPUT_FOLDER = "_output/";
+    private static final String OUTPUT_FOLDER = "_output";
+    private static final String INPUT_PREFIX = "example_patient_1";
 
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-001r";
-
-        String inputPrefix = "example_patient_1";
+        String jobName = getJobName();
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, INPUT_PREFIX);
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job
@@ -61,7 +59,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getError());
         assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertNull(result.getSummary());
-        assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
+        assertEquals(INPUT_PREFIX, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
         assertEquals(OUTPUT_FOLDER, result.getTargetLocation().getPrefix());
         assertTrue(result.getTargetLocation().getLocation().contains("blob.core.windows.net"));
@@ -70,14 +68,12 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-002r";
-
-        String inputPrefix = "example_patient_1";
+        String jobName = getJobName();
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, INPUT_PREFIX);
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job
@@ -102,7 +98,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertEquals(OperationStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
                 assertEquals("en-US", currentJob.getCustomizations().getSurrogateLocale());
-                assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
+                assertEquals(INPUT_PREFIX, currentJob.getSourceLocation().getPrefix());
                 assertTrue(currentJob.getSourceLocation().getLocation().contains("blob.core.windows.net"));
                 assertEquals(OUTPUT_FOLDER, currentJob.getTargetLocation().getPrefix());
                 assertTrue(currentJob.getTargetLocation().getLocation().contains("blob.core.windows.net"));
@@ -117,13 +113,12 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-003r";
-        String inputPrefix = "example_patient_1";
+        String jobName = getJobName();
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, INPUT_PREFIX);
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation,
@@ -151,14 +146,12 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-004r";
-
-        String inputPrefix = "example_patient_1";
+        String jobName = getJobName();
         String storageLocation = getStorageAccountLocation();
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, INPUT_PREFIX);
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job
@@ -185,14 +178,12 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-005r";
-
-        String inputPrefix = "example_patient_1";
+        String jobName = getJobName();
         String storageLocation = "FAKE_STORAGE_ACCOUNT";
         List<String> extensions = new ArrayList<>();
         extensions.add("*");
 
-        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
+        SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, INPUT_PREFIX);
         sourceStorageLocation.setExtensions(extensions);
 
         DeidentificationJob job

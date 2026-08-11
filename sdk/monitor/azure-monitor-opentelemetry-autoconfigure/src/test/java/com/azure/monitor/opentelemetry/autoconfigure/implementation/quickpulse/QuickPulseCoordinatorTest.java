@@ -18,6 +18,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 class QuickPulseCoordinatorTest {
+    private static final long VERIFY_TIMEOUT_MILLIS = 10000;
+    private static final long THREAD_JOIN_TIMEOUT_MILLIS = 10000;
+
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
     private static final HttpHeaderName QPS_SERVICE_POLLING_INTERVAL_HINT
         = HttpHeaderName.fromString("x-ms-qps-service-polling-interval-hint");
@@ -50,17 +53,17 @@ class QuickPulseCoordinatorTest {
         thread.setDaemon(true);
         thread.start();
 
-        Thread.sleep(1000);
-        coordinator.stop();
-
-        thread.join();
+        try {
+            Mockito.verify(mockPingSender, Mockito.timeout(VERIFY_TIMEOUT_MILLIS).atLeastOnce()).ping(null);
+        } finally {
+            stopAndJoin(coordinator, thread);
+        }
 
         Mockito.verify(mockFetcher, Mockito.never()).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.never()).startSending();
         Mockito.verify(mockSender, Mockito.never()).getQuickPulseStatus();
 
-        Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // make sure QP_IS_OFF after ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
     }
@@ -96,12 +99,12 @@ class QuickPulseCoordinatorTest {
         thread.setDaemon(true);
         thread.start();
 
-        Thread.sleep(1000);
-        coordinator.stop();
-
-        thread.join();
-
-        Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend();
+        try {
+            Mockito.verify(mockFetcher, Mockito.timeout(VERIFY_TIMEOUT_MILLIS).atLeastOnce())
+                .prepareQuickPulseDataForSend();
+        } finally {
+            stopAndJoin(coordinator, thread);
+        }
 
         Mockito.verify(mockSender, Mockito.times(1)).startSending();
         Mockito.verify(mockSender, Mockito.times(1)).getQuickPulseStatus();
@@ -109,6 +112,12 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // Make sure QP_IS_OFF after one post and ping
         assertThat(collector.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_OFF);
+    }
+
+    private static void stopAndJoin(QuickPulseCoordinator coordinator, Thread thread) throws InterruptedException {
+        coordinator.stop();
+        thread.join(THREAD_JOIN_TIMEOUT_MILLIS);
+        assertThat(thread.isAlive()).isFalse();
     }
 
     @Disabled("sporadically failing on CI")

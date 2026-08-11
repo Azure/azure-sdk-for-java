@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateRunGateTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateRunGateTargetProperties model
-            = BinaryData.fromString("{\"name\":\"e\",\"stage\":\"a\",\"group\":\"uhrzayvvt\",\"timing\":\"After\"}")
-                .toObject(UpdateRunGateTargetProperties.class);
+        UpdateRunGateTargetProperties model = BinaryData
+            .fromString("{\"name\":\"dzhlrq\",\"stage\":\"hckfrlhrx\",\"group\":\"kyv\",\"timing\":\"After\"}")
+            .toObject(UpdateRunGateTargetProperties.class);
         Assertions.assertEquals(Timing.AFTER, model.timing());
     }
 }

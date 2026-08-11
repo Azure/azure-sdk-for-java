@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.containerservicefleet.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
+import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -46,6 +46,11 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * Status information of the last operation for fleet member.
      */
     private FleetMemberStatus status;
+
+    /*
+     * The Mesh Member Properties associated with this Fleet Member.
+     */
+    private MeshProperties meshProperties;
 
     /**
      * Creates an instance of FleetMemberProperties class.
@@ -136,22 +141,13 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
     }
 
     /**
-     * Validates the instance.
+     * Get the meshProperties property: The Mesh Member Properties associated with this Fleet Member.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the meshProperties value.
      */
-    public void validate() {
-        if (clusterResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clusterResourceId in model FleetMemberProperties"));
-        }
-        if (status() != null) {
-            status().validate();
-        }
+    public MeshProperties meshProperties() {
+        return this.meshProperties;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FleetMemberProperties.class);
 
     /**
      * {@inheritDoc}
@@ -193,6 +189,8 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
                     deserializedFleetMemberProperties.labels = labels;
                 } else if ("status".equals(fieldName)) {
                     deserializedFleetMemberProperties.status = FleetMemberStatus.fromJson(reader);
+                } else if ("meshProperties".equals(fieldName)) {
+                    deserializedFleetMemberProperties.meshProperties = MeshProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Dataflow Destination Operation properties.
@@ -28,6 +28,11 @@ public final class DataflowDestinationOperationSettings
      * $userProperties, $payload, $context, and $subscription.
      */
     private String dataDestination;
+
+    /*
+     * Headers for the output data.
+     */
+    private List<DataflowDestinationHeaderAction> headers;
 
     /**
      * Creates an instance of DataflowDestinationOperationSettings class.
@@ -78,24 +83,24 @@ public final class DataflowDestinationOperationSettings
     }
 
     /**
-     * Validates the instance.
+     * Get the headers property: Headers for the output data.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the headers value.
      */
-    public void validate() {
-        if (endpointRef() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property endpointRef in model DataflowDestinationOperationSettings"));
-        }
-        if (dataDestination() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dataDestination in model DataflowDestinationOperationSettings"));
-        }
+    public List<DataflowDestinationHeaderAction> headers() {
+        return this.headers;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowDestinationOperationSettings.class);
+    /**
+     * Set the headers property: Headers for the output data.
+     * 
+     * @param headers the headers value to set.
+     * @return the DataflowDestinationOperationSettings object itself.
+     */
+    public DataflowDestinationOperationSettings withHeaders(List<DataflowDestinationHeaderAction> headers) {
+        this.headers = headers;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -105,6 +110,7 @@ public final class DataflowDestinationOperationSettings
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpointRef", this.endpointRef);
         jsonWriter.writeStringField("dataDestination", this.dataDestination);
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +135,10 @@ public final class DataflowDestinationOperationSettings
                     deserializedDataflowDestinationOperationSettings.endpointRef = reader.getString();
                 } else if ("dataDestination".equals(fieldName)) {
                     deserializedDataflowDestinationOperationSettings.dataDestination = reader.getString();
+                } else if ("headers".equals(fieldName)) {
+                    List<DataflowDestinationHeaderAction> headers
+                        = reader.readArray(reader1 -> DataflowDestinationHeaderAction.fromJson(reader1));
+                    deserializedDataflowDestinationOperationSettings.headers = headers;
                 } else {
                     reader.skipChildren();
                 }

@@ -23,7 +23,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.util.Assert;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -33,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BiConsumer;
 
 import static com.azure.spring.messaging.AzureHeaders.PARTITION_ID;
 import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
@@ -43,6 +43,7 @@ import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
  * <p>
  * It delegates real operation to {@link SendOperation} which supports synchronous and asynchronous sending.
  */
+@SuppressWarnings("deprecation")
 public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageHandler.class);
     private static final long DEFAULT_SEND_TIMEOUT = 10000;
@@ -50,8 +51,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final SendOperation sendOperation;
     private boolean sync = false;
 
-    @SuppressWarnings("removal")
-    private ListenableFutureCallback<Void> sendCallback;
+    private BiConsumer<Void, Throwable> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
     private ErrorMessageStrategy errorMessageStrategy = new DefaultErrorMessageStrategy();
@@ -108,14 +108,13 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     }
 
-    @SuppressWarnings("removal")
     private <T> void handleSendResponseAsync(Mono<T> mono, Message<?> message) {
         mono.doOnError(ex -> {
             if (LOGGER.isWarnEnabled()) {
                 LOGGER.warn("{} sent failed in async mode due to {}", message, ex.getMessage());
             }
             if (this.sendCallback != null) {
-                this.sendCallback.onFailure(ex);
+                this.sendCallback.accept(null, ex);
             }
 
             if (getSendFailureChannel() != null) {
@@ -127,7 +126,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
                 LOGGER.debug("{} sent successfully in async mode", message);
             }
             if (this.sendCallback != null) {
-                this.sendCallback.onSuccess((Void) t);
+                this.sendCallback.accept(null, null);
             }
         }).subscribe();
     }
@@ -264,8 +263,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
-    @SuppressWarnings("removal")
-    public void setSendCallback(ListenableFutureCallback<Void> callback) {
+    public void setSendCallback(BiConsumer<Void, Throwable> callback) {
         this.sendCallback = callback;
     }
 

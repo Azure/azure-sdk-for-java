@@ -61,7 +61,7 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.deleteIfExists()
             .then(super.cleanupAsync());
     }
 }

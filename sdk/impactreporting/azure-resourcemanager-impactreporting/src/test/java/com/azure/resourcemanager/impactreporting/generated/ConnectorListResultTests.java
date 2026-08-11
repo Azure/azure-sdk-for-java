@@ -13,9 +13,9 @@ public final class ConnectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"mddystkiiux\",\"tenantId\":\"qyud\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-08-19T10:45:17Z\"},\"id\":\"nbpoczvyifqrvkdv\",\"name\":\"sllr\",\"type\":\"vvdfwatkpnpul\"},{\"properties\":{\"provisioningState\":\"Failed\",\"connectorId\":\"czwtruwiqzbqjv\",\"tenantId\":\"ovm\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2020-12-31T07:20:30Z\"},\"id\":\"cspkwlhzdobpxjmf\",\"name\":\"bvvnchrkcciw\",\"type\":\"zjuqkhrsaj\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"connectorId\":\"ofoskghs\",\"tenantId\":\"uuimjmvxieduug\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-10-23T08:30:29Z\"},\"id\":\"rrfbyaosvexcson\",\"name\":\"clhocohsl\",\"type\":\"ev\"}],\"nextLink\":\"ggzfbu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"rhpdjpjumas\",\"tenantId\":\"azjpqyegualhbxxh\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-02-21T11:35:33Z\"},\"id\":\"zvdudgwdslfhotwm\",\"name\":\"ynpwlbj\",\"type\":\"pgacftadehxnlty\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"connectorId\":\"pusuesn\",\"tenantId\":\"wd\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-03-20T11:41:09Z\"},\"id\":\"vorxzdmohct\",\"name\":\"qvudwxdndnvowgu\",\"type\":\"jugwdkcglhsl\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"connectorId\":\"yggdtjixh\",\"tenantId\":\"kuofqweykhme\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-06-22T03:52:42Z\"},\"id\":\"yexfwh\",\"name\":\"bcibvyvdcsitynn\",\"type\":\"amdecte\"}],\"nextLink\":\"iqscjeypv\"}")
             .toObject(ConnectorListResult.class);
         Assertions.assertEquals(Platform.AZURE_MONITOR, model.value().get(0).properties().connectorType());
-        Assertions.assertEquals("ggzfbu", model.nextLink());
+        Assertions.assertEquals("iqscjeypv", model.nextLink());
     }
 }

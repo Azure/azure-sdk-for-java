@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class GrafanaFetchAvailablePluginsSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_FetchAvailablePlugins.json
+     * x-ms-original-file: 2025-08-01/Grafana_FetchAvailablePlugins.json
      */
     /**
      * Sample code: Grafana_FetchAvailablePlugins.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -306,26 +305,6 @@ public final class DataflowEndpointMqtt implements JsonSerializable<DataflowEndp
         this.cloudEventAttributes = cloudEventAttributes;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (authentication() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property authentication in model DataflowEndpointMqtt"));
-        } else {
-            authentication().validate();
-        }
-        if (tls() != null) {
-            tls().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowEndpointMqtt.class);
 
     /**
      * {@inheritDoc}

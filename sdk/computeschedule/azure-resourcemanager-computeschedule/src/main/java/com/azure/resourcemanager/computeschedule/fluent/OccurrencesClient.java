@@ -145,7 +145,7 @@ public interface OccurrencesClient {
         String occurrenceId, CancelOccurrenceRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -154,14 +154,15 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RecurringActionsResourceOperationResultInner>, RecurringActionsResourceOperationResultInner>
         beginDelay(String resourceGroupName, String scheduledActionName, String occurrenceId, DelayRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -171,7 +172,8 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RecurringActionsResourceOperationResultInner>, RecurringActionsResourceOperationResultInner>
@@ -179,7 +181,7 @@ public interface OccurrencesClient {
             Context context);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -188,14 +190,14 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,
         String occurrenceId, DelayRequest body);
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -205,7 +207,7 @@ public interface OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,

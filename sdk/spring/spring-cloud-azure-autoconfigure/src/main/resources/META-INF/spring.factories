@@ -1,4 +1,4 @@
-org.springframework.boot.env.EnvironmentPostProcessor=\
+org.springframework.boot.EnvironmentPostProcessor=\
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalConfigurationEnvironmentPostProcessor,\
 com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor
 

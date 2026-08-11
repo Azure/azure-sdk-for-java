@@ -10,9 +10,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
+import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
 import com.azure.resourcemanager.durabletask.models.SchedulerProperties;
 import com.azure.resourcemanager.durabletask.models.SchedulerSku;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -26,7 +28,7 @@ public final class SchedulersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"nwsubisnj\",\"ipAllowlist\":[\"pmng\",\"zscxaqwo\",\"chcbonqvpkvlrxnj\",\"ase\"],\"sku\":{\"name\":\"pheoflokeyy\",\"capacity\":354708232,\"redundancyState\":\"Zone\"}},\"location\":\"lwtgrhpdj\",\"tags\":{\"lhbxxhejjzzvdud\":\"masxazjpqyegu\",\"pwlbjnpg\":\"wdslfhotwmcy\",\"nltyfsoppusuesnz\":\"cftadeh\"},\"id\":\"dejbavo\",\"name\":\"xzdmohctb\",\"type\":\"vudwx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"wgqwgxhn\",\"ipAllowlist\":[\"kxfbkpycgklwndn\",\"jdauwhvy\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":725778535,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"mpowuwpr\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ualupjmkh\",\"name\":\"xobbcswsrt\",\"type\":\"riplrbpbewtg\"}]},\"location\":\"gblcgwxzvlvq\",\"tags\":{\"oayqc\":\"begibtnmxiebwwa\",\"uzgwyzmhtx\":\"wrtz\"},\"id\":\"ngmtsavjcb\",\"name\":\"wxqpsrknftguvri\",\"type\":\"hprwmdyv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,21 +38,21 @@ public final class SchedulersCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Scheduler response = manager.schedulers()
-            .define("a")
-            .withRegion("gehoqfbowskany")
-            .withExistingResourceGroup("w")
-            .withTags(
-                mapOf("ynhz", "lcuiywgqywgndr", "pec", "pphrcgynco", "lzevgbmqjqab", "vmmcoofs", "mivkwlzuvcc", "y"))
-            .withProperties(new SchedulerProperties()
-                .withIpAllowlist(Arrays.asList("vvtpgvdfgio", "kftutqxlngxlefg", "gnxkrxdqmidtth"))
-                .withSku(new SchedulerSku().withName("rvqdra").withCapacity(1546969178)))
+            .define("bkyvp")
+            .withRegion("liourqhak")
+            .withExistingResourceGroup("hckfrlhrx")
+            .withTags(mapOf("w", "ashsfwxos", "cjooxdjebwpucwwf", "xcug", "hzceuojgjrwjue", "ovbvmeueciv"))
+            .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("zka"))
+                .withSku(new SchedulerSku().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1834539320))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .create();
 
-        Assertions.assertEquals("lwtgrhpdj", response.location());
-        Assertions.assertEquals("masxazjpqyegu", response.tags().get("lhbxxhejjzzvdud"));
-        Assertions.assertEquals("pmng", response.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("pheoflokeyy", response.properties().sku().name());
-        Assertions.assertEquals(354708232, response.properties().sku().capacity());
+        Assertions.assertEquals("gblcgwxzvlvq", response.location());
+        Assertions.assertEquals("begibtnmxiebwwa", response.tags().get("oayqc"));
+        Assertions.assertEquals("kxfbkpycgklwndn", response.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, response.properties().sku().name());
+        Assertions.assertEquals(725778535, response.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.properties().publicNetworkAccess());
     }
 
     // Use "Map.of" if available

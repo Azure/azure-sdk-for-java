@@ -263,7 +263,7 @@ public final class DirectConnectionConfig {
      * Sets the network request timeout interval (time to wait for response from network peer).
      *
      * Default value is 5 seconds.
-     * It only allows values &ge;1s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
+     * It only allows values &ge;5s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
      * buffer so 10 seconds in total for transport is more than sufficient).
      *
      * Attention! Please adjust this value with caution.
@@ -275,13 +275,16 @@ public final class DirectConnectionConfig {
      * @return the {@link DirectConnectionConfig}
      */
     public DirectConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+
+        long networkRequestTimeoutInMs = networkRequestTimeout.toMillis();
+
         checkNotNull(networkRequestTimeout, "NetworkRequestTimeout can not be null");
-        checkArgument(networkRequestTimeout.toMillis() >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
+        checkArgument(networkRequestTimeoutInMs >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
             "NetworkRequestTimeout can not be less than %s Millis", MIN_NETWORK_REQUEST_TIMEOUT.toMillis());
-        checkArgument(networkRequestTimeout.toMillis() <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
+        checkArgument(networkRequestTimeoutInMs <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
             "NetworkRequestTimeout can not be larger than %s Millis", MAX_NETWORK_REQUEST_TIMEOUT.toMillis());
 
-        this.networkRequestTimeout = networkRequestTimeout;
+        this.networkRequestTimeout = Duration.ofMillis(Math.max(networkRequestTimeoutInMs, DEFAULT_NETWORK_REQUEST_TIMEOUT.toMillis()));
         return this;
     }
 

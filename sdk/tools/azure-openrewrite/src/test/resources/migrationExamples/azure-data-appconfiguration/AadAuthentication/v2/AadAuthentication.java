@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.identity.DefaultAzureCredential;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Sample demonstrates how to use AAD token to build a configuration client.

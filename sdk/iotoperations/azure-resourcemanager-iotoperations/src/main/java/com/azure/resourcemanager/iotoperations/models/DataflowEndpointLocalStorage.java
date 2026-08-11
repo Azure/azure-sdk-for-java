@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -47,21 +46,6 @@ public final class DataflowEndpointLocalStorage implements JsonSerializable<Data
         this.persistentVolumeClaimRef = persistentVolumeClaimRef;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (persistentVolumeClaimRef() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property persistentVolumeClaimRef in model DataflowEndpointLocalStorage"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowEndpointLocalStorage.class);
 
     /**
      * {@inheritDoc}

@@ -11,10 +11,7 @@ import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,13 +23,13 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AbstractCosmosConfigurationIT {
 
-    @SuppressWarnings("deprecation")
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+
 
     @Test
     public void containsExpressionResolver() {
@@ -47,15 +44,17 @@ public class AbstractCosmosConfigurationIT {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
             TestCosmosConfiguration.class);
 
-        Assertions.assertThat(context.getBean(CosmosFactory.class)).isNotNull();
+        assertThat(context.getBean(CosmosFactory.class)).isNotNull();
     }
 
-    @Test(expected = NoSuchBeanDefinitionException.class)
+    @Test
     public void defaultObjectMapperBeanNotExists() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            TestCosmosConfiguration.class);
+        assertThrows(NoSuchBeanDefinitionException.class, () -> {
+            final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
+                TestCosmosConfiguration.class);
 
-        context.getBean(ObjectMapper.class);
+            context.getBean(ObjectMapper.class);
+        });
     }
 
     @Test
@@ -63,8 +62,8 @@ public class AbstractCosmosConfigurationIT {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
             ObjectMapperConfiguration.class);
 
-        Assertions.assertThat(context.getBean(ObjectMapper.class)).isNotNull();
-        Assertions.assertThat(context.getBean(Constants.OBJECT_MAPPER_BEAN_NAME)).isNotNull();
+        assertThat(context.getBean(ObjectMapper.class)).isNotNull();
+        assertThat(context.getBean(Constants.OBJECT_MAPPER_BEAN_NAME)).isNotNull();
     }
 
     @Test
@@ -73,16 +72,16 @@ public class AbstractCosmosConfigurationIT {
             RequestOptionsConfiguration.class);
         final CosmosFactory factory = context.getBean(CosmosFactory.class);
 
-        Assertions.assertThat(factory).isNotNull();
+        assertThat(factory).isNotNull();
 
         final CosmosAsyncClient cosmosAsyncClient =  factory.getCosmosAsyncClient();
 
-        Assertions.assertThat(cosmosAsyncClient).isNotNull();
+        assertThat(cosmosAsyncClient).isNotNull();
         Field desiredConsistencyLevel = cosmosAsyncClient.getClass().getDeclaredField("desiredConsistencyLevel");
         desiredConsistencyLevel.setAccessible(true);
         ConsistencyLevel consistencyLevel =
             (ConsistencyLevel) desiredConsistencyLevel.get(cosmosAsyncClient);
-        Assertions.assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
+        assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
     }
 
     @Configuration

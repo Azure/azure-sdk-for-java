@@ -40,7 +40,6 @@ import static com.azure.cosmos.implementation.RequestTimeline.EventName.QUEUED;
 import static com.azure.cosmos.implementation.RequestTimeline.EventName.RECEIVED;
 import static com.azure.cosmos.implementation.RequestTimeline.EventName.TRANSIT_TIME;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
 public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse> implements IRequestRecord {
@@ -181,7 +180,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
                     this.timeCompleted = time;
                     break;
                 default:
-                    throw new IllegalStateException(lenientFormat("there is no transition from %s to %s",
+                    throw new IllegalStateException(String.format("there is no transition from %s to %s",
                         current,
                         value));
             }

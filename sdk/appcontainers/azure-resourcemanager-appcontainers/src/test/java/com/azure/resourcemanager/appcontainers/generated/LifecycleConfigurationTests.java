@@ -13,21 +13,21 @@ public final class LifecycleConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LifecycleConfiguration model = BinaryData.fromString(
-            "{\"lifecycleType\":\"Timed\",\"cooldownPeriodInSeconds\":1025524893,\"maxAlivePeriodInSeconds\":641060199}")
+            "{\"lifecycleType\":\"OnContainerExit\",\"cooldownPeriodInSeconds\":627294033,\"maxAlivePeriodInSeconds\":939102144}")
             .toObject(LifecycleConfiguration.class);
-        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleType());
-        Assertions.assertEquals(1025524893, model.cooldownPeriodInSeconds());
-        Assertions.assertEquals(641060199, model.maxAlivePeriodInSeconds());
+        Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleType());
+        Assertions.assertEquals(627294033, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(939102144, model.maxAlivePeriodInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LifecycleConfiguration model = new LifecycleConfiguration().withLifecycleType(LifecycleType.TIMED)
-            .withCooldownPeriodInSeconds(1025524893)
-            .withMaxAlivePeriodInSeconds(641060199);
+        LifecycleConfiguration model = new LifecycleConfiguration().withLifecycleType(LifecycleType.ON_CONTAINER_EXIT)
+            .withCooldownPeriodInSeconds(627294033)
+            .withMaxAlivePeriodInSeconds(939102144);
         model = BinaryData.fromObject(model).toObject(LifecycleConfiguration.class);
-        Assertions.assertEquals(LifecycleType.TIMED, model.lifecycleType());
-        Assertions.assertEquals(1025524893, model.cooldownPeriodInSeconds());
-        Assertions.assertEquals(641060199, model.maxAlivePeriodInSeconds());
+        Assertions.assertEquals(LifecycleType.ON_CONTAINER_EXIT, model.lifecycleType());
+        Assertions.assertEquals(627294033, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(939102144, model.maxAlivePeriodInSeconds());
     }
 }

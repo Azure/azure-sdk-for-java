@@ -22,7 +22,7 @@ public final class JavaComponentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"lin\",\"value\":\"yqxzxaqzibmqim\"},{\"propertyName\":\"mqruqguhfupe\",\"value\":\"svvoqsbpkflanfk\"},{\"propertyName\":\"syaowuzowp\",\"value\":\"hdkcprgu\"}],\"scale\":{\"minReplicas\":309241462,\"maxReplicas\":280040111},\"serviceBinds\":[{\"name\":\"lutixmq\",\"serviceId\":\"djizcbf\"},{\"name\":\"crunfhi\",\"serviceId\":\"nmfbc\"},{\"name\":\"qktkrumzuedkyzbf\",\"serviceId\":\"ovqkxiu\"}]},\"id\":\"ggvqrnhyhlwcjs\",\"name\":\"ggjh\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"owgw\",\"value\":\"mkekxpkzwaqxo\"},{\"propertyName\":\"ovchiqbplvfid\",\"value\":\"ztekxbyjgmsfep\"},{\"propertyName\":\"ihpq\",\"value\":\"agr\"}],\"scale\":{\"minReplicas\":18587902,\"maxReplicas\":262952356},\"serviceBinds\":[{\"name\":\"jfowxwy\",\"serviceId\":\"c\"},{\"name\":\"sgbipcukdveksbuh\",\"serviceId\":\"uchvlscrd\"},{\"name\":\"bfdyjduss\",\"serviceId\":\"szekbh\"},{\"name\":\"kaaggkreh\",\"serviceId\":\"rnuybffljfii\"}]},\"id\":\"eoagsqta\",\"name\":\"dusr\",\"type\":\"xxfavsqwudohzilf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class JavaComponentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JavaComponent> response
-            = manager.javaComponents().list("gfb", "mtlpqagyno", com.azure.core.util.Context.NONE);
+            = manager.javaComponents().list("toyrplixlajml", "pq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lin", response.iterator().next().properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("yqxzxaqzibmqim",
+        Assertions.assertEquals("owgw", response.iterator().next().properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("mkekxpkzwaqxo",
             response.iterator().next().properties().configurations().get(0).value());
-        Assertions.assertEquals(309241462, response.iterator().next().properties().scale().minReplicas());
-        Assertions.assertEquals(280040111, response.iterator().next().properties().scale().maxReplicas());
-        Assertions.assertEquals("lutixmq", response.iterator().next().properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("djizcbf", response.iterator().next().properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals(18587902, response.iterator().next().properties().scale().minReplicas());
+        Assertions.assertEquals(262952356, response.iterator().next().properties().scale().maxReplicas());
+        Assertions.assertEquals("jfowxwy", response.iterator().next().properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("c", response.iterator().next().properties().serviceBinds().get(0).serviceId());
     }
 }

@@ -63,17 +63,6 @@ public final class SecretSyncStatus implements JsonSerializable<SecretSyncStatus
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (conditions() != null) {
-            conditions().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

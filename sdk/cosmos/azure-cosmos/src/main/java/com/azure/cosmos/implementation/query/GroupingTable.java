@@ -15,15 +15,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GroupingTable {
-    private static final List<AggregateOperator> EMPTY_AGGREGATE_OPERATORS = new ArrayList<>();
 
     private final Map<UInt128, SingleGroupAggregator> table;
     private final Map<String, AggregateOperator> groupByAliasToAggregateType;
     private final List<String> orderedAliases;
     private final boolean hasSelectValue;
+    private final List<AggregateOperator> aggregateOperators;
 
-    GroupingTable(Map<String, AggregateOperator> groupByAliasToAggregateType, List<String> orderedAliases,
-        boolean hasSelectValue) {
+    GroupingTable(Collection<AggregateOperator> aggregates, Map<String, AggregateOperator> groupByAliasToAggregateType,
+        List<String> orderedAliases, boolean hasSelectValue) {
         if (groupByAliasToAggregateType == null) {
             throw new IllegalArgumentException("groupByAliasToAggregateType cannot be null");
         }
@@ -31,6 +31,11 @@ public class GroupingTable {
         this.groupByAliasToAggregateType = groupByAliasToAggregateType;
         this.orderedAliases = orderedAliases;
         this.hasSelectValue = hasSelectValue;
+
+        this.aggregateOperators = new ArrayList<>();
+        if (aggregates != null) {
+            this.aggregateOperators.addAll(aggregates);
+        }
     }
 
     public void addPayLoad(GroupByDocumentQueryExecutionContext.RewrittenGroupByProjection rewrittenGroupByProjection) {
@@ -38,7 +43,7 @@ public class GroupingTable {
             final UInt128 groupByKeysHash = DistinctHash.getHash(rewrittenGroupByProjection.getGroupByItems());
             SingleGroupAggregator singleGroupAggregator;
             if (!this.table.containsKey(groupByKeysHash)) {
-                singleGroupAggregator = SingleGroupAggregator.create(EMPTY_AGGREGATE_OPERATORS,
+                singleGroupAggregator = SingleGroupAggregator.create(this.aggregateOperators,
                                                                      this.groupByAliasToAggregateType,
                                                                      this.orderedAliases,
                                                                      this.hasSelectValue,

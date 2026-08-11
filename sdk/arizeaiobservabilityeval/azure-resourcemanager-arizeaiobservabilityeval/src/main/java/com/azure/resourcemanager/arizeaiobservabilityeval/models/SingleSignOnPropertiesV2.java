@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.arizeaiobservabilityeval.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -148,20 +147,6 @@ public final class SingleSignOnPropertiesV2 implements JsonSerializable<SingleSi
         this.aadDomains = aadDomains;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model SingleSignOnPropertiesV2"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SingleSignOnPropertiesV2.class);
 
     /**
      * {@inheritDoc}

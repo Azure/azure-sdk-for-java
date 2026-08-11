@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -48,22 +47,6 @@ public final class ElseCondition implements JsonSerializable<ElseCondition> {
         this.operations = operations;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operations() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property operations in model ElseCondition"));
-        } else {
-            operations().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ElseCondition.class);
 
     /**
      * {@inheritDoc}

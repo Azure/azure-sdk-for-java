@@ -12,15 +12,16 @@ public final class ConfigTemplateVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateVersionProperties model
-            = BinaryData.fromString("{\"configurations\":\"yxccyb\",\"provisioningState\":\"Initialized\"}")
+            = BinaryData.fromString("{\"configurations\":\"lqxihhrmooiz\",\"provisioningState\":\"Canceled\"}")
                 .toObject(ConfigTemplateVersionProperties.class);
-        Assertions.assertEquals("yxccyb", model.configurations());
+        Assertions.assertEquals("lqxihhrmooiz", model.configurations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateVersionProperties model = new ConfigTemplateVersionProperties().withConfigurations("yxccyb");
+        ConfigTemplateVersionProperties model
+            = new ConfigTemplateVersionProperties().withConfigurations("lqxihhrmooiz");
         model = BinaryData.fromObject(model).toObject(ConfigTemplateVersionProperties.class);
-        Assertions.assertEquals("yxccyb", model.configurations());
+        Assertions.assertEquals("lqxihhrmooiz", model.configurations());
     }
 }

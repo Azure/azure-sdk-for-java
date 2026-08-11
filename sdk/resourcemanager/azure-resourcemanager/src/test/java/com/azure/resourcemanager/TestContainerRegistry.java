@@ -5,7 +5,6 @@ package com.azure.resourcemanager;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.Registry;
-import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.core.management.Region;
@@ -22,25 +21,28 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withStandardSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .withTag("tag1", "value1")
             .create();
 
-        Assertions.assertTrue(registry.adminUserEnabled());
+        Assertions.assertFalse(registry.adminUserEnabled());
 
-        RegistryCredentials registryCredentials = registry.getCredentials();
-        Assertions.assertNotNull(registryCredentials);
-        if (TestUtils.isRecordMode()) {
-            Assertions.assertEquals(newName + "1", registryCredentials.username());
-        }
-        Assertions.assertEquals(2, registryCredentials.accessKeys().size());
+        // Policy in test subscription does not allow admin user to be enabled
+        // List credential is not allowed when admin user is disabled
+        //        RegistryCredentials registryCredentials = registry.getCredentials();
+        //        Assertions.assertNotNull(registryCredentials);
+        //        if (TestUtils.isRecordMode()) {
+        //            Assertions.assertEquals(newName + "1", registryCredentials.username());
+        //        }
+        //        Assertions.assertEquals(2, registryCredentials.accessKeys().size());
+
         Assertions.assertEquals(0, registry.webhooks().list().stream().count());
 
         Registry registry2 = registries.define(newName + "2")
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withBasicSku()
-            .withRegistryNameAsAdminUser()
+            .withoutRegistryNameAsAdminUser()
             .defineWebhook("webhookbing1")
             .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
             .withServiceUri("https://www.bing.com")
@@ -59,14 +61,14 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .withTag("tag1", "value1")
             .create();
 
-        Assertions.assertTrue(registry2.adminUserEnabled());
+        Assertions.assertFalse(registry2.adminUserEnabled());
 
-        RegistryCredentials registryCredentials2 = registry2.getCredentials();
-        Assertions.assertNotNull(registryCredentials2);
-        if (TestUtils.isRecordMode()) {
-            Assertions.assertEquals(newName + "2", registryCredentials2.username());
-        }
-        Assertions.assertEquals(2, registryCredentials2.accessKeys().size());
+        //        RegistryCredentials registryCredentials2 = registry2.getCredentials();
+        //        Assertions.assertNotNull(registryCredentials2);
+        //        if (TestUtils.isRecordMode()) {
+        //            Assertions.assertEquals(newName + "2", registryCredentials2.username());
+        //        }
+        //        Assertions.assertEquals(2, registryCredentials2.accessKeys().size());
 
         PagedIterable<Webhook> webhooksList = registry2.webhooks().list();
 

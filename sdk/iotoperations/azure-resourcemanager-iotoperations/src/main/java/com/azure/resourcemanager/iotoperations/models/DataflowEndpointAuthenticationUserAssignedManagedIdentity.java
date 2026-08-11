@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -100,27 +99,6 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentity
         this.tenantId = tenantId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (clientId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clientId in model DataflowEndpointAuthenticationUserAssignedManagedIdentity"));
-        }
-        if (tenantId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property tenantId in model DataflowEndpointAuthenticationUserAssignedManagedIdentity"));
-        }
-    }
-
-    private static final ClientLogger LOGGER
-        = new ClientLogger(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
 
     /**
      * {@inheritDoc}

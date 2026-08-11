@@ -25,7 +25,7 @@ public final class ExitOptions implements JsonSerializable<ExitOptions> {
      * API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
-    private BatchJobAction jobAction;
+    private BatchJobActionKind jobAction;
 
     /*
      * An action that the Batch service performs on Tasks that depend on this Task. Possible values are 'satisfy'
@@ -52,24 +52,8 @@ public final class ExitOptions implements JsonSerializable<ExitOptions> {
      * @return the jobAction value.
      */
     @Generated
-    public BatchJobAction getJobAction() {
+    public BatchJobActionKind getJobAction() {
         return this.jobAction;
-    }
-
-    /**
-     * Set the jobAction property: An action to take on the Job containing the Task, if the Task completes with the
-     * given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none
-     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then
-     * specifying this property returns an error and the add Task request fails with an invalid property value error; if
-     * you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
-     *
-     * @param jobAction the jobAction value to set.
-     * @return the ExitOptions object itself.
-     */
-    @Generated
-    public ExitOptions setJobAction(BatchJobAction jobAction) {
-        this.jobAction = jobAction;
-        return this;
     }
 
     /**
@@ -127,7 +111,7 @@ public final class ExitOptions implements JsonSerializable<ExitOptions> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("jobAction".equals(fieldName)) {
-                    deserializedExitOptions.jobAction = BatchJobAction.fromString(reader.getString());
+                    deserializedExitOptions.jobAction = BatchJobActionKind.fromString(reader.getString());
                 } else if ("dependencyAction".equals(fieldName)) {
                     deserializedExitOptions.dependencyAction = DependencyAction.fromString(reader.getString());
                 } else {
@@ -136,5 +120,21 @@ public final class ExitOptions implements JsonSerializable<ExitOptions> {
             }
             return deserializedExitOptions;
         });
+    }
+
+    /**
+     * Set the jobAction property: An action to take on the Job containing the Task, if the Task completes with the
+     * given exit condition and the Job's onTaskFailed property is 'performExitOptionsJobAction'. The default is none
+     * for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then
+     * specifying this property returns an error and the add Task request fails with an invalid property value error; if
+     * you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     *
+     * @param jobAction the jobAction value to set.
+     * @return the ExitOptions object itself.
+     */
+    @Generated
+    public ExitOptions setJobAction(BatchJobActionKind jobAction) {
+        this.jobAction = jobAction;
+        return this;
     }
 }

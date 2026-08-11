@@ -122,6 +122,12 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      */
     private EncryptionProperties encryption;
 
+    /*
+     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass
+     * network restrictions.
+     */
+    private NetworkBypassMode networkBypassMode;
+
     /**
      * Creates an instance of MongoClusterProperties class.
      */
@@ -485,50 +491,25 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Validates the instance.
+     * Get the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * Azure Cosmos DB service to bypass network restrictions.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the networkBypassMode value.
      */
-    public void validate() {
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (replicaParameters() != null) {
-            replicaParameters().validate();
-        }
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (replica() != null) {
-            replica().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
+    public NetworkBypassMode networkBypassMode() {
+        return this.networkBypassMode;
+    }
+
+    /**
+     * Set the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @param networkBypassMode the networkBypassMode value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withNetworkBypassMode(NetworkBypassMode networkBypassMode) {
+        this.networkBypassMode = networkBypassMode;
+        return this;
     }
 
     /**
@@ -554,6 +535,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("networkBypassMode",
+            this.networkBypassMode == null ? null : this.networkBypassMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -623,6 +606,9 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.authConfig = AuthConfigProperties.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedMongoClusterProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("networkBypassMode".equals(fieldName)) {
+                    deserializedMongoClusterProperties.networkBypassMode
+                        = NetworkBypassMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

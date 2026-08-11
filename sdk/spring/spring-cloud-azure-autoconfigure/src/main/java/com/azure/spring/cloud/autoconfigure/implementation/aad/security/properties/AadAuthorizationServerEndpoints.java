@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties;
 
-import com.nimbusds.oauth2.sdk.util.StringUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * Used to get endpoints for Microsoft Identity authorization server.
@@ -27,7 +27,7 @@ public class AadAuthorizationServerEndpoints {
      * @param tenantId the tenant ID
      */
     public AadAuthorizationServerEndpoints(String baseUri, String tenantId) {
-        if (StringUtils.isBlank(baseUri)) {
+        if (!StringUtils.hasText(baseUri)) {
             baseUri = DEFAULT_BASE_URI;
         }
         this.baseUri = addSlash(baseUri);

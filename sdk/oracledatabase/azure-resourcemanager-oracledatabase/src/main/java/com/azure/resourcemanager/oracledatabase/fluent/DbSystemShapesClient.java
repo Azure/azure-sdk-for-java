@@ -59,6 +59,7 @@ public interface DbSystemShapesClient {
      * 
      * @param location The name of the Azure region.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shapeAttribute Filters the result for the given Shape Attribute, such as BLOCK_STORAGE or SMART_STORAGE.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,5 +67,6 @@ public interface DbSystemShapesClient {
      * @return the response of a DbSystemShape list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DbSystemShapeInner> listByLocation(String location, String zone, Context context);
+    PagedIterable<DbSystemShapeInner> listByLocation(String location, String zone, String shapeAttribute,
+        Context context);
 }

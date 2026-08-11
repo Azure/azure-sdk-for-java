@@ -24,16 +24,6 @@ public class DialogStateResult implements JsonSerializable<DialogStateResult> {
     private String dialogId;
 
     /*
-     * Defines options for dialog.
-     */
-    private StartDialogOptions dialogOptions;
-
-    /*
-     * Determines the type of the dialog.
-     */
-    private DialogInputType dialogInputType;
-
-    /*
      * The value to identify context of the operation.
      */
     private String operationContext;

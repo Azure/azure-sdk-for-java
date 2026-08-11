@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class GlobalReachConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/GlobalReachConnections_Get.json
+     * x-ms-original-file: 2025-09-01/GlobalReachConnections_Get.json
      */
     /**
      * Sample code: GlobalReachConnections_Get.

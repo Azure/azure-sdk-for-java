@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ManagedClusterVersionsClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ManagedClusterCodeVersionResultInner;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusterVersionEnvironment;
@@ -153,20 +152,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedClusterCodeVersionResultInner>> getWithResponseAsync(String location,
         String clusterVersion) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (clusterVersion == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterVersion is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -212,24 +197,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedClusterCodeVersionResultInner> getWithResponse(String location, String clusterVersion,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (clusterVersion == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterVersion is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, clusterVersion, accept, context);
@@ -270,17 +237,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ManagedClusterCodeVersionResultInner>>> listWithResponseAsync(String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -323,20 +279,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ManagedClusterCodeVersionResultInner>> listWithResponse(String location, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, accept, context);
@@ -379,23 +321,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedClusterCodeVersionResultInner>> getByEnvironmentWithResponseAsync(String location,
         ManagedClusterVersionEnvironment environment, String clusterVersion) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (environment == null) {
-            return Mono.error(new IllegalArgumentException("Parameter environment is required and cannot be null."));
-        }
-        if (clusterVersion == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterVersion is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByEnvironment(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -446,28 +371,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedClusterCodeVersionResultInner> getByEnvironmentWithResponse(String location,
         ManagedClusterVersionEnvironment environment, String clusterVersion, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (environment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter environment is required and cannot be null."));
-        }
-        if (clusterVersion == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter clusterVersion is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getByEnvironmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, environment, clusterVersion, accept, context);
@@ -512,20 +415,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<ManagedClusterCodeVersionResultInner>>>
         listByEnvironmentWithResponseAsync(String location, ManagedClusterVersionEnvironment environment) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (environment == null) {
-            return Mono.error(new IllegalArgumentException("Parameter environment is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -573,24 +462,6 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<ManagedClusterCodeVersionResultInner>> listByEnvironmentWithResponse(String location,
         ManagedClusterVersionEnvironment environment, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (environment == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter environment is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.listByEnvironmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), location, environment, accept, context);
@@ -615,6 +486,4 @@ public final class ManagedClusterVersionsClientImpl implements ManagedClusterVer
         ManagedClusterVersionEnvironment environment) {
         return listByEnvironmentWithResponse(location, environment, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterVersionsClientImpl.class);
 }

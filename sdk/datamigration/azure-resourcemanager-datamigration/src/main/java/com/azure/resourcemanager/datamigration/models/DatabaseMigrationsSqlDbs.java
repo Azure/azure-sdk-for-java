@@ -108,6 +108,39 @@ public interface DatabaseMigrationsSqlDbs {
         MigrationOperationInput parameters, Context context);
 
     /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    DatabaseMigrationSqlDb retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput);
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    DatabaseMigrationSqlDb retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput, Context context);
+
+    /**
      * Retrieve the Database Migration resource.
      * 
      * @param id the resource ID.

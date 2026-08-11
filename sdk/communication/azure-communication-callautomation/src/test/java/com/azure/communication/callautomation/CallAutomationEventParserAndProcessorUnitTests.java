@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.CustomCallingContext;
+import com.azure.communication.callautomation.models.SipHeaderPrefix;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
@@ -1425,7 +1426,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         CommunicationIdentifier onBehalfofCallee = from;
 
         CustomCallingContext customCallingContext = new CustomCallingContext();
-        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", CustomCallingContext.SipHeaderPrefix.XMSCustom);
+        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", SipHeaderPrefix.X_MS_CUSTOM);
         customCallingContext.addVoip("Test-VoIP-Header", "TestVoIPValue");
         System.out.println("Added sip and voip headers successfully.");
         String receivedEvent = "[{\n" + "  \"id\": \"91cdb8e2-c4c2-4888-bc60-3003f09245b3\",\n"
@@ -1472,7 +1473,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         String incomingCallContext = "incomingCallContext";
         CommunicationIdentifier onBehalfofCallee = from;
         CustomCallingContext customCallingContext = new CustomCallingContext();
-        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", CustomCallingContext.SipHeaderPrefix.X);
+        customCallingContext.addSipX("Test-SIP-Header", "TestSIPValue", SipHeaderPrefix.X);
         customCallingContext.addVoip("Test-VoIP-Header", "TestVoIPValue");
         System.out.println("Added sip and voip headers successfully.");
         String receivedEvent = "[{\n" + "  \"id\": \"91cdb8e2-c4c2-4888-bc60-3003f09245b3\",\n"

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.HybridIdentityMetadatasClient;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.models.HybridIdentityMetadataInner;
 import com.azure.resourcemanager.azurestackhci.vm.implementation.models.HybridIdentityMetadataListResult;
@@ -127,13 +126,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridIdentityMetadataInner>> getWithResponseAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -167,15 +159,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridIdentityMetadataInner> getWithResponse(String resourceUri, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
     }
@@ -207,13 +190,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridIdentityMetadataInner>>
         listByVirtualMachineInstanceSinglePageAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVirtualMachineInstance(this.client.getEndpoint(),
@@ -249,15 +225,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceSinglePage(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HybridIdentityMetadataListResult> res = service.listByVirtualMachineInstanceSync(
             this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, Context.NONE);
@@ -278,15 +245,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceSinglePage(String resourceUri,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HybridIdentityMetadataListResult> res = service.listByVirtualMachineInstanceSync(
             this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
@@ -339,13 +297,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HybridIdentityMetadataInner>>
         listByVirtualMachineInstanceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.listByVirtualMachineInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -365,15 +316,6 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HybridIdentityMetadataListResult> res
             = service.listByVirtualMachineInstanceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -394,21 +336,10 @@ public final class HybridIdentityMetadatasClientImpl implements HybridIdentityMe
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<HybridIdentityMetadataInner> listByVirtualMachineInstanceNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<HybridIdentityMetadataListResult> res
             = service.listByVirtualMachineInstanceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(HybridIdentityMetadatasClientImpl.class);
 }

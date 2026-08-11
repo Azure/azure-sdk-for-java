@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class DeploymentsAsyncSample {
 
     private static DeploymentsAsyncClient deploymentsAsyncClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildDeploymentsAsyncClient();
 
@@ -33,7 +33,7 @@ public class DeploymentsAsyncSample {
     public static Mono<Deployment> getDeployment() {
         // BEGIN:com.azure.ai.projects.DeploymentsAsyncSample.getDeployment
 
-        String deploymentName = Configuration.getGlobalConfiguration().get("DEPLOYMENT_NAME", "");
+        String deploymentName = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME", "");
         return deploymentsAsyncClient.getDeployment(deploymentName)
             .doOnNext(deployment -> {
                 System.out.printf("Deployment name: %s%n", deployment.getName());

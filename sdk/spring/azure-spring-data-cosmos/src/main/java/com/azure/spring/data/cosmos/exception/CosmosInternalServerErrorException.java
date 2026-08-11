@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Internal Server Error Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosInternalServerErrorException extends CosmosAccessException {
 
     /**

@@ -15,22 +15,22 @@ public final class ConfigTemplateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"ibyowbblgyavutp\",\"latestVersion\":\"joxoism\",\"provisioningState\":\"InProgress\"},\"eTag\":\"pi\",\"location\":\"qolj\",\"tags\":{\"dwl\":\"gxxlxsffgcvizq\",\"youpfgfbkj\":\"w\"},\"id\":\"bdyhgkfminsgowz\",\"name\":\"ttsttktlahbqact\",\"type\":\"tgzukxitmmqt\"}")
+            "{\"properties\":{\"description\":\"n\",\"latestVersion\":\"zudhcxg\",\"provisioningState\":\"Canceled\"},\"eTag\":\"xcdyuibhmfdnb\",\"location\":\"dvfvfcjnaeoi\",\"tags\":{\"mzhwplefaxvxi\":\"hmgorffukiscv\",\"yqxtjjfzql\":\"cbtgnhnz\",\"dggxdbeesmi\":\"hycav\"},\"id\":\"knlrariaawiuagy\",\"name\":\"wqfbylyrfgiagt\",\"type\":\"ojocqwogf\"}")
             .toObject(ConfigTemplateInner.class);
-        Assertions.assertEquals("qolj", model.location());
-        Assertions.assertEquals("gxxlxsffgcvizq", model.tags().get("dwl"));
-        Assertions.assertEquals("ibyowbblgyavutp", model.properties().description());
+        Assertions.assertEquals("dvfvfcjnaeoi", model.location());
+        Assertions.assertEquals("hmgorffukiscv", model.tags().get("mzhwplefaxvxi"));
+        Assertions.assertEquals("n", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateInner model = new ConfigTemplateInner().withLocation("qolj")
-            .withTags(mapOf("dwl", "gxxlxsffgcvizq", "youpfgfbkj", "w"))
-            .withProperties(new ConfigTemplateProperties().withDescription("ibyowbblgyavutp"));
+        ConfigTemplateInner model = new ConfigTemplateInner().withLocation("dvfvfcjnaeoi")
+            .withTags(mapOf("mzhwplefaxvxi", "hmgorffukiscv", "yqxtjjfzql", "cbtgnhnz", "dggxdbeesmi", "hycav"))
+            .withProperties(new ConfigTemplateProperties().withDescription("n"));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateInner.class);
-        Assertions.assertEquals("qolj", model.location());
-        Assertions.assertEquals("gxxlxsffgcvizq", model.tags().get("dwl"));
-        Assertions.assertEquals("ibyowbblgyavutp", model.properties().description());
+        Assertions.assertEquals("dvfvfcjnaeoi", model.location());
+        Assertions.assertEquals("hmgorffukiscv", model.tags().get("mzhwplefaxvxi"));
+        Assertions.assertEquals("n", model.properties().description());
     }
 
     // Use "Map.of" if available

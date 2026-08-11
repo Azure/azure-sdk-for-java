@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Certificates_ListByManagedEnvironment
-     * .json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * Certificates_ListByManagedEnvironment.json
      */
     /**
      * Sample code: List Certificates by Managed Environment.

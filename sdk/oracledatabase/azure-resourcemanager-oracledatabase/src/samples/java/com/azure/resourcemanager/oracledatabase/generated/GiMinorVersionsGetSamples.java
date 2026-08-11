@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class GiMinorVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01/GiMinorVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-09-01/GiMinorVersions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GiMinorVersions_Get_MaximumSet.
@@ -19,6 +19,6 @@ public final class GiMinorVersionsGetSamples {
     public static void
         giMinorVersionsGetMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.giMinorVersions()
-            .getWithResponse("eastus", "giVersionName", "giMinorVersionName", com.azure.core.util.Context.NONE);
+            .getWithResponse("eastus", "19.0.0.0", "minorversion", com.azure.core.util.Context.NONE);
     }
 }

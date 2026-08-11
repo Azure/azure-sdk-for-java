@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DbNodeActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DbNodeAction model = BinaryData.fromString("{\"action\":\"Reset\"}").toObject(DbNodeAction.class);
-        Assertions.assertEquals(DbNodeActionEnum.RESET, model.action());
+        DbNodeAction model = BinaryData.fromString("{\"action\":\"Start\"}").toObject(DbNodeAction.class);
+        Assertions.assertEquals(DbNodeActionEnum.START, model.action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbNodeAction model = new DbNodeAction().withAction(DbNodeActionEnum.RESET);
+        DbNodeAction model = new DbNodeAction().withAction(DbNodeActionEnum.START);
         model = BinaryData.fromObject(model).toObject(DbNodeAction.class);
-        Assertions.assertEquals(DbNodeActionEnum.RESET, model.action());
+        Assertions.assertEquals(DbNodeActionEnum.START, model.action());
     }
 }

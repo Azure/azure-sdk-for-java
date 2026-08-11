@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mongocluster.fluent.ReplicasClient;
 import com.azure.resourcemanager.mongocluster.fluent.models.ReplicaInner;
 import com.azure.resourcemanager.mongocluster.implementation.models.ReplicaListResult;
@@ -112,22 +111,6 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByParentSinglePageAsync(String resourceGroupName,
         String mongoClusterName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mongoClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -165,24 +148,6 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentSinglePage(String resourceGroupName, String mongoClusterName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mongoClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ReplicaListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -205,24 +170,6 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentSinglePage(String resourceGroupName, String mongoClusterName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mongoClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter mongoClusterName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ReplicaListResult> res
             = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -277,13 +224,6 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicaInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -303,15 +243,6 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ReplicaListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -331,21 +262,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ReplicaInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ReplicaListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ReplicasClientImpl.class);
 }

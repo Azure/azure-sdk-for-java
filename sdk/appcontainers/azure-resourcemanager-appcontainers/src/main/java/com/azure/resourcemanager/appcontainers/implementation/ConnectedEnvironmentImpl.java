@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmen
 import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironment;
+import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentPatchResource;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
@@ -105,6 +106,8 @@ public final class ConnectedEnvironmentImpl
 
     private String connectedEnvironmentName;
 
+    private ConnectedEnvironmentPatchResource updateEnvironmentEnvelope;
+
     public ConnectedEnvironmentImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -132,20 +135,23 @@ public final class ConnectedEnvironmentImpl
     }
 
     public ConnectedEnvironmentImpl update() {
+        this.updateEnvironmentEnvelope = new ConnectedEnvironmentPatchResource();
         return this;
     }
 
     public ConnectedEnvironment apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironments()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), Context.NONE);
+            .updateWithResponse(resourceGroupName, connectedEnvironmentName, updateEnvironmentEnvelope, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectedEnvironment apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConnectedEnvironments()
-            .createOrUpdate(resourceGroupName, connectedEnvironmentName, this.innerModel(), context);
+            .updateWithResponse(resourceGroupName, connectedEnvironmentName, updateEnvironmentEnvelope, context)
+            .getValue();
         return this;
     }
 
@@ -198,8 +204,13 @@ public final class ConnectedEnvironmentImpl
     }
 
     public ConnectedEnvironmentImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateEnvironmentEnvelope.withTags(tags);
+            return this;
+        }
     }
 
     public ConnectedEnvironmentImpl withExtendedLocation(ExtendedLocation extendedLocation) {
@@ -220,5 +231,9 @@ public final class ConnectedEnvironmentImpl
     public ConnectedEnvironmentImpl withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration) {
         this.innerModel().withCustomDomainConfiguration(customDomainConfiguration);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

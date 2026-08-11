@@ -27,7 +27,8 @@ public final class FilesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.files().deleteWithResponse("gfmq", "sk", "ixvlz", "xplhpeva", com.azure.core.util.Context.NONE);
+        manager.files()
+            .deleteWithResponse("zubfo", "fdbgmkfwm", "cwtewfhxwyrkb", "ehzlry", com.azure.core.util.Context.NONE);
 
     }
 }

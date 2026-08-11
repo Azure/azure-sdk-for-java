@@ -21,7 +21,7 @@ public final class SharedPrivateLinkResourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateLinkResourceId\":\"bobzdopcjwvnhd\",\"groupId\":\"d\",\"requestMessage\":\"mgxcxrslpm\",\"dnsZone\":\"wuoegrpk\",\"status\":\"Rejected\",\"provisioningState\":\"Failed\"},\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
+            = "{\"properties\":{\"privateLinkResourceId\":\"tkblmpewww\",\"groupId\":\"bkrvrnsvshqj\",\"requestMessage\":\"hxcr\",\"dnsZone\":\"fovasr\",\"status\":\"Pending\",\"provisioningState\":\"Failed\"},\"id\":\"sqfsubcgjbirxb\",\"name\":\"ybsrfbjfdtwss\",\"type\":\"t\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class SharedPrivateLinkResourcesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SharedPrivateLinkResource response = manager.sharedPrivateLinkResources()
-            .getWithResponse("pnedgf", "cvkcvqvpkeqdcv", "rhvoods", com.azure.core.util.Context.NONE)
+            .getWithResponse("cqaqtdoqmcbx", "wvxysl", "bhsfxob", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bobzdopcjwvnhd", response.properties().privateLinkResourceId());
-        Assertions.assertEquals("d", response.properties().groupId());
-        Assertions.assertEquals("mgxcxrslpm", response.properties().requestMessage());
-        Assertions.assertEquals("wuoegrpk", response.properties().dnsZone());
+        Assertions.assertEquals("tkblmpewww", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("bkrvrnsvshqj", response.properties().groupId());
+        Assertions.assertEquals("hxcr", response.properties().requestMessage());
+        Assertions.assertEquals("fovasr", response.properties().dnsZone());
     }
 }

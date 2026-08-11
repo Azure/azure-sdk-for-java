@@ -12,26 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VmssDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmssDataDisk model = BinaryData
-            .fromString(
-                "{\"lun\":366208637,\"diskSizeGB\":2107533163,\"diskType\":\"Standard_LRS\",\"diskLetter\":\"olvrw\"}")
+        VmssDataDisk model = BinaryData.fromString(
+            "{\"lun\":210534625,\"diskSizeGB\":605018835,\"diskType\":\"Standard_LRS\",\"diskLetter\":\"ipmdscwx\"}")
             .toObject(VmssDataDisk.class);
-        Assertions.assertEquals(366208637, model.lun());
-        Assertions.assertEquals(2107533163, model.diskSizeGB());
+        Assertions.assertEquals(210534625, model.lun());
+        Assertions.assertEquals(605018835, model.diskSizeGB());
         Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("olvrw", model.diskLetter());
+        Assertions.assertEquals("ipmdscwx", model.diskLetter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmssDataDisk model = new VmssDataDisk().withLun(366208637)
-            .withDiskSizeGB(2107533163)
+        VmssDataDisk model = new VmssDataDisk().withLun(210534625)
+            .withDiskSizeGB(605018835)
             .withDiskType(DiskType.STANDARD_LRS)
-            .withDiskLetter("olvrw");
+            .withDiskLetter("ipmdscwx");
         model = BinaryData.fromObject(model).toObject(VmssDataDisk.class);
-        Assertions.assertEquals(366208637, model.lun());
-        Assertions.assertEquals(2107533163, model.diskSizeGB());
+        Assertions.assertEquals(210534625, model.lun());
+        Assertions.assertEquals(605018835, model.diskSizeGB());
         Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("olvrw", model.diskLetter());
+        Assertions.assertEquals("ipmdscwx", model.diskLetter());
     }
 }

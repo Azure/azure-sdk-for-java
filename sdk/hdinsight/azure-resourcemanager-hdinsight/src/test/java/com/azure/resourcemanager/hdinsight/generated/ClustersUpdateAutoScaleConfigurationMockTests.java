@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.Autoscale;
@@ -34,25 +34,27 @@ public final class ClustersUpdateAutoScaleConfigurationMockTests {
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.clusters()
-            .updateAutoScaleConfiguration("dtvqe", "rqctmxxdtdd", RoleName.WORKERNODE,
+            .updateAutoScaleConfiguration("uewmrswnjlxuzrhw", "usxjbaqehg", RoleName.WORKERNODE,
                 new AutoscaleConfigurationUpdateParameter()
                     .withAutoscale(
                         new Autoscale()
-                            .withCapacity(new AutoscaleCapacity().withMinInstanceCount(1948227960)
-                                .withMaxInstanceCount(1691518178))
+                            .withCapacity(new AutoscaleCapacity().withMinInstanceCount(1306458114)
+                                .withMaxInstanceCount(1128032057))
                             .withRecurrence(
-                                new AutoscaleRecurrence().withTimeZone("tznapxbannovv")
+                                new AutoscaleRecurrence().withTimeZone("coi")
                                     .withSchedule(Arrays.asList(
                                         new AutoscaleSchedule()
-                                            .withDays(Arrays.asList(DaysOfWeek.FRIDAY, DaysOfWeek.SATURDAY,
+                                            .withDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.MONDAY,
                                                 DaysOfWeek.SATURDAY))
                                             .withTimeAndCapacity(new AutoscaleTimeAndCapacity()),
                                         new AutoscaleSchedule()
-                                            .withDays(Arrays.asList(DaysOfWeek.WEDNESDAY, DaysOfWeek.SUNDAY,
-                                                DaysOfWeek.MONDAY, DaysOfWeek.SATURDAY))
+                                            .withDays(Arrays.asList(DaysOfWeek.WEDNESDAY, DaysOfWeek.THURSDAY,
+                                                DaysOfWeek.FRIDAY))
+                                            .withTimeAndCapacity(new AutoscaleTimeAndCapacity()),
+                                        new AutoscaleSchedule().withDays(Arrays.asList(DaysOfWeek.THURSDAY))
                                             .withTimeAndCapacity(new AutoscaleTimeAndCapacity()))))),
                 com.azure.core.util.Context.NONE);
 

@@ -1,14 +1,65 @@
 # Release History
 
-## 1.57.0-beta.1 (Unreleased)
+## 1.59.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.58.1 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.6` to `2.18.7`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+
+## 1.58.0 (2026-04-28)
+
+### Features Added
+
+- Added `getBodyAsInputStreamSync()` method to `HttpResponse` that returns the response content as an `InputStream` synchronously. ([#48858](https://github.com/Azure/azure-sdk-for-java/pull/48858))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.4` to `2.18.6`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
+
+## 1.57.1 (2026-01-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.5.0` to `1.5.1`.
+- Updated `azure-xml` from `1.2.0` to `1.2.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
+## 1.57.0 (2025-10-06)
+
+### Features Added
+
+- Adds `RetryStrategy.calculateRetryDelay(RequestRetryCondition)` to allow for richer inspection of the reason the
+  request failed and is being retried when calculating the delay. ([#46384](https://github.com/Azure/azure-sdk-for-java/pull/46384))
+
+### Bugs Fixed
+
+- Fixed a bug where `SharedExecutorService` didn't allow core threads to time out, even when a time out was set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
 
 ## 1.56.1 (2025-09-05)
 

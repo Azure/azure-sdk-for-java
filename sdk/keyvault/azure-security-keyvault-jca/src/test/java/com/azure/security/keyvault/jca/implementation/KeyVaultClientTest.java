@@ -3,24 +3,25 @@
 
 package com.azure.security.keyvault.jca.implementation;
 
+import com.azure.security.keyvault.jca.PropertyConvertorUtils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
+import com.azure.security.keyvault.jca.implementation.model.CertificateItemAttributes;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import java.security.cert.Certificate;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,7 +41,7 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 0);
+            assertEquals(0, result.size());
         }
     }
 
@@ -64,7 +65,7 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 1);
+            assertEquals(1, result.size());
             assertTrue(result.contains("fakeCertificateItem1"));
         }
     }
@@ -104,42 +105,101 @@ public class KeyVaultClientTest {
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
             List<String> result = keyVaultClient.getAliases();
 
-            assertEquals(result.size(), 3);
+            assertEquals(3, result.size());
             assertTrue(result
                 .containsAll(Arrays.asList("fakeCertificateItem1", "fakeCertificateItem2", "fakeCertificateItem3")));
         }
     }
 
     @Test
-    @Disabled
-    public void testGetAliases() {
-        List<String> result = getKeyVaultClient().getAliases();
-        assertNotNull(result);
+    public void testGetAliasFiltersOutDisabledCertificate() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            utilities.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            utilities.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            // Enabled certificate.
+            CertificateItemAttributes enabledAttributes = new CertificateItemAttributes();
+            enabledAttributes.setEnabled(true);
+            CertificateItem enabledCertificate = new CertificateItem();
+            enabledCertificate.setId("certificates/client-cert-active");
+            enabledCertificate.setAttributes(enabledAttributes);
+
+            // Disabled certificate. This one previously caused an HTTP 403 while initializing the keystore.
+            CertificateItemAttributes disabledAttributes = new CertificateItemAttributes();
+            disabledAttributes.setEnabled(false);
+            CertificateItem disabledCertificate = new CertificateItem();
+            disabledCertificate.setId("certificates/client-cert-unused");
+            disabledCertificate.setAttributes(disabledAttributes);
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(enabledCertificate, disabledCertificate));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            utilities.when(() -> HttpUtil.get(notNull(), anyMap())).thenReturn(certificateListResultString);
+
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
+            List<String> result = keyVaultClient.getAliases();
+
+            assertEquals(1, result.size());
+            assertTrue(result.contains("client-cert-active"));
+            assertFalse(result.contains("client-cert-unused"));
+        }
     }
 
     @Test
-    @Disabled
-    public void testGetCertificate() {
-        Certificate certificate = getKeyVaultClient().getCertificate("myalias");
-        assertNotNull(certificate);
+    public void testGetAliasKeepsEnabledAndAttributelessCertificates() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            utilities.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            utilities.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            // Certificate explicitly enabled.
+            CertificateItemAttributes enabledAttributes = new CertificateItemAttributes();
+            enabledAttributes.setEnabled(true);
+            CertificateItem enabledCertificate = new CertificateItem();
+            enabledCertificate.setId("certificates/enabledCertificate");
+            enabledCertificate.setAttributes(enabledAttributes);
+
+            // Certificate without attributes, which must be treated as enabled for backward compatibility.
+            CertificateItem attributelessCertificate = new CertificateItem();
+            attributelessCertificate.setId("certificates/attributelessCertificate");
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(enabledCertificate, attributelessCertificate));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            utilities.when(() -> HttpUtil.get(notNull(), anyMap())).thenReturn(certificateListResultString);
+
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
+            List<String> result = keyVaultClient.getAliases();
+
+            assertEquals(2, result.size());
+            assertTrue(result.containsAll(Arrays.asList("enabledCertificate", "attributelessCertificate")));
+        }
     }
 
     @Test
-    @Disabled
-    public void testGetKey() {
-        assertNull(getKeyVaultClient().getKey("myalias", null));
-    }
+    public void testGetAliasFiltersDisabledCertificateFromRawResponse() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            utilities.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            utilities.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
 
-    private KeyVaultClient getKeyVaultClient() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+            // A response that mirrors the shape returned by the Azure Key Vault "list certificates" REST API, with one
+            // enabled and one disabled certificate.
+            String rawResponse = "{\"value\":["
+                + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-active\","
+                + "\"attributes\":{\"enabled\":true,\"nbf\":1783324860,\"exp\":1814861460}},"
+                + "{\"id\":\"https://fake.vault.azure.net/certificates/client-cert-unused\","
+                + "\"attributes\":{\"enabled\":false,\"nbf\":1783324860,\"exp\":1814861460}}]," + "\"nextLink\":null}";
 
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, null,
-            disableChallengeResourceVerification);
+            utilities.when(() -> HttpUtil.get(notNull(), anyMap())).thenReturn(rawResponse);
+
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
+            List<String> result = keyVaultClient.getAliases();
+
+            assertEquals(1, result.size());
+            assertTrue(result.contains("client-cert-active"));
+            assertFalse(result.contains("client-cert-unused"));
+        }
     }
 
     @Test
@@ -204,5 +264,94 @@ public class KeyVaultClientTest {
 
             tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(2));
         }
+    }
+
+    @Test
+    public void testAccessTokenAuthentication() {
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class)) {
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            CertificateItem fakeCertificateItem = new CertificateItem();
+            fakeCertificateItem.setId("certificates/fakeCertificateItem");
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
+
+            // Create client with access token
+            String testAccessToken = "test-bearer-token-12345";
+            KeyVaultClient keyVaultClient
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, testAccessToken, false);
+
+            List<String> result = keyVaultClient.getAliases();
+
+            // Verify that the access token was used
+            assertEquals(1, result.size());
+            assertTrue(result.contains("fakeCertificateItem"));
+        }
+    }
+
+    @Test
+    public void testAuthenticationPriority() {
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class);
+            MockedStatic<AccessTokenUtil> tokenUtilMockedStatic = Mockito.mockStatic(AccessTokenUtil.class)) {
+
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+
+            AccessToken accessToken = new AccessToken("fake-token", 3600);
+            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()))
+                .thenReturn(accessToken);
+
+            CertificateItem fakeCertificateItem = new CertificateItem();
+            fakeCertificateItem.setId("certificates/fakeCertificateItem");
+
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
+
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
+
+            // Test 1: Managed Identity should take priority over access token
+            KeyVaultClient client1
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, "managed-id", "bearer-token", false);
+            client1.getAliases();
+            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), eq("managed-id")), times(1));
+
+            // Test 2: Access token should be used when managed identity is not set
+            KeyVaultClient client2
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, "bearer-token", false);
+            List<String> result = client2.getAliases();
+            assertEquals(1, result.size());
+            assertTrue(result.contains("fakeCertificateItem"));
+        }
+    }
+
+    @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+    @Test
+    public void testKeyVaultClients() {
+        String accessToken = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ACCESS_TOKEN");
+        KeyVaultClient keyVaultClient;
+        if (accessToken != null && !accessToken.isEmpty()) {
+            keyVaultClient = new KeyVaultClient(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                null, null, null, null, accessToken, false);
+
+        } else {
+            keyVaultClient = new KeyVaultClient(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
+                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        }
+        String certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+
+        assertTrue(keyVaultClient.getAliases().contains(certificateName));
+        assertNotNull(keyVaultClient.getCertificate(certificateName));
+        assertNotNull(keyVaultClient.getCertificateChain(certificateName));
+        assertNotNull(keyVaultClient.getKey(certificateName, null));
     }
 }

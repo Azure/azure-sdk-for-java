@@ -122,15 +122,6 @@ public final class ThreeTierRecommendationResult extends SapSizingRecommendation
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

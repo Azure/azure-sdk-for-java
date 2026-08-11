@@ -30,7 +30,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import javax.net.ssl.SSLException;
@@ -127,7 +126,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         final boolean ssl = "wss".equalsIgnoreCase(scheme);
         final SslContext sslCtx;
         if (ssl) {
-            sslCtx = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            sslCtx = SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
         } else {
             sslCtx = null;
         }

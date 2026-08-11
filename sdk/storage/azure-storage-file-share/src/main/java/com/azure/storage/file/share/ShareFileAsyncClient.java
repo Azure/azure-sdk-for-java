@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -49,6 +50,7 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -62,6 +64,7 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
@@ -70,11 +73,13 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
@@ -113,6 +118,7 @@ import java.util.stream.Collectors;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.file.share.implementation.util.ModelHelper.toShareFileRangeItems;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -394,7 +400,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null,
-                null, metadata, requestConditions, context));
+                null, metadata, requestConditions, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -447,7 +453,8 @@ public class ShareFileAsyncClient {
             StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
+                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(),
+                options.getFilePropertySemantics(), options.getData(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -455,24 +462,37 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
-        Context context) {
-        context = context == null ? Context.NONE : context;
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
+        FilePosixProperties filePosixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
+        FilePropertySemantics filePropertySemantics, BinaryData binaryData, Context context) {
+        final Context contextLocal = context == null ? Context.NONE : context;
+        final ShareRequestConditions requestConditionsLocal
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        final FileSmbProperties smbPropertiesLocal = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        final FilePosixProperties filePosixPropertiesLocal
+            = filePosixProperties == null ? new FilePosixProperties() : filePosixProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbPropertiesLocal.getFilePermissionKey());
 
-        return azureFileStorageClient.getFiles()
+        Mono<UploadUtils.FluxMd5Wrapper> contentMD5Mono;
+        Long contentLength;
+        if (binaryData != null) {
+            contentLength = binaryData.getLength();
+            contentMD5Mono = UploadUtils.computeMd5(binaryData.toFluxByteBuffer(), true, LOGGER);
+        } else {
+            contentLength = null;
+            contentMD5Mono = UploadUtils.computeMd5(null, false, LOGGER);
+        }
+
+        return contentMD5Mono.flatMap(fluxMD5wrapper -> azureFileStorageClient.getFiles()
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                httpHeaders, context)
-            .map(ModelHelper::createFileInfoResponse);
+                smbPropertiesLocal.getFilePermissionKey(), smbPropertiesLocal.getNtfsFileAttributesString(),
+                smbPropertiesLocal.getFileCreationTimeString(), smbPropertiesLocal.getFileLastWriteTimeString(),
+                smbPropertiesLocal.getFileChangeTimeString(), requestConditionsLocal.getLeaseId(),
+                filePosixPropertiesLocal.getOwner(), filePosixPropertiesLocal.getGroup(),
+                filePosixPropertiesLocal.getFileMode(), filePosixPropertiesLocal.getFileType(), fluxMD5wrapper.getMd5(),
+                filePropertySemantics, contentLength, null, null, fluxMD5wrapper.getData(), httpHeaders, contextLocal)
+            .map(ModelHelper::createFileInfoResponse));
     }
 
     /**
@@ -2686,7 +2706,9 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @return {@link ShareFileRange ranges} in the files.
+     * @deprecated Use {@link #listAllRanges()} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges() {
         return listRanges(null);
@@ -2712,7 +2734,9 @@ public class ShareFileAsyncClient {
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range) {
         return this.listRanges(range, null);
@@ -2740,11 +2764,82 @@ public class ShareFileAsyncClient {
      * @param range Optional byte range which returns file data only from the specified range.
      * @param requestConditions {@link ShareRequestConditions}
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRanges(ShareFileListRangesOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
-            return listRangesWithOptionalTimeout(range, requestConditions, null, Context.NONE);
+            return listRangesWithOptionalTimeout(range, requestConditions, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists all ranges for the file as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRanges() {
+        return listAllRanges(new ShareFileListRangesOptions());
+    }
+
+    /**
+     * Lists all ranges for the file as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options Optional parameters.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRanges(ShareFileListRangesOptions options) {
+        try {
+            ShareFileListRangesOptions finalOptions = options == null ? new ShareFileListRangesOptions() : options;
+            return listAllRangesInternal(finalOptions.getRange(), finalOptions.getRequestConditions(), null, null,
+                false, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param previousSnapshot Specifies that the response will contain only ranges that were changed between target
+     * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
+     * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(String previousSnapshot) {
+        return listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot));
+    }
+
+    /**
+     * Lists ranges that have changed between the file and the specified snapshot as a paged flux.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareFileListRangesDiffOptions}
+     * @return {@link ShareFileRangeItem ranges} in the file.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ShareFileRangeItem> listAllRangesDiff(ShareFileListRangesDiffOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return listAllRangesInternal(options.getRange(), options.getRequestConditions(),
+                options.getPreviousSnapshot(), options.isRenameIncluded(), true, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -2774,7 +2869,9 @@ public class ShareFileAsyncClient {
      * file and previous snapshot. Changed ranges include both updated and cleared ranges. The target file may be a
      * snapshot, as long as the snapshot specified by previousSnapshot is the older of the two.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRangesDiff(String)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
         try {
@@ -2809,23 +2906,26 @@ public class ShareFileAsyncClient {
      *
      * @param options {@link ShareFileListRangesDiffOptions}.
      * @return {@link ShareFileRange ranges} in the files that satisfy the requirements
+     * @deprecated Use {@link #listAllRangesDiff(ShareFileListRangesDiffOptions)} instead.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileRangeList>> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
             return listRangesWithResponse(options.getRange(), options.getRequestConditions(),
-                options.getPreviousSnapshot(), options.isRenameIncluded(), Context.NONE);
+                options.getPreviousSnapshot(), options.isRenameIncluded(), null, null, Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     PagedFlux<ShareFileRange> listRangesWithOptionalTimeout(ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareRequestConditions requestConditions, Duration timeout) {
 
         Function<String, Mono<PagedResponse<ShareFileRange>>> retriever = marker -> StorageImplUtils
-            .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, null, null, context), timeout)
+            .applyOptionalTimeout(
+                this.listRangesWithResponse(range, requestConditions, null, null, null, null, Context.NONE), timeout)
             .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 response.getValue()
@@ -2839,8 +2939,25 @@ public class ShareFileAsyncClient {
         return new PagedFlux<>(() -> retriever.apply(null), retriever);
     }
 
+    PagedFlux<ShareFileRangeItem> listAllRangesInternal(ShareFileRange range, ShareRequestConditions requestConditions,
+        String previousSnapshot, Boolean supportRename, boolean includeClearRanges, Duration timeout) {
+        BiFunction<String, Integer, Mono<PagedResponse<ShareFileRangeItem>>> nextPageRetriever
+            = (marker, pageSize) -> StorageImplUtils
+                .applyOptionalTimeout(this.listRangesWithResponse(range, requestConditions, previousSnapshot,
+                    supportRename, marker, pageSize, Context.NONE), timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), toShareFileRangeItems(response.getValue(), includeClearRanges),
+                    response.getValue().getNextMarker(), response.getHeaders()));
+
+        Function<Integer, Mono<PagedResponse<ShareFileRangeItem>>> firstPageRetriever
+            = pageSize -> nextPageRetriever.apply(null, pageSize);
+
+        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
+    }
+
     Mono<Response<ShareFileRangeList>> listRangesWithResponse(ShareFileRange range,
-        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, Context context) {
+        ShareRequestConditions requestConditions, String previousSnapshot, Boolean supportRename, String marker,
+        Integer maxResultsPerPage, Context context) {
 
         ShareRequestConditions finalRequestConditions
             = requestConditions == null ? new ShareRequestConditions() : requestConditions;
@@ -2849,7 +2966,7 @@ public class ShareFileAsyncClient {
 
         return this.azureFileStorageClient.getFiles()
             .getRangeListWithResponseAsync(shareName, filePath, snapshot, previousSnapshot, null, rangeString,
-                finalRequestConditions.getLeaseId(), supportRename, context)
+                finalRequestConditions.getLeaseId(), supportRename, marker, maxResultsPerPage, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -3483,5 +3600,37 @@ public class ShareFileAsyncClient {
         return this.azureFileStorageClient.getFiles()
             .getSymbolicLinkWithResponseAsync(shareName, filePath, null, snapshot, null, context)
             .map(ModelHelper::getSymbolicLinkResponse);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the file using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

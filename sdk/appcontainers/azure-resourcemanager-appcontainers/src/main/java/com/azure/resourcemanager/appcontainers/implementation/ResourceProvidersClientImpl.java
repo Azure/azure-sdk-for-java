@@ -21,6 +21,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionInner;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
@@ -56,7 +57,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientResourceProviders")
     public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/executions/{jobExecutionName}")
@@ -69,10 +70,28 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/jobs/{jobName}/executions/{jobExecutionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<JobExecutionInner> jobExecutionSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("jobName") String jobName,
+            @PathParam("jobExecutionName") String jobExecutionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.App/getCustomDomainVerificationId")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<String>> getCustomDomainVerificationId(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.App/getCustomDomainVerificationId")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<String> getCustomDomainVerificationIdSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -123,46 +142,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
      * @param jobExecutionName Job execution name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a single job execution along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobExecutionInner>> jobExecutionWithResponseAsync(String resourceGroupName, String jobName,
-        String jobExecutionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (jobExecutionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter jobExecutionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.jobExecution(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            jobName, jobExecutionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get details of a single job execution.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param jobExecutionName Job execution name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,7 +169,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobExecutionInner> jobExecutionWithResponse(String resourceGroupName, String jobName,
         String jobExecutionName, Context context) {
-        return jobExecutionWithResponseAsync(resourceGroupName, jobName, jobExecutionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (jobName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
+        }
+        if (jobExecutionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter jobExecutionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.jobExecutionSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            jobName, jobExecutionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -237,32 +240,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get the verification id of a subscription used for verifying custom domains.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the verification id of a subscription used for verifying custom domains along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> getCustomDomainVerificationIdWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getCustomDomainVerificationId(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get the verification id of a subscription used for verifying custom domains.
-     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the verification id of a subscription used for verifying custom domains on successful completion of
@@ -284,7 +261,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getCustomDomainVerificationIdWithResponse(Context context) {
-        return getCustomDomainVerificationIdWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getCustomDomainVerificationIdSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -298,4 +287,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public String getCustomDomainVerificationId() {
         return getCustomDomainVerificationIdWithResponse(Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersClientImpl.class);
 }

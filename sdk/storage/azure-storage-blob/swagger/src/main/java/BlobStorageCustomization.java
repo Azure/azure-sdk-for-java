@@ -120,7 +120,12 @@ public class BlobStorageCustomization extends Customization {
             clazz.getFieldByName("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED").ifPresent(field ->
                 field.addMarkerAnnotation("Deprecated").getJavadoc().ifPresent(javadoc -> field.setJavadocComment(
                     javadoc.addBlockTag("deprecated",
-                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}"))));
+                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}"))));
+
+            clazz.getFieldByName("INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED").ifPresent(field ->
+                field.addMarkerAnnotation("Deprecated").getJavadoc().ifPresent(javadoc -> field.setJavadocComment(
+                    javadoc.addBlockTag("deprecated",
+                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}"))));
         }));
 
         //QueryFormat

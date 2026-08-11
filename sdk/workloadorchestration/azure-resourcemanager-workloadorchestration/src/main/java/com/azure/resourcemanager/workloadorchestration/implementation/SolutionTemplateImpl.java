@@ -11,6 +11,8 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTem
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplate;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateProperties;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateUpdate;
+import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateUpdateProperties;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersion;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 import java.util.Collections;
@@ -83,6 +85,8 @@ public final class SolutionTemplateImpl
 
     private String solutionTemplateName;
 
+    private SolutionTemplateUpdate updateProperties;
+
     public SolutionTemplateImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -110,13 +114,14 @@ public final class SolutionTemplateImpl
     }
 
     public SolutionTemplateImpl update() {
+        this.updateProperties = new SolutionTemplateUpdate();
         return this;
     }
 
     public SolutionTemplate apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSolutionTemplates()
-            .updateWithResponse(resourceGroupName, solutionTemplateName, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, solutionTemplateName, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -124,7 +129,7 @@ public final class SolutionTemplateImpl
     public SolutionTemplate apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSolutionTemplates()
-            .updateWithResponse(resourceGroupName, solutionTemplateName, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, solutionTemplateName, updateProperties, context)
             .getValue();
         return this;
     }
@@ -180,12 +185,26 @@ public final class SolutionTemplateImpl
     }
 
     public SolutionTemplateImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public SolutionTemplateImpl withProperties(SolutionTemplateProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public SolutionTemplateImpl withProperties(SolutionTemplateUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

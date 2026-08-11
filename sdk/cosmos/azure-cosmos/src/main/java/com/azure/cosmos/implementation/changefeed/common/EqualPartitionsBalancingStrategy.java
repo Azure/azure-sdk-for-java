@@ -25,8 +25,18 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
     private final int minPartitionCount;
     private final int maxPartitionCount;
     private final Duration leaseExpirationInterval;
+    private final int maxLeasesToAcquirePerCycle;
 
     public EqualPartitionsBalancingStrategy(String hostName, int minPartitionCount, int maxPartitionCount, Duration leaseExpirationInterval) {
+        this(hostName, minPartitionCount, maxPartitionCount, leaseExpirationInterval, 0);
+    }
+
+    public EqualPartitionsBalancingStrategy(
+        String hostName,
+        int minPartitionCount,
+        int maxPartitionCount,
+        Duration leaseExpirationInterval,
+        int maxLeasesToAcquirePerCycle) {
         if (hostName == null) {
             throw new IllegalArgumentException("hostName");
         }
@@ -35,6 +45,10 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
         this.minPartitionCount = minPartitionCount;
         this.maxPartitionCount = maxPartitionCount;
         this.leaseExpirationInterval = leaseExpirationInterval;
+        if (maxLeasesToAcquirePerCycle < 0) {
+            throw new IllegalArgumentException("maxLeasesToAcquirePerCycle cannot be negative");
+        }
+        this.maxLeasesToAcquirePerCycle = maxLeasesToAcquirePerCycle;
     }
 
     @Override
@@ -57,43 +71,51 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
         int partitionsNeededForMe = target - myCount;
 
         if (expiredLeases.size() > 0) {
-            // We should try to pick at least one expired lease even if already overbooked when maximum partition count is not set.
-            // If other CFP instances are running, limit the number of expired leases to acquire to maximum 1 (non-greedy acquiring).
-            if ((this.maxPartitionCount == 0 && partitionsNeededForMe <= 0) || (partitionsNeededForMe > 1 && workerToPartitionCount.size() > 1)) {
-                partitionsNeededForMe = 1;
+            // Determine how many unused/expired leases to attempt this cycle.
+            // 1) If maxScaleCount is not set (unlimited), try to pick at least one expired lease even if we're already overbooked.
+            // 2) If maxLeasesToAcquirePerCycle is configured, cap with it (overrides the legacy non-greedy clamp by design).
+            // 3) Otherwise, preserve the legacy non-greedy clamp (at most one lease per cycle when multiple workers exist).
+            int leasesToAcquire = partitionsNeededForMe;
+            if (this.maxPartitionCount == 0 && leasesToAcquire <= 0) {
+                leasesToAcquire = 1;
             }
 
-            if (partitionsNeededForMe == 1) {
-                // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
-                Random random = new Random();
-                Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
-                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
-
-                return Collections.singletonList(expiredLease);
-            } else {
-                for (Lease lease : expiredLeases) {
-                    this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {} and maxScaleCount {} ",
-                        lease.getLeaseToken(), lease.getOwner(), this.hostName, myCount, this.maxPartitionCount);
-                }
+            if (this.maxLeasesToAcquirePerCycle > 0) {
+                leasesToAcquire = Math.min(leasesToAcquire, this.maxLeasesToAcquirePerCycle);
+            } else if (leasesToAcquire > 1 && workerToPartitionCount.size() > 1) {
+                leasesToAcquire = 1;
             }
 
-            // If we reach here with partitionsNeededForMe < 0, then it means the change feed processor instances has owned leases >= the maxScaleCount.
-            // Then in this case, the change feed processor instance will not pick up any new leases.
-            if (partitionsNeededForMe <= 0)
-            {
+            if (leasesToAcquire <= 0) {
                 return new ArrayList<>();
             }
 
-            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
+            Random random = new Random();
+
+            if (leasesToAcquire == 1) {
+                // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
+                Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
+                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} and maxLeasesToAcquirePerCycle {} ",
+                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount, this.maxLeasesToAcquirePerCycle);
+
+                return Collections.singletonList(expiredLease);
+            }
+
+            // For multiple acquisitions, shuffle and take a random subset.
+            Collections.shuffle(expiredLeases, random);
+            this.logger.info("Found {} unused or expired leases; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} and maxLeasesToAcquirePerCycle {} ",
+                expiredLeases.size(), this.hostName, myCount, leasesToAcquire, this.maxPartitionCount, this.maxLeasesToAcquirePerCycle);
+
+            return expiredLeases.subList(0, Math.min(leasesToAcquire, expiredLeases.size()));
         }
 
-        if (partitionsNeededForMe <= 0)
-            return new ArrayList<Lease>();
+        if (partitionsNeededForMe <= 0) {
+            return new ArrayList<>();
+        }
 
+        // Intentionally keep the legacy behavior for stealing: attempt to steal at most 1 lease per cycle.
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);
         List<Lease> stolenLeases = new ArrayList<>();
-
         if (stolenLease != null) {
             stolenLeases.add(stolenLease);
         }

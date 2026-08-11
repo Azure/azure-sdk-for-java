@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -97,25 +96,13 @@ public final class AzureStorageNfsFileShareEndpointProperties extends EndpointBa
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (storageAccountResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageAccountResourceId in model AzureStorageNfsFileShareEndpointProperties"));
-        }
-        if (fileShareName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property fileShareName in model AzureStorageNfsFileShareEndpointProperties"));
-        }
+    public AzureStorageNfsFileShareEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureStorageNfsFileShareEndpointProperties.class);
 
     /**
      * {@inheritDoc}
@@ -124,6 +111,7 @@ public final class AzureStorageNfsFileShareEndpointProperties extends EndpointBa
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("fileShareName", this.fileShareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
@@ -149,6 +137,9 @@ public final class AzureStorageNfsFileShareEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureStorageNfsFileShareEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureStorageNfsFileShareEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureStorageNfsFileShareEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));

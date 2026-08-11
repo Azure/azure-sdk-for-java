@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentsStoragesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironmentsStorages_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ManagedEnvironmentsStorages_Get.json
      */
     /**
      * Sample code: get a environments storage.
@@ -24,7 +24,7 @@ public final class ManagedEnvironmentsStoragesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ManagedEnvironmentsStorages_Get_NfsAzureFile.json
      */
     /**

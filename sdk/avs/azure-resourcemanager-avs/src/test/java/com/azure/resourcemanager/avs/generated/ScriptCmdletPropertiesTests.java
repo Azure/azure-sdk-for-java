@@ -11,7 +11,7 @@ public final class ScriptCmdletPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptCmdletProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Failed\",\"description\":\"ysuiizynkedya\",\"timeout\":\"wyhqmibzyhwits\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"SecureString\",\"name\":\"dpumnzgmw\",\"description\":\"mabiknsorgjhxb\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"String\",\"name\":\"kdmtncvokotll\",\"description\":\"yhgsy\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Float\",\"name\":\"tbnnha\",\"description\":\"ocrkvcikh\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Bool\",\"name\":\"qqu\",\"description\":\"ik\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]}")
+            "{\"provisioningState\":\"Failed\",\"description\":\"lw\",\"timeout\":\"ztzp\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"String\",\"name\":\"fz\",\"description\":\"hxx\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]}")
             .toObject(ScriptCmdletProperties.class);
     }
 }

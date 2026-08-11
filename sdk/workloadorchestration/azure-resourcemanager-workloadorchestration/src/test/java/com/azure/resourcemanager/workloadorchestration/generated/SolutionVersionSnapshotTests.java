@@ -12,8 +12,8 @@ public final class SolutionVersionSnapshotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionVersionSnapshot model
-            = BinaryData.fromString("{\"solutionVersionId\":\"hpluodpvruudlg\",\"specification\":{}}")
+            = BinaryData.fromString("{\"solutionVersionId\":\"ambtrnegvm\",\"specification\":{}}")
                 .toObject(SolutionVersionSnapshot.class);
-        Assertions.assertEquals("hpluodpvruudlg", model.solutionVersionId());
+        Assertions.assertEquals("ambtrnegvm", model.solutionVersionId());
     }
 }

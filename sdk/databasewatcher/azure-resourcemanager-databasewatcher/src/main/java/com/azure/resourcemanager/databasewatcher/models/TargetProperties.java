@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -151,29 +150,6 @@ public class TargetProperties implements JsonSerializable<TargetProperties> {
         this.provisioningState = provisioningState;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (targetAuthenticationType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetAuthenticationType in model TargetProperties"));
-        }
-        if (targetVault() != null) {
-            targetVault().validate();
-        }
-        if (connectionServerName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectionServerName in model TargetProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TargetProperties.class);
 
     /**
      * {@inheritDoc}

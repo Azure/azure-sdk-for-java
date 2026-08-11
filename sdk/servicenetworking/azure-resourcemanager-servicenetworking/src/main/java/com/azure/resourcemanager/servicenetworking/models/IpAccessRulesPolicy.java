@@ -49,17 +49,6 @@ public final class IpAccessRulesPolicy implements JsonSerializable<IpAccessRules
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

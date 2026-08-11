@@ -26,7 +26,7 @@ public final class JavaComponentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"sqrggvrbnyruko\",\"value\":\"aciduwjleip\"},{\"propertyName\":\"h\",\"value\":\"xpzruzythqkk\"},{\"propertyName\":\"bg\",\"value\":\"ellv\"},{\"propertyName\":\"nxdmnitmujdtv\",\"value\":\"lyymffhmjpddny\"}],\"scale\":{\"minReplicas\":1116641423,\"maxReplicas\":1558701655},\"serviceBinds\":[{\"name\":\"qmzjqrbrpvnmdy\",\"serviceId\":\"ebojtjppglao\"},{\"name\":\"qk\",\"serviceId\":\"t\"},{\"name\":\"jilaywkdcwmqsyri\",\"serviceId\":\"hxdqaol\"}]},\"id\":\"lnkkbjpjvlywltmf\",\"name\":\"obbjwhlwy\",\"type\":\"fnqzocr\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"tfxptpqayamkncfg\",\"value\":\"mxsnxocuul\"},{\"propertyName\":\"j\",\"value\":\"oy\"}],\"scale\":{\"minReplicas\":1378586528,\"maxReplicas\":117635238},\"serviceBinds\":[{\"name\":\"bdl\",\"serviceId\":\"gdyrcvuqbsgzl\"},{\"name\":\"hbj\",\"serviceId\":\"ogdxwbsfpyxxtjlf\"},{\"name\":\"cominxojjluxx\",\"serviceId\":\"ilz\"},{\"name\":\"zzqjmu\",\"serviceId\":\"ay\"}]},\"id\":\"ribqlotokh\",\"name\":\"vwta\",\"type\":\"nkcqwwxwjyofgw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,28 +35,26 @@ public final class JavaComponentsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        JavaComponent response
-            = manager.javaComponents()
-                .define("ktjtgra")
-                .withExistingManagedEnvironment("iwllbvgwzsffted", "us")
-                .withProperties(new JavaComponentProperties()
-                    .withConfigurations(Arrays.asList(
-                        new JavaComponentConfigurationProperty().withPropertyName("bebauzlqb").withValue("xwpfhnjzud"),
-                        new JavaComponentConfigurationProperty().withPropertyName("pzkg").withValue("boy"),
-                        new JavaComponentConfigurationProperty().withPropertyName("czzqrhmngqbedyg")
-                            .withValue("rzwnyk")))
-                    .withScale(new JavaComponentPropertiesScale().withMinReplicas(605280163).withMaxReplicas(791235384))
-                    .withServiceBinds(
-                        Arrays.asList(new JavaComponentServiceBind().withName("pwctofl").withServiceId("eacdhztx"),
-                            new JavaComponentServiceBind().withName("rfgdrwj").withServiceId("ewhfjsrwqrxetf"),
-                            new JavaComponentServiceBind().withName("wvrrmdqn").withServiceId("cnawth"))))
-                .create();
+        JavaComponent response = manager.javaComponents()
+            .define("hoadhrsxqvzv")
+            .withExistingManagedEnvironment("wwnbafoctohz", "aquvwsxbgnvkervq")
+            .withProperties(new JavaComponentProperties()
+                .withConfigurations(
+                    Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("gfajglzrsubklr")
+                        .withValue("jnltcetjdvqydi")))
+                .withScale(new JavaComponentPropertiesScale().withMinReplicas(408396280).withMaxReplicas(1461869156))
+                .withServiceBinds(
+                    Arrays.asList(new JavaComponentServiceBind().withName("dxvqzxoe").withServiceId("gjxb"),
+                        new JavaComponentServiceBind().withName("an").withServiceId("upwtz"),
+                        new JavaComponentServiceBind().withName("aklozk").withServiceId("zrpejpl"),
+                        new JavaComponentServiceBind().withName("anbtttkgsu").withServiceId("nrswgkpjhboyik"))))
+            .create();
 
-        Assertions.assertEquals("sqrggvrbnyruko", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("aciduwjleip", response.properties().configurations().get(0).value());
-        Assertions.assertEquals(1116641423, response.properties().scale().minReplicas());
-        Assertions.assertEquals(1558701655, response.properties().scale().maxReplicas());
-        Assertions.assertEquals("qmzjqrbrpvnmdy", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("ebojtjppglao", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("tfxptpqayamkncfg", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("mxsnxocuul", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(1378586528, response.properties().scale().minReplicas());
+        Assertions.assertEquals(117635238, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("bdl", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("gdyrcvuqbsgzl", response.properties().serviceBinds().get(0).serviceId());
     }
 }

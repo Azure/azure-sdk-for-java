@@ -9,7 +9,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
-import com.microsoft.aad.msal4j.MsalClientException;
+import com.microsoft.aad.msal4j.MsalServiceException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
@@ -230,7 +231,7 @@ public class OnBehalfOfCredentialTest {
             .additionallyAllowedTenants("*")
             .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof MsalClientException)
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
             .verify();
     }
 }

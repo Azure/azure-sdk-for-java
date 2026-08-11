@@ -18,7 +18,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesAllScopes() {
         GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages();
         assertFalse(response.getTranslation().isEmpty());
-        assertFalse(response.getDictionary().isEmpty());
+        assertFalse(response.getModels().isEmpty());
         assertFalse(response.getTransliteration().isEmpty());
     }
 
@@ -50,26 +50,14 @@ public class GetLanguagesTests extends TextTranslationClientBase {
         assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getDirectionality());
         assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getName());
         assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getNativeName());
-        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts());
+        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getToScripts());
 
+        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getToScripts().get(0).getCode());
         assertNotNull(
-            response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getCode());
-        assertNotNull(response.getTransliteration()
-            .get("be")
-            .getScripts()
-            .get(0)
-            .getTargetLanguageScripts()
-            .get(0)
-            .getDirectionality());
+            response.getTransliteration().get("be").getScripts().get(0).getToScripts().get(0).getDirectionality());
+        assertNotNull(response.getTransliteration().get("be").getScripts().get(0).getToScripts().get(0).getName());
         assertNotNull(
-            response.getTransliteration().get("be").getScripts().get(0).getTargetLanguageScripts().get(0).getName());
-        assertNotNull(response.getTransliteration()
-            .get("be")
-            .getScripts()
-            .get(0)
-            .getTargetLanguageScripts()
-            .get(0)
-            .getNativeName());
+            response.getTransliteration().get("be").getScripts().get(0).getToScripts().get(0).getNativeName());
     }
 
     @Test
@@ -84,43 +72,8 @@ public class GetLanguagesTests extends TextTranslationClientBase {
         assertNotNull(response.getTransliteration().get("zh-Hant").getNativeName());
         assertNotNull(response.getTransliteration().get("zh-Hant").getScripts());
 
-        assertTrue(
-            response.getTransliteration().get("zh-Hant").getScripts().get(0).getTargetLanguageScripts().size() > 1);
-        assertTrue(
-            response.getTransliteration().get("zh-Hant").getScripts().get(1).getTargetLanguageScripts().size() > 1);
-    }
-
-    @Test
-    public void getSupportedLanguagesDictionaryScope() {
-        ArrayList<LanguageScope> scopes = new ArrayList<>();
-        scopes.add(LanguageScope.DICTIONARY);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
-        assertFalse(response.getDictionary().isEmpty());
-        assertTrue(response.getDictionary().containsKey("de"));
-
-        assertNotNull(response.getDictionary().get("de").getName());
-        assertNotNull(response.getDictionary().get("de").getNativeName());
-        assertNotNull(response.getDictionary().get("de").getDirectionality());
-
-        assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getCode());
-        assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getDirectionality());
-        assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getName());
-        assertNotNull(response.getDictionary().get("de").getTranslations().get(0).getNativeName());
-    }
-
-    @Test
-    public void getSupportedLanguagesDictionaryScopeMultipleTranslations() {
-        ArrayList<LanguageScope> scopes = new ArrayList<>();
-        scopes.add(LanguageScope.DICTIONARY);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
-        assertFalse(response.getDictionary().isEmpty());
-        assertTrue(response.getDictionary().containsKey("en"));
-
-        assertNotNull(response.getDictionary().get("en").getName());
-        assertNotNull(response.getDictionary().get("en").getNativeName());
-        assertNotNull(response.getDictionary().get("en").getDirectionality());
-
-        assertTrue(response.getDictionary().get("en").getTranslations().size() > 1);
+        assertTrue(response.getTransliteration().get("zh-Hant").getScripts().get(0).getToScripts().size() > 1);
+        assertTrue(response.getTransliteration().get("zh-Hant").getScripts().get(1).getToScripts().size() > 1);
     }
 
     @Test
@@ -128,7 +81,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
         GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, "es", null);
         assertFalse(response.getTransliteration().isEmpty());
         assertFalse(response.getTranslation().isEmpty());
-        assertFalse(response.getDictionary().isEmpty());
+        assertFalse(response.getModels().isEmpty());
 
         assertNotNull(response.getTranslation().get("en").getDirectionality());
         assertNotNull(response.getTranslation().get("en").getName());

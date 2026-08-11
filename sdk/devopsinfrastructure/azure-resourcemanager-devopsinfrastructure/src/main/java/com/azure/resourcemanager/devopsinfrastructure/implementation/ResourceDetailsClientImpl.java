@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.ResourceDetailsClient;
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.ResourceDetailsObjectInner;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.models.ResourceDetailsObjectListResult;
@@ -112,21 +111,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolSinglePageAsync(String resourceGroupName,
         String poolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPool(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -164,24 +148,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolSinglePage(String resourceGroupName, String poolName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceDetailsObjectListResult> res
             = service.listByPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -204,24 +170,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolSinglePage(String resourceGroupName, String poolName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceDetailsObjectListResult> res = service.listByPoolSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, poolName, accept, context);
@@ -275,13 +223,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPoolNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -301,15 +242,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceDetailsObjectListResult> res
             = service.listByPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -329,21 +261,10 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ResourceDetailsObjectInner> listByPoolNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<ResourceDetailsObjectListResult> res
             = service.listByPoolNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceDetailsClientImpl.class);
 }

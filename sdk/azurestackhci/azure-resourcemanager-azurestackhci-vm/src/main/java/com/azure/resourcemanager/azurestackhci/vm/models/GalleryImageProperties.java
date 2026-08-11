@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.vm.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -284,32 +283,6 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
         this.sourceVirtualMachineId = sourceVirtualMachineId;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (osType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
-        }
-        if (vmImageRepositoryCredentials() != null) {
-            vmImageRepositoryCredentials().validate();
-        }
-        if (identifier() != null) {
-            identifier().validate();
-        }
-        if (version() != null) {
-            version().validate();
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GalleryImageProperties.class);
 
     /**
      * {@inheritDoc}

@@ -12,15 +12,15 @@ public final class ManagedPrivateEndpointModelListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointModelListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateLinkResourceId\":\"injep\",\"privateLinkResourceRegion\":\"tmryw\",\"groupIds\":[\"oqftiyqzrnkcq\",\"yx\",\"whzlsicohoq\",\"nwvlryavwhheunmm\"],\"requestMessage\":\"gyxzk\",\"connectionState\":{\"status\":\"Disconnected\",\"description\":\"koklya\"},\"privateLinkServiceUrl\":\"conuqszfkbeype\",\"privateLinkServicePrivateIP\":\"mjmwvvjektcx\"},\"location\":\"nhwlrsffrzpwvl\",\"tags\":{\"kt\":\"gbiqylihkaet\"},\"id\":\"fcivfsnkym\",\"name\":\"ctq\",\"type\":\"jf\"}],\"nextLink\":\"brjcxe\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"privateLinkResourceId\":\"th\",\"privateLinkResourceRegion\":\"m\",\"groupIds\":[\"v\",\"hxmzsbbzoggig\"],\"requestMessage\":\"wburvjxxjnspydpt\",\"connectionState\":{\"status\":\"Approved\",\"description\":\"ou\"},\"privateLinkServiceUrl\":\"vudwtiukbldng\",\"privateLinkServicePrivateIP\":\"ocipazyxoeg\"},\"location\":\"g\",\"tags\":{\"yp\":\"iucgygevqzn\"},\"id\":\"rbpizc\",\"name\":\"r\",\"type\":\"j\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateLinkResourceId\":\"nfyhx\",\"privateLinkResourceRegion\":\"oejzi\",\"groupIds\":[\"fsj\",\"tgzfbishcbkh\",\"jdeyeamdpha\",\"alpbuxwgipwhon\"],\"requestMessage\":\"kgshwa\",\"connectionState\":{\"status\":\"Rejected\",\"description\":\"bin\"},\"privateLinkServiceUrl\":\"pu\",\"privateLinkServicePrivateIP\":\"mryw\"},\"location\":\"zoqftiyqzrnkcqvy\",\"tags\":{\"cohoq\":\"hzls\",\"hgyxzkonoc\":\"nwvlryavwhheunmm\",\"uconuqszfkbey\":\"koklya\"},\"id\":\"ewrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"}],\"nextLink\":\"ylihkaetckt\"}")
             .toObject(ManagedPrivateEndpointModelListResponse.class);
-        Assertions.assertEquals("nhwlrsffrzpwvl", model.value().get(0).location());
-        Assertions.assertEquals("gbiqylihkaet", model.value().get(0).tags().get("kt"));
-        Assertions.assertEquals("injep", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("tmryw", model.value().get(0).privateLinkResourceRegion());
-        Assertions.assertEquals("oqftiyqzrnkcq", model.value().get(0).groupIds().get(0));
-        Assertions.assertEquals("gyxzk", model.value().get(0).requestMessage());
-        Assertions.assertEquals("conuqszfkbeype", model.value().get(0).privateLinkServiceUrl());
-        Assertions.assertEquals("brjcxe", model.nextLink());
+        Assertions.assertEquals("g", model.value().get(0).location());
+        Assertions.assertEquals("iucgygevqzn", model.value().get(0).tags().get("yp"));
+        Assertions.assertEquals("th", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("m", model.value().get(0).privateLinkResourceRegion());
+        Assertions.assertEquals("v", model.value().get(0).groupIds().get(0));
+        Assertions.assertEquals("wburvjxxjnspydpt", model.value().get(0).requestMessage());
+        Assertions.assertEquals("vudwtiukbldng", model.value().get(0).privateLinkServiceUrl());
+        Assertions.assertEquals("ylihkaetckt", model.nextLink());
     }
 }

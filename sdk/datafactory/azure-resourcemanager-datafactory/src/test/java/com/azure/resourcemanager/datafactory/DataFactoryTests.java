@@ -109,8 +109,8 @@ public class DataFactoryTests extends TestProxyTestBase {
             // data factory
             Factory dataFactory = manager.factories()
                 .define(DATA_FACTORY)
-                .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
+                .withRegion(REGION)
                 .create();
 
             // linked service

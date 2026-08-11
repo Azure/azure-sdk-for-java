@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SelfCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfCheck model
-            = BinaryData.fromString("{\"mode\":\"Disabled\",\"intervalSeconds\":8313214,\"timeoutSeconds\":5520044}")
-                .toObject(SelfCheck.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(8313214, model.intervalSeconds());
-        Assertions.assertEquals(5520044, model.timeoutSeconds());
+        SelfCheck model = BinaryData
+            .fromString("{\"mode\":\"Enabled\",\"intervalSeconds\":1041920176,\"timeoutSeconds\":1475447223}")
+            .toObject(SelfCheck.class);
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(1041920176, model.intervalSeconds());
+        Assertions.assertEquals(1475447223, model.timeoutSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfCheck model = new SelfCheck().withMode(OperationalMode.DISABLED)
-            .withIntervalSeconds(8313214)
-            .withTimeoutSeconds(5520044);
+        SelfCheck model = new SelfCheck().withMode(OperationalMode.ENABLED)
+            .withIntervalSeconds(1041920176)
+            .withTimeoutSeconds(1475447223);
         model = BinaryData.fromObject(model).toObject(SelfCheck.class);
-        Assertions.assertEquals(OperationalMode.DISABLED, model.mode());
-        Assertions.assertEquals(8313214, model.intervalSeconds());
-        Assertions.assertEquals(5520044, model.timeoutSeconds());
+        Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
+        Assertions.assertEquals(1041920176, model.intervalSeconds());
+        Assertions.assertEquals(1475447223, model.timeoutSeconds());
     }
 }

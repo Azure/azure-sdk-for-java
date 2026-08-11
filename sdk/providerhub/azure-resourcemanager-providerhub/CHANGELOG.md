@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,161 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0 (2026-03-03)
+
+- Azure Resource Manager ProviderHub client library for Java. This package contains Microsoft Azure SDK for ProviderHub Management SDK. Provider Hub. Package api-version 2024-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NotificationRegistrationArrayResponseWithContinuation` was removed
+
+#### `models.ResourceTypeRegistrationArrayResponseWithContinuation` was removed
+
+#### `models.SkuResourceArrayResponseWithContinuation` was removed
+
+#### `models.OperationsDefinitionArrayResponseWithContinuation` was removed
+
+#### `models.ProviderRegistrationArrayResponseWithContinuation` was removed
+
+#### `models.DefaultRolloutArrayResponseWithContinuation` was removed
+
+#### `models.ProviderMonitorSettingArrayResponseWithContinuation` was removed
+
+#### `models.AuthorizedApplicationArrayResponseWithContinuation` was removed
+
+#### `models.CustomRolloutArrayResponseWithContinuation` was removed
+
+#### `models.ResourceProviderManifestManagement` was modified
+
+* `ResourceProviderManifestManagement()` was changed to private access
+* `withIncidentContactEmail(java.lang.String)` was removed
+* `withResourceAccessRoles(java.util.List)` was removed
+* `withPcCode(java.lang.String)` was removed
+* `withResourceAccessPolicy(models.ResourceAccessPolicy)` was removed
+* `withIncidentRoutingTeam(java.lang.String)` was removed
+* `withSchemaOwners(java.util.List)` was removed
+* `withAuthorizationOwners(java.util.List)` was removed
+* `withExpeditedRolloutMetadata(models.ResourceProviderManagementExpeditedRolloutMetadata)` was removed
+* `withProfitCenterProgramId(java.lang.String)` was removed
+* `withErrorResponseMessageOptions(models.ResourceProviderManagementErrorResponseMessageOptions)` was removed
+* `withServiceTreeInfos(java.util.List)` was removed
+* `withCanaryManifestOwners(java.util.List)` was removed
+* `withExpeditedRolloutSubmitters(java.util.List)` was removed
+* `withManifestOwners(java.util.List)` was removed
+* `withIncidentRoutingService(java.lang.String)` was removed
+
+#### `models.ReRegisterSubscriptionMetadata` was modified
+
+* `models.ReRegisterSubscriptionMetadata withConcurrencyLimit(java.lang.Integer)` -> `models.ReRegisterSubscriptionMetadata withConcurrencyLimit(java.lang.Integer)`
+* `models.ReRegisterSubscriptionMetadata withEnabled(boolean)` -> `models.ReRegisterSubscriptionMetadata withEnabled(boolean)`
+
+#### `models.ResourceTypeRequestHeaderOptions` was modified
+
+* `ResourceTypeRequestHeaderOptions()` was changed to private access
+* `withOptInHeaders(models.OptInHeaderType)` was removed
+* `withOptOutHeaders(models.OptOutHeaderType)` was removed
+
+#### `models.ResourceProviderManifestFeaturesRule` was modified
+
+* `ResourceProviderManifestFeaturesRule()` was changed to private access
+* `withRequiredFeaturesPolicy(models.FeaturesPolicy)` was removed
+
+#### `models.ResourceProviderManifestProviderAuthentication` was modified
+
+* `ResourceProviderManifestProviderAuthentication()` was changed to private access
+* `withAllowedAudiences(java.util.List)` was removed
+
+#### `models.ResourceTypeTemplateDeploymentPolicy` was modified
+
+* `ResourceTypeTemplateDeploymentPolicy()` was changed to private access
+* `withPreflightNotifications(models.TemplateDeploymentPreflightNotifications)` was removed
+* `withPreflightOptions(models.TemplateDeploymentPreflightOptions)` was removed
+* `withCapabilities(models.TemplateDeploymentCapabilities)` was removed
+
+#### `models.ResourceProviderManifestRequestHeaderOptions` was modified
+
+* `ResourceProviderManifestRequestHeaderOptions()` was changed to private access
+* `withOptInHeaders(models.OptInHeaderType)` was removed
+* `withOptOutHeaders(models.OptOutHeaderType)` was removed
+
+#### `models.ResourceTypeIdentityManagement` was modified
+
+* `ResourceTypeIdentityManagement()` was changed to private access
+* `withType(models.IdentityManagementTypes)` was removed
+
+#### `models.OperationsDefinitionDisplay` was modified
+
+* `OperationsDefinitionDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `ProviderHubManager` was modified
+
+* `fluent.ProviderHub serviceClient()` -> `fluent.ProviderHubManagementClient serviceClient()`
+
+#### `models.IdentityManagement` was modified
+
+* `models.IdentityManagement withType(models.IdentityManagementTypes)` -> `models.IdentityManagement withType(models.IdentityManagementTypes)`
+
+#### `models.ResourceProviderManifestReRegisterSubscriptionMetadata` was modified
+
+* `ResourceProviderManifestReRegisterSubscriptionMetadata()` was changed to private access
+* `withEnabled(boolean)` was removed
+* `withConcurrencyLimit(java.lang.Integer)` was removed
+
+#### `models.ResourceType` was modified
+
+* `ResourceType()` was changed to private access
+* `withLinkedAccessChecks(java.util.List)` was removed
+* `withExtendedLocations(java.util.List)` was removed
+* `withMarketplaceType(models.MarketplaceType)` was removed
+* `withRoutingType(models.RoutingType)` was removed
+* `withSubscriptionStateRules(java.util.List)` was removed
+* `withDefaultApiVersion(java.lang.String)` was removed
+* `withLinkedNotificationRules(java.util.List)` was removed
+* `withAllowedUnauthorizedActions(java.util.List)` was removed
+* `withTemplateDeploymentPolicy(models.ResourceTypeTemplateDeploymentPolicy)` was removed
+* `withQuotaRule(models.QuotaRule)` was removed
+* `withAdditionalOptions(models.AdditionalOptions)` was removed
+* `withFeaturesRule(models.ResourceTypeFeaturesRule)` was removed
+* `withRequestHeaderOptions(models.ResourceTypeRequestHeaderOptions)` was removed
+* `withAllowedUnauthorizedActionsExtensions(java.util.List)` was removed
+* `withIdentityManagement(models.ResourceTypeIdentityManagement)` was removed
+* `withNotifications(java.util.List)` was removed
+* `withCrossTenantTokenValidation(models.CrossTenantTokenValidation)` was removed
+* `withRequiredFeatures(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withResourceDeletionPolicy(models.ManifestResourceDeletionPolicy)` was removed
+* `withLoggingRules(java.util.List)` was removed
+* `withEndpoints(java.util.List)` was removed
+* `withThrottlingRules(java.util.List)` was removed
+* `withMetadata(java.lang.Object)` was removed
+* `withSkuLink(java.lang.String)` was removed
+* `withResourceProviderAuthorizationRules(models.ResourceProviderAuthorizationRules)` was removed
+* `withDisallowedActionVerbs(java.util.List)` was removed
+* `withAuthorizationActionMappings(java.util.List)` was removed
+* `withLinkedOperationRules(java.util.List)` was removed
+* `withServiceTreeInfos(java.util.List)` was removed
+* `withResourceValidation(models.ResourceValidation)` was removed
+
+#### `models.ResourceTypeFeaturesRule` was modified
+
+* `ResourceTypeFeaturesRule()` was changed to private access
+* `withRequiredFeaturesPolicy(models.FeaturesPolicy)` was removed
+
+### Features Added
+
+#### `models.ResourceTypeIdentityManagement` was modified
+
+* `type()` was added
+
+#### `models.ResourceProviderManifestReRegisterSubscriptionMetadata` was modified
+
+* `concurrencyLimit()` was added
+* `enabled()` was added
 
 ## 2.0.0 (2025-07-29)
 

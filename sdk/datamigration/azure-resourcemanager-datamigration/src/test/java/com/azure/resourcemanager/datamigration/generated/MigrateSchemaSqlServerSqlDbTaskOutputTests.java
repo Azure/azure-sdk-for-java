@@ -10,9 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSchemaSqlServerSqlD
 public final class MigrateSchemaSqlServerSqlDbTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSchemaSqlServerSqlDbTaskOutput model
-            = BinaryData.fromString("{\"resultType\":\"MigrateSchemaSqlServerSqlDbTaskOutput\",\"id\":\"sqbuc\"}")
-                .toObject(MigrateSchemaSqlServerSqlDbTaskOutput.class);
+        MigrateSchemaSqlServerSqlDbTaskOutput model = BinaryData
+            .fromString("{\"resultType\":\"MigrateSchemaSqlServerSqlDbTaskOutput\",\"id\":\"zrdpsovwxznptgoe\"}")
+            .toObject(MigrateSchemaSqlServerSqlDbTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

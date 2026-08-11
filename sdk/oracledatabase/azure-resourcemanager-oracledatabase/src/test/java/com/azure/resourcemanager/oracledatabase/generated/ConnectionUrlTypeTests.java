@@ -12,14 +12,14 @@ public final class ConnectionUrlTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionUrlType model = BinaryData.fromString(
-            "{\"apexUrl\":\"imwkslircizj\",\"databaseTransformsUrl\":\"ydfce\",\"graphStudioUrl\":\"vlhv\",\"machineLearningNotebookUrl\":\"dyftumrtwna\",\"mongoDbUrl\":\"slbi\",\"ordsUrl\":\"ojgcyzt\",\"sqlDevWebUrl\":\"mznbaeqphch\"}")
+            "{\"apexUrl\":\"dqkdlwwqfbu\",\"databaseTransformsUrl\":\"kxtrq\",\"graphStudioUrl\":\"smlmbtxhwgfwsrta\",\"machineLearningNotebookUrl\":\"oezbrhubsk\",\"mongoDbUrl\":\"dyg\",\"ordsUrl\":\"okkqfqjbvleo\",\"sqlDevWebUrl\":\"ml\"}")
             .toObject(ConnectionUrlType.class);
-        Assertions.assertEquals("imwkslircizj", model.apexUrl());
-        Assertions.assertEquals("ydfce", model.databaseTransformsUrl());
-        Assertions.assertEquals("vlhv", model.graphStudioUrl());
-        Assertions.assertEquals("dyftumrtwna", model.machineLearningNotebookUrl());
-        Assertions.assertEquals("slbi", model.mongoDbUrl());
-        Assertions.assertEquals("ojgcyzt", model.ordsUrl());
-        Assertions.assertEquals("mznbaeqphch", model.sqlDevWebUrl());
+        Assertions.assertEquals("dqkdlwwqfbu", model.apexUrl());
+        Assertions.assertEquals("kxtrq", model.databaseTransformsUrl());
+        Assertions.assertEquals("smlmbtxhwgfwsrta", model.graphStudioUrl());
+        Assertions.assertEquals("oezbrhubsk", model.machineLearningNotebookUrl());
+        Assertions.assertEquals("dyg", model.mongoDbUrl());
+        Assertions.assertEquals("okkqfqjbvleo", model.ordsUrl());
+        Assertions.assertEquals("ml", model.sqlDevWebUrl());
     }
 }

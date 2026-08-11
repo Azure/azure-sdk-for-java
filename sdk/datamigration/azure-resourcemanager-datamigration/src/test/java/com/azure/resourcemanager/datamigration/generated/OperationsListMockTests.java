@@ -22,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"sif\",\"isDataAction\":false,\"display\":{\"provider\":\"gygnhrkombc\",\"resource\":\"ajdopggor\",\"operation\":\"oqtrotpvclpo\",\"description\":\"rlmw\"},\"origin\":\"system\",\"properties\":{\"kookbputmgvmuyak\":\"datawxjgvhxccbmkak\",\"fowzkroyr\":\"datalwk\"}}]}";
+            = "{\"value\":[{\"name\":\"dtkwppth\",\"isDataAction\":true,\"display\":{\"provider\":\"mimrljdpoqfxyemh\",\"resource\":\"tbaewhte\",\"operation\":\"oamfmxtllfltymqc\",\"description\":\"rfijhggabq\"},\"origin\":\"system\",\"properties\":{\"uhktq\":\"datalilirwdvffhsdpz\",\"fddtullygtavczcx\":\"dataxqwqnjxr\",\"ljphraspifleimi\":\"datafweapyfmlx\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,6 +33,6 @@ public final class OperationsListMockTests {
 
         PagedIterable<OperationsDefinition> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertFalse(response.iterator().next().isDataAction());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
     }
 }

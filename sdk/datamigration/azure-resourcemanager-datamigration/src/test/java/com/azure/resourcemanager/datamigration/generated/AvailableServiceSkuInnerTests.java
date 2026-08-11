@@ -15,39 +15,39 @@ public final class AvailableServiceSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableServiceSkuInner model = BinaryData.fromString(
-            "{\"resourceType\":\"jnalghf\",\"sku\":{\"name\":\"vsexsowuelu\",\"family\":\"hahhxvrhmzkwpj\",\"size\":\"wspughftqsxhqx\",\"tier\":\"xukndxdigr\"},\"capacity\":{\"minimum\":2060980520,\"maximum\":200260047,\"default\":1779713214,\"scaleType\":\"none\"}}")
+            "{\"resourceType\":\"fcqdpsq\",\"sku\":{\"name\":\"psvuoymgc\",\"family\":\"lvez\",\"size\":\"pqlmfe\",\"tier\":\"erqwkyhkobopg\"},\"capacity\":{\"minimum\":222452990,\"maximum\":540686876,\"default\":1472948449,\"scaleType\":\"automatic\"}}")
             .toObject(AvailableServiceSkuInner.class);
-        Assertions.assertEquals("jnalghf", model.resourceType());
-        Assertions.assertEquals("vsexsowuelu", model.sku().name());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.sku().family());
-        Assertions.assertEquals("wspughftqsxhqx", model.sku().size());
-        Assertions.assertEquals("xukndxdigr", model.sku().tier());
-        Assertions.assertEquals(2060980520, model.capacity().minimum());
-        Assertions.assertEquals(200260047, model.capacity().maximum());
-        Assertions.assertEquals(1779713214, model.capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.capacity().scaleType());
+        Assertions.assertEquals("fcqdpsq", model.resourceType());
+        Assertions.assertEquals("psvuoymgc", model.sku().name());
+        Assertions.assertEquals("lvez", model.sku().family());
+        Assertions.assertEquals("pqlmfe", model.sku().size());
+        Assertions.assertEquals("erqwkyhkobopg", model.sku().tier());
+        Assertions.assertEquals(222452990, model.capacity().minimum());
+        Assertions.assertEquals(540686876, model.capacity().maximum());
+        Assertions.assertEquals(1472948449, model.capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.capacity().scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableServiceSkuInner model = new AvailableServiceSkuInner().withResourceType("jnalghf")
-            .withSku(new AvailableServiceSkuSku().withName("vsexsowuelu")
-                .withFamily("hahhxvrhmzkwpj")
-                .withSize("wspughftqsxhqx")
-                .withTier("xukndxdigr"))
-            .withCapacity(new AvailableServiceSkuCapacity().withMinimum(2060980520)
-                .withMaximum(200260047)
-                .withDefaultProperty(1779713214)
-                .withScaleType(ServiceScalability.NONE));
+        AvailableServiceSkuInner model = new AvailableServiceSkuInner().withResourceType("fcqdpsq")
+            .withSku(new AvailableServiceSkuSku().withName("psvuoymgc")
+                .withFamily("lvez")
+                .withSize("pqlmfe")
+                .withTier("erqwkyhkobopg"))
+            .withCapacity(new AvailableServiceSkuCapacity().withMinimum(222452990)
+                .withMaximum(540686876)
+                .withDefaultProperty(1472948449)
+                .withScaleType(ServiceScalability.AUTOMATIC));
         model = BinaryData.fromObject(model).toObject(AvailableServiceSkuInner.class);
-        Assertions.assertEquals("jnalghf", model.resourceType());
-        Assertions.assertEquals("vsexsowuelu", model.sku().name());
-        Assertions.assertEquals("hahhxvrhmzkwpj", model.sku().family());
-        Assertions.assertEquals("wspughftqsxhqx", model.sku().size());
-        Assertions.assertEquals("xukndxdigr", model.sku().tier());
-        Assertions.assertEquals(2060980520, model.capacity().minimum());
-        Assertions.assertEquals(200260047, model.capacity().maximum());
-        Assertions.assertEquals(1779713214, model.capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.capacity().scaleType());
+        Assertions.assertEquals("fcqdpsq", model.resourceType());
+        Assertions.assertEquals("psvuoymgc", model.sku().name());
+        Assertions.assertEquals("lvez", model.sku().family());
+        Assertions.assertEquals("pqlmfe", model.sku().size());
+        Assertions.assertEquals("erqwkyhkobopg", model.sku().tier());
+        Assertions.assertEquals(222452990, model.capacity().minimum());
+        Assertions.assertEquals(540686876, model.capacity().maximum());
+        Assertions.assertEquals(1472948449, model.capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.capacity().scaleType());
     }
 }

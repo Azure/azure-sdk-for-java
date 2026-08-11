@@ -49,17 +49,6 @@ public final class SshConfiguration implements JsonSerializable<SshConfiguration
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (publicKeys() != null) {
-            publicKeys().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

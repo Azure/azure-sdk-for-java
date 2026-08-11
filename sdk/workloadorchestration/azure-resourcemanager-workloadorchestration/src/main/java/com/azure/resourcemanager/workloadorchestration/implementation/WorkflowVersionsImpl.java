@@ -31,12 +31,8 @@ public final class WorkflowVersionsImpl implements WorkflowVersions {
         String versionName, Context context) {
         Response<WorkflowVersionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, contextName, workflowName, versionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkflowVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkflowVersionImpl(inner.getValue(), this.manager()));
     }
 
     public WorkflowVersion get(String resourceGroupName, String contextName, String workflowName, String versionName) {

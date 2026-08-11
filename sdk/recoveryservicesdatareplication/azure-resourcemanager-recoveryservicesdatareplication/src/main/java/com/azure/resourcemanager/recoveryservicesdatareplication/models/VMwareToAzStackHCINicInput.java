@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -213,31 +212,6 @@ public final class VMwareToAzStackHCINicInput implements JsonSerializable<VMware
         this.isMacMigrationEnabled = isMacMigrationEnabled;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (nicId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property nicId in model VMwareToAzStackHCINicInput"));
-        }
-        if (label() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property label in model VMwareToAzStackHCINicInput"));
-        }
-        if (selectionTypeForFailover() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property selectionTypeForFailover in model VMwareToAzStackHCINicInput"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VMwareToAzStackHCINicInput.class);
 
     /**
      * {@inheritDoc}

@@ -41,9 +41,16 @@ class AzureMetadataService implements Runnable {
 
     AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions,
         Consumer<MetadataInstanceResponse> vmMetadataServiceCallback) {
+        this(attachStatsbeat, customDimensions, vmMetadataServiceCallback,
+            new HttpPipelineBuilder().tracer(new NoopTracer()).build());
+    }
+
+    // Visible for testing
+    AzureMetadataService(AttachStatsbeat attachStatsbeat, CustomDimensions customDimensions,
+        Consumer<MetadataInstanceResponse> vmMetadataServiceCallback, HttpPipeline httpPipeline) {
         this.attachStatsbeat = attachStatsbeat;
         this.customDimensions = customDimensions;
-        this.httpPipeline = new HttpPipelineBuilder().tracer(new NoopTracer()).build();
+        this.httpPipeline = httpPipeline;
         this.vmMetadataServiceCallback = vmMetadataServiceCallback;
     }
 
@@ -96,8 +103,8 @@ class AzureMetadataService implements Runnable {
         request.setHeader(HttpHeaderName.fromString("Metadata"), "true");
         HttpResponse response;
         try {
-            response = httpPipeline.sendSync(request, Context.NONE);
-        } catch (RuntimeException e) {
+            response = httpPipeline.send(request, Context.NONE).block();
+        } catch (Exception e) {
             logger.debug("Shutting down AzureMetadataService scheduler: is not running on Azure VM or VMSS");
             logger.trace(e.getMessage(), e);
             scheduledExecutor.shutdown();

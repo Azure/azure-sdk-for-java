@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PlacementPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/PlacementPolicies_Get.json
+     * x-ms-original-file: 2025-09-01/PlacementPolicies_Get.json
      */
     /**
      * Sample code: PlacementPolicies_Get.

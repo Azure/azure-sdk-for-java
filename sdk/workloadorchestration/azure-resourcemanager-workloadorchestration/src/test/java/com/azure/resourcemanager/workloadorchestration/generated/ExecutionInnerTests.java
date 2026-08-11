@@ -17,22 +17,23 @@ public final class ExecutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"workflowVersionId\":\"iwrxgkn\",\"specification\":{},\"status\":{\"updateTime\":\"2021-10-18T16:16:50Z\",\"status\":1482773915,\"statusMessage\":\"dfvpg\",\"stageHistory\":[{\"status\":631960755,\"statusMessage\":\"gbpfgz\",\"stage\":\"tx\",\"nextstage\":\"flbqvgaq\",\"errorMessage\":\"gafcqu\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":999562740,\"statusMessage\":\"tutnwlduycvuzhyr\",\"stage\":\"wipmvekdxuk\",\"nextstage\":\"gsjj\",\"errorMessage\":\"n\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":1861244838,\"statusMessage\":\"zjhfjmhvv\",\"stage\":\"vgpmun\",\"nextstage\":\"sx\",\"errorMessage\":\"hfbuzjyihsasbhud\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}},{\"status\":840782124,\"statusMessage\":\"ynsqyrpfoobr\",\"stage\":\"tyms\",\"nextstage\":\"ygqdnfwqzdz\",\"errorMessage\":\"ilaxhn\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"wivkxo\",\"type\":\"EdgeZone\"},\"eTag\":\"nbixxrti\",\"id\":\"cpwpg\",\"name\":\"lrcivtsoxfrke\",\"type\":\"xpmyyefrpmpdnq\"}")
+            "{\"properties\":{\"workflowVersionId\":\"foudor\",\"specification\":{},\"status\":{\"updateTime\":\"2021-03-21T18:39:32Z\",\"status\":307968762,\"statusMessage\":\"wy\",\"stageHistory\":[{\"status\":915134983,\"statusMessage\":\"xhugcm\",\"stage\":\"avlg\",\"nextstage\":\"bmftpmdt\",\"errorMessage\":\"jltfvnzcyjtotpv\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"qqihedsvqwthmk\",\"type\":\"CustomLocation\"},\"eTag\":\"cysihs\",\"id\":\"cw\",\"name\":\"hohsd\",\"type\":\"mcdzsufcohdxbz\"}")
             .toObject(ExecutionInner.class);
-        Assertions.assertEquals("iwrxgkn", model.properties().workflowVersionId());
-        Assertions.assertEquals("wivkxo", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("foudor", model.properties().workflowVersionId());
+        Assertions.assertEquals("qqihedsvqwthmk", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionInner model = new ExecutionInner()
-            .withProperties(new ExecutionProperties().withWorkflowVersionId("iwrxgkn").withSpecification(mapOf()))
-            .withExtendedLocation(new ExtendedLocation().withName("wivkxo").withType(ExtendedLocationType.EDGE_ZONE));
+            .withProperties(new ExecutionProperties().withWorkflowVersionId("foudor").withSpecification(mapOf()))
+            .withExtendedLocation(
+                new ExtendedLocation().withName("qqihedsvqwthmk").withType(ExtendedLocationType.CUSTOM_LOCATION));
         model = BinaryData.fromObject(model).toObject(ExecutionInner.class);
-        Assertions.assertEquals("iwrxgkn", model.properties().workflowVersionId());
-        Assertions.assertEquals("wivkxo", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
+        Assertions.assertEquals("foudor", model.properties().workflowVersionId());
+        Assertions.assertEquals("qqihedsvqwthmk", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
     }
 
     // Use "Map.of" if available

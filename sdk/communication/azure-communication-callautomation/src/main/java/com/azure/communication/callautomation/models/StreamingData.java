@@ -7,10 +7,12 @@ import java.io.IOException;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioMetadataContructorProxy;
+import com.azure.communication.callautomation.implementation.accesshelpers.DtmfDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionDataContructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.implementation.converters.AudioMetadataConverter;
+import com.azure.communication.callautomation.implementation.converters.DtmfDataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
 import com.azure.json.JsonProviders;
@@ -20,12 +22,14 @@ import com.azure.json.JsonToken;
 /** The abstract class used as parent of Streaming data such as Audio, Transcription, or Captions. */
 public abstract class StreamingData {
 
-    private StreamingDataKind streamingDataKind;
+    private final StreamingDataKind streamingDataKind;
 
     /**
      * Creates an instance of {@link StreamingData}.
+     * @param streamingDataKind The kind of streaming data.
      */
-    StreamingData() {
+    public StreamingData(StreamingDataKind streamingDataKind) {
+        this.streamingDataKind = streamingDataKind;
     }
 
     /**
@@ -38,19 +42,10 @@ public abstract class StreamingData {
     }
 
     /**
-     * Set the streaming data kind.
-     *
-     * @param streamingDataKind the kind of streaming data.
-     */
-    protected void setStreamingDataKind(StreamingDataKind streamingDataKind) {
-        this.streamingDataKind = streamingDataKind;
-    }
-
-    /**
      * Parses a base64 encoded string into a StreamingData object,
      * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
      * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData.
-     * @return StreamingData 
+     * @return StreamingData
      * @throws RuntimeException Throws a RuntimeException if the provided base64 string does not correspond to a supported data type for the specified Kind.
      */
     public static StreamingData parse(String data) {
@@ -61,7 +56,7 @@ public abstract class StreamingData {
      *  Parses a base64 encoded string into a StreamingData object,
      * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
      * @param <T> Subtypes of StreamingData ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
-     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData. 
+     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData.
      * @param type type of the streamindata ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
      * @return Subtypes of StreamingData
      * @throws RuntimeException Throws a NotSupportedException if the provided base64 string does not correspond
@@ -73,8 +68,8 @@ public abstract class StreamingData {
     }
 
     /**
-     * 
-     * @param data the base64 string 
+     *
+     * @param data the base64 string
      * @return the StreamingData
      */
     private static StreamingData parseStreamingData(String data) {
@@ -87,25 +82,25 @@ public abstract class StreamingData {
                         case "audioData":
                             AudioData audioData
                                 = AudioDataContructorProxy.create(AudioDataConverter.fromJson(jsonReader));
-                            audioData.setStreamingDataKind(StreamingDataKind.AUDIO_DATA);
                             return audioData;
 
                         case "audioMetadata":
                             AudioMetadata audioMetadata
                                 = AudioMetadataContructorProxy.create(AudioMetadataConverter.fromJson(jsonReader));
-                            audioMetadata.setStreamingDataKind(StreamingDataKind.AUDIO_METADATA);
                             return audioMetadata;
+
+                        case "dtmfData":
+                            DtmfData dtmfData = DtmfDataContructorProxy.create(DtmfDataConverter.fromJson(jsonReader));
+                            return dtmfData;
 
                         case "transcriptionData":
                             TranscriptionData transcriptionData = TranscriptionDataContructorProxy
                                 .create(TranscriptionDataConverter.fromJson(jsonReader));
-                            transcriptionData.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_DATA);
                             return transcriptionData;
 
                         case "transcriptionMetadata":
                             TranscriptionMetadata transcriptionMetadata = TranscriptionMetadataContructorProxy
                                 .create(TranscriptionMetadataConverter.fromJson(jsonReader));
-                            transcriptionMetadata.setStreamingDataKind(StreamingDataKind.TRANSCRIPTION_METADATA);
                             return transcriptionMetadata;
 
                         default:

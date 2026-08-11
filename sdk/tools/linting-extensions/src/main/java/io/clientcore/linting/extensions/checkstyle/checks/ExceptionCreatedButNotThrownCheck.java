@@ -14,7 +14,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 public class ExceptionCreatedButNotThrownCheck extends AbstractCheck {
     static final String ERROR_MESSAGE = "An exception is created and logged, but not thrown. Ensure the exception is "
         + "either thrown or not created at all. See "
-        + "https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
+        + "https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-v2.md#logging-best-practices for more details.";
     private static final String[] THROWABLE_AT_LOGGING_METHODS
         = new String[] { ".throwableAtError", ".throwableAtWarning" };
 

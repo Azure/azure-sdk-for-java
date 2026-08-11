@@ -56,10 +56,23 @@ public class ImpalaLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
+     * The transport protocol to use in the Thrift layer (for V2 only). Default value is Binary.
+     */
+    @Generated
+    private ImpalaThriftTransportProtocol thriftTransportProtocol;
+
+    /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
     @Generated
     private Object enableSsl;
+
+    /*
+     * Specify whether to enable server SSL certificate validation when you connect.Always use System Trust Store (for
+     * V2 only). The default value is true.
+     */
+    @Generated
+    private Object enableServerCertificateValidation;
 
     /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
@@ -229,6 +242,30 @@ public class ImpalaLinkedService extends LinkedService {
     }
 
     /**
+     * Get the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @return the thriftTransportProtocol value.
+     */
+    @Generated
+    public ImpalaThriftTransportProtocol getThriftTransportProtocol() {
+        return this.thriftTransportProtocol;
+    }
+
+    /**
+     * Set the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @param thriftTransportProtocol the thriftTransportProtocol value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    @Generated
+    public ImpalaLinkedService setThriftTransportProtocol(ImpalaThriftTransportProtocol thriftTransportProtocol) {
+        this.thriftTransportProtocol = thriftTransportProtocol;
+        return this;
+    }
+
+    /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
      * 
@@ -249,6 +286,30 @@ public class ImpalaLinkedService extends LinkedService {
     @Generated
     public ImpalaLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    @Generated
+    public Object getEnableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    @Generated
+    public ImpalaLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
         return this;
     }
 
@@ -442,7 +503,9 @@ public class ImpalaLinkedService extends LinkedService {
             || authenticationType != null
             || username != null
             || password != null
+            || thriftTransportProtocol != null
             || enableSsl != null
+            || enableServerCertificateValidation != null
             || trustedCertPath != null
             || useSystemTrustStore != null
             || allowHostNameCNMismatch != null
@@ -459,8 +522,14 @@ public class ImpalaLinkedService extends LinkedService {
                 jsonWriter.writeUntypedField("username", this.username);
             }
             jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeStringField("thriftTransportProtocol",
+                this.thriftTransportProtocol == null ? null : this.thriftTransportProtocol.toString());
             if (this.enableSsl != null) {
                 jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
             }
             if (this.trustedCertPath != null) {
                 jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
@@ -536,8 +605,13 @@ public class ImpalaLinkedService extends LinkedService {
                             deserializedImpalaLinkedService.username = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
                             deserializedImpalaLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("thriftTransportProtocol".equals(fieldName)) {
+                            deserializedImpalaLinkedService.thriftTransportProtocol
+                                = ImpalaThriftTransportProtocol.fromString(reader.getString());
                         } else if ("enableSsl".equals(fieldName)) {
                             deserializedImpalaLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                            deserializedImpalaLinkedService.enableServerCertificateValidation = reader.readUntyped();
                         } else if ("trustedCertPath".equals(fieldName)) {
                             deserializedImpalaLinkedService.trustedCertPath = reader.readUntyped();
                         } else if ("useSystemTrustStore".equals(fieldName)) {

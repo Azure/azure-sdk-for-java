@@ -12,18 +12,18 @@ public final class DataflowEndpointFabricOneLakeNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointFabricOneLakeNames model
-            = BinaryData.fromString("{\"lakehouseName\":\"lr\",\"workspaceName\":\"cyjmoadsuvarmy\"}")
+            = BinaryData.fromString("{\"lakehouseName\":\"sgplsakn\",\"workspaceName\":\"n\"}")
                 .toObject(DataflowEndpointFabricOneLakeNames.class);
-        Assertions.assertEquals("lr", model.lakehouseName());
-        Assertions.assertEquals("cyjmoadsuvarmy", model.workspaceName());
+        Assertions.assertEquals("sgplsakn", model.lakehouseName());
+        Assertions.assertEquals("n", model.workspaceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointFabricOneLakeNames model
-            = new DataflowEndpointFabricOneLakeNames().withLakehouseName("lr").withWorkspaceName("cyjmoadsuvarmy");
+            = new DataflowEndpointFabricOneLakeNames().withLakehouseName("sgplsakn").withWorkspaceName("n");
         model = BinaryData.fromObject(model).toObject(DataflowEndpointFabricOneLakeNames.class);
-        Assertions.assertEquals("lr", model.lakehouseName());
-        Assertions.assertEquals("cyjmoadsuvarmy", model.workspaceName());
+        Assertions.assertEquals("sgplsakn", model.lakehouseName());
+        Assertions.assertEquals("n", model.workspaceName());
     }
 }

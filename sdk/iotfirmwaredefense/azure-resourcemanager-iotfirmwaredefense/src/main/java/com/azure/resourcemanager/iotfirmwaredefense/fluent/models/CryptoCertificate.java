@@ -327,23 +327,6 @@ public final class CryptoCertificate implements JsonSerializable<CryptoCertifica
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subject() != null) {
-            subject().validate();
-        }
-        if (issuer() != null) {
-            issuer().validate();
-        }
-        if (pairedKey() != null) {
-            pairedKey().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

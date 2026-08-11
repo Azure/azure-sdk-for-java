@@ -13,19 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BulkDeploySolutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BulkDeploySolutionParameter model = BinaryData.fromString(
-            "{\"targets\":[{\"solutionVersionId\":\"aztz\"},{\"solutionVersionId\":\"ofncckwyfzqwhxxb\"},{\"solutionVersionId\":\"yq\"}]}")
+        BulkDeploySolutionParameter model = BinaryData.fromString("{\"targets\":[{\"solutionVersionId\":\"q\"}]}")
             .toObject(BulkDeploySolutionParameter.class);
-        Assertions.assertEquals("aztz", model.targets().get(0).solutionVersionId());
+        Assertions.assertEquals("q", model.targets().get(0).solutionVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkDeploySolutionParameter model = new BulkDeploySolutionParameter()
-            .withTargets(Arrays.asList(new BulkDeployTargetDetails().withSolutionVersionId("aztz"),
-                new BulkDeployTargetDetails().withSolutionVersionId("ofncckwyfzqwhxxb"),
-                new BulkDeployTargetDetails().withSolutionVersionId("yq")));
+            .withTargets(Arrays.asList(new BulkDeployTargetDetails().withSolutionVersionId("q")));
         model = BinaryData.fromObject(model).toObject(BulkDeploySolutionParameter.class);
-        Assertions.assertEquals("aztz", model.targets().get(0).solutionVersionId());
+        Assertions.assertEquals("q", model.targets().get(0).solutionVersionId());
     }
 }

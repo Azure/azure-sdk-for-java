@@ -18,6 +18,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withExistingStorageAccount(storageAccount)
             .create();
 
@@ -127,7 +128,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .create();
 
         // Using VMAccess Linux extension to reset the password for the existing user 'Foo12'
@@ -219,7 +220,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .defineNewExtension("VMAccessForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("VMAccessForLinux")
@@ -290,7 +291,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .defineNewExtension("VMAccessForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("VMAccessForLinux")
@@ -313,6 +314,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
     }
 
+    @Disabled("Forbidden to create secret")
     @Test
     public void canIgnoreInvalidJson() throws IOException {
         String vmName = generateRandomResourceName("javavm", 15);
@@ -347,7 +349,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .defineNewExtension("KeyVaultForLinux")
             .withPublisher("Microsoft.Azure.KeyVault")
             .withType("KeyVaultForLinux")

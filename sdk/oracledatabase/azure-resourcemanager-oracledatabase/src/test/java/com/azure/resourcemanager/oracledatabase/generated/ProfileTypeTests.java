@@ -18,16 +18,16 @@ public final class ProfileTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProfileType model = BinaryData.fromString(
-            "{\"consumerGroup\":\"Tpurgent\",\"displayName\":\"tpwoqhihejq\",\"hostFormat\":\"Fqdn\",\"isRegional\":true,\"protocol\":\"TCP\",\"sessionMode\":\"Direct\",\"syntaxFormat\":\"Long\",\"tlsAuthentication\":\"Mutual\",\"value\":\"cypsxjv\"}")
+            "{\"consumerGroup\":\"Low\",\"displayName\":\"vdxec\",\"hostFormat\":\"Ip\",\"isRegional\":true,\"protocol\":\"TCPS\",\"sessionMode\":\"Redirect\",\"syntaxFormat\":\"Long\",\"tlsAuthentication\":\"Mutual\",\"value\":\"zlhp\"}")
             .toObject(ProfileType.class);
-        Assertions.assertEquals(ConsumerGroup.TPURGENT, model.consumerGroup());
-        Assertions.assertEquals("tpwoqhihejq", model.displayName());
-        Assertions.assertEquals(HostFormatType.FQDN, model.hostFormat());
+        Assertions.assertEquals(ConsumerGroup.LOW, model.consumerGroup());
+        Assertions.assertEquals("vdxec", model.displayName());
+        Assertions.assertEquals(HostFormatType.IP, model.hostFormat());
         Assertions.assertTrue(model.isRegional());
-        Assertions.assertEquals(ProtocolType.TCP, model.protocol());
-        Assertions.assertEquals(SessionModeType.DIRECT, model.sessionMode());
+        Assertions.assertEquals(ProtocolType.TCPS, model.protocol());
+        Assertions.assertEquals(SessionModeType.REDIRECT, model.sessionMode());
         Assertions.assertEquals(SyntaxFormatType.LONG, model.syntaxFormat());
         Assertions.assertEquals(TlsAuthenticationType.MUTUAL, model.tlsAuthentication());
-        Assertions.assertEquals("cypsxjv", model.value());
+        Assertions.assertEquals("zlhp", model.value());
     }
 }

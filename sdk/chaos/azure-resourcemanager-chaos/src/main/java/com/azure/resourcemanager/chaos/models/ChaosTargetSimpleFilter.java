@@ -62,18 +62,6 @@ public final class ChaosTargetSimpleFilter extends ChaosTargetFilter {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (parameters() != null) {
-            parameters().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

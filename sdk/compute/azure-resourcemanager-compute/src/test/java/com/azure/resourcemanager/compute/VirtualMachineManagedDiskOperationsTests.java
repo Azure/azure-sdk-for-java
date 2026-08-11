@@ -26,7 +26,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +64,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPopularLinuxImage(linuxImage)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         // Ensure default to managed disk
@@ -146,7 +145,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
             .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
             // End : Add 5 empty managed disks
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -298,7 +297,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
             .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
             // End : Add bunch of empty managed disks
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         LOGGER.log(LogLevel.VERBOSE, () -> "Waiting for some time before de-provision");
@@ -345,7 +344,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
             // No explicit data disks, let CRP create it from the image's data disk images
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -385,7 +384,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 CachingTypes.READ_ONLY);
         }
         VirtualMachine virtualMachine3 = creatableVirtualMachine3.withNewDataDisk(200) // CreateOption: EMPTY
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -456,7 +455,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             // End : Add bunch of empty managed disks
             .withDataDiskDefaultCachingType(CachingTypes.READ_ONLY)
             .withDataDiskDefaultStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -475,19 +474,11 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     @Test
     public void canCreateVirtualMachineByAttachingManagedOsDisk() {
         final String uname = "juser";
-        final String password = password();
         final String vmName = "myvm6";
-        final String storageAccountName = generateRandomResourceName("stg", 17);
 
-        // Creates a native virtual machine
+        // Creates a virtual machine with a managed OS disk
         //
-        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
-            .define(storageAccountName)
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess();
-
-        VirtualMachine nativeVm = computeManager.virtualMachines()
+        VirtualMachine baseVm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -497,28 +488,23 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-            .withNewStorageAccount(storageAccountCreatable)
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .create();
 
-        Assertions.assertFalse(nativeVm.isManagedDiskEnabled());
-        String osVhdUri = nativeVm.osUnmanagedDiskVhdUri();
-        Assertions.assertNotNull(osVhdUri);
+        Assertions.assertTrue(baseVm.isManagedDiskEnabled());
+        String osDiskId = baseVm.osDiskId();
+        Assertions.assertNotNull(osDiskId);
 
-        computeManager.virtualMachines().deleteById(nativeVm.id());
+        // Delete the virtual machine, keeping its managed OS disk (OS disk delete option is explicitly set to DETACH)
+        //
+        computeManager.virtualMachines().deleteById(baseVm.id());
 
-        final String diskName = generateRandomResourceName("dsk-", 15);
-        Disk osDisk = computeManager.disks()
-            .define(diskName)
-            .withRegion(region)
-            .withExistingResourceGroup(rgName)
-            .withLinuxFromVhd(osVhdUri)
-            .withStorageAccountName(storageAccountName)
-            .create();
+        Disk osDisk = computeManager.disks().getById(osDiskId);
+        Assertions.assertNotNull(osDisk);
 
-        // Creates a managed virtual machine
+        // Creates a managed virtual machine by attaching the existing managed OS disk
         //
         VirtualMachine managedVm = computeManager.virtualMachines()
             .define(vmName)
@@ -528,7 +514,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
             .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -557,7 +543,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withNewDataDisk(100, 1, CachingTypes.READ_ONLY)
             .withNewDataDisk(100, 2, CachingTypes.READ_WRITE, StorageAccountTypes.STANDARD_LRS)
             .withNewAvailabilitySet(availSetName) // Default to managed availability set
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(generalPurposeVMSize())
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
 
@@ -619,6 +605,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         String osDiskId = vm.osDiskId();

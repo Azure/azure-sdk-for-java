@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.common;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class PropertyLoaderUnitTest {
 
@@ -11,8 +11,8 @@ public class PropertyLoaderUnitTest {
     public void testGetProjectVersion() {
         final String version = PropertyLoader.getProjectVersion();
 
-        Assert.assertNotNull(version);
-        Assert.assertNotEquals(version, "");
-        Assert.assertNotEquals(version, "@project.version@");
+        Assertions.assertNotNull(version);
+        Assertions.assertNotEquals(version, "");
+        Assertions.assertNotEquals(version, "@project.version@");
     }
 }

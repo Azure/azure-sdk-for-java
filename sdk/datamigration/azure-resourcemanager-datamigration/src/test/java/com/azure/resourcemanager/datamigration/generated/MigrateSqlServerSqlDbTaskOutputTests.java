@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlDbTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbTaskOutput model
-            = BinaryData.fromString("{\"resultType\":\"MigrateSqlServerSqlDbTaskOutput\",\"id\":\"npxybafiq\"}")
+            = BinaryData.fromString("{\"resultType\":\"MigrateSqlServerSqlDbTaskOutput\",\"id\":\"muikjcjcaztbws\"}")
                 .toObject(MigrateSqlServerSqlDbTaskOutput.class);
     }
 

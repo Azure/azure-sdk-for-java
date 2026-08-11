@@ -21,7 +21,7 @@ public final class AzureDevOpsOrganizationProfileTests {
         Assertions.assertEquals("v", model.organizations().get(0).url());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.organizations().get(0).projects().get(0));
         Assertions.assertEquals(180815183, model.organizations().get(0).parallelism());
-        Assertions.assertEquals(false, model.organizations().get(0).openAccess());
+        Assertions.assertFalse(model.organizations().get(0).openAccess());
         Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.permissionProfile().kind());
         Assertions.assertEquals("uybbkpodep", model.permissionProfile().users().get(0));
         Assertions.assertEquals("inuvamiheogn", model.permissionProfile().groups().get(0));
@@ -46,7 +46,7 @@ public final class AzureDevOpsOrganizationProfileTests {
         Assertions.assertEquals("v", model.organizations().get(0).url());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.organizations().get(0).projects().get(0));
         Assertions.assertEquals(180815183, model.organizations().get(0).parallelism());
-        Assertions.assertEquals(false, model.organizations().get(0).openAccess());
+        Assertions.assertFalse(model.organizations().get(0).openAccess());
         Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.permissionProfile().kind());
         Assertions.assertEquals("uybbkpodep", model.permissionProfile().users().get(0));
         Assertions.assertEquals("inuvamiheogn", model.permissionProfile().groups().get(0));

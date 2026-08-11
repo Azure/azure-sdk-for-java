@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplate;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateAsync;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithDeploymentOperations;
@@ -66,6 +67,7 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLocks() {
         Assertions.assertTrue(ManageLocks.runSample(azureResourceManager));
     }

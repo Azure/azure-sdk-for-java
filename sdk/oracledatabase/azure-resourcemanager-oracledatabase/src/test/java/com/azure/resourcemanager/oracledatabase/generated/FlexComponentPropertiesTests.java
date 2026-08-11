@@ -11,7 +11,7 @@ public final class FlexComponentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlexComponentProperties model = BinaryData.fromString(
-            "{\"minimumCoreCount\":957829467,\"availableCoreCount\":1827941579,\"availableDbStorageInGbs\":1811629321,\"runtimeMinimumCoreCount\":1534218395,\"shape\":\"noigbrnjwmwk\",\"availableMemoryInGbs\":703556051,\"availableLocalStorageInGbs\":808609813,\"computeModel\":\"ejjoqkagfhsxtta\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"nfaazpxdtnkdmkq\"}")
+            "{\"minimumCoreCount\":1631335830,\"availableCoreCount\":1444158285,\"availableDbStorageInGbs\":1189473402,\"runtimeMinimumCoreCount\":902595467,\"shape\":\"wgioilqukry\",\"availableMemoryInGbs\":1625650098,\"availableLocalStorageInGbs\":599402344,\"computeModel\":\"eoxorggufhyao\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"hhavgrvkffovjz\"}")
             .toObject(FlexComponentProperties.class);
     }
 }

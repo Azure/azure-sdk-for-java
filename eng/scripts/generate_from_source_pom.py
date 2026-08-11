@@ -37,7 +37,7 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'io.clientcore:clientcore-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3-5', 'com.azure.cosmos.spark:azure-cosmos-spark_3', 'com.azure.cosmos.spark:azure-cosmos-spark_4', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
 parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
@@ -222,10 +222,6 @@ def create_projects(artifacts_list_identifiers: list, artifact_identifier_to_ver
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid
-        if 'resourcemanagerhybrid' in root:
-            continue
-
         # Also ignore sdk/e2e as this only creates noise during checkout as it uses many current dependencies but isn't an actual project we want to build.
         if 'e2e' in root:
             continue
@@ -315,11 +311,9 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
         # These are added since From Source the parent POMs are also built.
         if project.parent_pom is not None and project.parent_pom in projects:
             parent_project = projects[project.parent_pom]
-            for dependency in parent_project.dependencies:
-                # Only continue if the parent's dependencies haven't already been resolved.
-                if not dependency in dependency_modules:
-                    dependency_modules.add(dependency)
-                    dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
+            if not parent_project.identifier in dependency_modules:
+                dependency_modules.add(parent_project.identifier)
+                dependency_modules = resolve_project_dependencies(parent_project.identifier, dependency_modules, projects)
 
     return dependency_modules
 

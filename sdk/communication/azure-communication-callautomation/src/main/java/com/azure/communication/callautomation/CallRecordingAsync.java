@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.RecordingResultResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
@@ -40,7 +39,6 @@ import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
-import com.azure.communication.callautomation.models.RecordingResult;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.RoomCallLocator;
 import com.azure.communication.callautomation.models.ServerCallLocator;
@@ -345,45 +343,6 @@ public final class CallRecordingAsync {
     }
 
     /**
-    * Get recording result by recording id.
-    *
-    * @param recordingId Recording id to stop.
-    * @throws HttpResponseException thrown if the request is rejected by server.
-    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-    * @return Response for a successful get recording state request.
-    */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingResult> getRecordingResult(String recordingId) {
-        return getRecordingResultResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
-    }
-
-    /**
-     * Get recording result by recording id.
-     *
-     * @param recordingId Recording id to stop.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get recording state request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingResult>> getRecordingResultResponse(String recordingId) {
-        return getRecordingResultResponseInternal(recordingId, null);
-    }
-
-    Mono<Response<RecordingResult>> getRecordingResultResponseInternal(String recordingId, Context context) {
-        try {
-            return withContext(contextValue -> {
-                contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal.getRecordingResultWithResponseAsync(recordingId, contextValue)
-                    .map(response -> new SimpleResponse<>(response,
-                        RecordingResultResponseConstructorProxy.create(response.getValue())));
-            });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Download the recording content, e.g. Recording's metadata, Recording video, from the ACS endpoint
      * passed as parameter.
      * @param sourceUrl - URL where the content is located.
@@ -410,6 +369,8 @@ public final class CallRecordingAsync {
         Context context) {
         try {
             Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
+            // Validate recording URL to prevent SSRF attacks
+            RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentDownloader.downloadStreamWithResponse(sourceUrl, range, contextValue);
@@ -498,6 +459,8 @@ public final class CallRecordingAsync {
         Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
+        // Validate recording URL to prevent SSRF attacks
+        RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
 
         Set<OpenOption> openOptions = new HashSet<>();
 
@@ -520,7 +483,8 @@ public final class CallRecordingAsync {
     }
 
     Mono<Void> downloadTo(String sourceUrl, OutputStream destinationStream, HttpRange httpRange, Context context) {
-
+        // Validate recording URL to prevent SSRF attacks
+        RecordingUrlValidator.validateRecordingUrl(sourceUrl, "sourceUrl");
         return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context).then();
     }
 
@@ -567,9 +531,13 @@ public final class CallRecordingAsync {
     }
 
     Mono<Response<Void>> deleteWithResponseInternal(String deleteUrl, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
-        URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
         try {
+            Objects.requireNonNull(deleteUrl, "'deleteUrl' cannot be null");
+            // Validate recording URL to prevent SSRF attacks before sending credentials
+            RecordingUrlValidator.validateRecordingUrl(deleteUrl, "deleteUrl");
+
+            HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
+            URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 contextValue = contextValue.addData("hmacSignatureURL", urlToSignWith);

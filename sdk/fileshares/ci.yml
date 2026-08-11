@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fileshares/ci.yml
+      - sdk/fileshares/azure-resourcemanager-fileshares/
+    exclude:
+      - sdk/fileshares/pom.xml
+      - sdk/fileshares/azure-resourcemanager-fileshares/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fileshares/ci.yml
+      - sdk/fileshares/azure-resourcemanager-fileshares/
+    exclude:
+      - sdk/fileshares/pom.xml
+      - sdk/fileshares/azure-resourcemanager-fileshares/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerfileshares
+    displayName: azure-resourcemanager-fileshares
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: fileshares
+    Artifacts:
+      - name: azure-resourcemanager-fileshares
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerfileshares
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerfileshares }}

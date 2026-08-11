@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.57.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,139 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.56.0 (2026-07-28)
+
+### Features Added
+
+- Added `withManagedIdentityCredentials()` and `withManagedIdentityCredentials(String userAssignedManagedIdentityClientId)` to `WebApp` and `FunctionApp` (definition and update) and deployment slots (`DeploymentSlot`/`FunctionDeploymentSlot` update), to pull a private container image (e.g. from Azure Container Registry) using the app's or slot's managed identity instead of a registry username and password.
+
+## 2.55.4 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-keyvault` from `2.55.2` to version `2.55.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.57.1`.
+
+## 2.55.3 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.5` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-keyvault` from `2.55.2` to version `2.55.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.8` to version `2.53.9`.
+
+
+## 2.55.2 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-keyvault` from `2.55.0` to version `2.55.2`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.8`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.5`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.6` to version `2.53.8`.
+
+## 2.55.1 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-dns` from `2.53.6` to version `2.53.7`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.4`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.6` to version `2.53.7`.
+- Upgraded `azure-resourcemanager-keyvault` from `2.55.0` to version `2.55.1`.
+
+
+## 2.55.0 (2026-02-26)
+
+### Breaking Changes
+
+- Removed `withPassword` method from `CertificatePatchResource` class. The password property is read-only.
+
+#### Changes to `WebSiteManagementClient` Class
+
+- Moved `AppServiceManager.serviceClient().getCertificateRegistrationProviders()` to `AppServiceManager.certificateRegistrationClient().getCertificateRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getAppServiceCertificateOrders()` to `AppServiceManager.certificateRegistrationClient().getAppServiceCertificateOrders()`.
+- Moved `AppServiceManager.serviceClient().getCertificateOrdersDiagnostics()` to `AppServiceManager.certificateRegistrationClient().getCertificateOrdersDiagnostics()`.
+- Moved `AppServiceManager.serviceClient().getDomainRegistrationProviders()` to `AppServiceManager.domainRegistrationClient().getDomainRegistrationProviders()`.
+- Moved `AppServiceManager.serviceClient().getDomains()` to `AppServiceManager.domainRegistrationClient().getDomains()`.
+- Moved `AppServiceManager.serviceClient().getTopLevelDomains()` to `AppServiceManager.domainRegistrationClient().getTopLevelDomains()`.
+
+### Other Changes
+
+- Certificate Registration related feature is deprecated in this library. Please use "azure-resourcemanager-certificateregistration" library.
+- Domain Registration related feature is deprecated in this library. Please use "azure-resourcemanager-domainregistration" library.
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-05-01`.
+
+## 2.54.2 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.1` to version `2.55.2`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.4` to version `2.53.5`.
+- Upgraded `azure-resourcemanager-keyvault` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.4` to version `2.53.5`.
+
+## 2.54.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-11-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-03-01`.
+
+## 2.53.5 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.4 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+- Upgraded `azure-resourcemanager-storage` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-dns` from `2.53.2` to version `2.53.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.2` to version `2.53.3`.
+
+## 2.53.3 (2025-09-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.2 (2025-08-27)
 

@@ -12,18 +12,18 @@ public final class DiagnosticDataProviderMetadataPropertyBagItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model
-            = BinaryData.fromString("{\"name\":\"gnitgvkxlzyq\",\"value\":\"fegcea\"}")
+            = BinaryData.fromString("{\"name\":\"fkqojpy\",\"value\":\"gtrd\"}")
                 .toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("gnitgvkxlzyq", model.name());
-        Assertions.assertEquals("fegcea", model.value());
+        Assertions.assertEquals("fkqojpy", model.name());
+        Assertions.assertEquals("gtrd", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticDataProviderMetadataPropertyBagItem model
-            = new DiagnosticDataProviderMetadataPropertyBagItem().withName("gnitgvkxlzyq").withValue("fegcea");
+            = new DiagnosticDataProviderMetadataPropertyBagItem().withName("fkqojpy").withValue("gtrd");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataProviderMetadataPropertyBagItem.class);
-        Assertions.assertEquals("gnitgvkxlzyq", model.name());
-        Assertions.assertEquals("fegcea", model.value());
+        Assertions.assertEquals("fkqojpy", model.name());
+        Assertions.assertEquals("gtrd", model.value());
     }
 }

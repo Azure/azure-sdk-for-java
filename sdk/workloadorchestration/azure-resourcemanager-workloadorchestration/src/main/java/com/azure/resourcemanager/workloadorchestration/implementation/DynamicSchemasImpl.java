@@ -31,12 +31,8 @@ public final class DynamicSchemasImpl implements DynamicSchemas {
         String dynamicSchemaName, Context context) {
         Response<DynamicSchemaInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DynamicSchemaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DynamicSchemaImpl(inner.getValue(), this.manager()));
     }
 
     public DynamicSchema get(String resourceGroupName, String schemaName, String dynamicSchemaName) {

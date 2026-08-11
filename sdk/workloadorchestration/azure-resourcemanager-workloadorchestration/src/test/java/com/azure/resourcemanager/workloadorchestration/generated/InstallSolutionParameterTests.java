@@ -12,14 +12,14 @@ public final class InstallSolutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InstallSolutionParameter model
-            = BinaryData.fromString("{\"solutionVersionId\":\"gygev\"}").toObject(InstallSolutionParameter.class);
-        Assertions.assertEquals("gygev", model.solutionVersionId());
+            = BinaryData.fromString("{\"solutionVersionId\":\"v\"}").toObject(InstallSolutionParameter.class);
+        Assertions.assertEquals("v", model.solutionVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InstallSolutionParameter model = new InstallSolutionParameter().withSolutionVersionId("gygev");
+        InstallSolutionParameter model = new InstallSolutionParameter().withSolutionVersionId("v");
         model = BinaryData.fromObject(model).toObject(InstallSolutionParameter.class);
-        Assertions.assertEquals("gygev", model.solutionVersionId());
+        Assertions.assertEquals("v", model.solutionVersionId());
     }
 }

@@ -152,17 +152,6 @@ public final class Performance implements JsonSerializable<Performance> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (expectedValueRange() != null) {
-            expectedValueRange().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

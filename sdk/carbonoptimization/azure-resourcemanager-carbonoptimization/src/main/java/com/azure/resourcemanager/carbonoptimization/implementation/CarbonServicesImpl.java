@@ -33,12 +33,8 @@ public final class CarbonServicesImpl implements CarbonServices {
         Context context) {
         Response<CarbonEmissionDataListResultInner> inner
             = this.serviceClient().queryCarbonEmissionReportsWithResponse(queryParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CarbonEmissionDataListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CarbonEmissionDataListResultImpl(inner.getValue(), this.manager()));
     }
 
     public CarbonEmissionDataListResult queryCarbonEmissionReports(QueryFilter queryParameters) {
@@ -54,12 +50,8 @@ public final class CarbonServicesImpl implements CarbonServices {
         queryCarbonEmissionDataAvailableDateRangeWithResponse(Context context) {
         Response<CarbonEmissionDataAvailableDateRangeInner> inner
             = this.serviceClient().queryCarbonEmissionDataAvailableDateRangeWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CarbonEmissionDataAvailableDateRangeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CarbonEmissionDataAvailableDateRangeImpl(inner.getValue(), this.manager()));
     }
 
     public CarbonEmissionDataAvailableDateRange queryCarbonEmissionDataAvailableDateRange() {

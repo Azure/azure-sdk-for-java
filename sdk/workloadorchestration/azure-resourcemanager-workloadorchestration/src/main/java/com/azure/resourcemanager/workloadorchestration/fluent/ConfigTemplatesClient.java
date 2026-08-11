@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTempl
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.ConfigTemplateVersionWithUpdateTypeInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersionResponseInner;
+import com.azure.resourcemanager.workloadorchestration.models.ConfigTemplateUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -125,7 +126,7 @@ public interface ConfigTemplatesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ConfigTemplateInner> updateWithResponse(String resourceGroupName, String configTemplateName,
-        ConfigTemplateInner properties, Context context);
+        ConfigTemplateUpdate properties, Context context);
 
     /**
      * update a Config Template Resource.
@@ -139,7 +140,7 @@ public interface ConfigTemplatesClient {
      * @return config Template Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigTemplateInner update(String resourceGroupName, String configTemplateName, ConfigTemplateInner properties);
+    ConfigTemplateInner update(String resourceGroupName, String configTemplateName, ConfigTemplateUpdate properties);
 
     /**
      * Create or update a Config Template Version Resource with the specified UpdateType.
@@ -150,7 +151,7 @@ public interface ConfigTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of config Template Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateVersion(
@@ -166,7 +167,7 @@ public interface ConfigTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of config Template Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConfigTemplateVersionInner>, ConfigTemplateVersionInner> beginCreateVersion(
@@ -182,7 +183,7 @@ public interface ConfigTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return config Template Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigTemplateVersionInner createVersion(String resourceGroupName, String configTemplateName,
@@ -198,7 +199,7 @@ public interface ConfigTemplatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return config Template Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConfigTemplateVersionInner createVersion(String resourceGroupName, String configTemplateName,

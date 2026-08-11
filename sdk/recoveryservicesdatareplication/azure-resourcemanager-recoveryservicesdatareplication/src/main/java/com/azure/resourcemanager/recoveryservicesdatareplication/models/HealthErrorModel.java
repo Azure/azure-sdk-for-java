@@ -225,17 +225,6 @@ public final class HealthErrorModel implements JsonSerializable<HealthErrorModel
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (childErrors() != null) {
-            childErrors().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -202,20 +202,6 @@ public final class ScheduledActionUpdateProperties implements JsonSerializable<S
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (schedule() != null) {
-            schedule().validate();
-        }
-        if (notificationSettings() != null) {
-            notificationSettings().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

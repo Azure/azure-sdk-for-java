@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -84,36 +83,6 @@ public final class UploadLimitWeeklyRecurrence extends WeeklyRecurrence {
         super.withEndTime(endTime);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (startTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property startTime in model UploadLimitWeeklyRecurrence"));
-        } else {
-            startTime().validate();
-        }
-        if (endTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property endTime in model UploadLimitWeeklyRecurrence"));
-        } else {
-            endTime().validate();
-        }
-        if (days() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property days in model UploadLimitWeeklyRecurrence"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UploadLimitWeeklyRecurrence.class);
 
     /**
      * {@inheritDoc}

@@ -19,7 +19,7 @@ public final class DeidUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"axcfjpgddtocjjx\":{\"clientId\":\"bkbfkgukdkex\",\"principalId\":\"pofm\"}}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
+            "{\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"axcfjpgddtocjjx\":{\"principalId\":\"bkbfkgukdkex\",\"clientId\":\"pofm\"}}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
             .toObject(DeidUpdate.class);
         Assertions.assertEquals("erhhbcsglumm", model.tags().get("jtjaodxobnbdxkq"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());

@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 /**
  * Azure implementation for check point callback.
  */
+@SuppressWarnings("deprecation")
 public class AzureCheckpointer implements Checkpointer {
 
     private final Supplier<Mono<Void>> success;

@@ -11,9 +11,8 @@ import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
  */
 public final class ConnectedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ConnectedEnvironments_CreateOrUpdate.
-     * json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ConnectedEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create kube environments.

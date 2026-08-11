@@ -22,7 +22,7 @@ public final class SharedPrivateLinkResourcesListByWatcherMockTests {
     @Test
     public void testListByWatcher() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"ubex\",\"groupId\":\"pzk\",\"requestMessage\":\"mond\",\"dnsZone\":\"quxvypomgkop\",\"status\":\"Disconnected\",\"provisioningState\":\"Canceled\"},\"id\":\"pajqgxysm\",\"name\":\"cmbqfqvmk\",\"type\":\"xozap\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"aruoujmkcjhwqyt\",\"groupId\":\"r\",\"requestMessage\":\"bnw\",\"dnsZone\":\"wgdrjervnaenqp\",\"status\":\"Disconnected\",\"provisioningState\":\"Canceled\"},\"id\":\"ygmi\",\"name\":\"thnzd\",\"type\":\"dslgnayqigynduh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SharedPrivateLinkResourcesListByWatcherMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SharedPrivateLinkResource> response = manager.sharedPrivateLinkResources()
-            .listByWatcher("yhrfouyftaakcpw", "yzvqt", com.azure.core.util.Context.NONE);
+            .listByWatcher("tpvjzbexilzznfqq", "vwpm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ubex", response.iterator().next().properties().privateLinkResourceId());
-        Assertions.assertEquals("pzk", response.iterator().next().properties().groupId());
-        Assertions.assertEquals("mond", response.iterator().next().properties().requestMessage());
-        Assertions.assertEquals("quxvypomgkop", response.iterator().next().properties().dnsZone());
+        Assertions.assertEquals("aruoujmkcjhwqyt", response.iterator().next().properties().privateLinkResourceId());
+        Assertions.assertEquals("r", response.iterator().next().properties().groupId());
+        Assertions.assertEquals("bnw", response.iterator().next().properties().requestMessage());
+        Assertions.assertEquals("wgdrjervnaenqp", response.iterator().next().properties().dnsZone());
     }
 }

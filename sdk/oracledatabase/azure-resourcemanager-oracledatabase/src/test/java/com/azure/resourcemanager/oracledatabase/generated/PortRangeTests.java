@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PortRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortRange model = BinaryData.fromString("{\"min\":495294265,\"max\":108593741}").toObject(PortRange.class);
-        Assertions.assertEquals(495294265, model.min());
-        Assertions.assertEquals(108593741, model.max());
+        PortRange model = BinaryData.fromString("{\"min\":772106102,\"max\":2101794539}").toObject(PortRange.class);
+        Assertions.assertEquals(772106102, model.min());
+        Assertions.assertEquals(2101794539, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortRange model = new PortRange().withMin(495294265).withMax(108593741);
+        PortRange model = new PortRange().withMin(772106102).withMax(2101794539);
         model = BinaryData.fromObject(model).toObject(PortRange.class);
-        Assertions.assertEquals(495294265, model.min());
-        Assertions.assertEquals(108593741, model.max());
+        Assertions.assertEquals(772106102, model.min());
+        Assertions.assertEquals(2101794539, model.max());
     }
 }

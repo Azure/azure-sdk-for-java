@@ -11,7 +11,7 @@ import com.azure.resourcemanager.terraform.models.ExportResourceGroup;
  */
 public final class TerraformExportTerraformSamples {
     /*
-     * x-ms-original-file: 2023-07-01-preview/ExportTerraform.json
+     * x-ms-original-file: 2025-09-01-preview/ExportTerraform.json
      */
     /**
      * Sample code: ExportTerraform.

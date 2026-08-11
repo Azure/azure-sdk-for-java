@@ -25,7 +25,7 @@ import com.azure.spring.cloud.feature.management.implementation.FeatureManagemen
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.models.Allocation;
 import com.azure.spring.cloud.feature.management.models.Conditions;
-import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.FeatureDefinition;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantReference;
@@ -72,7 +72,7 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssignedVariants() {
-        List<Feature> features = List.of(new Feature().setId("No Variants"));
+        List<FeatureDefinition> features = List.of(new FeatureDefinition().setId("No Variants"));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         assertNull(featureManager.getVariant("No Variants"));
@@ -81,7 +81,7 @@ public class FeatureManagerVariantTest {
     @Test
     public void noAssigner() {
         featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null, null, null);
-        List<Feature> features = List.of(new Feature().setId("No Assigner").setVariants(createVariants()));
+        List<FeatureDefinition> features = List.of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants()));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         assertNull(featureManager.getVariant("No Assigner"));
@@ -89,8 +89,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssignmentNoDefault() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants()).setAllocation(new Allocation()));
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants()).setAllocation(new Allocation()));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         assertNull(featureManager.getVariant("No Assigner"));
@@ -98,8 +98,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssignmentDefaultEnabled() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setAllocation(new Allocation().setDefaultWhenEnabled("small")).setEnabled(true));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
@@ -110,8 +110,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noAssignmentDefaultDisabled() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setAllocation(new Allocation().setDefaultWhenDisabled("large")));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
@@ -122,8 +122,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void disabledNoDefaultDisabled() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setAllocation(new Allocation()));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
@@ -133,8 +133,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void enabledFilterDefault() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"))))
                 .setAllocation(new Allocation().setDefaultWhenEnabled("small")).setEnabled(true));
@@ -152,8 +152,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void enabledFilterDefaultAnyTrue() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"))))
@@ -168,8 +168,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void enabledFilterDefaultAnyTrueJustOne() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOff"))))
@@ -184,8 +184,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void enabledFilterDefaultAllTrueJustOne() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOff")))
@@ -203,8 +203,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void enabledFilterDefaultAllTrueJustOneNoDefault() {
-        List<Feature> features = List
-            .of(new Feature().setId("No Assigner").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("No Assigner").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn")))
@@ -219,8 +219,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void allOnVariantOverride() {
-        List<Feature> features = List
-            .of(new Feature().setId("On").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("On").setVariants(createVariants())
                 .setConditions(new Conditions().setRequirementType("All").setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"))))
@@ -236,8 +236,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void allOnVariantOverrideNoDefault() {
-        List<Feature> features = List
-            .of(new Feature().setId("On").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("On").setVariants(createVariants())
                 .setConditions(new Conditions().setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn")))
@@ -254,7 +254,7 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void allOnVariantOverrideInvalidVariant() {
-        List<Feature> features = List.of(new Feature().setId("On").setVariants(createVariants())
+        List<FeatureDefinition> features = List.of(new FeatureDefinition().setId("On").setVariants(createVariants())
             .setConditions(new Conditions()
                 .setClientFilters(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
@@ -272,8 +272,8 @@ public class FeatureManagerVariantTest {
 
     @Test
     public void noFiltersButVariants() {
-        List<Feature> features = List
-            .of(new Feature().setId("On").setVariants(createVariants())
+        List<FeatureDefinition> features = List
+            .of(new FeatureDefinition().setId("On").setVariants(createVariants())
                 .setConditions(new Conditions().setRequirementType("All"))
                 .setAllocation(new Allocation().setDefaultWhenEnabled("small")).setEnabled(true));
 

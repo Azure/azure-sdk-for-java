@@ -41,8 +41,11 @@
     "com.azure.health.deidentification.models.PhiCategory": "HealthDataAIServices.DeidServices.PhiCategory",
     "com.azure.health.deidentification.models.PhiEntity": "HealthDataAIServices.DeidServices.PhiEntity",
     "com.azure.health.deidentification.models.PhiTaggerResult": "HealthDataAIServices.DeidServices.PhiTaggerResult",
+    "com.azure.health.deidentification.models.SimplePhiEntity": "HealthDataAIServices.DeidServices.SimplePhiEntity",
     "com.azure.health.deidentification.models.SourceStorageLocation": "HealthDataAIServices.DeidServices.SourceStorageLocation",
     "com.azure.health.deidentification.models.StringIndex": "HealthDataAIServices.DeidServices.StringIndex",
-    "com.azure.health.deidentification.models.TargetStorageLocation": "HealthDataAIServices.DeidServices.TargetStorageLocation"
+    "com.azure.health.deidentification.models.TaggedPhiEntities": "HealthDataAIServices.DeidServices.TaggedPhiEntities",
+    "com.azure.health.deidentification.models.TargetStorageLocation": "HealthDataAIServices.DeidServices.TargetStorageLocation",
+    "com.azure.health.deidentification.models.TextEncodingType": "HealthDataAIServices.DeidServices.TextEncodingType"
   }
 }

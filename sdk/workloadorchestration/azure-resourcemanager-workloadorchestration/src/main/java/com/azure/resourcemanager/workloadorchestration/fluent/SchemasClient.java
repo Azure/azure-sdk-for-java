@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.RemoveVersi
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionInner;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SchemaVersionWithUpdateTypeInner;
+import com.azure.resourcemanager.workloadorchestration.models.SchemaUpdate;
 import com.azure.resourcemanager.workloadorchestration.models.VersionParameter;
 
 /**
@@ -121,7 +122,7 @@ public interface SchemasClient {
      * @return schema Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName, SchemaInner properties,
+    Response<SchemaInner> updateWithResponse(String resourceGroupName, String schemaName, SchemaUpdate properties,
         Context context);
 
     /**
@@ -136,7 +137,7 @@ public interface SchemasClient {
      * @return schema Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaInner update(String resourceGroupName, String schemaName, SchemaInner properties);
+    SchemaInner update(String resourceGroupName, String schemaName, SchemaUpdate properties);
 
     /**
      * Delete a Schema Resource.
@@ -199,7 +200,7 @@ public interface SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of schema Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SchemaVersionInner>, SchemaVersionInner> beginCreateVersion(String resourceGroupName,
@@ -215,7 +216,7 @@ public interface SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of schema Version Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SchemaVersionInner>, SchemaVersionInner> beginCreateVersion(String resourceGroupName,
@@ -230,7 +231,7 @@ public interface SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return schema Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaVersionInner createVersion(String resourceGroupName, String schemaName,
@@ -246,7 +247,7 @@ public interface SchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return schema Version Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaVersionInner createVersion(String resourceGroupName, String schemaName, SchemaVersionWithUpdateTypeInner body,

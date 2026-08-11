@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.prop
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;

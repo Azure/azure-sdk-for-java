@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -62,21 +61,6 @@ public final class NamedPartitionScheme extends Partition {
         this.names = names;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (names() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property names in model NamedPartitionScheme"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(NamedPartitionScheme.class);
 
     /**
      * {@inheritDoc}
