@@ -29,7 +29,7 @@ public final class ServerSentEventHelper {
          * @param event The event name.
          * @param data The event data.
          * @param comment The event comment.
-         * @param retryAfter The reconnection delay.
+         * @param retryAfter The retry interval.
          * @param <T> The type of the event data.
          * @return The server-sent event.
          */
@@ -52,7 +52,7 @@ public final class ServerSentEventHelper {
      * @param event The event name.
      * @param data The event data.
      * @param comment The event comment.
-     * @param retryAfter The reconnection delay.
+     * @param retryAfter The retry interval.
      * @param <T> The type of the event data.
      * @return The server-sent event.
      */
