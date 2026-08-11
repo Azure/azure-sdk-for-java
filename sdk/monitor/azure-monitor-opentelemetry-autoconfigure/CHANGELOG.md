@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Validate Live Metrics redirect targets before following them.
+
 ### Other Changes
 
 ## 1.5.0 (2026-06-11)
