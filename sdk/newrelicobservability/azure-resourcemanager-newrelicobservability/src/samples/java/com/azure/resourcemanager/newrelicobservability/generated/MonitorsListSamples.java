@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/Monitors_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListBySubscription_MaximumSet_Gen.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
  */
 public final class MonitorsResubscribeSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Monitors_Resubscribe.json
+     * x-ms-original-file: 2026-06-01/Monitors_Resubscribe.json
      */
     /**
      * Sample code: Monitors_Resubscribe.
