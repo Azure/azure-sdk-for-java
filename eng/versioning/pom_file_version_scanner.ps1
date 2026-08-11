@@ -44,7 +44,6 @@ $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-pa
 
 . "${PSScriptRoot}/../common/scripts/Helpers/PSModule-Helpers.ps1"
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
-$SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples")
 $SdkRoot = Resolve-Path ($PSScriptRoot + "/../../sdk")
 
 # Not all POM files have a parent entry
@@ -548,15 +547,6 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $xmlPomFile = $null
 
     if ($_.FullName -like "*azure-arm-parent*")
-    {
-        return
-    }
-
-    # Exclude everything that's in samples as this folder contains end to end samples
-    # that uses BOM and some dependencies will not have versions as they are deduced from
-    # the BOM. Running version checks on these samples will always fail. So, we'll skip
-    # all version checks in the root samples directory.
-    if ($_.FullName.StartsWith($SamplesPath))
     {
         return
     }
