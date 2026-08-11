@@ -5,15 +5,15 @@
 package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
+import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.CertificateListDescription;
 import org.junit.jupiter.api.Assertions;
 
-public final class CertificateListDescriptionInnerTests {
+public final class CertificateListDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateListDescriptionInner model = BinaryData.fromString(
+        CertificateListDescription model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"subject\":\"kknryrtihf\",\"expiry\":\"Mon, 06 Sep 2021 02:12:49 GMT\",\"thumbprint\":\"bpzvgn\",\"isVerified\":true,\"created\":\"Sun, 31 Oct 2021 23:32:40 GMT\",\"updated\":\"Sun, 04 Apr 2021 05:14:55 GMT\"},\"etag\":\"fcyzkohdbihanufh\",\"id\":\"bj\",\"name\":\"s\",\"type\":\"git\"}]}")
-            .toObject(CertificateListDescriptionInner.class);
+            .toObject(CertificateListDescription.class);
         Assertions.assertTrue(model.value().get(0).properties().isVerified());
     }
 }

@@ -6,22 +6,23 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager;
-import com.azure.resourcemanager.deviceprovisioningservices.models.GroupIdInformation;
+import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
+public final class DpsCertificatesListMockTests {
     @Test
-    public void testGetPrivateLinkResourcesWithResponse() throws Exception {
+    public void testList() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"ggkzzlvmbmpa\",\"requiredMembers\":[\"dfvue\",\"yw\",\"bpfvm\"],\"requiredZoneNames\":[\"rfouyftaakcpw\",\"yzvqt\"]},\"id\":\"ubex\",\"name\":\"pzk\",\"type\":\"mond\"}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"lihkaetcktvfc\",\"expiry\":\"Tue, 13 Jul 2021 01:18:13 GMT\",\"thumbprint\":\"nkymuctqhjfbebrj\",\"isVerified\":true,\"created\":\"Fri, 05 Feb 2021 11:19:07 GMT\",\"updated\":\"Wed, 03 Feb 2021 12:30:06 GMT\"},\"etag\":\"ttxfvjr\",\"id\":\"rp\",\"name\":\"xepcyvahfn\",\"type\":\"jky\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,12 +31,9 @@ public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        GroupIdInformation response = manager.iotDpsResources()
-            .getPrivateLinkResourcesWithResponse("mutwuoe", "rpkhjwn", "yqsluic", com.azure.core.util.Context.NONE)
-            .getValue();
+        PagedIterable<CertificateResponse> response
+            = manager.dpsCertificates().list("senhwlrs", "frzpwvlqdqgb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggkzzlvmbmpa", response.properties().groupId());
-        Assertions.assertEquals("dfvue", response.properties().requiredMembers().get(0));
-        Assertions.assertEquals("rfouyftaakcpw", response.properties().requiredZoneNames().get(0));
+        Assertions.assertTrue(response.iterator().next().properties().isVerified());
     }
 }

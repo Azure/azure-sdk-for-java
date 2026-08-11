@@ -40,10 +40,10 @@ import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.GroupI
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.IotDpsSkuDefinitionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.NameAvailabilityInfoInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateLinkResourcesInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.IotDpsSkuDefinitionListResult;
+import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.PrivateLinkResources;
 import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.ProvisioningServiceDescriptionListResult;
 import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.SharedAccessSignatureAuthorizationRuleListResult;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
@@ -307,7 +307,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<PrivateLinkResourcesInner>> listPrivateLinkResources(@HostParam("endpoint") String endpoint,
+        Mono<Response<PrivateLinkResources>> listPrivateLinkResources(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -316,7 +316,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Response<PrivateLinkResourcesInner> listPrivateLinkResourcesSync(@HostParam("endpoint") String endpoint,
+        Response<PrivateLinkResources> listPrivateLinkResourcesSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -1801,17 +1801,19 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the available private link resources for a provisioning service along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourcesInner>>
-        listPrivateLinkResourcesWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<GroupIdInformationInner>>
+        listPrivateLinkResourcesSinglePageAsync(String resourceGroupName, String resourceName) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listPrivateLinkResources(this.client.getEndpoint(), this.client.getApiVersion(),
                     this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<GroupIdInformationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1823,13 +1825,34 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service on successful completion of {@link Mono}.
+     * @return the available private link resources for a provisioning service as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GroupIdInformationInner> listPrivateLinkResourcesAsync(String resourceGroupName,
+        String resourceName) {
+        return new PagedFlux<>(() -> listPrivateLinkResourcesSinglePageAsync(resourceGroupName, resourceName));
+    }
+
+    /**
+     * List private link resources for the given provisioning service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Name of the provisioning service to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available private link resources for a provisioning service along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourcesInner> listPrivateLinkResourcesAsync(String resourceGroupName,
+    private PagedResponse<GroupIdInformationInner> listPrivateLinkResourcesSinglePage(String resourceGroupName,
         String resourceName) {
-        return listPrivateLinkResourcesWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String accept = "application/json";
+        Response<PrivateLinkResources> res
+            = service.listPrivateLinkResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -1841,14 +1864,17 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service along with {@link Response}.
+     * @return the available private link resources for a provisioning service along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourcesInner> listPrivateLinkResourcesWithResponse(String resourceGroupName,
+    private PagedResponse<GroupIdInformationInner> listPrivateLinkResourcesSinglePage(String resourceGroupName,
         String resourceName, Context context) {
         final String accept = "application/json";
-        return service.listPrivateLinkResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        Response<PrivateLinkResources> res
+            = service.listPrivateLinkResourcesSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -1859,11 +1885,31 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service.
+     * @return the available private link resources for a provisioning service as paginated response with
+     * {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourcesInner listPrivateLinkResources(String resourceGroupName, String resourceName) {
-        return listPrivateLinkResourcesWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GroupIdInformationInner> listPrivateLinkResources(String resourceGroupName,
+        String resourceName) {
+        return new PagedIterable<>(() -> listPrivateLinkResourcesSinglePage(resourceGroupName, resourceName));
+    }
+
+    /**
+     * List private link resources for the given provisioning service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Name of the provisioning service to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available private link resources for a provisioning service as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GroupIdInformationInner> listPrivateLinkResources(String resourceGroupName,
+        String resourceName, Context context) {
+        return new PagedIterable<>(() -> listPrivateLinkResourcesSinglePage(resourceGroupName, resourceName, context));
     }
 
     /**

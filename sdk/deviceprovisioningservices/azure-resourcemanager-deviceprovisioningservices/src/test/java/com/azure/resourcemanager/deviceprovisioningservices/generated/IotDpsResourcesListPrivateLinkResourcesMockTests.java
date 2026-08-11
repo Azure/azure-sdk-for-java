@@ -6,6 +6,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
@@ -17,11 +18,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
+public final class IotDpsResourcesListPrivateLinkResourcesMockTests {
     @Test
-    public void testGetPrivateLinkResourcesWithResponse() throws Exception {
+    public void testListPrivateLinkResources() throws Exception {
         String responseStr
-            = "{\"properties\":{\"groupId\":\"ggkzzlvmbmpa\",\"requiredMembers\":[\"dfvue\",\"yw\",\"bpfvm\"],\"requiredZoneNames\":[\"rfouyftaakcpw\",\"yzvqt\"]},\"id\":\"ubex\",\"name\":\"pzk\",\"type\":\"mond\"}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"mocmbqfqvmk\",\"requiredMembers\":[\"zapvhelx\"],\"requiredZoneNames\":[\"lya\",\"dd\",\"kcbcue\",\"rjxgciqib\"]},\"id\":\"osx\",\"name\":\"dqrhzoymib\",\"type\":\"rq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,12 +31,11 @@ public final class IotDpsResourcesGetPrivateLinkResourcesWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        GroupIdInformation response = manager.iotDpsResources()
-            .getPrivateLinkResourcesWithResponse("mutwuoe", "rpkhjwn", "yqsluic", com.azure.core.util.Context.NONE)
-            .getValue();
+        PagedIterable<GroupIdInformation> response = manager.iotDpsResources()
+            .listPrivateLinkResources("mquxvypo", "gkopkwhojvpajqgx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggkzzlvmbmpa", response.properties().groupId());
-        Assertions.assertEquals("dfvue", response.properties().requiredMembers().get(0));
-        Assertions.assertEquals("rfouyftaakcpw", response.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("mocmbqfqvmk", response.iterator().next().properties().groupId());
+        Assertions.assertEquals("zapvhelx", response.iterator().next().properties().requiredMembers().get(0));
+        Assertions.assertEquals("lya", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

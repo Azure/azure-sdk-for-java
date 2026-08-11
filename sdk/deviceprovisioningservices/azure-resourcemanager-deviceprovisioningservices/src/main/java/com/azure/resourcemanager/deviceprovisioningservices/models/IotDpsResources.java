@@ -278,28 +278,30 @@ public interface IotDpsResources {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Name of the provisioning service to retrieve.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service along with {@link Response}.
+     * @return the available private link resources for a provisioning service as paginated response with
+     * {@link PagedIterable}.
      */
-    Response<PrivateLinkResources> listPrivateLinkResourcesWithResponse(String resourceGroupName, String resourceName,
-        Context context);
+    PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName);
 
     /**
      * List private link resources for the given provisioning service.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Name of the provisioning service to retrieve.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a provisioning service.
+     * @return the available private link resources for a provisioning service as paginated response with
+     * {@link PagedIterable}.
      */
-    PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName);
+    PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get private endpoint connection properties.

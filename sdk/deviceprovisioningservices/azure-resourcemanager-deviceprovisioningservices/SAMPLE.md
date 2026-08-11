@@ -152,7 +152,7 @@ public final class DpsCertificateListSamples {
      */
     public static void dPSGetCertificates(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.dpsCertificates()
-            .listWithResponse("myResourceGroup", "myFirstProvisioningService", com.azure.core.util.Context.NONE);
+            .list("myResourceGroup", "myFirstProvisioningService", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -641,7 +641,7 @@ public final class IotDpsResourceListPrivateLinkResourcesSamples {
     public static void
         privateLinkResourcesList(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .listPrivateLinkResourcesWithResponse("myResourceGroup", "myFirstProvisioningService",
+            .listPrivateLinkResources("myResourceGroup", "myFirstProvisioningService",
                 com.azure.core.util.Context.NONE);
     }
 }

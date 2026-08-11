@@ -6,44 +6,25 @@
 
 ### Breaking Changes
 
-#### `models.DpsCertificates` was modified
-
-* `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)` -> `models.CertificateListDescription list(java.lang.String,java.lang.String)`
-* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-
 #### `models.IotDpsResources` was modified
 
-* `listPrivateLinkResources(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `com.azure.core.http.rest.PagedIterable listPrivateLinkResources(java.lang.String,java.lang.String)` -> `models.PrivateLinkResources listPrivateLinkResources(java.lang.String,java.lang.String)`
-* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
-* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
 * `models.PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
 
 ### Features Added
-
-* `models.PrivateLinkResources` was added
-
-* `models.CertificateListDescription` was added
 
 * `models.IotHubAuthenticationType` was added
 
 #### `models.IotHubDefinitionDescription` was modified
 
-* `authenticationType()` was added
 * `hostName()` was added
-* `withAuthenticationType(models.IotHubAuthenticationType)` was added
 * `selectedUserAssignedIdentityResourceId()` was added
+* `withAuthenticationType(models.IotHubAuthenticationType)` was added
 * `withHostName(java.lang.String)` was added
+* `authenticationType()` was added
 * `withSelectedUserAssignedIdentityResourceId(java.lang.String)` was added
-
-#### `models.DpsCertificates` was modified
-
-* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-
-#### `models.IotDpsResources` was modified
-
-* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.2.0-beta.1 (2025-10-20)
 

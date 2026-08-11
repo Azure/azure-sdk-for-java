@@ -20,15 +20,19 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.DpsCertificatesClient;
-import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
+import com.azure.resourcemanager.deviceprovisioningservices.implementation.models.CertificateListDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePurpose;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeRequest;
@@ -151,7 +155,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateListDescriptionInner>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<CertificateListDescription>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("provisioningServiceName") String provisioningServiceName, @HeaderParam("Accept") String accept,
@@ -161,7 +165,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Response<CertificateListDescriptionInner> listSync(@HostParam("endpoint") String endpoint,
+        Response<CertificateListDescription> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("provisioningServiceName") String provisioningServiceName, @HeaderParam("Accept") String accept,
@@ -550,16 +554,18 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service along with {@link Response} on successful
+     * @return all the certificates tied to the provisioning service along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateListDescriptionInner>> listWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<CertificateResponseInner>> listSinglePageAsync(String resourceGroupName,
         String provisioningServiceName) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, provisioningServiceName, accept, context))
+            .<PagedResponse<CertificateResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -571,12 +577,32 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service on successful completion of {@link Mono}.
+     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<CertificateResponseInner> listAsync(String resourceGroupName, String provisioningServiceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, provisioningServiceName));
+    }
+
+    /**
+     * Get all the certificates tied to the provisioning service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the certificates tied to the provisioning service along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateListDescriptionInner> listAsync(String resourceGroupName, String provisioningServiceName) {
-        return listWithResponseAsync(resourceGroupName, provisioningServiceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private PagedResponse<CertificateResponseInner> listSinglePage(String resourceGroupName,
+        String provisioningServiceName) {
+        final String accept = "application/json";
+        Response<CertificateListDescription> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, provisioningServiceName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -588,14 +614,17 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service along with {@link Response}.
+     * @return all the certificates tied to the provisioning service along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateListDescriptionInner> listWithResponse(String resourceGroupName,
+    private PagedResponse<CertificateResponseInner> listSinglePage(String resourceGroupName,
         String provisioningServiceName, Context context) {
         final String accept = "application/json";
-        return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, provisioningServiceName, accept, context);
+        Response<CertificateListDescription> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, provisioningServiceName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -606,11 +635,28 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the certificates tied to the provisioning service.
+     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateListDescriptionInner list(String resourceGroupName, String provisioningServiceName) {
-        return listWithResponse(resourceGroupName, provisioningServiceName, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CertificateResponseInner> list(String resourceGroupName, String provisioningServiceName) {
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, provisioningServiceName));
+    }
+
+    /**
+     * Get all the certificates tied to the provisioning service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the certificates tied to the provisioning service as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CertificateResponseInner> list(String resourceGroupName, String provisioningServiceName,
+        Context context) {
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, provisioningServiceName, context));
     }
 
     /**

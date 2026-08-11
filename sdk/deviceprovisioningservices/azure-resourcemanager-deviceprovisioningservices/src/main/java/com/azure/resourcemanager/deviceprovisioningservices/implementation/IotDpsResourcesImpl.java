@@ -15,7 +15,6 @@ import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.GroupI
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.IotDpsSkuDefinitionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.NameAvailabilityInfoInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateLinkResourcesInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.AsyncOperationResult;
@@ -25,7 +24,6 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuDefi
 import com.azure.resourcemanager.deviceprovisioningservices.models.NameAvailabilityInfo;
 import com.azure.resourcemanager.deviceprovisioningservices.models.OperationInputs;
 import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.deviceprovisioningservices.models.PrivateLinkResources;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ProvisioningServiceDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.SharedAccessSignatureAuthorizationRule;
 import java.util.Collections;
@@ -184,22 +182,17 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         }
     }
 
-    public Response<PrivateLinkResources> listPrivateLinkResourcesWithResponse(String resourceGroupName,
-        String resourceName, Context context) {
-        Response<PrivateLinkResourcesInner> inner
-            = this.serviceClient().listPrivateLinkResourcesWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateLinkResourcesImpl(inner.getValue(), this.manager()));
+    public PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName) {
+        PagedIterable<GroupIdInformationInner> inner
+            = this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResources listPrivateLinkResources(String resourceGroupName, String resourceName) {
-        PrivateLinkResourcesInner inner
-            = this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new PrivateLinkResourcesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<GroupIdInformation> listPrivateLinkResources(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<GroupIdInformationInner> inner
+            = this.serviceClient().listPrivateLinkResources(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
     public Response<PrivateEndpointConnection> getPrivateEndpointConnectionWithResponse(String resourceGroupName,

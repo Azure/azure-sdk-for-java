@@ -22,7 +22,7 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithRespMockTests 
     @Test
     public void testGetPrivateEndpointConnectionWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"sipqii\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"yuq\",\"actionsRequired\":\"pqlpq\"}},\"id\":\"ciuqgbdb\",\"name\":\"t\",\"type\":\"uvfbtkuwh\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"enwash\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"dtkcnqxwbpokulp\",\"actionsRequired\":\"jwaa\"}},\"id\":\"pqiiobyuqe\",\"name\":\"pqlpq\",\"type\":\"cciuqgbdbutau\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,14 @@ public final class IotDpsResourcesGetPrivateEndpointConnectionWithRespMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.iotDpsResources()
-            .getPrivateEndpointConnectionWithResponse("nwashrtd", "kcnqxwbpo", "ulpiuj",
+            .getPrivateEndpointConnectionWithResponse("ibahwflus", "dtmhrkwofyyvoqa", "piexpbtgiw",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("yuq", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("pqlpq", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("dtkcnqxwbpokulp",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("jwaa", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }
