@@ -21,6 +21,7 @@ import com.azure.resourcemanager.kusto.models.Cluster;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -67,6 +68,7 @@ public class KustoManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("Provisioning a Kusto cluster requires a paid minimum capacity.")
     public void testCreateCluster() {
         Cluster cluster = null;
         try {
@@ -90,6 +92,12 @@ public class KustoManagerTests extends TestProxyTestBase {
                 kustoManager.clusters().deleteById(cluster.id());
             }
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void testListClusters() {
+        kustoManager.clusters().list().stream().findFirst();
     }
 
     private static String randomPadding() {
