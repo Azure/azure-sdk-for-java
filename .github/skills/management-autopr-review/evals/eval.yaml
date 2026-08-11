@@ -18,9 +18,9 @@ stimuli:
   - name: unrelated-service-folder-collision
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-folder.md"
+        - src: "fixtures/positive-folder.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -44,9 +44,9 @@ stimuli:
   - name: service-folder-name-mismatch
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-service-folder-mismatch.md"
+        - src: "fixtures/positive-service-folder-mismatch.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md. Focus on
@@ -72,9 +72,9 @@ stimuli:
   - name: stable-package-on-preview-api
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-version.md"
+        - src: "fixtures/positive-version.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -98,9 +98,9 @@ stimuli:
   - name: changed-api-version-is-reported-again
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-api-version-changed.md"
+        - src: "fixtures/positive-api-version-changed.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to update the review state from
@@ -126,9 +126,9 @@ stimuli:
   - name: metadata-api-version-map-is-reported
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-api-version-metadata-map.md"
+        - src: "fixtures/positive-api-version-metadata-map.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -170,9 +170,9 @@ stimuli:
   - name: changelog-api-version-map-detects-preview
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-version-changelog-map.md"
+        - src: "fixtures/positive-version-changelog-map.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -201,9 +201,9 @@ stimuli:
   - name: new-module-is-informational
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-new-module.md"
+        - src: "fixtures/positive-new-module.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -223,9 +223,9 @@ stimuli:
   - name: suspicious-lro-response-shape
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-lro.md"
+        - src: "fixtures/positive-lro.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -249,9 +249,9 @@ stimuli:
   - name: manager-name-casing-problem
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-manager-casing.md"
+        - src: "fixtures/positive-manager-casing.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -271,9 +271,9 @@ stimuli:
   - name: manager-name-spelling-problem
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-manager-spelling.md"
+        - src: "fixtures/positive-manager-spelling.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -293,9 +293,9 @@ stimuli:
   - name: manager-name-unrelated-to-package
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-manager-unrelated.md"
+        - src: "fixtures/positive-manager-unrelated.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -315,9 +315,9 @@ stimuli:
   - name: changed-existing-return-type
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-breaking.md"
+        - src: "fixtures/positive-breaking.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -342,9 +342,9 @@ stimuli:
   - name: overlapping-api-version-generations
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-api-version-overlap.md"
+        - src: "fixtures/positive-api-version-overlap.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.
@@ -369,9 +369,9 @@ stimuli:
   - name: missing-release-plan
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/positive-missing-release-plan.md"
+        - src: "fixtures/positive-missing-release-plan.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md.

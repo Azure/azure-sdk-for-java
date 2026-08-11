@@ -1,12 +1,11 @@
 paths:
   skills: "../../../skills/"
-  evals: vally/
+  evals: ./
 
 suites:
   all:
     description: "Full management AutoPR reviewer evaluation suite"
-    evals: ["vally/eval-*.yaml"]
+    evals: ["eval.yaml", "orchestration.yaml", "true-negatives.yaml"]
   true-negatives:
     description: "False-positive resistance gate"
-    evals: ["vally/eval-true-negatives.yaml"]
-
+    evals: ["true-negatives.yaml"]
