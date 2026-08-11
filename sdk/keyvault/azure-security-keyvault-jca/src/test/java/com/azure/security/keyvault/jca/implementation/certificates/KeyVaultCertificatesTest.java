@@ -475,7 +475,7 @@ public class KeyVaultCertificatesTest {
             .thenReturn(certificateChain);
 
         assertConcurrentFailureIsShared(() -> keyVaultCertificates.getCertificateChain("myalias"), blockingFailure,
-            loadFailure);
+            loadFailure, "loadMaterialIfNeeded");
         verify(keyVaultClient, times(1)).getCertificateChainForVersion(certificateVersion);
 
         Assertions.assertArrayEquals(certificateChain, keyVaultCertificates.getCertificateChain("myalias"));
@@ -490,7 +490,7 @@ public class KeyVaultCertificatesTest {
             .thenReturn(certificateVersion);
 
         assertConcurrentFailureIsShared(() -> keyVaultCertificates.getCertificate("myalias"), blockingFailure,
-            resolutionFailure);
+            resolutionFailure, "resolveCertificateVersionIfNeeded");
         verify(keyVaultClient, times(1)).resolveCertificateVersion("myalias");
 
         Assertions.assertSame(certificate, keyVaultCertificates.getCertificate("myalias"));
@@ -764,7 +764,7 @@ public class KeyVaultCertificatesTest {
     }
 
     private void assertConcurrentFailureIsShared(Runnable load, BlockingFailureAnswer<?> blockingFailure,
-        RuntimeException expectedFailure) throws Exception {
+        RuntimeException expectedFailure, String waiterCallerMethod) throws Exception {
         List<RuntimeException> failures = Collections.synchronizedList(new ArrayList<>());
         CountDownLatch readersReady = new CountDownLatch(CONCURRENT_READERS);
         CountDownLatch readersMayStart = new CountDownLatch(1);
@@ -789,7 +789,7 @@ public class KeyVaultCertificatesTest {
         awaitLatch(readersReady);
         readersMayStart.countDown();
         blockingFailure.awaitStarted();
-        awaitSingleFlightWaiters(readers);
+        awaitSingleFlightWaiters(readers, waiterCallerMethod);
         blockingFailure.release();
         joinThreads(readers);
 
@@ -862,7 +862,8 @@ public class KeyVaultCertificatesTest {
         throw new IllegalStateException("Timed out waiting for the threads to wait.");
     }
 
-    private static void awaitSingleFlightWaiters(List<Thread> readers) throws InterruptedException {
+    private static void awaitSingleFlightWaiters(List<Thread> readers, String waiterCallerMethod)
+        throws InterruptedException {
         long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(TIMEOUT_MILLIS);
 
         while (System.nanoTime() < deadline) {
@@ -870,7 +871,8 @@ public class KeyVaultCertificatesTest {
                 .filter(reader -> hasStackFrame(reader, BlockingFailureAnswer.class, "answer"))
                 .count();
             long waiterCount = readers.stream()
-                .filter(reader -> hasStackFrame(reader, KeyVaultCertificates.class, "awaitInFlightOperation"))
+                .filter(reader -> hasStackFrameCalledBy(reader, KeyVaultCertificates.class, "awaitInFlightOperation",
+                    waiterCallerMethod))
                 .count();
 
             if (ownerCount == 1 && waiterCount == readers.size() - 1) {
@@ -881,6 +883,22 @@ public class KeyVaultCertificatesTest {
         }
 
         throw new IllegalStateException("Timed out waiting for all readers to join the single-flight operation.");
+    }
+
+    private static boolean hasStackFrameCalledBy(Thread thread, Class<?> declaringClass, String methodName,
+        String callerMethodName) {
+        StackTraceElement[] stackTrace = thread.getStackTrace();
+        for (int index = 0; index < stackTrace.length - 1; index++) {
+            StackTraceElement frame = stackTrace[index];
+            StackTraceElement caller = stackTrace[index + 1];
+            if (frame.getClassName().equals(declaringClass.getName())
+                && frame.getMethodName().equals(methodName)
+                && caller.getClassName().equals(declaringClass.getName())
+                && caller.getMethodName().equals(callerMethodName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean hasStackFrame(Thread thread, Class<?> declaringClass, String methodName) {
