@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.69 (Unreleased)
+## 1.0.0-beta.69 (2026-08-11)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
 
 ## 1.0.0-beta.68 (2026-06-08)
 
