@@ -180,26 +180,20 @@ public class ShareStorageCustomization extends Customization {
                 if (!clazz.getMethodsByName("listSharesSegmentWithResponse").isEmpty()) {
                     return;
                 }
-                ast.addImport("com.azure.storage.file.share.implementation.util.ModelHelper");
-                ast.addImport("com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal");
+                // Bodies are intentionally left without ShareStorageExceptionInternal mapping;
+                // updateImplToMapInternalException (run later) wraps every class-returning method exactly once.
                 clazz.addMember(StaticJavaParser.parseMethodDeclaration(
                     "public Response<BinaryData> listSharesSegmentWithResponse(RequestOptions requestOptions) {\n"
                         + "    final String accept = \"application/xml\";\n"
-                        + "    try {\n"
-                        + "        return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
-                        + "            this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);\n"
-                        + "    } catch (ShareStorageExceptionInternal internalException) {\n"
-                        + "        throw ModelHelper.mapToShareStorageException(internalException);\n"
-                        + "    }\n"
+                        + "    return service.listSharesSegmentSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
+                        + "        this.client.getFileRequestIntent(), accept, requestOptions, Context.NONE);\n"
                         + "}"));
                 clazz.addMember(StaticJavaParser.parseMethodDeclaration(
                     "public Mono<Response<BinaryData>> listSharesSegmentWithResponseAsync(RequestOptions requestOptions) {\n"
                         + "    final String accept = \"application/xml\";\n"
-                        + "    return FluxUtil\n"
-                        + "        .withContext(context -> service.listSharesSegment(this.client.getUrl(),\n"
-                        + "            this.client.getServiceVersion().getVersion(), this.client.getFileRequestIntent(), accept,\n"
-                        + "            requestOptions, context))\n"
-                        + "        .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);\n"
+                        + "    return FluxUtil.withContext(context -> service.listSharesSegment(this.client.getUrl(),\n"
+                        + "        this.client.getServiceVersion().getVersion(), this.client.getFileRequestIntent(), accept,\n"
+                        + "        requestOptions, context));\n"
                         + "}"));
                 logger.info("Exposed raw listSharesSegmentWithResponse methods in ServicesImpl");
             }));
@@ -221,27 +215,21 @@ public class ShareStorageCustomization extends Customization {
                     if (!clazz.getMethodsByName("listHandlesWithResponse").isEmpty()) {
                         return;
                     }
-                    ast.addImport("com.azure.storage.file.share.implementation.util.ModelHelper");
-                    ast.addImport("com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal");
+                    // Bodies are intentionally left without ShareStorageExceptionInternal mapping;
+                    // updateImplToMapInternalException (run later) wraps every class-returning method exactly once.
                     clazz.addMember(StaticJavaParser.parseMethodDeclaration(
                         "public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {\n"
                             + "    final String accept = \"application/xml\";\n"
-                            + "    try {\n"
-                            + "        return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
-                            + "            this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,\n"
-                            + "            Context.NONE);\n"
-                            + "    } catch (ShareStorageExceptionInternal internalException) {\n"
-                            + "        throw ModelHelper.mapToShareStorageException(internalException);\n"
-                            + "    }\n"
+                            + "    return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
+                            + "        this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,\n"
+                            + "        Context.NONE);\n"
                             + "}"));
                     clazz.addMember(StaticJavaParser.parseMethodDeclaration(
                         "public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {\n"
                             + "    final String accept = \"application/xml\";\n"
-                            + "    return FluxUtil\n"
-                            + "        .withContext(context -> service.listHandles(this.client.getUrl(),\n"
-                            + "            this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),\n"
-                            + "            this.client.getFileRequestIntent(), accept, requestOptions, context))\n"
-                            + "        .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);\n"
+                            + "    return FluxUtil.withContext(context -> service.listHandles(this.client.getUrl(),\n"
+                            + "        this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),\n"
+                            + "        this.client.getFileRequestIntent(), accept, requestOptions, context));\n"
                             + "}"));
                     logger.info("Exposed raw listHandlesWithResponse methods in {}", implName);
                 }));

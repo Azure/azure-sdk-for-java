@@ -1155,31 +1155,6 @@ public final class DirectoriesImpl {
      * @return an enumeration of handles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
-        try {
-            final String accept = "application/xml";
-            try {
-                return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
-                    this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
-                    Context.NONE);
-            } catch (ShareStorageExceptionInternal internalException) {
-                throw ModelHelper.mapToShareStorageException(internalException);
-            }
-        } catch (ShareStorageExceptionInternal internalException) {
-            throw ModelHelper.mapToShareStorageException(internalException);
-        }
-    }
-
-    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.listHandles(this.client.getUrl(),
-                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, requestOptions, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
-
     public PagedIterable<BinaryData> listHandles(RequestOptions requestOptions) {
         return new PagedIterable<>(() -> listHandlesSinglePage(requestOptions));
     }
@@ -1473,5 +1448,30 @@ public final class DirectoriesImpl {
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
+    }
+
+    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {
+        try {
+            final String accept = "application/xml";
+            try {
+                return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),
+                    this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,
+                    Context.NONE);
+            } catch (ShareStorageExceptionInternal internalException) {
+                throw ModelHelper.mapToShareStorageException(internalException);
+            }
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.listHandles(this.client.getUrl(),
+                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, requestOptions, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 }
