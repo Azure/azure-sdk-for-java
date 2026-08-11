@@ -3,22 +3,16 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.models.SessionRequestContext;
+import com.azure.storage.common.test.shared.session.CreateSessionMockHttpClient;
+import com.azure.storage.common.test.shared.session.SessionTestHelper;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,46 +35,44 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 public class SessionProviderTests {
 
-    private static final String ACCOUNT_NAME = "myaccount";
-    private static final String CONTEXT_CONTAINER = "context-container";
-
     @Test
     public void getSessionAsyncUsesContainerFromContext() {
-        AtomicReference<String> requestedContainer = new AtomicReference<>();
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        CreateSessionMockHttpClient httpClient = new CreateSessionMockHttpClient();
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(httpClient);
 
         SessionRequestContext context
-            = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
+            = new SessionRequestContext().setContainerName(SessionTestHelper.TEST_CONTAINER_NAME)
+                .setAccountName(SessionTestHelper.TEST_ACCOUNT_NAME);
 
         StepVerifier.create(sessionProvider.getSessionAsync(context)).assertNext(credential -> {
             assertNotNull(credential);
-            assertNotNull(credential.getSessionToken());
+            assertEquals("session-token-for-testcontainer", credential.getSessionToken());
             assertNotNull(credential.getSessionKey());
         }).verifyComplete();
 
-        assertEquals(CONTEXT_CONTAINER, requestedContainer.get());
+        assertEquals(SessionTestHelper.TEST_CONTAINER_NAME, httpClient.getRequestedContainer());
     }
 
     @Test
     public void getSessionSyncUsesContainerFromContext() {
-        AtomicReference<String> requestedContainer = new AtomicReference<>();
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        CreateSessionMockHttpClient httpClient = new CreateSessionMockHttpClient();
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(httpClient);
 
         SessionRequestContext context
-            = new SessionRequestContext().setContainerName(CONTEXT_CONTAINER).setAccountName(ACCOUNT_NAME);
+            = new SessionRequestContext().setContainerName(SessionTestHelper.TEST_CONTAINER_NAME)
+                .setAccountName(SessionTestHelper.TEST_ACCOUNT_NAME);
 
         SessionCredential credential = sessionProvider.getSession(context);
 
         assertNotNull(credential);
-        assertNotNull(credential.getSessionToken());
+        assertEquals("session-token-for-testcontainer", credential.getSessionToken());
         assertNotNull(credential.getSessionKey());
-        assertEquals(CONTEXT_CONTAINER, requestedContainer.get());
+        assertEquals(SessionTestHelper.TEST_CONTAINER_NAME, httpClient.getRequestedContainer());
     }
 
     @Test
     public void missingContextContainerThrowsSync() {
-        AtomicReference<String> requestedContainer = new AtomicReference<>();
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(new CreateSessionMockHttpClient());
 
         // There is no constructor-supplied fallback container: a context with no container name must be
         // rejected rather than silently degrading to some default.
@@ -91,52 +83,17 @@ public class SessionProviderTests {
 
     @Test
     public void missingContextContainerThrowsAsync() {
-        AtomicReference<String> requestedContainer = new AtomicReference<>();
-        TokenCredentialSessionProvider sessionProvider = createSessionProvider(requestedContainer);
+        TokenCredentialSessionProvider sessionProvider = createSessionProvider(new CreateSessionMockHttpClient());
 
         SessionRequestContext context = new SessionRequestContext();
 
         StepVerifier.create(sessionProvider.getSessionAsync(context)).verifyError(IllegalArgumentException.class);
     }
 
-    private static TokenCredentialSessionProvider createSessionProvider(AtomicReference<String> requestedContainer) {
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(new CreateSessionMockClient(requestedContainer)).build();
-        return new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
-            BlobServiceVersion.getLatest(), ACCOUNT_NAME);
-    }
-
-    /**
-     * A fake transport that parses the container name out of the CreateSession request's path (the
-     * container is the first path segment; {@code restype=container&comp=session} is on the query string)
-     * and echoes it back into the session token, so tests can assert on the container that was actually
-     * requested without needing a real service.
-     */
-    private static final class CreateSessionMockClient implements HttpClient {
-
-        private final AtomicReference<String> requestedContainer;
-
-        CreateSessionMockClient(AtomicReference<String> requestedContainer) {
-            this.requestedContainer = requestedContainer;
-        }
-
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
-            String path = request.getUrl().getPath();
-            // Path looks like "/<container>"; strip the leading slash.
-            String container = path.startsWith("/") ? path.substring(1) : path;
-            requestedContainer.set(container);
-
-            String body = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<CreateSessionResult>"
-                + "<Id>test-session-id</Id>" + "<Expiration>Wed, 09 Sep 2099 00:00:00 GMT</Expiration>"
-                + "<AuthenticationType>HMAC</AuthenticationType>" + "<Credentials>" + "<SessionToken>session-token-for-"
-                + container + "</SessionToken>"
-                + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>" + "</Credentials>"
-                + "</CreateSessionResult>";
-
-            HttpResponse response = new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8))
-                .addHeader("Content-Type", "application/xml");
-            return Mono.just(response);
-        }
+    private static TokenCredentialSessionProvider createSessionProvider(CreateSessionMockHttpClient httpClient) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
+        return new TokenCredentialSessionProvider(pipeline,
+            "https://" + SessionTestHelper.TEST_ACCOUNT_NAME + ".blob.core.windows.net", BlobServiceVersion.getLatest(),
+            SessionTestHelper.TEST_ACCOUNT_NAME);
     }
 }
