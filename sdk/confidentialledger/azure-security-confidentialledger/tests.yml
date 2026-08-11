@@ -4,6 +4,9 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: confidentialledger
+    MaxParallel: 1
+    MatrixFilters:
+      - AZURE_TEST_HTTP_CLIENTS=^netty$
     Artifacts:
       - name: azure-security-confidentialledger
         groupId: com.azure
