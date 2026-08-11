@@ -12,9 +12,15 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.implementation.XmlSerializer;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.options.ShareCreateOptions;
@@ -40,6 +46,28 @@ public final class RequestOptionsHelper {
         = HttpHeaderName.fromString("x-ms-deleted-share-version");
     private static final HttpHeaderName X_MS_FILE_PERMISSION_FORMAT
         = HttpHeaderName.fromString("x-ms-file-permission-format");
+    private static final HttpHeaderName X_MS_FILE_PERMISSION = HttpHeaderName.fromString("x-ms-file-permission");
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
+        = HttpHeaderName.fromString("x-ms-file-permission-key");
+    private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
+    private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
+    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
+        = HttpHeaderName.fromString("x-ms-file-last-write-time");
+    private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+    private static final HttpHeaderName X_MS_FILE_PROPERTY_SEMANTICS
+        = HttpHeaderName.fromString("x-ms-file-property-semantics");
+    private static final HttpHeaderName X_MS_RECURSIVE = HttpHeaderName.fromString("x-ms-recursive");
+    private static final HttpHeaderName X_MS_FILE_EXTENDED_INFO = HttpHeaderName.fromString("x-ms-file-extended-info");
+    private static final HttpHeaderName X_MS_FILE_RENAME_REPLACE_IF_EXISTS
+        = HttpHeaderName.fromString("x-ms-file-rename-replace-if-exists");
+    private static final HttpHeaderName X_MS_FILE_RENAME_IGNORE_READONLY
+        = HttpHeaderName.fromString("x-ms-file-rename-ignore-readonly");
+    private static final HttpHeaderName X_MS_SOURCE_LEASE_ID = HttpHeaderName.fromString("x-ms-source-lease-id");
+    private static final HttpHeaderName X_MS_DESTINATION_LEASE_ID
+        = HttpHeaderName.fromString("x-ms-destination-lease-id");
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
     private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
     private static final HttpHeaderName X_MS_ENABLED_PROTOCOLS = HttpHeaderName.fromString("x-ms-enabled-protocols");
@@ -242,6 +270,159 @@ public final class RequestOptionsHelper {
         addLeaseId(requestOptions, leaseId);
         requestOptions.setBody(BinaryData.fromObject(new ShareSignedIdentifierWrapper(permissions), XML_SERIALIZER));
         scopeRequestToResourcePath(requestOptions, shareName);
+        return requestOptions;
+    }
+
+    /** Adds the SMB property headers (permission key, attributes, and the creation/last-write/change times). */
+    public static void addSmbProperties(RequestOptions requestOptions, String filePermissionKey,
+        String ntfsFileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
+        addHeader(requestOptions, X_MS_FILE_PERMISSION_KEY, filePermissionKey);
+        addHeader(requestOptions, X_MS_FILE_ATTRIBUTES, ntfsFileAttributes);
+        addHeader(requestOptions, X_MS_FILE_CREATION_TIME, fileCreationTime);
+        addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, fileLastWriteTime);
+        addHeader(requestOptions, X_MS_FILE_CHANGE_TIME, fileChangeTime);
+    }
+
+    /** Adds the NFS POSIX property headers (owner, group, and file mode). */
+    public static void addPosixProperties(RequestOptions requestOptions, FilePosixProperties posixProperties) {
+        if (posixProperties != null) {
+            addHeader(requestOptions, X_MS_OWNER, posixProperties.getOwner());
+            addHeader(requestOptions, X_MS_GROUP, posixProperties.getGroup());
+            addHeader(requestOptions, X_MS_MODE, posixProperties.getFileMode());
+        }
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.create}: metadata, file permission, SMB and POSIX
+     * properties, and the file-property semantics, scoped to the directory resource.
+     */
+    public static RequestOptions createDirectoryRequestOptions(String resourcePath, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String ntfsFileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
+        FilePosixProperties posixProperties, FilePropertySemantics filePropertySemantics, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addMetadata(requestOptions, metadata);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addSmbProperties(requestOptions, filePermissionKey, ntfsFileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime);
+        addPosixProperties(requestOptions, posixProperties);
+        addHeader(requestOptions, X_MS_FILE_PROPERTY_SEMANTICS, filePropertySemantics);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.setProperties}: file permission plus SMB and POSIX
+     * properties, scoped to the directory resource.
+     */
+    public static RequestOptions setDirectoryPropertiesRequestOptions(String resourcePath, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String ntfsFileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, FilePosixProperties posixProperties,
+        Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addSmbProperties(requestOptions, filePermissionKey, ntfsFileAttributes, fileCreationTime, fileLastWriteTime,
+            fileChangeTime);
+        addPosixProperties(requestOptions, posixProperties);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.listFilesAndDirectoriesSegment}: the prefix, snapshot,
+     * marker, maxresults and include query parameters plus the extended-info header, scoped to the directory resource.
+     */
+    public static RequestOptions listFilesAndDirectoriesRequestOptions(String resourcePath, String prefix,
+        String snapshot, String marker, Integer maxResults, List<ListFilesIncludeType> include,
+        boolean includeExtendedInfo, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (prefix != null) {
+            requestOptions.addQueryParam("prefix", prefix, false);
+        }
+        addSnapshot(requestOptions, snapshot);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxResults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxResults), false);
+        }
+        if (include != null && !include.isEmpty()) {
+            requestOptions.addQueryParam("include",
+                include.stream().map(ListFilesIncludeType::toString).collect(java.util.stream.Collectors.joining(",")),
+                false);
+        }
+        addHeader(requestOptions, X_MS_FILE_EXTENDED_INFO, includeExtendedInfo);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.listHandles}: the marker, maxresults and snapshot query
+     * parameters plus the recursive header, scoped to the directory resource.
+     */
+    public static RequestOptions listHandlesRequestOptions(String resourcePath, String marker, Integer maxResults,
+        String snapshot, boolean recursive, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        if (maxResults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxResults), false);
+        }
+        addSnapshot(requestOptions, snapshot);
+        addHeader(requestOptions, X_MS_RECURSIVE, recursive);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.forceCloseHandles}: the marker and snapshot query
+     * parameters plus the recursive header, scoped to the directory resource. The handle id is passed to the protocol
+     * method as an explicit parameter.
+     */
+    public static RequestOptions forceCloseHandlesRequestOptions(String resourcePath, String marker, String snapshot,
+        boolean recursive, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        if (marker != null) {
+            requestOptions.addQueryParam("marker", marker, false);
+        }
+        addSnapshot(requestOptions, snapshot);
+        addHeader(requestOptions, X_MS_RECURSIVE, recursive);
+        scopeRequestToResourcePath(requestOptions, resourcePath);
+        return requestOptions;
+    }
+
+    /**
+     * Builds the {@link RequestOptions} for {@code Directory.rename}: the rename flags, permission, metadata, source
+     * and destination lease ids, and the copy SMB info headers, scoped to the destination directory resource. The
+     * rename source is passed to the protocol method as an explicit parameter.
+     */
+    public static RequestOptions renameDirectoryRequestOptions(String resourcePath, Boolean replaceIfExists,
+        Boolean ignoreReadOnly, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, Map<String, String> metadata, SourceLeaseAccessConditions sourceConditions,
+        DestinationLeaseAccessConditions destinationConditions, CopyFileSmbInfo smbInfo, Context context) {
+        RequestOptions requestOptions = new RequestOptions().setContext(context);
+        addHeader(requestOptions, X_MS_FILE_RENAME_REPLACE_IF_EXISTS, replaceIfExists);
+        addHeader(requestOptions, X_MS_FILE_RENAME_IGNORE_READONLY, ignoreReadOnly);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION, filePermission);
+        addFilePermissionFormat(requestOptions, filePermissionFormat);
+        addHeader(requestOptions, X_MS_FILE_PERMISSION_KEY, filePermissionKey);
+        addMetadata(requestOptions, metadata);
+        if (sourceConditions != null) {
+            addHeader(requestOptions, X_MS_SOURCE_LEASE_ID, sourceConditions.getSourceLeaseId());
+        }
+        if (destinationConditions != null) {
+            addHeader(requestOptions, X_MS_DESTINATION_LEASE_ID, destinationConditions.getDestinationLeaseId());
+        }
+        if (smbInfo != null) {
+            addHeader(requestOptions, X_MS_FILE_ATTRIBUTES, smbInfo.getFileAttributes());
+            addHeader(requestOptions, X_MS_FILE_CREATION_TIME, smbInfo.getFileCreationTime());
+            addHeader(requestOptions, X_MS_FILE_LAST_WRITE_TIME, smbInfo.getFileLastWriteTime());
+            addHeader(requestOptions, X_MS_FILE_CHANGE_TIME, smbInfo.getFileChangeTime());
+        }
+        scopeRequestToResourcePath(requestOptions, resourcePath);
         return requestOptions;
     }
 

@@ -81,6 +81,8 @@ public class ShareStorageCustomization extends Customization {
 
         exposeRawListSharesSegment(customization, logger);
 
+        exposeRawListHandles(customization, logger);
+
         restoreFluentModels(customization, logger);
 
         customization.getClass("com.azure.storage.file.share.models", "ShareTokenIntent")
@@ -174,6 +176,45 @@ public class ShareStorageCustomization extends Customization {
                 + "    }\n\n";
         editor.replaceFile(path, content.replace(anchor, rawMethods + anchor));
         logger.info("Exposed raw listSharesSegmentWithResponse methods in {}", path);
+    }
+
+    /**
+     * Exposes raw {@code Response<BinaryData>} accessors for the Directory List Handles operation. Like
+     * {@code listSharesSegment}, the generated paging helpers discard the {@code NextMarker} from the XML envelope,
+     * but the hand-written {@code ShareDirectoryClient#listHandles} manages continuation itself, so these methods
+     * return the full response body for the client to deserialize {@code ListHandlesResponse}.
+     *
+     * @param customization The library customization.
+     * @param logger The logger.
+     */
+    private static void exposeRawListHandles(LibraryCustomization customization, Logger logger) {
+        Editor editor = customization.getRawEditor();
+        String path = PKG_ROOT + "implementation/DirectoriesImpl.java";
+        String content = editor.getFileContent(path);
+        String anchor = "    public PagedIterable<BinaryData> listHandles(RequestOptions requestOptions) {";
+        if (content.contains("listHandlesWithResponse(RequestOptions") || !content.contains(anchor)) {
+            return;
+        }
+        String rawMethods = "    public Response<BinaryData> listHandlesWithResponse(RequestOptions requestOptions) {\n"
+            + "        final String accept = \"application/xml\";\n"
+            + "        try {\n"
+            + "            return service.listHandlesSync(this.client.getUrl(), this.client.getServiceVersion().getVersion(),\n"
+            + "                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, requestOptions,\n"
+            + "                Context.NONE);\n"
+            + "        } catch (ShareStorageExceptionInternal internalException) {\n"
+            + "            throw ModelHelper.mapToShareStorageException(internalException);\n"
+            + "        }\n"
+            + "    }\n\n"
+            + "    public Mono<Response<BinaryData>> listHandlesWithResponseAsync(RequestOptions requestOptions) {\n"
+            + "        final String accept = \"application/xml\";\n"
+            + "        return FluxUtil\n"
+            + "            .withContext(context -> service.listHandles(this.client.getUrl(),\n"
+            + "                this.client.getServiceVersion().getVersion(), this.client.isAllowTrailingDot(),\n"
+            + "                this.client.getFileRequestIntent(), accept, requestOptions, context))\n"
+            + "            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);\n"
+            + "    }\n\n";
+        editor.replaceFile(path, content.replace(anchor, rawMethods + anchor));
+        logger.info("Exposed raw listHandlesWithResponse methods in {}", path);
     }
 
     /**
