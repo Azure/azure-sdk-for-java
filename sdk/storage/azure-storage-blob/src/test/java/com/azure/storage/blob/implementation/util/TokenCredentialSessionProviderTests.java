@@ -23,9 +23,10 @@ import reactor.test.StepVerifier;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class BlobSessionClientTests extends BlobTestBase {
+public class TokenCredentialSessionProviderTests extends BlobTestBase {
 
     @Test
     public void createSessionReturnsTokenAndKey() {
@@ -124,7 +125,7 @@ public class BlobSessionClientTests extends BlobTestBase {
         assertNotNull(credential.getSessionToken());
         assertNotNull(credential.getSessionKey());
         assertNotNull(credential.getExpiresAt());
-        assertEquals(false, credential.isExpired());
+        assertFalse(credential.isExpired());
     }
 
     @Disabled("Service does not yet support User Delegation SAS for Create Session — returns InvalidSessionAuthenticationType")
@@ -150,7 +151,7 @@ public class BlobSessionClientTests extends BlobTestBase {
                 assertNotNull(credential.getSessionToken());
                 assertNotNull(credential.getSessionKey());
                 assertNotNull(credential.getExpiresAt());
-                assertEquals(false, credential.isExpired());
+                assertFalse(credential.isExpired());
             })
             .verifyComplete();
     }

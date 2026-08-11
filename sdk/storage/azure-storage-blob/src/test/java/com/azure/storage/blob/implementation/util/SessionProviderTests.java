@@ -27,7 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * container named on the {@link SessionRequestContext}, proving out the "per-request container" seam that
  * backs the BYO {@link SessionProvider} extension point, and that a context missing a container
  * name is rejected rather than silently falling back to some default. This complements (and does not
- * duplicate) {@code BlobSessionClientTests}, which exercises these same paths against the live service, and
+ * duplicate) {@code TokenCredentialSessionProviderTests}, which exercises these same paths against the live service,
+ * and
  * {@code TokenCredentialSessionProviderCacheTest}, which fakes the transport wholesale to test per-container cache
  * timing behavior. Here {@link TokenCredentialSessionProvider} is real and only the transport is faked, so the
  * container name
