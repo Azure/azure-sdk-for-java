@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class KustoManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST3;
     private String resourceGroupName = "rg" + randomPadding();
     private KustoManager kustoManager;
     private ResourceManager resourceManager;
