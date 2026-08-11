@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `vertx-codegen` from `4.5.27` to `4.5.30`.
+- Upgraded `vertx-core` from `4.5.27` to `4.5.30`.
+
 ## 1.1.5 (2026-06-08)
 
 ### Other Changes
