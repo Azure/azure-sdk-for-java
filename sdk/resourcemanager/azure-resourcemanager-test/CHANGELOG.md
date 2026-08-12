@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.0.0-beta.3 (2026-08-12)
 
 ### Other Changes
+
+- Added `Accept` to ignored headers.
 
 ## 2.0.0-beta.2 (2025-08-20)
 
