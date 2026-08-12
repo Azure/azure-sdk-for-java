@@ -49,6 +49,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}.
+ * <p>
+ * The first section mirrors {@code ExpectContinueTests.cs} in azure-sdk-for-net one test at a time, with the same names
+ * and the same case values, so the two suites can be compared directly. .NET invokes {@code OnSendingRequest} on the
+ * policy itself; {@link com.azure.core.http.HttpPipelineCallContext} cannot be constructed outside azure-core, so the
+ * equivalent here is a pipeline holding only the policy under test plus a stub client.
+ * <p>
+ * The second section covers behavior .NET has no test for, most importantly that a throttling response takes effect on
+ * the very next retry attempt. Wire level behavior is covered separately by {@link ExpectContinueTransportTests}.
  */
 public class ExpectContinueTests {
     private static final String CONTINUE = "100-continue";
@@ -61,25 +69,159 @@ public class ExpectContinueTests {
     private static final RequestRetryOptions FAST_RETRY_OPTIONS
         = new RequestRetryOptions(RetryPolicyType.FIXED, 4, (Integer) null, 1L, 5L, null);
 
-    @SyncAsyncTest
-    public void onModeAppliesHeader() throws MalformedURLException {
+    // ---------------------------------------------------------------------------------------------------------------
+    // Mirrors of azure-sdk-for-net ExpectContinueTests.cs
+    // ---------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Mirrors {@code PolicyAddsHeaderOnContentBody([Values(true, false)] bool hasBody)}.
+     */
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void policyAddsHeaderOnContentBody(boolean hasBody) throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(200);
         HttpPipeline pipeline = pipeline(options(ExpectContinueMode.On), client);
 
-        send(pipeline, requestWithBody());
+        HttpRequest request = hasBody
+            ? new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody("foo")
+            : new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT));
+        pipeline.sendSync(request, Context.NONE);
 
-        assertEquals(1, client.expectHeaders.size());
-        assertEquals(CONTINUE, client.expectHeaders.get(0));
+        assertEquals(hasBody ? CONTINUE : null, client.expectHeaders.get(0));
+    }
+
+    /**
+     * Mirrors {@code PolicyRespectsThreshold(int threshold, int bodyLength, bool expectHeader)}.
+     */
+    @ParameterizedTest
+    @CsvSource({ "1024, 2048, true", "2048, 1024, false", "1024, 1024, true" })
+    public void policyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
+        throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(200);
+        HttpPipeline pipeline
+            = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold((long) threshold), client);
+
+        pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
+
+        assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(0));
+    }
+
+    /**
+     * Mirrors {@code ThrottlePolicyAddsHeaderOnlyAfterError([Values(429, 500, 503)] int errorStatusCode)}.
+     */
+    @ParameterizedTest
+    @ValueSource(ints = { 429, 500, 503 })
+    public void throttlePolicyAddsHeaderOnlyAfterError(int errorStatusCode) throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(202, errorStatusCode, 202);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+
+        // message1 doesn't get expect header
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertNull(client.expectHeaders.get(0));
+
+        // message2 doesn't get expect header but will trigger future messages
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertNull(client.expectHeaders.get(1));
+
+        // message3 gets expect header
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertEquals(CONTINUE, client.expectHeaders.get(2));
+    }
+
+    /**
+     * Mirrors {@code ThrottlePolicyRespectsThreshold(int threshold, int bodyLength, bool expectHeader)}.
+     */
+    @ParameterizedTest
+    @CsvSource({ "1024, 2048, true", "2048, 1024, false", "1024, 1024, true" })
+    public void throttlePolicyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
+        throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(429, 202);
+        HttpPipeline pipeline
+            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setContentLengthThreshold((long) threshold), client);
+
+        // message1 doesn't get expect header but will trigger future messages
+        pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
+        assertNull(client.expectHeaders.get(0));
+
+        // message2 gets expect header, subject to the threshold
+        pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
+        assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(1));
+    }
+
+    /**
+     * Mirrors {@code ThrottlePolicyRevertsAfterBackoff}. That test is disabled in .NET
+     * (Azure/azure-sdk-for-net#41368); this one is enabled, as the window here is a monotonic
+     * {@code System.nanoTime()} deadline and oversleeping it can only close the window.
+     */
+    @Test
+    public void throttlePolicyRevertsAfterBackoff() throws Exception {
+        Duration backoff = Duration.ofMillis(50);
+        RecordingHttpClient client = new RecordingHttpClient(429, 202, 202);
+        HttpPipeline pipeline
+            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setThrottleInterval(backoff), client);
+
+        // message1 doesn't get expect header but will trigger future messages
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertNull(client.expectHeaders.get(0));
+
+        // message2 gets expect header
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertEquals(CONTINUE, client.expectHeaders.get(1));
+
+        // wait out policy backoff, generously so the window can only have closed
+        Thread.sleep(500);
+
+        // message3 doesn't get expect header
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+        assertNull(client.expectHeaders.get(2));
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------
+    // Java specific coverage, with no counterpart in .NET
+    // ---------------------------------------------------------------------------------------------------------------
+
+    /**
+     * The reason the policy is placed below the retry policy: a throttling response has to take effect on the very next
+     * attempt, not only on a later call. This is the behavior azure-sdk-for-net#52438 corrected.
+     */
+    @SyncAsyncTest
+    public void appliesHeaderOnRetryAfterThrottling() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(503, 200);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+
+        HttpResponse response = send(pipeline, requestWithBody());
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals(2, client.expectHeaders.size());
+        assertNull(client.expectHeaders.get(0));
+        assertEquals(CONTINUE, client.expectHeaders.get(1));
     }
 
     @SyncAsyncTest
-    public void onModeDoesNotApplyHeaderWithoutBody() throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.On), client);
+    public void keepsApplyingHeaderAcrossMultipleRetries() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(503, 503, 429, 200);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
 
-        send(pipeline, new HttpRequest(HttpMethod.GET, new URL(ENDPOINT)));
+        HttpResponse response = send(pipeline, requestWithBody());
 
+        assertEquals(200, response.getStatusCode());
+        assertEquals(4, client.expectHeaders.size());
         assertNull(client.expectHeaders.get(0));
+        assertEquals(CONTINUE, client.expectHeaders.get(1));
+        assertEquals(CONTINUE, client.expectHeaders.get(2));
+        assertEquals(CONTINUE, client.expectHeaders.get(3));
+    }
+
+    @SyncAsyncTest
+    public void onModeAppliesHeaderOnEveryAttempt() throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(503, 200);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.On), client);
+
+        send(pipeline, requestWithBody());
+
+        assertEquals(2, client.expectHeaders.size());
+        assertEquals(CONTINUE, client.expectHeaders.get(0));
+        assertEquals(CONTINUE, client.expectHeaders.get(1));
     }
 
     @SyncAsyncTest
@@ -119,32 +261,33 @@ public class ExpectContinueTests {
     }
 
     @ParameterizedTest
-    @CsvSource({ "512, true", "1024, true", "1025, false", "2048, false" })
-    public void contentLengthThresholdIsHonored(long threshold, boolean expectHeader) throws MalformedURLException {
-        // BODY is 1024 bytes, so it is eligible when the threshold is at or below that.
-        RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold(threshold), client);
-
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-
-        assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(0));
-    }
-
-    @ParameterizedTest
-    @CsvSource({ "512, true", "1024, true", "1025, false", "2048, false" })
-    public void applyOnThrottleModeContentLengthThresholdIsHonored(long threshold, boolean expectHeader)
-        throws MalformedURLException {
-        // The threshold applies in auto mode too, so a throttled service does not cause tiny requests to pay for the
-        // additional round trip.
-        RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setContentLengthThreshold(threshold), client);
+    @ValueSource(ints = { 200, 201, 304, 404, 412, 501 })
+    public void applyOnThrottleIgnoresNonThrottlingResponses(int statusCode) throws MalformedURLException {
+        RecordingHttpClient client = new RecordingHttpClient(statusCode, 200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
         pipeline.sendSync(requestWithBody(), Context.NONE);
 
         assertNull(client.expectHeaders.get(0));
-        assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(1));
+        assertNull(client.expectHeaders.get(1));
+    }
+
+    @Test
+    public void unknownContentLengthIsAlwaysEligible() throws MalformedURLException {
+        // A body whose length cannot be determined ahead of time is never measured against the threshold, as doing so
+        // would require buffering it.
+        RecordingHttpClient client = new RecordingHttpClient(200);
+        HttpPipeline pipeline
+            = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold(Long.MAX_VALUE), client);
+
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT));
+        request.setBody(BinaryData.fromStream(new ByteArrayInputStream(BODY)));
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+
+        pipeline.sendSync(request, Context.NONE);
+
+        assertEquals(CONTINUE, client.expectHeaders.get(0));
     }
 
     @ParameterizedTest
@@ -174,122 +317,9 @@ public class ExpectContinueTests {
         assertEquals(CONTINUE, client.expectHeaders.get(0));
     }
 
-    @Test
-    public void unknownContentLengthIsAlwaysEligible() throws MalformedURLException {
-        // A body whose length cannot be determined ahead of time is never measured against the threshold, as doing so
-        // would require buffering it.
-        RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold(Long.MAX_VALUE), client);
-
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT));
-        request.setBody(BinaryData.fromStream(new ByteArrayInputStream(BODY)));
-        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-
-        pipeline.sendSync(request, Context.NONE);
-
-        assertEquals(CONTINUE, client.expectHeaders.get(0));
-    }
-
-    @SyncAsyncTest
-    public void applyOnThrottleModeDoesNotApplyHeaderBeforeThrottling() throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
-
-        send(pipeline, requestWithBody());
-        send(pipeline, requestWithBody());
-
-        assertNull(client.expectHeaders.get(0));
-        assertNull(client.expectHeaders.get(1));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = { 429, 500, 503 })
-    public void applyOnThrottleModeAppliesHeaderAfterThrottlingResponse(int statusCode) throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(statusCode, 200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
-
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-
-        assertNull(client.expectHeaders.get(0));
-        assertEquals(CONTINUE, client.expectHeaders.get(1));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = { 200, 201, 304, 404, 412, 501 })
-    public void applyOnThrottleModeIgnoresNonThrottlingResponses(int statusCode) throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(statusCode, 200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
-
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-
-        assertNull(client.expectHeaders.get(0));
-        assertNull(client.expectHeaders.get(1));
-    }
-
-    @Test
-    public void applyOnThrottleModeStopsApplyingHeaderAfterIntervalElapses() throws Exception {
-        RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setThrottleInterval(Duration.ofMillis(50)), client);
-
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-
-        // Sleeping well past the interval, so the window can only be closed by the time the third request is sent.
-        Thread.sleep(500);
-        pipeline.sendSync(requestWithBody(), Context.NONE);
-
-        assertNull(client.expectHeaders.get(0));
-        assertEquals(CONTINUE, client.expectHeaders.get(1));
-        assertNull(client.expectHeaders.get(2));
-    }
-
-    /**
-     * The policy is placed after the retry policy so that a throttling response takes effect on the very next attempt,
-     * rather than only on a later call.
-     */
-    @SyncAsyncTest
-    public void applyOnThrottleModeAppliesHeaderOnRetryAfterThrottling() throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
-
-        HttpResponse response = send(pipeline, requestWithBody());
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(2, client.expectHeaders.size());
-        assertNull(client.expectHeaders.get(0));
-        assertEquals(CONTINUE, client.expectHeaders.get(1));
-    }
-
-    @SyncAsyncTest
-    public void applyOnThrottleModeKeepsApplyingHeaderAcrossMultipleRetries() throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(503, 503, 429, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
-
-        HttpResponse response = send(pipeline, requestWithBody());
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(4, client.expectHeaders.size());
-        assertNull(client.expectHeaders.get(0));
-        assertEquals(CONTINUE, client.expectHeaders.get(1));
-        assertEquals(CONTINUE, client.expectHeaders.get(2));
-        assertEquals(CONTINUE, client.expectHeaders.get(3));
-    }
-
-    @SyncAsyncTest
-    public void onModeAppliesHeaderOnEveryAttempt() throws MalformedURLException {
-        RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.On), client);
-
-        send(pipeline, requestWithBody());
-
-        assertEquals(2, client.expectHeaders.size());
-        assertEquals(CONTINUE, client.expectHeaders.get(0));
-        assertEquals(CONTINUE, client.expectHeaders.get(1));
-    }
+    // ---------------------------------------------------------------------------------------------------------------
+    // Helpers
+    // ---------------------------------------------------------------------------------------------------------------
 
     /*
      * The opt out is read with the legacy Configuration.get(String, T), which resolves against the environment
@@ -305,7 +335,11 @@ public class ExpectContinueTests {
     }
 
     private static HttpRequest requestWithBody() throws MalformedURLException {
-        return new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(BODY);
+        return requestWithBody(BODY.length);
+    }
+
+    private static HttpRequest requestWithBody(int bodyLength) throws MalformedURLException {
+        return new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[bodyLength]);
     }
 
     private static HttpPipeline pipeline(ExpectContinueOptions options, HttpClient client) {

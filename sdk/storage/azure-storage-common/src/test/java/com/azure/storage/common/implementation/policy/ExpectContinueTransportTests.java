@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -86,15 +87,20 @@ public class ExpectContinueTransportTests {
         DROPS_HEADER
     }
 
+    /*
+     * transport x invocation path. The sync and async paths are separate code paths in every transport, so both are
+     * measured rather than assuming they agree.
+     */
     static Stream<Arguments> transports() {
-        return Stream.of(
-            Arguments.of("netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider",
-                ContinueSupport.SENDS_HEADER_ONLY),
-            Arguments.of("okhttp", "com.azure.core.http.okhttp.OkHttpAsyncClientProvider", ContinueSupport.DEFERS_BODY),
-            Arguments.of("jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider",
-                ContinueSupport.DROPS_HEADER),
-            Arguments.of("vertx", "com.azure.core.http.vertx.VertxHttpClientProvider",
-                ContinueSupport.SENDS_HEADER_ONLY));
+        Object[][] clients = {
+            { "netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY },
+            { "okhttp", "com.azure.core.http.okhttp.OkHttpAsyncClientProvider", ContinueSupport.DEFERS_BODY },
+            { "jdk", "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider", ContinueSupport.DROPS_HEADER },
+            { "vertx", "com.azure.core.http.vertx.VertxHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY } };
+
+        return Stream.of(clients)
+            .flatMap(client -> Stream.of(Arguments.of(client[0] + " sync", client[1], client[2], true),
+                Arguments.of(client[0] + " async", client[1], client[2], false)));
     }
 
     @BeforeEach
@@ -112,14 +118,16 @@ public class ExpectContinueTransportTests {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("transports")
-    public void transportBehaviorOnTheWire(String name, String providerClassName, ContinueSupport expected)
-        throws Exception {
+    public void transportBehaviorOnTheWire(String name, String providerClassName, ContinueSupport expected,
+        boolean sync) throws Exception {
         HttpClient httpClient = createHttpClient(providerClassName);
         assumeTrue(httpClient != null, name + " is not on the test classpath");
 
         HttpPipeline pipeline = pipeline(httpClient);
-        HttpResponse response
-            = pipeline.sendSync(new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY), Context.NONE);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
+        HttpResponse response = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block();
+
+        assertNotNull(response, name + " returned no response");
 
         assertEquals(201, response.getStatusCode(), name + " did not complete the request");
         assertTrue(server.awaitRequest(), name + " never reached the server");
