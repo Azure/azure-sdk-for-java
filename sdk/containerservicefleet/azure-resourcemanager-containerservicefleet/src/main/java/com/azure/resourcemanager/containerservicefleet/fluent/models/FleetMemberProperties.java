@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
-import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -46,11 +45,6 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
      * Status information of the last operation for fleet member.
      */
     private FleetMemberStatus status;
-
-    /*
-     * The Mesh Member Properties associated with this Fleet Member.
-     */
-    private MeshProperties meshProperties;
 
     /**
      * Creates an instance of FleetMemberProperties class.
@@ -141,15 +135,6 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
     }
 
     /**
-     * Get the meshProperties property: The Mesh Member Properties associated with this Fleet Member.
-     * 
-     * @return the meshProperties value.
-     */
-    public MeshProperties meshProperties() {
-        return this.meshProperties;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -189,8 +174,6 @@ public final class FleetMemberProperties implements JsonSerializable<FleetMember
                     deserializedFleetMemberProperties.labels = labels;
                 } else if ("status".equals(fieldName)) {
                     deserializedFleetMemberProperties.status = FleetMemberStatus.fromJson(reader);
-                } else if ("meshProperties".equals(fieldName)) {
-                    deserializedFleetMemberProperties.meshProperties = MeshProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -152,14 +152,18 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
 
     /**
      * Acquires a session lock for the next available session and creates a {@link ServiceBusReceiverClient}
-     * to receive messages from the session. It will wait until a session is available if no one is available
-     * immediately.
+     * to receive messages from the session. If no session is available immediately, it waits for one; if none
+     * becomes available within the operation timeout it throws a retriable timeout error rather than blocking
+     * indefinitely, so callers typically invoke this in a loop.
      *
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      *
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if no session becomes available within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example an authorization or
+     *      connection error surfaced by the underlying asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
@@ -187,8 +191,12 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
      * @throws ServiceBusException if the lock cannot be acquired.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
-     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws IllegalStateException if the session is not acquired within the operation timeout (the total
+     *      of all retry attempts derived from {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)});
+     *      this is retriable, so callers typically retry.
+     * @throws AmqpException if acquiring the session fails at the AMQP level (for example the session is already
+     *      locked by another client, or an authorization or connection error surfaced by the underlying
+     *      asynchronous accept).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {

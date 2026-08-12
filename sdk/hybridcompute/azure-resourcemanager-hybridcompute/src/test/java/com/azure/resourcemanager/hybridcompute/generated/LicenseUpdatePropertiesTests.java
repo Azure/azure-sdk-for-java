@@ -17,11 +17,11 @@ public final class LicenseUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseUpdateProperties model = BinaryData.fromString(
-            "{\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":2030092975}}")
+            "{\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2016\",\"edition\":\"Datacenter\",\"type\":\"pCore\",\"processors\":2030092975}}")
             .toObject(LicenseUpdateProperties.class);
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2016, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
         Assertions.assertEquals(2030092975, model.processors());
@@ -31,14 +31,14 @@ public final class LicenseUpdatePropertiesTests {
     public void testSerialize() throws Exception {
         LicenseUpdateProperties model = new LicenseUpdateProperties().withLicenseType(LicenseType.ESU)
             .withState(LicenseState.DEACTIVATED)
-            .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+            .withTarget(LicenseTarget.WINDOWS_SERVER_2016)
             .withEdition(LicenseEdition.DATACENTER)
             .withType(LicenseCoreType.P_CORE)
             .withProcessors(2030092975);
         model = BinaryData.fromObject(model).toObject(LicenseUpdateProperties.class);
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2016, model.target());
         Assertions.assertEquals(LicenseEdition.DATACENTER, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
         Assertions.assertEquals(2030092975, model.processors());

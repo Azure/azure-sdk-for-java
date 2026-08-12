@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class GatewaysUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/gateway/Gateway_Update.json
+     * x-ms-original-file: 2026-06-16-preview/gateway/Gateway_Update.json
      */
     /**
      * Sample code: Update a Gateway.
@@ -23,6 +23,9 @@ public final class GatewaysUpdateSamples {
         Gateway resource = manager.gateways()
             .getByResourceGroupWithResponse("myResourceGroup", "{gatewayName}", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withAllowedFeatures(Arrays.asList("*")).apply();
+        resource.update()
+            .withAllowedFeatures(Arrays.asList("*"))
+            .withGatewayBypass(Arrays.asList("contoso.com", "internal.corp.net"))
+            .apply();
     }
 }

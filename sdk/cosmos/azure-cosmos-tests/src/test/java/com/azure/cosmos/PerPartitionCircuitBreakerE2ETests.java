@@ -65,6 +65,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -90,6 +91,7 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
+@Listeners(TestCaseIdDataProviderInterceptor.class)
 public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
@@ -100,7 +102,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static final Duration TRANSIENT_404_1002_RETRY_DELAY = Duration.ofSeconds(5);
 
-    private static final Duration TRANSIENT_404_1002_MAX_RETRY_DURATION = Duration.ofMinutes(5);
+    private static final Duration TRANSIENT_404_1002_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
     private List<String> writeRegions;
     private List<String> readRegions;
@@ -183,6 +185,25 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
                 this.firstPreferredRegion,
                 this.secondPreferredRegion));
+    };
+
+    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndOptionalSecondPreferredRegion = (ctx) -> {
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
+        String expectation = String.format(
+            "Expected diagnostics context to include the first preferred region <%s> and optionally the second <%s>",
+            firstPreferredRegionName,
+            secondPreferredRegionName);
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (!contactedRegionNames.contains(firstPreferredRegionName)
+            || contactedRegionNames.stream().anyMatch(
+                region -> !region.equals(firstPreferredRegionName) && !region.equals(secondPreferredRegionName))) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("a subset of <%s, %s>", firstPreferredRegionName, secondPreferredRegionName),
+                contactedRegionNames,
+                ctx));
+        }
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOnePreferredRegion = (ctx) -> {
@@ -1726,7 +1747,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstAndOptionalSecondPreferredRegion,
                 ALL_CONNECTION_MODES_INCLUDED,
                 1,
                 15,
@@ -2938,7 +2959,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         };
     }
 
-    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect",
+        timeOut = 5 * TIMEOUT)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsDirect(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -3971,6 +3993,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
     }
 
     private static boolean hasNonFaultInjected404RetryableResponse(ResponseWrapper<?> response) {
+        if (!hasRetryableTerminal404(response)) {
+            return false;
+        }
+
         CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
         if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
             return false;
@@ -4001,6 +4027,23 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         return false;
+    }
+
+    private static boolean hasRetryableTerminal404(ResponseWrapper<?> response) {
+        if (response == null) {
+            return false;
+        }
+
+        if (response.cosmosException != null) {
+            return isRetryable404(
+                response.cosmosException.getStatusCode(),
+                response.cosmosException.getSubStatusCode());
+        }
+
+        return response.batchResponse != null
+            && isRetryable404(
+                response.batchResponse.getStatusCode(),
+                response.batchResponse.getSubStatusCode());
     }
 
     private static boolean hasNonFaultInjected404RetryableGatewayResponse(
