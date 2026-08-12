@@ -262,6 +262,34 @@ stimuli:
       - The newly generated response and headers types expose Location and Retry-After and must be flagged with MGMT-LRO.
       - MGMT-LRO must appear under Warning as a request for human verification.
 
+  - name: non-pageable-list-return
+    tags:
+      rule: list-return
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-list-return.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "non-pageable list return detected"
+        config:
+          pattern: "\\[MGMT-LIST-RETURN\\]"
+      - type: output-matches
+        name: "list return concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-LIST-RETURN\\].*CertificateListDescription"
+      - type: prompt
+    rubric:
+      - The changed user-facing DpsCertificates.list operation returns CertificateListDescription instead of PagedIterable<CertificateResponse>.
+      - MGMT-LIST-RETURN must appear under Warning and ask whether the standard pageable shape should be restored.
+
   - name: manager-name-casing-problem
     environment:
       skills:

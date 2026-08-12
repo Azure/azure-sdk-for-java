@@ -75,6 +75,33 @@ stimuli:
         name: "no generated-path concern"
         config:
           pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
+
+  - name: pageable-list-and-helper-shapes-are-clean
+    tags:
+      rule: list-return
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-list-return.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no list return concern"
+        config:
+          pattern: "\\[MGMT-LIST-RETURN\\]"
+      - type: prompt
+    rubric:
+      - The user-facing list and listByResourceGroup operations return PagedIterable, and the async list operation returns PagedFlux.
+      - The non-pageable listWithResponse, protocol list, and private single-page helper shapes are explicit exclusions.
+      - MGMT-LIST-RETURN must not be raised.
+
   - name: matching-service-folder-is-clean
     environment:
       skills:
