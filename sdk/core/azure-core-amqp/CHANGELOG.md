@@ -2,10 +2,6 @@
 
 ## 2.12.1 (2026-08-12)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed a memory leak in `RequestResponseChannel` (used by management/request-response operations such as

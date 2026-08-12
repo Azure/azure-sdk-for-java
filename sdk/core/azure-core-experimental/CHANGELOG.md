@@ -2,12 +2,6 @@
 
 ## 1.0.0-beta.69 (2026-08-12)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates

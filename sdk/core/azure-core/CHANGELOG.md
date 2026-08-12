@@ -6,8 +6,6 @@
 
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed a bug where retrying requests with bodies created from a mark/reset-capable `InputStream` could fail because the stream was closed between retry attempts. ([#49650](https://github.com/Azure/azure-sdk-for-java/pull/49650))

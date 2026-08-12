@@ -2,12 +2,6 @@
 
 ## 1.16.6 (2026-08-12)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates

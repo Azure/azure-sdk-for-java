@@ -2,12 +2,6 @@
 
 ## 1.27.0-beta.17 (2026-08-12)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
