@@ -34,7 +34,6 @@ import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import com.azure.resourcemanager.resources.implementation.models.LocationListResult;
 import com.azure.resourcemanager.resources.implementation.models.SubscriptionListResult;
 import com.azure.resourcemanager.resources.models.CheckZonePeersRequest;
-import com.azure.resourcemanager.resources.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -72,7 +71,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/locations")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LocationListResult>> listLocations(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("includeExtendedLocations") Boolean includeExtendedLocations,
@@ -81,7 +80,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
@@ -89,7 +88,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
@@ -104,7 +103,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LocationListResult>> listLocationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -112,7 +111,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubscriptionListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
@@ -126,7 +125,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -163,7 +162,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -199,7 +198,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -220,7 +219,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -244,7 +243,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -266,7 +265,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -289,7 +288,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -307,7 +306,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -334,7 +333,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -358,7 +357,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription on successful completion of {@link Mono}.
      */
@@ -373,7 +372,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response}.
      */
@@ -387,7 +386,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
@@ -399,7 +398,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     /**
      * Gets all subscriptions for a tenant.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -423,7 +422,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -443,7 +442,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     /**
      * Gets all subscriptions for a tenant.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
@@ -457,7 +456,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
@@ -470,7 +469,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
     /**
      * Gets all subscriptions for a tenant.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
@@ -484,7 +483,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
@@ -617,7 +616,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -650,7 +649,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -679,7 +678,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -705,7 +704,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */

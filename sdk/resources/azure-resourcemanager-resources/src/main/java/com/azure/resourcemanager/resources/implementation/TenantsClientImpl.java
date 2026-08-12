@@ -22,12 +22,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
 import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.resources.implementation.models.TenantListResult;
-import com.azure.resourcemanager.resources.models.CloudErrorException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -64,14 +64,14 @@ public final class TenantsClientImpl implements TenantsClient {
         @Headers({ "Content-Type: application/json" })
         @Get("/tenants")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TenantListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TenantListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
@@ -79,7 +79,7 @@ public final class TenantsClientImpl implements TenantsClient {
     /**
      * Gets the tenants for your account.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -103,7 +103,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -123,7 +123,7 @@ public final class TenantsClientImpl implements TenantsClient {
     /**
      * Gets the tenants for your account.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account as paginated response with {@link PagedFlux}.
      */
@@ -137,7 +137,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account as paginated response with {@link PagedFlux}.
      */
@@ -150,7 +150,7 @@ public final class TenantsClientImpl implements TenantsClient {
     /**
      * Gets the tenants for your account.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account as paginated response with {@link PagedIterable}.
      */
@@ -164,7 +164,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account as paginated response with {@link PagedIterable}.
      */
@@ -178,7 +178,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -204,7 +204,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */

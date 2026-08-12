@@ -18,11 +18,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.models.CheckResourceNameResultInner;
-import com.azure.resourcemanager.resources.models.CloudErrorException;
 import com.azure.resourcemanager.resources.models.ResourceName;
 import reactor.core.publisher.Mono;
 
@@ -61,7 +61,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/checkResourceName")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckResourceNameResultInner>> checkResourceName(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ResourceName resourceNameDefinition, Context context);
@@ -75,7 +75,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * 
      * @param resourceNameDefinition The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
      * reserved word along with {@link Response} on successful completion of {@link Mono}.
@@ -106,7 +106,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @param resourceNameDefinition The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
      * reserved word along with {@link Response} on successful completion of {@link Mono}.
@@ -133,7 +133,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
      * reserved word on successful completion of {@link Mono}.
@@ -154,7 +154,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @param resourceNameDefinition The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
      * reserved word along with {@link Response}.
@@ -171,7 +171,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with
      * a reserved word.
      * 
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
      * reserved word.

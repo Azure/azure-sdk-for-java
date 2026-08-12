@@ -29,8 +29,7 @@ public interface SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -48,8 +47,7 @@ public interface SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -67,8 +65,7 @@ public interface SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -88,8 +85,7 @@ public interface SubscriptionsClient {
      * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available geo-locations.
      * 
@@ -105,8 +101,7 @@ public interface SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -119,8 +114,7 @@ public interface SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription on successful completion of {@link Mono}.
      */
@@ -133,8 +127,7 @@ public interface SubscriptionsClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response}.
      */
@@ -146,8 +139,7 @@ public interface SubscriptionsClient {
      * 
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
@@ -157,8 +149,7 @@ public interface SubscriptionsClient {
     /**
      * Gets all subscriptions for a tenant.
      * 
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
@@ -168,8 +159,7 @@ public interface SubscriptionsClient {
     /**
      * Gets all subscriptions for a tenant.
      * 
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
@@ -181,8 +171,7 @@ public interface SubscriptionsClient {
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.resources.models.CloudErrorException thrown if the request is rejected by
-     * server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
