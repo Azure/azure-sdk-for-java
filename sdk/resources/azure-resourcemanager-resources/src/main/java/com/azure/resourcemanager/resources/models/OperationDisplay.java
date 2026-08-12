@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * Service provider: Microsoft.Resources
+     * Service provider: Microsoft.Authorization
      */
     private String provider;
 
@@ -31,11 +31,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
      */
     private String operation;
 
-    /*
-     * Description of the operation.
-     */
-    private String description;
-
     /**
      * Creates an instance of OperationDisplay class.
      */
@@ -43,7 +38,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the provider property: Service provider: Microsoft.Resources.
+     * Get the provider property: Service provider: Microsoft.Authorization.
      * 
      * @return the provider value.
      */
@@ -52,7 +47,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Resources.
+     * Set the provider property: Service provider: Microsoft.Authorization.
      * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
@@ -103,26 +98,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     }
 
     /**
-     * Get the description property: Description of the operation.
-     * 
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the operation.
-     * 
-     * @param description the description value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,7 +114,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
         jsonWriter.writeStringField("provider", this.provider);
         jsonWriter.writeStringField("resource", this.resource);
         jsonWriter.writeStringField("operation", this.operation);
-        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -164,8 +138,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
                     deserializedOperationDisplay.resource = reader.getString();
                 } else if ("operation".equals(fieldName)) {
                     deserializedOperationDisplay.operation = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedOperationDisplay.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

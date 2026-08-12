@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.models.OperationDisplay;
 import java.io.IOException;
 
 /**
- * Microsoft.Resources operation.
+ * Microsoft.Authorization operation.
  */
 @Fluent
 public final class OperationInner implements JsonSerializable<OperationInner> {
