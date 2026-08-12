@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies an action for a newly unmanaged resource.
+ * Specifies whether to delete or detach a resource from the deployment stack.
  */
 public final class DeploymentStacksDeleteDetachEnum extends ExpandableStringEnum<DeploymentStacksDeleteDetachEnum> {
     /**
-     * Delete the resources from Azure.
+     * Delete the resource from Azure.
      */
     public static final DeploymentStacksDeleteDetachEnum DELETE = fromString("delete");
 
     /**
-     * Keep the resources in Azure.
+     * Keep the resource in Azure.
      */
     public static final DeploymentStacksDeleteDetachEnum DETACH = fromString("detach");
 

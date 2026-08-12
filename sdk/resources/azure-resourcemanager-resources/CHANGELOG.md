@@ -8,6 +8,10 @@
 
 ### Breaking Changes
 
+- Removed properties `ancestors`, `complianceReasonCode`, `policyAssignmentDisplayName`, `policyDefinitionDisplayName`,
+  `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
+  `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
+
 ### Bugs Fixed
 
 ### Other Changes

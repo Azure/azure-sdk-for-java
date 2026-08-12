@@ -40,9 +40,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.implementation.models.DeploymentStackListResult;
-import com.azure.resourcemanager.resources.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.models.UnmanageActionManagementGroupMode;
 import com.azure.resourcemanager.resources.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.models.UnmanageActionResourceMode;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -127,7 +127,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
             @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
             @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
@@ -185,7 +185,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         Mono<Response<Flux<ByteBuffer>>> deleteAtSubscription(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
             @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
             @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
@@ -242,7 +242,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
             @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
             @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
@@ -1056,7 +1056,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         if (this.client.getEndpoint() == null) {
@@ -1101,7 +1101,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -1145,7 +1145,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -1168,7 +1168,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -1198,7 +1198,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -1223,7 +1223,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -1252,7 +1252,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -1280,7 +1280,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
@@ -1301,7 +1301,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -1329,7 +1329,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -1350,7 +1350,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -1376,7 +1376,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -2201,7 +2201,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteAtSubscriptionWithResponseAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         if (this.client.getEndpoint() == null) {
@@ -2241,7 +2241,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteAtSubscriptionWithResponseAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -2280,7 +2280,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -2302,7 +2302,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionAsync(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -2331,7 +2331,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -2355,7 +2355,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -2383,7 +2383,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -2410,7 +2410,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
@@ -2430,7 +2430,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionAsync(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -2457,7 +2457,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -2477,7 +2477,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscription(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -2501,8 +2501,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+    public void deleteAtSubscription(String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -3358,7 +3357,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         if (this.client.getEndpoint() == null) {
@@ -3399,7 +3398,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -3439,7 +3438,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3463,7 +3462,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupAsync(String managementGroupId,
         String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -3493,7 +3492,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -3519,7 +3518,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -3548,7 +3547,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -3576,7 +3575,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
@@ -3597,7 +3596,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -3625,7 +3624,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
@@ -3646,7 +3645,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
         final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
         final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
         final Boolean bypassStackOutOfSyncError = null;
@@ -3672,7 +3671,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
+        UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError,
         Context context) {
