@@ -38,12 +38,12 @@
 
 #### `models.BenefitRecommendationProperties` was modified
 
-* `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)` -> `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)`
 * `validate()` was removed
 * `models.BenefitRecommendationProperties withTerm(models.Term)` -> `models.BenefitRecommendationProperties withTerm(models.Term)`
 * `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)` -> `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)`
-* `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)` -> `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)`
+* `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)` -> `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)`
 * `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)` -> `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)`
+* `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)` -> `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)`
 
 #### `models.ExportDeliveryInfo` was modified
 
@@ -58,8 +58,8 @@
 #### `models.BlobInfo` was modified
 
 * `BlobInfo()` was changed to private access
-* `withBlobLink(java.lang.String)` was removed
 * `withByteCount(java.lang.Long)` was removed
+* `withBlobLink(java.lang.String)` was removed
 * `validate()` was removed
 
 #### `models.ReportConfigTimePeriod` was modified
@@ -90,8 +90,8 @@
 
 #### `models.CostManagementProxyResource` was modified
 
-* `models.CostManagementProxyResource withEtag(java.lang.String)` -> `models.CostManagementProxyResource withEtag(java.lang.String)`
 * `validate()` was removed
+* `models.CostManagementProxyResource withEtag(java.lang.String)` -> `models.CostManagementProxyResource withEtag(java.lang.String)`
 
 #### `models.QueryGrouping` was modified
 
@@ -120,8 +120,8 @@
 #### `models.RecommendationUsageDetails` was modified
 
 * `RecommendationUsageDetails()` was changed to private access
-* `withUsageGrain(models.Grain)` was removed
 * `validate()` was removed
+* `withUsageGrain(models.Grain)` was removed
 
 #### `models.QueryDefinition` was modified
 
@@ -150,8 +150,8 @@
 
 #### `models.BenefitUtilizationSummaryProperties` was modified
 
-* `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)` -> `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)`
 * `validate()` was removed
+* `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)` -> `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)`
 
 #### `models.QueryComparisonExpression` was modified
 
@@ -160,17 +160,17 @@
 #### `models.QueryColumn` was modified
 
 * `QueryColumn()` was changed to private access
-* `validate()` was removed
 * `withType(java.lang.String)` was removed
+* `validate()` was removed
 * `withName(java.lang.String)` was removed
 
 #### `models.CostManagementResource` was modified
 
 * `models.CostManagementResource withLocation(java.lang.String)` -> `models.CostManagementResource withLocation(java.lang.String)`
-* `models.CostManagementResource withTags(java.util.Map)` -> `models.CostManagementResource withTags(java.util.Map)`
-* `withTags(java.util.Map)` was removed
 * `validate()` was removed
 * `withLocation(java.lang.String)` was removed
+* `withTags(java.util.Map)` was removed
+* `models.CostManagementResource withTags(java.util.Map)` -> `models.CostManagementResource withTags(java.util.Map)`
 
 #### `CostManagementManager` was modified
 
@@ -183,12 +183,12 @@
 #### `models.SingleScopeBenefitRecommendationProperties` was modified
 
 * `SingleScopeBenefitRecommendationProperties()` was changed to private access
+* `withTerm(models.Term)` was removed
+* `withUsage(models.RecommendationUsageDetails)` was removed
 * `validate()` was removed
 * `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
-* `withUsage(models.RecommendationUsageDetails)` was removed
-* `withTerm(models.Term)` was removed
-* `withCommitmentGranularity(models.Grain)` was removed
 * `withLookBackPeriod(models.LookBackPeriod)` was removed
+* `withCommitmentGranularity(models.Grain)` was removed
 
 #### `models.ExportSchedule` was modified
 
@@ -249,10 +249,10 @@
 
 #### `models.PriceSheets` was modified
 
+* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 * `download(java.lang.String,java.lang.String,java.lang.String)` was removed
 * `download(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String)`
-* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.ExportDeliveryDestination` was modified
 
@@ -299,17 +299,17 @@
 #### `models.IncludedQuantityUtilizationSummary` was modified
 
 * `IncludedQuantityUtilizationSummary()` was changed to private access
-* `withBenefitType(models.BenefitKind)` was removed
 * `validate()` was removed
+* `withBenefitType(models.BenefitKind)` was removed
 
 #### `models.SharedScopeBenefitRecommendationProperties` was modified
 
 * `SharedScopeBenefitRecommendationProperties()` was changed to private access
-* `validate()` was removed
-* `withUsage(models.RecommendationUsageDetails)` was removed
-* `withTerm(models.Term)` was removed
 * `withLookBackPeriod(models.LookBackPeriod)` was removed
+* `validate()` was removed
 * `withCommitmentGranularity(models.Grain)` was removed
+* `withTerm(models.Term)` was removed
+* `withUsage(models.RecommendationUsageDetails)` was removed
 * `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
 
 #### `models.ReportConfigGrouping` was modified
@@ -480,10 +480,10 @@
 
 #### `models.CommonExportProperties` was modified
 
-* `dataOverwriteBehavior()` was added
-* `exportDescription()` was added
 * `compressionMode()` was added
+* `exportDescription()` was added
 * `systemSuspensionContext()` was added
+* `dataOverwriteBehavior()` was added
 
 #### `models.SavingsPlanUtilizationSummary` was modified
 
@@ -500,9 +500,9 @@
 #### `models.Export$Definition` was modified
 
 * `withExportDescription(java.lang.String)` was added
-* `withRegion(java.lang.String)` was added
-* `withRegion(com.azure.core.management.Region)` was added
 * `withIdentity(models.SystemAssignedServiceIdentity)` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withRegion(java.lang.String)` was added
 * `withCompressionMode(models.CompressionModeType)` was added
 * `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
 
@@ -514,23 +514,23 @@
 #### `CostManagementManager` was modified
 
 * `markupRules()` was added
+* `budgets()` was added
 * `generateBenefitUtilizationSummariesReports()` was added
 * `settings()` was added
-* `budgets()` was added
 * `costAllocationRules()` was added
 
 #### `models.Export` was modified
 
-* `region()` was added
-* `regionName()` was added
 * `exportDescription()` was added
-* `dataOverwriteBehavior()` was added
 * `systemSuspensionContext()` was added
-* `identity()` was added
-* `systemData()` was added
+* `regionName()` was added
 * `executeWithResponse(models.ExportRunRequest,com.azure.core.util.Context)` was added
-* `location()` was added
+* `region()` was added
+* `identity()` was added
 * `compressionMode()` was added
+* `location()` was added
+* `systemData()` was added
+* `dataOverwriteBehavior()` was added
 
 #### `models.ExportType` was modified
 
@@ -543,21 +543,21 @@
 #### `models.ExportRun` was modified
 
 * `startDate()` was added
-* `endDate()` was added
 * `manifestFile()` was added
+* `endDate()` was added
 
 #### `models.ExportRunProperties` was modified
 
+* `manifestFile()` was added
 * `startDate()` was added
 * `endDate()` was added
-* `manifestFile()` was added
 
 #### `models.ExportDatasetConfiguration` was modified
 
-* `filters()` was added
-* `withFilters(java.util.List)` was added
-* `withDataVersion(java.lang.String)` was added
 * `dataVersion()` was added
+* `filters()` was added
+* `withDataVersion(java.lang.String)` was added
+* `withFilters(java.util.List)` was added
 
 #### `models.BenefitUtilizationSummary` was modified
 
@@ -569,15 +569,15 @@
 
 #### `models.PriceSheets` was modified
 
-* `downloadByBillingAccount(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String)` was added
-* `downloadByBillingAccount(java.lang.String,java.lang.String)` was added
+* `downloadByBillingAccount(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `downloadByBillingAccount(java.lang.String,java.lang.String)` was added
 
 #### `models.ExportDeliveryDestination` was modified
 
-* `type()` was added
 * `withType(models.DestinationType)` was added
+* `type()` was added
 
 #### `models.BenefitRecommendationModel` was modified
 
@@ -585,10 +585,10 @@
 
 #### `models.Export$Update` was modified
 
+* `withIdentity(models.SystemAssignedServiceIdentity)` was added
 * `withExportDescription(java.lang.String)` was added
 * `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
 * `withCompressionMode(models.CompressionModeType)` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
 
 #### `models.GranularityType` was modified
 
