@@ -187,7 +187,7 @@ public final class NapsterOmniagentApiManagementClientImpl implements NapsterOmn
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-12-24-preview";
+        this.apiVersion = "2026-08-11";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
         this.saaSOperationGroups = new SaaSOperationGroupsClientImpl(this);
