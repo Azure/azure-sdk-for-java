@@ -17,19 +17,19 @@ import java.io.IOException;
 @Fluent
 public final class DeploymentParameter implements JsonSerializable<DeploymentParameter> {
     /*
-     * Input value to the parameter.
+     * Input value to the parameter .
      */
     private Object value;
-
-    /*
-     * Type of the value.
-     */
-    private String type;
 
     /*
      * Azure Key Vault parameter reference.
      */
     private KeyVaultParameterReference reference;
+
+    /*
+     * Input expression to the parameter.
+     */
+    private String expression;
 
     /**
      * Creates an instance of DeploymentParameter class.
@@ -38,7 +38,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     }
 
     /**
-     * Get the value property: Input value to the parameter.
+     * Get the value property: Input value to the parameter .
      * 
      * @return the value value.
      */
@@ -47,33 +47,13 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     }
 
     /**
-     * Set the value property: Input value to the parameter.
+     * Set the value property: Input value to the parameter .
      * 
      * @param value the value value to set.
      * @return the DeploymentParameter object itself.
      */
     public DeploymentParameter withValue(Object value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the type property: Type of the value.
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the value.
-     * 
-     * @param type the type value to set.
-     * @return the DeploymentParameter object itself.
-     */
-    public DeploymentParameter withType(String type) {
-        this.type = type;
         return this;
     }
 
@@ -98,6 +78,26 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     }
 
     /**
+     * Get the expression property: Input expression to the parameter.
+     * 
+     * @return the expression value.
+     */
+    public String expression() {
+        return this.expression;
+    }
+
+    /**
+     * Set the expression property: Input expression to the parameter.
+     * 
+     * @param expression the expression value to set.
+     * @return the DeploymentParameter object itself.
+     */
+    public DeploymentParameter withExpression(String expression) {
+        this.expression = expression;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,8 +117,8 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
         if (this.value != null) {
             jsonWriter.writeUntypedField("value", this.value);
         }
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("reference", this.reference);
+        jsonWriter.writeStringField("expression", this.expression);
         return jsonWriter.writeEndObject();
     }
 
@@ -139,10 +139,10 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
 
                 if ("value".equals(fieldName)) {
                     deserializedDeploymentParameter.value = reader.readUntyped();
-                } else if ("type".equals(fieldName)) {
-                    deserializedDeploymentParameter.type = reader.getString();
                 } else if ("reference".equals(fieldName)) {
                     deserializedDeploymentParameter.reference = KeyVaultParameterReference.fromJson(reader);
+                } else if ("expression".equals(fieldName)) {
+                    deserializedDeploymentParameter.expression = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

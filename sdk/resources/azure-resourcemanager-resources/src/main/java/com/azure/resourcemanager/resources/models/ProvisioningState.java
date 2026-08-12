@@ -12,6 +12,11 @@ import java.util.Collection;
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**
+     * NotSpecified.
+     */
+    public static final ProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
+
+    /**
      * Accepted.
      */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
@@ -22,9 +27,29 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState RUNNING = fromString("Running");
 
     /**
+     * Ready.
+     */
+    public static final ProvisioningState READY = fromString("Ready");
+
+    /**
      * Creating.
      */
     public static final ProvisioningState CREATING = fromString("Creating");
+
+    /**
+     * Created.
+     */
+    public static final ProvisioningState CREATED = fromString("Created");
+
+    /**
+     * Deleting.
+     */
+    public static final ProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Deleted.
+     */
+    public static final ProvisioningState DELETED = fromString("Deleted");
 
     /**
      * Canceled.
