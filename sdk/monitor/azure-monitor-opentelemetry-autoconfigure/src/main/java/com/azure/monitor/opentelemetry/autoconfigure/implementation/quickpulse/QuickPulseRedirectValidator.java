@@ -10,6 +10,7 @@ import java.util.Locale;
 final class QuickPulseRedirectValidator {
 
     private static final String HTTPS = "https";
+    private static final int DEFAULT_HTTPS_PORT = 443;
 
     private QuickPulseRedirectValidator() {
     }
@@ -19,23 +20,30 @@ final class QuickPulseRedirectValidator {
         URL configuredUrl = new URL(configuredEndpoint);
         URL redirectUrl = new URL(redirectLink);
 
-        if (!HTTPS.equalsIgnoreCase(redirectUrl.getProtocol()) || redirectUrl.getUserInfo() != null) {
-            throw new MalformedURLException("Redirect must use https and must not contain user information");
+        if (!HTTPS.equalsIgnoreCase(redirectUrl.getProtocol())
+            || redirectUrl.getUserInfo() != null
+            || !isDefaultHttpsPort(redirectUrl)) {
+            throw new MalformedURLException(
+                "Redirect must use https, must not contain user information, and must use the default https port");
         }
 
         String configuredHost = configuredUrl.getHost();
         String redirectHost = redirectUrl.getHost();
-        if (!isSameOrSubdomain(redirectHost, configuredHost) && !isKnownLiveMetricsHost(redirectHost)) {
+        if (!isSameHost(redirectHost, configuredHost) && !isKnownLiveMetricsHost(redirectHost)) {
             throw new MalformedURLException("Redirect host is outside the configured Live Metrics endpoint boundary");
         }
 
         return redirectUrl.getProtocol() + "://" + redirectUrl.getAuthority() + "/";
     }
 
-    private static boolean isSameOrSubdomain(String host, String expectedDomain) {
+    private static boolean isDefaultHttpsPort(URL url) {
+        return url.getPort() == -1 || url.getPort() == DEFAULT_HTTPS_PORT;
+    }
+
+    private static boolean isSameHost(String host, String expectedHost) {
         String normalizedHost = normalizeHost(host);
-        String normalizedDomain = normalizeHost(expectedDomain);
-        return normalizedHost.equals(normalizedDomain) || normalizedHost.endsWith("." + normalizedDomain);
+        String normalizedExpectedHost = normalizeHost(expectedHost);
+        return normalizedHost.equals(normalizedExpectedHost);
     }
 
     private static boolean isKnownLiveMetricsHost(String host) {
@@ -49,6 +57,10 @@ final class QuickPulseRedirectValidator {
     }
 
     private static String normalizeHost(String host) {
-        return host.toLowerCase(Locale.ROOT);
+        String normalizedHost = host.toLowerCase(Locale.ROOT);
+        if (normalizedHost.endsWith(".")) {
+            return normalizedHost.substring(0, normalizedHost.length() - 1);
+        }
+        return normalizedHost;
     }
 }
