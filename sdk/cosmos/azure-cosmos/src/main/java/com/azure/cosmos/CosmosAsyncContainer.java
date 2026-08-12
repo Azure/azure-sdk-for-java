@@ -2427,6 +2427,7 @@ public class CosmosAsyncContainer {
 
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
+        requestOptions.setItemId(itemId);
         applyPolicies(OperationType.Delete, ResourceType.Document, requestOptions, this.deleteItemSpanName);
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
@@ -2536,6 +2537,7 @@ public class CosmosAsyncContainer {
         checkNotNull(options, "Argument 'options' must not be null.");
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
+        requestOptions.setItemId(itemId);
         applyPolicies(OperationType.Replace, ResourceType.Document, requestOptions, this.replaceItemSpanName);
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
             .calculateAndGetEffectiveNonIdempotentRetriesEnabled(
@@ -2579,6 +2581,7 @@ public class CosmosAsyncContainer {
         Class<T> itemType) {
 
         RequestOptions requestOptions = itemOptionsAccessor().toRequestOptions(options);
+        requestOptions.setItemId(itemId);
         applyPolicies(OperationType.Patch, ResourceType.Document, requestOptions, this.patchItemSpanName);
 
         WriteRetryPolicy nonIdempotentWriteRetryPolicy = requestOptions
@@ -2660,6 +2663,7 @@ public class CosmosAsyncContainer {
         Context context) {
         RequestOptions requestOptions =
             itemOptionsAccessor().toRequestOptions(options);
+        requestOptions.setItemId(itemId);
         requestOptions.setEffectiveItemSerializer(database.getClient().getEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer()));
         applyPolicies(OperationType.Read, ResourceType.Document, requestOptions, this.readItemSpanName);
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase().getDocClientWrapper()

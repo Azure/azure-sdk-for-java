@@ -2293,13 +2293,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
                                                                       ByteBuffer contentAsByteBuffer,
-                                                                      Document document,
-                                                                      RequestOptions options) {
+                                                                      Document document) {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
         return collectionObs
                 .map(collectionValueHolder -> {
-                    addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v, null);
+                    addPartitionKeyInformation(request, contentAsByteBuffer, document, collectionValueHolder.v, null);
                     return request;
                 });
     }
@@ -2307,30 +2306,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
                                                                       ByteBuffer contentAsByteBuffer,
                                                                       Object document,
-                                                                      RequestOptions options,
                                                                       Mono<Utils.ValueHolder<DocumentCollection>> collectionObs,
                                                                       CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionContextForRequest) {
 
         return collectionObs.map(collectionValueHolder -> {
-            addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v, crossRegionContextForRequest);
+            addPartitionKeyInformation(request, contentAsByteBuffer, document, collectionValueHolder.v, crossRegionContextForRequest);
             return request;
         });
     }
 
     private void addPartitionKeyInformation(RxDocumentServiceRequest request,
                                             ByteBuffer contentAsByteBuffer,
-                                            Object objectDoc, RequestOptions options,
+                                            Object objectDoc,
                                             DocumentCollection collection,
                                             CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
 
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
-        // Resolve the partition key supplied by the caller through the request options (if any).
         PartitionKeyInternal partitionKeyInternal = null;
-        if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)) {
+        PartitionKey providedPartitionKey = request.getProvidedPartitionKey();
+        if (PartitionKey.NONE.equals(providedPartitionKey)) {
             partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
-        } else if (options != null && options.getPartitionKey() != null) {
-            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
+        } else if (providedPartitionKey != null) {
+            partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(providedPartitionKey);
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
@@ -2338,14 +2336,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
-        boolean partitionKeyNeedsItemId = partitionKeyRequiresItemId(
-            request, options, partitionKeyDefinition, partitionKeyInternal);
+        boolean partitionKeyNeedsItemId =
+            partitionKeyRequiresItemId(request, partitionKeyDefinition, partitionKeyInternal);
+        boolean itemIdNeedsExtraction =
+            partitionKeyNeedsItemId && Strings.isNullOrEmpty(request.getItemId());
+        boolean materializeDocument = partitionKeyNeedsExtraction || itemIdNeedsExtraction;
 
-        // Materialize the payload (if any) only when it will actually be used: either to extract the
-        // partition key value from the document, or to read the item id needed to complete a partial
-        // "/id"-terminated partition key. The cheap eligibility checks above run before parsing the
-        // payload, and a fully specified partition key leaves the body untouched.
-        boolean materializeDocument = partitionKeyNeedsExtraction || partitionKeyNeedsItemId;
         InternalObjectNode internalObjectNode = null;
         if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
             if (objectDoc instanceof InternalObjectNode) {
@@ -2362,7 +2358,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        // When the partition key was not resolved from request options, derive it from the document body.
         if (partitionKeyNeedsExtraction && internalObjectNode != null) {
             Instant serializationStartTime = Instant.now();
             partitionKeyInternal =  PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
@@ -2390,7 +2385,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                 }
             }
-
         }
 
         partitionKeyInternal = completePartitionKeyInternalForRequest(
@@ -2416,10 +2410,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return partitionKeyInternal;
         }
 
-        OperationType operationType = request.getOperationType();
-        String itemId = (operationType == OperationType.Create || operationType == OperationType.Upsert)
-            ? (internalObjectNode == null ? null : internalObjectNode.getId())
-            : getItemIdFromRequestForPartitionKey(request);
+        String itemId = request.getItemId();
+        if (Strings.isNullOrEmpty(itemId) && internalObjectNode != null) {
+            itemId = internalObjectNode.getId();
+            request.setItemId(itemId);
+        }
 
         return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
             partitionKeyDefinition, partitionKeyInternal, itemId);
@@ -2427,7 +2422,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static boolean partitionKeyRequiresItemId(
         RxDocumentServiceRequest request,
-        RequestOptions options,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal) {
 
@@ -2446,9 +2440,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         // An explicit PartitionKey.NONE means the caller does not want any partition key value.
-        if (options != null
-            && options.getPartitionKey() != null
-            && options.getPartitionKey().equals(PartitionKey.NONE)) {
+        if (PartitionKey.NONE.equals(request.getProvidedPartitionKey())) {
             return false;
         }
 
@@ -2456,39 +2448,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             partitionKeyDefinition, partitionKeyInternal);
     }
 
-    private static String getItemIdFromRequestForPartitionKey(RxDocumentServiceRequest request) {
-        if (request == null) {
-            return null;
+    private static void setItemIdFromDocumentLink(RequestOptions options, String documentLink) {
+        if (options == null
+            || StringUtils.isEmpty(documentLink)
+            || !PathsHelper.isNameBased(documentLink)) {
+            return;
         }
 
-        // The trailing path segment is only guaranteed to be the item id for read/replace/delete/patch
-        // requests (their resource address ends with "docs/{id}"). Restrict the extraction to those
-        // operations so a future change that routes a differently-shaped path here cannot silently
-        // turn a non-id path segment into the last component of the partition key.
-        OperationType operationType = request.getOperationType();
-        if (operationType != OperationType.Read
-            && operationType != OperationType.Replace
-            && operationType != OperationType.Delete
-            && operationType != OperationType.Patch) {
-            return null;
+        int endIndex = documentLink.length();
+        while (endIndex > 0 && documentLink.charAt(endIndex - 1) == '/') {
+            endIndex--;
         }
 
-        // The item id can only be recovered from a name based request path (e.g. dbs/../colls/../docs/{id}).
-        if (!request.getIsNameBased()) {
-            return null;
+        int lastSlashIndex = documentLink.lastIndexOf('/', endIndex - 1);
+        if (lastSlashIndex >= 0 && lastSlashIndex < endIndex - 1) {
+            options.setItemId(documentLink.substring(lastSlashIndex + 1, endIndex));
         }
-
-        String resourceAddress = request.getResourceAddress();
-        if (Strings.isNullOrEmpty(resourceAddress)) {
-            return null;
-        }
-
-        int lastSlashIndex = resourceAddress.lastIndexOf('/');
-        if (lastSlashIndex < 0 || lastSlashIndex == resourceAddress.length() - 1) {
-            return null;
-        }
-
-        return resourceAddress.substring(lastSlashIndex + 1);
     }
 
     private Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
@@ -2555,7 +2530,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
-        return addPartitionKeyInformation(request, content, document, options, collectionObs, crossRegionContextForRequest)
+        return addPartitionKeyInformation(request, content, document, collectionObs, crossRegionContextForRequest)
             .zipWith(collectionObs);
     }
 
@@ -3523,6 +3498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        setItemIdFromDocumentLink(nonNullRequestOptions, documentLink);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
 
         DocumentClientRetryPolicy finalRequestRetryPolicy =
@@ -3761,7 +3737,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                 request);
         Mono<RxDocumentServiceRequest> requestObs =
-            addPartitionKeyInformation(request, content, document, options, collectionObs, crossRegionAvailabilityContextForRequest);
+            addPartitionKeyInformation(request, content, document, collectionObs, crossRegionAvailabilityContextForRequest);
 
         return collectionObs
             .flatMap(documentCollectionValueHolder -> {
@@ -3881,6 +3857,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        setItemIdFromDocumentLink(nonNullRequestOptions, documentLink);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy documentClientRetryPolicy =
             this.getRetryPolicyForPointOperation(
@@ -3993,7 +3970,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request,
             null,
             null,
-            options,
             collectionObs,
             crossRegionAvailabilityContextForRequest);
 
@@ -4099,6 +4075,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        setItemIdFromDocumentLink(nonNullRequestOptions, documentLink);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
             this.getRetryPolicyForPointOperation(
@@ -4183,7 +4160,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
-                request, null, internalObjectNode, options, collectionObs, crossRegionAvailabilityContextForRequest);
+                request, null, internalObjectNode, collectionObs, crossRegionAvailabilityContextForRequest);
 
             return collectionObs
                 .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
@@ -4255,7 +4232,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, null);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, collectionObs, null);
 
             return requestObs.flatMap(req -> this
                 .deleteAllItemsByPartitionKey(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
@@ -4297,6 +4274,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        setItemIdFromDocumentLink(nonNullRequestOptions, documentLink);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy retryPolicyInstance =
             this.getRetryPolicyForPointOperation(
@@ -4382,7 +4360,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         documentCollection)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
-                            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, crossRegionAvailabilityContextForRequest);
+                            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, collectionObs, crossRegionAvailabilityContextForRequest);
 
                             return requestObs.flatMap(req -> {
 
@@ -6416,7 +6394,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicy.onBeforeSendRequest(request);
             }
 
-            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options);
+            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null);
             return reqObs.flatMap(req -> create(request, retryPolicy, getOperationContextAndListenerTuple(options))
                     .map(response -> {
                         this.captureSessionToken(request, response);
@@ -6812,7 +6790,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.Conflict, path, requestHeaders, options);
 
-            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options);
+            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null);
 
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
@@ -6870,7 +6848,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Delete, ResourceType.Conflict, path, requestHeaders, options);
 
-            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null, options);
+            Mono<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, null);
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
