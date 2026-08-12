@@ -505,7 +505,8 @@ public interface Volume {
     List<PlacementKeyValuePairs> placementRules();
 
     /**
-     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Gets the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1304,9 +1305,11 @@ public interface Volume {
         interface WithEnableSubvolumes {
             /**
              * Specifies the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the
-             * volume.
+             * volume
+             * Deprecated. Subvolume operations and this flag will be removed in a future API version..
              * 
-             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume.
+             * @param enableSubvolumes Flag indicating whether subvolume operations are enabled on the volume
+             * Deprecated. Subvolume operations and this flag will be removed in a future API version.
              * @return the next definition stage.
              */
             WithCreate withEnableSubvolumes(EnableSubvolumes enableSubvolumes);

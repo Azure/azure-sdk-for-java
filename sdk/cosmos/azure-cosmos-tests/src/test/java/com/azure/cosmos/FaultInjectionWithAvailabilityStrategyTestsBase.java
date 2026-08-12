@@ -945,7 +945,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // Expected outcome is a successful retry by the availability strategy
             new Object[] {
                 "GW_408_FirstRegionOnly",
-                ONE_AND_HALF_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.GATEWAY,
@@ -4791,7 +4791,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // All records per partition will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_408_OnlyFirstRegion_EagerAvailabilityStrategy",
-                ONE_AND_HALF_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4875,7 +4875,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // All records per partition will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_410-1002_Local_OnlyFirstRegion_EagerAvailabilityStrategy",
-                ONE_AND_HALF_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -5075,14 +5075,15 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("availabilityStrategy");
         return createTestContainer(clientWithPreferredRegions, dbId);
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions, String dbId) {
         String containerId = UUID.randomUUID().toString();
 
-        clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block();
+        executeControlPlaneWithRetry(
+            () -> clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block());
         CosmosAsyncDatabase databaseWithSeveralWriteableRegions = clientWithPreferredRegions.getDatabase(dbId);
 
         // setup db and container and pass their ids accordingly

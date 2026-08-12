@@ -12,24 +12,24 @@ public final class ResourceQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceQuota model = BinaryData.fromString(
-            "{\"cpuRequest\":\"jrrfbyaosve\",\"cpuLimit\":\"sonpclhocohs\",\"memoryRequest\":\"ev\",\"memoryLimit\":\"ggzfbu\"}")
+            "{\"cpuRequest\":\"vo\",\"cpuLimit\":\"ujjugwdkcglh\",\"memoryRequest\":\"azjdyggd\",\"memoryLimit\":\"ixhbkuofqweykhm\"}")
             .toObject(ResourceQuota.class);
-        Assertions.assertEquals("jrrfbyaosve", model.cpuRequest());
-        Assertions.assertEquals("sonpclhocohs", model.cpuLimit());
-        Assertions.assertEquals("ev", model.memoryRequest());
-        Assertions.assertEquals("ggzfbu", model.memoryLimit());
+        Assertions.assertEquals("vo", model.cpuRequest());
+        Assertions.assertEquals("ujjugwdkcglh", model.cpuLimit());
+        Assertions.assertEquals("azjdyggd", model.memoryRequest());
+        Assertions.assertEquals("ixhbkuofqweykhm", model.memoryLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceQuota model = new ResourceQuota().withCpuRequest("jrrfbyaosve")
-            .withCpuLimit("sonpclhocohs")
-            .withMemoryRequest("ev")
-            .withMemoryLimit("ggzfbu");
+        ResourceQuota model = new ResourceQuota().withCpuRequest("vo")
+            .withCpuLimit("ujjugwdkcglh")
+            .withMemoryRequest("azjdyggd")
+            .withMemoryLimit("ixhbkuofqweykhm");
         model = BinaryData.fromObject(model).toObject(ResourceQuota.class);
-        Assertions.assertEquals("jrrfbyaosve", model.cpuRequest());
-        Assertions.assertEquals("sonpclhocohs", model.cpuLimit());
-        Assertions.assertEquals("ev", model.memoryRequest());
-        Assertions.assertEquals("ggzfbu", model.memoryLimit());
+        Assertions.assertEquals("vo", model.cpuRequest());
+        Assertions.assertEquals("ujjugwdkcglh", model.cpuLimit());
+        Assertions.assertEquals("azjdyggd", model.memoryRequest());
+        Assertions.assertEquals("ixhbkuofqweykhm", model.memoryLimit());
     }
 }

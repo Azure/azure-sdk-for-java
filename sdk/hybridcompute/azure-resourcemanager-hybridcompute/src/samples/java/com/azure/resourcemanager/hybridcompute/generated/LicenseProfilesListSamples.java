@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class LicenseProfilesListSamples {
     /*
-     * x-ms-original-file: 2025-09-16-preview/licenseProfile/LicenseProfile_List.json
+     * x-ms-original-file: 2026-06-16-preview/licenseProfile/LicenseProfile_List.json
      */
     /**
      * Sample code: List all License Profiles.

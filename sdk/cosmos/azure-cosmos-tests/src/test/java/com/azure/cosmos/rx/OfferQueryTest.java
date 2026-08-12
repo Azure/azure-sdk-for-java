@@ -3,12 +3,12 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -39,8 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OfferQueryTest extends TestSuiteBase {
 
-    public final static int SETUP_TIMEOUT = 40000;
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
 

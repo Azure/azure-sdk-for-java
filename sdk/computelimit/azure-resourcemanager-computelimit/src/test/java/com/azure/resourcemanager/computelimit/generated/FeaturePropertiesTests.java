@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FeaturePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeatureProperties model = BinaryData.fromString("{\"state\":\"Disabled\",\"provisioningState\":\"Succeeded\"}")
+        FeatureProperties model = BinaryData.fromString("{\"state\":\"Enabled\",\"provisioningState\":\"Failed\"}")
             .toObject(FeatureProperties.class);
-        Assertions.assertEquals(FeatureState.DISABLED, model.state());
+        Assertions.assertEquals(FeatureState.ENABLED, model.state());
     }
 }
