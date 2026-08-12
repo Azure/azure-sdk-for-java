@@ -107,14 +107,17 @@ headers.
 
 - **Severity:** Warning
 
-Review newly added or changed user-facing public operations named `list` or
-starting with `listBy`. Report when their return type is neither
-`PagedIterable<T>` nor `PagedFlux<T>`. Identify the method and its actual return
-type, and ask whether the operation should expose the standard pageable shape.
+Review newly added user-facing public operations whose name starts with
+`list`. When the return type is neither `PagedIterable<T>` nor `PagedFlux<T>`,
+inspect the returned model. Report only when that model exposes a
+collection-valued `value` property. Identify the method, return type, and
+`value` element type, then ask whether the operation should expose the standard
+pageable shape.
 
 Do not report `listWithResponse` methods, low-level protocol client methods,
-private single-page helpers, or unchanged legacy operations. A
-`PagedIterable<T>` or `PagedFlux<T>` return is valid.
+private single-page helpers, or pre-existing operations. A `PagedIterable<T>`
+or `PagedFlux<T>` return is valid. Treat a response model without a `value`
+property as a genuine non-pageable action response.
 
 ### `MGMT-MANAGER-NAME`: suspicious management entry-point name
 

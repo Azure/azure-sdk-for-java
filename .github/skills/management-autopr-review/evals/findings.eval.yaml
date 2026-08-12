@@ -287,7 +287,7 @@ stimuli:
           pattern: "(?s)### Warning.*\\[MGMT-LIST-RETURN\\].*CertificateListDescription"
       - type: prompt
     rubric:
-      - The changed user-facing DpsCertificates.list operation returns CertificateListDescription instead of PagedIterable<CertificateResponse>.
+      - The newly added user-facing DpsCertificates.listCertificates operation returns CertificateListDescription instead of PagedIterable<CertificateResponse>.
       - MGMT-LIST-RETURN must appear under Warning and ask whether the standard pageable shape should be restored.
 
   - name: manager-name-casing-problem

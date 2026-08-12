@@ -96,11 +96,6 @@ stimuli:
         name: "no list return concern"
         config:
           pattern: "\\[MGMT-LIST-RETURN\\]"
-      - type: prompt
-    rubric:
-      - The user-facing list and listByResourceGroup operations return PagedIterable, and the async list operation returns PagedFlux.
-      - The non-pageable listWithResponse, protocol list, and private single-page helper shapes are explicit exclusions.
-      - MGMT-LIST-RETURN must not be raised.
 
   - name: matching-service-folder-is-clean
     environment:

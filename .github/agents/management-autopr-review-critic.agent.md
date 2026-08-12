@@ -22,10 +22,11 @@ For every candidate, verify in order:
    - Reject any evidence from a path containing a `generated` segment.
    - For `MGMT-BREAKING`, require a GA package and a current CHANGELOG breaking
      entry. Do not require the current Java diff to contain the break.
-   - For `MGMT-LIST-RETURN`, require a newly added or changed user-facing
-     public `list` or `listBy...` operation whose return type is neither
-     `PagedIterable<T>` nor `PagedFlux<T>`. Reject response variants, protocol
-     methods, private helpers, and unchanged legacy operations.
+   - For `MGMT-LIST-RETURN`, require a newly added user-facing public `list*`
+     operation whose return type is neither `PagedIterable<T>` nor
+     `PagedFlux<T>` and whose return model exposes a collection-valued `value`.
+     Reject return models without `value`, response variants, protocol methods,
+     private helpers, and pre-existing operations.
    - For `MGMT-MANAGER-NAME`, require the exact newly added or renamed public
      root-package class and independently verify at least one of the three
      naming signals. Reject unchanged legacy names and uncertain branding,
