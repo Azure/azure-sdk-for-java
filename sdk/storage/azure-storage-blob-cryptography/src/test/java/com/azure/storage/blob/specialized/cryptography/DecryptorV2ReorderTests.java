@@ -45,6 +45,8 @@ public class DecryptorV2ReorderTests {
     private static final int REGION_DATA_LENGTH = 1024;
     private static final int REGION_TOTAL_LENGTH = NONCE_LENGTH + REGION_DATA_LENGTH + TAG_LENGTH;
     private static final int REGION_COUNT = 4;
+    // Mirrors DecryptorV2.NONCE_WRAP_REGION_COUNT: EncryptorV2's nonce repeats every 2^32 regions.
+    private static final long NONCE_WRAP_REGION_COUNT = 1L << 32;
     private static final Random RANDOM = new Random();
 
     @AfterEach
@@ -142,6 +144,46 @@ public class DecryptorV2ReorderTests {
 
         long offset = firstRegion * REGION_DATA_LENGTH;
         assertThrows(IllegalStateException.class, () -> decrypt(cek, ciphertext, offset));
+    }
+
+    @Test
+    public void decryptsLastRegionBeforeNonceWrap() {
+        // Region 2^32 - 1 is the last region with a unique nonce; it must still decrypt successfully.
+        byte[] cek = randomBytes(32);
+        long lastUniqueRegion = NONCE_WRAP_REGION_COUNT - 1;
+        byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
+
+        byte[] ciphertext = encryptRegionAt(cek, lastUniqueRegion, plaintext);
+        byte[] recovered = decrypt(cek, ciphertext, lastUniqueRegion * REGION_DATA_LENGTH);
+
+        assertArrayEquals(plaintext, recovered);
+    }
+
+    @Test
+    public void failsClosedAtNonceWrapBoundary() {
+        // Region 2^32 is where EncryptorV2's nonce repeats (reuses region 0's nonce). Integrity cannot be verified, so
+        // decryption must fail closed by default.
+        byte[] cek = randomBytes(32);
+        long wrapRegion = NONCE_WRAP_REGION_COUNT;
+        byte[] ciphertext = encryptRegionAt(cek, wrapRegion, randomBytes(REGION_DATA_LENGTH));
+
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+            () -> decrypt(cek, ciphertext, wrapRegion * REGION_DATA_LENGTH));
+        assertTrue(e.getMessage().contains("nonce reuse"), e.getMessage());
+    }
+
+    @Test
+    public void recoverySwitchAllowsPastNonceWrapBoundary() {
+        // With the recovery switch, the wrap-boundary fail-closed is bypassed and plaintext is recovered.
+        System.setProperty(CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME, "true");
+
+        byte[] cek = randomBytes(32);
+        long wrapRegion = NONCE_WRAP_REGION_COUNT;
+        byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
+        byte[] ciphertext = encryptRegionAt(cek, wrapRegion, plaintext);
+
+        byte[] recovered = decrypt(cek, ciphertext, wrapRegion * REGION_DATA_LENGTH);
+        assertArrayEquals(plaintext, recovered);
     }
 
     private static byte[] encrypt(byte[] cek, byte[] plaintext) {

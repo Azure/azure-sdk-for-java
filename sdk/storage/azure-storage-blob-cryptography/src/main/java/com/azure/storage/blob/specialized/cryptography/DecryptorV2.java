@@ -39,6 +39,14 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 class DecryptorV2 extends Decryptor {
     private static final ClientLogger LOGGER = new ClientLogger(DecryptorV2.class);
 
+    /*
+     * EncryptorV2 truncates the region index to an int when producing each region's nonce (see EncryptorV2.getCipher),
+     * so nonces are unique only for the first 2^32 regions. At or beyond this index the nonce repeats: two distinct
+     * regions can share a nonce and each retain a valid GCM tag. That both defeats sequential reorder detection and is
+     * GCM nonce reuse, so integrity cannot be verified past this boundary.
+     */
+    private static final long NONCE_WRAP_REGION_COUNT = 1L << 32;
+
     protected DecryptorV2(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
         EncryptionData encryptionData) {
         super(keyResolver, keyWrapper, encryptionData);
@@ -110,19 +118,35 @@ class DecryptorV2 extends Decryptor {
     /**
      * Validates that the nonce of an authenticated region matches the nonce that would have been produced for the
      * expected sequential region index during encryption. A mismatch indicates that the region has been reordered or
-     * otherwise tampered with.
+     * otherwise tampered with. Also fails closed once the region index reaches the point where the encryption nonce
+     * begins to repeat, as integrity can no longer be guaranteed there.
      *
      * @param actualNonce The nonce read from the downloaded region.
      * @param nonceLength The length of the nonce.
      * @param expectedRegion The expected 0-based region index.
-     * @return A {@link RuntimeException} describing the tampering if the nonce is out of order, or {@code null} if the
-     * nonce is valid.
+     * @return A {@link RuntimeException} describing the tampering or unverifiable state if the region is invalid, or
+     * {@code null} if the nonce is valid.
      */
     private RuntimeException validateRegionNonce(byte[] actualNonce, int nonceLength, long expectedRegion) {
         // Cannot reconstruct the expected nonce if it is too short to hold the region index. This should never happen
         // for CSEv2 (nonce length is 12), so treat it as unverifiable rather than a failure.
         if (nonceLength < Long.BYTES || actualNonce.length < Long.BYTES) {
             return null;
+        }
+
+        // Fail closed once the region index reaches the point where EncryptorV2's nonces begin to repeat. Beyond this
+        // boundary two regions can share a nonce and a valid GCM tag, so a reorder of them is undetectable and the
+        // ciphertext already suffers GCM nonce reuse. We therefore cannot vouch for integrity and refuse to proceed
+        // (unless the data-recovery switch is enabled, which is handled by the caller). This is only reachable for
+        // extremely large blobs using a small authenticated region size (~64 GiB at the 16-byte minimum).
+        if (expectedRegion >= NONCE_WRAP_REGION_COUNT) {
+            return LOGGER.logExceptionAsError(new IllegalStateException(
+                "Cannot verify the integrity of client-side encrypted (v2) content beyond " + NONCE_WRAP_REGION_COUNT
+                    + " authenticated regions (region index " + expectedRegion + "), because the encryption nonce "
+                    + "repeats past that point, resulting in GCM nonce reuse. This blob is too large for its "
+                    + "authenticated region size to be safely verified. To recover data anyway, set the \""
+                    + CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_ENV_VAR + "\" environment variable (or the \""
+                    + CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME + "\" system property) to \"true\"."));
         }
 
         // Reconstruct the nonce exactly as EncryptorV2 does: the region index is truncated to an int (see
