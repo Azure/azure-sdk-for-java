@@ -75,9 +75,8 @@ public class CorePerfIntegrationTest {
         for (HttpClientType httpClientType : Arrays.asList(NETTY, OKHTTP)) {
             for (BinaryDataSource binaryDataSource : BinaryDataSource.values()) {
                 for (Boolean includePipelinePolicies : Arrays.asList(true, false)) {
-                    List<String> argLine = new ArrayList<>(
-                        Arrays.asList("unused", "--backend-type", "mock", "--http-client",
-                            httpClientType.toString(), "--binary-data-source", binaryDataSource.name()));
+                    List<String> argLine = new ArrayList<>(Arrays.asList("unused", "--backend-type", "mock",
+                        "--http-client", httpClientType.toString(), "--binary-data-source", binaryDataSource.name()));
                     if (includePipelinePolicies) {
                         argLine.add("--include-pipeline-policies");
                     }

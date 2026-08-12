@@ -50,7 +50,6 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     protected final MyRestProxyService service;
     protected final HttpPipeline httpPipeline;
 
-
     public RestProxyTestBase(TOptions options) {
         this(options, null, null);
     }
