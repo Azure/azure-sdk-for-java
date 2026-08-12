@@ -94,6 +94,8 @@ steps:
       inputs:
         pwsh: true
         filePath: eng/pipelines/scripts/Set-PowerShellJavaHome.ps1
+        arguments: >
+          -JavaTestVersion $(JavaTestVersion)
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
@@ -254,8 +256,8 @@ steps:
     inputs:
       pwsh: true
       filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
-      workingDirectory: $(System.DefaultWorkingDirectory)/sdk
     workingDirectory: $(System.DefaultWorkingDirectory)/sdk
+    condition: always()
 
   - task: PublishTestResults@2
     condition: always()

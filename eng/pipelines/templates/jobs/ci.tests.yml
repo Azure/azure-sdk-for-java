@@ -169,5 +169,7 @@ jobs:
         inputs:
           pwsh: true
           filePath: eng/pipelines/scripts/Write-TestProxyLogs.ps1
+          arguments: >
+            -LogFileDirectory $(Build.SourcesDirectory)
         displayName: Dump Test-Proxy Logs
         condition: succeededOrFailed()

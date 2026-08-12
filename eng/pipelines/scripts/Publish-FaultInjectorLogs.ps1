@@ -1,13 +1,31 @@
 <#
 .SYNOPSIS
 Publishes any logs captured by http-fault-injector for further investigation.
-#>
-param()
 
-if (Test-Path -Path "$env:BUILD_SOURCEDIRECTORY/http-fault-injector.log") {
-    if (-not (Test-Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/troubleshooting")) {
-        New-Item -ItemType Directory -Path "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/troubleshooting" | Out-Null
+.PARAMETER LogFileDirectory
+The directory where the log files are located.
+
+.PARAMETER OutputDirectory
+The directory where the logs should be published to.
+
+.PARAMETER UniqueId
+A unique identifier for the log files, typically the job name or build ID.
+#>
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$LogFileDirectory,
+
+    [Parameter(Mandatory=$true)]
+    [string]$OutputDirectory,
+
+    [Parameter(Mandatory=$true)]
+    [string]$UniqueId
+)
+
+if (Test-Path -Path "$LogFileDirectory/http-fault-injector.log") {
+    if (-not (Test-Path "$OutputDirectory/troubleshooting")) {
+        New-Item -ItemType Directory -Path "$OutputDirectory/troubleshooting" | Out-Null
     }
-    Compress-Archive -Path "$env:BUILD_SOURCEDIRECTORY/http-fault-injector.log" -DestinationPath "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/troubleshooting/fault-$env:SYSTEM_JOBNAME.zip"
+    Compress-Archive -Path "$LogFileDirectory/http-fault-injector.log" -DestinationPath "$OutputDirectory/troubleshooting/fault-$UniqueId.zip"
     Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"
 }

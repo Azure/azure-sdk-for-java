@@ -155,7 +155,11 @@ jobs:
           displayName: 'Check for and copy http-fault-injector log file'
           inputs:
             pwsh: true
-            filePath: /eng/pipelines/scripts/Publish-FaultInjectorLogs.ps1
+            filePath: eng/pipelines/scripts/Publish-FaultInjectorLogs.ps1
+            arguments: >
+              -LogFileDirectory $(Build.SourcesDirectory)
+              -OutputDirectory $(System.DefaultWorkingDirectory)
+              -UniqueId $(System.JobName)
           condition: failed()
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
