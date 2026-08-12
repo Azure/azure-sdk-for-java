@@ -2327,28 +2327,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         // Resolve the partition key supplied by the caller through the request options (if any).
         PartitionKeyInternal partitionKeyInternal = null;
-        boolean partitionKeyProvidedByCaller = false;
         if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)) {
             partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
-            partitionKeyProvidedByCaller = true;
         } else if (options != null && options.getPartitionKey() != null) {
             partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
-            partitionKeyProvidedByCaller = true;
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-            partitionKeyProvidedByCaller = true;
         }
 
+        boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
+        boolean partitionKeyNeedsItemId = partitionKeyRequiresItemId(
+            request, options, partitionKeyDefinition, partitionKeyInternal);
+
         // Materialize the payload (if any) only when it will actually be used: either to extract the
-        // partition key value from the document (no partition key provided by the caller), or to read
-        // the item id for a "/id"-terminated partition key that still needs it. Only write operations
-        // carry a payload here; read/delete/patch recover the id from the request path instead. In
-        // particular, when the caller already supplied a fully specified partition key, the body is
-        // left untouched (it is never parsed for the partition key).
-        boolean materializeDocument = !partitionKeyProvidedByCaller
-            || partitionKeyRequiresItemId(request, options, partitionKeyDefinition, partitionKeyInternal);
+        // partition key value from the document, or to read the item id needed to complete a partial
+        // "/id"-terminated partition key. The cheap eligibility checks above run before parsing the
+        // payload, and a fully specified partition key leaves the body untouched.
+        boolean materializeDocument = partitionKeyNeedsExtraction || partitionKeyNeedsItemId;
         InternalObjectNode internalObjectNode = null;
         if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
             if (objectDoc instanceof InternalObjectNode) {
@@ -2365,8 +2362,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        // When the caller did not provide a partition key, derive it from the document body.
-        if (!partitionKeyProvidedByCaller && internalObjectNode != null) {
+        // When the partition key was not resolved from request options, derive it from the document body.
+        if (partitionKeyNeedsExtraction && internalObjectNode != null) {
             Instant serializationStartTime = Instant.now();
             partitionKeyInternal =  PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
             Instant serializationEndTime = Instant.now();
@@ -2397,7 +2394,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         partitionKeyInternal = completePartitionKeyInternalForRequest(
-            request, options, partitionKeyDefinition, partitionKeyInternal, internalObjectNode);
+            request, partitionKeyDefinition, partitionKeyInternal, internalObjectNode, partitionKeyNeedsItemId);
 
         if (partitionKeyInternal == null) {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
@@ -2410,12 +2407,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static PartitionKeyInternal completePartitionKeyInternalForRequest(
         RxDocumentServiceRequest request,
-        RequestOptions options,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal,
-        InternalObjectNode internalObjectNode) {
+        InternalObjectNode internalObjectNode,
+        boolean partitionKeyNeedsItemId) {
 
-        if (!partitionKeyRequiresItemId(request, options, partitionKeyDefinition, partitionKeyInternal)) {
+        if (!partitionKeyNeedsItemId) {
             return partitionKeyInternal;
         }
 
@@ -2433,6 +2430,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal) {
+
+        // Most containers do not end their partition key definition in "/id".
+        if (!PartitionKeyHelper.isLastPartitionKeyPathId(partitionKeyDefinition)) {
+            return false;
+        }
 
         if (request == null || request.getResourceType() != ResourceType.Document) {
             return false;
