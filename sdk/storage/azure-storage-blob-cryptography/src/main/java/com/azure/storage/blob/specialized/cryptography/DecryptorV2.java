@@ -125,9 +125,12 @@ class DecryptorV2 extends Decryptor {
             return null;
         }
 
-        // Reconstruct the nonce exactly as EncryptorV2 does: an 8-byte big-endian region index followed by zero
-        // padding to the nonce length.
-        byte[] expectedNonce = ByteBuffer.allocate(nonceLength).putLong(expectedRegion).array();
+        // Reconstruct the nonce exactly as EncryptorV2 does: the region index is truncated to an int (see
+        // EncryptorV2.getCipher(int) / Tuple.getT1().intValue()) and then written as an 8-byte big-endian
+        // (sign-extended) value followed by zero padding to the nonce length. The int truncation must be replicated
+        // here so that valid blobs with region indices >= Integer.MAX_VALUE (reachable at ~32 GiB with the minimum
+        // 16-byte region size) are not incorrectly flagged as reordered.
+        byte[] expectedNonce = ByteBuffer.allocate(nonceLength).putLong((int) expectedRegion).array();
         if (Arrays.equals(expectedNonce, actualNonce)) {
             return null;
         }

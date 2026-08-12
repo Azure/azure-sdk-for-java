@@ -11,16 +11,20 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Flux;
 
+import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
@@ -105,6 +109,41 @@ public class DecryptorV2ReorderTests {
         assertArrayEquals(expected, recovered);
     }
 
+    @Test
+    public void decryptsRegionsAcrossIntegerMaxValueBoundary() {
+        // EncryptorV2 truncates the region index to an int when producing the nonce, so region Integer.MAX_VALUE + 1
+        // wraps to a negative (sign-extended) nonce. The reorder detection must replicate that truncation, otherwise
+        // valid blobs whose region indices cross Integer.MAX_VALUE (reachable at ~32 GiB with the minimum 16-byte
+        // region size) would be incorrectly rejected as reordered.
+        byte[] cek = randomBytes(32);
+        long firstRegion = Integer.MAX_VALUE;
+        byte[] region0Plaintext = randomBytes(REGION_DATA_LENGTH);
+        byte[] region1Plaintext = randomBytes(REGION_DATA_LENGTH);
+
+        byte[] ciphertext = concat(encryptRegionAt(cek, firstRegion, region0Plaintext),
+            encryptRegionAt(cek, firstRegion + 1, region1Plaintext));
+
+        long offset = firstRegion * REGION_DATA_LENGTH;
+        byte[] recovered = decrypt(cek, ciphertext, offset);
+
+        assertArrayEquals(concat(region0Plaintext, region1Plaintext), recovered);
+    }
+
+    @Test
+    public void detectsReorderAcrossIntegerMaxValueBoundary() {
+        // Detection must still fire across the int boundary: place a region whose nonce belongs to a different index
+        // than expected and confirm it is rejected.
+        byte[] cek = randomBytes(32);
+        long firstRegion = Integer.MAX_VALUE;
+
+        byte[] ciphertext = concat(encryptRegionAt(cek, firstRegion, randomBytes(REGION_DATA_LENGTH)),
+            // Expected index here is firstRegion + 1, but this region is nonced for firstRegion + 2.
+            encryptRegionAt(cek, firstRegion + 2, randomBytes(REGION_DATA_LENGTH)));
+
+        long offset = firstRegion * REGION_DATA_LENGTH;
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, ciphertext, offset));
+    }
+
     private static byte[] encrypt(byte[] cek, byte[] plaintext) {
         SecretKey key = new SecretKeySpec(cek, AES);
         EncryptorV2 encryptor = new EncryptorV2(key,
@@ -112,6 +151,22 @@ public class DecryptorV2ReorderTests {
             ENCRYPTION_PROTOCOL_V2);
         List<ByteBuffer> buffers = encryptor.encrypt(Flux.just(ByteBuffer.wrap(plaintext))).collectList().block();
         return toBytes(buffers);
+    }
+
+    /**
+     * Encrypts a single region using the same nonce scheme as {@link EncryptorV2}: the region index is truncated to an
+     * int and written big-endian into the nonce. Produces {@code nonce || ciphertext || tag}. Used to craft ciphertext
+     * for arbitrary (very large) region indices without materializing all preceding regions.
+     */
+    private static byte[] encryptRegionAt(byte[] cek, long regionIndex, byte[] plaintext) {
+        try {
+            byte[] nonce = ByteBuffer.allocate(NONCE_LENGTH).putLong((int) regionIndex).array();
+            Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cek, AES), new GCMParameterSpec(TAG_LENGTH * 8, nonce));
+            return concat(nonce, cipher.doFinal(plaintext));
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static byte[] decrypt(byte[] cek, byte[] ciphertext, long offset) {
@@ -153,5 +208,11 @@ public class DecryptorV2ReorderTests {
         byte[] bytes = new byte[length];
         RANDOM.nextBytes(bytes);
         return bytes;
+    }
+
+    private static byte[] concat(byte[] left, byte[] right) {
+        byte[] result = Arrays.copyOf(left, left.length + right.length);
+        System.arraycopy(right, 0, result, left.length, right.length);
+        return result;
     }
 }
