@@ -19,6 +19,6 @@ public final class SubscriptionFeatureRegistrationsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void getsAListOfFeatureRegistrations(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getSubscriptionFeatureRegistrations().list(com.azure.core.util.Context.NONE);
+        manager.featureClient().getSubscriptionFeatureRegistrations().list(com.azure.core.util.Context.NONE);
     }
 }

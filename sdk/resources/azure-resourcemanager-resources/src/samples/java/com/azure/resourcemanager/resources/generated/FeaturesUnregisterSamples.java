@@ -19,7 +19,7 @@ public final class FeaturesUnregisterSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void registerFeature(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.featureClient()
             .getFeatures()
             .unregisterWithResponse("Resource Provider Namespace", "feature", com.azure.core.util.Context.NONE);
     }

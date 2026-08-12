@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsListAllAtManagementGroupSamples {
      */
     public static void
         listAllPolicyDefinitionVersionsAtManagementGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitionVersions()
             .listAllAtManagementGroupWithResponse("MyManagementGroup", com.azure.core.util.Context.NONE);
     }

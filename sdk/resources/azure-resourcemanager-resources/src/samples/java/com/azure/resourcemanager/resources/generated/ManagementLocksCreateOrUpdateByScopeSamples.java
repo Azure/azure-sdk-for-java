@@ -22,7 +22,7 @@ public final class ManagementLocksCreateOrUpdateByScopeSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void createManagementLockAtScope(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .createOrUpdateByScopeWithResponse("subscriptions/subscriptionId", "testlock",
                 new ManagementLockObjectInner().withLevel(LockLevel.READ_ONLY), com.azure.core.util.Context.NONE);

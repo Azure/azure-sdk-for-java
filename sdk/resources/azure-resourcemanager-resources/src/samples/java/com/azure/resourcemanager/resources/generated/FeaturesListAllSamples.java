@@ -19,6 +19,6 @@ public final class FeaturesListAllSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listSubscriptionFeatures(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getFeatures().listAll(com.azure.core.util.Context.NONE);
+        manager.featureClient().getFeatures().listAll(com.azure.core.util.Context.NONE);
     }
 }

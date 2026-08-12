@@ -22,7 +22,7 @@ public final class SubscriptionFeatureRegistrationsCreateOrUpdateSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void createsAFeatureRegistration(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.featureClient()
             .getSubscriptionFeatureRegistrations()
             .createOrUpdateWithResponse("subscriptionFeatureRegistrationGroupTestRG", "testFeature",
                 new SubscriptionFeatureRegistrationInner()

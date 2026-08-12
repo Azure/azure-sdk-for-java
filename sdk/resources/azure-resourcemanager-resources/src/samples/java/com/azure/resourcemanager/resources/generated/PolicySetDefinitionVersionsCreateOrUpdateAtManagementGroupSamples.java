@@ -28,7 +28,7 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSam
      */
     public static void createOrUpdateAPolicySetDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement", "1.2.1",
                 new PolicySetDefinitionVersionInner().withDisplayName("Cost Management")

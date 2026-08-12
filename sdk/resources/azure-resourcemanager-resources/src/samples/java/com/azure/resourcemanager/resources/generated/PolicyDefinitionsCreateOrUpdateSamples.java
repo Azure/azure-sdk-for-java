@@ -31,7 +31,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinitionWithAdvancedParameters(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("EventHubDiagnosticLogs", new PolicyDefinitionInner().withMode("Indexed")
                 .withDisplayName("Event Hubs should have diagnostic logging enabled")
@@ -63,7 +63,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinitionWithExternalEvaluationEnforcementSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("RandomizeVMAllocation", new PolicyDefinitionInner().withMode("Indexed")
                 .withDisplayName("Randomize VM Allocation")
@@ -95,7 +95,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager)
         throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("ResourceNaming", new PolicyDefinitionInner().withMode("All")
                 .withDisplayName("Enforce resource naming convention")

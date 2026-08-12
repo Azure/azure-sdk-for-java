@@ -32,7 +32,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithResourceSelectors(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
@@ -52,7 +52,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void updateAPolicyAssignmentWithAResourcePercentageSelector(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
@@ -72,7 +72,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithAUserAssignedIdentity(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentUpdate().withLocation("eastus")
@@ -93,7 +93,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithOverrides(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate().withOverrides(Arrays.asList(new OverrideModel()
@@ -114,7 +114,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void updateAPolicyAssignmentWithSelfServeExemptionSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
@@ -133,7 +133,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void updateAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentUpdate().withLocation("eastus")

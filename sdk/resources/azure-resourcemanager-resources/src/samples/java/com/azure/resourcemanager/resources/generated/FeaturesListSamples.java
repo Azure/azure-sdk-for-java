@@ -19,6 +19,6 @@ public final class FeaturesListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listProviderFeatures(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getFeatures().list("Resource Provider Namespace", com.azure.core.util.Context.NONE);
+        manager.featureClient().getFeatures().list("Resource Provider Namespace", com.azure.core.util.Context.NONE);
     }
 }

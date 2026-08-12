@@ -17,6 +17,6 @@ public final class PolicySetDefinitionsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listPolicySetDefinitions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getPolicySetDefinitions().list(null, null, null, com.azure.core.util.Context.NONE);
+        manager.policyClient().getPolicySetDefinitions().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

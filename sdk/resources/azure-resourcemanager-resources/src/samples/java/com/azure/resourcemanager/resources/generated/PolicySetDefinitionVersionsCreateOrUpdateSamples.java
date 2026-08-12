@@ -31,7 +31,7 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionVersion(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .createOrUpdateWithResponse("CostManagement", "1.2.1",
                 new PolicySetDefinitionVersionInner().withDisplayName("Cost Management")

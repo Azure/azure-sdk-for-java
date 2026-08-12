@@ -20,7 +20,7 @@ public final class ManagementLocksGetByResourceGroupSamples {
      */
     public static void
         getManagementLockAtResourceGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .getByResourceGroupWithResponse("resourcegroupname", "testlock", com.azure.core.util.Context.NONE);
     }

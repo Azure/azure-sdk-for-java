@@ -19,7 +19,7 @@ public final class ManagementLocksGetByScopeSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void getManagementLockAtScope(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .getByScopeWithResponse("subscriptions/subscriptionId", "testlock", com.azure.core.util.Context.NONE);
     }

@@ -20,6 +20,6 @@ public final class ManagementLocksListSamples {
      */
     public static void
         listManagementLocksAtSubscriptionLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getManagementLocks().list(null, com.azure.core.util.Context.NONE);
+        manager.managementLockClient().getManagementLocks().list(null, com.azure.core.util.Context.NONE);
     }
 }

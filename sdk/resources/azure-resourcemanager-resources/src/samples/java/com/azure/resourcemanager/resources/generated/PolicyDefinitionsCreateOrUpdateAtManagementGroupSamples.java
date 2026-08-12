@@ -28,7 +28,7 @@ public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicyDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming",
                 new PolicyDefinitionInner().withMode("All")

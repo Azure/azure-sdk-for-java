@@ -20,7 +20,7 @@ public final class ManagementLocksDeleteSamples {
      */
     public static void
         deleteManagementLockAtResourceGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .deleteWithResponse("resourcegroupname", "testlock", com.azure.core.util.Context.NONE);
     }

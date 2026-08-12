@@ -20,7 +20,7 @@ public final class ManagementLocksDeleteAtResourceLevelSamples {
      */
     public static void
         deleteManagementLockAtResourceLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .deleteAtResourceLevelWithResponse("resourcegroupname", "Microsoft.Storage", "parentResourcePath",
                 "storageAccounts", "teststorageaccount", "testlock", com.azure.core.util.Context.NONE);

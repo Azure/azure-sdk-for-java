@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsDeleteAtManagementGroupSamples {
      */
     public static void deleteAPolicySetDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .deleteAtManagementGroupWithResponse("MyManagementGroup", "CostManagement", "1.2.1",
                 com.azure.core.util.Context.NONE);

@@ -19,7 +19,7 @@ public final class ManagementLocksDeleteByScopeSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deleteManagementLockAtScope(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .deleteByScopeWithResponse("subscriptions/subscriptionId", "testlock", com.azure.core.util.Context.NONE);
     }

@@ -18,7 +18,7 @@ public final class ChangesGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void getChange(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.resourceChangeClient()
             .getChanges()
             .getWithResponse("resourceGroup1", "resourceProvider1", "resourceType1", "resourceName1",
                 "1d58d72f-0719-4a48-9228-b7ea682885bf", com.azure.core.util.Context.NONE);

@@ -18,7 +18,7 @@ public final class PolicyDefinitionsListByManagementGroupSamples {
      */
     public static void
         listPolicyDefinitionsByManagementGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .listByManagementGroup("MyManagementGroup", null, null, com.azure.core.util.Context.NONE);
     }

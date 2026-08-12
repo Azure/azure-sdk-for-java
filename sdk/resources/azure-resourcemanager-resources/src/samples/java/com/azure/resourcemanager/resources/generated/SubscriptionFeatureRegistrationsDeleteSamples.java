@@ -19,7 +19,7 @@ public final class SubscriptionFeatureRegistrationsDeleteSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deletesAFeatureRegistration(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.featureClient()
             .getSubscriptionFeatureRegistrations()
             .deleteWithResponse("subscriptionFeatureRegistrationGroupTestRG", "testFeature",
                 com.azure.core.util.Context.NONE);

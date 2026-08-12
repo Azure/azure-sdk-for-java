@@ -19,6 +19,6 @@ public final class AuthorizationOperationsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listProviderOperations(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getAuthorizationOperations().list(com.azure.core.util.Context.NONE);
+        manager.managementLockClient().getAuthorizationOperations().list(com.azure.core.util.Context.NONE);
     }
 }

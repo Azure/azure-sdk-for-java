@@ -17,7 +17,7 @@ public final class DataPolicyManifestsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listDataPolicyManifests(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getDataPolicyManifests().list(null, com.azure.core.util.Context.NONE);
+        manager.policyClient().getDataPolicyManifests().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -30,7 +30,7 @@ public final class DataPolicyManifestsListSamples {
      */
     public static void
         listDataPolicyManifestsWithNamespaceFilter(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getDataPolicyManifests()
             .list("namespace eq 'Microsoft.KeyVault'", com.azure.core.util.Context.NONE);
     }

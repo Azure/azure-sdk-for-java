@@ -19,7 +19,7 @@ public final class SubscriptionFeatureRegistrationsListBySubscriptionSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void getsAListOfFeatureRegistrations(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.featureClient()
             .getSubscriptionFeatureRegistrations()
             .listBySubscription("subscriptionFeatureRegistrationGroupTestRG", com.azure.core.util.Context.NONE);
     }

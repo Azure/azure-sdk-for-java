@@ -23,7 +23,7 @@ public final class ManagementLocksCreateOrUpdateAtResourceLevelSamples {
      */
     public static void
         createManagementLockAtResourceLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .createOrUpdateAtResourceLevelWithResponse("resourcegroupname", "Microsoft.Storage", "parentResourcePath",
                 "storageAccounts", "teststorageaccount", "testlock",

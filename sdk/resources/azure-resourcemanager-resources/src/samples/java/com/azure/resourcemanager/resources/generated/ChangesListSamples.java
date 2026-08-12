@@ -18,7 +18,7 @@ public final class ChangesListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listChanges(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.resourceChangeClient()
             .getChanges()
             .list("resourceGroup1", "resourceProvider1", "resourceType1", "resourceName1", null, null,
                 com.azure.core.util.Context.NONE);

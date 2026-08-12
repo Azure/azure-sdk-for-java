@@ -20,7 +20,7 @@ public final class ManagementLocksDeleteAtSubscriptionLevelSamples {
      */
     public static void
         deleteManagementLockAtSubscriptionLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .deleteAtSubscriptionLevelWithResponse("testlock", com.azure.core.util.Context.NONE);
     }

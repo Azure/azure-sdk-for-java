@@ -20,7 +20,7 @@ public final class PolicyTokensAcquireSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void acquireAPolicyToken(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyTokens()
             .acquireWithResponse(new PolicyTokenRequest().withOperation(new PolicyTokenOperation().withUri(
                 "https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01")

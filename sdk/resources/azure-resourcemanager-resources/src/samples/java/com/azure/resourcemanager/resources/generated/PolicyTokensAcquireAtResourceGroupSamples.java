@@ -21,7 +21,7 @@ public final class PolicyTokensAcquireAtResourceGroupSamples {
      */
     public static void
         acquireAPolicyTokenAtResourceGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyTokens()
             .acquireAtResourceGroupWithResponse("testRG",
                 new PolicyTokenRequest().withOperation(new PolicyTokenOperation().withUri(

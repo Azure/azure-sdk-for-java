@@ -19,7 +19,7 @@ public final class ManagementLocksGetAtResourceLevelSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void getManagementLockAtResourceLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .getAtResourceLevelWithResponse("resourcegroupname", "Microsoft.Storage", "parentResourcePath",
                 "storageAccounts", "teststorageaccount", "testlock", com.azure.core.util.Context.NONE);

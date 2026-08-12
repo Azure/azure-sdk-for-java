@@ -23,7 +23,7 @@ public final class ManagementLocksCreateOrUpdateAtSubscriptionLevelSamples {
      */
     public static void
         createManagementLockAtSubscriptionLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .createOrUpdateAtSubscriptionLevelWithResponse("testlock",
                 new ManagementLockObjectInner().withLevel(LockLevel.READ_ONLY), com.azure.core.util.Context.NONE);

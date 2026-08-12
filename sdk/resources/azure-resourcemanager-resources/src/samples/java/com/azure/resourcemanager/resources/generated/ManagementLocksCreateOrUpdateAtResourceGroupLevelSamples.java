@@ -23,7 +23,7 @@ public final class ManagementLocksCreateOrUpdateAtResourceGroupLevelSamples {
      */
     public static void
         createManagementLockAtResourceGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .createOrUpdateAtResourceGroupLevelWithResponse("resourcegroupname", "testlock",
                 new ManagementLockObjectInner().withLevel(LockLevel.READ_ONLY), com.azure.core.util.Context.NONE);

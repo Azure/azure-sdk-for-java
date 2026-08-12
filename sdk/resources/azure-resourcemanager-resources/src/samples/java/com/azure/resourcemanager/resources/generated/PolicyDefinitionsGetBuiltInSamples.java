@@ -17,7 +17,7 @@ public final class PolicyDefinitionsGetBuiltInSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveABuiltInPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .getBuiltInWithResponse("7433c107-6db4-4ad1-b57a-a76dce0154a1", com.azure.core.util.Context.NONE);
     }

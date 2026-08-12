@@ -20,7 +20,7 @@ public final class ManagementLocksListByResourceGroupSamples {
      */
     public static void
         listManagementGroupsAtResourceGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .listByResourceGroup("resourcegroupname", null, com.azure.core.util.Context.NONE);
     }

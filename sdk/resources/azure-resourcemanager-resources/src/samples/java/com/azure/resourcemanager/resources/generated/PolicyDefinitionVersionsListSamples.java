@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsListSamples {
      */
     public static void
         listPolicyDefinitionVersionsBySubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitionVersions()
             .list("ResourceNaming", null, com.azure.core.util.Context.NONE);
     }

@@ -20,7 +20,7 @@ public final class ManagementLocksGetAtSubscriptionLevelSamples {
      */
     public static void
         getManagementLockAtSubscriptionLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.managementLockClient()
             .getManagementLocks()
             .getAtSubscriptionLevelWithResponse("testlock", com.azure.core.util.Context.NONE);
     }

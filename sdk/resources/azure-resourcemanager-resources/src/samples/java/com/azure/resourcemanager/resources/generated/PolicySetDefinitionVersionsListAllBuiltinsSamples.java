@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsListAllBuiltinsSamples {
      */
     public static void
         listAllBuiltInPolicyDefinitionVersions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .listAllBuiltinsWithResponse(com.azure.core.util.Context.NONE);
     }

@@ -18,7 +18,7 @@ public final class DataPolicyManifestsGetByPolicyModeSamples {
      */
     public static void
         retrieveADataPolicyManifestByPolicyMode(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getDataPolicyManifests()
             .getByPolicyModeWithResponse("Microsoft.KeyVault.Data", com.azure.core.util.Context.NONE);
     }
