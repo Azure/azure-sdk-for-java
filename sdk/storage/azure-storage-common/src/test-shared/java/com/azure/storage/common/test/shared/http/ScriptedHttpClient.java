@@ -129,13 +129,11 @@ public final class ScriptedHttpClient implements HttpClient {
     /**
      * Queues a request-keyed response that is built from the incoming request.
      *
-     * @param requestKey The queue key.
+     * @param requestKey      The queue key.
      * @param responseFactory The response factory.
-     * @return This client.
      */
-    public ScriptedHttpClient enqueueResponse(String requestKey, ResponseFactory responseFactory) {
+    public void enqueueResponse(String requestKey, ResponseFactory responseFactory) {
         enqueueKeyed(requestKey, new FactoryResponseAction(responseFactory));
-        return this;
     }
 
     /**
@@ -153,12 +151,10 @@ public final class ScriptedHttpClient implements HttpClient {
      * Queues a request-keyed failure for the next request with the given key.
      *
      * @param requestKey The queue key.
-     * @param error The error to emit.
-     * @return This client.
+     * @param error      The error to emit.
      */
-    public ScriptedHttpClient enqueueFailure(String requestKey, Throwable error) {
+    public void enqueueFailure(String requestKey, Throwable error) {
         enqueueKeyed(requestKey, new FailureResponseAction(error));
-        return this;
     }
 
     /**
