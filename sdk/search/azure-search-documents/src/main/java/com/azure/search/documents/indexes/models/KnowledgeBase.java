@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffort;
-import com.azure.search.documents.models.KnowledgeBaseRetrieveDefaults;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

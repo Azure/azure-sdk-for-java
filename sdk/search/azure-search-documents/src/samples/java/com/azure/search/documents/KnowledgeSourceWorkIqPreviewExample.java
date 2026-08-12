@@ -9,14 +9,14 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
+import com.azure.search.documents.indexes.models.EntraAppAuthentication;
 import com.azure.search.documents.indexes.models.WorkIQKnowledgeSource;
+import com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
-import com.azure.search.documents.models.EntraAppAuthentication;
-import com.azure.search.documents.models.WorkIQKnowledgeSourceParameters;
 
 /**
  * Demonstrates creating and using a Work IQ knowledge source in the preview API.

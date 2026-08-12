@@ -14,7 +14,6 @@ import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.SearchIndexerDataIdentity;
-import com.azure.search.documents.models.KnowledgeSourceNetworkAccessMode;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;

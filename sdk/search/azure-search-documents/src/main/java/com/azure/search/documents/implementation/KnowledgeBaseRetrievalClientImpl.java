@@ -293,6 +293,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *          (Optional){
      *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
+     *             startedAt: OffsetDateTime (Optional)
+     *             completedAt: OffsetDateTime (Optional)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
      *                 code: String (Optional)
@@ -435,6 +437,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *          (Optional){
      *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
+     *             startedAt: OffsetDateTime (Optional)
+     *             completedAt: OffsetDateTime (Optional)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
      *                 code: String (Optional)
@@ -495,9 +499,14 @@ public final class KnowledgeBaseRetrievalClientImpl {
     }
 
     /**
-     * KnowledgeBase retrieves relevant data from backing stores, streaming progress and results as
-     * server-sent events on the same connection as they become available, instead of waiting for the
-     * full retrieval to complete.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     * 
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -584,9 +593,14 @@ public final class KnowledgeBaseRetrievalClientImpl {
     }
 
     /**
-     * KnowledgeBase retrieves relevant data from backing stores, streaming progress and results as
-     * server-sent events on the same connection as they become available, instead of waiting for the
-     * full retrieval to complete.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     * 
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>

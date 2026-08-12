@@ -8,7 +8,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.WorkIQKnowledgeSourceParameters;
 import java.io.IOException;
 
 /**

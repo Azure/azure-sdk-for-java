@@ -135,6 +135,10 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
@@ -162,6 +166,8 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
     public static KnowledgeBaseFileActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
@@ -177,6 +183,12 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -204,6 +216,8 @@ public final class KnowledgeBaseFileActivityRecord extends KnowledgeBaseActivity
             }
             KnowledgeBaseFileActivityRecord deserializedKnowledgeBaseFileActivityRecord
                 = new KnowledgeBaseFileActivityRecord(id);
+            deserializedKnowledgeBaseFileActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseFileActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseFileActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseFileActivityRecord.setError(error);
             deserializedKnowledgeBaseFileActivityRecord.setWarning(warning);

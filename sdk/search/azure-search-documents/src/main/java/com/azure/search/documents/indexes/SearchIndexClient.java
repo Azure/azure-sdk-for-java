@@ -35,6 +35,7 @@ import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
@@ -42,10 +43,9 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
+import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
-import com.azure.search.documents.models.ListingSearchType;
-import com.azure.search.documents.models.UpdateKnowledgeSourceFileRequest;
-import com.azure.search.documents.models.UploadKnowledgeSourceFileMultipartRequest;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -4829,82 +4829,6 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * BinaryData
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     fileId: String (Optional)
-     *     fileName: String (Optional)
-     *     fileSizeBytes: Long (Optional)
-     *     createdAt: OffsetDateTime (Optional)
-     *     lastUpdatedAt: OffsetDateTime (Optional)
-     *     errorMessage: String (Optional)
-     *     prefix: String (Optional)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *     extractionMode: String(minimal/standard) (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String contentDisposition, String name,
-        BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.uploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions);
-    }
-
-    /**
-     * Uploads a file to a File knowledge source for processing and indexing.
-     *
-     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
-     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
-     * For example: `attachment; filename="installation-guide.pdf"`.
-     * @param name The name of the knowledge source.
-     * @param file The file content to upload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata for a file uploaded to a File knowledge source.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSourceFile uploadKnowledgeSourceFile(String contentDisposition, String name, BinaryData file) {
-        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions)
-            .getValue()
-            .toObject(KnowledgeSourceFile.class);
-    }
-
-    /**
      * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name, custom
      * metadata, and optional parsing/extraction overrides) and a 'content' part with the raw file bytes.
      * <p><strong>Response Body Schema</strong></p>
@@ -5167,5 +5091,55 @@ public final class SearchIndexClient {
         }
         return serviceClient.listIndexStatsSummary(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     fileId: String (Optional)
+     *     fileName: String (Optional)
+     *     fileSizeBytes: Long (Optional)
+     *     createdAt: OffsetDateTime (Optional)
+     *     lastUpdatedAt: OffsetDateTime (Optional)
+     *     errorMessage: String (Optional)
+     *     prefix: String (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *     extractionMode: String(minimal/standard) (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metadata for a file uploaded to a File knowledge source along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> uploadKnowledgeSourceFileWithResponse(String contentDisposition, String name, BinaryData file,
+        RequestOptions requestOptions) {
+        return this.serviceClient.uploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions);
     }
 }
