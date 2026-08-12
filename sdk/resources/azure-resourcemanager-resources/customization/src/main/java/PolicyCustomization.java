@@ -25,30 +25,34 @@ public class PolicyCustomization extends Customization {
 
     private static void customizePolicyClient(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getInterfaceByName(customization.getClassName()).ifPresent(clazz -> {
-            MethodDeclaration method = clazz.addMethod("getPolicyExemptions");
-            method.setType("PolicyExemptionsClient");
-            method.removeBody();
-            method.setJavadocComment("Gets the PolicyExemptionsClient object to access its operations.\n\n"
-                + "@return the PolicyExemptionsClient object.");
+            if (clazz.getMethodsByName("getPolicyExemptions").isEmpty()) {
+                MethodDeclaration method = clazz.addMethod("getPolicyExemptions");
+                method.setType("PolicyExemptionsClient");
+                method.removeBody();
+                method.setJavadocComment("Gets the PolicyExemptionsClient object to access its operations.\n\n"
+                    + "@return the PolicyExemptionsClient object.");
+            }
         }));
     }
 
     private static void customizePolicyClientImpl(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-            ast.addImport("com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient");
-            clazz.addField("PolicyExemptionsClient", "policyExemptions", Modifier.Keyword.PRIVATE,
-                Modifier.Keyword.FINAL);
+            if (clazz.getMethodsByName("getPolicyExemptions").isEmpty()) {
+                ast.addImport("com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient");
+                clazz.addField("PolicyExemptionsClient", "policyExemptions", Modifier.Keyword.PRIVATE,
+                    Modifier.Keyword.FINAL);
 
-            MethodDeclaration method = clazz.addMethod("getPolicyExemptions", Modifier.Keyword.PUBLIC);
-            method.addMarkerAnnotation("Override");
-            method.setType("PolicyExemptionsClient");
-            method.setBody(StaticJavaParser.parseBlock("{ return this.policyExemptions; }"));
-            method.setJavadocComment("Gets the PolicyExemptionsClient object to access its operations.\n\n"
-                + "@return the PolicyExemptionsClient object.");
+                MethodDeclaration method = clazz.addMethod("getPolicyExemptions", Modifier.Keyword.PUBLIC);
+                method.addMarkerAnnotation("Override");
+                method.setType("PolicyExemptionsClient");
+                method.setBody(StaticJavaParser.parseBlock("{ return this.policyExemptions; }"));
+                method.setJavadocComment("Gets the PolicyExemptionsClient object to access its operations.\n\n"
+                    + "@return the PolicyExemptionsClient object.");
 
-            clazz.getConstructors()
-                .forEach(constructor -> constructor.getBody()
-                    .addStatement("this.policyExemptions = new PolicyExemptionsClientImpl(this);"));
+                clazz.getConstructors()
+                    .forEach(constructor -> constructor.getBody()
+                        .addStatement("this.policyExemptions = new PolicyExemptionsClientImpl(this);"));
+            }
         }));
     }
 }
