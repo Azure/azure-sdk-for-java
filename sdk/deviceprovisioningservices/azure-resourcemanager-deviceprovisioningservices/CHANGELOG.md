@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2026-08-11)
+
+- Azure Resource Manager IotDps client library for Java. This package contains Microsoft Azure SDK for IotDps Management SDK. API for using the Azure IoT Hub Device Provisioning Service features. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.IotDpsResources` was modified
+
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+
+### Features Added
+
+* `models.IotHubAuthenticationType` was added
+
+#### `models.IotHubDefinitionDescription` was modified
+
+* `selectedUserAssignedIdentityResourceId()` was added
+* `withAuthenticationType(models.IotHubAuthenticationType)` was added
+* `authenticationType()` was added
+* `withHostName(java.lang.String)` was added
+* `withSelectedUserAssignedIdentityResourceId(java.lang.String)` was added
+* `hostName()` was added
 
 ## 1.2.0-beta.1 (2025-10-20)
 

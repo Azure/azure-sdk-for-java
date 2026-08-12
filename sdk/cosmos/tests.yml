@@ -18,6 +18,13 @@ extends:
             - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
               parameters:
                 AccountSelector: $(AccountSelector)
+          # Fixed self-owned account (RG sdk-ci) shared across runs - nothing tears it down, so leaked
+          # databases stay forever. ACCOUNT_HOST/ACCOUNT_KEY are set by the resolve pre-step above.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(ACCOUNT_HOST)
+                AccountKey: $(ACCOUNT_KEY)
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -56,6 +63,13 @@ extends:
             - template: /sdk/cosmos/pipeline/resolve-test-account-steps.yml
               parameters:
                 AccountSelector: multimaster-session-http2
+          # Fixed self-owned account (RG sdk-ci) shared across runs - nothing tears it down, so leaked
+          # databases stay forever. ACCOUNT_HOST/ACCOUNT_KEY are set by the resolve pre-step above.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(ACCOUNT_HOST)
+                AccountKey: $(ACCOUNT_KEY)
           MatrixConfigs:
             - Name: Cosmos_live_test_http2
               Path: sdk/cosmos/live-http2-platform-matrix.json
@@ -85,6 +99,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_Http2NetworkFault'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
           PreSteps:
             - script: |
                 sudo apt-get update -qq && sudo apt-get install -y -qq iptables
@@ -123,6 +144,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -155,6 +183,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_EndpointProbe'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thinclient-test-endpoint)
+                AccountKey: $(thinclient-test-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -191,6 +226,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiRegion'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thin-client-canary-multi-region-session-endpoint)
+                AccountKey: $(thin-client-canary-multi-region-session-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -223,6 +265,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_ThinClient_MultiMaster'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(thin-client-canary-multi-writer-session-endpoint)
+                AccountKey: $(thin-client-canary-multi-writer-session-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
@@ -255,6 +304,13 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_GSI'
+          # Long lived shared account: nothing tears it down at the end of the run, so leaked
+          # databases stay forever. Delete this job's databases even if the job failed.
+          PostSteps:
+            - template: /sdk/cosmos/cleanup-test-resources.yml
+              parameters:
+                AccountHost: $(gsi-pipeline-uri)
+                AccountKey: $(gsi-pipeline-key)
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos

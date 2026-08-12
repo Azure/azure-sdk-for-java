@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.fabric.generated;
 
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacity;
 import com.azure.resourcemanager.fabric.models.FabricCapacityUpdateProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
@@ -18,7 +20,7 @@ import java.util.Map;
  */
 public final class FabricCapacitiesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_Update.json
+     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_Update.json
      */
     /**
      * Sample code: Update capacity properties.
@@ -32,8 +34,11 @@ public final class FabricCapacitiesUpdateSamples {
         resource.update()
             .withTags(mapOf("testKey", "fakeTokenPlaceholder"))
             .withSku(new RpSku().withName("F8").withTier(RpSkuTier.FABRIC))
-            .withProperties(new FabricCapacityUpdateProperties().withAdministration(
-                new CapacityAdministration().withMembers(Arrays.asList("azsdktest2@microsoft.com"))))
+            .withProperties(new FabricCapacityUpdateProperties()
+                .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
+                    .withThresholdCapacityUnitHours(4))
+                .withAdministration(
+                    new CapacityAdministration().withMembers(Arrays.asList("azsdktest2@microsoft.com"))))
             .apply();
     }
 
