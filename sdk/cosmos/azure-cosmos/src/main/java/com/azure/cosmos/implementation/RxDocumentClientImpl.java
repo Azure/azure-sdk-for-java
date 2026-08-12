@@ -2341,22 +2341,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             partitionKeyProvidedByCaller = true;
         }
 
-        // Hierarchical partition key ending in "/id": for a point operation the item id has to be
-        // appended so a caller can address an item using only the prefix of the partition key. This
-        // is only needed when the container's last partition key path is "/id" and the resolved
-        // partition key is not already fully specified. Queries/read-feed, stored procedures and
-        // delete-by-partition-key (ResourceType.PartitionKey) are excluded by shouldEnsureIdInPartitionKey.
-        boolean ensureIdInPartitionKey =
-            shouldEnsureIdInPartitionKey(request, options, partitionKeyDefinition)
-                && PartitionKeyHelper.partitionKeyRequiresIdComponent(partitionKeyDefinition, partitionKeyInternal);
-
         // Materialize the payload (if any) only when it will actually be used: either to extract the
         // partition key value from the document (no partition key provided by the caller), or to read
         // the item id for a "/id"-terminated partition key that still needs it. Only write operations
         // carry a payload here; read/delete/patch recover the id from the request path instead. In
         // particular, when the caller already supplied a fully specified partition key, the body is
         // left untouched (it is never parsed for the partition key).
-        boolean materializeDocument = !partitionKeyProvidedByCaller || ensureIdInPartitionKey;
+        boolean materializeDocument = !partitionKeyProvidedByCaller
+            || partitionKeyRequiresItemId(request, options, partitionKeyDefinition, partitionKeyInternal);
         InternalObjectNode internalObjectNode = null;
         if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
             if (objectDoc instanceof InternalObjectNode) {
@@ -2404,17 +2396,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         }
 
-        // Append the item id to complete a hierarchical partition key ending in "/id". For write
-        // create/upsert operations the id is read from the (already materialized) body; for
-        // read/replace/delete/patch it is recovered from the request path.
-        if (ensureIdInPartitionKey) {
-            OperationType operationType = request.getOperationType();
-            String itemId = (operationType == OperationType.Create || operationType == OperationType.Upsert)
-                ? (internalObjectNode == null ? null : internalObjectNode.getId())
-                : getItemIdFromRequestForPartitionKey(request);
-            partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
-                partitionKeyDefinition, partitionKeyInternal, itemId);
-        }
+        partitionKeyInternal = completePartitionKeyInternalForRequest(
+            request, options, partitionKeyDefinition, partitionKeyInternal, internalObjectNode);
 
         if (partitionKeyInternal == null) {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
@@ -2425,9 +2408,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
     }
 
-    private static boolean shouldEnsureIdInPartitionKey(RxDocumentServiceRequest request,
-                                                        RequestOptions options,
-                                                        PartitionKeyDefinition partitionKeyDefinition) {
+    private static PartitionKeyInternal completePartitionKeyInternalForRequest(
+        RxDocumentServiceRequest request,
+        RequestOptions options,
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal partitionKeyInternal,
+        InternalObjectNode internalObjectNode) {
+
+        if (!partitionKeyRequiresItemId(request, options, partitionKeyDefinition, partitionKeyInternal)) {
+            return partitionKeyInternal;
+        }
+
+        OperationType operationType = request.getOperationType();
+        String itemId = (operationType == OperationType.Create || operationType == OperationType.Upsert)
+            ? (internalObjectNode == null ? null : internalObjectNode.getId())
+            : getItemIdFromRequestForPartitionKey(request);
+
+        return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
+            partitionKeyDefinition, partitionKeyInternal, itemId);
+    }
+
+    private static boolean partitionKeyRequiresItemId(
+        RxDocumentServiceRequest request,
+        RequestOptions options,
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal partitionKeyInternal) {
+
         if (request == null || request.getResourceType() != ResourceType.Document) {
             return false;
         }
@@ -2444,7 +2450,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return false;
         }
 
-        return PartitionKeyHelper.isLastPartitionKeyPathId(partitionKeyDefinition);
+        return PartitionKeyHelper.partitionKeyRequiresIdComponent(
+            partitionKeyDefinition, partitionKeyInternal);
     }
 
     private static String getItemIdFromRequestForPartitionKey(RxDocumentServiceRequest request) {
