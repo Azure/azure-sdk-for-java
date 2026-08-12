@@ -4,5 +4,6 @@
 
 /**
  * Package containing the service clients for ResourceManagementClient.
+ * To manage and control access to your resources, you can define customized policies and assign them at a scope.
  */
 package com.azure.resourcemanager.resources.fluent;
