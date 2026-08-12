@@ -16,16 +16,16 @@ public enum ExpectContinueMode {
      *
      * <p>This is the default behavior when no options are provided.</p>
      */
-    APPLY_ON_THROTTLE,
+    ApplyOnThrottle,
 
     /**
      * Tells the pipeline to apply {@code Expect: 100-continue} regardless of recent error status. The header is still
      * subject to {@link ExpectContinueOptions#getContentLengthThreshold()}.
      */
-    ON,
+    On,
 
     /**
      * Tells the pipeline to never apply {@code Expect: 100-continue}.
      */
-    OFF
+    Off
 }

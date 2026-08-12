@@ -161,7 +161,7 @@ public class ExpectContinueTransportTests {
 
     private static HttpPipeline pipeline(HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, new ExpectContinueOptions().setMode(ExpectContinueMode.ON));
+        BuilderUtils.addExpectContinuePolicy(policies, new ExpectContinueOptions().setMode(ExpectContinueMode.On));
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();

@@ -231,6 +231,8 @@ public final class BuilderHelper {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         QueueHeadersAndQueryParameters.getQueueHeaders().forEach(defaultOptions::addAllowedHeaderName);
         QueueHeadersAndQueryParameters.getQueueQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
+        // Allowed so that it is visible in logs whether a request negotiated Expect: 100-continue.
+        defaultOptions.addAllowedHeaderName(HttpHeaderName.EXPECT.getCaseSensitiveName());
         return defaultOptions;
     }
 

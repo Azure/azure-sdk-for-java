@@ -54,14 +54,14 @@ public final class BuilderUtils {
         Long threshold = options.getContentLengthThreshold();
 
         switch (options.getMode()) {
-            case ON:
+            case On:
                 policies.add(new ExpectContinuePolicy(threshold));
                 break;
 
-            case OFF:
+            case Off:
                 break;
 
-            case APPLY_ON_THROTTLE:
+            case ApplyOnThrottle:
             default:
                 policies.add(new ExpectContinueOnThrottlePolicy(options.getThrottleInterval(), threshold));
                 break;

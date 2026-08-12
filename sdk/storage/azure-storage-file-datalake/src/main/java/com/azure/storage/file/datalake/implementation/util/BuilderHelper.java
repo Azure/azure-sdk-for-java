@@ -166,6 +166,8 @@ public final class BuilderHelper {
         DataLakeHeadersAndQueryParameters.getDataLakeHeaders().forEach(defaultOptions::addAllowedHeaderName);
         DataLakeHeadersAndQueryParameters.getDataLakeQueryParameters()
             .forEach(defaultOptions::addAllowedQueryParamName);
+        // Allowed so that it is visible in logs whether a request negotiated Expect: 100-continue.
+        defaultOptions.addAllowedHeaderName(HttpHeaderName.EXPECT.getCaseSensitiveName());
         return defaultOptions;
     }
 

@@ -645,7 +645,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ExpectContinueOptions().setMode(ExpectContinueMode.OFF), new ClientLogger(BuilderHelperTests.class));
+            new ExpectContinueOptions().setMode(ExpectContinueMode.Off), new ClientLogger(BuilderHelperTests.class));
 
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
@@ -667,7 +667,7 @@ public class BuilderHelperTests {
                         return new MockHttpResponse(request, 201);
                     }
                 }, new ArrayList<>(), new ArrayList<>(), null, null,
-                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class));
+                new ExpectContinueOptions().setMode(ExpectContinueMode.On), new ClientLogger(BuilderHelperTests.class));
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
         pipeline.sendSync(request, Context.NONE);

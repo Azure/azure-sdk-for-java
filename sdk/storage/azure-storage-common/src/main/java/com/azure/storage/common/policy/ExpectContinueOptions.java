@@ -30,7 +30,7 @@ import java.time.Duration;
 public final class ExpectContinueOptions {
     private static final Duration DEFAULT_THROTTLE_INTERVAL = Duration.ofMinutes(1);
 
-    private ExpectContinueMode mode = ExpectContinueMode.APPLY_ON_THROTTLE;
+    private ExpectContinueMode mode = ExpectContinueMode.ApplyOnThrottle;
     private Long contentLengthThreshold;
     private Duration throttleInterval = DEFAULT_THROTTLE_INTERVAL;
 
@@ -43,7 +43,7 @@ public final class ExpectContinueOptions {
     /**
      * Gets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @return The mode. Defaults to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
+     * @return The mode. Defaults to {@link ExpectContinueMode#ApplyOnThrottle}.
      */
     public ExpectContinueMode getMode() {
         return mode;
@@ -52,11 +52,11 @@ public final class ExpectContinueOptions {
     /**
      * Sets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @param mode The mode. A null value resets this to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
+     * @param mode The mode. A null value resets this to {@link ExpectContinueMode#ApplyOnThrottle}.
      * @return The updated options.
      */
     public ExpectContinueOptions setMode(ExpectContinueMode mode) {
-        this.mode = mode == null ? ExpectContinueMode.APPLY_ON_THROTTLE : mode;
+        this.mode = mode == null ? ExpectContinueMode.ApplyOnThrottle : mode;
         return this;
     }
 
@@ -86,7 +86,7 @@ public final class ExpectContinueOptions {
 
     /**
      * Gets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
+     * the service. Only used in mode {@link ExpectContinueMode#ApplyOnThrottle}.
      *
      * @return The interval. Defaults to one minute.
      */
@@ -96,7 +96,7 @@ public final class ExpectContinueOptions {
 
     /**
      * Sets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
+     * the service. Only used in mode {@link ExpectContinueMode#ApplyOnThrottle}.
      *
      * @param throttleInterval The interval. A null value resets this to the default of one minute.
      * @return The updated options.
