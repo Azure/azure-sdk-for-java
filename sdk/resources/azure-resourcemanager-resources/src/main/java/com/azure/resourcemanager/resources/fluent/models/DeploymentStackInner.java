@@ -7,11 +7,22 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.resources.models.DeploymentStackProperties;
+import com.azure.resourcemanager.resources.models.ActionOnUnmanage;
+import com.azure.resourcemanager.resources.models.DenySettings;
+import com.azure.resourcemanager.resources.models.DeploymentParameter;
+import com.azure.resourcemanager.resources.models.DeploymentStackProvisioningState;
+import com.azure.resourcemanager.resources.models.DeploymentStacksDebugSetting;
+import com.azure.resourcemanager.resources.models.DeploymentStacksParametersLink;
+import com.azure.resourcemanager.resources.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.models.ManagedResourceReference;
+import com.azure.resourcemanager.resources.models.ResourceReference;
+import com.azure.resourcemanager.resources.models.ResourceReferenceExtended;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,7 +33,7 @@ public final class DeploymentStackInner extends ProxyResource {
     /*
      * Deployment stack properties.
      */
-    private DeploymentStackProperties properties;
+    private DeploymentStackProperties innerProperties;
 
     /*
      * The geo-location where the resource lives. Required for subscription and management group scoped stacks. The
@@ -62,23 +73,12 @@ public final class DeploymentStackInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Deployment stack properties.
+     * Get the innerProperties property: Deployment stack properties.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public DeploymentStackProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Deployment stack properties.
-     * 
-     * @param properties the properties value to set.
-     * @return the DeploymentStackInner object itself.
-     */
-    public DeploymentStackInner withProperties(DeploymentStackProperties properties) {
-        this.properties = properties;
-        return this;
+    private DeploymentStackProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -163,13 +163,363 @@ public final class DeploymentStackInner extends ProxyResource {
     }
 
     /**
+     * Get the error property: The error detail.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.innerProperties() == null ? null : this.innerProperties().error();
+    }
+
+    /**
+     * Get the template property: The template content. You use this element when you want to pass the template syntax
+     * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
+     * Use either the templateLink property or the template property, but not both.
+     * 
+     * @return the template value.
+     */
+    public Object template() {
+        return this.innerProperties() == null ? null : this.innerProperties().template();
+    }
+
+    /**
+     * Set the template property: The template content. You use this element when you want to pass the template syntax
+     * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
+     * Use either the templateLink property or the template property, but not both.
+     * 
+     * @param template the template value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withTemplate(Object template) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withTemplate(template);
+        return this;
+    }
+
+    /**
+     * Get the templateLink property: The URI of the template. Use either the templateLink property or the template
+     * property, but not both.
+     * 
+     * @return the templateLink value.
+     */
+    public DeploymentStacksTemplateLink templateLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().templateLink();
+    }
+
+    /**
+     * Set the templateLink property: The URI of the template. Use either the templateLink property or the template
+     * property, but not both.
+     * 
+     * @param templateLink the templateLink value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withTemplateLink(DeploymentStacksTemplateLink templateLink) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withTemplateLink(templateLink);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Name and value pairs that define the deployment parameters for the template. Use
+     * this element when providing the parameter values directly in the request, rather than linking to an existing
+     * parameter file. Use either the parametersLink property or the parameters property, but not both.
+     * 
+     * @return the parameters value.
+     */
+    public Map<String, DeploymentParameter> parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: Name and value pairs that define the deployment parameters for the template. Use
+     * this element when providing the parameter values directly in the request, rather than linking to an existing
+     * parameter file. Use either the parametersLink property or the parameters property, but not both.
+     * 
+     * @param parameters the parameters value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withParameters(Map<String, DeploymentParameter> parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the parametersLink property: The URI of parameters file. Use this element to link to an existing parameters
+     * file. Use either the parametersLink property or the parameters property, but not both.
+     * 
+     * @return the parametersLink value.
+     */
+    public DeploymentStacksParametersLink parametersLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().parametersLink();
+    }
+
+    /**
+     * Set the parametersLink property: The URI of parameters file. Use this element to link to an existing parameters
+     * file. Use either the parametersLink property or the parameters property, but not both.
+     * 
+     * @param parametersLink the parametersLink value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withParametersLink(DeploymentStacksParametersLink parametersLink) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withParametersLink(parametersLink);
+        return this;
+    }
+
+    /**
+     * Get the actionOnUnmanage property: Defines the behavior of resources that are no longer managed after the
+     * Deployment stack is updated or deleted.
+     * 
+     * @return the actionOnUnmanage value.
+     */
+    public ActionOnUnmanage actionOnUnmanage() {
+        return this.innerProperties() == null ? null : this.innerProperties().actionOnUnmanage();
+    }
+
+    /**
+     * Set the actionOnUnmanage property: Defines the behavior of resources that are no longer managed after the
+     * Deployment stack is updated or deleted.
+     * 
+     * @param actionOnUnmanage the actionOnUnmanage value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withActionOnUnmanage(ActionOnUnmanage actionOnUnmanage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withActionOnUnmanage(actionOnUnmanage);
+        return this;
+    }
+
+    /**
+     * Get the debugSetting property: The debug setting of the deployment.
+     * 
+     * @return the debugSetting value.
+     */
+    public DeploymentStacksDebugSetting debugSetting() {
+        return this.innerProperties() == null ? null : this.innerProperties().debugSetting();
+    }
+
+    /**
+     * Set the debugSetting property: The debug setting of the deployment.
+     * 
+     * @param debugSetting the debugSetting value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withDebugSetting(DeploymentStacksDebugSetting debugSetting) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withDebugSetting(debugSetting);
+        return this;
+    }
+
+    /**
+     * Get the deploymentScope property: The scope at which the initial deployment should be created. If a scope is not
+     * specified, it will default to the scope of the deployment stack. Valid scopes are: management group (format:
+     * '/providers/Microsoft.Management/managementGroups/{managementGroupId}'), subscription (format:
+     * '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
+     * 
+     * @return the deploymentScope value.
+     */
+    public String deploymentScope() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentScope();
+    }
+
+    /**
+     * Set the deploymentScope property: The scope at which the initial deployment should be created. If a scope is not
+     * specified, it will default to the scope of the deployment stack. Valid scopes are: management group (format:
+     * '/providers/Microsoft.Management/managementGroups/{managementGroupId}'), subscription (format:
+     * '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}').
+     * 
+     * @param deploymentScope the deploymentScope value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withDeploymentScope(String deploymentScope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withDeploymentScope(deploymentScope);
+        return this;
+    }
+
+    /**
+     * Get the description property: Deployment stack description. Max length of 4096 characters.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Deployment stack description. Max length of 4096 characters.
+     * 
+     * @param description the description value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the denySettings property: Defines how resources deployed by the stack are locked.
+     * 
+     * @return the denySettings value.
+     */
+    public DenySettings denySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().denySettings();
+    }
+
+    /**
+     * Set the denySettings property: Defines how resources deployed by the stack are locked.
+     * 
+     * @param denySettings the denySettings value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withDenySettings(DenySettings denySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withDenySettings(denySettings);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: State of the deployment stack.
+     * 
+     * @return the provisioningState value.
+     */
+    public DeploymentStackProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the correlationId property: The correlation id of the last Deployment stack upsert or delete operation. It is
+     * in GUID format and is used for tracing.
+     * 
+     * @return the correlationId value.
+     */
+    public String correlationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().correlationId();
+    }
+
+    /**
+     * Get the bypassStackOutOfSyncError property: Flag to bypass service errors that indicate the stack resource list
+     * is not correctly synchronized.
+     * 
+     * @return the bypassStackOutOfSyncError value.
+     */
+    public Boolean bypassStackOutOfSyncError() {
+        return this.innerProperties() == null ? null : this.innerProperties().bypassStackOutOfSyncError();
+    }
+
+    /**
+     * Set the bypassStackOutOfSyncError property: Flag to bypass service errors that indicate the stack resource list
+     * is not correctly synchronized.
+     * 
+     * @param bypassStackOutOfSyncError the bypassStackOutOfSyncError value to set.
+     * @return the DeploymentStackInner object itself.
+     */
+    public DeploymentStackInner withBypassStackOutOfSyncError(Boolean bypassStackOutOfSyncError) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentStackProperties();
+        }
+        this.innerProperties().withBypassStackOutOfSyncError(bypassStackOutOfSyncError);
+        return this;
+    }
+
+    /**
+     * Get the detachedResources property: An array of resources that were detached during the most recent Deployment
+     * stack update. Detached means that the resource was removed from the template, but no relevant deletion operations
+     * were specified. So, the resource still exists while no longer being associated with the stack.
+     * 
+     * @return the detachedResources value.
+     */
+    public List<ResourceReference> detachedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().detachedResources();
+    }
+
+    /**
+     * Get the deletedResources property: An array of resources that were deleted during the most recent Deployment
+     * stack update. Deleted means that the resource was removed from the template and relevant deletion operations were
+     * specified.
+     * 
+     * @return the deletedResources value.
+     */
+    public List<ResourceReference> deletedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletedResources();
+    }
+
+    /**
+     * Get the failedResources property: An array of resources that failed to reach goal state during the most recent
+     * update. Each resourceId is accompanied by an error message.
+     * 
+     * @return the failedResources value.
+     */
+    public List<ResourceReferenceExtended> failedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().failedResources();
+    }
+
+    /**
+     * Get the resources property: An array of resources currently managed by the deployment stack.
+     * 
+     * @return the resources value.
+     */
+    public List<ManagedResourceReference> resources() {
+        return this.innerProperties() == null ? null : this.innerProperties().resources();
+    }
+
+    /**
+     * Get the deploymentId property: The resourceId of the deployment resource created by the deployment stack.
+     * 
+     * @return the deploymentId value.
+     */
+    public String deploymentId() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentId();
+    }
+
+    /**
+     * Get the outputs property: The outputs of the deployment resource created by the deployment stack.
+     * 
+     * @return the outputs value.
+     */
+    public Object outputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
+    }
+
+    /**
+     * Get the duration property: The duration of the last successful Deployment stack update.
+     * 
+     * @return the duration value.
+     */
+    public String duration() {
+        return this.innerProperties() == null ? null : this.innerProperties().duration();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 
@@ -179,7 +529,7 @@ public final class DeploymentStackInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -208,7 +558,7 @@ public final class DeploymentStackInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedDeploymentStackInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedDeploymentStackInner.properties = DeploymentStackProperties.fromJson(reader);
+                    deserializedDeploymentStackInner.innerProperties = DeploymentStackProperties.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedDeploymentStackInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
