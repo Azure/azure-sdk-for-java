@@ -1,0 +1,7 @@
+[
+  {
+    "id": 71004,
+    "user": {"login": "github-actions[bot]"},
+    "body": "<!-- management-autopr-review -->\n## Automated management AutoPR review\n\n- Head SHA: `1111111111111111111111111111111111111111`\n\n### Informational\n\n- `[MGMT-API-VERSION]` New — Package API version is `2026-07-01-preview`."
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "number": 12007,
+  "title": "[AutoPR azure-resourcemanager-compute-bulkactions]-generated-from-SDK Generation",
+  "user": {"login": "app/azure-sdk-automation"},
+  "base": {"ref": "main", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "head": {"sha": "1200712007120071200712007120071200712007", "repo": {"full_name": "Azure/azure-sdk-for-java"}},
+  "draft": false,
+  "body": "Release Plan link: https://azsdk-releaseplan-dashboard-hveph5aqhhcfhtgu.westus-01.azurewebsites.net/?releaseplan=35926",
+  "changed_files": 2
+}

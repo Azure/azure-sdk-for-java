@@ -1,0 +1,11 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/CreateMode.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/CreateMode.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/CreateMode.java
+@@ -0,0 +1,6 @@
++package com.azure.resourcemanager.contosowidgets.models;
++
++public final class CreateMode {
++    public static final CreateMode DEFAULT = new CreateMode("Default");
++    private final String value;
++}

@@ -1,0 +1,14 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+index f6e7588..2dddc46 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md
+@@ -1,3 +1,9 @@
+ # Release History
++
++## 1.3.0-beta.2 (Unreleased)
++
++- Package api-version 2026-04-01-preview.
++
++- Added create mode support.
+ 
+ ## 1.3.0-beta.1 (2026-03-01)

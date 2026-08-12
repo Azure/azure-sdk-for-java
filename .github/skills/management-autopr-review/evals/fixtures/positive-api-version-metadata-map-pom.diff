@@ -1,0 +1,10 @@
+diff --git a/sdk/compute/azure-resourcemanager-compute/pom.xml b/sdk/compute/azure-resourcemanager-compute/pom.xml
+index 997d804..58fa9c2 100644
+--- a/sdk/compute/azure-resourcemanager-compute/pom.xml
++++ b/sdk/compute/azure-resourcemanager-compute/pom.xml
+@@ -8,4 +8,4 @@
+   <groupId>com.azure.resourcemanager</groupId>
+   <artifactId>azure-resourcemanager-compute</artifactId>
+-  <version>1.1.0</version>
++  <version>1.2.0</version>
+ </project>

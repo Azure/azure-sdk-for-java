@@ -1,0 +1,9 @@
+diff --git a/sdk/containerservice/azure-resourcemanager-containerservice/src/main/java/com/azure/resourcemanager/containerservice/ContianerServiceManager.java b/sdk/containerservice/azure-resourcemanager-containerservice/src/main/java/com/azure/resourcemanager/containerservice/ContianerServiceManager.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/containerservice/azure-resourcemanager-containerservice/src/main/java/com/azure/resourcemanager/containerservice/ContianerServiceManager.java
+@@ -0,0 +1,4 @@
++package com.azure.resourcemanager.containerservice;
++
++public final class ContianerServiceManager {
++}
