@@ -19,7 +19,7 @@ The evaluation runner also verifies that the source and compiled workflow allow
 Run from the repository root:
 
 ```powershell
-.\.github\skills\evals\management-autopr-reviewer\run-evals.ps1 -Suite true-negatives
+.\.github\skills\management-autopr-review\evals\run-evals.ps1 -Suite true-negatives
 ```
 
 The runner expects a built sibling checkout at `..\vally`. Building Vally

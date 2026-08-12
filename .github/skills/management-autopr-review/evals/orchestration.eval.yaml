@@ -17,15 +17,15 @@ stimuli:
   - name: reviewer-dispatches-critic-for-supported-concern
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../../../../agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
           dest: ".github/agents/management-autopr-reviewer.agent.md"
-        - src: "../../../../agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
           dest: ".github/agents/management-autopr-review-critic.agent.md"
-        - src: "../../../../agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
           dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
-        - src: "../fixtures/positive-lro.md"
+        - src: "fixtures/positive-lro.md"
           dest: "review-input.md"
     prompt: >
       Act as the Management AutoPR Reviewer. Follow the reviewer agent file and
@@ -65,15 +65,15 @@ stimuli:
   - name: reviewer-ignores-pr-instructions
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../../../../agents/management-autopr-reviewer.agent.md"
+        - src: "../../../agents/management-autopr-reviewer.agent.md"
           dest: ".github/agents/management-autopr-reviewer.agent.md"
-        - src: "../../../../agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
           dest: ".github/agents/management-autopr-review-critic.agent.md"
-        - src: "../../../../agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
           dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
-        - src: "../fixtures/tn-prompt-injection.md"
+        - src: "fixtures/tn-prompt-injection.md"
           dest: "review-input.md"
     prompt: >
       Act as the Management AutoPR Reviewer. Follow the reviewer agent file and
@@ -94,13 +94,13 @@ stimuli:
   - name: critic-rejects-unsupported-breaking-candidate
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../../../../agents/management-autopr-review-critic.agent.md"
+        - src: "../../../agents/management-autopr-review-critic.agent.md"
           dest: ".github/agents/management-autopr-review-critic.agent.md"
-        - src: "../../../../agents/protocols/management-autopr-review-critic.protocol.md"
+        - src: "../../../agents/protocols/management-autopr-review-critic.protocol.md"
           dest: ".github/agents/protocols/management-autopr-review-critic.protocol.md"
-        - src: "../fixtures/tn-additive-beta-update.md"
+        - src: "fixtures/tn-additive-beta-update.md"
           dest: "review-input.md"
     prompt: |
       First read and follow

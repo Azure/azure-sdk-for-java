@@ -205,6 +205,9 @@ When a new head SHA passes the Java gate, include each still-applicable prior
 item as `Carried forward` in the replacement current-state comment; do not
 restate its question as `New`.
 
+Code-format only the concern ID. Do not wrap the complete finding in backticks,
+because evidence may contain its own inline code spans.
+
 Output:
 
 ```markdown
@@ -221,15 +224,15 @@ Output:
 
 ### Blocking
 
-- `[MGMT-...] New|Carried forward|Resolved — evidence and requested action`
+- `[MGMT-...]` New|Carried forward|Resolved — evidence and requested action
 
 ### Warning
 
-- `[MGMT-...] New|Carried forward|Resolved — evidence and verification request`
+- `[MGMT-...]` New|Carried forward|Resolved — evidence and verification request
 
 ### Informational
 
-- `[MGMT-...] New|Carried forward|Resolved — context`
+- `[MGMT-...]` New|Carried forward|Resolved — context
 ```
 
 Order sections as Blocking, Warning, Informational and omit empty sections.
