@@ -13,11 +13,11 @@ public final class RpSkuEnumerationForExistingResourceResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RpSkuEnumerationForExistingResourceResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"nhutjeltmrldhugj\",\"sku\":{\"name\":\"zdatqxhocdg\",\"tier\":\"Fabric\"}}],\"nextLink\":\"lgphu\"}")
+            "{\"value\":[{\"resourceType\":\"sntnbybkzgcw\",\"sku\":{\"name\":\"wclxxwrl\",\"tier\":\"Fabric\"}},{\"resourceType\":\"ouskcqvkocrc\",\"sku\":{\"name\":\"dkwt\",\"tier\":\"Fabric\"}},{\"resourceType\":\"xbnjbiksq\",\"sku\":{\"name\":\"gls\",\"tier\":\"Fabric\"}},{\"resourceType\":\"inqpjwnzll\",\"sku\":{\"name\":\"fmppe\",\"tier\":\"Fabric\"}}],\"nextLink\":\"mgxsab\"}")
             .toObject(RpSkuEnumerationForExistingResourceResult.class);
-        Assertions.assertEquals("nhutjeltmrldhugj", model.value().get(0).resourceType());
-        Assertions.assertEquals("zdatqxhocdg", model.value().get(0).sku().name());
+        Assertions.assertEquals("sntnbybkzgcw", model.value().get(0).resourceType());
+        Assertions.assertEquals("wclxxwrl", model.value().get(0).sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.value().get(0).sku().tier());
-        Assertions.assertEquals("lgphu", model.nextLink());
+        Assertions.assertEquals("mgxsab", model.nextLink());
     }
 }

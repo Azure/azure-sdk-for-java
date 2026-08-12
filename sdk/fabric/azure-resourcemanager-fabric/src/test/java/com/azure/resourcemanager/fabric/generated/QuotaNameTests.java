@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaName model = BinaryData.fromString("{\"value\":\"prwzwbnguitnwui\",\"localizedValue\":\"a\"}")
+        QuotaName model = BinaryData.fromString("{\"value\":\"xwjkcprbnwbxg\",\"localizedValue\":\"tbvpysszdnru\"}")
             .toObject(QuotaName.class);
-        Assertions.assertEquals("prwzwbnguitnwui", model.value());
-        Assertions.assertEquals("a", model.localizedValue());
+        Assertions.assertEquals("xwjkcprbnwbxg", model.value());
+        Assertions.assertEquals("tbvpysszdnru", model.localizedValue());
     }
 }

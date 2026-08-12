@@ -1,63 +1,14 @@
 # Release History
 
-## 1.1.0 (2026-08-07)
-
-- Azure Resource Manager Fabric client library for Java. This package contains Microsoft Azure SDK for Fabric Management SDK.  Package api-version 2026-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-
-### Breaking Changes
-
-#### `models.FabricCapacityUpdate` was modified
-
-* `validate()` was removed
-
-#### `models.FabricCapacityProperties` was modified
-
-* `validate()` was removed
-
-#### `models.CheckNameAvailabilityRequest` was modified
-
-* `validate()` was removed
-
-#### `models.RpSku` was modified
-
-* `validate()` was removed
-
-#### `models.OperationDisplay` was modified
-
-* `validate()` was removed
-
-#### `models.FabricCapacityUpdateProperties` was modified
-
-* `validate()` was removed
-
-#### `models.CapacityAdministration` was modified
-
-* `validate()` was removed
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
-* `models.QuotaName` was added
+### Breaking Changes
 
-* `models.Quota` was added
+### Bugs Fixed
 
-* `models.CapacityOverageState` was added
-
-* `models.CapacityOverageProperties` was added
-
-#### `models.FabricCapacityProperties` was modified
-
-* `withOverage(models.CapacityOverageProperties)` was added
-* `overage()` was added
-
-#### `models.FabricCapacityUpdateProperties` was modified
-
-* `withOverage(models.CapacityOverageProperties)` was added
-* `overage()` was added
-
-#### `models.FabricCapacities` was modified
-
-* `listUsages(java.lang.String,com.azure.core.util.Context)` was added
-* `listUsages(java.lang.String)` was added
+### Other Changes
 
 ## 1.0.0 (2024-10-17)
 
