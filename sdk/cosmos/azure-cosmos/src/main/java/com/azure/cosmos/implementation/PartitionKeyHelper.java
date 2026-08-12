@@ -69,10 +69,13 @@ public class PartitionKeyHelper {
             return false;
         }
 
-        boolean hasProvidedPartitionKey =
-            providedPartitionKey != null && providedPartitionKey.getComponents() != null;
-        if (!hasProvidedPartitionKey) {
+        if (providedPartitionKey == null) {
             return true;
+        }
+
+        // PartitionKey.NONE is an explicit sentinel, not an omitted partition key.
+        if (providedPartitionKey.getComponents() == null) {
+            return false;
         }
 
         int pathCount = partitionKeyDefinition.getPaths().size();
@@ -88,6 +91,7 @@ public class PartitionKeyHelper {
      *   <li>If the last partition key path is not "/id", the provided partition key is returned unchanged.</li>
      *   <li>If the provided partition key already contains all components (it is fully specified,
      *       including the id), it is returned unchanged.</li>
+     *   <li>If the provided partition key is {@link PartitionKey#NONE}, it is returned unchanged.</li>
      *   <li>If the provided partition key is exactly the prefix (component count == pathCount - 1),
      *       the item id is appended.</li>
      *   <li>If no partition key is provided, a partition key of {@code [null * (pathCount - 1), id]}

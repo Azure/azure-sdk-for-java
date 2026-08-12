@@ -146,7 +146,7 @@ final class BulkExecutorUtil {
      * for create/upsert the id is read from the (serialized) item body. Returns {@code null} when the
      * id cannot be determined.
      */
-    private static String resolveItemId(ItemBulkOperation<?, ?> operation, CosmosItemSerializer effectiveItemSerializer) {
+    static String resolveItemId(ItemBulkOperation<?, ?> operation, CosmosItemSerializer effectiveItemSerializer) {
         if (StringUtils.isNotEmpty(operation.getId())) {
             return operation.getId();
         }
@@ -160,7 +160,7 @@ final class BulkExecutorUtil {
             ? effectiveItemSerializer
             : operation.getEffectiveItemSerializerForResult();
 
-        Map<String, Object> serializedItem = serializer.serialize(item);
+        Map<String, Object> serializedItem = operation.getSerializedItem(serializer);
         Object idValue = serializedItem == null ? null : serializedItem.get(Constants.Properties.ID);
         return idValue == null ? null : idValue.toString();
     }

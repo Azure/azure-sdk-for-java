@@ -62,7 +62,7 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_HierarchicalIdAsPartitionKeyTest() {
         client = getClientBuilder().buildClient();
-        database = createSyncDatabase(client, CosmosDatabaseForTest.generateId());
+        database = createTestSyncDatabase(client, "hierarchical-id-partition-key");
 
         PartitionKeyDefinition hpkDefinition = new PartitionKeyDefinition();
         hpkDefinition.setKind(PartitionKind.MULTI_HASH);
@@ -129,6 +129,22 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkReplaceUsesAddressedItemIdForPartitionKey() {
+        String addressedId = UUID.randomUUID().toString();
+        PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add("pkReplace").build();
+        hpkContainer.createItem(
+            new TestItem(addressedId, "pkReplace", "original"),
+            prefixPartitionKey,
+            new CosmosItemRequestOptions());
+
+        TestItem replacement = new TestItem(UUID.randomUUID().toString(), "pkReplace", "replacement");
+        assertThatThrownBy(() -> hpkContainer.replaceItem(
+            replacement, addressedId, prefixPartitionKey, new CosmosItemRequestOptions()))
+            .isInstanceOfSatisfying(CosmosException.class, exception ->
+                assertThat(exception.getStatusCode()).isEqualTo(400));
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void hpkReadManyWithPrefixPartitionKey() {
         String id1 = UUID.randomUUID().toString();
         String id2 = UUID.randomUUID().toString();
@@ -146,6 +162,21 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
 
         FeedResponse<TestItem> feedResponse = hpkContainer.readMany(itemIdentities, TestItem.class);
         assertThat(feedResponse.getResults()).hasSize(2);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkReadManyDoesNotRewriteNonePartitionKey() {
+        String id = UUID.randomUUID().toString();
+        hpkContainer.createItem(
+            new TestItem(id, null, "v1"),
+            new PartitionKeyBuilder().addNullValue().build(),
+            new CosmosItemRequestOptions());
+
+        List<CosmosItemIdentity> identities =
+            Collections.singletonList(new CosmosItemIdentity(PartitionKey.NONE, id));
+
+        assertThatThrownBy(() -> hpkContainer.readMany(identities, TestItem.class))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -213,6 +244,24 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
             .isEqualTo("patched");
         assertThatThrownBy(() -> hpkContainer.readItem(deleteId, prefixPartitionKey, TestItem.class))
             .isInstanceOf(CosmosException.class);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkBulkDoesNotRewriteNonePartitionKey() {
+        String id = UUID.randomUUID().toString();
+        hpkContainer.createItem(
+            new TestItem(id, null, "v1"),
+            new PartitionKeyBuilder().addNullValue().build(),
+            new CosmosItemRequestOptions());
+
+        List<CosmosItemOperation> operations = Collections.singletonList(
+            CosmosBulkOperations.getDeleteItemOperation(id, PartitionKey.NONE));
+
+        assertThatThrownBy(() -> hpkContainer.executeBulkOperations(operations).iterator().hasNext())
+            .isInstanceOf(IllegalArgumentException.class);
+        assertThat(hpkContainer.readItem(
+            id, new PartitionKeyBuilder().addNullValue().build(), TestItem.class).getItem().getId())
+            .isEqualTo(id);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

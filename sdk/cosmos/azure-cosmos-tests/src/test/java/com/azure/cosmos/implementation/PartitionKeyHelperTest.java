@@ -92,6 +92,18 @@ public class PartitionKeyHelperTest {
     }
 
     @Test(groups = "unit")
+    public void ensureId_nonePartitionKey_returnsOriginalPartitionKey() {
+        PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id");
+        PartitionKeyInternal provided = toInternal(PartitionKey.NONE);
+
+        assertThat(PartitionKeyHelper.partitionKeyRequiresIdComponent(definition, provided)).isFalse();
+        assertThat(PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId"))
+            .isSameAs(provided);
+        assertThat(PartitionKeyHelper.ensureIdIsInPartitionKey(definition, PartitionKey.NONE, "myId"))
+            .isSameAs(PartitionKey.NONE);
+    }
+
+    @Test(groups = "unit")
     public void ensureId_nullPartitionKey_buildsPartitionKeyFromId() {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id");
 

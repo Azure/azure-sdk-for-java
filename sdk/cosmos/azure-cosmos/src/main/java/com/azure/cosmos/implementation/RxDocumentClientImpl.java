@@ -2405,11 +2405,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         // Append the item id to complete a hierarchical partition key ending in "/id". For write
-        // operations the id is read from the (already materialized) body; for read/delete/patch it is
-        // recovered from the request path.
+        // create/upsert operations the id is read from the (already materialized) body; for
+        // read/replace/delete/patch it is recovered from the request path.
         if (ensureIdInPartitionKey) {
-            String itemId = (internalObjectNode != null)
-                ? internalObjectNode.getId()
+            OperationType operationType = request.getOperationType();
+            String itemId = (operationType == OperationType.Create || operationType == OperationType.Upsert)
+                ? (internalObjectNode == null ? null : internalObjectNode.getId())
                 : getItemIdFromRequestForPartitionKey(request);
             partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
                 partitionKeyDefinition, partitionKeyInternal, itemId);
@@ -2451,12 +2452,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return null;
         }
 
-        // The trailing path segment is only guaranteed to be the item id for read/delete/patch
+        // The trailing path segment is only guaranteed to be the item id for read/replace/delete/patch
         // requests (their resource address ends with "docs/{id}"). Restrict the extraction to those
         // operations so a future change that routes a differently-shaped path here cannot silently
         // turn a non-id path segment into the last component of the partition key.
         OperationType operationType = request.getOperationType();
         if (operationType != OperationType.Read
+            && operationType != OperationType.Replace
             && operationType != OperationType.Delete
             && operationType != OperationType.Patch) {
             return null;

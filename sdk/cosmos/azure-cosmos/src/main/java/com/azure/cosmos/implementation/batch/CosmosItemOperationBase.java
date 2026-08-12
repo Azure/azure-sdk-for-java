@@ -23,18 +23,23 @@ public abstract class CosmosItemOperationBase implements CosmosItemOperation {
 
     abstract JsonSerializable getSerializedOperationInternal(CosmosItemSerializer effectiveItemSerializer);
 
-    public JsonSerializable getSerializedOperation(CosmosItemSerializer effectiveItemSerializer) {
+    public synchronized JsonSerializable getSerializedOperation(CosmosItemSerializer effectiveItemSerializer) {
         if (this.serializedOperation.get() == null) {
             this.serializedOperation.compareAndSet(null, this.getSerializedOperationInternal(effectiveItemSerializer));
         }
         return this.serializedOperation.get();
     }
 
-    public int getSerializedLength(CosmosItemSerializer effectiveItemSerializer) {
+    public synchronized int getSerializedLength(CosmosItemSerializer effectiveItemSerializer) {
         if (this.serializedLengthReference.get() == null) {
             this.serializedLengthReference.compareAndSet(null, this.getSerializedLengthInternal(effectiveItemSerializer));
         }
         return this.serializedLengthReference.get();
+    }
+
+    protected synchronized void resetSerializedOperation() {
+        this.serializedOperation.set(null);
+        this.serializedLengthReference.set(null);
     }
 
     private int getSerializedLengthInternal(CosmosItemSerializer effectiveItemSerializer) {
