@@ -1,12 +1,10 @@
 # Release History
 
-## 1.59.0-beta.1 (Unreleased)
+## 1.59.0 (2026-08-12)
 
 ### Features Added
 
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
