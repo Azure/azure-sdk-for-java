@@ -260,6 +260,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @Disabled("TODO: restore the test after resources lib release. Playback URI casing changed from resourceGroups to resourcegroups.")
     public void testGenericResources() {
         // Create some resources
         NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups()
