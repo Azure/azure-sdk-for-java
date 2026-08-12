@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -20,6 +19,7 @@ import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.test.shared.http.ScriptedHttpClient;
 import com.azure.storage.common.test.shared.session.SessionTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +34,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,8 +81,8 @@ public class SessionTokenCredentialPolicyTest {
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure));
 
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(200)  // first request: acquisition fails, bearer fallback
-            .thenReturn(200); // second request: cooldown active, bearer fallback
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200)  // first request: acquisition fails, bearer fallback
+            .enqueueResponse(200); // second request: cooldown active, bearer fallback
         HttpPipeline pipeline = buildPipeline(transport);
 
         StepVerifier.create(pipeline.send(blobGetRequest()))
@@ -108,8 +106,8 @@ public class SessionTokenCredentialPolicyTest {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure))       // first call: acquisition fails
             .thenReturn(Mono.just(credentialWithToken())); // third call: cooldown expired
 
-        SequencedMockHttpClient transport
-            = new SequencedMockHttpClient().thenReturn(200).thenReturn(200).thenReturn(200);
+        ScriptedHttpClient transport
+            = new ScriptedHttpClient().enqueueResponse(200).enqueueResponse(200).enqueueResponse(200);
         HttpPipeline pipeline = buildPipeline(transport);
 
         StepVerifier.create(pipeline.send(blobGetRequest()))
@@ -131,7 +129,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policySignsRequestWithSessionCredential() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(200);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -150,8 +148,8 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerAsync() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(401)  // session auth returns 401
-            .thenReturn(200); // bearer retry succeeds
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)  // session auth returns 401
+            .enqueueResponse(200); // bearer retry succeeds
 
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
@@ -171,7 +169,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyReturns403WithoutRetry() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(403);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(403);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -185,7 +183,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyReturnsDataRequest503WithoutBearerFallbackAsync() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(503);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(503);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -200,7 +198,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyFallsToBearerOn400Async() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(400).thenReturn(200);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(400).enqueueResponse(200);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -219,7 +217,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpRequest request = blobGetRequest();
         HttpHeaders responseHeaders
             = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-auth-info"), "session_expiring");
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(200, responseHeaders);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200, responseHeaders);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -238,7 +236,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void noSessionExpiringHintDoesNotForceBackgroundRefresh() {
         HttpRequest request = blobGetRequest();
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(200);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -260,7 +258,7 @@ public class SessionTokenCredentialPolicyTest {
             .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
             .set(HttpHeaderName.RANGE, "bytes=0-1023");
 
-        SequencedMockHttpClient transport = new SequencedMockHttpClient().thenReturn(200);
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(cred));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -351,7 +349,7 @@ public class SessionTokenCredentialPolicyTest {
 
     // Helpers
 
-    private HttpPipeline buildPipeline(SequencedMockHttpClient transport) {
+    private HttpPipeline buildPipeline(ScriptedHttpClient transport) {
         return new HttpPipelineBuilder().httpClient(transport).policies(policy).build();
     }
 
@@ -395,44 +393,6 @@ public class SessionTokenCredentialPolicyTest {
         }).when(context).setData(anyString(), org.mockito.ArgumentMatchers.any());
 
         return context;
-    }
-
-    private static final class SequencedMockHttpClient implements HttpClient {
-        private final ConcurrentLinkedQueue<ResponseSpec> responses = new ConcurrentLinkedQueue<>();
-        private final AtomicInteger requestCount = new AtomicInteger();
-
-        private SequencedMockHttpClient thenReturn(int statusCode) {
-            return thenReturn(statusCode, new HttpHeaders());
-        }
-
-        private SequencedMockHttpClient thenReturn(int statusCode, HttpHeaders headers) {
-            responses.add(new ResponseSpec(statusCode, headers));
-            return this;
-        }
-
-        @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
-            requestCount.incrementAndGet();
-            ResponseSpec response = responses.poll();
-            if (response == null) {
-                return Mono.error(new IllegalStateException("No response configured for request."));
-            }
-            return Mono.just(new MockHttpResponse(request, response.statusCode, response.headers));
-        }
-
-        private int getRequestCount() {
-            return requestCount.get();
-        }
-
-        private static final class ResponseSpec {
-            private final int statusCode;
-            private final HttpHeaders headers;
-
-            private ResponseSpec(int statusCode, HttpHeaders headers) {
-                this.statusCode = statusCode;
-                this.headers = headers;
-            }
-        }
     }
 
     private static final class MutableClock extends Clock {

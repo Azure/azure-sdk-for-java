@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,10 +31,10 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
 
     @Test
     public void createSessionReturnsTokenAndKey() {
-        BlobContainerClient oauthCc = getOAuthServiceClient().getBlobContainerClient(cc.getBlobContainerName());
-        TokenCredentialSessionProvider sessionProvider = new TokenCredentialSessionProvider(oauthCc.getHttpPipeline(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
-            ENVIRONMENT.getPrimaryAccount().getName());
+        AtomicReference<String> requestPath = new AtomicReference<>();
+        TokenCredentialSessionProvider sessionProvider = new TokenCredentialSessionProvider(
+            createOAuthPipeline(new AtomicInteger(), requestPath), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         SessionCredential credential
             = sessionProvider.getSession(new SessionRequestContext().setContainerName(cc.getBlobContainerName()));
@@ -42,15 +43,15 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
         assertNotNull(credential.getSessionToken());
         assertNotNull(credential.getSessionKey());
         assertNotNull(credential.getExpiresAt());
+        assertEquals("/" + cc.getBlobContainerName(), requestPath.get());
     }
 
     @Test
     public void createSessionAsyncReturnsTokenAndKey() {
-        BlobContainerAsyncClient oauthCc
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        TokenCredentialSessionProvider sessionProvider = new TokenCredentialSessionProvider(oauthCc.getHttpPipeline(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), BlobServiceVersion.getLatest(),
-            ENVIRONMENT.getPrimaryAccount().getName());
+        AtomicReference<String> requestPath = new AtomicReference<>();
+        TokenCredentialSessionProvider sessionProvider = new TokenCredentialSessionProvider(
+            createOAuthPipeline(new AtomicInteger(), requestPath), ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(),
+            BlobServiceVersion.getLatest(), ENVIRONMENT.getPrimaryAccount().getName());
 
         StepVerifier
             .create(sessionProvider
@@ -62,6 +63,7 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
                 assertNotNull(credential.getExpiresAt());
             })
             .verifyComplete();
+        assertEquals("/" + ccAsync.getBlobContainerName(), requestPath.get());
     }
 
     @Test
@@ -169,8 +171,15 @@ public class TokenCredentialSessionProviderTests extends BlobTestBase {
     }
 
     private HttpPipeline createOAuthPipeline(AtomicInteger policyInvocationCount) {
+        return createOAuthPipeline(policyInvocationCount, null);
+    }
+
+    private HttpPipeline createOAuthPipeline(AtomicInteger policyInvocationCount, AtomicReference<String> requestPath) {
         HttpPipelinePolicy policy = (context, next) -> {
             policyInvocationCount.incrementAndGet();
+            if (requestPath != null) {
+                requestPath.set(context.getHttpRequest().getUrl().getPath());
+            }
             return next.process();
         };
 
