@@ -15,13 +15,6 @@ import reactor.core.publisher.Mono;
  * {@link com.azure.storage.blob.BlobServiceClientBuilder#sessionOptions(SessionOptions)}, to have it used in
  * place of the default, built-in provider (which calls the storage service's CreateSession REST API directly
  * and manages its own per-container caching).
- * <p>
- * This is modeled loosely on {@code com.azure.core.credential.TokenCredential} from azure-core: a small,
- * request-parameterized factory for a credential-bearing value. Unlike {@code TokenCredential}, it is
- * deliberately <em>not</em> annotated {@code @FunctionalInterface} - both {@link #getSessionAsync} and
- * {@link #getSession} are true abstract methods, so implementers must provide efficient sync and async paths
- * independently rather than being forced to accept a default, blocking-on-async implementation of the
- * synchronous method (or vice versa).
  *
  * <h2>Lifecycle</h2>
  * <p>
