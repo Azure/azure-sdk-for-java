@@ -13,6 +13,9 @@ import java.util.function.Predicate;
 
 /**
  * Consumes a single HTTP response as a server-sent event stream.
+ *
+ * <p>The supplied response must implement {@link java.io.Closeable}. The stream closes the physical response when
+ * consumption ends; a response that is not closeable is rejected with {@link IllegalArgumentException}.</p>
  */
 public final class ServerSentEventStreams {
     private ServerSentEventStreams() {
@@ -28,6 +31,7 @@ public final class ServerSentEventStreams {
      * @param converter Converts an event name and data payload into the generated event type.
      * @param <T> The type of the event data.
      * @return A flux of decoded server-sent events.
+     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
         BiFunction<String, String, T> converter) {
@@ -47,6 +51,7 @@ public final class ServerSentEventStreams {
      * @param terminalEvent Identifies the inclusive terminal event.
      * @param <T> The type of the event data.
      * @return A flux of decoded server-sent events.
+     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
         BiFunction<String, String, T> converter, Predicate<ServerSentEvent<T>> terminalEvent) {
@@ -63,6 +68,7 @@ public final class ServerSentEventStreams {
      * @param converter Converts an event name and data payload into the generated event type.
      * @param listener The listener that receives decoded events and lifecycle notifications.
      * @param <T> The type of the event data.
+     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> converter,
         ServerSentEventListener<T> listener) {
@@ -82,6 +88,7 @@ public final class ServerSentEventStreams {
      * @param terminalEvent Identifies the inclusive terminal event.
      * @param listener The listener that receives decoded events and lifecycle notifications.
      * @param <T> The type of the event data.
+     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> converter,
         Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {

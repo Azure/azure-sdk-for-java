@@ -91,7 +91,7 @@ public final class HttpUtils {
 
         for (String value : headerValue.split(",")) {
             String[] mediaRange = value.split(";");
-            if (TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange[0].trim()) && !hasZeroQuality(mediaRange)) {
+            if (TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange[0].trim()) && hasPositiveQuality(mediaRange)) {
                 return true;
             }
         }
@@ -110,24 +110,54 @@ public final class HttpUtils {
             return false;
         }
 
-        int parameterSeparator = headerValue.indexOf(';');
-        String mediaType = parameterSeparator < 0 ? headerValue : headerValue.substring(0, parameterSeparator);
-        return TEXT_EVENT_STREAM.equalsIgnoreCase(mediaType.trim());
-    }
+        String[] mediaTypeAndParameters = headerValue.split(";");
+        if (!TEXT_EVENT_STREAM.equalsIgnoreCase(mediaTypeAndParameters[0].trim())) {
+            return false;
+        }
 
-    private static boolean hasZeroQuality(String[] mediaRange) {
-        for (int i = 1; i < mediaRange.length; i++) {
-            String parameter = mediaRange[i].trim();
-            if (parameter.regionMatches(true, 0, "q=", 0, 2)) {
-                try {
-                    return Double.parseDouble(parameter.substring(2).trim()) == 0D;
-                } catch (NumberFormatException ignored) {
-                    return false;
-                }
+        for (int i = 1; i < mediaTypeAndParameters.length; i++) {
+            String parameter = mediaTypeAndParameters[i].trim();
+            int equalsIndex = parameter.indexOf('=');
+            if (equalsIndex > 0
+                && "charset".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())
+                && !isUtf8(parameter.substring(equalsIndex + 1).trim())) {
+                return false;
             }
         }
 
-        return false;
+        return true;
+    }
+
+    private static boolean hasPositiveQuality(String[] mediaRange) {
+        boolean qualityFound = false;
+        for (int i = 1; i < mediaRange.length; i++) {
+            String parameter = mediaRange[i].trim();
+            int equalsIndex = parameter.indexOf('=');
+            if (equalsIndex > 0 && "q".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())) {
+                if (qualityFound
+                    || !parameter.regionMatches(true, 0, "q=", 0, 2)
+                    || !isValidPositiveQuality(parameter.substring(2))) {
+                    return false;
+                }
+                qualityFound = true;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isValidPositiveQuality(String quality) {
+        return quality.matches("0(?:\\.[0-9]{0,3})?|1(?:\\.0{0,3})?") && !quality.matches("0(?:\\.0{0,3})?");
+    }
+
+    private static boolean isUtf8(String charset) {
+        return "utf-8".equalsIgnoreCase(unquote(charset));
+    }
+
+    private static String unquote(String value) {
+        return value.length() > 1 && value.charAt(0) == '"' && value.charAt(value.length() - 1) == '"'
+            ? value.substring(1, value.length() - 1)
+            : value;
     }
 
     /**

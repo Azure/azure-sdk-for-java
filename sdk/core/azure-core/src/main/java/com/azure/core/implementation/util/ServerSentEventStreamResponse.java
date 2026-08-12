@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Owns a physical response used by a logical server-sent event stream.
+ *
+ * <p>The source response must implement {@link Closeable}; otherwise this class rejects it with
+ * {@link IllegalArgumentException} because it cannot guarantee physical response cleanup.</p>
  */
 final class ServerSentEventStreamResponse implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventStreamResponse.class);
@@ -36,17 +39,18 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
      *
      * @param response The REST response.
      * @return The stream response.
+     * @throws IllegalArgumentException If {@code response} does not implement {@link Closeable}.
      */
     static ServerSentEventStreamResponse fromResponse(Response<BinaryData> response) {
         Objects.requireNonNull(response, "'response' cannot be null.");
+        if (!(response instanceof Closeable)) {
+            throw new IllegalArgumentException("'response' must own a closeable streaming response.");
+        }
         if (response.getStatusCode() != 204
             && !HttpUtils.isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
             closeResponse(response);
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Expected a successful server-sent event response to have Content-Type 'text/event-stream'."));
-        }
-        if (!(response instanceof Closeable)) {
-            throw new IllegalArgumentException("'response' must own a closeable streaming response.");
         }
 
         BinaryData body = response.getValue();
