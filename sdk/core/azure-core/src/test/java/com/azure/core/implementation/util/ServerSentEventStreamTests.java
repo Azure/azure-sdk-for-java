@@ -275,6 +275,190 @@ public class ServerSentEventStreamTests {
         assertTrue(response.closed.get());
     }
 
+    @Test
+    public void toFluxEmitsTerminalEventAndCancelsRemainingBody() {
+        AtomicBoolean cancelled = new AtomicBoolean();
+        AtomicReference<Integer> conversionCount = new AtomicReference<>(0);
+        BinaryData body
+            = BinaryData
+                .fromFlux(Flux.concat(
+                    Flux.just(ByteBuffer
+                        .wrap("data: one\n\ndata: [DONE]\n\ndata: ignored\n\n".getBytes(StandardCharsets.UTF_8))),
+                    Flux.never()).doOnCancel(() -> cancelled.set(true)), null, false)
+                .block();
+        TestResponse response = response(200, body);
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> {
+            conversionCount.set(conversionCount.get() + 1);
+            return data;
+        }, event -> "[DONE]".equals(event.getData())))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .assertNext(event -> assertEquals("[DONE]", event.getData()))
+            .verifyComplete();
+
+        assertEquals(2, conversionCount.get());
+        assertTrue(cancelled.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxFailsOnEofBeforeTerminalEvent() {
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\n"));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data, event -> false))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .expectErrorMessage("The server-sent event stream ended before a terminal event.")
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxFailsOnMetadataOnlyEofBeforeTerminalEvent() {
+        TestResponse response = response(200, BinaryData.fromString("retry: 1000\n\n"));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data, event -> false))
+            .expectErrorMessage("The server-sent event stream ended before a terminal event.")
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxCancellationBeforeTerminalDoesNotCreateEofError() {
+        AtomicBoolean cancelled = new AtomicBoolean();
+        BinaryData body = BinaryData.fromFlux(
+            Flux.concat(Flux.just(ByteBuffer.wrap("data: one\n\n".getBytes(StandardCharsets.UTF_8))), Flux.never())
+                .doOnCancel(() -> cancelled.set(true)),
+            null, false).block();
+        TestResponse response = response(200, body);
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data, event -> false))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .thenCancel()
+            .verify();
+
+        assertTrue(cancelled.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxNoContentDoesNotInvokeTerminalPredicate() {
+        AtomicBoolean predicateInvoked = new AtomicBoolean();
+        TestResponse response = response(204, null);
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data, event -> {
+            predicateInvoked.set(true);
+            return false;
+        })).verifyComplete();
+
+        assertFalse(predicateInvoked.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxPropagatesTerminalPredicateFailureAndClosesResponse() {
+        RuntimeException failure = new IllegalStateException("predicate failed");
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\n"));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data, event -> {
+            throw failure;
+        }))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .expectErrorMatches(error -> error == failure)
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void listenDeliversTerminalEventAndSkipsBufferedEventsAfterIt() {
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\ndata: [DONE]\n\ndata: ignored\n\n"));
+        List<String> events = new ArrayList<>();
+        AtomicReference<Integer> conversionCount = new AtomicReference<>(0);
+
+        ServerSentEventStreams.listen(response, (event, data) -> {
+            conversionCount.set(conversionCount.get() + 1);
+            return data;
+        }, event -> "[DONE]".equals(event.getData()), event -> events.add(event.getData()));
+
+        assertEquals(2, events.size());
+        assertEquals("[DONE]", events.get(1));
+        assertEquals(2, conversionCount.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void listenFailsOnEofBeforeTerminalEventAndNotifiesListener() {
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\n"));
+        AtomicReference<Throwable> reportedError = new AtomicReference<>();
+        List<String> events = new ArrayList<>();
+
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> ServerSentEventStreams
+            .listen(response, (event, data) -> data, event -> false, new ServerSentEventListener<String>() {
+                @Override
+                public void onEvent(ServerSentEvent<String> event) {
+                    events.add(event.getData());
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    reportedError.set(error);
+                }
+            }));
+
+        assertEquals(1, events.size());
+        assertSame(exception, reportedError.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void listenNoContentDoesNotInvokeTerminalPredicate() {
+        AtomicBoolean predicateInvoked = new AtomicBoolean();
+        TestResponse response = response(204, null);
+
+        ServerSentEventStreams.listen(response, (event, data) -> data, event -> {
+            predicateInvoked.set(true);
+            return false;
+        }, event -> {
+        });
+
+        assertFalse(predicateInvoked.get());
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void listenPropagatesTerminalPredicateFailureAndClosesResponse() {
+        RuntimeException failure = new IllegalStateException("predicate failed");
+        AtomicReference<Throwable> reportedError = new AtomicReference<>();
+        AtomicBoolean closed = new AtomicBoolean();
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\n"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> ServerSentEventStreams.listen(response, (event, data) -> data, event -> {
+                throw failure;
+            }, new ServerSentEventListener<String>() {
+                @Override
+                public void onEvent(ServerSentEvent<String> event) {
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    reportedError.set(error);
+                }
+
+                @Override
+                public void onClose() {
+                    closed.set(true);
+                }
+            }));
+
+        assertSame(failure, exception);
+        assertSame(failure, reportedError.get());
+        assertTrue(closed.get());
+        assertTrue(response.closed.get());
+    }
+
     private static TestResponse response(int statusCode, BinaryData body) {
         return response(statusCode, body, "text/event-stream");
     }
