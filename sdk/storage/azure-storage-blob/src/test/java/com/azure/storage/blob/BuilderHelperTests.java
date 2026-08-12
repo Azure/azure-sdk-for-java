@@ -717,19 +717,33 @@ public class BuilderHelperTests {
 
     @Test
     public void customSessionProviderIsWiredIntoPipelineWithResolvedRequestContext() {
-        AtomicReference<SessionRequestContext> receivedContext = new AtomicReference<>();
+        AtomicReference<SessionRequestContext> capturedContext = new AtomicReference<>();
+        SessionProvider provider = createCapturingSessionProvider(capturedContext);
+
+        HttpPipeline pipeline = buildPipelineWithSessionProvider(provider);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob");
+
+        StepVerifier.create(pipeline.send(request)).expectNextCount(1).verifyComplete();
+
+        assertNotNull(capturedContext.get(), "Custom session provider should have been invoked by the pipeline");
+        assertEquals("container", capturedContext.get().getContainerName());
+        assertEquals("account", capturedContext.get().getAccountName());
+    }
+
+    private SessionProvider createCapturingSessionProvider(AtomicReference<SessionRequestContext> capture) {
         SessionCredential credential = new SessionCredential("session-token",
             "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==", OffsetDateTime.now().plusMinutes(5), "account");
-        SessionProvider provider = new SessionProvider() {
+
+        return new SessionProvider() {
             @Override
             public Mono<SessionCredential> getSessionAsync(SessionRequestContext context) {
-                receivedContext.set(context);
+                capture.set(context);
                 return Mono.just(credential);
             }
 
             @Override
             public SessionCredential getSession(SessionRequestContext context) {
-                receivedContext.set(context);
+                capture.set(context);
                 return credential;
             }
 
@@ -742,18 +756,18 @@ public class BuilderHelperTests {
             public void refreshSession(SessionRequestContext context) {
             }
         };
-        SessionOptions options = new SessionOptions().setSessionProvider(provider);
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
-            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), options, null);
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
-            .expectNextCount(1)
-            .verifyComplete();
+    }
 
-        assertNotNull(receivedContext.get(), "Custom session provider should have been invoked by the pipeline");
-        assertEquals("container", receivedContext.get().getContainerName());
-        assertEquals("account", receivedContext.get().getAccountName());
+    private HttpPipeline buildPipelineWithSessionProvider(SessionProvider provider) {
+        SessionOptions options = new SessionOptions().setSessionProvider(provider);
+        HttpClient mockClient = request -> {
+            MockHttpResponse response = new MockHttpResponse(request, 200);
+            return Mono.just(response);
+        };
+
+        return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
+            null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), mockClient, new ArrayList<>(),
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options, null);
     }
 
     private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {
