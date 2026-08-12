@@ -6,8 +6,10 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestUtils;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -19,6 +21,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -226,6 +230,18 @@ public class CPKTests extends BlobTestBase {
         assertResponseStatusCode(response, 200);
         assertTrue(Boolean.parseBoolean(response.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
         assertEquals(key.getKeySha256(), response.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+    }
+
+    // Mirrors .NET's GetLayoutAsync_CPK (Azure/azure-sdk-for-net#57554), also LiveOnly for the same reason as the
+    // rest of this class: the encryption key hash cannot be safely stored in recordings.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutWithCPK() {
+        Iterator<BlobLayoutInfo> iterator = cpkExistingBlob.getLayout(null, Context.NONE).iterator();
+
+        assertTrue(iterator.hasNext());
+        BlobLayoutInfo info = iterator.next();
+        assertEquals(key.getKeySha256(), info.getEncryptionKeySha256());
     }
 
     //    @Test

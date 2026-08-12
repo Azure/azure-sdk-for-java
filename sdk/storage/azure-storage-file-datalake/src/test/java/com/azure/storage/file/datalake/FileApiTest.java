@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -26,6 +27,7 @@ import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttp
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -58,6 +60,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -112,8 +115,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -149,6 +154,290 @@ public class FileApiTest extends DataLakeTestBase {
     @AfterEach
     public void cleanup() {
         createdFiles.forEach(File::delete);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayout() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        Iterator<DataLakeFileLayoutInfo> iterator = fc.getLayout(null).iterator();
+
+        assertTrue(iterator.hasNext());
+        DataLakeFileLayoutInfo info = iterator.next();
+
+        assertNotNull(info.getETag());
+        assertFalse(info.getETag().isEmpty());
+        assertEquals(DATA.getDefaultDataSizeLong(), info.getFileSize());
+        assertNotNull(info.getLastModified());
+        assertNotNull(info.getCreationTime());
+        assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
+        assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutEmptyFile() {
+        DataLakeFileClient emptyFile = dataLakeFileSystemClient.createFile(generatePathName());
+
+        assertDoesNotThrow(() -> emptyFile.getLayout(null).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutRange() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        assertDoesNotThrow(
+            () -> fc.getLayout(new DataLakeFileGetLayoutOptions().setRange(new FileRange(0, (long) Constants.KB)))
+                .stream()
+                .count());
+    }
+
+    // Mirrors .NET's GetLayoutAsync_ReturnsRangesAndEndpoints (Azure/azure-sdk-for-net#57554). Java's
+    // DataLakeFileLayoutRange already resolves the endpoint index eagerly, so this asserts directly on
+    // (range, endpoint) pairs rather than cross-referencing a separate raw endpoint-index table.
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutReturnsRangesAndEndpoints() {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        fc.append(BinaryData.fromBytes(content), 0);
+        fc.flush(content.length, true);
+
+        List<com.azure.storage.file.datalake.models.DataLakeFileLayoutRange> ranges
+            = fc.getLayout(null).stream().flatMap(info -> info.getRanges().stream()).collect(Collectors.toList());
+
+        assertFalse(ranges.isEmpty());
+        assertEquals(0, ranges.get(0).getRange().getOffset());
+        long coveredEnd = 0;
+        for (com.azure.storage.file.datalake.models.DataLakeFileLayoutRange range : ranges) {
+            assertEquals(coveredEnd, range.getRange().getOffset(), "Ranges should be contiguous with no gaps");
+            coveredEnd += range.getRange().getLength();
+            assertNotNull(range.getEndpoint());
+            assertFalse(range.getEndpoint().isEmpty());
+        }
+        assertEquals(content.length, coveredEnd);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutPageSize() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        Iterator<PagedResponse<DataLakeFileLayoutInfo>> iterator = fc.getLayout(null).iterableByPage(1).iterator();
+        int pageCount = 0;
+
+        while (iterator.hasNext()) {
+            PagedResponse<DataLakeFileLayoutInfo> page = iterator.next();
+            assertTrue(page.getValue().size() <= 1);
+            pageCount++;
+        }
+
+        assertTrue(pageCount > 0);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutContinuationToken() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        Iterator<PagedResponse<DataLakeFileLayoutInfo>> iterator = fc.getLayout(null).iterableByPage(1).iterator();
+        String token = iterator.next().getContinuationToken();
+
+        assertDoesNotThrow(() -> fc.getLayout(null).iterableByPage(token).iterator().hasNext());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("modifiedMatchAndLeaseIdSupplier")
+    public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        match = setupPathMatchCondition(fc, match);
+        leaseID = setupPathLeaseCondition(fc, leaseID);
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertDoesNotThrow(
+            () -> fc.getLayout(new DataLakeFileGetLayoutOptions().setRequestConditions(drc)).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
+    public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        DataLakeRequestConditions drc = new DataLakeRequestConditions().setLeaseId(setupPathLeaseCondition(fc, leaseID))
+            .setIfMatch(match)
+            .setIfNoneMatch(setupPathMatchCondition(fc, noneMatch))
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertThrows(DataLakeStorageException.class,
+            () -> fc.getLayout(new DataLakeFileGetLayoutOptions().setRequestConditions(drc)).stream().count());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutError() {
+        DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient(generatePathName());
+
+        assertThrows(DataLakeStorageException.class, () -> fileClient.getLayout(null).stream().count());
+    }
+
+    // Mirrors .NET's GetLayoutAsync_FileSAS (Azure/azure-sdk-for-net#57554): verifies getLayout works when
+    // authenticated via a file-system-scoped SAS token rather than a shared key/AAD credential.
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutFileSAS() {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+        String sas = dataLakeFileSystemClient
+            .generateSas(new DataLakeServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permissions));
+        DataLakeFileClient sasClient
+            = getFileClient(sas, dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath());
+
+        Iterator<DataLakeFileLayoutInfo> iterator = sasClient.getLayout(null).iterator();
+
+        assertTrue(iterator.hasNext());
+        assertNotNull(iterator.next().getETag());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void readToFileWithDataLocalityEnabledSingleChunk() throws IOException {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        ReadToFileOptions options = new ReadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true);
+
+        assertDoesNotThrow(() -> fc.readToFileWithResponse(options, null, null));
+
+        assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(outFile.toPath()), StandardCharsets.UTF_8));
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void readToFileWithDataLocalityEnabledMultipleChunks() throws IOException {
+        File file = getRandomFile(16 * Constants.KB);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        fc.uploadFromFile(file.toPath().toString(), true);
+
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        // Force a small block size so the download spans several chunks, exercising the per-chunk
+        // layout-cache-resolution wrapper inherited from BlockBlobClient (chunk 0 is a no-op passthrough; chunks 1+
+        // go through the locality-aware download function).
+        ReadToFileOptions options = new ReadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong((long) (2 * Constants.KB)));
+
+        assertDoesNotThrow(() -> fc.readToFileWithResponse(options, null, null));
+
+        compareFiles(file, outFile, 0, 16 * Constants.KB);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void readToFileWithDataLocalityDisabledIsUnaffected() throws IOException {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        // Default (enableDataLocality unset / false) behavior must be identical to before this feature existed.
+        assertDoesNotThrow(
+            () -> fc.readToFileWithResponse(new ReadToFileOptions(outFile.toPath().toString()), null, null));
+
+        assertEquals(DATA.getDefaultText(), new String(Files.readAllBytes(outFile.toPath()), StandardCharsets.UTF_8));
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void readToFileWithDataLocalityEnabledReturnsProperties() throws IOException {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        File outFile = new File(prefix + ".txt");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        ReadToFileOptions options = new ReadToFileOptions(outFile.toPath().toString()).setEnableDataLocality(true);
+        PathProperties properties = fc.readToFileWithResponse(options, null, null).getValue();
+
+        assertEquals(DATA.getDefaultDataSizeLong(), properties.getFileSize());
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void openInputStreamWithDataLocalityEnabled() throws IOException {
+        fc.append(DATA.getDefaultBinaryData(), 0);
+        fc.flush(DATA.getDefaultDataSizeLong(), true);
+
+        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setEnableDataLocality(true);
+
+        byte[] readBytes;
+        DataLakeFileOpenInputStreamResult result = fc.openInputStream(options);
+        try (InputStream is = result.getInputStream()) {
+            readBytes = readAllBytesFromStream(is);
+        }
+
+        assertArrayEquals(DATA.getDefaultBytes(), readBytes);
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void openInputStreamWithDataLocalityEnabledPartialRange() throws IOException {
+        byte[] content = getRandomByteArray(8 * Constants.KB);
+        fc.append(BinaryData.fromBytes(content), 0);
+        fc.flush(content.length, true);
+
+        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setEnableDataLocality(true)
+            .setBlockSize(2 * Constants.KB)
+            .setRange(new FileRange(Constants.KB, (long) (4 * Constants.KB)));
+
+        byte[] readBytes;
+        DataLakeFileOpenInputStreamResult result = fc.openInputStream(options);
+        try (InputStream is = result.getInputStream()) {
+            readBytes = readAllBytesFromStream(is);
+        }
+
+        byte[] expected = new byte[4 * Constants.KB];
+        System.arraycopy(content, Constants.KB, expected, 0, expected.length);
+        assertArrayEquals(expected, readBytes);
+    }
+
+    private static byte[] readAllBytesFromStream(InputStream is) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[512];
+        int read;
+        while ((read = is.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
+        }
+        return out.toByteArray();
     }
 
     @Test

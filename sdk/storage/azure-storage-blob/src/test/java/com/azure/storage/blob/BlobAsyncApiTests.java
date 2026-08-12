@@ -8,6 +8,7 @@ import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -31,6 +32,7 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -51,6 +53,7 @@ import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
@@ -136,6 +139,118 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @AfterEach
     public void cleanup() {
         createdFiles.forEach(File::delete);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayout() {
+        StepVerifier.create(bc.getLayout(null).collectList()).assertNext(r -> {
+            assertFalse(r.isEmpty());
+            BlobLayoutInfo info = r.get(0);
+            assertNotNull(info.getETag());
+            assertFalse(info.getETag().isEmpty());
+            assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
+            assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
+            assertNotNull(info.getLastModified());
+            assertNotNull(info.getCreatedOn());
+            assertTrue(info.isServerEncrypted());
+            assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
+            assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutEmptyBlob() {
+        BlobAsyncClient emptyBlob = ccAsync.getBlobAsyncClient(generateBlobName());
+
+        StepVerifier.create(emptyBlob.getBlockBlobAsyncClient()
+            .commitBlockList(new ArrayList<>())
+            .thenMany(emptyBlob.getLayout(null))
+            .then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutRange() {
+        StepVerifier.create(bc.getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
+            .then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutPageSize() {
+        StepVerifier.create(bc.getLayout(null).byPage(1).collectList()).assertNext(r -> {
+            assertFalse(r.isEmpty());
+            r.forEach(page -> assertTrue(page.getValue().size() <= 1));
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutContinuationToken() {
+        Flux<PagedResponse<BlobLayoutInfo>> response
+            = bc.getLayout(null).byPage(1).next().flatMapMany(r -> bc.getLayout(null).byPage(r.getContinuationToken()));
+
+        StepVerifier.create(response.then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+
+        Flux<BlobLayoutInfo> response = bc.setTags(t)
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
+                BlobTestBase::convertNulls))
+            .flatMapMany(conditions -> {
+                BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setTagsConditions(tags);
+
+                return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac));
+            });
+
+        StepVerifier.create(response.then()).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Mono<Long> response
+            = Mono
+                .zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, noneMatch),
+                    BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
+
+                    return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac)).count();
+                });
+
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutError() {
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
+
+        StepVerifier.create(blobClient.getLayout(null)).verifyError(BlobStorageException.class);
     }
 
     @Test

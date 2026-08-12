@@ -19,6 +19,7 @@ import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -237,6 +239,17 @@ public class CPKAsyncTests extends BlobTestBase {
             assertResponseStatusCode(r, 200);
             assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_SERVER_ENCRYPTED)));
             assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+        }).verifyComplete();
+    }
+
+    // Mirrors .NET's GetLayoutAsync_CPK (Azure/azure-sdk-for-net#57554), also LiveOnly for the same reason as the
+    // rest of this class: the encryption key hash cannot be safely stored in recordings.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutWithCPK() {
+        StepVerifier.create(cpkExistingBlob.getLayout(null).collectList()).assertNext(r -> {
+            assertFalse(r.isEmpty());
+            assertEquals(key.getKeySha256(), r.get(0).getEncryptionKeySha256());
         }).verifyComplete();
     }
 

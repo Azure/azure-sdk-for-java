@@ -237,11 +237,7 @@ public class BlobTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient
-            = new BlobServiceClientBuilder().httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
-                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
-                .buildClient();
+        BlobServiceClient cleanupClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
         for (BlobContainerItem container : cleanupClient.listBlobContainers(options, null)) {

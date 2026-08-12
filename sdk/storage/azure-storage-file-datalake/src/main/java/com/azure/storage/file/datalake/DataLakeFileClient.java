@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -39,6 +40,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -52,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -148,6 +151,21 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Returns the file's layout.
+     * <p>
+     * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
+     * through the wrapped {@link BlockBlobClient} because Data Lake does not yet have its own generated layout REST
+     * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
+     *
+     * @param options {@link DataLakeFileGetLayoutOptions}
+     * @return A response emitting all file layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
+        return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 
     /**
@@ -1082,7 +1100,11 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param getRangeContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call. To
+     * manually route this single read to a specific locality-aware endpoint (bypassing the automatic
+     * caching/resolution used by {@code enableDataLocality} on the chunked read APIs), add
+     * {@link com.azure.storage.common.policy.DataLocalityPolicy#LAYOUT_ENDPOINT_KEY} to this context with the
+     * endpoint value obtained from {@link #getLayout(DataLakeFileGetLayoutOptions)}.
      *
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -1397,7 +1419,8 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
                     .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
                     .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                    .setOpenOptions(options.getOpenOptions()), timeout, finalContext);
+                    .setOpenOptions(options.getOpenOptions())
+                    .setEnableDataLocality(options.isEnableDataLocality()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

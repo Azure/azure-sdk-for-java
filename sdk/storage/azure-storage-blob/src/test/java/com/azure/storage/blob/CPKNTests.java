@@ -290,6 +290,23 @@ public class CPKNTests extends BlobTestBase {
         Assertions.assertEquals(scope1, cpknBlockBlob.getProperties().getEncryptionScope());
     }
 
+    // Mirrors .NET's GetLayoutAsync_EncryptionScope (Azure/azure-sdk-for-net#57554). This class's @BeforeEach
+    // depends on named encryption scopes ("testscope1"/"testscope2") that are not configured on the current test
+    // account (EncryptionScopeNotAvailable, HTTP 409) -- a pre-existing environment gap unrelated to this
+    // feature; the other 16+ pre-existing tests in this class share the same limitation.
+    // feature; the other 16+ pre-existing tests in this class share the same limitation.
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void getLayoutWithEncryptionScope() {
+        cpknBlockBlob.upload(DATA.getDefaultBinaryData());
+
+        Iterator<com.azure.storage.blob.models.BlobLayoutInfo> iterator
+            = cpknBlockBlob.getLayout(null, com.azure.core.util.Context.NONE).iterator();
+
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals(scope1, iterator.next().getEncryptionScope());
+    }
+
     @Test
     public void serviceClientBuilderCheck() {
         Assertions.assertThrows(IllegalArgumentException.class,
