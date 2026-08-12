@@ -7,38 +7,20 @@ package com.azure.resourcemanager.iothub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.iothub.models.RoutingTwin;
 import com.azure.resourcemanager.iothub.models.RoutingTwinProperties;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class RoutingTwinTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingTwin model = BinaryData.fromString(
-            "{\"tags\":{\"ultskzbbtdz\":\"\\\"dataxipeilpjzuaejx\\\"\",\"ekg\":\"\\\"datamv\\\"\"},\"properties\":{\"desired\":{\"fpbsjyofdxl\":\"\\\"datauh\\\"\",\"ttouwaboekqvkel\":\"\\\"dataus\\\"\",\"xwyjsflhhc\":\"\\\"datasmv\\\"\"},\"reported\":{\"ixisxyawjoy\":\"\\\"datan\\\"\",\"yexz\":\"\\\"dataqcslyjpkiid\\\"\",\"hnrztfol\":\"\\\"dataeli\\\"\"}}}")
+            "{\"tags\":\"\\\"dataekqvkeln\\\"\",\"properties\":{\"desired\":\"\\\"databxwyjsflhhcaa\\\"\",\"reported\":\"\\\"datajixisxyawjoyaqcs\\\"\"}}")
             .toObject(RoutingTwin.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingTwin model = new RoutingTwin()
-            .withTags(mapOf("ultskzbbtdz", "\"dataxipeilpjzuaejx\"", "ekg", "\"datamv\""))
-            .withProperties(new RoutingTwinProperties()
-                .withDesired(
-                    mapOf("fpbsjyofdxl", "\"datauh\"", "ttouwaboekqvkel", "\"dataus\"", "xwyjsflhhc", "\"datasmv\""))
-                .withReported(
-                    mapOf("ixisxyawjoy", "\"datan\"", "yexz", "\"dataqcslyjpkiid\"", "hnrztfol", "\"dataeli\"")));
+        RoutingTwin model = new RoutingTwin().withTags("\"dataekqvkeln\"")
+            .withProperties(new RoutingTwinProperties().withDesired("\"databxwyjsflhhcaa\"")
+                .withReported("\"datajixisxyawjoyaqcs\""));
         model = BinaryData.fromObject(model).toObject(RoutingTwin.class);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
