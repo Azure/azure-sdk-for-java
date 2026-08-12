@@ -36,7 +36,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.policy.Request100ContinueOptions;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.net.MalformedURLException;
@@ -92,7 +92,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private Request100ContinueOptions expectContinueOptions;
+    private ExpectContinueOptions expectContinueOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -615,10 +615,10 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * By default the header is applied only for a period after the service has indicated it is under load, so that
      * a body is not uploaded just to be rejected again.
      *
-     * @param expectContinueOptions {@link Request100ContinueOptions} to be used when sending requests with a body.
+     * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
      * @return the updated BlobContainerClientBuilder object
      */
-    public BlobContainerClientBuilder request100ContinueOptions(Request100ContinueOptions expectContinueOptions) {
+    public BlobContainerClientBuilder expectContinueBehavior(ExpectContinueOptions expectContinueOptions) {
         this.expectContinueOptions = expectContinueOptions;
         return this;
     }

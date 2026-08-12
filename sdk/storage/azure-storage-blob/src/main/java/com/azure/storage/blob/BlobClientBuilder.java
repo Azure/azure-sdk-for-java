@@ -35,7 +35,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.policy.Request100ContinueOptions;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.io.OutputStream;
@@ -93,7 +93,7 @@ public final class BlobClientBuilder
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private Request100ContinueOptions expectContinueOptions;
+    private ExpectContinueOptions expectContinueOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -659,10 +659,10 @@ public final class BlobClientBuilder
      * By default the header is applied only for a period after the service has indicated it is under load, so that
      * a body is not uploaded just to be rejected again.
      *
-     * @param expectContinueOptions {@link Request100ContinueOptions} to be used when sending requests with a body.
+     * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
      * @return the updated BlobClientBuilder object
      */
-    public BlobClientBuilder request100ContinueOptions(Request100ContinueOptions expectContinueOptions) {
+    public BlobClientBuilder expectContinueBehavior(ExpectContinueOptions expectContinueOptions) {
         this.expectContinueOptions = expectContinueOptions;
         return this;
     }

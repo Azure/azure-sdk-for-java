@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation.policy;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.Configuration;
 
 import java.time.Duration;
@@ -25,14 +26,16 @@ import java.util.concurrent.atomic.AtomicLong;
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
-public final class ExpectContinueOnThrottlePolicy extends ExpectContinuePolicy {
+public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy {
     /*
      * Cap the window so that adding it to System.nanoTime() cannot overflow. Roughly 73 years, far longer than any
      * meaningful configuration.
      */
     private static final long MAX_INTERVAL_NANOS = Long.MAX_VALUE / 4;
 
-    private final long autoIntervalNanos;
+    private final long throttleIntervalNanos;
+    private final long contentLengthThreshold;
+    private final boolean disabled;
 
     /*
      * The nanoTime after which the throttle window has elapsed. Initialized to now, meaning no window is open until a
@@ -44,36 +47,44 @@ public final class ExpectContinueOnThrottlePolicy extends ExpectContinuePolicy {
      * Creates a policy that applies {@code Expect: 100-continue} for the given interval after the service indicates it
      * is under load.
      *
-     * @param autoInterval The interval for which the header is applied after a triggering response.
+     * @param throttleInterval The interval for which the header is applied after a triggering response.
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header. A null value
      * means every request with a body is eligible.
      */
-    public ExpectContinueOnThrottlePolicy(Duration autoInterval, Long contentLengthThreshold) {
-        super(contentLengthThreshold);
-        this.autoIntervalNanos = toNanos(autoInterval);
+    public ExpectContinueOnThrottlePolicy(Duration throttleInterval, Long contentLengthThreshold) {
+        this(throttleInterval, contentLengthThreshold, Configuration.getGlobalConfiguration());
     }
 
     /**
      * Creates a policy reading the opt out from the given configuration. For testing.
      *
-     * @param autoInterval The interval for which the header is applied after a triggering response.
+     * @param throttleInterval The interval for which the header is applied after a triggering response.
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
      * @param configuration The configuration to read the opt out from.
      */
-    ExpectContinueOnThrottlePolicy(Duration autoInterval, Long contentLengthThreshold, Configuration configuration) {
-        super(contentLengthThreshold, configuration);
-        this.autoIntervalNanos = toNanos(autoInterval);
+    ExpectContinueOnThrottlePolicy(Duration throttleInterval, Long contentLengthThreshold,
+        Configuration configuration) {
+        this.throttleIntervalNanos = toNanos(throttleInterval);
+        this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
+        // Read once here rather than per request. This is a process-level opt out, so it cannot meaningfully change
+        // over the lifetime of a client.
+        this.disabled = ExpectContinueSupport.isDisabled(configuration);
     }
 
     @Override
-    boolean shouldApplyExpectContinue(HttpRequest request) {
-        return isWithinThrottleWindow() && super.shouldApplyExpectContinue(request);
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
+        HttpRequest request = context.getHttpRequest();
+        if (!disabled
+            && isWithinThrottleWindow()
+            && ExpectContinueSupport.isEligible(request, contentLengthThreshold)) {
+            ExpectContinueSupport.applyHeader(request);
+        }
     }
 
     @Override
     protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
         if (response != null && isThrottleResponse(response.getStatusCode())) {
-            windowExpiryNanos.set(System.nanoTime() + autoIntervalNanos);
+            windowExpiryNanos.set(System.nanoTime() + throttleIntervalNanos);
         }
 
         return super.afterReceivedResponse(context, response);
@@ -87,13 +98,13 @@ public final class ExpectContinueOnThrottlePolicy extends ExpectContinuePolicy {
         return statusCode == 429 || statusCode == 500 || statusCode == 503;
     }
 
-    private static long toNanos(Duration autoInterval) {
-        if (autoInterval == null || autoInterval.isNegative()) {
+    private static long toNanos(Duration throttleInterval) {
+        if (throttleInterval == null || throttleInterval.isNegative()) {
             return 0;
         }
 
         try {
-            return Math.min(autoInterval.toNanos(), MAX_INTERVAL_NANOS);
+            return Math.min(throttleInterval.toNanos(), MAX_INTERVAL_NANOS);
         } catch (ArithmeticException ex) {
             // Duration too large to express in nanoseconds.
             return MAX_INTERVAL_NANOS;

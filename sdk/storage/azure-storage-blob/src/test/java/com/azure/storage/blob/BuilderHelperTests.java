@@ -30,8 +30,8 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.policy.ExpectContinueOnThrottlePolicy;
 import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
-import com.azure.storage.common.policy.Request100ContinueMode;
-import com.azure.storage.common.policy.Request100ContinueOptions;
+import com.azure.storage.common.policy.ExpectContinueMode;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -642,11 +642,10 @@ public class BuilderHelperTests {
 
     @Test
     public void expectContinueOptionsAreHonoredByBuilder() {
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
-                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-                new ArrayList<>(), null, null, new Request100ContinueOptions().setMode(Request100ContinueMode.NEVER),
-                new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.OFF), new ClientLogger(BuilderHelperTests.class));
 
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
@@ -668,8 +667,7 @@ public class BuilderHelperTests {
                         return new MockHttpResponse(request, 201);
                     }
                 }, new ArrayList<>(), new ArrayList<>(), null, null,
-                new Request100ContinueOptions().setMode(Request100ContinueMode.ALWAYS),
-                new ClientLogger(BuilderHelperTests.class));
+                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class));
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
         pipeline.sendSync(request, Context.NONE);

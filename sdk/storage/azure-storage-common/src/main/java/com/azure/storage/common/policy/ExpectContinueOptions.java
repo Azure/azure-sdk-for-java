@@ -16,41 +16,47 @@ import java.time.Duration;
  * sending a large body that the service is going to reject anyway, which can significantly reduce the bandwidth spent
  * retrying while the service is throttling.</p>
  *
- * <p>For more information, see
- * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">the
- * Storage service documentation</a>.</p>
+ * <p>For more information on the header itself, see
+ * <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.1.1">RFC 9110 section 10.1.1</a>.</p>
+ *
+ * <p><strong>Whether the header has any effect depends on the HTTP client in use.</strong> Setting it does not by
+ * itself make a client wait for the service to respond before sending the body. Of the supported transports, only
+ * {@code azure-core-http-okhttp} performs the handshake. {@code azure-core-http-netty} and
+ * {@code azure-core-http-vertx} send the header but stream the body immediately, and
+ * {@code azure-core-http-jdk-httpclient} drops the header altogether, as {@code Expect} is restricted by
+ * {@code java.net.http.HttpClient}. On those transports these options are accepted but save no bandwidth.</p>
  */
 @Fluent
-public final class Request100ContinueOptions {
-    private static final Duration DEFAULT_AUTO_INTERVAL = Duration.ofMinutes(1);
+public final class ExpectContinueOptions {
+    private static final Duration DEFAULT_THROTTLE_INTERVAL = Duration.ofMinutes(1);
 
-    private Request100ContinueMode mode = Request100ContinueMode.AUTO;
+    private ExpectContinueMode mode = ExpectContinueMode.APPLY_ON_THROTTLE;
     private Long contentLengthThreshold;
-    private Duration autoInterval = DEFAULT_AUTO_INTERVAL;
+    private Duration throttleInterval = DEFAULT_THROTTLE_INTERVAL;
 
     /**
-     * Creates a new {@link Request100ContinueOptions} with default parameters applied.
+     * Creates a new {@link ExpectContinueOptions} with default parameters applied.
      */
-    public Request100ContinueOptions() {
+    public ExpectContinueOptions() {
     }
 
     /**
      * Gets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @return The mode. Defaults to {@link Request100ContinueMode#AUTO}.
+     * @return The mode. Defaults to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      */
-    public Request100ContinueMode getMode() {
+    public ExpectContinueMode getMode() {
         return mode;
     }
 
     /**
      * Sets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @param mode The mode. A null value resets this to {@link Request100ContinueMode#AUTO}.
+     * @param mode The mode. A null value resets this to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      * @return The updated options.
      */
-    public Request100ContinueOptions setMode(Request100ContinueMode mode) {
-        this.mode = mode == null ? Request100ContinueMode.AUTO : mode;
+    public ExpectContinueOptions setMode(ExpectContinueMode mode) {
+        this.mode = mode == null ? ExpectContinueMode.APPLY_ON_THROTTLE : mode;
         return this;
     }
 
@@ -73,30 +79,30 @@ public final class Request100ContinueOptions {
      * @param contentLengthThreshold The threshold in bytes. A null value means every request with a body is eligible.
      * @return The updated options.
      */
-    public Request100ContinueOptions setContentLengthThreshold(Long contentLengthThreshold) {
+    public ExpectContinueOptions setContentLengthThreshold(Long contentLengthThreshold) {
         this.contentLengthThreshold = contentLengthThreshold;
         return this;
     }
 
     /**
      * Gets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link Request100ContinueMode#AUTO}.
+     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      *
      * @return The interval. Defaults to one minute.
      */
-    public Duration getAutoInterval() {
-        return autoInterval;
+    public Duration getThrottleInterval() {
+        return throttleInterval;
     }
 
     /**
      * Sets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link Request100ContinueMode#AUTO}.
+     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      *
-     * @param autoInterval The interval. A null value resets this to the default of one minute.
+     * @param throttleInterval The interval. A null value resets this to the default of one minute.
      * @return The updated options.
      */
-    public Request100ContinueOptions setAutoInterval(Duration autoInterval) {
-        this.autoInterval = autoInterval == null ? DEFAULT_AUTO_INTERVAL : autoInterval;
+    public ExpectContinueOptions setThrottleInterval(Duration throttleInterval) {
+        this.throttleInterval = throttleInterval == null ? DEFAULT_THROTTLE_INTERVAL : throttleInterval;
         return this;
     }
 }

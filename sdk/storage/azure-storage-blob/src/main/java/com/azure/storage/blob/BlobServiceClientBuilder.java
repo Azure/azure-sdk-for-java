@@ -38,7 +38,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.policy.Request100ContinueOptions;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
@@ -93,7 +93,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private Request100ContinueOptions expectContinueOptions;
+    private ExpectContinueOptions expectContinueOptions;
     private boolean anonymousAccess;
 
     /**
@@ -596,10 +596,10 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * By default the header is applied only for a period after the service has indicated it is under load, so that
      * a body is not uploaded just to be rejected again.
      *
-     * @param expectContinueOptions {@link Request100ContinueOptions} to be used when sending requests with a body.
+     * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
      * @return the updated BlobServiceClientBuilder object
      */
-    public BlobServiceClientBuilder request100ContinueOptions(Request100ContinueOptions expectContinueOptions) {
+    public BlobServiceClientBuilder expectContinueBehavior(ExpectContinueOptions expectContinueOptions) {
         this.expectContinueOptions = expectContinueOptions;
         return this;
     }

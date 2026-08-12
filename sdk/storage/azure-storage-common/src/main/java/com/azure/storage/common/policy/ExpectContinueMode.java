@@ -5,9 +5,9 @@ package com.azure.storage.common.policy;
 
 /**
  * This type holds possible options for applying the HTTP header {@code Expect: 100-continue} to requests that carry a
- * body. They may be used with {@link Request100ContinueOptions}.
+ * body. They may be used with {@link ExpectContinueOptions}.
  */
-public enum Request100ContinueMode {
+public enum ExpectContinueMode {
     /**
      * Tells the pipeline to apply {@code Expect: 100-continue} only after the service has recently indicated that it is
      * under load, and to keep applying it until a period of time has passed since the last such response.
@@ -16,16 +16,16 @@ public enum Request100ContinueMode {
      *
      * <p>This is the default behavior when no options are provided.</p>
      */
-    AUTO,
+    APPLY_ON_THROTTLE,
 
     /**
      * Tells the pipeline to apply {@code Expect: 100-continue} regardless of recent error status. The header is still
-     * subject to {@link Request100ContinueOptions#getContentLengthThreshold()}.
+     * subject to {@link ExpectContinueOptions#getContentLengthThreshold()}.
      */
-    ALWAYS,
+    ON,
 
     /**
      * Tells the pipeline to never apply {@code Expect: 100-continue}.
      */
-    NEVER
+    OFF
 }
