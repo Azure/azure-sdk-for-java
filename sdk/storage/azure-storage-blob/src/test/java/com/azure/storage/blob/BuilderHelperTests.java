@@ -693,7 +693,6 @@ public class BuilderHelperTests {
 
     // region buildPipeline session tests
 
-
     @ParameterizedTest(name = "{0}")
     @MethodSource("pipelinesWithoutSessionsSupplier")
     public void pipelinesWithoutSessionsDoNotContainSessionPolicy(String scenario,
@@ -744,11 +743,10 @@ public class BuilderHelperTests {
             }
         };
         SessionOptions options = new SessionOptions().setSessionProvider(provider);
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT, REQUEST_RETRY_OPTIONS,
-                null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(),
-                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), options,
-                null);
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ClientLogger(BuilderHelperTests.class), options, null);
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
             .expectNextCount(1)
             .verifyComplete();
@@ -757,7 +755,6 @@ public class BuilderHelperTests {
         assertEquals("container", receivedContext.get().getContainerName());
         assertEquals("account", receivedContext.get().getAccountName());
     }
-
 
     private static Stream<Arguments> pipelinesWithoutSessionsSupplier() {
         return Stream.of(
