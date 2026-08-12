@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.relationships.generated;
 
 /**
- * Samples for DependencyOfRelationships Delete.
+ * Samples for DependencyOfRelationships ListByParent.
  */
-public final class DependencyOfRelationshipsDeleteSamples {
+public final class DependencyOfRelationshipsListByParentSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_Delete.json
+     * x-ms-original-file: 2026-03-01-preview/DependencyOfRelationships_ListByParent.json
      */
     /**
-     * Sample code: DependencyOfRelationships_Delete.
+     * Sample code: DependencyOfRelationships_ListByParent.
      * 
      * @param manager Entry point to RelationshipsManager.
      */
     public static void
-        dependencyOfRelationshipsDelete(com.azure.resourcemanager.relationships.RelationshipsManager manager) {
+        dependencyOfRelationshipsListByParent(com.azure.resourcemanager.relationships.RelationshipsManager manager) {
         manager.dependencyOfRelationships()
-            .delete(
+            .listByParent(
                 "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account",
-                "relationshipOne", com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -38,7 +38,7 @@ public interface ServiceGroupMemberRelationship {
      * 
      * @return the properties value.
      */
-    ServiceGroupMemberRelationshipProperties properties();
+    ServiceGroupMemberRelationshipPropertiesV2 properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -114,7 +114,7 @@ public interface ServiceGroupMemberRelationship {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withProperties(ServiceGroupMemberRelationshipProperties properties);
+            WithCreate withProperties(ServiceGroupMemberRelationshipPropertiesV2 properties);
         }
     }
 
@@ -159,7 +159,7 @@ public interface ServiceGroupMemberRelationship {
              * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            Update withProperties(ServiceGroupMemberRelationshipProperties properties);
+            Update withProperties(ServiceGroupMemberRelationshipPropertiesV2 properties);
         }
     }
 

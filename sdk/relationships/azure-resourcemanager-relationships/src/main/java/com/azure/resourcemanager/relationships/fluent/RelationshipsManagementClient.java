@@ -26,6 +26,13 @@ public interface RelationshipsManagementClient {
     String getApiVersion();
 
     /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    String getSubscriptionId();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      * 
      * @return the httpPipeline value.
@@ -59,4 +66,11 @@ public interface RelationshipsManagementClient {
      * @return the ServiceGroupMemberRelationshipsClient object.
      */
     ServiceGroupMemberRelationshipsClient getServiceGroupMemberRelationships();
+
+    /**
+     * Gets the ContainsRelationshipsClient object to access its operations.
+     * 
+     * @return the ContainsRelationshipsClient object.
+     */
+    ContainsRelationshipsClient getContainsRelationships();
 }

@@ -25,10 +25,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
+import com.azure.resourcemanager.relationships.implementation.ContainsRelationshipsImpl;
 import com.azure.resourcemanager.relationships.implementation.DependencyOfRelationshipsImpl;
 import com.azure.resourcemanager.relationships.implementation.OperationsImpl;
 import com.azure.resourcemanager.relationships.implementation.RelationshipsManagementClientBuilder;
 import com.azure.resourcemanager.relationships.implementation.ServiceGroupMemberRelationshipsImpl;
+import com.azure.resourcemanager.relationships.models.ContainsRelationships;
 import com.azure.resourcemanager.relationships.models.DependencyOfRelationships;
 import com.azure.resourcemanager.relationships.models.Operations;
 import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationships;
@@ -51,6 +53,8 @@ public final class RelationshipsManager {
 
     private ServiceGroupMemberRelationships serviceGroupMemberRelationships;
 
+    private ContainsRelationships containsRelationships;
+
     private final RelationshipsManagementClient clientObject;
 
     private RelationshipsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
@@ -58,6 +62,7 @@ public final class RelationshipsManager {
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new RelationshipsManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
             .buildClient();
     }
@@ -301,6 +306,18 @@ public final class RelationshipsManager {
                 = new ServiceGroupMemberRelationshipsImpl(clientObject.getServiceGroupMemberRelationships(), this);
         }
         return serviceGroupMemberRelationships;
+    }
+
+    /**
+     * Gets the resource collection API of ContainsRelationships.
+     * 
+     * @return Resource collection API of ContainsRelationships.
+     */
+    public ContainsRelationships containsRelationships() {
+        if (this.containsRelationships == null) {
+            this.containsRelationships = new ContainsRelationshipsImpl(clientObject.getContainsRelationships(), this);
+        }
+        return containsRelationships;
     }
 
     /**
