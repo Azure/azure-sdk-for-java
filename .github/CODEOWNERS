@@ -63,7 +63,7 @@
 # AzureSdkOwners:                                                  @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                                         @conniey @Azure/azure-java-sdk
+/sdk/core/azure-core-amqp/                                         @conniey @j7nw4r @sagar0207 @SwayGom @sjkwak @hmlam @Azure/azure-java-sdk
 
 # ServiceLabel: %Azure.Core.AMQP
 # AzureSdkOwners:                                                  @conniey

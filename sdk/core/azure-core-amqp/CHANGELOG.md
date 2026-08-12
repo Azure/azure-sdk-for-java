@@ -1,10 +1,6 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.12.1 (2026-08-12)
 
 ### Bugs Fixed
 
@@ -15,6 +11,11 @@
   the credit flux. ([#47261](https://github.com/Azure/azure-sdk-for-java/issues/47261))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
 
 ## 2.12.0 (2026-06-08)
 

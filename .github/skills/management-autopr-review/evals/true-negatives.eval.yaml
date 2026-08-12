@@ -17,9 +17,9 @@ stimuli:
   - name: additive-beta-update-is-clean
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-additive-beta-update.md"
+        - src: "fixtures/tn-additive-beta-update.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an
@@ -42,9 +42,9 @@ stimuli:
   - name: beta-breaking-changelog-is-not-main-concern
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-beta-breaking-changelog.md"
+        - src: "fixtures/tn-beta-breaking-changelog.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an
@@ -60,9 +60,9 @@ stimuli:
   - name: generated-only-java-is-not-reviewed
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-generated-only-java.md"
+        - src: "fixtures/tn-generated-only-java.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an
@@ -78,9 +78,9 @@ stimuli:
   - name: matching-service-folder-is-clean
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-service-folder-match.md"
+        - src: "fixtures/tn-service-folder-match.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md. Focus on
@@ -101,9 +101,9 @@ stimuli:
   - name: prior-concern-is-carried-once
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-prior-concern.md"
+        - src: "fixtures/tn-prior-concern.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to update the review state from
@@ -128,9 +128,9 @@ stimuli:
   - name: standard-manager-name-is-clean
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-manager-clean.md"
+        - src: "fixtures/tn-manager-clean.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an
@@ -147,9 +147,9 @@ stimuli:
   - name: reordered-manager-identity-is-clean
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-manager-reordered.md"
+        - src: "fixtures/tn-manager-reordered.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an
@@ -166,9 +166,9 @@ stimuli:
   - name: unchanged-legacy-manager-name-is-clean
     environment:
       skills:
-        - "../../../management-autopr-review"
+        - ".."
       files:
-        - src: "../fixtures/tn-manager-legacy.md"
+        - src: "fixtures/tn-manager-legacy.md"
           dest: "review-input.md"
     prompt: >
       Use the management-autopr-review skill to review review-input.md as an

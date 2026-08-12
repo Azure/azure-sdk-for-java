@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iothub.generated;
  */
 public final class CertificatesGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/iothub_generateverificationcode.json
+     * x-ms-original-file: 2026-05-01-preview/iothub_generateverificationcode.json
      */
     /**
      * Sample code: Certificates_GenerateVerificationCode.
