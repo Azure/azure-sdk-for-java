@@ -38,12 +38,12 @@
 
 #### `models.BenefitRecommendationProperties` was modified
 
-* `validate()` was removed
-* `models.BenefitRecommendationProperties withTerm(models.Term)` -> `models.BenefitRecommendationProperties withTerm(models.Term)`
-* `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)` -> `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)`
-* `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)` -> `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)`
 * `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)` -> `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)`
+* `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)` -> `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)`
+* `models.BenefitRecommendationProperties withTerm(models.Term)` -> `models.BenefitRecommendationProperties withTerm(models.Term)`
+* `validate()` was removed
 * `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)` -> `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)`
+* `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)` -> `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)`
 
 #### `models.ExportDeliveryInfo` was modified
 
@@ -58,9 +58,9 @@
 #### `models.BlobInfo` was modified
 
 * `BlobInfo()` was changed to private access
-* `withByteCount(java.lang.Long)` was removed
 * `withBlobLink(java.lang.String)` was removed
 * `validate()` was removed
+* `withByteCount(java.lang.Long)` was removed
 
 #### `models.ReportConfigTimePeriod` was modified
 
@@ -120,8 +120,8 @@
 #### `models.RecommendationUsageDetails` was modified
 
 * `RecommendationUsageDetails()` was changed to private access
-* `validate()` was removed
 * `withUsageGrain(models.Grain)` was removed
+* `validate()` was removed
 
 #### `models.QueryDefinition` was modified
 
@@ -130,8 +130,8 @@
 #### `models.SavingsPlanUtilizationSummary` was modified
 
 * `SavingsPlanUtilizationSummary()` was changed to private access
-* `withBenefitType(models.BenefitKind)` was removed
 * `validate()` was removed
+* `withBenefitType(models.BenefitKind)` was removed
 
 #### `models.Exports` was modified
 
@@ -140,8 +140,8 @@
 #### `models.ForecastColumn` was modified
 
 * `ForecastColumn()` was changed to private access
-* `validate()` was removed
 * `withName(java.lang.String)` was removed
+* `validate()` was removed
 * `withType(java.lang.String)` was removed
 
 #### `models.ReportConfigFilter` was modified
@@ -150,8 +150,8 @@
 
 #### `models.BenefitUtilizationSummaryProperties` was modified
 
-* `validate()` was removed
 * `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)` -> `models.BenefitUtilizationSummaryProperties withBenefitType(models.BenefitKind)`
+* `validate()` was removed
 
 #### `models.QueryComparisonExpression` was modified
 
@@ -160,16 +160,16 @@
 #### `models.QueryColumn` was modified
 
 * `QueryColumn()` was changed to private access
-* `withType(java.lang.String)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 
 #### `models.CostManagementResource` was modified
 
-* `models.CostManagementResource withLocation(java.lang.String)` -> `models.CostManagementResource withLocation(java.lang.String)`
-* `validate()` was removed
 * `withLocation(java.lang.String)` was removed
 * `withTags(java.util.Map)` was removed
+* `models.CostManagementResource withLocation(java.lang.String)` -> `models.CostManagementResource withLocation(java.lang.String)`
+* `validate()` was removed
 * `models.CostManagementResource withTags(java.util.Map)` -> `models.CostManagementResource withTags(java.util.Map)`
 
 #### `CostManagementManager` was modified
@@ -183,11 +183,11 @@
 #### `models.SingleScopeBenefitRecommendationProperties` was modified
 
 * `SingleScopeBenefitRecommendationProperties()` was changed to private access
+* `withLookBackPeriod(models.LookBackPeriod)` was removed
+* `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
 * `withTerm(models.Term)` was removed
 * `withUsage(models.RecommendationUsageDetails)` was removed
 * `validate()` was removed
-* `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
-* `withLookBackPeriod(models.LookBackPeriod)` was removed
 * `withCommitmentGranularity(models.Grain)` was removed
 
 #### `models.ExportSchedule` was modified
@@ -244,15 +244,15 @@
 
 #### `models.Operation` was modified
 
-* `models.Operation withDisplay(models.OperationDisplay)` -> `models.Operation withDisplay(models.OperationDisplay)`
 * `validate()` was removed
+* `models.Operation withDisplay(models.OperationDisplay)` -> `models.Operation withDisplay(models.OperationDisplay)`
 
 #### `models.PriceSheets` was modified
 
-* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)`
-* `download(java.lang.String,java.lang.String,java.lang.String)` was removed
 * `download(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String)`
+* `download(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.ExportDeliveryDestination` was modified
 
@@ -299,16 +299,16 @@
 #### `models.IncludedQuantityUtilizationSummary` was modified
 
 * `IncludedQuantityUtilizationSummary()` was changed to private access
-* `validate()` was removed
 * `withBenefitType(models.BenefitKind)` was removed
+* `validate()` was removed
 
 #### `models.SharedScopeBenefitRecommendationProperties` was modified
 
 * `SharedScopeBenefitRecommendationProperties()` was changed to private access
-* `withLookBackPeriod(models.LookBackPeriod)` was removed
-* `validate()` was removed
-* `withCommitmentGranularity(models.Grain)` was removed
 * `withTerm(models.Term)` was removed
+* `validate()` was removed
+* `withLookBackPeriod(models.LookBackPeriod)` was removed
+* `withCommitmentGranularity(models.Grain)` was removed
 * `withUsage(models.RecommendationUsageDetails)` was removed
 * `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
 
@@ -480,10 +480,10 @@
 
 #### `models.CommonExportProperties` was modified
 
-* `compressionMode()` was added
-* `exportDescription()` was added
 * `systemSuspensionContext()` was added
 * `dataOverwriteBehavior()` was added
+* `exportDescription()` was added
+* `compressionMode()` was added
 
 #### `models.SavingsPlanUtilizationSummary` was modified
 
@@ -499,12 +499,12 @@
 
 #### `models.Export$Definition` was modified
 
-* `withExportDescription(java.lang.String)` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
-* `withRegion(com.azure.core.management.Region)` was added
-* `withRegion(java.lang.String)` was added
-* `withCompressionMode(models.CompressionModeType)` was added
 * `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
+* `withCompressionMode(models.CompressionModeType)` was added
+* `withRegion(java.lang.String)` was added
+* `withIdentity(models.SystemAssignedServiceIdentity)` was added
+* `withExportDescription(java.lang.String)` was added
+* `withRegion(com.azure.core.management.Region)` was added
 
 #### `models.CostManagementResource` was modified
 
@@ -513,24 +513,24 @@
 
 #### `CostManagementManager` was modified
 
-* `markupRules()` was added
-* `budgets()` was added
+* `costAllocationRules()` was added
 * `generateBenefitUtilizationSummariesReports()` was added
 * `settings()` was added
-* `costAllocationRules()` was added
+* `budgets()` was added
+* `markupRules()` was added
 
 #### `models.Export` was modified
 
+* `location()` was added
+* `compressionMode()` was added
+* `systemData()` was added
 * `exportDescription()` was added
-* `systemSuspensionContext()` was added
+* `region()` was added
 * `regionName()` was added
 * `executeWithResponse(models.ExportRunRequest,com.azure.core.util.Context)` was added
-* `region()` was added
 * `identity()` was added
-* `compressionMode()` was added
-* `location()` was added
-* `systemData()` was added
 * `dataOverwriteBehavior()` was added
+* `systemSuspensionContext()` was added
 
 #### `models.ExportType` was modified
 
@@ -542,21 +542,21 @@
 
 #### `models.ExportRun` was modified
 
-* `startDate()` was added
 * `manifestFile()` was added
+* `startDate()` was added
 * `endDate()` was added
 
 #### `models.ExportRunProperties` was modified
 
-* `manifestFile()` was added
 * `startDate()` was added
+* `manifestFile()` was added
 * `endDate()` was added
 
 #### `models.ExportDatasetConfiguration` was modified
 
 * `dataVersion()` was added
-* `filters()` was added
 * `withDataVersion(java.lang.String)` was added
+* `filters()` was added
 * `withFilters(java.util.List)` was added
 
 #### `models.BenefitUtilizationSummary` was modified
@@ -570,9 +570,9 @@
 #### `models.PriceSheets` was modified
 
 * `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String)` was added
-* `downloadByBillingAccount(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByBillingAccount(java.lang.String,java.lang.String)` was added
+* `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `downloadByBillingAccount(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ExportDeliveryDestination` was modified
 
@@ -586,9 +586,9 @@
 #### `models.Export$Update` was modified
 
 * `withIdentity(models.SystemAssignedServiceIdentity)` was added
+* `withCompressionMode(models.CompressionModeType)` was added
 * `withExportDescription(java.lang.String)` was added
 * `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
-* `withCompressionMode(models.CompressionModeType)` was added
 
 #### `models.GranularityType` was modified
 
