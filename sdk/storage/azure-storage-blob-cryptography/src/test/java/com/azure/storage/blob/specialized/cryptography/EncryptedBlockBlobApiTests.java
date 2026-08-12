@@ -599,6 +599,50 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertThrows(Exception.class, () -> bec.downloadStream(new ByteArrayOutputStream()));
     }
 
+    @LiveOnly
+    @Test
+    public void encryptionV2DetectRegionReorder() {
+        // Region must be large enough for at least a few regions; use the minimum region size to keep the blob small.
+        int regionDataLength = 16;
+        int regionCount = 4;
+        int regionTotalLength = NONCE_LENGTH + regionDataLength + TAG_LENGTH;
+        byte[] plaintext = getRandomByteArray(regionDataLength * regionCount);
+
+        String blobName = generateBlobName();
+        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+                .blobName(blobName)
+                .clientSideEncryptionOptions(
+                    new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionDataLength))
+                .buildEncryptedBlobAsyncClient());
+
+        // Upload with encryption.
+        encryptedClient.upload(BinaryData.fromBytes(plaintext));
+
+        // Download the raw ciphertext (bypassing decryption) and preserve its encryption metadata.
+        BlobClient plainClient = cc.getBlobClient(blobName);
+        byte[] ciphertext = plainClient.downloadContent().toBytes();
+        Map<String, String> metadata = plainClient.getProperties().getMetadata();
+
+        // Swap two otherwise-untampered authenticated regions and re-upload the tampered ciphertext.
+        swapRegions(ciphertext, 2, 3, regionTotalLength);
+        plainClient.upload(BinaryData.fromBytes(ciphertext), true);
+        plainClient.setMetadata(metadata);
+
+        // The reordering must now be detected on download.
+        assertThrows(Exception.class, () -> encryptedClient.downloadStream(new ByteArrayOutputStream()));
+    }
+
+    private static void swapRegions(byte[] buffer, int leftRegion, int rightRegion, int regionLength) {
+        int leftOffset = leftRegion * regionLength;
+        int rightOffset = rightRegion * regionLength;
+        for (int i = 0; i < regionLength; i++) {
+            byte temp = buffer[leftOffset + i];
+            buffer[leftOffset + i] = buffer[rightOffset + i];
+            buffer[rightOffset + i] = temp;
+        }
+    }
+
     @Test
     public void downloadUnencryptedData() {
         // Create client

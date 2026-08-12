@@ -55,6 +55,20 @@ final class CryptographyConstants {
 
     static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
 
+    /**
+     * System property name that, when set to {@code true}, disables detection of reordered client-side encryption v2
+     * authenticated regions. Intended for data recovery only.
+     */
+    static final String CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME
+        = "Azure.Storage.CseV2AllowMisorderedAuthRegions";
+
+    /**
+     * Environment variable name that, when set to {@code true}, disables detection of reordered client-side encryption
+     * v2 authenticated regions. Intended for data recovery only.
+     */
+    static final String CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_ENV_VAR
+        = "AZURE_STORAGE_CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS";
+
     private CryptographyConstants() {
     }
 
