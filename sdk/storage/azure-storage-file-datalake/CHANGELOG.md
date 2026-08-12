@@ -7,8 +7,14 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
+  name a second time, causing subsequent requests made through that client to target a double-encoded path when the
+  name contained characters such as `%`, `#`, or a space.
 
 ### Other Changes
+- Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
+  `DataLakePathClientBuilder.pathName(String)`, which incorrectly instructed callers to pass a URL-encoded path name.
+  Path names have been used verbatim since 12.22.0 and are percent-encoded by the client when the request URL is built.
 
 ## 12.29.0-beta.1 (2026-07-28)
 

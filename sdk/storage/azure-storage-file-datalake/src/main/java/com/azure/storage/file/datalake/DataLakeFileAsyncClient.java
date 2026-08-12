@@ -24,7 +24,6 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
@@ -127,10 +126,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
-            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
-            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken(), pathAsyncClient.getCpkInfo(),
-            pathAsyncClient.isTokenCredentialAuthenticated());
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
+            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken(),
+            pathAsyncClient.getCpkInfo(), pathAsyncClient.isTokenCredentialAuthenticated());
     }
 
     /**
