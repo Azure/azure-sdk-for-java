@@ -84,6 +84,26 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
+    public void toFluxRejectsIncompatibleCharsetAndClosesResponse() {
+        TestResponse response
+            = response(200, BinaryData.fromString("data: one\n\n"), "text/event-stream; charset=utf-16");
+
+        assertThrows(IllegalStateException.class,
+            () -> ServerSentEventStreams.toFlux(response, (event, data) -> data).blockLast());
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxRejectsNonCloseableResponseBeforeValidatingContentType() {
+        ResponseBase<Object, BinaryData> response
+            = new ResponseBase<>(null, 200, new HttpHeaders(), BinaryData.fromString("data: one\n\n"), null);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> ServerSentEventStreams.toFlux(response, (event, data) -> data).blockLast());
+    }
+
+    @Test
     public void toFluxRejectsMissingContentTypeAndClosesResponse() {
         TestResponse response = new TestResponse(200, new HttpHeaders(), BinaryData.fromString("data: one\n\n"));
 
