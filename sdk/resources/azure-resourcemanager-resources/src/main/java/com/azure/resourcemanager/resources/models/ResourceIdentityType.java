@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.resources.models;
 
 /**
- * The identity type. This is the only required field when adding a system or user assigned identity to a resource.
+ * The identity type.
  */
 public enum ResourceIdentityType {
     /**
-     * Indicates that a system assigned identity is associated with the resource.
+     * SystemAssigned.
      */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
     /**
-     * Indicates that a user assigned identity is associated with the resource.
+     * UserAssigned.
      */
     USER_ASSIGNED("UserAssigned"),
 
     /**
-     * Indicates that no identity is associated with the resource or that the existing identity should be removed.
+     * SystemAssigned, UserAssigned.
+     */
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
+
+    /**
+     * None.
      */
     NONE("None");
 
