@@ -2,7 +2,7 @@
 
 ## 2.55.0-beta.1 (Unreleased)
 
-- Package api-version 2024-08-01.
+- Package api-version 2024-03-01.
 
 ### Features Added
 
