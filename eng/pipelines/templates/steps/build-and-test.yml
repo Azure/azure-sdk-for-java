@@ -256,7 +256,7 @@ steps:
     inputs:
       pwsh: true
       filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
-    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
+      workingDirectory: $(System.DefaultWorkingDirectory)/sdk
     condition: always()
 
   - task: PublishTestResults@2

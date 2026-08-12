@@ -5,6 +5,10 @@ Writes the contents of any test-proxy log files to the console for easier debugg
 .PARAMETER LogFileDirectory
 The directory where the log files are located.
 #>
+params (
+    [Parameter(Mandatory = $true)]
+    [string]$LogFileDirectory
+)
 
 $files = @(Get-ChildItem -Path $LogFileDirectory -Filter test-proxy.log)
 Write-Host "###### Found $($files.Count) test-proxy.log file(s) under '$LogFileDirectory'"

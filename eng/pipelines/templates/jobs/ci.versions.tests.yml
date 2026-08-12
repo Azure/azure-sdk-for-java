@@ -1,7 +1,4 @@
 parameters:
-  - name: SDKType
-    type: string
-    default: client
   - name: Artifacts
     type: object
     default: []
