@@ -83,11 +83,22 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/tn-list-return.md"
-          dest: "review-input.md"
+        - src: "fixtures/tn-list-return-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/tn-list-return-public.diff"
+          dest: "pr-diff/011-Widgets.java.diff"
+        - src: "fixtures/tn-list-return-async.diff"
+          dest: "pr-diff/028-WidgetsAsyncClient.java.diff"
+        - src: "fixtures/tn-list-return-keys.diff"
+          dest: "pr-diff/047-CommunicationServiceKeys.java.diff"
+        - src: "fixtures/tn-list-return-credentials.diff"
+          dest: "pr-diff/063-FleetCredentialResults.java.diff"
+        - src: "fixtures/tn-list-return-implementation.diff"
+          dest: "pr-diff/104-WidgetsClientImpl.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md as an
-      eligible generated management AutoPR.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review

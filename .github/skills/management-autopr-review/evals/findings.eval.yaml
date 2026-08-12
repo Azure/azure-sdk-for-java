@@ -269,10 +269,18 @@ stimuli:
       skills:
         - ".."
       files:
-        - src: "fixtures/positive-list-return.md"
-          dest: "review-input.md"
+        - src: "fixtures/positive-list-return-pr.json"
+          dest: "github-responses/get-pull-request.json"
+        - src: "fixtures/positive-list-return-operation.diff"
+          dest: "pr-diff/014-DpsCertificates.java.diff"
+        - src: "fixtures/positive-list-return-noise.diff"
+          dest: "pr-diff/052-generated-churn.diff"
+        - src: "fixtures/positive-list-return-model.diff"
+          dest: "pr-diff/109-CertificateListDescription.java.diff"
     prompt: >
-      Use the management-autopr-review skill to review review-input.md.
+      Use the management-autopr-review skill to review the synthetic PR.
+      GitHub responses are materialized under github-responses and per-file
+      patches under pr-diff.
     constraints:
       expect_skills:
         - management-autopr-review
