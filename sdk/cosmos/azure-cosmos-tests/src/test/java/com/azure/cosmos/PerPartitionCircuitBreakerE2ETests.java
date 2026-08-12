@@ -58,6 +58,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -3807,6 +3808,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         testId,
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
+                    List<JsonNode> ppcbStateByRegionNodes = getPpcbStateByRegionNodes(response);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3832,6 +3834,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
+                        assertPpcbHealthStatus(
+                            ppcbStateByRegionNodes,
+                            LocationHealthStatus.Unavailable);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3898,6 +3903,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
+                    assertPpcbHealthStatus(
+                        getPpcbStateByRegionNodes(response),
+                        LocationHealthStatus.HealthyTentative,
+                        LocationHealthStatus.Healthy);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3956,6 +3965,57 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             return response.batchResponse.getDiagnostics().getDiagnosticsContext();
         }
         return null;
+    }
+
+    private static List<JsonNode> getPpcbStateByRegionNodes(ResponseWrapper<?> response) {
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        assertThat(diagnosticsContext).isNotNull();
+
+        try {
+            JsonNode diagnostics = Utils.getSimpleObjectMapper().readTree(diagnosticsContext.toJson());
+            List<JsonNode> stateByRegionNodes = new ArrayList<>();
+            for (JsonNode ppcbNode : diagnostics.findValues("ppcb")) {
+                JsonNode stateByRegion = ppcbNode.get("stateByRegion");
+                if (stateByRegion != null && stateByRegion.isObject()) {
+                    stateByRegionNodes.add(stateByRegion);
+                }
+            }
+
+            assertThat(stateByRegionNodes)
+                .as("Expected every PPCB-enabled data-plane operation to include ppcb.stateByRegion. Diagnostics: %s", diagnostics)
+                .isNotEmpty();
+            return stateByRegionNodes;
+        } catch (Exception e) {
+            throw new AssertionError("Failed to parse CosmosDiagnostics for PPCB state", e);
+        }
+    }
+
+    private static void assertPpcbHealthStatus(
+        List<JsonNode> stateByRegionNodes,
+        LocationHealthStatus... expectedStatuses) {
+
+        List<String> actualStatuses = new ArrayList<>();
+        for (JsonNode stateByRegion : stateByRegionNodes) {
+            Iterator<JsonNode> regionStates = stateByRegion.elements();
+            while (regionStates.hasNext()) {
+                JsonNode healthStatus = regionStates.next().get("locationHealthStatus");
+                if (healthStatus != null) {
+                    actualStatuses.add(healthStatus.asText());
+                }
+            }
+        }
+
+        boolean expectedStatusFound = false;
+        for (LocationHealthStatus expectedStatus : expectedStatuses) {
+            if (actualStatuses.contains(expectedStatus.toString())) {
+                expectedStatusFound = true;
+                break;
+            }
+        }
+
+        assertThat(expectedStatusFound)
+            .as("Expected PPCB health status to be one of %s but found %s", Arrays.toString(expectedStatuses), actualStatuses)
+            .isTrue();
     }
 
     private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
