@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 /**
  * Implementation support for parsing one server-sent event response.
@@ -94,6 +96,38 @@ public final class ServerSentEventStream {
     }
 
     /**
+     * Decodes an SSE response until an inclusive terminal event is emitted, closing its physical response.
+     */
+    public static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
+        BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent) {
+        Objects.requireNonNull(response, "'response' cannot be null.");
+        Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
+        Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
+
+        return Flux.defer(() -> {
+            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
+            if (streamResponse.getStatusCode() == 204) {
+                streamResponse.close();
+                return Flux.empty();
+            }
+
+            AtomicBoolean terminalObserved = new AtomicBoolean();
+            return decodeBody(streamResponse.getBody(), new StreamState(), deserializer).takeUntil(event -> {
+                boolean terminal = terminalEvent.test(event);
+                if (terminal) {
+                    terminalObserved.set(true);
+                }
+                return terminal;
+            })
+                .concatWith(Flux.defer(() -> terminalObserved.get()
+                    ? Flux.empty()
+                    : Flux.error(
+                        new IllegalStateException("The server-sent event stream ended before a terminal event."))))
+                .doFinally(ignored -> streamResponse.close());
+        });
+    }
+
+    /**
      * Processes an SSE response, closing its physical response on completion, failure, or interruption.
      */
     public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> deserializer,
@@ -105,6 +139,32 @@ public final class ServerSentEventStream {
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
             if (streamResponse.getStatusCode() != 204) {
                 processBody(streamResponse.getBody(), new StreamState(), deserializer, listener);
+            }
+        } catch (IOException exception) {
+            listener.onError(exception);
+            throw new UncheckedIOException(exception);
+        } catch (RuntimeException exception) {
+            listener.onError(exception);
+            throw exception;
+        } finally {
+            listener.onClose();
+        }
+    }
+
+    /**
+     * Processes an SSE response until an inclusive terminal event is delivered, closing its physical response.
+     */
+    public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> deserializer,
+        Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
+        Objects.requireNonNull(response, "'response' cannot be null.");
+        Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
+        Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
+        Objects.requireNonNull(listener, "'listener' cannot be null.");
+
+        try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
+            if (streamResponse.getStatusCode() != 204
+                && !processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalEvent, listener)) {
+                throw new IllegalStateException("The server-sent event stream ended before a terminal event.");
             }
         } catch (IOException exception) {
             listener.onError(exception);
@@ -149,8 +209,29 @@ public final class ServerSentEventStream {
                     processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), deserializer, listener);
                 }
             }
-
             processFrames(decoder.finish(), deserializer, listener);
+        }
+    }
+
+    private static <T> boolean processBody(BinaryData body, StreamState state,
+        BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent,
+        ServerSentEventListener<T> listener) throws IOException {
+        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
+        byte[] readBuffer = new byte[8192];
+
+        try (InputStream stream = new FluxInputStream(body.toFluxByteBuffer())) {
+            while (true) {
+                checkInterrupted();
+                int read = stream.read(readBuffer);
+                if (read == -1) {
+                    return processFrames(decoder.finish(), deserializer, terminalEvent, listener);
+                }
+                if (read > 0
+                    && processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), deserializer, terminalEvent,
+                        listener)) {
+                    return true;
+                }
+            }
         }
     }
 
@@ -163,6 +244,23 @@ public final class ServerSentEventStream {
                 listener.onEvent(frame.toEvent(data));
             }
         }
+    }
+
+    private static <T> boolean processFrames(List<ServerSentEventFrame> frames,
+        BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent,
+        ServerSentEventListener<T> listener) {
+        for (ServerSentEventFrame frame : frames) {
+            checkInterrupted();
+            T data = deserializer.apply(frame.event, frame.data);
+            if (data != null) {
+                ServerSentEvent<T> event = frame.toEvent(data);
+                listener.onEvent(event);
+                if (terminalEvent.test(event)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private static void checkInterrupted() {
