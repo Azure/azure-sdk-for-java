@@ -675,6 +675,17 @@ public class BuilderHelperTests {
         assertEquals("100-continue", expectHeader.get());
     }
 
+    /**
+     * The Expect header is allowed by default so that it is visible in logs whether a request negotiated the
+     * 100-continue handshake.
+     */
+    @Test
+    public void expectHeaderIsAllowedInDefaultLogOptions() {
+        assertTrue(BuilderHelper.getDefaultHttpLogOptions()
+            .getAllowedHeaderNames()
+            .contains(HttpHeaderName.EXPECT.getCaseSensitiveName()));
+    }
+
     private static int indexOfPolicy(HttpPipeline pipeline, Class<?> policyType) {
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             if (policyType.isInstance(pipeline.getPolicy(i))) {
