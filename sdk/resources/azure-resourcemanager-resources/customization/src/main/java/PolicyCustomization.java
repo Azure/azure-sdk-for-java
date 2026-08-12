@@ -25,7 +25,7 @@ public class PolicyCustomization extends Customization {
 
     private static void customizePolicyClient(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getInterfaceByName(customization.getClassName()).ifPresent(clazz -> {
-            MethodDeclaration method = clazz.addMethod("getPolicyExemptions", Modifier.Keyword.PUBLIC);
+            MethodDeclaration method = clazz.addMethod("getPolicyExemptions");
             method.setType("PolicyExemptionsClient");
             method.removeBody();
             method.setJavadocComment("Gets the PolicyExemptionsClient object to access its operations.\n\n"

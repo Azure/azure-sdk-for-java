@@ -100,5 +100,5 @@ public interface PolicyClient {
      *
      * @return the PolicyExemptionsClient object.
      */
-    public PolicyExemptionsClient getPolicyExemptions();
+    PolicyExemptionsClient getPolicyExemptions();
 }
