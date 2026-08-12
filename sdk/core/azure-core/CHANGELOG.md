@@ -5,7 +5,11 @@
 ### Features Added
 
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
-
+- Added generic `ServerSentEvent<T>`, `ServerSentEventListener<T>`, and `ServerSentEventStreams` for typed,
+  incrementally decoded server-sent event streams. The REST proxy preserves live-body ownership, HTTP response logging
+  does not consume SSE bodies, and streams stop cleanly on HTTP 204 or response-body EOF. Each physical response is
+  closed on completion, failure, interruption, or asynchronous cancellation. Asynchronous decoding parses the reactive
+  response body without blocking worker threads.
 ### Breaking Changes
 
 ### Bugs Fixed
