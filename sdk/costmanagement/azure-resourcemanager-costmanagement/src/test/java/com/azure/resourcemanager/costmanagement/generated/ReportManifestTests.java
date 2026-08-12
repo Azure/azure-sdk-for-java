@@ -17,15 +17,14 @@ public final class ReportManifestTests {
             "{\"manifestVersion\":\"dbxiqx\",\"dataFormat\":\"Csv\",\"byteCount\":4410581477178003370,\"blobCount\":2092757029,\"compressData\":true,\"requestContext\":{\"requestScope\":\"inheh\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"vwbcblembnkbwv\",\"end\":\"vxkdivqihebwtswb\"},\"billingPeriod\":\"wfmdurage\",\"invoiceId\":\"zvcjfelisdjubggb\"}},\"blobs\":[{\"blobLink\":\"xkbsazgakgac\",\"byteCount\":1058435758897538488},{\"blobLink\":\"dmspof\",\"byteCount\":8260920896758809530},{\"blobLink\":\"rylniofrzg\",\"byteCount\":2813086357064357787}]}")
             .toObject(ReportManifest.class);
         Assertions.assertEquals("dbxiqx", model.manifestVersion());
-        Assertions.assertEquals(CostDetailsDataFormat.CSV_COST_DETAILS_DATA_FORMAT, model.dataFormat());
+        Assertions.assertEquals(CostDetailsDataFormat.CSV, model.dataFormat());
         Assertions.assertEquals(4410581477178003370L, model.byteCount());
         Assertions.assertEquals(2092757029, model.blobCount());
         Assertions.assertTrue(model.compressData());
         Assertions.assertEquals("xkbsazgakgac", model.blobs().get(0).blobLink());
         Assertions.assertEquals(1058435758897538488L, model.blobs().get(0).byteCount());
         Assertions.assertEquals("inheh", model.requestScope());
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE,
-            model.requestBody().metric());
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
         Assertions.assertEquals("vwbcblembnkbwv", model.requestBody().timePeriod().start());
         Assertions.assertEquals("vxkdivqihebwtswb", model.requestBody().timePeriod().end());
         Assertions.assertEquals("wfmdurage", model.requestBody().billingPeriod());

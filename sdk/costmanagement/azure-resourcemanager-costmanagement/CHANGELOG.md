@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-08-11)
+## 1.1.0 (2026-08-12)
 
 - Azure Resource Manager CostManagement client library for Java. This package contains Microsoft Azure SDK for CostManagement Management SDK. CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -39,11 +39,11 @@
 #### `models.BenefitRecommendationProperties` was modified
 
 * `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)` -> `models.BenefitRecommendationProperties withRecommendationDetails(models.AllSavingsBenefitDetails)`
-* `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)` -> `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)`
-* `models.BenefitRecommendationProperties withTerm(models.Term)` -> `models.BenefitRecommendationProperties withTerm(models.Term)`
 * `validate()` was removed
-* `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)` -> `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)`
+* `models.BenefitRecommendationProperties withTerm(models.Term)` -> `models.BenefitRecommendationProperties withTerm(models.Term)`
+* `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)` -> `models.BenefitRecommendationProperties withCommitmentGranularity(models.Grain)`
 * `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)` -> `models.BenefitRecommendationProperties withUsage(models.RecommendationUsageDetails)`
+* `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)` -> `models.BenefitRecommendationProperties withLookBackPeriod(models.LookBackPeriod)`
 
 #### `models.ExportDeliveryInfo` was modified
 
@@ -52,15 +52,15 @@
 #### `models.Status` was modified
 
 * `Status()` was changed to private access
-* `validate()` was removed
 * `withStatus(models.ReportOperationStatusType)` was removed
+* `validate()` was removed
 
 #### `models.BlobInfo` was modified
 
 * `BlobInfo()` was changed to private access
-* `validate()` was removed
 * `withBlobLink(java.lang.String)` was removed
 * `withByteCount(java.lang.Long)` was removed
+* `validate()` was removed
 
 #### `models.ReportConfigTimePeriod` was modified
 
@@ -90,8 +90,8 @@
 
 #### `models.CostManagementProxyResource` was modified
 
-* `validate()` was removed
 * `models.CostManagementProxyResource withEtag(java.lang.String)` -> `models.CostManagementProxyResource withEtag(java.lang.String)`
+* `validate()` was removed
 
 #### `models.QueryGrouping` was modified
 
@@ -120,8 +120,8 @@
 #### `models.RecommendationUsageDetails` was modified
 
 * `RecommendationUsageDetails()` was changed to private access
-* `validate()` was removed
 * `withUsageGrain(models.Grain)` was removed
+* `validate()` was removed
 
 #### `models.QueryDefinition` was modified
 
@@ -130,8 +130,8 @@
 #### `models.SavingsPlanUtilizationSummary` was modified
 
 * `SavingsPlanUtilizationSummary()` was changed to private access
-* `validate()` was removed
 * `withBenefitType(models.BenefitKind)` was removed
+* `validate()` was removed
 
 #### `models.Exports` was modified
 
@@ -157,11 +157,6 @@
 
 * `validate()` was removed
 
-#### `models.CostDetailsMetricType` was modified
-
-* `AMORTIZED_COST` was removed
-* `ACTUAL_COST` was removed
-
 #### `models.QueryColumn` was modified
 
 * `QueryColumn()` was changed to private access
@@ -171,11 +166,11 @@
 
 #### `models.CostManagementResource` was modified
 
-* `withTags(java.util.Map)` was removed
-* `models.CostManagementResource withTags(java.util.Map)` -> `models.CostManagementResource withTags(java.util.Map)`
-* `withLocation(java.lang.String)` was removed
 * `models.CostManagementResource withLocation(java.lang.String)` -> `models.CostManagementResource withLocation(java.lang.String)`
+* `models.CostManagementResource withTags(java.util.Map)` -> `models.CostManagementResource withTags(java.util.Map)`
+* `withTags(java.util.Map)` was removed
 * `validate()` was removed
+* `withLocation(java.lang.String)` was removed
 
 #### `CostManagementManager` was modified
 
@@ -189,11 +184,11 @@
 
 * `SingleScopeBenefitRecommendationProperties()` was changed to private access
 * `validate()` was removed
-* `withLookBackPeriod(models.LookBackPeriod)` was removed
 * `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
+* `withUsage(models.RecommendationUsageDetails)` was removed
 * `withTerm(models.Term)` was removed
 * `withCommitmentGranularity(models.Grain)` was removed
-* `withUsage(models.RecommendationUsageDetails)` was removed
+* `withLookBackPeriod(models.LookBackPeriod)` was removed
 
 #### `models.ExportSchedule` was modified
 
@@ -249,14 +244,14 @@
 
 #### `models.Operation` was modified
 
-* `validate()` was removed
 * `models.Operation withDisplay(models.OperationDisplay)` -> `models.Operation withDisplay(models.OperationDisplay)`
+* `validate()` was removed
 
 #### `models.PriceSheets` was modified
 
-* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String)`
-* `download(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `download(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `download(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String)`
 * `models.DownloadUrl downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.PricesheetDownloadProperties downloadByBillingProfile(java.lang.String,java.lang.String,com.azure.core.util.Context)`
 
 #### `models.ExportDeliveryDestination` was modified
@@ -267,12 +262,6 @@
 
 * `validate()` was removed
 
-#### `models.CostDetailsStatusType` was modified
-
-* `COMPLETED` was removed
-* `FAILED` was removed
-* `NO_DATA_FOUND` was removed
-
 #### `models.ReportConfigComparisonExpression` was modified
 
 * `validate()` was removed
@@ -280,10 +269,6 @@
 #### `models.QueryAggregation` was modified
 
 * `validate()` was removed
-
-#### `models.CostDetailsDataFormat` was modified
-
-* `CSV` was removed
 
 #### `models.ExportDataset` was modified
 
@@ -314,18 +299,18 @@
 #### `models.IncludedQuantityUtilizationSummary` was modified
 
 * `IncludedQuantityUtilizationSummary()` was changed to private access
-* `validate()` was removed
 * `withBenefitType(models.BenefitKind)` was removed
+* `validate()` was removed
 
 #### `models.SharedScopeBenefitRecommendationProperties` was modified
 
 * `SharedScopeBenefitRecommendationProperties()` was changed to private access
-* `withTerm(models.Term)` was removed
-* `withCommitmentGranularity(models.Grain)` was removed
-* `withUsage(models.RecommendationUsageDetails)` was removed
-* `withLookBackPeriod(models.LookBackPeriod)` was removed
-* `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
 * `validate()` was removed
+* `withUsage(models.RecommendationUsageDetails)` was removed
+* `withTerm(models.Term)` was removed
+* `withLookBackPeriod(models.LookBackPeriod)` was removed
+* `withCommitmentGranularity(models.Grain)` was removed
+* `withRecommendationDetails(models.AllSavingsBenefitDetails)` was removed
 
 #### `models.ReportConfigGrouping` was modified
 
@@ -495,8 +480,8 @@
 
 #### `models.CommonExportProperties` was modified
 
-* `exportDescription()` was added
 * `dataOverwriteBehavior()` was added
+* `exportDescription()` was added
 * `compressionMode()` was added
 * `systemSuspensionContext()` was added
 
@@ -514,17 +499,12 @@
 
 #### `models.Export$Definition` was modified
 
-* `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
 * `withExportDescription(java.lang.String)` was added
-* `withCompressionMode(models.CompressionModeType)` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
-* `withRegion(com.azure.core.management.Region)` was added
 * `withRegion(java.lang.String)` was added
-
-#### `models.CostDetailsMetricType` was modified
-
-* `AMORTIZED_COST_COST_DETAILS_METRIC_TYPE` was added
-* `ACTUAL_COST_COST_DETAILS_METRIC_TYPE` was added
+* `withRegion(com.azure.core.management.Region)` was added
+* `withIdentity(models.SystemAssignedServiceIdentity)` was added
+* `withCompressionMode(models.CompressionModeType)` was added
+* `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
 
 #### `models.CostManagementResource` was modified
 
@@ -533,23 +513,23 @@
 
 #### `CostManagementManager` was modified
 
-* `generateBenefitUtilizationSummariesReports()` was added
-* `costAllocationRules()` was added
-* `budgets()` was added
 * `markupRules()` was added
+* `generateBenefitUtilizationSummariesReports()` was added
 * `settings()` was added
+* `budgets()` was added
+* `costAllocationRules()` was added
 
 #### `models.Export` was modified
 
-* `exportDescription()` was added
-* `location()` was added
-* `systemSuspensionContext()` was added
-* `executeWithResponse(models.ExportRunRequest,com.azure.core.util.Context)` was added
-* `dataOverwriteBehavior()` was added
-* `systemData()` was added
 * `region()` was added
-* `identity()` was added
 * `regionName()` was added
+* `exportDescription()` was added
+* `dataOverwriteBehavior()` was added
+* `systemSuspensionContext()` was added
+* `identity()` was added
+* `systemData()` was added
+* `executeWithResponse(models.ExportRunRequest,com.azure.core.util.Context)` was added
+* `location()` was added
 * `compressionMode()` was added
 
 #### `models.ExportType` was modified
@@ -562,9 +542,9 @@
 
 #### `models.ExportRun` was modified
 
-* `manifestFile()` was added
 * `startDate()` was added
 * `endDate()` was added
+* `manifestFile()` was added
 
 #### `models.ExportRunProperties` was modified
 
@@ -574,10 +554,10 @@
 
 #### `models.ExportDatasetConfiguration` was modified
 
-* `dataVersion()` was added
 * `filters()` was added
 * `withFilters(java.util.List)` was added
 * `withDataVersion(java.lang.String)` was added
+* `dataVersion()` was added
 
 #### `models.BenefitUtilizationSummary` was modified
 
@@ -589,36 +569,26 @@
 
 #### `models.PriceSheets` was modified
 
-* `downloadByBillingAccount(java.lang.String,java.lang.String)` was added
-* `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByBillingAccount(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String)` was added
+* `downloadByBillingAccount(java.lang.String,java.lang.String)` was added
+* `downloadByInvoice(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.ExportDeliveryDestination` was modified
 
 * `type()` was added
 * `withType(models.DestinationType)` was added
 
-#### `models.CostDetailsStatusType` was modified
-
-* `NO_DATA_FOUND_COST_DETAILS_STATUS_TYPE` was added
-* `FAILED_COST_DETAILS_STATUS_TYPE` was added
-* `COMPLETED_COST_DETAILS_STATUS_TYPE` was added
-
 #### `models.BenefitRecommendationModel` was modified
 
 * `systemData()` was added
 
-#### `models.CostDetailsDataFormat` was modified
-
-* `CSV_COST_DETAILS_DATA_FORMAT` was added
-
 #### `models.Export$Update` was modified
 
 * `withExportDescription(java.lang.String)` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
-* `withCompressionMode(models.CompressionModeType)` was added
 * `withDataOverwriteBehavior(models.DataOverwriteBehaviorType)` was added
+* `withCompressionMode(models.CompressionModeType)` was added
+* `withIdentity(models.SystemAssignedServiceIdentity)` was added
 
 #### `models.GranularityType` was modified
 

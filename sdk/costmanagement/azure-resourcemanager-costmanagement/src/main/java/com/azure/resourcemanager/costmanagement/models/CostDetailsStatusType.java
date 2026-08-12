@@ -14,17 +14,17 @@ public final class CostDetailsStatusType extends ExpandableStringEnum<CostDetail
     /**
      * Operation is Completed.
      */
-    public static final CostDetailsStatusType COMPLETED_COST_DETAILS_STATUS_TYPE = fromString("Completed");
+    public static final CostDetailsStatusType COMPLETED = fromString("Completed");
 
     /**
      * Operation is Completed and no cost data found.
      */
-    public static final CostDetailsStatusType NO_DATA_FOUND_COST_DETAILS_STATUS_TYPE = fromString("NoDataFound");
+    public static final CostDetailsStatusType NO_DATA_FOUND = fromString("NoDataFound");
 
     /**
      * Operation Failed.
      */
-    public static final CostDetailsStatusType FAILED_COST_DETAILS_STATUS_TYPE = fromString("Failed");
+    public static final CostDetailsStatusType FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of CostDetailsStatusType value.

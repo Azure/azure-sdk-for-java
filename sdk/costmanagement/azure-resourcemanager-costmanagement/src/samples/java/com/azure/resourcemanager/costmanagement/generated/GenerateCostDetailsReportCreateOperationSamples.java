@@ -24,8 +24,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("subscriptions/00000000-0000-0000-0000-000000000000",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
@@ -42,8 +41,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/enrollmentAccounts/1234",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
@@ -60,8 +58,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withInvoiceId("M1234567"),
                 com.azure.core.util.Context.NONE);
     }
@@ -79,8 +76,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withBillingPeriod("202205"),
                 com.azure.core.util.Context.NONE);
     }
@@ -97,8 +93,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withInvoiceId("M1234567"),
                 com.azure.core.util.Context.NONE);
     }
@@ -115,8 +110,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
@@ -133,8 +127,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/departments/12345",
-                new GenerateCostDetailsReportRequestDefinition()
-                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }

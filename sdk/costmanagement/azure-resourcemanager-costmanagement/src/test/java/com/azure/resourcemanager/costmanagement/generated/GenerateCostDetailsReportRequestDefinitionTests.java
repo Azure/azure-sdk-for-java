@@ -16,7 +16,7 @@ public final class GenerateCostDetailsReportRequestDefinitionTests {
         GenerateCostDetailsReportRequestDefinition model = BinaryData.fromString(
             "{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"uqn\",\"end\":\"ophzfylsgcrp\"},\"billingPeriod\":\"cunezzcezelfw\",\"invoiceId\":\"wl\"}")
             .toObject(GenerateCostDetailsReportRequestDefinition.class);
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE, model.metric());
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.metric());
         Assertions.assertEquals("uqn", model.timePeriod().start());
         Assertions.assertEquals("ophzfylsgcrp", model.timePeriod().end());
         Assertions.assertEquals("cunezzcezelfw", model.billingPeriod());
@@ -25,13 +25,13 @@ public final class GenerateCostDetailsReportRequestDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateCostDetailsReportRequestDefinition model = new GenerateCostDetailsReportRequestDefinition()
-            .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
-            .withTimePeriod(new CostDetailsTimePeriod().withStart("uqn").withEnd("ophzfylsgcrp"))
-            .withBillingPeriod("cunezzcezelfw")
-            .withInvoiceId("wl");
+        GenerateCostDetailsReportRequestDefinition model
+            = new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                .withTimePeriod(new CostDetailsTimePeriod().withStart("uqn").withEnd("ophzfylsgcrp"))
+                .withBillingPeriod("cunezzcezelfw")
+                .withInvoiceId("wl");
         model = BinaryData.fromObject(model).toObject(GenerateCostDetailsReportRequestDefinition.class);
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE, model.metric());
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.metric());
         Assertions.assertEquals("uqn", model.timePeriod().start());
         Assertions.assertEquals("ophzfylsgcrp", model.timePeriod().end());
         Assertions.assertEquals("cunezzcezelfw", model.billingPeriod());

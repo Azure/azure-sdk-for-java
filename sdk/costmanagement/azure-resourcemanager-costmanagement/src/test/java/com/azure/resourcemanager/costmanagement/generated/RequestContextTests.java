@@ -16,8 +16,7 @@ public final class RequestContextTests {
             "{\"requestScope\":\"mstk\",\"requestBody\":{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"bcuiiz\",\"end\":\"ktwfa\"},\"billingPeriod\":\"nv\",\"invoiceId\":\"ibmikostbzb\"}}")
             .toObject(RequestContext.class);
         Assertions.assertEquals("mstk", model.requestScope());
-        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE,
-            model.requestBody().metric());
+        Assertions.assertEquals(CostDetailsMetricType.ACTUAL_COST, model.requestBody().metric());
         Assertions.assertEquals("bcuiiz", model.requestBody().timePeriod().start());
         Assertions.assertEquals("ktwfa", model.requestBody().timePeriod().end());
         Assertions.assertEquals("nv", model.requestBody().billingPeriod());

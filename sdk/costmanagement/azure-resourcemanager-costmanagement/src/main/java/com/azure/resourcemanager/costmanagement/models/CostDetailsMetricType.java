@@ -14,12 +14,12 @@ public final class CostDetailsMetricType extends ExpandableStringEnum<CostDetail
     /**
      * Actual cost data.
      */
-    public static final CostDetailsMetricType ACTUAL_COST_COST_DETAILS_METRIC_TYPE = fromString("ActualCost");
+    public static final CostDetailsMetricType ACTUAL_COST = fromString("ActualCost");
 
     /**
      * Amortized cost data.
      */
-    public static final CostDetailsMetricType AMORTIZED_COST_COST_DETAILS_METRIC_TYPE = fromString("AmortizedCost");
+    public static final CostDetailsMetricType AMORTIZED_COST = fromString("AmortizedCost");
 
     /**
      * Creates a new instance of CostDetailsMetricType value.

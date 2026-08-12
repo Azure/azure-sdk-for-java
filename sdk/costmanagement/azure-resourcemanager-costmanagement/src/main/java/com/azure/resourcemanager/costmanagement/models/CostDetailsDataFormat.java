@@ -14,7 +14,7 @@ public final class CostDetailsDataFormat extends ExpandableStringEnum<CostDetail
     /**
      * Csv data format.
      */
-    public static final CostDetailsDataFormat CSV_COST_DETAILS_DATA_FORMAT = fromString("Csv");
+    public static final CostDetailsDataFormat CSV = fromString("Csv");
 
     /**
      * Creates a new instance of CostDetailsDataFormat value.
