@@ -5,7 +5,7 @@ Writes the contents of any test-proxy log files to the console for easier debugg
 .PARAMETER LogFileDirectory
 The directory where the log files are located.
 #>
-params (
+param(
     [Parameter(Mandatory = $true)]
     [string]$LogFileDirectory
 )
