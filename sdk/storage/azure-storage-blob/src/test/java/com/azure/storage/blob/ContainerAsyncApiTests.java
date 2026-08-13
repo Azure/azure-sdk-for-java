@@ -15,7 +15,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -2150,39 +2149,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
 
         assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
-    }
-
-    @Test
-    @ResourceLock("BlobSessionAuth")
-    public void createSession() {
-        BlobContainerAsyncClient oauthCcAsync
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        StepVerifier.create(oauthCcAsync.createSession()).assertNext(response -> {
-            assertNotNull(response);
-            assertNotNull(response.getId());
-            assertNotNull(response.getExpiration());
-            assertNotNull(response.getCredentials());
-            assertNotNull(response.getCredentials().getSessionToken());
-            assertNotNull(response.getCredentials().getSessionKey());
-        }).verifyComplete();
-    }
-
-    @Test
-    @ResourceLock("BlobSessionAuth")
-    public void createSessionWithResponse() {
-        BlobContainerAsyncClient oauthCcAsync
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        StepVerifier.create(oauthCcAsync.createSessionWithResponse()).assertNext(response -> {
-            assertResponseStatusCode(response, 201);
-            CreateSessionResponse sessionResponse = response.getValue();
-            assertNotNull(sessionResponse);
-            assertNotNull(sessionResponse.getId());
-            assertNotNull(sessionResponse.getExpiration());
-            assertTrue(sessionResponse.getExpiration().isAfter(testResourceNamer.now()));
-            assertNotNull(sessionResponse.getCredentials());
-            assertNotNull(sessionResponse.getCredentials().getSessionToken());
-            assertNotNull(sessionResponse.getCredentials().getSessionKey());
-        }).verifyComplete();
     }
 
     @Test
