@@ -10,14 +10,13 @@ public class CorePerfStressOptions extends PerfStressOptions {
 
     @Parameter(
         names = { "--backend-type" },
-        description = "The backend type used for tests. " + "Options are mock, blobs or wiremock. "
-            + "Defaults to mock.")
+        description = "The backend type used for tests. Options are mock or blobs. Defaults to mock.")
     private BackendType backendType = BackendType.MOCK;
 
     @Parameter(
         names = { "--binary-data-source" },
         description = "The binary data source used for tests that use BinaryData. "
-            + "Options are bytes, file or stream. " + "Defaults to file.")
+            + "Options are bytes, file or stream. Defaults to file.")
     private BinaryDataSource binaryDataSource = BinaryDataSource.FILE;
 
     @Parameter(
@@ -26,7 +25,7 @@ public class CorePerfStressOptions extends PerfStressOptions {
     private boolean includePipelinePolicies;
 
     /**
-     * The backend type used for tests. Options are mock, blobs or wiremock. Defaults to mock.
+     * The backend type used for tests. Options are mock or blobs. Defaults to mock.
      * @return The backend type used for tests.
      */
     public BackendType getBackendType() {
@@ -52,7 +51,7 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum BackendType {
-        MOCK, BLOBS, WIREMOCK
+        MOCK, BLOBS
     }
 
     public enum BinaryDataSource {
