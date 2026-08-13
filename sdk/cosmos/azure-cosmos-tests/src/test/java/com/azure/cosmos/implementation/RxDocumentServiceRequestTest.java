@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.PartitionKey;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
@@ -23,29 +22,6 @@ public class RxDocumentServiceRequestTest {
     private final static String DOCUMENT_DEFINITION = "{ " + "\"id\": \"%s\", " + "\"mypk\": \"%s\", "
             + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]" + "}";
     private static final String PARTITION_KEY_VALUE = "1";
-
-    @Test(groups = { "unit" })
-    public void createAndClonePreserveItemRequestMetadata() {
-        RequestOptions options = new RequestOptions();
-        PartitionKey partitionKey = new PartitionKey("pk");
-        options.setPartitionKey(partitionKey);
-        options.setItemId("item-id");
-
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(),
-            OperationType.Read,
-            ResourceType.Document,
-            "dbs/db/colls/coll/docs/item-id",
-            new HashedMap<String, String>(),
-            options);
-
-        assertThat(request.getProvidedPartitionKey()).isSameAs(partitionKey);
-        assertThat(request.getItemId()).isEqualTo("item-id");
-
-        RxDocumentServiceRequest clonedRequest = request.clone();
-        assertThat(clonedRequest.getProvidedPartitionKey()).isSameAs(partitionKey);
-        assertThat(clonedRequest.getItemId()).isEqualTo("item-id");
-    }
 
     private final String DOCUMENT_URL_WITH_ID = "/dbs/IXYFAA==/colls/IXYFAOHEBPM=/docs/IXYFAOHEBPMBAAAAAAAAAA==/";
     private final String DOCUMENT_URL_WITH_NAME = "/dbs/testDB/colls/testColl/docs/testDoc/";

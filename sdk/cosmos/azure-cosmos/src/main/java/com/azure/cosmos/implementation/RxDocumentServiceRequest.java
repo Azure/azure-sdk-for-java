@@ -74,8 +74,6 @@ public class RxDocumentServiceRequest implements Cloneable {
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
     private PartitionKeyDefinition partitionKeyDefinition;
-    private PartitionKey providedPartitionKey;
-    private String itemId;
     private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
@@ -430,7 +428,6 @@ public class RxDocumentServiceRequest implements Cloneable {
             AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
-        setItemRequestMetadata(request, options);
         return request;
     }
 
@@ -457,7 +454,6 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
-        setItemRequestMetadata(request, options);
         return request;
     }
 
@@ -473,8 +469,6 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
-        setItemRequestMetadata(request, options);
-
         return request;
     }
 
@@ -500,7 +494,6 @@ public class RxDocumentServiceRequest implements Cloneable {
             body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
-        setItemRequestMetadata(request, options);
         return request;
     }
 
@@ -579,16 +572,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
-        setItemRequestMetadata(request, options);
         return request;
-    }
-
-    private static void setItemRequestMetadata(RxDocumentServiceRequest request, Object options) {
-        if (options instanceof RequestOptions) {
-            RequestOptions requestOptions = (RequestOptions) options;
-            request.providedPartitionKey = requestOptions.getPartitionKey();
-            request.itemId = requestOptions.getItemId();
-        }
     }
 
     /**
@@ -972,18 +956,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.partitionKeyInternal;
     }
 
-    PartitionKey getProvidedPartitionKey() {
-        return providedPartitionKey;
-    }
-
-    String getItemId() {
-        return itemId;
-    }
-
-    void setItemId(String itemId) {
-        this.itemId = itemId;
-    }
-
     public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.partitionKeyDefinition = partitionKeyDefinition;
     }
@@ -1095,8 +1067,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
             this.resourceId, this.isNameBased, this.getResourceType(), clonedHeaders);
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
-        rxDocumentServiceRequest.providedPartitionKey = this.providedPartitionKey;
-        rxDocumentServiceRequest.itemId = this.itemId;
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());

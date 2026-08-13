@@ -41,7 +41,6 @@ public class RequestOptions implements OverridableRequestOptions {
     private String offerType;
     private String ifMatchETag;
     private String ifNoneMatchETag;
-    private String itemId;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
     private boolean scriptLoggingEnabled;
@@ -83,7 +82,6 @@ public class RequestOptions implements OverridableRequestOptions {
         this.offerType = toBeCloned.offerType;
         this.ifMatchETag = toBeCloned.ifMatchETag;
         this.ifNoneMatchETag = toBeCloned.ifNoneMatchETag;
-        this.itemId = toBeCloned.itemId;
         this.offerThroughput = toBeCloned.offerThroughput;
         this.partitionkey = toBeCloned.partitionkey;
         this.scriptLoggingEnabled = toBeCloned.scriptLoggingEnabled;
@@ -400,14 +398,6 @@ public class RequestOptions implements OverridableRequestOptions {
      */
     public void setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
-    }
-
-    public String getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
     }
 
     /**
