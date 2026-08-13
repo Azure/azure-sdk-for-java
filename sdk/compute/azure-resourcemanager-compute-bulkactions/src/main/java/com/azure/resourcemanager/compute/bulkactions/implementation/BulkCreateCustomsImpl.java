@@ -10,9 +10,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustoms;
+import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.OperationStatusResult;
 
@@ -78,6 +80,25 @@ public final class BulkCreateCustomsImpl implements BulkCreateCustoms {
 
     public void cancel(String resourceGroupName, String location, String name, Context context) {
         this.serviceClient().cancel(resourceGroupName, location, name, context);
+    }
+
+    public Response<GetOperationStatusResponse> virtualMachinesGetOperationStatusWithResponse(String resourceGroupName,
+        String location, String name, Context context) {
+        Response<GetOperationStatusResponseInner> inner = this.serviceClient()
+            .virtualMachinesGetOperationStatusWithResponse(resourceGroupName, location, name, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetOperationStatusResponseImpl(inner.getValue(), this.manager()));
+    }
+
+    public GetOperationStatusResponse virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name) {
+        GetOperationStatusResponseInner inner
+            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
+        if (inner != null) {
+            return new GetOperationStatusResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<LocationBasedBulkCreateCustom> listByResourceGroup(String resourceGroupName, String location) {

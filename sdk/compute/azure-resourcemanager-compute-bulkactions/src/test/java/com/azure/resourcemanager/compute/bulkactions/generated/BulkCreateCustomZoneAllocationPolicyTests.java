@@ -15,24 +15,25 @@ public final class BulkCreateCustomZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BulkCreateCustomZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"fbshrnsvbuswd\",\"rank\":106815843},{\"zone\":\"yybyc\",\"rank\":1761285242}]}")
+            "{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"mlqtmldgxob\",\"rank\":1794047018},{\"zone\":\"rclnpkc\",\"rank\":1115944872},{\"zone\":\"yzriykhy\",\"rank\":529722805}]}")
             .toObject(BulkCreateCustomZoneAllocationPolicy.class);
         Assertions.assertEquals(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.distributionStrategy());
-        Assertions.assertEquals("fbshrnsvbuswd", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(106815843, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals("mlqtmldgxob", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1794047018, model.zonePreferences().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkCreateCustomZoneAllocationPolicy model = new BulkCreateCustomZoneAllocationPolicy()
             .withDistributionStrategy(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-            .withZonePreferences(Arrays.asList(new ZonePreference().withZone("fbshrnsvbuswd").withRank(106815843),
-                new ZonePreference().withZone("yybyc").withRank(1761285242)));
+            .withZonePreferences(Arrays.asList(new ZonePreference().withZone("mlqtmldgxob").withRank(1794047018),
+                new ZonePreference().withZone("rclnpkc").withRank(1115944872),
+                new ZonePreference().withZone("yzriykhy").withRank(529722805)));
         model = BinaryData.fromObject(model).toObject(BulkCreateCustomZoneAllocationPolicy.class);
         Assertions.assertEquals(BulkCreateCustomDistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.distributionStrategy());
-        Assertions.assertEquals("fbshrnsvbuswd", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(106815843, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals("mlqtmldgxob", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1794047018, model.zonePreferences().get(0).rank());
     }
 }

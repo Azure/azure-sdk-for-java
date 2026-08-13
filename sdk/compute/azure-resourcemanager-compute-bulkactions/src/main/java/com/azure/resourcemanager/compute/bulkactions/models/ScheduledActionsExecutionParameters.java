@@ -15,8 +15,8 @@ import java.io.IOException;
  * The execution parameters the scheduled action is supposed to follow.
  */
 @Fluent
-public final class RecurringScheduledActionsExecutionParameters
-    implements JsonSerializable<RecurringScheduledActionsExecutionParameters> {
+public final class ScheduledActionsExecutionParameters
+    implements JsonSerializable<ScheduledActionsExecutionParameters> {
     /*
      * Details that could optimize the user's request
      */
@@ -25,12 +25,12 @@ public final class RecurringScheduledActionsExecutionParameters
     /*
      * Retry policy the user can pass
      */
-    private RecurringScheduledActionsRetryPolicy retryPolicy;
+    private ScheduledActionsRetryPolicy retryPolicy;
 
     /**
-     * Creates an instance of RecurringScheduledActionsExecutionParameters class.
+     * Creates an instance of ScheduledActionsExecutionParameters class.
      */
-    public RecurringScheduledActionsExecutionParameters() {
+    public ScheduledActionsExecutionParameters() {
     }
 
     /**
@@ -46,9 +46,9 @@ public final class RecurringScheduledActionsExecutionParameters
      * Set the optimizationPreference property: Details that could optimize the user's request.
      * 
      * @param optimizationPreference the optimizationPreference value to set.
-     * @return the RecurringScheduledActionsExecutionParameters object itself.
+     * @return the ScheduledActionsExecutionParameters object itself.
      */
-    public RecurringScheduledActionsExecutionParameters
+    public ScheduledActionsExecutionParameters
         withOptimizationPreference(OptimizationPreference optimizationPreference) {
         this.optimizationPreference = optimizationPreference;
         return this;
@@ -59,7 +59,7 @@ public final class RecurringScheduledActionsExecutionParameters
      * 
      * @return the retryPolicy value.
      */
-    public RecurringScheduledActionsRetryPolicy retryPolicy() {
+    public ScheduledActionsRetryPolicy retryPolicy() {
         return this.retryPolicy;
     }
 
@@ -67,10 +67,9 @@ public final class RecurringScheduledActionsExecutionParameters
      * Set the retryPolicy property: Retry policy the user can pass.
      * 
      * @param retryPolicy the retryPolicy value to set.
-     * @return the RecurringScheduledActionsExecutionParameters object itself.
+     * @return the ScheduledActionsExecutionParameters object itself.
      */
-    public RecurringScheduledActionsExecutionParameters
-        withRetryPolicy(RecurringScheduledActionsRetryPolicy retryPolicy) {
+    public ScheduledActionsExecutionParameters withRetryPolicy(ScheduledActionsRetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -88,33 +87,33 @@ public final class RecurringScheduledActionsExecutionParameters
     }
 
     /**
-     * Reads an instance of RecurringScheduledActionsExecutionParameters from the JsonReader.
+     * Reads an instance of ScheduledActionsExecutionParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RecurringScheduledActionsExecutionParameters if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RecurringScheduledActionsExecutionParameters.
+     * @return An instance of ScheduledActionsExecutionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledActionsExecutionParameters.
      */
-    public static RecurringScheduledActionsExecutionParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static ScheduledActionsExecutionParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RecurringScheduledActionsExecutionParameters deserializedRecurringScheduledActionsExecutionParameters
-                = new RecurringScheduledActionsExecutionParameters();
+            ScheduledActionsExecutionParameters deserializedScheduledActionsExecutionParameters
+                = new ScheduledActionsExecutionParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("optimizationPreference".equals(fieldName)) {
-                    deserializedRecurringScheduledActionsExecutionParameters.optimizationPreference
+                    deserializedScheduledActionsExecutionParameters.optimizationPreference
                         = OptimizationPreference.fromString(reader.getString());
                 } else if ("retryPolicy".equals(fieldName)) {
-                    deserializedRecurringScheduledActionsExecutionParameters.retryPolicy
-                        = RecurringScheduledActionsRetryPolicy.fromJson(reader);
+                    deserializedScheduledActionsExecutionParameters.retryPolicy
+                        = ScheduledActionsRetryPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedRecurringScheduledActionsExecutionParameters;
+            return deserializedScheduledActionsExecutionParameters;
         });
     }
 }

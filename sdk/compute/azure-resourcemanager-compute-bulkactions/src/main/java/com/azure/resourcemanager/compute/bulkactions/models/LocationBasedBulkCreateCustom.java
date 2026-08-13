@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
@@ -341,4 +342,24 @@ public interface LocationBasedBulkCreateCustom {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void cancel(Context context);
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with {@link Response}.
+     */
+    Response<GetOperationStatusResponse> virtualMachinesGetOperationStatusWithResponse(Context context);
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation.
+     */
+    GetOperationStatusResponse virtualMachinesGetOperationStatus();
 }

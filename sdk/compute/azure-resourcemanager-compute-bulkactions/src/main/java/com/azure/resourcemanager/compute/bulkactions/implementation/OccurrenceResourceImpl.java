@@ -8,7 +8,7 @@ import com.azure.resourcemanager.compute.bulkactions.fluent.models.OccurrenceRes
 import com.azure.resourcemanager.compute.bulkactions.models.Error;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceResource;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceProvisioningState;
+import com.azure.resourcemanager.compute.bulkactions.models.OccurrenceResourceProvisioningState;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +53,7 @@ public final class OccurrenceResourceImpl implements OccurrenceResource {
         return this.innerModel().scheduledTime();
     }
 
-    public ResourceProvisioningState provisioningState() {
+    public OccurrenceResourceProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

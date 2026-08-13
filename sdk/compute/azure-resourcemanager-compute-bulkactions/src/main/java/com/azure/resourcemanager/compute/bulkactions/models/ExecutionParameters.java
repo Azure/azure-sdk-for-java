@@ -32,6 +32,14 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
      */
     private Boolean verifyVmAgentHealth;
 
+    /*
+     * Capacity recommendation parameters for the request. When provided on an executeStart request, the service
+     * computes placement recommendations only if the VM fails to start due to an allocation failure; the
+     * recommendations for the desired sizes and locations are then surfaced in the operation's capacityRecommendation
+     * response.
+     */
+    private CapacityRecommendationParameters capacityRecommendationParameters;
+
     /**
      * Creates an instance of ExecutionParameters class.
      */
@@ -101,6 +109,33 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
     }
 
     /**
+     * Get the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @return the capacityRecommendationParameters value.
+     */
+    public CapacityRecommendationParameters capacityRecommendationParameters() {
+        return this.capacityRecommendationParameters;
+    }
+
+    /**
+     * Set the capacityRecommendationParameters property: Capacity recommendation parameters for the request. When
+     * provided on an executeStart request, the service computes placement recommendations only if the VM fails to start
+     * due to an allocation failure; the recommendations for the desired sizes and locations are then surfaced in the
+     * operation's capacityRecommendation response.
+     * 
+     * @param capacityRecommendationParameters the capacityRecommendationParameters value to set.
+     * @return the ExecutionParameters object itself.
+     */
+    public ExecutionParameters
+        withCapacityRecommendationParameters(CapacityRecommendationParameters capacityRecommendationParameters) {
+        this.capacityRecommendationParameters = capacityRecommendationParameters;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -110,6 +145,7 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
             this.optimizationPreference == null ? null : this.optimizationPreference.toString());
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
         jsonWriter.writeBooleanField("verifyVmAgentHealth", this.verifyVmAgentHealth);
+        jsonWriter.writeJsonField("capacityRecommendationParameters", this.capacityRecommendationParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -135,6 +171,9 @@ public final class ExecutionParameters implements JsonSerializable<ExecutionPara
                     deserializedExecutionParameters.retryPolicy = RetryPolicy.fromJson(reader);
                 } else if ("verifyVmAgentHealth".equals(fieldName)) {
                     deserializedExecutionParameters.verifyVmAgentHealth = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capacityRecommendationParameters".equals(fieldName)) {
+                    deserializedExecutionParameters.capacityRecommendationParameters
+                        = CapacityRecommendationParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

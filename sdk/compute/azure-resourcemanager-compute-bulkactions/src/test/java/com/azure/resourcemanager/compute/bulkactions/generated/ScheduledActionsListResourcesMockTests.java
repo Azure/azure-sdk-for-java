@@ -24,7 +24,7 @@ public final class ScheduledActionsListResourcesMockTests {
     @Test
     public void testListResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wtoaukhfk\",\"id\":\"cisiz\",\"type\":\"a\",\"resourceId\":\"dsxjwuivedw\",\"notificationSettings\":[{\"destination\":\"eewxeiqbpsmg\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
+            = "{\"value\":[{\"name\":\"fexl\",\"id\":\"xn\",\"type\":\"kizvoa\",\"resourceId\":\"knaqlnuwig\",\"notificationSettings\":[{\"destination\":\"lykwphvxz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class ScheduledActionsListResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ScheduledActionResource> response
-            = manager.scheduledActions().listResources("eeyaswl", "augmrmfjlr", com.azure.core.util.Context.NONE);
+            = manager.scheduledActions().listResources("az", "umtggmuwdchozfn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dsxjwuivedw", response.iterator().next().resourceId());
-        Assertions.assertEquals("eewxeiqbpsmg", response.iterator().next().notificationSettings().get(0).destination());
+        Assertions.assertEquals("knaqlnuwig", response.iterator().next().resourceId());
+        Assertions.assertEquals("lykwphvxz", response.iterator().next().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());
-        Assertions.assertTrue(response.iterator().next().notificationSettings().get(0).disabled());
+        Assertions.assertFalse(response.iterator().next().notificationSettings().get(0).disabled());
     }
 }

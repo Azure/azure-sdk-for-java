@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.compute.bulkactions.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreateCustomProperties;
+import com.azure.resourcemanager.compute.bulkactions.models.GetOperationStatusResponse;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreateCustom;
 import com.azure.resourcemanager.compute.bulkactions.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.compute.bulkactions.models.Plan;
@@ -161,6 +163,15 @@ public final class LocationBasedBulkCreateCustomImpl implements LocationBasedBul
 
     public void cancel(Context context) {
         serviceManager.bulkCreateCustoms().cancel(resourceGroupName, location, name, context);
+    }
+
+    public Response<GetOperationStatusResponse> virtualMachinesGetOperationStatusWithResponse(Context context) {
+        return serviceManager.bulkCreateCustoms()
+            .virtualMachinesGetOperationStatusWithResponse(resourceGroupName, location, name, context);
+    }
+
+    public GetOperationStatusResponse virtualMachinesGetOperationStatus() {
+        return serviceManager.bulkCreateCustoms().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
     }
 
     public LocationBasedBulkCreateCustomImpl withTags(Map<String, String> tags) {

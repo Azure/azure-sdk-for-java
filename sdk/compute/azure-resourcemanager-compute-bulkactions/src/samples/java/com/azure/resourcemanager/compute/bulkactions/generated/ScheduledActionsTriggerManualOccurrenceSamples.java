@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class ScheduledActionsTriggerManualOccurrenceSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/ScheduledActions_TriggerManualOccurrence_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_TriggerManualOccurrence_MaximumSet.

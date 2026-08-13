@@ -34,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
+import com.azure.resourcemanager.compute.bulkactions.fluent.models.GetOperationStatusResponseInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateCustomInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.compute.bulkactions.implementation.models.BulkCreateCustomListResult;
@@ -164,6 +165,26 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
             @PathParam("name") String name, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<GetOperationStatusResponseInner>> virtualMachinesGetOperationStatus(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom")
@@ -955,6 +976,86 @@ public final class BulkCreateCustomsClientImpl implements BulkCreateCustomsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String location, String name, Context context) {
         beginCancel(resourceGroupName, location, name, context).getFinalResult();
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<GetOperationStatusResponseInner>>
+        virtualMachinesGetOperationStatusWithResponseAsync(String resourceGroupName, String location, String name) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.virtualMachinesGetOperationStatus(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, location, name, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusAsync(String resourceGroupName,
+        String location, String name) {
+        return virtualMachinesGetOperationStatusWithResponseAsync(resourceGroupName, location, name)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetOperationStatusResponseInner> virtualMachinesGetOperationStatusWithResponse(
+        String resourceGroupName, String location, String name, Context context) {
+        final String accept = "application/json";
+        return service.virtualMachinesGetOperationStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, name, accept, context);
+    }
+
+    /**
+     * Gets the operation status for virtual machines in a BulkCreateCustom operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The location name.
+     * @param name The name of the BulkCreateCustom. The value must be an UUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for virtual machines in a BulkCreateCustom operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetOperationStatusResponseInner virtualMachinesGetOperationStatus(String resourceGroupName, String location,
+        String name) {
+        return virtualMachinesGetOperationStatusWithResponse(resourceGroupName, location, name, Context.NONE)
+            .getValue();
     }
 
     /**

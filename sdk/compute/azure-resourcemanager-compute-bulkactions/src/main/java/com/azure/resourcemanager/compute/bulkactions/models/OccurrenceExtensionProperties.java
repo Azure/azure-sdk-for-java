@@ -38,7 +38,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
     /*
      * The current state of the resource
      */
-    private ResourceProvisioningState provisioningState;
+    private OccurrenceResourceProvisioningState provisioningState;
 
     /*
      * Error details for the resource. Only populated if resource is in failed state.
@@ -89,7 +89,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
      * 
      * @return the provisioningState value.
      */
-    public ResourceProvisioningState provisioningState() {
+    public OccurrenceResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -154,7 +154,7 @@ public final class OccurrenceExtensionProperties implements JsonSerializable<Occ
                     deserializedOccurrenceExtensionProperties.notificationSettings = notificationSettings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedOccurrenceExtensionProperties.provisioningState
-                        = ResourceProvisioningState.fromString(reader.getString());
+                        = OccurrenceResourceProvisioningState.fromString(reader.getString());
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedOccurrenceExtensionProperties.errorDetails = Error.fromJson(reader);
                 } else {

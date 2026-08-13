@@ -139,7 +139,7 @@ import java.util.Map;
  */
 public final class LaunchBulkInstancesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: LaunchBulkInstancesOperation_CreateOrUpdate_Example.

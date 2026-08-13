@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineInfo model = BinaryData.fromString("{\"vmSize\":\"fdfdosygexpa\",\"zone\":\"akhmsbzjhcrz\"}")
+        VirtualMachineInfo model = BinaryData.fromString("{\"vmSize\":\"itnwuizgazxufi\",\"zone\":\"ckyfih\"}")
             .toObject(VirtualMachineInfo.class);
-        Assertions.assertEquals("fdfdosygexpa", model.vmSize());
-        Assertions.assertEquals("akhmsbzjhcrz", model.zone());
+        Assertions.assertEquals("itnwuizgazxufi", model.vmSize());
+        Assertions.assertEquals("ckyfih", model.zone());
     }
 }

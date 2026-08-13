@@ -12,16 +12,16 @@ public final class VMAttributeMinMaxIntegerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMAttributeMinMaxInteger model
-            = BinaryData.fromString("{\"min\":1133665771,\"max\":384139525}").toObject(VMAttributeMinMaxInteger.class);
-        Assertions.assertEquals(1133665771, model.min());
-        Assertions.assertEquals(384139525, model.max());
+            = BinaryData.fromString("{\"min\":1987785731,\"max\":1767174247}").toObject(VMAttributeMinMaxInteger.class);
+        Assertions.assertEquals(1987785731, model.min());
+        Assertions.assertEquals(1767174247, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMAttributeMinMaxInteger model = new VMAttributeMinMaxInteger().withMin(1133665771).withMax(384139525);
+        VMAttributeMinMaxInteger model = new VMAttributeMinMaxInteger().withMin(1987785731).withMax(1767174247);
         model = BinaryData.fromObject(model).toObject(VMAttributeMinMaxInteger.class);
-        Assertions.assertEquals(1133665771, model.min());
-        Assertions.assertEquals(384139525, model.max());
+        Assertions.assertEquals(1987785731, model.min());
+        Assertions.assertEquals(1767174247, model.max());
     }
 }

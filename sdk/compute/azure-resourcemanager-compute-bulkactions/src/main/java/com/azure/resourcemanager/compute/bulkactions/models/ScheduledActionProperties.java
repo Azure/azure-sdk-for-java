@@ -58,7 +58,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     /*
      * The status of the last provisioning operation performed on the resource.
      */
-    private RecurringScheduledActionsProvisioningState provisioningState;
+    private ScheduledActionsProvisioningState provisioningState;
 
     /**
      * Creates an instance of ScheduledActionProperties class.
@@ -211,7 +211,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
      * 
      * @return the provisioningState value.
      */
-    public RecurringScheduledActionsProvisioningState provisioningState() {
+    public ScheduledActionsProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -271,7 +271,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
                     deserializedScheduledActionProperties.disabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedScheduledActionProperties.provisioningState
-                        = RecurringScheduledActionsProvisioningState.fromString(reader.getString());
+                        = ScheduledActionsProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

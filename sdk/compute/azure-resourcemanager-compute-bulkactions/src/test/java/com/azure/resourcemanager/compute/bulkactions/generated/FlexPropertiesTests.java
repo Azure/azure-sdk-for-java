@@ -22,48 +22,48 @@ public final class FlexPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlexProperties model = BinaryData.fromString(
-            "{\"vmSizeProfiles\":[{\"name\":\"xobnbdxkqpxok\",\"rank\":1844276281}],\"osType\":\"Linux\",\"priorityProfile\":{\"type\":\"Regular\",\"maxPricePerVM\":94.0853559764359,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"CapacityOptimized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"odgmaajrmvdjwz\",\"rank\":1277488223}]},\"minCapacity\":1274470316}")
+            "{\"vmSizeProfiles\":[{\"name\":\"ithlvmezyvshxm\",\"rank\":1190455395}],\"osType\":\"Windows\",\"priorityProfile\":{\"type\":\"Spot\",\"maxPricePerVM\":15.859623549083935,\"evictionPolicy\":\"Delete\",\"allocationStrategy\":\"CapacityOptimized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortSingleZone\",\"zonePreferences\":[{\"zone\":\"jx\",\"rank\":1626686302},{\"zone\":\"nspydptkoenkoukn\",\"rank\":73605186}]},\"minCapacity\":124550903}")
             .toObject(FlexProperties.class);
-        Assertions.assertEquals("xobnbdxkqpxok", model.vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(1844276281, model.vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals(PriorityType.REGULAR, model.priorityProfile().type());
-        Assertions.assertEquals(94.0853559764359D, model.priorityProfile().maxPricePerVM());
+        Assertions.assertEquals("ithlvmezyvshxm", model.vmSizeProfiles().get(0).name());
+        Assertions.assertEquals(1190455395, model.vmSizeProfiles().get(0).rank());
+        Assertions.assertEquals(OsType.WINDOWS, model.osType());
+        Assertions.assertEquals(PriorityType.SPOT, model.priorityProfile().type());
+        Assertions.assertEquals(15.859623549083935D, model.priorityProfile().maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.priorityProfile().evictionPolicy());
         Assertions.assertEquals(AllocationStrategy.CAPACITY_OPTIMIZED, model.priorityProfile().allocationStrategy());
         Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1277488223, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1274470316, model.minCapacity());
+        Assertions.assertEquals("jx", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(1626686302, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
+        Assertions.assertEquals(124550903, model.minCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FlexProperties model = new FlexProperties()
-            .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("xobnbdxkqpxok").withRank(1844276281)))
-            .withOsType(OsType.LINUX)
-            .withPriorityProfile(new PriorityProfile().withType(PriorityType.REGULAR)
-                .withMaxPricePerVM(94.0853559764359D)
+            .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("ithlvmezyvshxm").withRank(1190455395)))
+            .withOsType(OsType.WINDOWS)
+            .withPriorityProfile(new PriorityProfile().withType(PriorityType.SPOT)
+                .withMaxPricePerVM(15.859623549083935D)
                 .withEvictionPolicy(EvictionPolicy.DELETE)
                 .withAllocationStrategy(AllocationStrategy.CAPACITY_OPTIMIZED))
             .withZoneAllocationPolicy(
                 new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE)
-                    .withZonePreferences(
-                        Arrays.asList(new ZonePreference().withZone("odgmaajrmvdjwz").withRank(1277488223))))
-            .withMinCapacity(1274470316);
+                    .withZonePreferences(Arrays.asList(new ZonePreference().withZone("jx").withRank(1626686302),
+                        new ZonePreference().withZone("nspydptkoenkoukn").withRank(73605186))))
+            .withMinCapacity(124550903);
         model = BinaryData.fromObject(model).toObject(FlexProperties.class);
-        Assertions.assertEquals("xobnbdxkqpxok", model.vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(1844276281, model.vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals(PriorityType.REGULAR, model.priorityProfile().type());
-        Assertions.assertEquals(94.0853559764359D, model.priorityProfile().maxPricePerVM());
+        Assertions.assertEquals("ithlvmezyvshxm", model.vmSizeProfiles().get(0).name());
+        Assertions.assertEquals(1190455395, model.vmSizeProfiles().get(0).rank());
+        Assertions.assertEquals(OsType.WINDOWS, model.osType());
+        Assertions.assertEquals(PriorityType.SPOT, model.priorityProfile().type());
+        Assertions.assertEquals(15.859623549083935D, model.priorityProfile().maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DELETE, model.priorityProfile().evictionPolicy());
         Assertions.assertEquals(AllocationStrategy.CAPACITY_OPTIMIZED, model.priorityProfile().allocationStrategy());
         Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_SINGLE_ZONE,
             model.zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(1277488223, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1274470316, model.minCapacity());
+        Assertions.assertEquals("jx", model.zoneAllocationPolicy().zonePreferences().get(0).zone());
+        Assertions.assertEquals(1626686302, model.zoneAllocationPolicy().zonePreferences().get(0).rank());
+        Assertions.assertEquals(124550903, model.minCapacity());
     }
 }

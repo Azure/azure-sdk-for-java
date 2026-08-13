@@ -33,6 +33,8 @@ import com.azure.resourcemanager.compute.bulkactions.models.NetworkProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OSDisk;
 import com.azure.resourcemanager.compute.bulkactions.models.OSProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentMode;
+import com.azure.resourcemanager.compute.bulkactions.models.PartialFulfillmentPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -54,7 +56,7 @@ import java.util.Map;
  */
 public final class BulkCreateCustomCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_CreateOrUpdate_MaximumSet.
@@ -67,8 +69,10 @@ public final class BulkCreateCustomCreateOrUpdateSamples {
             .define("89f31926-145c-410c-a56a-5bc97359274c")
             .withExistingLocation("rgBulkactions", "eastus")
             .withTags(mapOf("workload", "batch-render", "env", "prod"))
-            .withProperties(new BulkCreateCustomProperties().withCapacity(10)
+            .withProperties(new BulkCreateCustomProperties().withCapacity(2)
                 .withCapacityType(CapacityType.VM)
+                .withMinCapacity(1)
+                .withPartialFulfillmentPolicy(new PartialFulfillmentPolicy().withMode(PartialFulfillmentMode.ENABLED))
                 .withPriorityProfile(new BulkCreateCustomPriorityProfile().withType(PriorityType.SPOT)
                     .withMaxPricePerVM(0.2D)
                     .withEvictionPolicy(EvictionPolicy.DELETE)

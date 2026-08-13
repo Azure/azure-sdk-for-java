@@ -14,20 +14,20 @@ public final class HardwareProfileTests {
     public void testDeserialize() throws Exception {
         HardwareProfile model = BinaryData
             .fromString(
-                "{\"vmSize\":\"twm\",\"vmSizeProperties\":{\"vCpusAvailable\":643148633,\"vCpusPerCore\":17080551}}")
+                "{\"vmSize\":\"odxun\",\"vmSizeProperties\":{\"vCpusAvailable\":81041412,\"vCpusPerCore\":1695559106}}")
             .toObject(HardwareProfile.class);
-        Assertions.assertEquals("twm", model.vmSize());
-        Assertions.assertEquals(643148633, model.vmSizeProperties().vCpusAvailable());
-        Assertions.assertEquals(17080551, model.vmSizeProperties().vCpusPerCore());
+        Assertions.assertEquals("odxun", model.vmSize());
+        Assertions.assertEquals(81041412, model.vmSizeProperties().vCpusAvailable());
+        Assertions.assertEquals(1695559106, model.vmSizeProperties().vCpusPerCore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HardwareProfile model = new HardwareProfile().withVmSize("twm")
-            .withVmSizeProperties(new VmSizeProperties().withVCpusAvailable(643148633).withVCpusPerCore(17080551));
+        HardwareProfile model = new HardwareProfile().withVmSize("odxun")
+            .withVmSizeProperties(new VmSizeProperties().withVCpusAvailable(81041412).withVCpusPerCore(1695559106));
         model = BinaryData.fromObject(model).toObject(HardwareProfile.class);
-        Assertions.assertEquals("twm", model.vmSize());
-        Assertions.assertEquals(643148633, model.vmSizeProperties().vCpusAvailable());
-        Assertions.assertEquals(17080551, model.vmSizeProperties().vCpusPerCore());
+        Assertions.assertEquals("odxun", model.vmSize());
+        Assertions.assertEquals(81041412, model.vmSizeProperties().vCpusAvailable());
+        Assertions.assertEquals(1695559106, model.vmSizeProperties().vCpusPerCore());
     }
 }

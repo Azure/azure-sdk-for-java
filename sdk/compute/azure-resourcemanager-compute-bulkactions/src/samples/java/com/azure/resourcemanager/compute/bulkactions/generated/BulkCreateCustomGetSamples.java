@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateCustomGetSamples {
     /*
-     * x-ms-original-file: 2026-07-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BulkCreateCustom_Get_MaximumSet.

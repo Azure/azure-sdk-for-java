@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CapacityReservationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacityReservationProfile model
-            = BinaryData.fromString("{\"capacityReservationGroup\":{\"id\":\"emmsbvdkc\"}}")
-                .toObject(CapacityReservationProfile.class);
-        Assertions.assertEquals("emmsbvdkc", model.capacityReservationGroup().id());
+        CapacityReservationProfile model = BinaryData.fromString("{\"capacityReservationGroup\":{\"id\":\"p\"}}")
+            .toObject(CapacityReservationProfile.class);
+        Assertions.assertEquals("p", model.capacityReservationGroup().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CapacityReservationProfile model
-            = new CapacityReservationProfile().withCapacityReservationGroup(new SubResource().withId("emmsbvdkc"));
+            = new CapacityReservationProfile().withCapacityReservationGroup(new SubResource().withId("p"));
         model = BinaryData.fromObject(model).toObject(CapacityReservationProfile.class);
-        Assertions.assertEquals("emmsbvdkc", model.capacityReservationGroup().id());
+        Assertions.assertEquals("p", model.capacityReservationGroup().id());
     }
 }

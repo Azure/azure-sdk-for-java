@@ -15,14 +15,14 @@ import com.azure.resourcemanager.compute.bulkactions.models.Month;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.NotificationType;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsDeadlineType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsResourceOperationType;
-import com.azure.resourcemanager.compute.bulkactions.models.RecurringScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceType;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledAction;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionProperties;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsDeadlineType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsExecutionParameters;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsResourceOperationType;
+import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsRetryPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ScheduledActionsSchedule;
 import com.azure.resourcemanager.compute.bulkactions.models.WeekDay;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +38,7 @@ public final class ScheduledActionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceType\":\"VirtualMachine\",\"actionType\":\"Start\",\"startTime\":\"2021-04-30T19:25:35Z\",\"endTime\":\"2021-10-09T23:53:03Z\",\"schedule\":{\"scheduledTime\":\"namtuatmzw\",\"timeZone\":\"jj\",\"requestedWeekDays\":[\"Wednesday\",\"Wednesday\",\"Monday\"],\"requestedMonths\":[\"September\"],\"requestedDaysOfTheMonth\":[1557135644,755129650,1505052289],\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":703078575,\"retryWindowInMinutes\":1760991954,\"onFailureAction\":\"Unknown\"}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"ggahtt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"ajqfutlx\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true},{\"destination\":\"sunwqrjzfrgqhaoh\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"cnjrohmbpyryxame\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":true,\"provisioningState\":\"Succeeded\"},\"location\":\"rocxnehvs\",\"tags\":{\"apucygvo\":\"dlfp\",\"xlghieegj\":\"vyuns\",\"gbuxantuygdh\":\"gvvpasek\",\"pirpiwrqof\":\"aq\"},\"id\":\"lopmjnlexwhcbjpi\",\"name\":\"k\",\"type\":\"phuuuerctato\"}";
+            = "{\"properties\":{\"resourceType\":\"VirtualMachineScaleSet\",\"actionType\":\"Start\",\"startTime\":\"2021-11-02T23:10Z\",\"endTime\":\"2021-09-13T13:50:20Z\",\"schedule\":{\"scheduledTime\":\"jlfyou\",\"timeZone\":\"pckyec\",\"requestedWeekDays\":[\"All\"],\"requestedMonths\":[\"March\",\"July\",\"January\"],\"requestedDaysOfTheMonth\":[241474802],\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1302814584,\"retryWindowInMinutes\":789295576,\"onFailureAction\":\"Start\"}},\"deadlineType\":\"Unknown\"},\"notificationSettings\":[{\"destination\":\"iutgj\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"jdnrqjbt\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false},{\"destination\":\"qaqbz\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}],\"disabled\":false,\"provisioningState\":\"Succeeded\"},\"location\":\"bwbqamt\",\"tags\":{\"epmywbormcqm\":\"iyslpkcvmwfaux\"},\"id\":\"ciijqpkzfbojxj\",\"name\":\"cs\",\"type\":\"yqwixvcpwnkwywzw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -48,71 +48,57 @@ public final class ScheduledActionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ScheduledAction response = manager.scheduledActions()
-            .define("d")
-            .withRegion("xxbsojklinhmd")
-            .withExistingResourceGroup("cbbxigdhxi")
-            .withTags(mapOf("g", "sprqsgnzxojpslsv", "apcohhouc", "liufiqwoyxq"))
-            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE_SCALE_SET)
-                .withActionType(ScheduledActionType.HIBERNATE)
-                .withStartTime(OffsetDateTime.parse("2021-10-17T09:52:02Z"))
-                .withEndTime(OffsetDateTime.parse("2021-10-11T10:45:09Z"))
-                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("dpyqyybxubmd")
-                    .withTimeZone("afcbqw")
-                    .withRequestedWeekDays(Arrays.asList(WeekDay.SATURDAY))
-                    .withRequestedMonths(Arrays.asList(Month.DECEMBER, Month.JANUARY, Month.APRIL))
-                    .withRequestedDaysOfTheMonth(Arrays.asList(329495392, 538354089))
-                    .withExecutionParameters(new RecurringScheduledActionsExecutionParameters()
+            .define("ui")
+            .withRegion("iua")
+            .withExistingResourceGroup("yl")
+            .withTags(mapOf("zc", "gmxitpfi"))
+            .withProperties(new ScheduledActionProperties().withResourceType(ResourceType.VIRTUAL_MACHINE)
+                .withActionType(ScheduledActionType.START)
+                .withStartTime(OffsetDateTime.parse("2021-06-14T14:08:19Z"))
+                .withEndTime(OffsetDateTime.parse("2021-05-03T08:54:55Z"))
+                .withSchedule(new ScheduledActionsSchedule().withScheduledTime("crkdlbn")
+                    .withTimeZone("qxvhcsyhzlwxa")
+                    .withRequestedWeekDays(Arrays.asList(WeekDay.WEDNESDAY))
+                    .withRequestedMonths(Arrays.asList(Month.MAY, Month.MAY, Month.NOVEMBER))
+                    .withRequestedDaysOfTheMonth(Arrays.asList(1418945719))
+                    .withExecutionParameters(new ScheduledActionsExecutionParameters()
                         .withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                        .withRetryPolicy(new RecurringScheduledActionsRetryPolicy().withRetryCount(1602491470)
-                            .withRetryWindowInMinutes(1626543066)
-                            .withOnFailureAction(RecurringScheduledActionsResourceOperationType.HIBERNATE)))
-                    .withDeadlineType(RecurringScheduledActionsDeadlineType.INITIATE_AT))
-                .withNotificationSettings(Arrays.asList(
-                    new NotificationProperties().withDestination("opwbeonrlkwzd")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("eakxcptsoqfyi")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("hkrttzrazis")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(false),
-                    new NotificationProperties().withDestination("emv")
-                        .withType(NotificationType.EMAIL)
-                        .withLanguage(Language.EN_US)
-                        .withDisabled(true)))
+                        .withRetryPolicy(new ScheduledActionsRetryPolicy().withRetryCount(187101645)
+                            .withRetryWindowInMinutes(1249532916)
+                            .withOnFailureAction(ScheduledActionsResourceOperationType.HIBERNATE)))
+                    .withDeadlineType(ScheduledActionsDeadlineType.COMPLETE_BY))
+                .withNotificationSettings(Arrays.asList(new NotificationProperties().withDestination("opagttmvmmag")
+                    .withType(NotificationType.EMAIL)
+                    .withLanguage(Language.EN_US)
+                    .withDisabled(true)))
                 .withDisabled(false))
             .create();
 
-        Assertions.assertEquals("rocxnehvs", response.location());
-        Assertions.assertEquals("dlfp", response.tags().get("apucygvo"));
-        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE, response.properties().resourceType());
+        Assertions.assertEquals("bwbqamt", response.location());
+        Assertions.assertEquals("iyslpkcvmwfaux", response.tags().get("epmywbormcqm"));
+        Assertions.assertEquals(ResourceType.VIRTUAL_MACHINE_SCALE_SET, response.properties().resourceType());
         Assertions.assertEquals(ScheduledActionType.START, response.properties().actionType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T19:25:35Z"), response.properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-09T23:53:03Z"), response.properties().endTime());
-        Assertions.assertEquals("namtuatmzw", response.properties().schedule().scheduledTime());
-        Assertions.assertEquals("jj", response.properties().schedule().timeZone());
-        Assertions.assertEquals(WeekDay.WEDNESDAY, response.properties().schedule().requestedWeekDays().get(0));
-        Assertions.assertEquals(Month.SEPTEMBER, response.properties().schedule().requestedMonths().get(0));
-        Assertions.assertEquals(1557135644, response.properties().schedule().requestedDaysOfTheMonth().get(0));
-        Assertions.assertEquals(OptimizationPreference.COST,
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T23:10Z"), response.properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T13:50:20Z"), response.properties().endTime());
+        Assertions.assertEquals("jlfyou", response.properties().schedule().scheduledTime());
+        Assertions.assertEquals("pckyec", response.properties().schedule().timeZone());
+        Assertions.assertEquals(WeekDay.ALL, response.properties().schedule().requestedWeekDays().get(0));
+        Assertions.assertEquals(Month.MARCH, response.properties().schedule().requestedMonths().get(0));
+        Assertions.assertEquals(241474802, response.properties().schedule().requestedDaysOfTheMonth().get(0));
+        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
             response.properties().schedule().executionParameters().optimizationPreference());
-        Assertions.assertEquals(703078575,
+        Assertions.assertEquals(1302814584,
             response.properties().schedule().executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1760991954,
+        Assertions.assertEquals(789295576,
             response.properties().schedule().executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(RecurringScheduledActionsResourceOperationType.UNKNOWN,
+        Assertions.assertEquals(ScheduledActionsResourceOperationType.START,
             response.properties().schedule().executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertEquals(RecurringScheduledActionsDeadlineType.UNKNOWN,
-            response.properties().schedule().deadlineType());
-        Assertions.assertEquals("ggahtt", response.properties().notificationSettings().get(0).destination());
+        Assertions.assertEquals(ScheduledActionsDeadlineType.UNKNOWN, response.properties().schedule().deadlineType());
+        Assertions.assertEquals("iutgj", response.properties().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL, response.properties().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.properties().notificationSettings().get(0).language());
         Assertions.assertFalse(response.properties().notificationSettings().get(0).disabled());
-        Assertions.assertTrue(response.properties().disabled());
+        Assertions.assertFalse(response.properties().disabled());
     }
 
     // Use "Map.of" if available

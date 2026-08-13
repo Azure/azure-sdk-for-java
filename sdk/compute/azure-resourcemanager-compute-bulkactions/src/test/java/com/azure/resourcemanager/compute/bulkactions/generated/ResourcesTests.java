@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Resources model = BinaryData.fromString("{\"ids\":[\"rkxvdum\"]}").toObject(Resources.class);
-        Assertions.assertEquals("rkxvdum", model.ids().get(0));
+        Resources model = BinaryData.fromString("{\"ids\":[\"zoxxjtf\"]}").toObject(Resources.class);
+        Assertions.assertEquals("zoxxjtf", model.ids().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Resources model = new Resources().withIds(Arrays.asList("rkxvdum"));
+        Resources model = new Resources().withIds(Arrays.asList("zoxxjtf"));
         model = BinaryData.fromObject(model).toObject(Resources.class);
-        Assertions.assertEquals("rkxvdum", model.ids().get(0));
+        Assertions.assertEquals("zoxxjtf", model.ids().get(0));
     }
 }

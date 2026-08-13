@@ -15,21 +15,23 @@ public final class ZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortBalanced\",\"zonePreferences\":[{\"zone\":\"qsycbkbfkgu\",\"rank\":395689109}]}")
+            "{\"distributionStrategy\":\"StrictBalanced\",\"zonePreferences\":[{\"zone\":\"ucgygevqz\",\"rank\":2000803950},{\"zone\":\"yp\",\"rank\":1534766868},{\"zone\":\"bpizcdrqjsdpydn\",\"rank\":1305817330}]}")
             .toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED, model.distributionStrategy());
-        Assertions.assertEquals("qsycbkbfkgu", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(395689109, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(DistributionStrategy.STRICT_BALANCED, model.distributionStrategy());
+        Assertions.assertEquals("ucgygevqz", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(2000803950, model.zonePreferences().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ZoneAllocationPolicy model
-            = new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_BALANCED)
-                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("qsycbkbfkgu").withRank(395689109)));
+            = new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.STRICT_BALANCED)
+                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("ucgygevqz").withRank(2000803950),
+                    new ZonePreference().withZone("yp").withRank(1534766868),
+                    new ZonePreference().withZone("bpizcdrqjsdpydn").withRank(1305817330)));
         model = BinaryData.fromObject(model).toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED, model.distributionStrategy());
-        Assertions.assertEquals("qsycbkbfkgu", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(395689109, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(DistributionStrategy.STRICT_BALANCED, model.distributionStrategy());
+        Assertions.assertEquals("ucgygevqz", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(2000803950, model.zonePreferences().get(0).rank());
     }
 }
