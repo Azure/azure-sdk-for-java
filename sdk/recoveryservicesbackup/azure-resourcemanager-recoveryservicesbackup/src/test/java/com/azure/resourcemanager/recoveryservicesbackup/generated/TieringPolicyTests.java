@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TieringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TieringPolicy model = BinaryData
-            .fromString("{\"tieringMode\":\"TierRecommended\",\"duration\":1323683698,\"durationType\":\"Invalid\"}")
-            .toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
-        Assertions.assertEquals(1323683698, model.duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
+        TieringPolicy model
+            = BinaryData.fromString("{\"tieringMode\":\"DoNotTier\",\"duration\":1495139625,\"durationType\":\"Days\"}")
+                .toObject(TieringPolicy.class);
+        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
+        Assertions.assertEquals(1495139625, model.duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.TIER_RECOMMENDED)
-            .withDuration(1323683698)
-            .withDurationType(RetentionDurationType.INVALID);
+        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.DO_NOT_TIER)
+            .withDuration(1495139625)
+            .withDurationType(RetentionDurationType.DAYS);
         model = BinaryData.fromObject(model).toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringMode());
-        Assertions.assertEquals(1323683698, model.duration());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
+        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
+        Assertions.assertEquals(1495139625, model.duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
     }
 }

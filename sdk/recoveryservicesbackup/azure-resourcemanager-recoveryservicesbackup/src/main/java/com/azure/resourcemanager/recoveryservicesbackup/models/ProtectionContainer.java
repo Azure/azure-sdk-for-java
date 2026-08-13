@@ -50,6 +50,11 @@ public class ProtectionContainer implements JsonSerializable<ProtectionContainer
      */
     private String protectableObjectType;
 
+    /*
+     * Source location of the container
+     */
+    private String sourceLocation;
+
     /**
      * Creates an instance of ProtectionContainer class.
      */
@@ -170,6 +175,26 @@ public class ProtectionContainer implements JsonSerializable<ProtectionContainer
     }
 
     /**
+     * Get the sourceLocation property: Source location of the container.
+     * 
+     * @return the sourceLocation value.
+     */
+    public String sourceLocation() {
+        return this.sourceLocation;
+    }
+
+    /**
+     * Set the sourceLocation property: Source location of the container.
+     * 
+     * @param sourceLocation the sourceLocation value to set.
+     * @return the ProtectionContainer object itself.
+     */
+    ProtectionContainer withSourceLocation(String sourceLocation) {
+        this.sourceLocation = sourceLocation;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -261,6 +286,8 @@ public class ProtectionContainer implements JsonSerializable<ProtectionContainer
                     deserializedProtectionContainer.healthStatus = reader.getString();
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedProtectionContainer.protectableObjectType = reader.getString();
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedProtectionContainer.sourceLocation = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -15,20 +15,19 @@ public final class WeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WeeklySchedule model = BinaryData
-            .fromString(
-                "{\"scheduleRunDays\":[\"Saturday\",\"Thursday\"],\"scheduleRunTimes\":[\"2021-08-17T11:36:27Z\"]}")
+            .fromString("{\"scheduleRunDays\":[\"Sunday\",\"Monday\"],\"scheduleRunTimes\":[\"2021-06-06T20:33:44Z\"]}")
             .toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T11:36:27Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T20:33:44Z"), model.scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklySchedule model
-            = new WeeklySchedule().withScheduleRunDays(Arrays.asList(DayOfWeek.SATURDAY, DayOfWeek.THURSDAY))
-                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-08-17T11:36:27Z")));
+            = new WeeklySchedule().withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.MONDAY))
+                .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-06-06T20:33:44Z")));
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
-        Assertions.assertEquals(DayOfWeek.SATURDAY, model.scheduleRunDays().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T11:36:27Z"), model.scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.scheduleRunDays().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T20:33:44Z"), model.scheduleRunTimes().get(0));
     }
 }

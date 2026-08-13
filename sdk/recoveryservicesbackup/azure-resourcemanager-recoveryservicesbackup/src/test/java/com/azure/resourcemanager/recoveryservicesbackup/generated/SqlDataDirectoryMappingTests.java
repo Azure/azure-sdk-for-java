@@ -13,24 +13,24 @@ public final class SqlDataDirectoryMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlDataDirectoryMapping model = BinaryData.fromString(
-            "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"ohdjhhflzok\",\"sourcePath\":\"ox\",\"targetPath\":\"lnjetaglt\"}")
+            "{\"mappingType\":\"Data\",\"sourceLogicalName\":\"piljhahzvech\",\"sourcePath\":\"bnwieholew\",\"targetPath\":\"iuubwefqsf\"}")
             .toObject(SqlDataDirectoryMapping.class);
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("ohdjhhflzok", model.sourceLogicalName());
-        Assertions.assertEquals("ox", model.sourcePath());
-        Assertions.assertEquals("lnjetaglt", model.targetPath());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.mappingType());
+        Assertions.assertEquals("piljhahzvech", model.sourceLogicalName());
+        Assertions.assertEquals("bnwieholew", model.sourcePath());
+        Assertions.assertEquals("iuubwefqsf", model.targetPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlDataDirectoryMapping model = new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.LOG)
-            .withSourceLogicalName("ohdjhhflzok")
-            .withSourcePath("ox")
-            .withTargetPath("lnjetaglt");
+        SqlDataDirectoryMapping model = new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.DATA)
+            .withSourceLogicalName("piljhahzvech")
+            .withSourcePath("bnwieholew")
+            .withTargetPath("iuubwefqsf");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectoryMapping.class);
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("ohdjhhflzok", model.sourceLogicalName());
-        Assertions.assertEquals("ox", model.sourcePath());
-        Assertions.assertEquals("lnjetaglt", model.targetPath());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.mappingType());
+        Assertions.assertEquals("piljhahzvech", model.sourceLogicalName());
+        Assertions.assertEquals("bnwieholew", model.sourcePath());
+        Assertions.assertEquals("iuubwefqsf", model.targetPath());
     }
 }

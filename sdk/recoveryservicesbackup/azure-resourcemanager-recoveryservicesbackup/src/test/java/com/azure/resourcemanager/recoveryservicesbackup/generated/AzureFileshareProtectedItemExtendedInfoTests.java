@@ -13,22 +13,22 @@ public final class AzureFileshareProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileshareProtectedItemExtendedInfo model = BinaryData.fromString(
-            "{\"oldestRecoveryPoint\":\"2021-07-19T23:59:40Z\",\"recoveryPointCount\":1059289451,\"policyState\":\"x\",\"resourceState\":\"qgtz\",\"resourceStateSyncTime\":\"2021-05-26T20:14:49Z\"}")
+            "{\"oldestRecoveryPoint\":\"2021-12-09T19:14:49Z\",\"recoveryPointCount\":57336706,\"policyState\":\"udgwdslfho\",\"resourceState\":\"mcy\",\"resourceStateSyncTime\":\"2021-07-29T20:13:33Z\"}")
             .toObject(AzureFileshareProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:59:40Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(1059289451, model.recoveryPointCount());
-        Assertions.assertEquals("x", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-09T19:14:49Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(57336706, model.recoveryPointCount());
+        Assertions.assertEquals("udgwdslfho", model.policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileshareProtectedItemExtendedInfo model = new AzureFileshareProtectedItemExtendedInfo()
-            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-07-19T23:59:40Z"))
-            .withRecoveryPointCount(1059289451)
-            .withPolicyState("x");
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-12-09T19:14:49Z"))
+            .withRecoveryPointCount(57336706)
+            .withPolicyState("udgwdslfho");
         model = BinaryData.fromObject(model).toObject(AzureFileshareProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T23:59:40Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(1059289451, model.recoveryPointCount());
-        Assertions.assertEquals("x", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-09T19:14:49Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(57336706, model.recoveryPointCount());
+        Assertions.assertEquals("udgwdslfho", model.policyState());
     }
 }

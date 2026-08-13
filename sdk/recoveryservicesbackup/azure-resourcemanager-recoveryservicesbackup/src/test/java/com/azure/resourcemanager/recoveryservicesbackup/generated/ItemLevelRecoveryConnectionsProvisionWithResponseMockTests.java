@@ -32,11 +32,10 @@ public final class ItemLevelRecoveryConnectionsProvisionWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.itemLevelRecoveryConnections()
-            .provisionWithResponse("bnhrxlelfjhkeiz", "pihtdmiwjekpt", "caydbjzcqymlcfnz", "mhsurlgwqkpmm", "pstauol",
-                "wiubmomsgvv",
-                new IlrRequestResource().withLocation("vvlrlohewjjmajn")
-                    .withTags(mapOf("fzqxjo", "lqionswaeqk", "totryegpkhxrme", "ho"))
-                    .withETag("nlwkbfokxkhupz")
+            .provisionWithResponse("dpxot", "diiaocqibzji", "weebiphryv", "jw", "w", "qsratjhd",
+                new IlrRequestResource().withLocation("ybspijhfrzg")
+                    .withTags(mapOf("s", "agvwukhs", "fmz", "mo", "neyttl", "wilzzhnijmriprlk"))
+                    .withETag("xivcbkutpumlt")
                     .withProperties(new IlrRequest()),
                 com.azure.core.util.Context.NONE);
 

@@ -23,7 +23,7 @@ public final class ProtectionIntentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"shthmgpczqu\",\"itemId\":\"t\",\"policyId\":\"vcpxtzhigqqbtimp\",\"protectionState\":\"NotProtected\"},\"tags\":{\"aawja\":\"rnsihqhudsmus\"},\"location\":\"wj\",\"eTag\":\"czmnniixy\",\"id\":\"qban\",\"name\":\"sjtgirnbgmgmddo\",\"type\":\"gm\"}";
+            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"pcfpcfj\",\"itemId\":\"zlgzawkgyepey\",\"policyId\":\"nnidmdiawpzxk\",\"protectionState\":\"NotProtected\"},\"tags\":{\"uos\":\"kctd\",\"hqodv\":\"wqpsqaz\"},\"location\":\"cnbhcb\",\"eTag\":\"kztibni\",\"id\":\"tsxjmfmeftvhkmoo\",\"name\":\"jrhskbwgmjgrul\",\"type\":\"fogxhcxnw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class ProtectionIntentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionIntentResource response = manager.protectionIntents()
-            .getWithResponse("rxipmlnfyzav", "rbypi", "dbkp", "jtaqhsmqazpdg", com.azure.core.util.Context.NONE)
+            .getWithResponse("lmcskyk", "fuofixcnpcfykkp", "ycpawm", "jp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(BackupManagementType.MAB, response.properties().backupManagementType());
-        Assertions.assertEquals("shthmgpczqu", response.properties().sourceResourceId());
-        Assertions.assertEquals("t", response.properties().itemId());
-        Assertions.assertEquals("vcpxtzhigqqbtimp", response.properties().policyId());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, response.properties().backupManagementType());
+        Assertions.assertEquals("pcfpcfj", response.properties().sourceResourceId());
+        Assertions.assertEquals("zlgzawkgyepey", response.properties().itemId());
+        Assertions.assertEquals("nnidmdiawpzxk", response.properties().policyId());
         Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, response.properties().protectionState());
-        Assertions.assertEquals("rnsihqhudsmus", response.tags().get("aawja"));
-        Assertions.assertEquals("wj", response.location());
-        Assertions.assertEquals("czmnniixy", response.etag());
+        Assertions.assertEquals("kctd", response.tags().get("uos"));
+        Assertions.assertEquals("cnbhcb", response.location());
+        Assertions.assertEquals("kztibni", response.etag());
     }
 }
