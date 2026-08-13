@@ -27,7 +27,7 @@ public final class AliasPattern implements JsonSerializable<AliasPattern> {
     private String variable;
 
     /*
-     * The pattern for an alias path.
+     * The type of alias pattern
      */
     private AliasPatternType type;
 
@@ -56,7 +56,7 @@ public final class AliasPattern implements JsonSerializable<AliasPattern> {
     }
 
     /**
-     * Get the type property: The pattern for an alias path.
+     * Get the type property: The type of alias pattern.
      * 
      * @return the type value.
      */
