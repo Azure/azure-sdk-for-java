@@ -3808,7 +3808,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         testId,
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
-                    List<JsonNode> ppcbStateByRegionNodes = getPpcbStateByRegionNodes(response);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3835,7 +3834,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
                         assertPpcbHealthStatus(
-                            ppcbStateByRegionNodes,
+                            getPpcbStateByRegionNodes(response),
                             LocationHealthStatus.Unavailable);
                     }
 
