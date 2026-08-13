@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.resourcemanager.hybridcompute.models.AssessmentModeTypes;
+import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.Machine;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileLinuxConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.PatchModeTypes;
+import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
 
 /**
  * Samples for Machines Update.
  */
 public final class MachinesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/machine/Machines_Update.json
+     * x-ms-original-file: 2026-07-15/machine/Machines_Update.json
      */
     /**
      * Sample code: Update a Machine.
@@ -31,7 +31,7 @@ public final class MachinesUpdateSamples {
             .getByResourceGroupWithResponse("myResourceGroup", "myMachine", null, com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withLocationData(new LocationData().withName("Redmond"))
             .withOsProfile(new OSProfile()
                 .withWindowsConfiguration(
