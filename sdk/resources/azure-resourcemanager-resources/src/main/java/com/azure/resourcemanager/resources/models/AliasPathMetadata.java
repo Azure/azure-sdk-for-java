@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The AliasPathMetadata model.
+ * The alias path metadata.
  */
 @Immutable
 public final class AliasPathMetadata implements JsonSerializable<AliasPathMetadata> {
@@ -64,6 +64,8 @@ public final class AliasPathMetadata implements JsonSerializable<AliasPathMetada
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("attributes", this.attributes == null ? null : this.attributes.toString());
         return jsonWriter.writeEndObject();
     }
 

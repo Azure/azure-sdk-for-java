@@ -225,7 +225,7 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-07-01";
+        this.apiVersion = "2025-11-01";
         this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/deletePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy set definition at management group level.
@@ -18,7 +18,7 @@ public final class PolicySetDefinitionsDeleteAtManagementGroupSamples {
      */
     public static void
         deleteAPolicySetDefinitionAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .deleteAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 com.azure.core.util.Context.NONE);

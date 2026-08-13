@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DataPolicyManifestsGetByPolicyModeSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getDataPolicyManifest.json
+     * x-ms-original-file: 2025-11-01/getDataPolicyManifest.json
      */
     /**
      * Sample code: Retrieve a data policy manifest by policy mode.
@@ -18,7 +18,7 @@ public final class DataPolicyManifestsGetByPolicyModeSamples {
      */
     public static void
         retrieveADataPolicyManifestByPolicyMode(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getDataPolicyManifests()
             .getByPolicyModeWithResponse("Microsoft.KeyVault.Data", com.azure.core.util.Context.NONE);
     }

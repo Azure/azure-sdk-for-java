@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionVersionsListAllSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listAllPolicySetDefinitionVersions.json
+     * x-ms-original-file: 2025-11-01/listAllPolicySetDefinitionVersions.json
      */
     /**
      * Sample code: List all policy definition versions at subscription.
@@ -18,6 +18,6 @@ public final class PolicySetDefinitionVersionsListAllSamples {
      */
     public static void
         listAllPolicyDefinitionVersionsAtSubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient().getPolicySetDefinitionVersions().listAllWithResponse(com.azure.core.util.Context.NONE);
+        manager.serviceClient().getPolicySetDefinitionVersions().listAllWithResponse(com.azure.core.util.Context.NONE);
     }
 }

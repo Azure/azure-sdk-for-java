@@ -32,11 +32,6 @@ public final class Selector implements JsonSerializable<Selector> {
      */
     private List<String> notIn;
 
-    /*
-     * The percent of total resources that will be governed by the policy.
-     */
-    private Integer progress;
-
     /**
      * Creates an instance of Selector class.
      */
@@ -104,26 +99,6 @@ public final class Selector implements JsonSerializable<Selector> {
     }
 
     /**
-     * Get the progress property: The percent of total resources that will be governed by the policy.
-     * 
-     * @return the progress value.
-     */
-    public Integer progress() {
-        return this.progress;
-    }
-
-    /**
-     * Set the progress property: The percent of total resources that will be governed by the policy.
-     * 
-     * @param progress the progress value to set.
-     * @return the Selector object itself.
-     */
-    public Selector withProgress(Integer progress) {
-        this.progress = progress;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,7 +115,6 @@ public final class Selector implements JsonSerializable<Selector> {
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeArrayField("in", this.in, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("notIn", this.notIn, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("progress", this.progress);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,8 +141,6 @@ public final class Selector implements JsonSerializable<Selector> {
                 } else if ("notIn".equals(fieldName)) {
                     List<String> notIn = reader.readArray(reader1 -> reader1.getString());
                     deserializedSelector.notIn = notIn;
-                } else if ("progress".equals(fieldName)) {
-                    deserializedSelector.progress = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

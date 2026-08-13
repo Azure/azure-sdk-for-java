@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy definition at management group level.
@@ -28,7 +28,7 @@ public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicyDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming",
                 new PolicyDefinitionInner().withMode("All")

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionVersion.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy set definition version.
@@ -31,7 +31,7 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionVersion(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitionVersions()
             .createOrUpdateWithResponse("CostManagement", "1.2.1",
                 new PolicySetDefinitionVersionInner().withDisplayName("Cost Management")

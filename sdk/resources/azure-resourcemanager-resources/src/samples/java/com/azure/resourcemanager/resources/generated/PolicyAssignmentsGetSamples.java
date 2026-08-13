@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2025-11-01/getPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Retrieve a policy assignment with overrides.
@@ -18,30 +18,14 @@ public final class PolicyAssignmentsGetSamples {
      */
     public static void
         retrieveAPolicyAssignmentWithOverrides(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Retrieve a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to ResourceManager.
-     */
-    public static void retrieveAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
-            .getPolicyAssignments()
-            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2025-11-01/getPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Retrieve a policy assignment with resource selectors.
@@ -50,14 +34,14 @@ public final class PolicyAssignmentsGetSamples {
      */
     public static void
         retrieveAPolicyAssignmentWithResourceSelectors(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-11-01/getPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a user assigned identity.
@@ -66,14 +50,14 @@ public final class PolicyAssignmentsGetSamples {
      */
     public static void retrieveAPolicyAssignmentWithAUserAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignment.json
+     * x-ms-original-file: 2025-11-01/getPolicyAssignment.json
      */
     /**
      * Sample code: Retrieve a policy assignment.
@@ -81,14 +65,14 @@ public final class PolicyAssignmentsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicyAssignment(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2025-11-01/getPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Retrieve a policy assignment with a system assigned identity.
@@ -97,7 +81,7 @@ public final class PolicyAssignmentsGetSamples {
      */
     public static void retrieveAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming", null,
                 com.azure.core.util.Context.NONE);

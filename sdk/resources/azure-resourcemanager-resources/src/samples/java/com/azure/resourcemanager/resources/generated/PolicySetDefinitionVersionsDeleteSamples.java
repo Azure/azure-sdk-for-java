@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicySetDefinitionVersion.json
+     * x-ms-original-file: 2025-11-01/deletePolicySetDefinitionVersion.json
      */
     /**
      * Sample code: Delete a policy set definition version.
@@ -17,7 +17,7 @@ public final class PolicySetDefinitionVersionsDeleteSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deleteAPolicySetDefinitionVersion(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitionVersions()
             .deleteWithResponse("CostManagement", "1.2.1", com.azure.core.util.Context.NONE);
     }

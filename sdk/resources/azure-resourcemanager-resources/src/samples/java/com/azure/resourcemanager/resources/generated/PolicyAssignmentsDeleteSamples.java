@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyAssignment.json
+     * x-ms-original-file: 2025-11-01/deletePolicyAssignment.json
      */
     /**
      * Sample code: Delete a policy assignment.
@@ -17,7 +17,7 @@ public final class PolicyAssignmentsDeleteSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deleteAPolicyAssignment(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .deleteWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 com.azure.core.util.Context.NONE);

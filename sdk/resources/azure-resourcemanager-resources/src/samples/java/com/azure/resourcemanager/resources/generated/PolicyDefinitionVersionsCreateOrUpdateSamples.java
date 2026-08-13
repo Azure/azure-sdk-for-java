@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionVersion.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicyDefinitionVersion.json
      */
     /**
      * Sample code: Create or update a policy definition version.
@@ -28,7 +28,7 @@ public final class PolicyDefinitionVersionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinitionVersion(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitionVersions()
             .createOrUpdateWithResponse("ResourceNaming", "1.2.1", new PolicyDefinitionVersionInner().withMode("All")
                 .withDisplayName("Enforce resource naming convention")

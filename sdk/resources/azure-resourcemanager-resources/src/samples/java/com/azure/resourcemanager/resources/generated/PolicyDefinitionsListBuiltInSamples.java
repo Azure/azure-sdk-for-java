@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionsListBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listBuiltInPolicyDefinitions.json
+     * x-ms-original-file: 2025-11-01/listBuiltInPolicyDefinitions.json
      */
     /**
      * Sample code: List built-in policy definitions.
@@ -17,6 +17,6 @@ public final class PolicyDefinitionsListBuiltInSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listBuiltInPolicyDefinitions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient().getPolicyDefinitions().listBuiltIn(null, null, com.azure.core.util.Context.NONE);
+        manager.serviceClient().getPolicyDefinitions().listBuiltIn(null, null, com.azure.core.util.Context.NONE);
     }
 }

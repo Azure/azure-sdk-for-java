@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionVersionsDeleteAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/deletePolicyDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/deletePolicyDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Delete a policy definition version at management group level.
@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsDeleteAtManagementGroupSamples {
      */
     public static void deleteAPolicyDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitionVersions()
             .deleteAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming", "1.2.1",
                 com.azure.core.util.Context.NONE);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinition.json
+     * x-ms-original-file: 2025-11-01/getPolicyDefinition.json
      */
     /**
      * Sample code: Retrieve a policy definition.
@@ -17,7 +17,7 @@ public final class PolicyDefinitionsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .getWithResponse("ResourceNaming", com.azure.core.util.Context.NONE);
     }

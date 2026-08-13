@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
@@ -38,7 +38,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithResourceSelectors(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
@@ -54,7 +54,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithEnrollEnforcement.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithEnrollEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment to enforce policy effect only on enrolled resources during
@@ -65,7 +65,7 @@ public final class PolicyAssignmentsCreateSamples {
     public static void
         createOrUpdateAPolicyAssignmentToEnforcePolicyEffectOnlyOnEnrolledResourcesDuringResourceCreationOrUpdate(
             com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNamingEnroll",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
@@ -81,7 +81,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignment.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignment.json
      */
     /**
      * Sample code: Create or update a policy assignment.
@@ -90,7 +90,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignment(com.azure.resourcemanager.resources.ResourceManager manager)
         throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
@@ -107,7 +107,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
@@ -116,7 +116,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -134,32 +134,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Create or update a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to ResourceManager.
-     */
-    public static void createOrUpdateAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
-            .getPolicyAssignments()
-            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
-                new PolicyAssignmentInner().withDisplayName("Limit resources by rollout percentage")
-                    .withPolicyDefinitionId(
-                        "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
-                    .withDescription("Limit resources by rollout percentage")
-                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
-                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
-                    .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRollout")
-                        .withSelectors(Arrays.asList(
-                            new Selector().withKind(SelectorKind.fromString("resourcePercentage")).withProgress(80))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Create or update a policy assignment with self-serve exemption settings.
@@ -168,7 +143,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithSelfServeExemptionSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -186,7 +161,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentNonComplianceMessages.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentNonComplianceMessages.json
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
@@ -195,7 +170,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithMultipleNonComplianceMessages(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "securityInitAssignment",
                 new PolicyAssignmentInner().withDisplayName("Enforce security policies")
@@ -212,7 +187,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
@@ -221,7 +196,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithAUserAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -242,7 +217,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
@@ -251,7 +226,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithOverrides(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
@@ -277,7 +252,7 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createPolicyAssignmentWithoutEnforcement.json
+     * x-ms-original-file: 2025-11-01/createPolicyAssignmentWithoutEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or
@@ -287,7 +262,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithoutEnforcingPolicyEffectDuringResourceCreationOrUpdate(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitions.json
+     * x-ms-original-file: 2025-11-01/listPolicySetDefinitions.json
      */
     /**
      * Sample code: List policy set definitions.
@@ -17,6 +17,6 @@ public final class PolicySetDefinitionsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listPolicySetDefinitions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient().getPolicySetDefinitions().list(null, null, null, com.azure.core.util.Context.NONE);
+        manager.serviceClient().getPolicySetDefinitions().list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

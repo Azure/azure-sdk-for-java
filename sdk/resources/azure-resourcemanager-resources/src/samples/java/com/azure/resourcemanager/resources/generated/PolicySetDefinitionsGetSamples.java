@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinition.json
+     * x-ms-original-file: 2025-11-01/getPolicySetDefinition.json
      */
     /**
      * Sample code: Retrieve a policy set definition.
@@ -17,7 +17,7 @@ public final class PolicySetDefinitionsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicySetDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .getWithResponse("CostManagement", null, com.azure.core.util.Context.NONE);
     }

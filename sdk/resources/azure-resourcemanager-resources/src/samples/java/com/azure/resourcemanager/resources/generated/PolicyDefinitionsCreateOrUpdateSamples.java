@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionAdvancedParams.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
      * Sample code: Create or update a policy definition with advanced parameters.
@@ -31,7 +31,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinitionWithAdvancedParameters(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("EventHubDiagnosticLogs", new PolicyDefinitionInner().withMode("Indexed")
                 .withDisplayName("Event Hubs should have diagnostic logging enabled")
@@ -54,7 +54,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
      */
     /**
      * Sample code: Create or update a policy definition with external evaluation enforcement settings.
@@ -63,7 +63,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinitionWithExternalEvaluationEnforcementSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("RandomizeVMAllocation", new PolicyDefinitionInner().withMode("Indexed")
                 .withDisplayName("Randomize VM Allocation")
@@ -86,7 +86,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicyDefinition.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicyDefinition.json
      */
     /**
      * Sample code: Create or update a policy definition.
@@ -95,7 +95,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager)
         throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .createOrUpdateWithResponse("ResourceNaming", new PolicyDefinitionInner().withMode("All")
                 .withDisplayName("Enforce resource naming convention")

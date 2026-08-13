@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignments.json
+     * x-ms-original-file: 2025-11-01/listPolicyAssignments.json
      */
     /**
      * Sample code: List policy assignments that apply to a subscription.
@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToASubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .list("atScope()", "LatestDefinitionVersion, EffectiveDefinitionVersion", null,
                 com.azure.core.util.Context.NONE);

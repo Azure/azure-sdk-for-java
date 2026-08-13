@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.models.PolicyTokenRequest;
  */
 public final class PolicyTokensAcquireAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/acquirePolicyTokenAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/acquirePolicyTokenAtManagementGroup.json
      */
     /**
      * Sample code: Acquire a policy token at management group level.
@@ -21,7 +21,7 @@ public final class PolicyTokensAcquireAtManagementGroupSamples {
      */
     public static void
         acquireAPolicyTokenAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyTokens()
             .acquireAtManagementGroupWithResponse("MyManagementGroup",
                 new PolicyTokenRequest().withOperation(new PolicyTokenOperation().withUri(

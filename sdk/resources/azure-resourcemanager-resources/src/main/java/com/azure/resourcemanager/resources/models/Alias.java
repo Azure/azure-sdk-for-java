@@ -43,7 +43,7 @@ public final class Alias implements JsonSerializable<Alias> {
     private AliasPattern defaultPattern;
 
     /*
-     * The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
+     * The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata.
      */
     private AliasPathMetadata defaultMetadata;
 
@@ -136,6 +136,7 @@ public final class Alias implements JsonSerializable<Alias> {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("defaultPath", this.defaultPath);
         jsonWriter.writeJsonField("defaultPattern", this.defaultPattern);
+        jsonWriter.writeJsonField("defaultMetadata", this.defaultMetadata);
         return jsonWriter.writeEndObject();
     }
 

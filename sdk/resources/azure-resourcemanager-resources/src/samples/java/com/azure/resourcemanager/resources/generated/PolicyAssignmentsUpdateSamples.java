@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: 2025-11-01/updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy assignment with resource selectors.
@@ -32,7 +32,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithResourceSelectors(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
@@ -43,27 +43,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithResourcePercentageSelector.json
-     */
-    /**
-     * Sample code: Update a policy assignment with a resource percentage selector.
-     * 
-     * @param manager Entry point to ResourceManager.
-     */
-    public static void updateAPolicyAssignmentWithAResourcePercentageSelector(
-        com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
-            .getPolicyAssignments()
-            .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
-                new PolicyAssignmentUpdate()
-                    .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRollout")
-                        .withSelectors(Arrays.asList(
-                            new Selector().withKind(SelectorKind.fromString("resourcePercentage")).withProgress(80))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: 2025-11-01/updatePolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a user assigned identity.
@@ -72,7 +52,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithAUserAssignedIdentity(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentUpdate().withLocation("eastus")
@@ -84,7 +64,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithOverrides.json
+     * x-ms-original-file: 2025-11-01/updatePolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Update a policy assignment with overrides.
@@ -93,7 +73,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void
         updateAPolicyAssignmentWithOverrides(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate().withOverrides(Arrays.asList(new OverrideModel()
@@ -105,7 +85,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithSelfserveExemptionSettings.json
+     * x-ms-original-file: 2025-11-01/updatePolicyAssignmentWithSelfserveExemptionSettings.json
      */
     /**
      * Sample code: Update a policy assignment with self-serve exemption settings.
@@ -114,7 +94,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void updateAPolicyAssignmentWithSelfServeExemptionSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
@@ -124,7 +104,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/updatePolicyAssignmentWithIdentity.json
+     * x-ms-original-file: 2025-11-01/updatePolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Update a policy assignment with a system assigned identity.
@@ -133,7 +113,7 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     public static void updateAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentUpdate().withLocation("eastus")

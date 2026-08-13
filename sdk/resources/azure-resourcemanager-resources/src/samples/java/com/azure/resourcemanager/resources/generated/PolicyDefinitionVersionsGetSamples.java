@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinitionVersion.json
+     * x-ms-original-file: 2025-11-01/getPolicyDefinitionVersion.json
      */
     /**
      * Sample code: Retrieve a policy definition version.
@@ -17,7 +17,7 @@ public final class PolicyDefinitionVersionsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicyDefinitionVersion(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitionVersions()
             .getWithResponse("ResourceNaming", "1.2.1", com.azure.core.util.Context.NONE);
     }

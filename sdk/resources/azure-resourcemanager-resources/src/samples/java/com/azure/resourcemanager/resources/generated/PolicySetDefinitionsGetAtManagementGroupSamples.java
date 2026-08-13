@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/getPolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy set definition at management group level.
@@ -18,7 +18,7 @@ public final class PolicySetDefinitionsGetAtManagementGroupSamples {
      */
     public static void retrieveAPolicySetDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .getAtManagementGroupWithResponse("MyManagementGroup", "CostManagement", null,
                 com.azure.core.util.Context.NONE);

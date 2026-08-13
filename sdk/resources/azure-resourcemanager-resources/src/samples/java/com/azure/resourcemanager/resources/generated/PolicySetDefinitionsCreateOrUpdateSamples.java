@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroups.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinitionWithGroups.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups.
@@ -32,7 +32,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionWithGroups(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .createOrUpdateWithResponse("CostManagement", new PolicySetDefinitionInner()
                 .withDisplayName("Cost Management")
@@ -66,7 +66,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinition.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinition.json
      */
     /**
      * Sample code: Create or update a policy set definition.
@@ -75,7 +75,7 @@ public final class PolicySetDefinitionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateAPolicySetDefinition(com.azure.resourcemanager.resources.ResourceManager manager)
         throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .createOrUpdateWithResponse("CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")

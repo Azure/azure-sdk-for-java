@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitionsByManagementGroup.json
+     * x-ms-original-file: 2025-11-01/listPolicySetDefinitionsByManagementGroup.json
      */
     /**
      * Sample code: List policy set definitions at management group level.
@@ -18,7 +18,7 @@ public final class PolicySetDefinitionsListByManagementGroupSamples {
      */
     public static void
         listPolicySetDefinitionsAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .listByManagementGroup("MyManagementGroup", null, null, null, com.azure.core.util.Context.NONE);
     }

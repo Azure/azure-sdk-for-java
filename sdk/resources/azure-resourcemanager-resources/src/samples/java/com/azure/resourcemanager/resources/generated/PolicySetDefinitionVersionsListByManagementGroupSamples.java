@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionVersionsListByManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicySetDefinitionVersionsByManagementGroup.json
+     * x-ms-original-file: 2025-11-01/listPolicySetDefinitionVersionsByManagementGroup.json
      */
     /**
      * Sample code: List policy set definitions at management group level.
@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsListByManagementGroupSamples {
      */
     public static void
         listPolicySetDefinitionsAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitionVersions()
             .listByManagementGroup("MyManagementGroup", "CostManagement", null, null, com.azure.core.util.Context.NONE);
     }

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition version at management group level.
@@ -28,7 +28,7 @@ public final class PolicySetDefinitionVersionsCreateOrUpdateAtManagementGroupSam
      */
     public static void createOrUpdateAPolicySetDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitionVersions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement", "1.2.1",
                 new PolicySetDefinitionVersionInner().withDisplayName("Cost Management")

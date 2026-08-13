@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getBuiltinPolicyDefinition.json
+     * x-ms-original-file: 2025-11-01/getBuiltinPolicyDefinition.json
      */
     /**
      * Sample code: Retrieve a built-in policy definition.
@@ -17,7 +17,7 @@ public final class PolicyDefinitionsGetBuiltInSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveABuiltInPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitions()
             .getBuiltInWithResponse("7433c107-6db4-4ad1-b57a-a76dce0154a1", com.azure.core.util.Context.NONE);
     }

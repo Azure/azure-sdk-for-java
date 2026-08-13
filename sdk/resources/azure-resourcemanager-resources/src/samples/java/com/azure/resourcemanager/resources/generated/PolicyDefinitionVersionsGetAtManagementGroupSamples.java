@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyDefinitionVersionsGetAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/getPolicyDefinitionVersionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/getPolicyDefinitionVersionAtManagementGroup.json
      */
     /**
      * Sample code: Retrieve a policy definition version at management group level.
@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsGetAtManagementGroupSamples {
      */
     public static void retrieveAPolicyDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyDefinitionVersions()
             .getAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming", "1.2.1",
                 com.azure.core.util.Context.NONE);

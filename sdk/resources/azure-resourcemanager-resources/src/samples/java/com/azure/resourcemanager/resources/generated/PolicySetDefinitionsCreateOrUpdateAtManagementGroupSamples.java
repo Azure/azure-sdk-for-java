@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups at management group level.
@@ -29,7 +29,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionWithGroupsAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")
@@ -63,7 +63,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file: 2025-11-01/createOrUpdatePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition at management group level.
@@ -72,7 +72,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicySetDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")

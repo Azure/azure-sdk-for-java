@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForResourceGroup.json
+     * x-ms-original-file: 2025-11-01/listPolicyAssignmentsForResourceGroup.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.
@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListByResourceGroupSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToAResourceGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .listByResourceGroup("TestResourceGroup", "atScope()",
                 "LatestDefinitionVersion, EffectiveDefinitionVersion", null, com.azure.core.util.Context.NONE);

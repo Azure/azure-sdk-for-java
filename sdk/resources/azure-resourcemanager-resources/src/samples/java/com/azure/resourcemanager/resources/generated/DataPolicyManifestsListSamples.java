@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DataPolicyManifestsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifests.json
+     * x-ms-original-file: 2025-11-01/listDataPolicyManifests.json
      */
     /**
      * Sample code: List data policy manifests.
@@ -17,11 +17,11 @@ public final class DataPolicyManifestsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listDataPolicyManifests(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient().getDataPolicyManifests().list(null, com.azure.core.util.Context.NONE);
+        manager.serviceClient().getDataPolicyManifests().list(null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/listDataPolicyManifestsNamespaceFilter.json
+     * x-ms-original-file: 2025-11-01/listDataPolicyManifestsNamespaceFilter.json
      */
     /**
      * Sample code: List data policy manifests with namespace filter.
@@ -30,7 +30,7 @@ public final class DataPolicyManifestsListSamples {
      */
     public static void
         listDataPolicyManifestsWithNamespaceFilter(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getDataPolicyManifests()
             .list("namespace eq 'Microsoft.KeyVault'", com.azure.core.util.Context.NONE);
     }

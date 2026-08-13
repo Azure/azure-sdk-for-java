@@ -68,12 +68,6 @@ public final class ExternalEvaluationEndpointInvocationResult
     private Object additionalInfo;
 
     /*
-     * The compliance state of the resource against the policy. Possible values are NotSpecified, NonCompliant,
-     * Conflict, NotApplicable, Compliant, Error, Unknown, and Exempt.
-     */
-    private ComplianceState complianceState;
-
-    /*
      * The expiration of the results.
      */
     private OffsetDateTime expiration;
@@ -168,16 +162,6 @@ public final class ExternalEvaluationEndpointInvocationResult
     }
 
     /**
-     * Get the complianceState property: The compliance state of the resource against the policy. Possible values are
-     * NotSpecified, NonCompliant, Conflict, NotApplicable, Compliant, Error, Unknown, and Exempt.
-     * 
-     * @return the complianceState value.
-     */
-    public ComplianceState complianceState() {
-        return this.complianceState;
-    }
-
-    /**
      * Get the expiration property: The expiration of the results.
      * 
      * @return the expiration value.
@@ -219,8 +203,6 @@ public final class ExternalEvaluationEndpointInvocationResult
         if (this.additionalInfo != null) {
             jsonWriter.writeUntypedField("additionalInfo", this.additionalInfo);
         }
-        jsonWriter.writeStringField("complianceState",
-            this.complianceState == null ? null : this.complianceState.toString());
         jsonWriter.writeStringField("expiration",
             this.expiration == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiration));
         return jsonWriter.writeEndObject();
@@ -264,9 +246,6 @@ public final class ExternalEvaluationEndpointInvocationResult
                         = reader.readUntyped();
                 } else if ("additionalInfo".equals(fieldName)) {
                     deserializedExternalEvaluationEndpointInvocationResult.additionalInfo = reader.readUntyped();
-                } else if ("complianceState".equals(fieldName)) {
-                    deserializedExternalEvaluationEndpointInvocationResult.complianceState
-                        = ComplianceState.fromString(reader.getString());
                 } else if ("expiration".equals(fieldName)) {
                     deserializedExternalEvaluationEndpointInvocationResult.expiration = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

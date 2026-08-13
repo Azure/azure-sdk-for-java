@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: 2026-07-01/listPolicyAssignmentsForResource.json
+     * x-ms-original-file: 2025-11-01/listPolicyAssignmentsForResource.json
      */
     /**
      * Sample code: List policy assignments that apply to a resource group.
@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListForResourceSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToAResourceGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.policyClient()
+        manager.serviceClient()
             .getPolicyAssignments()
             .listForResource("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames",
                 "MyTestComputer.cloudapp.net", null, null, null, com.azure.core.util.Context.NONE);
