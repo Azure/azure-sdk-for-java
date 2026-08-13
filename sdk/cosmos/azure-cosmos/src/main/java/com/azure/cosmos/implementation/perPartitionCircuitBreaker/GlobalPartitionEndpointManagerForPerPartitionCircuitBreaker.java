@@ -98,15 +98,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()
             && this.isPartitionRecoveryTaskRunning.compareAndSet(false, true)) {
 
-            Disposable recoveryDisposable = this.updateStaleLocationInfo()
+            this.partitionRecoveryDisposable.set(this.updateStaleLocationInfo()
                 .subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_CHECK_BOUNDED_ELASTIC)
-                .subscribe();
-            this.partitionRecoveryDisposable.set(recoveryDisposable);
-
-            if (this.isClosed.get()
-                && this.partitionRecoveryDisposable.compareAndSet(recoveryDisposable, null)) {
-                recoveryDisposable.dispose();
-            }
+                .subscribe());
         }
     }
 
@@ -324,8 +318,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         Flux<?> recoveryWork = Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat(() -> !this.isClosed.get())
-            .flatMap(ignore -> this.getFailbackBacklog(), 1, 1)
-            .flatMap(failbackRecoveryEntry -> {
+            .flatMap(ignore -> this.runFailbackRecoveryCycle(), 1, 1);
+
+        return this.keepFailbackRecoveryAlive(recoveryWork);
+    }
+
+    Flux<?> runFailbackRecoveryCycle() {
+        return this.getFailbackBacklog().flatMap(failbackRecoveryEntry -> {
 
                 try {
                     PartitionKeyRangeWrapper partitionKeyRangeWrapper = failbackRecoveryEntry.getLeft();
@@ -399,8 +398,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                 return Flux.empty();
             }, 1, 1);
-
-        return this.keepFailbackRecoveryAlive(recoveryWork);
     }
 
     private Flux<Pair<PartitionKeyRangeWrapper, RegionalRoutingContext>> getFailbackBacklog() {
@@ -470,7 +467,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         this.clientCorrelationId.set(clientCorrelationId == null ? StringUtils.EMPTY : clientCorrelationId);
     }
 
-    void recordFailbackPendingRecoveryByCollection(Map<String, AtomicInteger> pendingRecoveryCountByCollection) {
+    synchronized void recordFailbackPendingRecoveryByCollection(Map<String, AtomicInteger> pendingRecoveryCountByCollection) {
         MultiGauge gauge = this.failbackPendingRecoveryGauge.get();
         if (gauge == null) {
             return;
@@ -484,7 +481,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         gauge.register(rows, true);
     }
 
-    public void removeFailbackPendingRecoveryMeter() {
+    public synchronized void removeFailbackPendingRecoveryMeter() {
         MultiGauge gauge = this.failbackPendingRecoveryGauge.getAndSet(null);
         if (gauge != null) {
             gauge.register(Collections.emptyList(), true);
