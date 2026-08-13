@@ -5,12 +5,20 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 final class QuickPulseRedirectValidator {
 
     private static final String HTTPS = "https";
     private static final int DEFAULT_HTTPS_PORT = 443;
+
+    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES
+        = Collections.unmodifiableList(Arrays.asList(".livediagnostics.monitor.azure.com", ".monitor.azure.com",
+            ".services.visualstudio.com", ".applicationinsights.azure.com", ".monitor.azure.us",
+            ".applicationinsights.azure.us", ".monitor.azure.cn", ".applicationinsights.azure.cn"));
 
     private QuickPulseRedirectValidator() {
     }
@@ -48,12 +56,12 @@ final class QuickPulseRedirectValidator {
 
     private static boolean isKnownLiveMetricsHost(String host) {
         String normalizedHost = normalizeHost(host);
-        return normalizedHost.endsWith(".services.visualstudio.com")
-            || normalizedHost.endsWith(".livediagnostics.monitor.azure.com")
-            || normalizedHost.endsWith(".applicationinsights.azure.com")
-            || normalizedHost.endsWith(".applicationinsights.azure.cn")
-            || normalizedHost.endsWith(".applicationinsights.us")
-            || normalizedHost.endsWith(".applicationinsights.azure.us");
+        for (String suffix : ALLOWED_REDIRECT_DOMAIN_SUFFIXES) {
+            if (normalizedHost.endsWith(suffix)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String normalizeHost(String host) {
