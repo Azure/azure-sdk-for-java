@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-08-12)
+## 1.0.0-beta.2 (2026-08-13)
 
 - Azure Resource Manager relationships client library for Java. This package contains Microsoft Azure SDK for relationships Management SDK. Microsoft.Relationships Resource Provider management API. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -41,8 +41,8 @@
 
 #### `models.DependencyOfRelationships` was modified
 
-* `listByParent(java.lang.String,com.azure.core.util.Context)` was added
 * `listByParent(java.lang.String)` was added
+* `listByParent(java.lang.String,com.azure.core.util.Context)` was added
 
 #### `RelationshipsManager` was modified
 
