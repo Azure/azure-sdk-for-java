@@ -200,8 +200,8 @@ public class PpcbFailbackLoggingTest {
         remainingByCollection.put("collectionB", new HashSet<>(Arrays.asList("3", "4")));
 
         try {
-            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.remaining"))
-                .isSameAs(CosmosMetricName.PPCB_FAILBACK_REMAINING);
+            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pendingPartitionCount"))
+                .isSameAs(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT);
             this.manager.registerFailbackRemainingMeter(
                 registry,
                 Tag.of("ClientCorrelationId", "client1"));
@@ -219,7 +219,7 @@ public class PpcbFailbackLoggingTest {
             assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(1);
 
             this.manager.close();
-            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT.toString())
                 .gauges()).isEmpty();
         } finally {
             this.manager.close();
@@ -229,7 +229,7 @@ public class PpcbFailbackLoggingTest {
 
     private static Gauge getFailbackRemainingGauge(SimpleMeterRegistry registry, String collectionRid) {
         return registry
-            .get(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+            .get(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT.toString())
             .tag("ClientCorrelationId", "client1")
             .tag("CollectionRid", collectionRid)
             .gauge();

@@ -459,7 +459,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         }
 
         this.failbackRemainingGauge.set(
-            MultiGauge.builder(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+            MultiGauge.builder(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT.toString())
                 .description("Number of PPCB partition key ranges remaining to fail back")
                 .baseUnit("partitions")
                 .tags(Collections.singletonList(clientCorrelationTag))
