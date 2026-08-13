@@ -12,8 +12,8 @@ public final class EventHubConsumerGroupsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubConsumerGroupsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"bpodxunkbebxm\":\"\\\"datandlkzgxhurip\\\"\",\"oievseotgqrlltm\":\"\\\"databyyntwlrbqt\\\"\",\"jefuzmuvpbttdumo\":\"\\\"datawlauwzizxbmpg\\\"\"},\"etag\":\"pxebmnzbt\",\"id\":\"jpglkfgohdne\",\"name\":\"el\",\"type\":\"phsdyhto\"},{\"properties\":{\"wwquuvxzxclvithh\":\"\\\"datakd\\\"\",\"hcohfwdsjnk\":\"\\\"datazonosgg\\\"\",\"swacffgdkzz\":\"\\\"dataljuti\\\"\"},\"etag\":\"kfvhqcrailvpn\",\"id\":\"fuflrwdmhdlx\",\"name\":\"jrxs\",\"type\":\"gafcnihgwqapnedg\"},{\"properties\":{\"vdrhvoo\":\"\\\"datavkcvqvpkeqd\\\"\",\"dopcjwvnh\":\"\\\"datasotbob\\\"\",\"mgxcxrslpm\":\"\\\"datald\\\"\",\"qsluicp\":\"\\\"datatwuoegrpkhjwni\\\"\"},\"etag\":\"gk\",\"id\":\"lvmbmpaxmodfvuef\",\"name\":\"wsbpfvm\",\"type\":\"yhrfouyftaakcpw\"},{\"properties\":{\"xkp\":\"\\\"datavqtmnub\\\"\",\"mquxvypo\":\"\\\"dataksmond\\\"\",\"smocmbq\":\"\\\"datagkopkwhojvpajqgx\\\"\"},\"etag\":\"vmkcx\",\"id\":\"apvhelxprgly\",\"name\":\"tddckcb\",\"type\":\"uejrjxgc\"}],\"nextLink\":\"ibrhosxsdqr\"}")
+            "{\"value\":[{\"properties\":{\"ttdumorppxebmnzb\":\"\\\"datapgcjefuzmuvp\\\"\",\"el\":\"\\\"databhjpglkfgohdne\\\"\",\"fikdowwqu\":\"\\\"dataphsdyhto\\\"\",\"zx\":\"\\\"datav\\\"\"},\"etag\":\"vithh\",\"id\":\"o\",\"name\":\"osggbhc\",\"type\":\"hfwdsjnkaljutiis\"}],\"nextLink\":\"cffgdkzzewk\"}")
             .toObject(EventHubConsumerGroupsListResult.class);
-        Assertions.assertEquals("ibrhosxsdqr", model.nextLink());
+        Assertions.assertEquals("cffgdkzzewk", model.nextLink());
     }
 }

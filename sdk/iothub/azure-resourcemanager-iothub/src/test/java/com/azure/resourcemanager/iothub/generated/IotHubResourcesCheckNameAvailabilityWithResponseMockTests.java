@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class IotHubResourcesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"sxiftozq\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"xkw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IotHubResourcesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IotHubNameAvailabilityInfo response = manager.iotHubResources()
-            .checkNameAvailabilityWithResponse(new OperationInputs().withName("frddhcrati"),
+            .checkNameAvailabilityWithResponse(new OperationInputs().withName("mctlpdngitv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sxiftozq", response.message());
+        Assertions.assertEquals("xkw", response.message());
     }
 }
