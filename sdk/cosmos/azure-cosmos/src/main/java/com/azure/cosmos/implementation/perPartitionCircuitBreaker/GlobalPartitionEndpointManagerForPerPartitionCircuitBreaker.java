@@ -38,11 +38,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -406,16 +404,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private Flux<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> getFailbackBacklog() {
         List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> failbackBacklog
             = new ArrayList<>();
-        Map<String, Set<String>> remainingPartitionRangeIdsByCollection = new HashMap<>();
+        Map<String, AtomicInteger> remainingPartitionCountByCollection = new HashMap<>();
 
         for (Map.Entry<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> entry
             : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()) {
 
             PartitionKeyRangeWrapper partitionKeyRangeWrapper = entry.getKey();
-            Set<String> remainingPartitionRangeIds = remainingPartitionRangeIdsByCollection
+            AtomicInteger remainingPartitionCount = remainingPartitionCountByCollection
                 .computeIfAbsent(
                     partitionKeyRangeWrapper.getCollectionResourceId(),
-                    ignored -> new HashSet<>());
+                    ignored -> new AtomicInteger());
+            boolean isPartitionRangeUnavailable = false;
 
             try {
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = entry.getValue();
@@ -429,13 +428,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
 
                         if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
+                            isPartitionRangeUnavailable = true;
                             failbackBacklog.add(
                                 Pair.of(
                                     partitionKeyRangeWrapper,
                                     Pair.of(
                                         locationWithStaleUnavailabilityInfo,
                                         locationSpecificHealthContext)));
-                            remainingPartitionRangeIds.add(partitionKeyRangeWrapper.getPartitionKeyRange().getId());
                         }
                     }
                 }
@@ -446,10 +445,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                     "SCAN_UNAVAILABLE_PARTITIONS",
                     e);
             }
+
+            if (isPartitionRangeUnavailable) {
+                remainingPartitionCount.incrementAndGet();
+            }
         }
 
         this.logFailbackBacklog(failbackBacklog.size());
-        this.recordFailbackRemainingByCollection(remainingPartitionRangeIdsByCollection);
+        this.recordFailbackRemainingByCollection(remainingPartitionCountByCollection);
         return Flux.fromIterable(failbackBacklog);
     }
 
@@ -466,17 +469,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 .register(meterRegistry));
     }
 
-    void recordFailbackRemainingByCollection(Map<String, Set<String>> remainingPartitionRangeIdsByCollection) {
+    void recordFailbackRemainingByCollection(Map<String, AtomicInteger> remainingPartitionCountByCollection) {
         MultiGauge gauge = this.failbackRemainingGauge.get();
         if (gauge == null) {
             return;
         }
 
         List<MultiGauge.Row<?>> rows = new ArrayList<>();
-        remainingPartitionRangeIdsByCollection.forEach((collectionRid, partitionRangeIds) ->
+        remainingPartitionCountByCollection.forEach((collectionRid, partitionCount) ->
             rows.add(MultiGauge.Row.of(
                 Tags.of(COLLECTION_RID_TAG_NAME, collectionRid),
-                partitionRangeIds.size())));
+                partitionCount)));
         gauge.register(rows, true);
     }
 

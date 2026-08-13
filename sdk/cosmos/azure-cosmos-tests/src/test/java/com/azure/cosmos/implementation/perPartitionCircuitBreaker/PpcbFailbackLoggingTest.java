@@ -22,10 +22,9 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -195,9 +194,9 @@ public class PpcbFailbackLoggingTest {
     @Test(groups = {"unit"})
     public void failbackRemainingGaugeIsPerCollectionAndReportsZero() {
         SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        Map<String, Set<String>> remainingByCollection = new HashMap<>();
-        remainingByCollection.put("collectionA", new HashSet<>(Arrays.asList("0", "1", "2")));
-        remainingByCollection.put("collectionB", new HashSet<>(Arrays.asList("3", "4")));
+        Map<String, AtomicInteger> remainingByCollection = new HashMap<>();
+        remainingByCollection.put("collectionA", new AtomicInteger(3));
+        remainingByCollection.put("collectionB", new AtomicInteger(2));
 
         try {
             assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pendingPartitionCount"))
@@ -210,9 +209,9 @@ public class PpcbFailbackLoggingTest {
             assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isEqualTo(3);
             assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(2);
 
-            Map<String, Set<String>> updatedRemainingByCollection = new HashMap<>();
-            updatedRemainingByCollection.put("collectionA", Collections.emptySet());
-            updatedRemainingByCollection.put("collectionB", Collections.singleton("4"));
+            Map<String, AtomicInteger> updatedRemainingByCollection = new HashMap<>();
+            updatedRemainingByCollection.put("collectionA", new AtomicInteger());
+            updatedRemainingByCollection.put("collectionB", new AtomicInteger(1));
             this.manager.recordFailbackRemainingByCollection(updatedRemainingByCollection);
 
             assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isZero();
