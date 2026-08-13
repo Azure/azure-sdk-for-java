@@ -75,6 +75,7 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
         jsonWriter.writeStringField("optimization_model", this.optimizationModel);
         jsonWriter.writeStringField("evaluation_level",
             this.evaluationLevel == null ? null : this.evaluationLevel.toString());
+        jsonWriter.writeNumberField("max_stalls", this.maxStalls);
         return jsonWriter.writeEndObject();
     }
 
@@ -105,6 +106,8 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
                     deserializedOptimizationOptions.optimizationModel = reader.getString();
                 } else if ("evaluation_level".equals(fieldName)) {
                     deserializedOptimizationOptions.evaluationLevel = EvaluationLevel.fromString(reader.getString());
+                } else if ("max_stalls".equals(fieldName)) {
+                    deserializedOptimizationOptions.maxStalls = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
@@ -233,6 +236,48 @@ public final class OptimizationOptions implements JsonSerializable<OptimizationO
     @Generated
     public OptimizationOptions setMaxCandidates(Integer maxCandidates) {
         this.maxCandidates = maxCandidates;
+        return this;
+    }
+
+    /*
+     * Maximum number of consecutive reflective minibatch rejections before stopping early. A 'stall' occurs when the
+     * optimizer proposes a prompt change, evaluates it on a small subset, and the score does not improve — so no full
+     * validation-set evaluation is triggered. The counter resets whenever a minibatch passes and its full-validation
+     * score beats the current best. Only a sustained plateau of `max_stalls` consecutive minibatch failures triggers
+     * the stop. The service defaults to 5 if a value is not specified by the caller. Must be >= 1 when set.
+     */
+    @Generated
+    private Integer maxStalls;
+
+    /**
+     * Get the maxStalls property: Maximum number of consecutive reflective minibatch rejections before stopping early.
+     * A 'stall' occurs when the optimizer proposes a prompt change, evaluates it on a small subset, and the score does
+     * not improve — so no full validation-set evaluation is triggered. The counter resets whenever a minibatch passes
+     * and its full-validation score beats the current best. Only a sustained plateau of `max_stalls` consecutive
+     * minibatch failures triggers the stop. The service defaults to 5 if a value is not specified by the caller. Must
+     * be &gt;= 1 when set.
+     *
+     * @return the maxStalls value.
+     */
+    @Generated
+    public Integer getMaxStalls() {
+        return this.maxStalls;
+    }
+
+    /**
+     * Set the maxStalls property: Maximum number of consecutive reflective minibatch rejections before stopping early.
+     * A 'stall' occurs when the optimizer proposes a prompt change, evaluates it on a small subset, and the score does
+     * not improve — so no full validation-set evaluation is triggered. The counter resets whenever a minibatch passes
+     * and its full-validation score beats the current best. Only a sustained plateau of `max_stalls` consecutive
+     * minibatch failures triggers the stop. The service defaults to 5 if a value is not specified by the caller. Must
+     * be &gt;= 1 when set.
+     *
+     * @param maxStalls the maxStalls value to set.
+     * @return the OptimizationOptions object itself.
+     */
+    @Generated
+    public OptimizationOptions setMaxStalls(Integer maxStalls) {
+        this.maxStalls = maxStalls;
         return this;
     }
 }

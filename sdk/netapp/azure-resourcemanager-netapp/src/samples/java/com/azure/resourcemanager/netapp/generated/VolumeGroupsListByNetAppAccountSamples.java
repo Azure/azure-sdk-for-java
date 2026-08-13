@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_Custom.json
+     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_Custom.json
      */
     /**
      * Sample code: VolumeGroups_List_Custom.
@@ -21,7 +21,7 @@ public final class VolumeGroupsListByNetAppAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_Oracle.json
+     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_List_Oracle.
@@ -33,7 +33,7 @@ public final class VolumeGroupsListByNetAppAccountSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-15-preview/VolumeGroups_List_SapHana.json
+     * x-ms-original-file: 2026-05-15-preview/VolumeGroups_List_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_List_SapHana.

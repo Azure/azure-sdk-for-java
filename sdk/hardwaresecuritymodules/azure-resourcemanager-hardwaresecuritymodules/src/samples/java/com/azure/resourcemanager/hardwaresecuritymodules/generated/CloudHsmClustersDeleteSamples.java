@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class CloudHsmClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Delete_MaximumSet_Gen.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackupPolicyState;
  */
 public final class ElasticBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticBackupPolicies_CreateOrUpdate.

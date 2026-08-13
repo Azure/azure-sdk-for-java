@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.2.0</version>
+    <version>2.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -629,20 +629,20 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses.
 
-##### **Toolbox Search (Preview)**
+##### **Toolbox Search**
 
-Use `ToolboxSearchPreviewToolboxTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
+Toolbox Search lets an agent search the available toolbox tools at runtime. The GA implementation is `ToolSearchToolboxTool` (`toolbox_search`), and the preview implementation `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is maintained alongside it for backward compatibility.
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-ToolboxSearchPreviewToolboxTool toolboxSearchTool = new ToolboxSearchPreviewToolboxTool()
+ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
     .setName("search_tools")
     .setDescription("Search over available toolbox tools at runtime.");
 
 ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
     toolboxName,
     Collections.singletonList(toolboxSearchTool),
-    "Toolbox version with a Toolbox Search preview tool.",
+    "Toolbox version with a Toolbox Search tool.",
     null,
     null,
     null);

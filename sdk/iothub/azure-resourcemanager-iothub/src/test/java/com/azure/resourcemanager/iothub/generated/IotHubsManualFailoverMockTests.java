@@ -29,7 +29,7 @@ public final class IotHubsManualFailoverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.iotHubs()
-            .manualFailover("tbghhavgrvkf", "ovjzhpjbibgjmfx", new FailoverInput().withFailoverRegion("mv"),
+            .manualFailover("xeznoi", "brnjwmw", new FailoverInput().withFailoverRegion("pn"),
                 com.azure.core.util.Context.NONE);
 
     }

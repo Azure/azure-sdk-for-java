@@ -292,7 +292,7 @@ public final class BetaSkillsAsyncClient {
      * </pre>
      *
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -728,7 +728,7 @@ public final class BetaSkillsAsyncClient {
      * Creates a new version of a skill from uploaded files via multipart form data.
      *
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

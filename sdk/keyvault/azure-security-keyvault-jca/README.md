@@ -64,7 +64,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.11.0</version>
+    <version>2.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -142,6 +142,7 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
 * `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
+* `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility.
 
 You can configure these properties using:
 ```java

@@ -36,6 +36,18 @@
           "code": "java.method.removed",
           "old": "method java.lang.String com.azure.ai.projects.models.ContinuousEvaluationRuleAction::getEvalId()",
           "justification": "Breaking change in beta operation: ContinuousEvaluationRuleAction no longer exposes evalId in the current Evaluations preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.BetaDatasets(Async)?Client::createGenerationJob(WithResponse)?\\(.*\\)",
+          "justification": "Breaking change in beta operation: createGenerationJob was replaced by the long-running-operation beginCreateGenerationJob to align with the current Datasets preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.BetaEvaluators(Async)?Client::createEvaluatorGenerationJob(WithResponse)?\\(.*\\)",
+          "justification": "Breaking change in beta operation: createEvaluatorGenerationJob was replaced by the long-running-operation beginCreateEvaluatorGenerationJob to align with the current Evaluators preview contract."
         }
       ]
     }
