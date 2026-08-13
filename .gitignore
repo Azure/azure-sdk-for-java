@@ -126,3 +126,6 @@ stress-test-addons*
 
 # Temp typespec files
 TempTypeSpecFiles/
+
+# Azure Artifacts Credential Provider runtime
+.azure-artifacts/

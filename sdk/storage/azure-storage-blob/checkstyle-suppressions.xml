@@ -6,6 +6,7 @@
   <suppress files="com.azure.storage.blob.implementation.util.BlobSasImplUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobOutputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
+  <suppress files="com.azure.storage.blob.implementation.util.SessionTokenCredentialPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
   <suppress files="com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="com.azure.storage.blob.BlobClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />

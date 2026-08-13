@@ -46,6 +46,8 @@ import com.azure.storage.blob.implementation.models.ContainersRestoreHeaders;
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersSetMetadataHeaders;
 import com.azure.storage.blob.implementation.models.ContainersSubmitBatchHeaders;
+import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
+import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.models.FilterBlobSegment;
 import com.azure.storage.blob.implementation.models.FilterBlobsIncludeItem;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
@@ -937,6 +939,26 @@ public final class ContainersImpl {
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/{containerName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<Response<CreateSessionResponse>> createSession(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") CreateSessionConfiguration createSessionConfiguration,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/{containerName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Response<CreateSessionResponse> createSessionSync(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @BodyParam("application/xml") CreateSessionConfiguration createSessionConfiguration,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -6703,6 +6725,161 @@ public final class ContainersImpl {
             final String accept = "application/xml";
             return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
                 timeout, this.client.getVersion(), requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateSessionResponse>> createSessionWithResponseAsync(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(context -> createSessionWithResponseAsync(containerName, createSessionConfiguration, timeout,
+                requestId, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateSessionResponse>> createSessionWithResponseAsync(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId, Context context) {
+        final String restype = "container";
+        final String comp = "session";
+        final String accept = "application/xml";
+        return service
+            .createSession(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
+                requestId, createSessionConfiguration, accept, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CreateSessionResponse> createSessionAsync(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId) {
+        return createSessionWithResponseAsync(containerName, createSessionConfiguration, timeout, requestId)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CreateSessionResponse> createSessionAsync(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId, Context context) {
+        return createSessionWithResponseAsync(containerName, createSessionConfiguration, timeout, requestId, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateSessionResponse> createSessionWithResponse(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId, Context context) {
+        try {
+            final String restype = "container";
+            final String comp = "session";
+            final String accept = "application/xml";
+            return service.createSessionSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, createSessionConfiguration, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The Create Session operation enables users to create a session scoped to a container.
+     *
+     * @param containerName The container name.
+     * @param createSessionConfiguration The createSessionConfiguration parameter.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateSessionResponse createSession(String containerName,
+        CreateSessionConfiguration createSessionConfiguration, Integer timeout, String requestId) {
+        try {
+            return createSessionWithResponse(containerName, createSessionConfiguration, timeout, requestId,
+                Context.NONE).getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
