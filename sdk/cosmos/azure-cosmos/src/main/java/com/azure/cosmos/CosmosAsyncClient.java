@@ -212,6 +212,9 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientCorrelationTag = Tag.of(
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
+        this.asyncDocumentClient
+            .getGlobalPartitionEndpointManagerForCircuitBreaker()
+            .setClientCorrelationId(this.clientCorrelationTag.getValue());
 
         this.clientMetricRegistrySnapshot = clientTelemetryConfigAccessor()
             .getClientMetricRegistry(effectiveTelemetryConfig);

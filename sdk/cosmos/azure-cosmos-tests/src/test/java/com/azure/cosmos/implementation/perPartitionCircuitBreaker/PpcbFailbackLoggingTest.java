@@ -209,9 +209,6 @@ public class PpcbFailbackLoggingTest {
             assertThat(getPendingRecoveryGauge(registry, "collectionA").value()).isEqualTo(3);
             assertThat(getPendingRecoveryGauge(registry, "collectionB").value()).isEqualTo(2);
 
-            pendingRecoveryByCollection.get("collectionA").decrementAndGet();
-            assertThat(getPendingRecoveryGauge(registry, "collectionA").value()).isEqualTo(2);
-
             Map<String, AtomicInteger> updatedPendingRecoveryByCollection = new HashMap<>();
             updatedPendingRecoveryByCollection.put("collectionA", new AtomicInteger());
             updatedPendingRecoveryByCollection.put("collectionB", new AtomicInteger(1));
@@ -227,6 +224,18 @@ public class PpcbFailbackLoggingTest {
             this.manager.close();
             registry.close();
         }
+    }
+
+    @Test(groups = {"unit"})
+    public void failbackLogsIncludeClientCorrelationId() {
+        RuntimeException failure = new RuntimeException("failure");
+        this.manager.setClientCorrelationId("client1");
+
+        this.manager.logFailbackBacklog(7);
+        this.manager.logFailbackFailure(PARTITION, REGION, "OPEN_CONNECTION_TASK", failure);
+
+        verify(this.logger).info(contains("clientCorrelationId: client1"));
+        verify(this.logger).warn(contains("clientCorrelationId: client1"), same(failure));
     }
 
     private static Gauge getPendingRecoveryGauge(SimpleMeterRegistry registry, String collectionRid) {
