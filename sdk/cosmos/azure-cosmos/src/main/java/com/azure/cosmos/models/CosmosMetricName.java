@@ -77,6 +77,13 @@ public final class CosmosMetricName {
         CosmosMetricCategory.OPERATION_DETAILS);
 
     /**
+     * Number of PPCB partition key ranges remaining to fail back, by collection (Gauge)
+     */
+    public static final CosmosMetricName PPCB_FAILBACK_REMAINING = new CosmosMetricName(
+        nameOf("ppcb.failback.remaining"),
+        CosmosMetricCategory.OPERATION_SUMMARY);
+
+    /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
      */
@@ -465,6 +472,7 @@ public final class CosmosMetricName {
         map.put(nameOf("op.maxitemcount"), CosmosMetricName.OPERATION_DETAILS_MAX_ITEM_COUNT);
         map.put(nameOf("op.actualitemcount"), CosmosMetricName.OPERATION_DETAILS_ACTUAL_ITEM_COUNT);
         map.put(nameOf("op.regionscontacted"), CosmosMetricName.OPERATION_DETAILS_REGIONS_CONTACTED);
+        map.put(nameOf("ppcb.failback.remaining"), CosmosMetricName.PPCB_FAILBACK_REMAINING);
         map.put(nameOf("req.rntbd.requests"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUESTS);
         map.put(nameOf("req.rntbd.latency"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
         map.put(nameOf("req.rntbd.backendlatency"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);

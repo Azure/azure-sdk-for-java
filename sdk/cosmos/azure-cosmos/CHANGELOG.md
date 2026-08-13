@@ -5,6 +5,7 @@
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
+* Added the `cosmos.client.ppcb.failback.remaining` gauge (`CosmosMetricName.PPCB_FAILBACK_REMAINING`) to report partition key ranges remaining to fail back per collection. - See [PR 50122](https://github.com/Azure/azure-sdk-for-java/pull/50122)
 
 #### Breaking Changes
 

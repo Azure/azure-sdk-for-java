@@ -21,6 +21,11 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosMetricName;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.MultiGauge;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.Tags;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
@@ -33,9 +38,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -46,6 +53,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
+    private static final String COLLECTION_RID_TAG_NAME = "CollectionRid";
     private static final Map<String, String> EMPTY_MAP = new HashMap<>();
     private static final String BASE_EXCEPTION_MESSAGE = "FAILED IN Per-Partition Circuit Breaker: ";
 
@@ -61,6 +69,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final Logger failbackLogger;
     private final AtomicInteger failbackFailureLogCount;
     private final AtomicInteger failbackBacklogScanCount;
+    private final AtomicReference<MultiGauge> failbackRemainingGauge;
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this(globalEndpointManager, logger);
@@ -75,6 +84,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         this.failbackLogger = checkNotNull(failbackLogger, "Argument 'failbackLogger' cannot be null!");
         this.failbackFailureLogCount = new AtomicInteger();
         this.failbackBacklogScanCount = new AtomicInteger();
+        this.failbackRemainingGauge = new AtomicReference<>();
 
         PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         this.consecutiveExceptionBasedCircuitBreaker = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
@@ -396,11 +406,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private Flux<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> getFailbackBacklog() {
         List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> failbackBacklog
             = new ArrayList<>();
+        Map<String, Set<String>> remainingPartitionRangeIdsByCollection = new HashMap<>();
 
         for (Map.Entry<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> entry
             : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()) {
 
             PartitionKeyRangeWrapper partitionKeyRangeWrapper = entry.getKey();
+            Set<String> remainingPartitionRangeIds = remainingPartitionRangeIdsByCollection
+                .computeIfAbsent(
+                    partitionKeyRangeWrapper.getCollectionResourceId(),
+                    ignored -> new HashSet<>());
 
             try {
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = entry.getValue();
@@ -420,6 +435,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                     Pair.of(
                                         locationWithStaleUnavailabilityInfo,
                                         locationSpecificHealthContext)));
+                            remainingPartitionRangeIds.add(partitionKeyRangeWrapper.getPartitionKeyRange().getId());
                         }
                     }
                 }
@@ -433,7 +449,42 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         }
 
         this.logFailbackBacklog(failbackBacklog.size());
+        this.recordFailbackRemainingByCollection(remainingPartitionRangeIdsByCollection);
         return Flux.fromIterable(failbackBacklog);
+    }
+
+    public synchronized void registerFailbackRemainingMeter(MeterRegistry meterRegistry, Tag clientCorrelationTag) {
+        if (meterRegistry == null || clientCorrelationTag == null || this.failbackRemainingGauge.get() != null) {
+            return;
+        }
+
+        this.failbackRemainingGauge.set(
+            MultiGauge.builder(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+                .description("Number of PPCB partition key ranges remaining to fail back")
+                .baseUnit("partitions")
+                .tags(Collections.singletonList(clientCorrelationTag))
+                .register(meterRegistry));
+    }
+
+    void recordFailbackRemainingByCollection(Map<String, Set<String>> remainingPartitionRangeIdsByCollection) {
+        MultiGauge gauge = this.failbackRemainingGauge.get();
+        if (gauge == null) {
+            return;
+        }
+
+        List<MultiGauge.Row<?>> rows = new ArrayList<>();
+        remainingPartitionRangeIdsByCollection.forEach((collectionRid, partitionRangeIds) ->
+            rows.add(MultiGauge.Row.of(
+                Tags.of(COLLECTION_RID_TAG_NAME, collectionRid),
+                partitionRangeIds.size())));
+        gauge.register(rows, true);
+    }
+
+    public void removeFailbackRemainingMeter() {
+        MultiGauge gauge = this.failbackRemainingGauge.getAndSet(null);
+        if (gauge != null) {
+            gauge.register(Collections.emptyList(), true);
+        }
     }
 
     void logFailbackBacklog(int unavailablePartitionRegionCount) {
@@ -577,6 +628,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         this.isClosed.set(true);
         this.failbackFailureLogCount.set(0);
         this.failbackBacklogScanCount.set(0);
+        this.removeFailbackRemainingMeter();
         Disposable disposable = this.partitionRecoveryDisposable.getAndSet(null);
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();

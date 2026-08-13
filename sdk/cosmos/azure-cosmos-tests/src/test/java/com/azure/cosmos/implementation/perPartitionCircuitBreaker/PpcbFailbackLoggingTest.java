@@ -8,6 +8,10 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.azure.cosmos.models.CosmosMetricName;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.testng.annotations.BeforeMethod;
@@ -18,7 +22,11 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -182,5 +190,48 @@ public class PpcbFailbackLoggingTest {
             "PPCB failback backlog: unavailablePartitionRegionCount: 7"));
         verify(this.logger).info(contains(
             "PPCB failback backlog: unavailablePartitionRegionCount: 0"));
+    }
+
+    @Test(groups = {"unit"})
+    public void failbackRemainingGaugeIsPerCollectionAndReportsZero() {
+        SimpleMeterRegistry registry = new SimpleMeterRegistry();
+        Map<String, Set<String>> remainingByCollection = new HashMap<>();
+        remainingByCollection.put("collectionA", new HashSet<>(Arrays.asList("0", "1", "2")));
+        remainingByCollection.put("collectionB", new HashSet<>(Arrays.asList("3", "4")));
+
+        try {
+            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.remaining"))
+                .isSameAs(CosmosMetricName.PPCB_FAILBACK_REMAINING);
+            this.manager.registerFailbackRemainingMeter(
+                registry,
+                Tag.of("ClientCorrelationId", "client1"));
+            this.manager.recordFailbackRemainingByCollection(remainingByCollection);
+
+            assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isEqualTo(3);
+            assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(2);
+
+            Map<String, Set<String>> updatedRemainingByCollection = new HashMap<>();
+            updatedRemainingByCollection.put("collectionA", Collections.emptySet());
+            updatedRemainingByCollection.put("collectionB", Collections.singleton("4"));
+            this.manager.recordFailbackRemainingByCollection(updatedRemainingByCollection);
+
+            assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isZero();
+            assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(1);
+
+            this.manager.close();
+            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+                .gauges()).isEmpty();
+        } finally {
+            this.manager.close();
+            registry.close();
+        }
+    }
+
+    private static Gauge getFailbackRemainingGauge(SimpleMeterRegistry registry, String collectionRid) {
+        return registry
+            .get(CosmosMetricName.PPCB_FAILBACK_REMAINING.toString())
+            .tag("ClientCorrelationId", "client1")
+            .tag("CollectionRid", collectionRid)
+            .gauge();
     }
 }

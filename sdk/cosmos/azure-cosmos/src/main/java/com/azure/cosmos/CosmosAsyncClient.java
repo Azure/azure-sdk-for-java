@@ -220,6 +220,8 @@ public final class CosmosAsyncClient implements Closeable {
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
         CosmosMeterOptions memoryMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
+        CosmosMeterOptions failbackRemainingMeterOptions = clientTelemetryConfigAccessor()
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_REMAINING);
 
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
@@ -236,6 +238,13 @@ public final class CosmosAsyncClient implements Closeable {
                 effectiveTelemetryConfig,
                 this.accountTagValue
             );
+            if (failbackRemainingMeterOptions.isEnabled()) {
+                this.asyncDocumentClient
+                    .getGlobalPartitionEndpointManagerForCircuitBreaker()
+                    .registerFailbackRemainingMeter(
+                        this.clientMetricRegistrySnapshot,
+                        this.clientCorrelationTag);
+            }
 
             clientTelemetryConfigAccessor().addDiagnosticsHandler(
                 effectiveTelemetryConfig,
@@ -563,6 +572,9 @@ public final class CosmosAsyncClient implements Closeable {
     @Override
     public void close() {
         if (this.clientMetricRegistrySnapshot != null) {
+            this.asyncDocumentClient
+                .getGlobalPartitionEndpointManagerForCircuitBreaker()
+                .removeFailbackRemainingMeter();
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();
