@@ -26,7 +26,7 @@ public final class RecoveryServicesCapabilitiesWithResponseMockTests {
     @Test
     public void testCapabilitiesWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"sfeaenwabfat\",\"lddxbjhwua\",\"nozj\",\"sphyoulpjrvxa\"],\"subResource\":\"AzureSiteRecovery\"}]},\"type\":\"vimjwos\"}";
+            = "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"zikhl\",\"fjhdg\",\"gge\"],\"subResource\":\"AzureSiteRecovery\"}]},\"type\":\"nyga\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,17 @@ public final class RecoveryServicesCapabilitiesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapabilitiesResponse response = manager.recoveryServices()
-            .capabilitiesWithResponse("kfoqreyfkzikfj",
-                new ResourceCapabilities().withType("zel")
+            .capabilitiesWithResponse("ag",
+                new ResourceCapabilities().withType("sytxitcskfcktqum")
                     .withProperties(new CapabilitiesProperties().withDnsZones(
                         Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
+                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY)))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vimjwos", response.type());
+        Assertions.assertEquals("nyga", response.type());
         Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
             response.properties().dnsZones().get(0).subResource());
-        Assertions.assertEquals("sfeaenwabfat", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("zikhl", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
     }
 }
