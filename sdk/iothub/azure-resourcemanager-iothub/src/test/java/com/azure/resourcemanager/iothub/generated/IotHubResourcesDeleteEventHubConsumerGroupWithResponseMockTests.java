@@ -28,7 +28,7 @@ public final class IotHubResourcesDeleteEventHubConsumerGroupWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.iotHubResources()
-            .deleteEventHubConsumerGroupWithResponse("wau", "qncygupkvi", "mdscwxqupev", "hfstotxhojujbyp",
+            .deleteEventHubConsumerGroupWithResponse("wccsnjvcdwxlpqek", "tn", "htjsying", "fq",
                 com.azure.core.util.Context.NONE);
 
     }
