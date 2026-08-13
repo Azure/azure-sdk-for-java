@@ -1856,7 +1856,7 @@ public final class BlobContainerAsyncClient {
      * @return A {@link Mono} containing the {@link CreateSessionResponse} with session credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CreateSessionResponse> createSession() {
+    public Mono<CreateSessionResponse> createSession() {
         return createSessionWithResponse().flatMap(FluxUtil::toMono);
     }
 
@@ -1867,7 +1867,7 @@ public final class BlobContainerAsyncClient {
      * @return A {@link Mono} containing a {@link Response} with the {@link CreateSessionResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CreateSessionResponse>> createSessionWithResponse() {
+    public Mono<Response<CreateSessionResponse>> createSessionWithResponse() {
         try {
             return withContext(this::createSessionWithResponse);
         } catch (RuntimeException ex) {

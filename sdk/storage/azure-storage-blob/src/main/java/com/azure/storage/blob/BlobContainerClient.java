@@ -1651,7 +1651,7 @@ public final class BlobContainerClient {
      * @return The {@link CreateSessionResponse} with session credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateSessionResponse createSession() {
+    public CreateSessionResponse createSession() {
         return createSessionWithResponse(null, Context.NONE).getValue();
     }
 
@@ -1664,7 +1664,7 @@ public final class BlobContainerClient {
      * @return A {@link Response} containing the {@link CreateSessionResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CreateSessionResponse> createSessionWithResponse(Duration timeout, Context context) {
+    public Response<CreateSessionResponse> createSessionWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         CreateSessionConfiguration config
             = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
