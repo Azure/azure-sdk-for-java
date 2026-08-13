@@ -192,33 +192,36 @@ public class PpcbFailbackLoggingTest {
     }
 
     @Test(groups = {"unit"})
-    public void failbackRemainingGaugeIsPerCollectionAndReportsZero() {
+    public void failbackPendingRecoveryGaugeIsPerCollectionAndReportsZero() {
         SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        Map<String, AtomicInteger> remainingByCollection = new HashMap<>();
-        remainingByCollection.put("collectionA", new AtomicInteger(3));
-        remainingByCollection.put("collectionB", new AtomicInteger(2));
+        Map<String, AtomicInteger> pendingRecoveryByCollection = new HashMap<>();
+        pendingRecoveryByCollection.put("collectionA", new AtomicInteger(3));
+        pendingRecoveryByCollection.put("collectionB", new AtomicInteger(2));
 
         try {
-            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pendingPartitionCount"))
-                .isSameAs(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT);
-            this.manager.registerFailbackRemainingMeter(
+            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pendingRecoveryCount"))
+                .isSameAs(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT);
+            this.manager.registerFailbackPendingRecoveryMeter(
                 registry,
                 Tag.of("ClientCorrelationId", "client1"));
-            this.manager.recordFailbackRemainingByCollection(remainingByCollection);
+            this.manager.recordFailbackPendingRecoveryByCollection(pendingRecoveryByCollection);
 
-            assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isEqualTo(3);
-            assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(2);
+            assertThat(getPendingRecoveryGauge(registry, "collectionA").value()).isEqualTo(3);
+            assertThat(getPendingRecoveryGauge(registry, "collectionB").value()).isEqualTo(2);
 
-            Map<String, AtomicInteger> updatedRemainingByCollection = new HashMap<>();
-            updatedRemainingByCollection.put("collectionA", new AtomicInteger());
-            updatedRemainingByCollection.put("collectionB", new AtomicInteger(1));
-            this.manager.recordFailbackRemainingByCollection(updatedRemainingByCollection);
+            pendingRecoveryByCollection.get("collectionA").decrementAndGet();
+            assertThat(getPendingRecoveryGauge(registry, "collectionA").value()).isEqualTo(2);
 
-            assertThat(getFailbackRemainingGauge(registry, "collectionA").value()).isZero();
-            assertThat(getFailbackRemainingGauge(registry, "collectionB").value()).isEqualTo(1);
+            Map<String, AtomicInteger> updatedPendingRecoveryByCollection = new HashMap<>();
+            updatedPendingRecoveryByCollection.put("collectionA", new AtomicInteger());
+            updatedPendingRecoveryByCollection.put("collectionB", new AtomicInteger(1));
+            this.manager.recordFailbackPendingRecoveryByCollection(updatedPendingRecoveryByCollection);
+
+            assertThat(getPendingRecoveryGauge(registry, "collectionA").value()).isZero();
+            assertThat(getPendingRecoveryGauge(registry, "collectionB").value()).isEqualTo(1);
 
             this.manager.close();
-            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT.toString())
+            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
                 .gauges()).isEmpty();
         } finally {
             this.manager.close();
@@ -226,9 +229,9 @@ public class PpcbFailbackLoggingTest {
         }
     }
 
-    private static Gauge getFailbackRemainingGauge(SimpleMeterRegistry registry, String collectionRid) {
+    private static Gauge getPendingRecoveryGauge(SimpleMeterRegistry registry, String collectionRid) {
         return registry
-            .get(CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT.toString())
+            .get(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
             .tag("ClientCorrelationId", "client1")
             .tag("CollectionRid", collectionRid)
             .gauge();

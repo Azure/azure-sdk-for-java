@@ -220,8 +220,8 @@ public final class CosmosAsyncClient implements Closeable {
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
         CosmosMeterOptions memoryMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
-        CosmosMeterOptions failbackRemainingMeterOptions = clientTelemetryConfigAccessor()
-            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_PENDING_PARTITION_COUNT);
+        CosmosMeterOptions failbackPendingRecoveryMeterOptions = clientTelemetryConfigAccessor()
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT);
 
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
@@ -238,10 +238,10 @@ public final class CosmosAsyncClient implements Closeable {
                 effectiveTelemetryConfig,
                 this.accountTagValue
             );
-            if (failbackRemainingMeterOptions.isEnabled()) {
+            if (failbackPendingRecoveryMeterOptions.isEnabled()) {
                 this.asyncDocumentClient
                     .getGlobalPartitionEndpointManagerForCircuitBreaker()
-                    .registerFailbackRemainingMeter(
+                    .registerFailbackPendingRecoveryMeter(
                         this.clientMetricRegistrySnapshot,
                         this.clientCorrelationTag);
             }
@@ -574,7 +574,7 @@ public final class CosmosAsyncClient implements Closeable {
         if (this.clientMetricRegistrySnapshot != null) {
             this.asyncDocumentClient
                 .getGlobalPartitionEndpointManagerForCircuitBreaker()
-                .removeFailbackRemainingMeter();
+                .removeFailbackPendingRecoveryMeter();
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();
