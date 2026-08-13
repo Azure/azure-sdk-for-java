@@ -2351,17 +2351,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
         boolean partitionKeyNeedsItemId =
-            partitionKeyRequiresItemId(request, providedPartitionKey, partitionKeyDefinition, partitionKeyInternal);
+            partitionKeyRequiresItemId(request, partitionKeyDefinition, partitionKeyInternal);
         boolean itemIdNeedsExtraction =
             partitionKeyNeedsItemId && Strings.isNullOrEmpty(itemId);
         boolean materializeDocument = partitionKeyNeedsExtraction || itemIdNeedsExtraction;
 
-        InternalObjectNode internalObjectNode = null;
         if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
+            InternalObjectNode internalObjectNode;
             if (objectDoc instanceof InternalObjectNode) {
                 internalObjectNode = (InternalObjectNode) objectDoc;
             } else if (objectDoc instanceof ObjectNode) {
-                internalObjectNode = new InternalObjectNode((ObjectNode) objectDoc);
+                internalObjectNode = new InternalObjectNode((ObjectNode)objectDoc);
             } else if (contentAsByteBuffer != null) {
                 contentAsByteBuffer.rewind();
                 internalObjectNode = new InternalObjectNode(contentAsByteBuffer);
@@ -2370,39 +2370,46 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 //  If it does, it is a SDK bug
                 throw new IllegalStateException("ContentAsByteBuffer and objectDoc are null");
             }
-        }
 
-        if (partitionKeyNeedsExtraction && internalObjectNode != null) {
-            Instant serializationStartTime = Instant.now();
-            partitionKeyInternal =  PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
-            Instant serializationEndTime = Instant.now();
-            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                serializationStartTime,
-                serializationEndTime,
-                SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
-            );
+            if (partitionKeyNeedsExtraction) {
+                Instant serializationStartTime = Instant.now();
+                partitionKeyInternal =
+                    PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
+                Instant serializationEndTime = Instant.now();
+                SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
+                    new SerializationDiagnosticsContext.SerializationDiagnostics(
+                        serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
+                    );
 
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+                SerializationDiagnosticsContext serializationDiagnosticsContext =
+                    BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
 
-            if (serializationDiagnosticsContext != null) {
-                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
-            } else if (crossRegionAvailabilityContextForRequest != null) {
+                if (serializationDiagnosticsContext != null) {
+                    serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+                } else if (crossRegionAvailabilityContextForRequest != null) {
 
-                PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
-                    = crossRegionAvailabilityContextForRequest.getPointOperationContextForCircuitBreaker();
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
+                        = crossRegionAvailabilityContextForRequest.getPointOperationContextForCircuitBreaker();
 
-                if (pointOperationContextForCircuitBreaker != null) {
-                    serializationDiagnosticsContext = pointOperationContextForCircuitBreaker.getSerializationDiagnosticsContext();
+                    if (pointOperationContextForCircuitBreaker != null) {
+                        serializationDiagnosticsContext =
+                            pointOperationContextForCircuitBreaker.getSerializationDiagnosticsContext();
 
-                    if (serializationDiagnosticsContext != null) {
-                        serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+                        if (serializationDiagnosticsContext != null) {
+                            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+                        }
                     }
                 }
             }
+
+            if (itemIdNeedsExtraction) {
+                itemId = internalObjectNode.getId();
+            }
         }
 
-        partitionKeyInternal = completePartitionKeyInternalForRequest(
-            partitionKeyDefinition, partitionKeyInternal, itemId, internalObjectNode, partitionKeyNeedsItemId);
+        partitionKeyInternal = completePartitionKeyInternalForRequest(request, partitionKeyDefinition, partitionKeyInternal, itemId);
 
         if (partitionKeyInternal == null) {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
@@ -2414,46 +2421,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static PartitionKeyInternal completePartitionKeyInternalForRequest(
+        RxDocumentServiceRequest request,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal,
-        String itemId,
-        InternalObjectNode internalObjectNode,
-        boolean partitionKeyNeedsItemId) {
+        String itemId) {
 
-        if (!partitionKeyNeedsItemId) {
-            return partitionKeyInternal;
+        if (partitionKeyRequiresItemId(request, partitionKeyDefinition, partitionKeyInternal)) {
+            return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
+                partitionKeyDefinition, partitionKeyInternal, itemId);
         }
 
-        if (Strings.isNullOrEmpty(itemId) && internalObjectNode != null) {
-            itemId = internalObjectNode.getId();
-        }
-
-        return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
-            partitionKeyDefinition, partitionKeyInternal, itemId);
+        return partitionKeyInternal;
     }
 
     private static boolean partitionKeyRequiresItemId(
         RxDocumentServiceRequest request,
-        PartitionKey providedPartitionKey,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal) {
 
-        // Most containers do not end their partition key definition in "/id".
-        if (!PartitionKeyHelper.isLastPartitionKeyPathId(partitionKeyDefinition)) {
-            return false;
-        }
+        if (request == null
+            || request.getResourceType() != ResourceType.Document
+            || request.getOperationType() == null
+            || !request.getOperationType().isPointOperation()) {
 
-        if (request == null || request.getResourceType() != ResourceType.Document) {
-            return false;
-        }
-
-        // Only point operations (create/read/replace/upsert/delete/patch) can carry an item id.
-        if (request.getOperationType() == null || !request.getOperationType().isPointOperation()) {
-            return false;
-        }
-
-        // An explicit PartitionKey.NONE means the caller does not want any partition key value.
-        if (PartitionKey.NONE.equals(providedPartitionKey)) {
             return false;
         }
 
