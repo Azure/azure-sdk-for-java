@@ -17,7 +17,7 @@ public final class BatchNodeSchedulingDisableOptions {
      * The options to use for disabling scheduling on the Compute Node.
      */
     @Generated
-    private BatchNodeDisableSchedulingParameters parameters;
+    private BatchNodeSchedulingDisableParameters parameters;
 
     /**
      * Creates an instance of BatchNodeSchedulingDisableOptions class.
@@ -32,20 +32,8 @@ public final class BatchNodeSchedulingDisableOptions {
      * @return the parameters value.
      */
     @Generated
-    public BatchNodeDisableSchedulingParameters getParameters() {
+    public BatchNodeSchedulingDisableParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: The options to use for disabling scheduling on the Compute Node.
-     *
-     * @param parameters the parameters value to set.
-     * @return the BatchNodeSchedulingDisableOptions object itself.
-     */
-    @Generated
-    public BatchNodeSchedulingDisableOptions setParameters(BatchNodeDisableSchedulingParameters parameters) {
-        this.parameters = parameters;
-        return this;
     }
 
     /*
@@ -83,6 +71,18 @@ public final class BatchNodeSchedulingDisableOptions {
         } else {
             this.timeout = timeout.getSeconds();
         }
+        return this;
+    }
+
+    /**
+     * Set the parameters property: The options to use for disabling scheduling on the Compute Node.
+     *
+     * @param parameters the parameters value to set.
+     * @return the BatchNodeSchedulingDisableOptions object itself.
+     */
+    @Generated
+    public BatchNodeSchedulingDisableOptions setParameters(BatchNodeSchedulingDisableParameters parameters) {
+        this.parameters = parameters;
         return this;
     }
 }

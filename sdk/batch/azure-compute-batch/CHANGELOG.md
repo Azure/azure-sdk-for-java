@@ -13,6 +13,9 @@
   - All models following the `Batch[Object]Info` pattern -> `Batch[Object]Details`
   - `VirtualMachineInfo` -> `VirtualMachineDetails`
 
+- Replaced the public `BatchFileProperties(HttpHeaders)` constructor with a static factory
+  `BatchFileProperties.fromHeaders(HttpHeaders)`.
+
 ### Other Changes
 
 This is the first generally available release of the `azure-compute-batch` library. It includes all features and breaking changes introduced in `1.0.0-beta.6`.

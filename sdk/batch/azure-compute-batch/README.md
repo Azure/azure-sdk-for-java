@@ -334,7 +334,7 @@ BatchPool stoppedPool = stopPoller.getFinalResult();
 The `enablePoolAutoScale` method can be used to enable auto scale in a pool. You can optionally pass in a `BatchPoolEnableAutoScaleParameters` object.
 
 ```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
-BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
+BatchPoolAutoScaleEnableParameters autoScaleParameters = new BatchPoolAutoScaleEnableParameters()
     .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
     .setAutoScaleFormula("$TargetDedicated = 1;");
 

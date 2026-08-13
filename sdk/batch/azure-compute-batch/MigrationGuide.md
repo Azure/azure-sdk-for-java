@@ -406,7 +406,7 @@ batchClient.poolOperations().enableAutoScale("poolId", "$TargetDedicatedNodes=0;
 With `Azure-Compute-Batch`, you can call `enablePoolAutoScale` directly on the client and pass in a `BatchPoolEnableAutoScaleParameters` object.
 
 ```java com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
-BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
+BatchPoolAutoScaleEnableParameters autoScaleParameters = new BatchPoolAutoScaleEnableParameters()
     .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
     .setAutoScaleFormula("$TargetDedicated = 1;");
 

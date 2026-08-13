@@ -48,7 +48,6 @@ import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
 import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingParameters;
 import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
 import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -66,6 +65,7 @@ import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsGetOptions;
 import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingDisableOptions;
+import com.azure.compute.batch.models.BatchNodeSchedulingDisableParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingEnableOptions;
 import com.azure.compute.batch.models.BatchNodeStartOptions;
 import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
@@ -77,12 +77,12 @@ import com.azure.compute.batch.models.BatchNodeVMExtension;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
 import com.azure.compute.batch.models.BatchPoolDisableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
@@ -224,7 +224,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -266,7 +266,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -327,7 +327,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -367,7 +367,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -693,7 +693,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1156,7 +1156,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
@@ -1212,7 +1212,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1622,7 +1622,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1984,7 +1984,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2023,7 +2023,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2031,9 +2031,9 @@ public final class BatchClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2111,7 +2111,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2204,7 +2204,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2323,7 +2323,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2366,7 +2366,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2422,7 +2422,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2556,7 +2556,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3045,7 +3045,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3412,7 +3412,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3907,7 +3907,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4025,7 +4025,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4067,7 +4067,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4499,7 +4499,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4971,7 +4971,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5450,7 +5450,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5529,7 +5529,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5599,7 +5599,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
@@ -5708,7 +5708,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6202,7 +6202,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6664,7 +6664,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7271,7 +7271,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7715,7 +7715,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8184,7 +8184,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8351,7 +8351,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8573,7 +8573,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8705,9 +8705,9 @@ public final class BatchClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8844,7 +8844,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9077,7 +9077,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9292,7 +9292,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9510,7 +9510,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -9592,7 +9592,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9639,7 +9639,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9714,7 +9714,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9754,7 +9754,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9944,7 +9944,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10015,7 +10015,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10058,7 +10058,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10102,7 +10102,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10168,7 +10168,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10214,7 +10214,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10227,9 +10227,9 @@ public final class BatchClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10274,7 +10274,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10455,7 +10455,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10527,7 +10527,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10641,7 +10641,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -10721,7 +10721,7 @@ public final class BatchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -11836,7 +11836,7 @@ public final class BatchClient {
         // Retrieve response from getTaskFilePropertiesWithResponse and construct BatchFileProperties from its
         // headers
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -11857,7 +11857,7 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -12276,7 +12276,7 @@ public final class BatchClient {
         }
         // Retrieve response from getNodeFilePropertiesWithResponse and construct BatchFileProperties from its headers
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -12297,7 +12297,7 @@ public final class BatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
         Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
-        return new BatchFileProperties(response.getHeaders());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
     }
 
     /**
@@ -14413,7 +14413,7 @@ public final class BatchClient {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
         Duration timeout = options == null ? null : options.getTimeout();
-        BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
+        BatchNodeSchedulingDisableParameters parameters = options == null ? null : options.getParameters();
         if (timeout != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
@@ -15682,30 +15682,6 @@ public final class BatchClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -15729,55 +15705,6 @@ public final class BatchClient {
         RequestOptions requestOptions = new RequestOptions();
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
             .toObject(AutoScaleRun.class);
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
-        BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeout = options == null ? null : options.getTimeout();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeout != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
     }
 
     /**
@@ -15831,5 +15758,78 @@ public final class BatchClient {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
     }
 }

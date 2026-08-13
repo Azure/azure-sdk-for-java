@@ -15,13 +15,19 @@ import com.azure.core.http.HttpHeaders;
 public class BatchFileProperties {
     private final HttpHeaders headers;
 
-    /**
-     * Constructs a BatchFileProperties object from HTTP response headers.
-     *
-     * @param headers The HttpHeaders object containing the headers from which to extract file properties.
-     */
-    public BatchFileProperties(HttpHeaders headers) {
+    private BatchFileProperties(HttpHeaders headers) {
         this.headers = headers;
+    }
+
+    /**
+     * Creates a {@link BatchFileProperties} instance from the HTTP response headers returned by a Batch service
+     * request.
+     *
+     * @param headers The {@link HttpHeaders} containing the headers from which to extract file properties.
+     * @return A new {@link BatchFileProperties} instance populated from the provided headers.
+     */
+    public static BatchFileProperties fromHeaders(HttpHeaders headers) {
+        return new BatchFileProperties(headers);
     }
 
     /**

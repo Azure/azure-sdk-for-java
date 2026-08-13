@@ -53,7 +53,7 @@ import com.azure.compute.batch.models.BatchNodeUserCreateParameters;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolDetails;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
@@ -235,7 +235,7 @@ public final class ReadmeSamples {
         // END: com.azure.compute.batch.stop-resize-pool.stop-pool-resize
 
         // BEGIN: com.azure.compute.batch.enable-pool-auto-scale.pool-enable-autoscale
-        BatchPoolEnableAutoScaleParameters autoScaleParameters = new BatchPoolEnableAutoScaleParameters()
+        BatchPoolAutoScaleEnableParameters autoScaleParameters = new BatchPoolAutoScaleEnableParameters()
             .setAutoScaleEvaluationInterval(Duration.ofMinutes(6))
             .setAutoScaleFormula("$TargetDedicated = 1;");
 
