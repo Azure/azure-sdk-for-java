@@ -17,7 +17,7 @@ public final class PolicyDefinitionsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicyDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .getWithResponse("ResourceNaming", com.azure.core.util.Context.NONE);
     }

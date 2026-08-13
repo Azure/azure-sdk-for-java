@@ -17,7 +17,7 @@ public final class PolicySetDefinitionsListBuiltInSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listBuiltInPolicySetDefinitions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitions()
             .listBuiltIn(null, null, null, com.azure.core.util.Context.NONE);
     }

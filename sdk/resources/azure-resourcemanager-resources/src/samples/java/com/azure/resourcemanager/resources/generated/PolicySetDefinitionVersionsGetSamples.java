@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsGetSamples {
      */
     public static void
         retrieveAPolicySetDefinitionVersion(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .getWithResponse("CostManagement", "1.2.1", null, com.azure.core.util.Context.NONE);
     }

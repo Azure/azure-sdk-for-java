@@ -18,7 +18,7 @@ public final class PolicyDefinitionsGetAtManagementGroupSamples {
      */
     public static void
         retrieveAPolicyDefinitionAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .getAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming", com.azure.core.util.Context.NONE);
     }

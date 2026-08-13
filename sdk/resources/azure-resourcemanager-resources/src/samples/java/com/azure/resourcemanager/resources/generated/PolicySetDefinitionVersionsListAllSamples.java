@@ -18,6 +18,6 @@ public final class PolicySetDefinitionVersionsListAllSamples {
      */
     public static void
         listAllPolicyDefinitionVersionsAtSubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getPolicySetDefinitionVersions().listAllWithResponse(com.azure.core.util.Context.NONE);
+        manager.policyClient().getPolicySetDefinitionVersions().listAllWithResponse(com.azure.core.util.Context.NONE);
     }
 }

@@ -29,7 +29,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionWithGroupsAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")
@@ -72,7 +72,7 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
      */
     public static void createOrUpdateAPolicySetDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitions()
             .createOrUpdateAtManagementGroupWithResponse("MyManagementGroup", "CostManagement",
                 new PolicySetDefinitionInner().withDisplayName("Cost Management")

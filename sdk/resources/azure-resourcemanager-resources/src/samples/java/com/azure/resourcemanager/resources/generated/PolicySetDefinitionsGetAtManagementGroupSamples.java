@@ -18,7 +18,7 @@ public final class PolicySetDefinitionsGetAtManagementGroupSamples {
      */
     public static void retrieveAPolicySetDefinitionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitions()
             .getAtManagementGroupWithResponse("MyManagementGroup", "CostManagement", null,
                 com.azure.core.util.Context.NONE);

@@ -38,7 +38,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithResourceSelectors(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
@@ -65,7 +65,7 @@ public final class PolicyAssignmentsCreateSamples {
     public static void
         createOrUpdateAPolicyAssignmentToEnforcePolicyEffectOnlyOnEnrolledResourcesDuringResourceCreationOrUpdate(
             com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNamingEnroll",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
@@ -90,7 +90,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignment(com.azure.resourcemanager.resources.ResourceManager manager)
         throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
@@ -116,7 +116,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithASystemAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -143,7 +143,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithSelfServeExemptionSettings(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -170,7 +170,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithMultipleNonComplianceMessages(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "securityInitAssignment",
                 new PolicyAssignmentInner().withDisplayName("Enforce security policies")
@@ -196,7 +196,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithAUserAssignedIdentity(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withLocation("eastus")
@@ -226,7 +226,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithOverrides(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
@@ -262,7 +262,7 @@ public final class PolicyAssignmentsCreateSamples {
      */
     public static void createOrUpdateAPolicyAssignmentWithoutEnforcingPolicyEffectDuringResourceCreationOrUpdate(
         com.azure.resourcemanager.resources.ResourceManager manager) throws IOException {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")

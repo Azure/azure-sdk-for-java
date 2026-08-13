@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListByResourceGroupSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToAResourceGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .listByResourceGroup("TestResourceGroup", "atScope()",
                 "LatestDefinitionVersion, EffectiveDefinitionVersion", null, com.azure.core.util.Context.NONE);

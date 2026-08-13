@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsGetAtManagementGroupSamples {
      */
     public static void retrieveAPolicyDefinitionVersionAtManagementGroupLevel(
         com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitionVersions()
             .getAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming", "1.2.1",
                 com.azure.core.util.Context.NONE);

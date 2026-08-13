@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsGetBuiltInSamples {
      */
     public static void
         retrieveABuiltInPolicySetDefinitionVersion(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .getBuiltInWithResponse("1f3afdf9-d0c9-4c3d-847f-89da613e70a8", "1.2.1", null,
                 com.azure.core.util.Context.NONE);

@@ -18,7 +18,7 @@ public final class PolicyDefinitionVersionsListBuiltInSamples {
      */
     public static void
         listBuiltInPolicyDefinitionVersions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitionVersions()
             .listBuiltIn("06a78e20-9358-41c9-923c-fb736d382a12", null, com.azure.core.util.Context.NONE);
     }

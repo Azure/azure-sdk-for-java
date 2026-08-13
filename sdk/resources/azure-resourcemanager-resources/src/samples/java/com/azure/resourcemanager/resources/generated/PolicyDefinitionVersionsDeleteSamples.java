@@ -17,7 +17,7 @@ public final class PolicyDefinitionVersionsDeleteSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deleteAPolicyDefinitionVersion(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitionVersions()
             .deleteWithResponse("ResourceNaming", "1.2.1", com.azure.core.util.Context.NONE);
     }

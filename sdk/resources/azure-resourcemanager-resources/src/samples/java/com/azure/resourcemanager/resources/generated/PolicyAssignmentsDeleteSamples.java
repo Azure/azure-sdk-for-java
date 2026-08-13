@@ -17,7 +17,7 @@ public final class PolicyAssignmentsDeleteSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void deleteAPolicyAssignment(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .deleteWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 com.azure.core.util.Context.NONE);

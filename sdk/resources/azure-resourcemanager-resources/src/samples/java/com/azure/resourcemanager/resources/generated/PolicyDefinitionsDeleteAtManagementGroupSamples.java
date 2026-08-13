@@ -18,7 +18,7 @@ public final class PolicyDefinitionsDeleteAtManagementGroupSamples {
      */
     public static void
         deleteAPolicyDefinitionAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyDefinitions()
             .deleteAtManagementGroupWithResponse("MyManagementGroup", "ResourceNaming",
                 com.azure.core.util.Context.NONE);

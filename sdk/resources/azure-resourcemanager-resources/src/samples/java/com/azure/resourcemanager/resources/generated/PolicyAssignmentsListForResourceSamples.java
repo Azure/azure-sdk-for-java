@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListForResourceSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToAResourceGroup(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .listForResource("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames",
                 "MyTestComputer.cloudapp.net", null, null, null, com.azure.core.util.Context.NONE);

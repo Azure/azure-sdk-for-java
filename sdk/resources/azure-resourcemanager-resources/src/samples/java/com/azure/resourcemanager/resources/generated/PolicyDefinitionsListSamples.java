@@ -18,6 +18,6 @@ public final class PolicyDefinitionsListSamples {
      */
     public static void
         listPolicyDefinitionsBySubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient().getPolicyDefinitions().list(null, null, com.azure.core.util.Context.NONE);
+        manager.policyClient().getPolicyDefinitions().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

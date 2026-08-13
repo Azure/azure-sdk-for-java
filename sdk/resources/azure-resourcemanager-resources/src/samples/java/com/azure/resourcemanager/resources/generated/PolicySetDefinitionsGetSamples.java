@@ -17,7 +17,7 @@ public final class PolicySetDefinitionsGetSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void retrieveAPolicySetDefinition(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitions()
             .getWithResponse("CostManagement", null, com.azure.core.util.Context.NONE);
     }

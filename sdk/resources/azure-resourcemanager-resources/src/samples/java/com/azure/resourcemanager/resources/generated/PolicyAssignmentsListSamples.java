@@ -18,7 +18,7 @@ public final class PolicyAssignmentsListSamples {
      */
     public static void
         listPolicyAssignmentsThatApplyToASubscription(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicyAssignments()
             .list("atScope()", "LatestDefinitionVersion, EffectiveDefinitionVersion", null,
                 com.azure.core.util.Context.NONE);

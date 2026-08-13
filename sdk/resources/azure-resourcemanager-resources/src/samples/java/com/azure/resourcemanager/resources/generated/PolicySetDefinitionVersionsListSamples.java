@@ -17,7 +17,7 @@ public final class PolicySetDefinitionVersionsListSamples {
      * @param manager Entry point to ResourceManager.
      */
     public static void listPolicySetDefinitions(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .list("CostManagement", null, null, com.azure.core.util.Context.NONE);
     }

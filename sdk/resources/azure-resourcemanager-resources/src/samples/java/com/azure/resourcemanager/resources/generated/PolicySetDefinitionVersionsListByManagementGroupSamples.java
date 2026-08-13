@@ -18,7 +18,7 @@ public final class PolicySetDefinitionVersionsListByManagementGroupSamples {
      */
     public static void
         listPolicySetDefinitionsAtManagementGroupLevel(com.azure.resourcemanager.resources.ResourceManager manager) {
-        manager.serviceClient()
+        manager.policyClient()
             .getPolicySetDefinitionVersions()
             .listByManagementGroup("MyManagementGroup", "CostManagement", null, null, com.azure.core.util.Context.NONE);
     }
