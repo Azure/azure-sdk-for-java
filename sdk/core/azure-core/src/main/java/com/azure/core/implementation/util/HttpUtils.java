@@ -7,6 +7,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -89,9 +92,11 @@ public final class HttpUtils {
             return false;
         }
 
-        for (String value : headerValue.split(",")) {
-            String[] mediaRange = value.split(";");
-            if (TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange[0].trim()) && hasPositiveQuality(mediaRange)) {
+        for (String value : splitHeaderValue(headerValue, ',')) {
+            List<String> mediaRange = splitHeaderValue(value, ';');
+            if (!mediaRange.isEmpty()
+                && TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange.get(0).trim())
+                && hasPositiveQuality(mediaRange)) {
                 return true;
             }
         }
@@ -106,17 +111,19 @@ public final class HttpUtils {
      * @return Whether the header identifies a {@code text/event-stream} representation.
      */
     public static boolean isTextEventStreamContentType(String headerValue) {
-        if (headerValue == null || headerValue.indexOf(',') >= 0) {
+        if (headerValue == null) {
             return false;
         }
 
-        String[] mediaTypeAndParameters = headerValue.split(";");
-        if (!TEXT_EVENT_STREAM.equalsIgnoreCase(mediaTypeAndParameters[0].trim())) {
+        List<String> mediaTypeAndParameters = splitHeaderValue(headerValue, ';');
+        if (mediaTypeAndParameters.size() == 0
+            || !TEXT_EVENT_STREAM.equalsIgnoreCase(mediaTypeAndParameters.get(0).trim())
+            || splitHeaderValue(headerValue, ',').size() != 1) {
             return false;
         }
 
-        for (int i = 1; i < mediaTypeAndParameters.length; i++) {
-            String parameter = mediaTypeAndParameters[i].trim();
+        for (int i = 1; i < mediaTypeAndParameters.size(); i++) {
+            String parameter = mediaTypeAndParameters.get(i).trim();
             int equalsIndex = parameter.indexOf('=');
             if (equalsIndex > 0
                 && "charset".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())
@@ -128,10 +135,10 @@ public final class HttpUtils {
         return true;
     }
 
-    private static boolean hasPositiveQuality(String[] mediaRange) {
+    private static boolean hasPositiveQuality(List<String> mediaRange) {
         boolean qualityFound = false;
-        for (int i = 1; i < mediaRange.length; i++) {
-            String parameter = mediaRange[i].trim();
+        for (int i = 1; i < mediaRange.size(); i++) {
+            String parameter = mediaRange.get(i).trim();
             int equalsIndex = parameter.indexOf('=');
             if (equalsIndex > 0 && "q".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())) {
                 if (qualityFound
@@ -158,6 +165,34 @@ public final class HttpUtils {
         return value.length() > 1 && value.charAt(0) == '"' && value.charAt(value.length() - 1) == '"'
             ? value.substring(1, value.length() - 1)
             : value;
+    }
+
+    private static List<String> splitHeaderValue(String value, char delimiter) {
+        List<String> segments = new ArrayList<>();
+        int start = 0;
+        boolean quoted = false;
+        boolean escaped = false;
+
+        for (int i = 0; i < value.length(); i++) {
+            char character = value.charAt(i);
+            if (escaped) {
+                escaped = false;
+            } else if (quoted && character == '\\') {
+                escaped = true;
+            } else if (character == '"') {
+                quoted = !quoted;
+            } else if (!quoted && character == delimiter) {
+                segments.add(value.substring(start, i));
+                start = i + 1;
+            }
+        }
+
+        if (quoted || escaped) {
+            return Collections.emptyList();
+        }
+
+        segments.add(value.substring(start));
+        return segments;
     }
 
     /**

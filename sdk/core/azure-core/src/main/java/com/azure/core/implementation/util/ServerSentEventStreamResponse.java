@@ -46,7 +46,12 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
         if (!(response instanceof Closeable)) {
             throw new IllegalArgumentException("'response' must own a closeable streaming response.");
         }
-        if (response.getStatusCode() != 204
+        if (response.getStatusCode() != 200 && response.getStatusCode() != 204) {
+            closeResponse(response);
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Expected a server-sent event response to have status code 200 or 204."));
+        }
+        if (response.getStatusCode() == 200
             && !HttpUtils.isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
             closeResponse(response);
             throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -54,7 +59,7 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
         }
 
         BinaryData body = response.getValue();
-        if (response.getStatusCode() != 204) {
+        if (response.getStatusCode() == 200) {
             if (body == null) {
                 closeResponse(response);
                 throw new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
