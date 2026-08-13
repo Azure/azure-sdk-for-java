@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
@@ -108,6 +109,10 @@ public final class TopicRuntimeProperties {
     /**
      * Gets the total number of SQL filters across all subscriptions of the topic.
      *
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
+     *
      * @return The total number of SQL filters across all subscriptions of the topic.
      */
     public int getSqlFilterCount() {
@@ -116,6 +121,10 @@ public final class TopicRuntimeProperties {
 
     /**
      * Gets the total number of correlation filters across all subscriptions of the topic.
+     *
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
      *
      * @return The total number of correlation filters across all subscriptions of the topic.
      */
