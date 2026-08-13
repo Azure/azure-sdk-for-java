@@ -3833,9 +3833,16 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
-                        assertPpcbHealthStatus(
-                            getPpcbStateByRegionNodes(response),
-                            LocationHealthStatus.Unavailable);
+                        List<JsonNode> stateByRegionNodes = getPpcbStateByRegionNodes(response);
+                        if (isAnyRegionShortCircuitedForPartition(
+                            partitionKeyRangeWrapper,
+                            partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+                            locationEndpointToLocationSpecificContextForPartitionField)) {
+
+                            assertPpcbHealthStatus(
+                                stateByRegionNodes,
+                                LocationHealthStatus.Unavailable);
+                        }
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -5716,6 +5723,25 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         return 0d;
+    }
+
+    private static boolean isAnyRegionShortCircuitedForPartition(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
+
+        Object partitionLevelLocationUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+        if (partitionLevelLocationUnavailabilityInfo == null) {
+            return false;
+        }
+
+        ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationSpecificHealthContexts
+            = (ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext>)
+            locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfo);
+
+        return locationSpecificHealthContexts.values().stream().anyMatch(
+            context -> context.getLocationHealthStatus() == LocationHealthStatus.Unavailable);
     }
 
     private static FaultInjectionConnectionType evaluateFaultInjectionConnectionType(ConnectionMode connectionMode) {

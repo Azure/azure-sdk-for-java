@@ -511,6 +511,25 @@ public class PpcbFailbackLoggingTest {
         }
     }
 
+    @Test(groups = {"unit"})
+    public void allRegionsUnavailableClearsExclusionsAndPublishesEmptyState() {
+        RxDocumentServiceRequest request = createReadRequest(PARTITION);
+        int failureCount = this.manager.getConsecutiveExceptionBasedCircuitBreaker()
+            .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
+
+        for (int failure = 0; failure < failureCount; failure++) {
+            this.manager.handleLocationExceptionForPartitionKeyRange(request, REGION, false);
+        }
+        for (int failure = 0; failure < failureCount; failure++) {
+            this.manager.handleLocationExceptionForPartitionKeyRange(request, SECOND_REGION, false);
+        }
+
+        assertThat(getUnavailableRegions(request, PARTITION)).isEmpty();
+        assertThat(request.requestContext
+            .getPerPartitionCircuitBreakerInfoHolder()
+            .getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
+    }
+
     private void markRegionUnavailable(RxDocumentServiceRequest request) {
         this.markRegionUnavailable(request, PARTITION);
     }
