@@ -83,6 +83,25 @@ public class PartitionKeyHelper {
     }
 
     /**
+     * Returns whether the provided partition key contains one component for every path in the
+     * container's partition key definition.
+     *
+     * @param partitionKeyDefinition the partition key definition of the container.
+     * @param providedPartitionKey the partition key provided by the caller.
+     * @return {@code true} if the partition key is fully specified; otherwise {@code false}.
+     */
+    public static boolean isFullPartitionKey(
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal providedPartitionKey) {
+
+        return partitionKeyDefinition != null
+            && partitionKeyDefinition.getPaths() != null
+            && providedPartitionKey != null
+            && providedPartitionKey.getComponents() != null
+            && providedPartitionKey.getComponents().size() == partitionKeyDefinition.getPaths().size();
+    }
+
+    /**
      * When the last path of a (hierarchical) partition key definition is "/id", ensures the item's
      * id is part of the partition key so callers can address an item using only the prefix of the
      * partition key (i.e. without repeating the id).

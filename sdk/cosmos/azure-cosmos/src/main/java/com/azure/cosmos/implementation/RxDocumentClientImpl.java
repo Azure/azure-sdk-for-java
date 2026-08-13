@@ -2655,15 +2655,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 // Partition key is always non-null
                 partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
 
-                // Hierarchical partition key ending in "/id": a transactional batch targets a single
-                // logical partition and cannot carry a per-item id, so the batch's partition key must
-                // already include the id (i.e. be fully specified). A prefix-only partition key is
-                // rejected because there is no per-item id available to complete it.
-                if (PartitionKeyHelper.partitionKeyRequiresIdComponent(partitionKeyDefinition, partitionKeyInternal)) {
+                if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
                     throw new IllegalArgumentException(
-                        "A transactional batch on a container whose last partition key path is '/id' "
-                            + "requires the id value to be part of the batch's partition key. Include the "
-                            + "id when building the PartitionKey used to create the batch.");
+                        "A transactional batch requires a full partition key matching all paths in the "
+                            + "container's partition key definition.");
                 }
             }
 

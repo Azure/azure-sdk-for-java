@@ -79,6 +79,23 @@ public class PartitionKeyHelperTest {
     }
 
     @Test(groups = "unit")
+    public void isFullPartitionKey_requiresComponentForEveryPath() {
+        PartitionKeyDefinition definition =
+            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/Region");
+
+        assertThat(PartitionKeyHelper.isFullPartitionKey(
+            pkDefinition(PartitionKind.HASH, "/pk"),
+            toInternal(new PartitionKey("value")))).isTrue();
+        assertThat(PartitionKeyHelper.isFullPartitionKey(
+            definition,
+            toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").add("west").build()))).isTrue();
+        assertThat(PartitionKeyHelper.isFullPartitionKey(
+            definition,
+            toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build()))).isFalse();
+        assertThat(PartitionKeyHelper.isFullPartitionKey(definition, null)).isFalse();
+    }
+
+    @Test(groups = "unit")
     public void ensureId_fullySpecifiedPartitionKey_returnsOriginalPartitionKey() {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id");
         PartitionKeyInternal provided =

@@ -316,11 +316,10 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
         CosmosBatch batch = CosmosBatch.createCosmosBatch(prefixPartitionKey);
         batch.createItemOperation(new TestItem(id, "pkBatch", "v1"));
 
-        // A batch targets a single partition key and cannot carry a per-item id, so a prefix
-        // partition key is rejected for a container whose last partition key path is "/id".
+        // A batch targets a single logical partition, so a prefix partition key is rejected.
         assertThatThrownBy(() -> hpkContainer.executeCosmosBatch(batch))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("requires the id value to be part of the batch's partition key");
+            .hasMessageContaining("requires a full partition key");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
