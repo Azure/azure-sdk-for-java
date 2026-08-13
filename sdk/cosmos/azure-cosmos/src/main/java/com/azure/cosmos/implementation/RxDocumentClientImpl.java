@@ -2350,10 +2350,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
-        boolean partitionKeyNeedsItemId =
-            partitionKeyRequiresItemId(request, partitionKeyDefinition, partitionKeyInternal);
+        boolean pkNeedsId =
+            shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal);
         boolean itemIdNeedsExtraction =
-            partitionKeyNeedsItemId && Strings.isNullOrEmpty(itemId);
+            pkNeedsId && Strings.isNullOrEmpty(itemId);
         boolean materializeDocument = partitionKeyNeedsExtraction || itemIdNeedsExtraction;
 
         if (materializeDocument && (contentAsByteBuffer != null || objectDoc != null)) {
@@ -2409,7 +2409,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        partitionKeyInternal = completePartitionKeyInternalForRequest(request, partitionKeyDefinition, partitionKeyInternal, itemId);
+        partitionKeyInternal = completePkWithIdIfNeeded(
+            request, partitionKeyDefinition, partitionKeyInternal, itemId);
 
         if (partitionKeyInternal == null) {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
@@ -2420,13 +2421,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
     }
 
-    private static PartitionKeyInternal completePartitionKeyInternalForRequest(
+    private static PartitionKeyInternal completePkWithIdIfNeeded(
         RxDocumentServiceRequest request,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal,
         String itemId) {
 
-        if (partitionKeyRequiresItemId(request, partitionKeyDefinition, partitionKeyInternal)) {
+        if (shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal)) {
             return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
                 partitionKeyDefinition, partitionKeyInternal, itemId);
         }
@@ -2434,7 +2435,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return partitionKeyInternal;
     }
 
-    private static boolean partitionKeyRequiresItemId(
+    private static boolean shouldCompletePkWithId(
         RxDocumentServiceRequest request,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal) {
@@ -2449,25 +2450,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return PartitionKeyHelper.partitionKeyRequiresIdComponent(
             partitionKeyDefinition, partitionKeyInternal);
-    }
-
-    private static String getItemIdFromDocumentLink(String documentLink) {
-        if (StringUtils.isEmpty(documentLink)
-            || !PathsHelper.isNameBased(documentLink)) {
-            return null;
-        }
-
-        int endIndex = documentLink.length();
-        while (endIndex > 0 && documentLink.charAt(endIndex - 1) == '/') {
-            endIndex--;
-        }
-
-        int lastSlashIndex = documentLink.lastIndexOf('/', endIndex - 1);
-        if (lastSlashIndex >= 0 && lastSlashIndex < endIndex - 1) {
-            return documentLink.substring(lastSlashIndex + 1, endIndex);
-        }
-
-        return null;
     }
 
     private Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
@@ -3473,7 +3455,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
+    public Mono<ResourceResponse<Document>> replaceDocument(String documentLink, String itemId, Object document,
                                                             RequestOptions options) {
 
         String collectionLink = Utils.getCollectionName(documentLink);
@@ -3483,6 +3465,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Replace,
             (opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest) -> replaceDocumentCore(
                 documentLink,
+                itemId,
                 document,
                 opt,
                 e2ecfg,
@@ -3496,6 +3479,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> replaceDocumentCore(
         String documentLink,
+        String itemId,
         Object document,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
@@ -3528,6 +3512,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 ObservableHelper.inlineIfPossibleAsObs(
                     () -> replaceDocumentInternal(
                         documentLink,
+                        itemId,
                         document,
                         nonNullRequestOptions,
                         finalRequestRetryPolicy,
@@ -3540,6 +3525,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
         String documentLink,
+        String itemId,
         Object document,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
@@ -3570,6 +3556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return this.replaceDocumentInternal(
                 documentLink,
+                itemId,
                 typedDocument,
                 options,
                 itemAlreadySerialized,
@@ -3584,84 +3571,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    @Override
-    public Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
-
-        String collectionLink = Utils.getCollectionName(document.getSelfLink());
-
-        return wrapPointOperationWithAvailabilityStrategy(
-            ResourceType.Document,
-            OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
-                document,
-                opt,
-                clientCtxOverride,
-                pointOperationContextForCircuitBreaker
-            ),
-            options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
-            collectionLink
-        );
-    }
-
-    private Mono<ResourceResponse<Document>> replaceDocumentCore(
-        Document document,
-        RequestOptions options,
-        DiagnosticsClientContext clientContextOverride,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        DocumentClientRetryPolicy requestRetryPolicy =
-            this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
-        if (options == null || options.getPartitionKey() == null) {
-            String collectionLink = document.getSelfLink();
-            requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(
-                collectionCache, requestRetryPolicy, collectionLink, options);
-        }
-        DocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
-        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
-
-        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper.inlineIfPossibleAsObs(
-            () -> replaceDocumentInternal(
-                document,
-                options,
-                finalRequestRetryPolicy,
-                clientContextOverride,
-                requestReference,
-                crossRegionAvailabilityContextForRequest),
-            requestRetryPolicy), requestReference);
-    }
-
-    private Mono<ResourceResponse<Document>> replaceDocumentInternal(
-        Document document,
-        RequestOptions options,
-        DocumentClientRetryPolicy retryPolicyInstance,
-        DiagnosticsClientContext clientContextOverride,
-        AtomicReference<RxDocumentServiceRequest> requestReference,
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
-
-        try {
-            if (document == null) {
-                throw new IllegalArgumentException("document");
-            }
-
-            return this.replaceDocumentInternal(
-                document.getSelfLink(),
-                document,
-                options,
-                false,
-                retryPolicyInstance,
-                clientContextOverride,
-                requestReference,
-                crossRegionAvailabilityContextForRequest);
-
-        } catch (Exception e) {
-            logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
-            return Mono.error(e);
-        }
-    }
-
     private Mono<ResourceResponse<Document>> replaceDocumentInternal(
         String documentLink,
+        String itemId,
         Document document,
         RequestOptions options,
         boolean itemAlreadySerialized,
@@ -3746,7 +3658,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 content,
                 document,
                 options,
-                getItemIdFromDocumentLink(documentLink),
+                itemId,
                 collectionObs,
                 crossRegionAvailabilityContextForRequest);
 
@@ -3838,6 +3750,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
+                                                          String itemId,
                                                           CosmosPatchOperations cosmosPatchOperations,
                                                           RequestOptions options) {
 
@@ -3848,6 +3761,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Patch,
             (opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest) -> patchDocumentCore(
                 documentLink,
+                itemId,
                 cosmosPatchOperations,
                 opt,
                 e2ecfg,
@@ -3861,6 +3775,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> patchDocumentCore(
         String documentLink,
+        String itemId,
         CosmosPatchOperations cosmosPatchOperations,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
@@ -3894,6 +3809,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 ObservableHelper.inlineIfPossibleAsObs(
                     () -> patchDocumentInternal(
                         documentLink,
+                        itemId,
                         cosmosPatchOperations,
                         nonNullRequestOptions,
                         documentClientRetryPolicy,
@@ -3906,6 +3822,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> patchDocumentInternal(
         String documentLink,
+        String itemId,
         CosmosPatchOperations cosmosPatchOperations,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
@@ -3981,7 +3898,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             null,
             null,
             options,
-            getItemIdFromDocumentLink(documentLink),
+            itemId,
             collectionObs,
             crossRegionAvailabilityContextForRequest);
 
@@ -4036,7 +3953,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, String itemId,
+                                                           RequestOptions options) {
 
         String collectionLink = Utils.getCollectionName(documentLink);
 
@@ -4045,6 +3963,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Delete,
             (opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest) -> deleteDocumentCore(
                 documentLink,
+                itemId,
                 null,
                 opt,
                 e2ecfg,
@@ -4058,7 +3977,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options) {
+    public Mono<ResourceResponse<Document>> deleteDocument(String documentLink, String itemId,
+                                                           InternalObjectNode internalObjectNode,
+                                                           RequestOptions options) {
 
         String collectionLink = Utils.getCollectionName(documentLink);
 
@@ -4067,6 +3988,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             OperationType.Delete,
             (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
                 documentLink,
+                itemId,
                 internalObjectNode,
                 opt,
                 e2ecfg,
@@ -4080,6 +4002,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> deleteDocumentCore(
         String documentLink,
+        String itemId,
         InternalObjectNode internalObjectNode,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
@@ -4112,6 +4035,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 ObservableHelper.inlineIfPossibleAsObs(
                     () -> deleteDocumentInternal(
                         documentLink,
+                        itemId,
                         internalObjectNode,
                         nonNullRequestOptions,
                         requestRetryPolicy,
@@ -4124,6 +4048,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> deleteDocumentInternal(
         String documentLink,
+        String itemId,
         InternalObjectNode internalObjectNode,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
@@ -4175,7 +4100,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 null,
                 internalObjectNode,
                 options,
-                getItemIdFromDocumentLink(documentLink),
+                itemId,
                 collectionObs,
                 crossRegionAvailabilityContextForRequest);
 
@@ -4262,12 +4187,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
-        return readDocument(documentLink, options, this);
+    public Mono<ResourceResponse<Document>> readDocument(String documentLink, String itemId, RequestOptions options) {
+        return readDocument(documentLink, itemId, options, this);
     }
 
     private Mono<ResourceResponse<Document>> readDocument(
         String documentLink,
+        String itemId,
         RequestOptions options,
         DiagnosticsClientContext innerDiagnosticsFactory) {
 
@@ -4276,7 +4202,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Read,
-            (opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest),
+            (opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest) -> readDocumentCore(
+                documentLink, itemId, opt, e2ecfg, clientCtxOverride, crossRegionAvailabilityContextForRequest),
             options,
             false,
             innerDiagnosticsFactory,
@@ -4286,6 +4213,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> readDocumentCore(
         String documentLink,
+        String itemId,
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
@@ -4317,6 +4245,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ObservableHelper.inlineIfPossibleAsObs(
                 () -> readDocumentInternal(
                     documentLink,
+                    itemId,
                     nonNullRequestOptions,
                     retryPolicyInstance,
                     scopedDiagnosticsFactory,
@@ -4329,6 +4258,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Mono<ResourceResponse<Document>> readDocumentInternal(
         String documentLink,
+        String itemId,
         RequestOptions options,
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
@@ -4382,7 +4312,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 null,
                                 null,
                                 options,
-                                getItemIdFromDocumentLink(documentLink),
+                                itemId,
                                 collectionObs,
                                 crossRegionAvailabilityContextForRequest);
 
@@ -5567,7 +5497,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RequestOptions requestOptions = queryOptionsAccessor()
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
-                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions, diagnosticsFactory)
+                    return this.readDocument(
+                        resourceLink + firstIdentity.getId(),
+                        firstIdentity.getId(),
+                        requestOptions,
+                        diagnosticsFactory)
                         .flatMap(resourceResponse -> Mono.just(
                             new ImmutablePair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)
                         ))
