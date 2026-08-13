@@ -1736,6 +1736,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -1783,6 +1800,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2391,6 +2425,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -2711,6 +2763,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4396,6 +4466,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4454,6 +4536,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4507,6 +4601,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -4558,6 +4669,23 @@ public final class BatchClientImpl {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4968,6 +5096,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5381,6 +5526,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -5716,6 +5878,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -6055,6 +6235,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6079,6 +6277,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6102,6 +6317,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6164,6 +6396,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
@@ -6230,6 +6480,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6289,6 +6557,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -6354,6 +6640,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -6427,6 +6731,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6495,6 +6817,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6549,6 +6889,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6602,6 +6959,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6697,6 +7071,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -6796,6 +7188,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6861,6 +7271,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6925,6 +7353,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
@@ -7541,6 +7987,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7597,6 +8055,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8091,6 +8561,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8587,6 +9074,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -8953,6 +9457,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9322,6 +9844,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9818,6 +10358,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -10316,6 +10874,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10380,6 +10956,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
@@ -10447,6 +11041,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10500,6 +11112,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10552,6 +11181,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10617,6 +11263,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10688,6 +11352,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -11132,6 +11814,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -11569,6 +12269,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -15964,6 +16682,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16018,6 +16753,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -16075,6 +16827,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16128,6 +16897,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16180,6 +16966,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -16234,6 +17032,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -16731,6 +17541,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -17232,6 +18059,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -17697,6 +18541,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -18165,6 +19027,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -18668,6 +19548,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19170,6 +20068,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19219,6 +20135,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19267,6 +20200,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19312,6 +20262,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19358,6 +20325,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19405,6 +20389,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19453,6 +20454,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19892,6 +20910,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -20333,6 +21369,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22470,6 +23524,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22633,6 +23705,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -23801,6 +24891,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24014,6 +25121,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24068,6 +25192,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
@@ -24121,6 +25257,18 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
@@ -24364,6 +25512,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -24613,6 +25779,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -24852,6 +26036,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
@@ -25089,6 +26291,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -25438,6 +26658,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
@@ -25489,6 +26726,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
@@ -25544,6 +26798,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
@@ -25600,6 +26871,23 @@ public final class BatchClientImpl {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
@@ -25629,6 +26917,18 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -25660,6 +26960,18 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -25710,6 +27022,28 @@ public final class BatchClientImpl {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -25762,6 +27096,28 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -25802,6 +27158,27 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -25843,6 +27220,27 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -26150,6 +27548,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
@@ -26194,6 +27610,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
@@ -26225,6 +27659,18 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
@@ -26256,6 +27702,18 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
@@ -26298,6 +27756,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -26343,6 +27819,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -26530,6 +28024,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26715,6 +28226,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26758,6 +28286,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26809,6 +28355,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26840,6 +28404,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26867,6 +28448,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26912,6 +28510,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26965,6 +28581,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27013,6 +28647,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -27064,6 +28716,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27113,6 +28783,24 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -27165,6 +28853,24 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -27198,6 +28904,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
@@ -27226,6 +28949,23 @@ public final class BatchClientImpl {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
@@ -27267,6 +29007,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -27313,6 +29070,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -27373,6 +29147,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -27435,6 +29226,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -28310,6 +30118,23 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
@@ -28380,6 +30205,23 @@ public final class BatchClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -28749,6 +30591,18 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -28780,6 +30634,18 @@ public final class BatchClientImpl {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -28830,6 +30696,28 @@ public final class BatchClientImpl {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -28882,6 +30770,28 @@ public final class BatchClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
@@ -28922,6 +30832,27 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -28963,6 +30894,27 @@ public final class BatchClientImpl {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      * 
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
