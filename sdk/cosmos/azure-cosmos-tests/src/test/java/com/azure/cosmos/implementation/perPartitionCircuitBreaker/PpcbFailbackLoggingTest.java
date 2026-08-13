@@ -13,9 +13,13 @@ import org.slf4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -116,23 +120,67 @@ public class PpcbFailbackLoggingTest {
                 failure);
         }
 
-            verify(this.logger, times(11)).warn(contains("reason: RuntimeException"), same(failure));
-            verify(this.logger, times(89)).debug(contains("reason: RuntimeException"), same(failure));
+        verify(this.logger, times(11)).warn(contains("reason: RuntimeException"), same(failure));
+        verify(this.logger, times(89)).debug(contains("reason: RuntimeException"), same(failure));
     }
 
-        @Test(groups = {"unit"})
-        public void unexpectedStreamFailureIsLoggedAndRetried() {
-            RuntimeException failure = new RuntimeException("failure");
-            AtomicInteger subscriptions = new AtomicInteger();
-            Flux<String> recoveryWork = Flux.defer(() -> subscriptions.incrementAndGet() == 1
-                ? Flux.error(failure)
-                : Flux.just("recovered"));
+    @Test(groups = {"unit"})
+    public void unexpectedStreamFailureIsLoggedAndRetried() {
+        RuntimeException failure = new RuntimeException("failure");
+        AtomicInteger subscriptions = new AtomicInteger();
+        Flux<String> recoveryWork = Flux.defer(() -> subscriptions.incrementAndGet() == 1
+            ? Flux.error(failure)
+            : Flux.just("recovered"));
+
+        Object result = this.manager.keepFailbackRecoveryAlive(recoveryWork)
+            .blockFirst(Duration.ofSeconds(1));
+
+        assertThat(result).isEqualTo("recovered");
+        assertThat(subscriptions.get()).isEqualTo(2);
+        verify(this.logger).warn(contains("stage: RECOVERY_STREAM"), same(failure));
+    }
+
+    @Test(groups = {"unit"})
+    public void recoverySurvivesRepeatedFailuresOnOneThreadScheduler() {
+        Scheduler scheduler = Schedulers.newBoundedElastic(1, 1, "ppcb-resilience-test");
+        AtomicInteger subscriptions = new AtomicInteger();
+        Set<String> threadNames = new HashSet<>();
+
+        try {
+            Flux<String> recoveryWork = Flux.defer(() -> {
+                threadNames.add(Thread.currentThread().getName());
+                return subscriptions.incrementAndGet() <= 3
+                    ? Flux.error(new RuntimeException("failure"))
+                    : Flux.just("recovered");
+            }).subscribeOn(scheduler);
 
             Object result = this.manager.keepFailbackRecoveryAlive(recoveryWork)
-                .blockFirst(Duration.ofSeconds(1));
+                .blockFirst(Duration.ofSeconds(5));
 
             assertThat(result).isEqualTo("recovered");
-            assertThat(subscriptions.get()).isEqualTo(2);
-            verify(this.logger).warn(contains("stage: RECOVERY_STREAM"), same(failure));
+            assertThat(subscriptions.get()).isEqualTo(4);
+            assertThat(threadNames).hasSize(1);
+            assertThat(threadNames.iterator().next()).startsWith("ppcb-resilience-test");
+            verify(this.logger, times(1)).warn(contains("stage: RECOVERY_STREAM"), Mockito.any(RuntimeException.class));
+            verify(this.logger, times(2)).debug(contains("stage: RECOVERY_STREAM"), Mockito.any(RuntimeException.class));
+        } finally {
+            scheduler.dispose();
         }
+    }
+
+    @Test(groups = {"unit"})
+    public void failbackBacklogProgressIsSampledAndCompletionIsLogged() {
+        for (int scan = 0; scan < 10; scan++) {
+            this.manager.logFailbackBacklog(7);
+        }
+        this.manager.logFailbackBacklog(0);
+        this.manager.logFailbackBacklog(0);
+
+        verify(this.logger, times(2)).info(contains(
+            "PPCB failback backlog: unavailablePartitionRegionCount: 7"));
+        verify(this.logger, times(8)).debug(contains(
+            "PPCB failback backlog: unavailablePartitionRegionCount: 7"));
+        verify(this.logger).info(contains(
+            "PPCB failback backlog: unavailablePartitionRegionCount: 0"));
+    }
 }

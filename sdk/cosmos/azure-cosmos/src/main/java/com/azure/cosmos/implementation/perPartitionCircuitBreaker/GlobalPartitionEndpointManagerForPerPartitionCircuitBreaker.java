@@ -60,6 +60,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
     private final Logger failbackLogger;
     private final AtomicInteger failbackFailureLogCount;
+    private final AtomicInteger failbackBacklogScanCount;
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this(globalEndpointManager, logger);
@@ -73,6 +74,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         this.globalEndpointManager = globalEndpointManager;
         this.failbackLogger = checkNotNull(failbackLogger, "Argument 'failbackLogger' cannot be null!");
         this.failbackFailureLogCount = new AtomicInteger();
+        this.failbackBacklogScanCount = new AtomicInteger();
 
         PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         this.consecutiveExceptionBasedCircuitBreaker = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
@@ -312,52 +314,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         Flux<?> recoveryWork = Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat(() -> !this.isClosed.get())
-            .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()), 1, 1)
-            .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
-
-                logger.debug("Background updateStaleLocationInfo kicking in...");
-                PartitionKeyRangeWrapper partitionKeyRangeWrapper
-                    = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
-
-                try {
-                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
-
-                    if (partitionLevelLocationUnavailabilityInfo != null) {
-
-                        List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> locationToLocationSpecificHealthContextList = new ArrayList<>();
-
-                        for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
-
-                            RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
-                            LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
-
-                            if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
-                                locationToLocationSpecificHealthContextList.add(
-                                    Pair.of(
-                                        partitionKeyRangeWrapper,
-                                        Pair.of(
-                                            locationWithStaleUnavailabilityInfo,
-                                            locationSpecificHealthContext)));
-                            }
-                        }
-
-                        if (locationToLocationSpecificHealthContextList.isEmpty()) {
-                            return Flux.empty();
-                        } else {
-                            return Flux.fromIterable(locationToLocationSpecificHealthContextList);
-                        }
-                    } else {
-                        return Mono.empty();
-                    }
-                } catch (Exception e) {
-                    this.logFailbackFailure(
-                        partitionKeyRangeWrapper,
-                        null,
-                        "SCAN_UNAVAILABLE_PARTITIONS",
-                        e);
-                    return Flux.empty();
-                }
-            }, 1, 1)
+            .flatMap(ignore -> this.getFailbackBacklog(), 1, 1)
             .flatMap(locationToLocationSpecificHealthContextPair -> {
 
                 try {
@@ -434,6 +391,73 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             }, 1, 1);
 
         return this.keepFailbackRecoveryAlive(recoveryWork);
+    }
+
+    private Flux<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> getFailbackBacklog() {
+        List<Pair<PartitionKeyRangeWrapper, Pair<RegionalRoutingContext, LocationSpecificHealthContext>>> failbackBacklog
+            = new ArrayList<>();
+
+        for (Map.Entry<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> entry
+            : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()) {
+
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper = entry.getKey();
+
+            try {
+                PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = entry.getValue();
+
+                if (partitionLevelLocationUnavailabilityInfo != null) {
+
+                    for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics
+                        : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+
+                        RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
+                        LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
+
+                        if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
+                            failbackBacklog.add(
+                                Pair.of(
+                                    partitionKeyRangeWrapper,
+                                    Pair.of(
+                                        locationWithStaleUnavailabilityInfo,
+                                        locationSpecificHealthContext)));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                this.logFailbackFailure(
+                    partitionKeyRangeWrapper,
+                    null,
+                    "SCAN_UNAVAILABLE_PARTITIONS",
+                    e);
+            }
+        }
+
+        this.logFailbackBacklog(failbackBacklog.size());
+        return Flux.fromIterable(failbackBacklog);
+    }
+
+    void logFailbackBacklog(int unavailablePartitionRegionCount) {
+        int previousScanCount = unavailablePartitionRegionCount == 0
+            ? this.failbackBacklogScanCount.getAndSet(0)
+            : this.failbackBacklogScanCount.updateAndGet(
+                current -> current == Integer.MAX_VALUE ? 1 : current + 1);
+
+        if (unavailablePartitionRegionCount == 0 && previousScanCount == 0) {
+            return;
+        }
+
+        String message = "PPCB failback backlog: unavailablePartitionRegionCount: "
+            + unavailablePartitionRegionCount
+            + ", trackedPartitionKeyRangeCount: "
+            + this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.size()
+            + ", consecutiveBacklogScanCount: "
+            + (unavailablePartitionRegionCount == 0 ? 0 : previousScanCount);
+
+        if (unavailablePartitionRegionCount == 0 || previousScanCount == 1 || previousScanCount % 10 == 0) {
+            this.failbackLogger.info(message);
+        } else {
+            this.failbackLogger.debug(message);
+        }
     }
 
     Flux<?> keepFailbackRecoveryAlive(Flux<?> recoveryWork) {
@@ -552,6 +576,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     public void close() {
         this.isClosed.set(true);
         this.failbackFailureLogCount.set(0);
+        this.failbackBacklogScanCount.set(0);
         Disposable disposable = this.partitionRecoveryDisposable.getAndSet(null);
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
