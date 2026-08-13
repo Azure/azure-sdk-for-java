@@ -16,6 +16,13 @@ import java.util.function.Predicate;
  *
  * <p>The supplied response must implement {@link java.io.Closeable}. The stream closes the physical response when
  * consumption ends; a response that is not closeable is rejected with {@link IllegalArgumentException}.</p>
+ *
+ * <p>A returned {@link Flux} consumes one supplied physical response and supports exactly one subscription. Before
+ * that subscription claims the response, ownership remains with the caller; if it is never subscribed, the caller
+ * must close the response.</p>
+ *
+ * <p>If both stream processing and eager response cleanup fail, the cleanup failure is emitted and the processing
+ * failure is suppressed.</p>
  */
 public final class ServerSentEventStreams {
     private ServerSentEventStreams() {
@@ -25,7 +32,8 @@ public final class ServerSentEventStreams {
      * Decodes a single server-sent event response as a {@link Flux}.
      *
      * <p>The response body is validated as {@code text/event-stream}, decoded incrementally, and closed on
-     * completion, failure, or cancellation. A 204 response produces an empty {@link Flux}.</p>
+     * completion, failure, or cancellation. A 204 response produces an empty {@link Flux}. Only HTTP 200 and 204
+     * responses are accepted.</p>
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the generated event type.
@@ -42,9 +50,9 @@ public final class ServerSentEventStreams {
      * Decodes a single server-sent event response as a {@link Flux} until an inclusive terminal event is emitted.
      *
      * <p>The response body is validated as {@code text/event-stream}, decoded incrementally, and closed after a
-     * terminal event, on failure, or on cancellation. A 204 response produces an empty {@link Flux}. If the response
-     * body ends before a terminal event is emitted, the flux fails. This method does not reconnect or replay a
-     * request.</p>
+     * terminal event, on failure, or on cancellation. A 204 response does not evaluate the predicate and fails
+     * because it cannot satisfy the terminal-event requirement. If the response body ends before a terminal event is
+     * emitted, the flux fails. This method does not reconnect or replay a request.</p>
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the generated event type.
@@ -62,7 +70,8 @@ public final class ServerSentEventStreams {
      * Decodes a single server-sent event response and invokes a listener for each event.
      *
      * <p>The response body is validated as {@code text/event-stream}, decoded incrementally, and closed on EOF,
-     * failure, or interruption. A 204 response completes without events.</p>
+     * failure, or interruption. A 204 response completes without events. Only HTTP 200 and 204 responses are
+     * accepted.</p>
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the generated event type.
@@ -79,9 +88,9 @@ public final class ServerSentEventStreams {
      * Decodes a single server-sent event response until an inclusive terminal event is delivered to a listener.
      *
      * <p>The response body is validated as {@code text/event-stream}, decoded incrementally, and closed after a
-     * terminal event, on failure, or on interruption. A 204 response completes without events. If the response body
-     * ends before a terminal event is delivered, this method fails. This method does not reconnect or replay a
-     * request.</p>
+     * terminal event, on failure, or on interruption. A 204 response does not evaluate the predicate and fails
+     * because it cannot satisfy the terminal-event requirement. If the response body ends before a terminal event is
+     * delivered, this method fails. This method does not reconnect or replay a request.</p>
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the generated event type.

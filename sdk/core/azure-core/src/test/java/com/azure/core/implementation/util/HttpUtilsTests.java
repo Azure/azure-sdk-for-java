@@ -25,6 +25,8 @@ public class HttpUtilsTests {
         assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=0.0000"));
         assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=invalid"));
         assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q = 0.5"));
+        assertFalse(HttpUtils.acceptsTextEventStream("application/json; note=\"text/event-stream, q=1\""));
+        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream; note=\"x,y;q=0.5\"; q=0.5"));
     }
 
     @Test
@@ -34,5 +36,7 @@ public class HttpUtilsTests {
         assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=iso-8859-1"));
         assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=utf-16"));
         assertFalse(HttpUtils.isTextEventStreamContentType("application/json, text/event-stream"));
+        assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"x,y;z\""));
+        assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"unterminated"));
     }
 }

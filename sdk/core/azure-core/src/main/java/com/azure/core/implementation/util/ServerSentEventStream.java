@@ -9,6 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,7 +67,7 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
         try {
-            processBody(body, new StreamState(), deserializer, listener);
+            processBody(body, new StreamState(), deserializer, TerminalEventPolicy.endOnResponseCompletion(), listener);
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -88,16 +89,7 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(response, "'response' cannot be null.");
         Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
 
-        return Flux.defer(() -> {
-            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            if (streamResponse.getStatusCode() == 204) {
-                streamResponse.close();
-                return Flux.empty();
-            }
-
-            return decodeBody(streamResponse.getBody(), new StreamState(), deserializer)
-                .doFinally(ignored -> streamResponse.close());
-        });
+        return toFlux(response, deserializer, TerminalEventPolicy.endOnResponseCompletion());
     }
 
     /**
@@ -111,26 +103,38 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
         Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
 
+        return toFlux(response, deserializer, TerminalEventPolicy.requireTerminal(terminalEvent));
+    }
+
+    private static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
+        BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy) {
+        AtomicBoolean subscribed = new AtomicBoolean();
         return Flux.defer(() -> {
-            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            if (streamResponse.getStatusCode() == 204) {
-                streamResponse.close();
-                return Flux.empty();
+            if (!subscribed.compareAndSet(false, true)) {
+                return Flux
+                    .error(new IllegalStateException("This server-sent event stream supports only one subscription."));
             }
 
+            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
             AtomicBoolean terminalObserved = new AtomicBoolean();
-            return decodeBody(streamResponse.getBody(), new StreamState(), deserializer).takeUntil(event -> {
-                boolean terminal = terminalEvent.test(event);
-                if (terminal) {
-                    terminalObserved.set(true);
-                }
-                return terminal;
-            })
-                .concatWith(Flux.defer(() -> terminalObserved.get()
-                    ? Flux.empty()
-                    : Flux.error(
-                        new IllegalStateException("The server-sent event stream ended before a terminal event."))))
-                .doFinally(ignored -> streamResponse.close());
+            Flux<ServerSentEvent<T>> events = streamResponse.getStatusCode() == 204
+                ? Flux.empty()
+                : decodeBody(streamResponse.getBody(), new StreamState(), deserializer);
+            if (terminalPolicy.hasTerminalPredicate()) {
+                events = events.takeUntil(event -> {
+                    boolean terminal = terminalPolicy.isTerminal(event);
+                    if (terminal) {
+                        terminalObserved.set(true);
+                    }
+                    return terminal;
+                });
+            }
+
+            Flux<ServerSentEvent<T>> decodedEvents = events;
+            return Flux.using(() -> streamResponse,
+                ignored -> decodedEvents
+                    .concatWith(Mono.fromRunnable(() -> terminalPolicy.validateCompletion(terminalObserved.get()))),
+                ServerSentEventStreamResponse::close, true);
         });
     }
 
@@ -146,9 +150,10 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
-            if (streamResponse.getStatusCode() != 204) {
-                processBody(streamResponse.getBody(), new StreamState(), deserializer, listener);
-            }
+            boolean terminalObserved = streamResponse.getStatusCode() != 204
+                && processBody(streamResponse.getBody(), new StreamState(), deserializer,
+                    TerminalEventPolicy.endOnResponseCompletion(), listener);
+            TerminalEventPolicy.<T>endOnResponseCompletion().validateCompletion(terminalObserved);
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -173,10 +178,10 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
-            if (streamResponse.getStatusCode() != 204
-                && !processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalEvent, listener)) {
-                throw new IllegalStateException("The server-sent event stream ended before a terminal event.");
-            }
+            TerminalEventPolicy<T> terminalPolicy = TerminalEventPolicy.requireTerminal(terminalEvent);
+            boolean terminalObserved = streamResponse.getStatusCode() != 204
+                && processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalPolicy, listener);
+            terminalPolicy.validateCompletion(terminalObserved);
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -203,7 +208,8 @@ public final class ServerSentEventStream {
         return data == null ? Flux.empty() : Flux.just(frame.toEvent(data));
     }
 
-    private static <T> void processBody(BinaryData body, StreamState state, BiFunction<String, String, T> deserializer,
+    private static <T> boolean processBody(BinaryData body, StreamState state,
+        BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy,
         ServerSentEventListener<T> listener) throws IOException {
         ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
         byte[] readBuffer = new byte[8192];
@@ -214,31 +220,10 @@ public final class ServerSentEventStream {
                 checkInterrupted();
                 read = stream.read(readBuffer);
                 if (read == -1) {
-                    break;
-                }
-                if (read > 0) {
-                    processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), deserializer, listener);
-                }
-            }
-            processFrames(decoder.finish(), deserializer, listener);
-        }
-    }
-
-    private static <T> boolean processBody(BinaryData body, StreamState state,
-        BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent,
-        ServerSentEventListener<T> listener) throws IOException {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
-        byte[] readBuffer = new byte[8192];
-
-        try (InputStream stream = new FluxInputStream(body.toFluxByteBuffer())) {
-            while (true) {
-                checkInterrupted();
-                int read = stream.read(readBuffer);
-                if (read == -1) {
-                    return processFrames(decoder.finish(), deserializer, terminalEvent, listener);
+                    return processFrames(decoder.finish(), deserializer, terminalPolicy, listener);
                 }
                 if (read > 0
-                    && processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), deserializer, terminalEvent,
+                    && processFrames(decoder.feed(ByteBuffer.wrap(readBuffer, 0, read)), deserializer, terminalPolicy,
                         listener)) {
                     return true;
                 }
@@ -246,19 +231,8 @@ public final class ServerSentEventStream {
         }
     }
 
-    private static <T> void processFrames(List<ServerSentEventFrame> frames, BiFunction<String, String, T> deserializer,
-        ServerSentEventListener<T> listener) {
-        for (ServerSentEventFrame frame : frames) {
-            checkInterrupted();
-            T data = deserializer.apply(frame.event, frame.data);
-            if (data != null) {
-                listener.onEvent(frame.toEvent(data));
-            }
-        }
-    }
-
     private static <T> boolean processFrames(List<ServerSentEventFrame> frames,
-        BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent,
+        BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy,
         ServerSentEventListener<T> listener) {
         for (ServerSentEventFrame frame : frames) {
             checkInterrupted();
@@ -266,12 +240,42 @@ public final class ServerSentEventStream {
             if (data != null) {
                 ServerSentEvent<T> event = frame.toEvent(data);
                 listener.onEvent(event);
-                if (terminalEvent.test(event)) {
+                if (terminalPolicy.isTerminal(event)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    private static final class TerminalEventPolicy<T> {
+        private final Predicate<ServerSentEvent<T>> terminalPredicate;
+
+        private TerminalEventPolicy(Predicate<ServerSentEvent<T>> terminalPredicate) {
+            this.terminalPredicate = terminalPredicate;
+        }
+
+        private boolean hasTerminalPredicate() {
+            return terminalPredicate != null;
+        }
+
+        private boolean isTerminal(ServerSentEvent<T> event) {
+            return terminalPredicate != null && terminalPredicate.test(event);
+        }
+
+        private void validateCompletion(boolean terminalObserved) {
+            if (terminalPredicate != null && !terminalObserved) {
+                throw new IllegalStateException("The server-sent event stream ended before a terminal event.");
+            }
+        }
+
+        private static <T> TerminalEventPolicy<T> endOnResponseCompletion() {
+            return new TerminalEventPolicy<>(null);
+        }
+
+        private static <T> TerminalEventPolicy<T> requireTerminal(Predicate<ServerSentEvent<T>> terminalPredicate) {
+            return new TerminalEventPolicy<>(terminalPredicate);
+        }
     }
 
     private static void checkInterrupted() {
