@@ -12,6 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
+import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceMigrationStatus;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
@@ -37,6 +39,11 @@ public final class NetworkVirtualAppliancePropertiesFormat
      * Address Prefix.
      */
     private String addressPrefix;
+
+    /*
+     * Address Prefix for Dual-Stack NVAs.
+     */
+    private String addressPrefixV6;
 
     /*
      * BootStrapConfigurationBlobs storage URLs.
@@ -130,10 +137,29 @@ public final class NetworkVirtualAppliancePropertiesFormat
     private List<NvaInterfaceConfigurationsProperties> nvaInterfaceConfigurations;
 
     /*
+     * The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack NVA (the vHub/VNet must also be
+     * dual-stack). ["IPv4"], an empty array, or omitting the field deploys an IPv4-only NVA. The value "IPv6" may only
+     * appear in combination with "IPv4"; standalone ["IPv6"] is reserved for future use and is rejected by the service
+     * today.
+     */
+    private List<IpVersion> addressFamily;
+
+    /*
      * A Internal Load Balancer's HA port frontend IP address. Can be used to set routes & UDR to load balance traffic
      * between NVA instances
      */
     private String privateIpAddress;
+
+    /*
+     * An Internal Load Balancer's HA port frontend IPv6 address. Can be used to set routes & UDR to load balance
+     * traffic between NVA instances. This field appears in dual-stack NVAs.
+     */
+    private String privateIpAddressV6;
+
+    /*
+     * The migration status of the Network Virtual Appliance.
+     */
+    private NetworkVirtualApplianceMigrationStatus migrationStatus;
 
     /**
      * Creates an instance of NetworkVirtualAppliancePropertiesFormat class.
@@ -168,6 +194,15 @@ public final class NetworkVirtualAppliancePropertiesFormat
      */
     public String addressPrefix() {
         return this.addressPrefix;
+    }
+
+    /**
+     * Get the addressPrefixV6 property: Address Prefix for Dual-Stack NVAs.
+     * 
+     * @return the addressPrefixV6 value.
+     */
+    public String addressPrefixV6() {
+        return this.addressPrefixV6;
     }
 
     /**
@@ -476,6 +511,32 @@ public final class NetworkVirtualAppliancePropertiesFormat
     }
 
     /**
+     * Get the addressFamily property: The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack
+     * NVA (the vHub/VNet must also be dual-stack). ["IPv4"], an empty array, or omitting the field deploys an IPv4-only
+     * NVA. The value "IPv6" may only appear in combination with "IPv4"; standalone ["IPv6"] is reserved for future use
+     * and is rejected by the service today.
+     * 
+     * @return the addressFamily value.
+     */
+    public List<IpVersion> addressFamily() {
+        return this.addressFamily;
+    }
+
+    /**
+     * Set the addressFamily property: The address families to deploy the NVA in. ["IPv4", "IPv6"] deploys a dual-stack
+     * NVA (the vHub/VNet must also be dual-stack). ["IPv4"], an empty array, or omitting the field deploys an IPv4-only
+     * NVA. The value "IPv6" may only appear in combination with "IPv4"; standalone ["IPv6"] is reserved for future use
+     * and is rejected by the service today.
+     * 
+     * @param addressFamily the addressFamily value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat withAddressFamily(List<IpVersion> addressFamily) {
+        this.addressFamily = addressFamily;
+        return this;
+    }
+
+    /**
      * Get the privateIpAddress property: A Internal Load Balancer's HA port frontend IP address. Can be used to set
      * routes &amp; UDR to load balance traffic between NVA instances.
      * 
@@ -483,6 +544,25 @@ public final class NetworkVirtualAppliancePropertiesFormat
      */
     public String privateIpAddress() {
         return this.privateIpAddress;
+    }
+
+    /**
+     * Get the privateIpAddressV6 property: An Internal Load Balancer's HA port frontend IPv6 address. Can be used to
+     * set routes &amp; UDR to load balance traffic between NVA instances. This field appears in dual-stack NVAs.
+     * 
+     * @return the privateIpAddressV6 value.
+     */
+    public String privateIpAddressV6() {
+        return this.privateIpAddressV6;
+    }
+
+    /**
+     * Get the migrationStatus property: The migration status of the Network Virtual Appliance.
+     * 
+     * @return the migrationStatus value.
+     */
+    public NetworkVirtualApplianceMigrationStatus migrationStatus() {
+        return this.migrationStatus;
     }
 
     /**
@@ -515,6 +595,9 @@ public final class NetworkVirtualAppliancePropertiesFormat
         if (nvaInterfaceConfigurations() != null) {
             nvaInterfaceConfigurations().forEach(e -> e.validate());
         }
+        if (migrationStatus() != null) {
+            migrationStatus().validate();
+        }
     }
 
     /**
@@ -541,6 +624,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
         jsonWriter.writeJsonField("partnerManagedResource", this.partnerManagedResource);
         jsonWriter.writeArrayField("nvaInterfaceConfigurations", this.nvaInterfaceConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("addressFamily", this.addressFamily,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -565,6 +650,8 @@ public final class NetworkVirtualAppliancePropertiesFormat
                         = VirtualApplianceSkuProperties.fromJson(reader);
                 } else if ("addressPrefix".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.addressPrefix = reader.getString();
+                } else if ("addressPrefixV6".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.addressPrefixV6 = reader.getString();
                 } else if ("bootStrapConfigurationBlobs".equals(fieldName)) {
                     List<String> bootStrapConfigurationBlobs = reader.readArray(reader1 -> reader1.getString());
                     deserializedNetworkVirtualAppliancePropertiesFormat.bootStrapConfigurationBlobs
@@ -626,8 +713,17 @@ public final class NetworkVirtualAppliancePropertiesFormat
                         = reader.readArray(reader1 -> NvaInterfaceConfigurationsProperties.fromJson(reader1));
                     deserializedNetworkVirtualAppliancePropertiesFormat.nvaInterfaceConfigurations
                         = nvaInterfaceConfigurations;
+                } else if ("addressFamily".equals(fieldName)) {
+                    List<IpVersion> addressFamily
+                        = reader.readArray(reader1 -> IpVersion.fromString(reader1.getString()));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.addressFamily = addressFamily;
                 } else if ("privateIpAddress".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.privateIpAddress = reader.getString();
+                } else if ("privateIpAddressV6".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.privateIpAddressV6 = reader.getString();
+                } else if ("migrationStatus".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.migrationStatus
+                        = NetworkVirtualApplianceMigrationStatus.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
