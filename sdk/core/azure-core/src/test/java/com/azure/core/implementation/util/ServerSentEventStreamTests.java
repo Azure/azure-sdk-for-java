@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -151,6 +152,36 @@ public class ServerSentEventStreamTests {
         StepVerifier.create(events).expectNextCount(1).verifyComplete();
         StepVerifier.create(events)
             .expectErrorMessage("This server-sent event stream supports only one subscription.")
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxRejectsOversizedPendingLineAndClosesResponse() {
+        byte[] body = new byte[ServerSentEventStream.MAX_PENDING_EVENT_BYTES + 1];
+        Arrays.fill(body, (byte) 'a');
+        TestResponse response = response(200, BinaryData.fromBytes(body));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .expectErrorMessage("The server-sent event exceeds the maximum supported size of 16 MiB.")
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxRejectsOversizedPendingDataAndClosesResponse() {
+        byte[] dataLine = "data:\n".getBytes(StandardCharsets.UTF_8);
+        int lineCount = ServerSentEventStream.MAX_PENDING_EVENT_BYTES / (dataLine.length - 1) + 1;
+        byte[] body = new byte[lineCount * dataLine.length];
+        for (int offset = 0; offset < body.length; offset += dataLine.length) {
+            System.arraycopy(dataLine, 0, body, offset, dataLine.length);
+        }
+        TestResponse response = response(200, BinaryData.fromBytes(body));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .expectErrorMessage("The server-sent event exceeds the maximum supported size of 16 MiB.")
             .verify();
 
         assertTrue(response.closed.get());

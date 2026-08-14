@@ -23,6 +23,9 @@ import java.util.function.Predicate;
  *
  * <p>If both stream processing and eager response cleanup fail, the cleanup failure is emitted and the processing
  * failure is suppressed.</p>
+ *
+ * <p>A single event may contain at most 16 MiB of non-line-ending bytes. Larger events fail stream processing to
+ * prevent an incomplete event from consuming memory without bound.</p>
  */
 public final class ServerSentEventStreams {
     private ServerSentEventStreams() {

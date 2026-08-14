@@ -33,7 +33,9 @@ import java.util.function.Predicate;
  * non-closeable responses with {@link IllegalArgumentException}, as stream cleanup cannot otherwise be guaranteed.</p>
  */
 public final class ServerSentEventStream {
+    static final int MAX_PENDING_EVENT_BYTES = 16 * 1024 * 1024;
     private static final String DEFAULT_EVENT = "message";
+    private static final String EVENT_TOO_LARGE = "The server-sent event exceeds the maximum supported size of 16 MiB.";
 
     private ServerSentEventStream() {
     }
@@ -327,10 +329,11 @@ public final class ServerSentEventStream {
         private final StreamState state;
         private byte[] lineBytes = new byte[256];
         private int lineLength;
+        private int pendingEventBytes;
         private boolean pendingCarriageReturn;
         private boolean firstLine = true;
         private String event;
-        private List<String> data;
+        private StringBuilder data;
         private String comment;
 
         private ServerSentEventDecoder(StreamState state) {
@@ -370,10 +373,15 @@ public final class ServerSentEventStream {
         }
 
         private void appendByte(byte value) {
+            if (pendingEventBytes == MAX_PENDING_EVENT_BYTES) {
+                throw new IllegalStateException(EVENT_TOO_LARGE);
+            }
+
             if (lineLength == lineBytes.length) {
                 lineBytes = Arrays.copyOf(lineBytes, lineBytes.length * 2);
             }
             lineBytes[lineLength++] = value;
+            pendingEventBytes++;
         }
 
         private String decodeLine() {
@@ -415,9 +423,10 @@ public final class ServerSentEventStream {
 
                 case "data":
                     if (data == null) {
-                        data = new ArrayList<>();
+                        data = new StringBuilder(value);
+                    } else {
+                        data.append('\n').append(value);
                     }
-                    data.add(value);
                     break;
 
                 case "id":
@@ -440,7 +449,7 @@ public final class ServerSentEventStream {
 
         private ServerSentEventFrame buildEvent() {
             String currentEvent = event;
-            List<String> currentData = data;
+            StringBuilder currentData = data;
             String currentComment = comment;
             resetEvent();
 
@@ -452,14 +461,15 @@ public final class ServerSentEventStream {
                 currentEvent = DEFAULT_EVENT;
             }
 
-            return new ServerSentEventFrame(state.lastEventId, currentEvent, String.join("\n", currentData),
-                currentComment, state.retryAfter);
+            return new ServerSentEventFrame(state.lastEventId, currentEvent, currentData.toString(), currentComment,
+                state.retryAfter);
         }
 
         private void resetEvent() {
             event = null;
             data = null;
             comment = null;
+            pendingEventBytes = 0;
         }
     }
 
