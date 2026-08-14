@@ -22,7 +22,7 @@
       explicit version overrides the parent dependencyManagement) to avoid binary incompatibilities.
     -->
     <azure-ai-agents.version>2.2.0</azure-ai-agents.version>
-    <sample-openai.version>4.14.0</sample-openai.version>
+    <sample-openai.version>4.50.0</sample-openai.version>
     <azure-core-http-okhttp.version>1.13.5</azure-core-http-okhttp.version>
     <azure-resourcemanager-authorization.version>2.53.9</azure-resourcemanager-authorization.version>
     <azure-resourcemanager-cognitiveservices.version>1.4.0</azure-resourcemanager-cognitiveservices.version>
