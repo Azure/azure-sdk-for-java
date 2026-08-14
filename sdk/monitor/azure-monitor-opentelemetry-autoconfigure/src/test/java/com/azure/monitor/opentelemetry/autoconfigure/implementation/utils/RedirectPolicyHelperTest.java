@@ -12,97 +12,75 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RedirectPolicyHelperTest {
 
-    private static final String LIVE_METRICS_ENDPOINT = "https://westus.livediagnostics.monitor.azure.com/";
-    private static final String INGESTION_ENDPOINT = "https://westus-0.in.applicationinsights.azure.com/v2.1/track";
+    private static final String DEFAULT_LIVE_METRICS_ENDPOINT = "https://rt.services.visualstudio.com/";
+    private static final String DEFAULT_INGESTION_ENDPOINT = "https://dc.services.visualstudio.com/v2.1/track";
 
     @Test
-    public void liveMetricsAllowsTrustedSuffix() throws MalformedURLException {
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT,
-            "https://eastus.livediagnostics.monitor.azure.com/QuickPulseService.svc/")).isTrue();
+    public void allowsLiveMetricsStampRedirect() throws MalformedURLException {
+        assertThat(isTrustedRedirect(DEFAULT_LIVE_METRICS_ENDPOINT,
+            "https://westus.livediagnostics.monitor.azure.com/QuickPulseService.svc/")).isTrue();
     }
 
     @Test
-    public void liveMetricsAllowsConfiguredHost() throws MalformedURLException {
-        assertThat(isTrustedLiveMetricsRedirect("https://live.example.com/",
-            "https://live.example.com/QuickPulseService.svc/")).isTrue();
+    public void allowsIngestionStampRedirect() throws MalformedURLException {
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT,
+            "https://westus-0.in.applicationinsights.azure.com/v2.1/track")).isTrue();
     }
 
     @Test
-    public void liveMetricsIsCaseAndTrailingDotInsensitive() throws MalformedURLException {
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT,
-            "https://EastUS.LiveDiagnostics.Monitor.Azure.Com./QuickPulseService.svc/")).isTrue();
-    }
-
-    @Test
-    public void liveMetricsRejectsUntrustedTargets() throws MalformedURLException {
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT, "https://attacker.invalid/")).isFalse();
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT,
-            "https://evil.livediagnostics.monitor.azure.com.attacker.invalid/")).isFalse();
-        assertThat(isTrustedLiveMetricsRedirect("https://live.example.com/", "https://evil.live.example.com/"))
-            .isFalse();
-    }
-
-    @Test
-    public void liveMetricsRejectsUnsafeUrls() throws MalformedURLException {
+    public void allowsGlobalApplicationInsightsHosts() throws MalformedURLException {
         assertThat(
-            isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT, "http://eastus.livediagnostics.monitor.azure.com/"))
-                .isFalse();
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT,
-            "https://user@eastus.livediagnostics.monitor.azure.com/")).isFalse();
-        assertThat(isTrustedLiveMetricsRedirect(LIVE_METRICS_ENDPOINT,
-            "https://eastus.livediagnostics.monitor.azure.com:444/")).isFalse();
+            isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT, "https://dc.applicationinsights.microsoft.com/v2.1/track"))
+                .isTrue();
+        assertThat(isTrustedRedirect(DEFAULT_LIVE_METRICS_ENDPOINT,
+            "https://rt.applicationinsights.microsoft.com/QuickPulseService.svc/")).isTrue();
     }
 
     @Test
-    public void ingestionAllowsSharedSuffix() throws MalformedURLException {
-        assertThat(isTrustedIngestionRedirect(INGESTION_ENDPOINT,
-            "https://eastus-0.in.applicationinsights.azure.com/v2.1/track")).isTrue();
+    public void allowsSovereignCloudHosts() throws MalformedURLException {
+        assertThat(isTrustedRedirect("https://dc.applicationinsights.azure.us/v2.1/track",
+            "https://usgovvirginia.livediagnostics.monitor.azure.us/QuickPulseService.svc/")).isTrue();
+        assertThat(isTrustedRedirect("https://dc.applicationinsights.azure.cn/v2.1/track",
+            "https://chinanorth2.in.applicationinsights.azure.cn/v2.1/track")).isTrue();
     }
 
     @Test
-    public void ingestionAllowsSameHost() throws MalformedURLException {
-        assertThat(isTrustedIngestionRedirect("https://ingestion.example.com/v2.1/track",
-            "https://ingestion.example.com/v2/track")).isTrue();
-    }
-
-    @Test
-    public void ingestionRejectsSameHostWithDifferentPort() throws MalformedURLException {
-        assertThat(isTrustedIngestionRedirect("https://ingestion.example.com/v2.1/track",
-            "https://ingestion.example.com:444/v2/track")).isFalse();
-    }
-
-    @Test
-    public void ingestionRejectsSiblingsOfUntrustedParent() throws MalformedURLException {
-        assertThat(isTrustedIngestionRedirect("https://ingestion.example.com/v2.1/track",
-            "https://attacker.example.com/v2.1/track")).isFalse();
-        assertThat(isTrustedIngestionRedirect("https://foo.azure.com/v2.1/track", "https://bar.azure.com/v2.1/track"))
-            .isFalse();
-    }
-
-    @Test
-    public void ingestionRejectsCrossingBetweenTrustedSuffixes() throws MalformedURLException {
+    public void allowsCurrentHost() throws MalformedURLException {
         assertThat(
-            isTrustedIngestionRedirect(INGESTION_ENDPOINT, "https://westus.services.visualstudio.com/v2.1/track"))
+            isTrustedRedirect("https://ingestion.example.com/v2.1/track", "https://ingestion.example.com/v2/track"))
+                .isTrue();
+    }
+
+    @Test
+    public void isCaseAndTrailingDotInsensitive() throws MalformedURLException {
+        assertThat(isTrustedRedirect(DEFAULT_LIVE_METRICS_ENDPOINT,
+            "https://WestUS.LiveDiagnostics.Monitor.Azure.Com./QuickPulseService.svc/")).isTrue();
+    }
+
+    @Test
+    public void rejectsUntrustedTargets() throws MalformedURLException {
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT, "https://attacker.invalid/v2.1/track")).isFalse();
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT,
+            "https://evil.applicationinsights.azure.com.attacker.invalid/v2.1/track")).isFalse();
+        assertThat(isTrustedRedirect("https://ingestion.example.com/v2.1/track",
+            "https://evil.ingestion.example.com/v2.1/track")).isFalse();
+        assertThat(isTrustedRedirect("https://foo.azure.com/v2.1/track", "https://bar.azure.com/v2.1/track")).isFalse();
+    }
+
+    @Test
+    public void rejectsUnsafeUrls() throws MalformedURLException {
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT,
+            "http://westus-0.in.applicationinsights.azure.com/v2.1/track")).isFalse();
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT,
+            "https://user@westus-0.in.applicationinsights.azure.com/v2.1/track")).isFalse();
+        assertThat(isTrustedRedirect(DEFAULT_INGESTION_ENDPOINT,
+            "https://westus-0.in.applicationinsights.azure.com:444/v2.1/track")).isFalse();
+        assertThat(
+            isTrustedRedirect("https://ingestion.example.com/v2.1/track", "https://ingestion.example.com:444/v2/track"))
                 .isFalse();
     }
 
-    @Test
-    public void ingestionRejectsUnsafeUrls() throws MalformedURLException {
-        assertThat(isTrustedIngestionRedirect(INGESTION_ENDPOINT,
-            "http://eastus-0.in.applicationinsights.azure.com/v2.1/track")).isFalse();
-        assertThat(isTrustedIngestionRedirect(INGESTION_ENDPOINT,
-            "https://user@eastus-0.in.applicationinsights.azure.com/v2.1/track")).isFalse();
-        assertThat(isTrustedIngestionRedirect(INGESTION_ENDPOINT,
-            "https://eastus-0.in.applicationinsights.azure.com:444/v2.1/track")).isFalse();
-    }
-
-    private static boolean isTrustedLiveMetricsRedirect(String configuredEndpoint, String redirectLink)
-        throws MalformedURLException {
-        return RedirectPolicyHelper.isTrustedLiveMetricsRedirect(new URL(configuredEndpoint), new URL(redirectLink));
-    }
-
-    private static boolean isTrustedIngestionRedirect(String currentUrl, String redirectLink)
-        throws MalformedURLException {
-        return RedirectPolicyHelper.isTrustedIngestionRedirect(new URL(currentUrl), new URL(redirectLink));
+    private static boolean isTrustedRedirect(String currentUrl, String redirectLink) throws MalformedURLException {
+        return RedirectPolicyHelper.isTrustedRedirect(new URL(currentUrl), new URL(redirectLink));
     }
 }

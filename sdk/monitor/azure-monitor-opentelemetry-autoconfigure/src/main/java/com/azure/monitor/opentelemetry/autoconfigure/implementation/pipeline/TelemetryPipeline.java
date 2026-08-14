@@ -115,7 +115,7 @@ public class TelemetryPipeline {
                 listener.onException(request, "Invalid redirect: " + location, e);
                 return;
             }
-            if (!RedirectPolicyHelper.isTrustedIngestionRedirect(request.getUrl(), locationUrl)) {
+            if (!RedirectPolicyHelper.isTrustedRedirect(request.getUrl(), locationUrl)) {
                 String errorMessage = "Refused cross-origin redirect: " + location;
                 listener.onException(request, errorMessage, new MalformedURLException(errorMessage));
                 result.fail();

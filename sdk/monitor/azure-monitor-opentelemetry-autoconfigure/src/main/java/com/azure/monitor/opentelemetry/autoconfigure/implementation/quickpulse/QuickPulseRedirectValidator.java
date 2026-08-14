@@ -18,7 +18,7 @@ final class QuickPulseRedirectValidator {
         URL configuredUrl = new URL(configuredEndpoint);
         URL redirectUrl = new URL(redirectLink);
 
-        if (!RedirectPolicyHelper.isTrustedLiveMetricsRedirect(configuredUrl, redirectUrl)) {
+        if (!RedirectPolicyHelper.isTrustedRedirect(configuredUrl, redirectUrl)) {
             throw new MalformedURLException("Redirect host is outside the configured Live Metrics endpoint boundary");
         }
 

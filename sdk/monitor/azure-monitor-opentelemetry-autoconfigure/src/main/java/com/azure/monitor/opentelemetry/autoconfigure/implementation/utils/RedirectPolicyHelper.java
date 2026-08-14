@@ -17,20 +17,26 @@ public final class RedirectPolicyHelper {
 
     private static final String HTTPS = "https";
 
-    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES
-        = Collections.unmodifiableList(Arrays.asList(".livediagnostics.monitor.azure.com", ".monitor.azure.com",
-            ".services.visualstudio.com", ".applicationinsights.azure.com", ".monitor.azure.us",
+    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES = Collections.unmodifiableList(
+        Arrays.asList(".livediagnostics.monitor.azure.com", ".monitor.azure.com", ".services.visualstudio.com",
+            ".applicationinsights.azure.com", ".applicationinsights.microsoft.com", ".monitor.azure.us",
             ".applicationinsights.azure.us", ".monitor.azure.cn", ".applicationinsights.azure.cn"));
 
     /**
-     * Returns whether a Live Metrics redirect target is safe to follow.
+     * Returns whether a redirect target is safe to follow.
+     * <p>
+     * Stamp reassignment moves between suffixes (for example {@code rt.services.visualstudio.com} to
+     * {@code &lt;region&gt;.livediagnostics.monitor.azure.com}), so the target host is checked on its own rather than
+     * being required to share a suffix with the current host.
      *
-     * @param configuredUrl the configured Live Metrics endpoint
-     * @param redirectUrl the redirect target from the {@code x-ms-qps-service-endpoint-redirect-v2} header
+     * @param currentUrl the endpoint the request is currently targeting
+     * @param redirectUrl the redirect target
      * @return true if the redirect target is trusted
      */
-    public static boolean isTrustedLiveMetricsRedirect(URL configuredUrl, URL redirectUrl) {
-        if (!isValidHttpsRedirect(redirectUrl) || !isDefaultPort(redirectUrl)) {
+    public static boolean isTrustedRedirect(URL currentUrl, URL redirectUrl) {
+        if (!HTTPS.equalsIgnoreCase(redirectUrl.getProtocol())
+            || redirectUrl.getUserInfo() != null
+            || !isDefaultPort(redirectUrl)) {
             return false;
         }
 
@@ -39,49 +45,9 @@ public final class RedirectPolicyHelper {
             return false;
         }
 
-        // A redirect back to the configured host stays inside the boundary the customer already chose, which keeps
+        // A redirect back to the current host stays inside the boundary the customer already chose, which keeps
         // custom endpoints and reverse proxies working.
-        return redirectHost.equals(canonicalHost(configuredUrl)) || hasAllowedSuffix(redirectHost);
-    }
-
-    /**
-     * Returns whether an ingestion redirect target is safe to follow.
-     *
-     * @param currentUrl the URL the request is currently targeting
-     * @param redirectUrl the redirect target from the {@code Location} header
-     * @return true if the redirect target is trusted
-     */
-    public static boolean isTrustedIngestionRedirect(URL currentUrl, URL redirectUrl) {
-        if (!isValidHttpsRedirect(redirectUrl)) {
-            return false;
-        }
-
-        String currentHost = canonicalHost(currentUrl);
-        String redirectHost = canonicalHost(redirectUrl);
-        if (currentHost.isEmpty() || redirectHost.isEmpty()) {
-            return false;
-        }
-
-        if (currentHost.equals(redirectHost)) {
-            return HTTPS.equalsIgnoreCase(currentUrl.getProtocol())
-                && effectivePort(currentUrl) == effectivePort(redirectUrl);
-        }
-
-        if (!isDefaultPort(currentUrl) || !isDefaultPort(redirectUrl)) {
-            return false;
-        }
-
-        // Cross-host ingestion redirects are stamp reassignments, so both hosts must live under the same suffix.
-        for (String suffix : ALLOWED_REDIRECT_DOMAIN_SUFFIXES) {
-            if (currentHost.endsWith(suffix) && redirectHost.endsWith(suffix)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean isValidHttpsRedirect(URL redirectUrl) {
-        return HTTPS.equalsIgnoreCase(redirectUrl.getProtocol()) && redirectUrl.getUserInfo() == null;
+        return redirectHost.equals(canonicalHost(currentUrl)) || hasAllowedSuffix(redirectHost);
     }
 
     private static boolean hasAllowedSuffix(String host) {
@@ -95,10 +61,6 @@ public final class RedirectPolicyHelper {
 
     private static boolean isDefaultPort(URL url) {
         return url.getPort() == -1 || url.getPort() == url.getDefaultPort();
-    }
-
-    private static int effectivePort(URL url) {
-        return url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
     }
 
     private static String canonicalHost(URL url) {

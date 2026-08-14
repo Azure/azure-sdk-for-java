@@ -48,12 +48,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TelemetryItemExporterTest {
 
     private static final String CONNECTION_STRING = "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
-        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com";
+        + "IngestionEndpoint=https://dc.services.visualstudio.com";
     private static final String REDIRECT_CONNECTION_STRING = "InstrumentationKey=11111111-0000-0000-0000-0FEEDDADBEEF;"
-        + "IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com";
+        + "IngestionEndpoint=https://dc.services.visualstudio.com";
 
     private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-0FEEDDADBEEF";
-    private static final String REDIRECT_URL = "https://eastus-0.in.applicationinsights.azure.com";
+    // stamp reassignment moves from the global host to a regional host under a different suffix
+    private static final String REDIRECT_URL = "https://westus-0.in.applicationinsights.azure.com";
     private static final String UNTRUSTED_REDIRECT_URL = "https://attacker.invalid";
 
     RecordingHttpClient recordingHttpClient;
