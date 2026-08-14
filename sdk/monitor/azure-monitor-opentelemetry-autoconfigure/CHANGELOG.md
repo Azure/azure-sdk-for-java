@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Validate Live Metrics redirect targets before following them ([#50117](https://github.com/Azure/azure-sdk-for-java/pull/50117))
+- Validate ingestion and Live Metrics redirect targets before following them ([#50117](https://github.com/Azure/azure-sdk-for-java/pull/50117))
 
 ### Other Changes
 

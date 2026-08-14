@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.RedirectPolicyHelper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import reactor.core.publisher.Mono;
@@ -112,6 +113,12 @@ public class TelemetryPipeline {
                 locationUrl = new URI(location).toURL();
             } catch (MalformedURLException | URISyntaxException e) {
                 listener.onException(request, "Invalid redirect: " + location, e);
+                return;
+            }
+            if (!RedirectPolicyHelper.isTrustedIngestionRedirect(request.getUrl(), locationUrl)) {
+                String errorMessage = "Refused cross-origin redirect: " + location;
+                listener.onException(request, errorMessage, new MalformedURLException(errorMessage));
+                result.fail();
                 return;
             }
             redirectCache.put(request.getConnectionString(), locationUrl);
