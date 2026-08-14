@@ -73,6 +73,11 @@ public final class PublicIpPrefixPropertiesFormatInner
      */
     private NatGatewayInner natGateway;
 
+    /*
+     * Whether the public IP prefix SKU has been upgraded from Standard to StandardV2.
+     */
+    private Boolean upgradedToV2;
+
     /**
      * Creates an instance of PublicIpPrefixPropertiesFormatInner class.
      */
@@ -226,6 +231,15 @@ public final class PublicIpPrefixPropertiesFormatInner
     }
 
     /**
+     * Get the upgradedToV2 property: Whether the public IP prefix SKU has been upgraded from Standard to StandardV2.
+     * 
+     * @return the upgradedToV2 value.
+     */
+    public Boolean upgradedToV2() {
+        return this.upgradedToV2;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -300,6 +314,9 @@ public final class PublicIpPrefixPropertiesFormatInner
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("natGateway".equals(fieldName)) {
                     deserializedPublicIpPrefixPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
+                } else if ("upgradedToV2".equals(fieldName)) {
+                    deserializedPublicIpPrefixPropertiesFormatInner.upgradedToV2
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class CommitsListSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkManagerCommitList.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerCommitList.json
      */
     /**
      * Sample code: List Network Manager Commit.

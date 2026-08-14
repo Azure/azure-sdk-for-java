@@ -17,6 +17,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceIn
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdsInner;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceBootDiagnosticParameters;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceCommitMigrationRequest;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceExecuteMigrationRequest;
+import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePrepareMigrationRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -823,4 +826,435 @@ public interface NetworkVirtualAppliancesClient extends InnerSupportsGet<Network
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkVirtualApplianceInstanceIdInner getBootDiagnosticLogs(String resourceGroupName,
         String networkVirtualApplianceName, NetworkVirtualApplianceBootDiagnosticParameters request, Context context);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> prepareMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginPrepareMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPrepareMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginPrepareMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body, Context context);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> prepareMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void prepareMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body);
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void prepareMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body, Context context);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> executeMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginExecuteMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecuteMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body, Context context);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> executeMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body);
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void executeMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body, Context context);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> commitMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginCommitMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCommitMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCommitMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body, Context context);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> commitMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void commitMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body);
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void commitMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body, Context context);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> abortMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginAbortMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortMigration(String resourceGroupName,
+        String networkVirtualApplianceName);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortMigration(String resourceGroupName, String networkVirtualApplianceName,
+        Context context);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> abortMigrationAsync(String resourceGroupName, String networkVirtualApplianceName);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortMigration(String resourceGroupName, String networkVirtualApplianceName);
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortMigration(String resourceGroupName, String networkVirtualApplianceName, Context context);
 }

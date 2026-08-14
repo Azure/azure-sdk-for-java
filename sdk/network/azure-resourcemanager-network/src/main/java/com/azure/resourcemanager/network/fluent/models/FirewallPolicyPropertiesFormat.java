@@ -40,6 +40,11 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
     private List<SubResource> ruleCollectionGroups;
 
     /*
+     * List of references to FirewallPolicyKubeSelectorGroups.
+     */
+    private List<SubResource> kubeSelectorGroups;
+
+    /*
      * The provisioning state of the firewall policy resource.
      */
     private ProvisioningState provisioningState;
@@ -109,6 +114,12 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
      */
     private FirewallPolicySku sku;
 
+    /*
+     * Indicates that the Firewall Policy is managed by AFC (Azure Firewall for Containers). When set, the policy is
+     * treated as read-only for callers that do not supply the AFC-managed sync marker on write operations.
+     */
+    private Boolean afcManaged;
+
     /**
      * Creates an instance of FirewallPolicyPropertiesFormat class.
      */
@@ -132,6 +143,15 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
      */
     public List<SubResource> ruleCollectionGroups() {
         return this.ruleCollectionGroups;
+    }
+
+    /**
+     * Get the kubeSelectorGroups property: List of references to FirewallPolicyKubeSelectorGroups.
+     * 
+     * @return the kubeSelectorGroups value.
+     */
+    public List<SubResource> kubeSelectorGroups() {
+        return this.kubeSelectorGroups;
     }
 
     /**
@@ -383,6 +403,17 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
     }
 
     /**
+     * Get the afcManaged property: Indicates that the Firewall Policy is managed by AFC (Azure Firewall for
+     * Containers). When set, the policy is treated as read-only for callers that do not supply the AFC-managed sync
+     * marker on write operations.
+     * 
+     * @return the afcManaged value.
+     */
+    public Boolean afcManaged() {
+        return this.afcManaged;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -459,6 +490,9 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
                 } else if ("ruleCollectionGroups".equals(fieldName)) {
                     List<SubResource> ruleCollectionGroups = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedFirewallPolicyPropertiesFormat.ruleCollectionGroups = ruleCollectionGroups;
+                } else if ("kubeSelectorGroups".equals(fieldName)) {
+                    List<SubResource> kubeSelectorGroups = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedFirewallPolicyPropertiesFormat.kubeSelectorGroups = kubeSelectorGroups;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFirewallPolicyPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
@@ -494,6 +528,8 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
                         = FirewallPolicyTransportSecurity.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
                     deserializedFirewallPolicyPropertiesFormat.sku = FirewallPolicySku.fromJson(reader);
+                } else if ("afcManaged".equals(fieldName)) {
+                    deserializedFirewallPolicyPropertiesFormat.afcManaged = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

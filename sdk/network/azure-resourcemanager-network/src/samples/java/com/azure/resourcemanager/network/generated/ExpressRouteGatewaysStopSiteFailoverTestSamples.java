@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class ExpressRouteGatewaysStopSiteFailoverTestSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteGatewayStopSiteFailoverTest.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteGatewayStopSiteFailoverTest.json
      */
     /**
      * Sample code: ExpressRouteGatewayStopSiteFailoverTest.

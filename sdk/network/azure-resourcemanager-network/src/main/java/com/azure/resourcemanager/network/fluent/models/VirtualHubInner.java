@@ -494,6 +494,52 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
+     * Get the addressPrefixV6 property: IPv6 Address-prefix for this VirtualHub.
+     * 
+     * @return the addressPrefixV6 value.
+     */
+    public String addressPrefixV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefixV6();
+    }
+
+    /**
+     * Set the addressPrefixV6 property: IPv6 Address-prefix for this VirtualHub.
+     * 
+     * @param addressPrefixV6 the addressPrefixV6 value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withAddressPrefixV6(String addressPrefixV6) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualHubProperties();
+        }
+        this.innerProperties().withAddressPrefixV6(addressPrefixV6);
+        return this;
+    }
+
+    /**
+     * Get the virtualRouterIpsV6 property: VirtualRouter IPv6 IPs.
+     * 
+     * @return the virtualRouterIpsV6 value.
+     */
+    public List<String> virtualRouterIpsV6() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualRouterIpsV6();
+    }
+
+    /**
+     * Set the virtualRouterIpsV6 property: VirtualRouter IPv6 IPs.
+     * 
+     * @param virtualRouterIpsV6 the virtualRouterIpsV6 value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withVirtualRouterIpsV6(List<String> virtualRouterIpsV6) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualHubProperties();
+        }
+        this.innerProperties().withVirtualRouterIpsV6(virtualRouterIpsV6);
+        return this;
+    }
+
+    /**
      * Get the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
      * 
      * @return the allowBranchToBranchTraffic value.

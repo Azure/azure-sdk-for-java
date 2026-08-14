@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysGetFailoverSingleTestDetailsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
      */
     /**
      * Sample code: ExpressRouteGatewayGetFailoverSingleTestDetails.

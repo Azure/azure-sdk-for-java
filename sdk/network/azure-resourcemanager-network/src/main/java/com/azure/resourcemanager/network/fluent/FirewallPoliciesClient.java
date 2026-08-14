@@ -90,6 +90,8 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,7 +99,24 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String firewallPolicyName, FirewallPolicyInner parameters);
+        String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync);
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of firewallPolicy Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync);
 
     /**
      * Creates or updates the specified Firewall Policy.
@@ -135,6 +154,8 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,7 +164,24 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(String resourceGroupName,
-        String firewallPolicyName, FirewallPolicyInner parameters, Context context);
+        String firewallPolicyName, FirewallPolicyInner parameters, Boolean afcManagedSync, Context context);
+
+    /**
+     * Creates or updates the specified Firewall Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return firewallPolicy Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String firewallPolicyName,
+        FirewallPolicyInner parameters, Boolean afcManagedSync);
 
     /**
      * Creates or updates the specified Firewall Policy.
@@ -181,6 +219,8 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Parameters supplied to the create or update Firewall Policy operation.
+     * @param afcManagedSync Indicates that the write originates from AFC (Azure Firewall for Containers) and is
+     * permitted to modify an AFC-managed Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -189,7 +229,7 @@ public interface FirewallPoliciesClient extends InnerSupportsGet<FirewallPolicyI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FirewallPolicyInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
-        FirewallPolicyInner parameters, Context context);
+        FirewallPolicyInner parameters, Boolean afcManagedSync, Context context);
 
     /**
      * Updates tags of a Azure Firewall Policy resource.

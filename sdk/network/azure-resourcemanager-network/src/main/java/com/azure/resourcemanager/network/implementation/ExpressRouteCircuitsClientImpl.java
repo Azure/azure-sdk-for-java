@@ -272,7 +272,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -310,7 +310,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -399,7 +399,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -442,7 +442,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -634,7 +634,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -679,7 +679,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -766,7 +766,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, circuitName, context))
@@ -802,7 +802,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             circuitName, context);
@@ -962,7 +962,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -998,7 +998,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1086,7 +1086,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1116,7 +1116,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1206,7 +1206,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStats(this.client.getEndpoint(), apiVersion,
@@ -1244,7 +1244,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1329,7 +1329,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1369,7 +1369,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (circuitName == null) {
             return Mono.error(new IllegalArgumentException("Parameter circuitName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCircuitLinkFailoverAllTestsDetails(this.client.getEndpoint(), apiVersion,
@@ -1644,7 +1644,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(),
@@ -1696,7 +1696,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (failoverTestId == null) {
             return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCircuitLinkFailoverSingleTestDetails(this.client.getEndpoint(), apiVersion,
@@ -1934,7 +1934,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
@@ -1981,7 +1981,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
             return Mono
                 .error(new IllegalArgumentException("Parameter circuitTestCategory is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startCircuitLinkFailoverTest(this.client.getEndpoint(), apiVersion,
@@ -2187,7 +2187,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -2232,7 +2232,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         } else {
             stopParameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2429,7 +2429,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2476,7 +2476,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2694,7 +2694,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTable(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -2739,7 +2739,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2957,7 +2957,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, circuitName, peeringName, devicePath, accept, context))
@@ -3002,7 +3002,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (devicePath == null) {
             return Mono.error(new IllegalArgumentException("Parameter devicePath is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3221,7 +3221,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPeeringStats(this.client.getEndpoint(), apiVersion,
@@ -3263,7 +3263,7 @@ public final class ExpressRouteCircuitsClientImpl implements InnerSupportsGet<Ex
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPeeringStats(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

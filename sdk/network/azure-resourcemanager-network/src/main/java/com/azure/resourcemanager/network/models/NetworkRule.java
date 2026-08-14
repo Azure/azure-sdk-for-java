@@ -56,6 +56,11 @@ public final class NetworkRule extends FirewallPolicyRule {
      */
     private List<String> destinationFqdns;
 
+    /*
+     * List of source Kubernetes Selector Groups for this rule.
+     */
+    private List<String> sourceKubeSelectorGroups;
+
     /**
      * Creates an instance of NetworkRule class.
      */
@@ -213,6 +218,26 @@ public final class NetworkRule extends FirewallPolicyRule {
     }
 
     /**
+     * Get the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @return the sourceKubeSelectorGroups value.
+     */
+    public List<String> sourceKubeSelectorGroups() {
+        return this.sourceKubeSelectorGroups;
+    }
+
+    /**
+     * Set the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @param sourceKubeSelectorGroups the sourceKubeSelectorGroups value to set.
+     * @return the NetworkRule object itself.
+     */
+    public NetworkRule withSourceKubeSelectorGroups(List<String> sourceKubeSelectorGroups) {
+        this.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -262,6 +287,8 @@ public final class NetworkRule extends FirewallPolicyRule {
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("destinationFqdns", this.destinationFqdns,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceKubeSelectorGroups", this.sourceKubeSelectorGroups,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -308,6 +335,9 @@ public final class NetworkRule extends FirewallPolicyRule {
                 } else if ("destinationFqdns".equals(fieldName)) {
                     List<String> destinationFqdns = reader.readArray(reader1 -> reader1.getString());
                     deserializedNetworkRule.destinationFqdns = destinationFqdns;
+                } else if ("sourceKubeSelectorGroups".equals(fieldName)) {
+                    List<String> sourceKubeSelectorGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
                 } else {
                     reader.skipChildren();
                 }

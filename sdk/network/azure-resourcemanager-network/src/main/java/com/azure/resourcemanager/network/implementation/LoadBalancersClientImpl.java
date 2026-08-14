@@ -217,7 +217,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, expand, detailLevel, accept, context))
@@ -257,7 +257,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -356,7 +356,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -402,7 +402,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -594,7 +594,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -640,7 +640,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -728,7 +728,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, loadBalancerName, context))
@@ -765,7 +765,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             loadBalancerName, context);
@@ -926,7 +926,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -962,7 +962,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1050,7 +1050,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1080,7 +1080,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1174,7 +1174,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.migrateToIpBased(this.client.getEndpoint(), apiVersion,
@@ -1216,7 +1216,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.migrateToIpBased(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1314,7 +1314,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1366,7 +1366,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1579,7 +1579,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.swapPublicIpAddresses(this.client.getEndpoint(), apiVersion,
@@ -1617,7 +1617,7 @@ public final class LoadBalancersClientImpl implements InnerSupportsGet<LoadBalan
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-07-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.swapPublicIpAddresses(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

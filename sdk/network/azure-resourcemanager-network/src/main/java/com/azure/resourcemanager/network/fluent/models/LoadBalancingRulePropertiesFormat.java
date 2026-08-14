@@ -90,8 +90,9 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     private Boolean disableOutboundSnat;
 
     /*
-     * Defines whether connections between 2 communicating endpoints can be tracked and associated to the same backend
-     * VM over its lifetime when using UDP protocol.
+     * Enables UDP flow tracking for the load balancing rule. This property is retained for rule-level configuration
+     * compatibility. When enableConnectionTracking is specified on the associated frontend IP configuration, the
+     * frontend setting takes precedence.
      */
     private Boolean enableConnectionTracking;
 
@@ -363,8 +364,9 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     }
 
     /**
-     * Get the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
-     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * Get the enableConnectionTracking property: Enables UDP flow tracking for the load balancing rule. This property
+     * is retained for rule-level configuration compatibility. When enableConnectionTracking is specified on the
+     * associated frontend IP configuration, the frontend setting takes precedence.
      * 
      * @return the enableConnectionTracking value.
      */
@@ -373,8 +375,9 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     }
 
     /**
-     * Set the enableConnectionTracking property: Defines whether connections between 2 communicating endpoints can be
-     * tracked and associated to the same backend VM over its lifetime when using UDP protocol.
+     * Set the enableConnectionTracking property: Enables UDP flow tracking for the load balancing rule. This property
+     * is retained for rule-level configuration compatibility. When enableConnectionTracking is specified on the
+     * associated frontend IP configuration, the frontend setting takes precedence.
      * 
      * @param enableConnectionTracking the enableConnectionTracking value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.

@@ -57,6 +57,11 @@ public final class ApplicationRule extends FirewallPolicyRule {
     private List<String> sourceIpGroups;
 
     /*
+     * List of source Kubernetes Selector Groups for this rule.
+     */
+    private List<String> sourceKubeSelectorGroups;
+
+    /*
      * Terminate TLS connections for this rule.
      */
     private Boolean terminateTls;
@@ -228,6 +233,26 @@ public final class ApplicationRule extends FirewallPolicyRule {
     }
 
     /**
+     * Get the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @return the sourceKubeSelectorGroups value.
+     */
+    public List<String> sourceKubeSelectorGroups() {
+        return this.sourceKubeSelectorGroups;
+    }
+
+    /**
+     * Set the sourceKubeSelectorGroups property: List of source Kubernetes Selector Groups for this rule.
+     * 
+     * @param sourceKubeSelectorGroups the sourceKubeSelectorGroups value to set.
+     * @return the ApplicationRule object itself.
+     */
+    public ApplicationRule withSourceKubeSelectorGroups(List<String> sourceKubeSelectorGroups) {
+        this.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
+        return this;
+    }
+
+    /**
      * Get the terminateTls property: Terminate TLS connections for this rule.
      * 
      * @return the terminateTls value.
@@ -339,6 +364,8 @@ public final class ApplicationRule extends FirewallPolicyRule {
         jsonWriter.writeArrayField("fqdnTags", this.fqdnTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceKubeSelectorGroups", this.sourceKubeSelectorGroups,
+            (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("terminateTLS", this.terminateTls);
         jsonWriter.writeArrayField("webCategories", this.webCategories,
             (writer, element) -> writer.writeString(element));
@@ -390,6 +417,9 @@ public final class ApplicationRule extends FirewallPolicyRule {
                 } else if ("sourceIpGroups".equals(fieldName)) {
                     List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationRule.sourceIpGroups = sourceIpGroups;
+                } else if ("sourceKubeSelectorGroups".equals(fieldName)) {
+                    List<String> sourceKubeSelectorGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApplicationRule.sourceKubeSelectorGroups = sourceKubeSelectorGroups;
                 } else if ("terminateTLS".equals(fieldName)) {
                     deserializedApplicationRule.terminateTls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("webCategories".equals(fieldName)) {

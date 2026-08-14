@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitGet.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitGet.json
      */
     /**
      * Sample code: Get ExpressRouteCircuit.
@@ -17,6 +17,20 @@ public final class ExpressRouteCircuitsGetByResourceGroupSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void getExpressRouteCircuit(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getExpressRouteCircuits()
+            .getByResourceGroupWithResponse("rg1", "circuitName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/ExpressRouteMultiCloudCircuitGet.json
+     */
+    /**
+     * Sample code: Get MultiCloud ExpressRouteCircuit.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getMultiCloudExpressRouteCircuit(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getExpressRouteCircuits()
             .getByResourceGroupWithResponse("rg1", "circuitName", com.azure.core.util.Context.NONE);

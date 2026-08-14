@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteLinkFailoverStopApiP
  */
 public final class ExpressRouteCircuitsStopCircuitLinkFailoverTestSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
      */
     /**
      * Sample code: ExpressRouteCircuitStopCircuitLinkFailoverTest.
