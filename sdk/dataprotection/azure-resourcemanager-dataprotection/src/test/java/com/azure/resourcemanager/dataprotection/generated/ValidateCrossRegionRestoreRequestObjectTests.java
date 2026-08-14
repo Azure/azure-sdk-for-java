@@ -19,19 +19,18 @@ public final class ValidateCrossRegionRestoreRequestObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateCrossRegionRestoreRequestObject model = BinaryData.fromString(
-            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"ugicjooxdjebw\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"wwfvov\",\"resourceGuardOperationRequests\":[\"euecivyhzceuoj\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"ueiotwmcdyt\"}},\"crossRegionRestoreDetails\":{\"sourceRegion\":\"x\",\"sourceBackupInstanceId\":\"it\"}}")
+            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"eilpjzuaejxdu\"},\"sourceDataStoreType\":\"VaultStore\",\"sourceResourceId\":\"kzbbtd\",\"resourceGuardOperationRequests\":[\"veekgpwozuhkfp\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"f\"}},\"crossRegionRestoreDetails\":{\"sourceRegion\":\"xl\",\"sourceBackupInstanceId\":\"us\"}}")
             .toObject(ValidateCrossRegionRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("ugicjooxdjebw", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("wwfvov", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("euecivyhzceuoj", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("eilpjzuaejxdu", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.VAULT_STORE, model.restoreRequestObject().sourceDataStoreType());
+        Assertions.assertEquals("kzbbtd", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("veekgpwozuhkfp", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("ueiotwmcdyt",
-            model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("x", model.crossRegionRestoreDetails().sourceRegion());
-        Assertions.assertEquals("it", model.crossRegionRestoreDetails().sourceBackupInstanceId());
+        Assertions.assertEquals("f", model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("xl", model.crossRegionRestoreDetails().sourceRegion());
+        Assertions.assertEquals("us", model.crossRegionRestoreDetails().sourceBackupInstanceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,25 +38,24 @@ public final class ValidateCrossRegionRestoreRequestObjectTests {
         ValidateCrossRegionRestoreRequestObject model = new ValidateCrossRegionRestoreRequestObject()
             .withRestoreRequestObject(new AzureBackupRestoreRequest()
                 .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                    .withRestoreLocation("ugicjooxdjebw"))
-                .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
-                .withSourceResourceId("wwfvov")
-                .withResourceGuardOperationRequests(Arrays.asList("euecivyhzceuoj"))
-                .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                    .withUserAssignedIdentityArmUrl("ueiotwmcdyt")))
+                    .withRestoreLocation("eilpjzuaejxdu"))
+                .withSourceDataStoreType(SourceDataStoreType.VAULT_STORE)
+                .withSourceResourceId("kzbbtd")
+                .withResourceGuardOperationRequests(Arrays.asList("veekgpwozuhkfp"))
+                .withIdentityDetails(
+                    new IdentityDetails().withUseSystemAssignedIdentity(false).withUserAssignedIdentityArmUrl("f")))
             .withCrossRegionRestoreDetails(
-                new CrossRegionRestoreDetails().withSourceRegion("x").withSourceBackupInstanceId("it"));
+                new CrossRegionRestoreDetails().withSourceRegion("xl").withSourceBackupInstanceId("us"));
         model = BinaryData.fromObject(model).toObject(ValidateCrossRegionRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("ugicjooxdjebw", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("wwfvov", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("euecivyhzceuoj", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("eilpjzuaejxdu", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.VAULT_STORE, model.restoreRequestObject().sourceDataStoreType());
+        Assertions.assertEquals("kzbbtd", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("veekgpwozuhkfp", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("ueiotwmcdyt",
-            model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("x", model.crossRegionRestoreDetails().sourceRegion());
-        Assertions.assertEquals("it", model.crossRegionRestoreDetails().sourceBackupInstanceId());
+        Assertions.assertEquals("f", model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("xl", model.crossRegionRestoreDetails().sourceRegion());
+        Assertions.assertEquals("us", model.crossRegionRestoreDetails().sourceBackupInstanceId());
     }
 }
