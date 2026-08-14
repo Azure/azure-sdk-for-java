@@ -71,19 +71,25 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 
 ```java
-vault = recoveryServicesManager.vaults()
-    .define(vaultName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
-    .withProperties(new VaultProperties()
-        .withSecuritySettings(new SecuritySettings()
-            .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
-        .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-        .withRestoreSettings(new RestoreSettings()
-            .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
-                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
-    .create();
+vault
+    = recoveryServicesManager.vaults()
+        .define(vaultName)
+        .withRegion(REGION)
+        .withExistingResourceGroup(resourceGroupName)
+        .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
+        .withProperties(
+            new VaultProperties()
+                .withSecuritySettings(
+                    new SecuritySettings()
+                        .withImmutabilitySettings(
+                            new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                                .withConfiguration(new ImmutabilityConfiguration()
+                                    .withType(ImmutabilityType.AS_PER_POLICY))))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRestoreSettings(new RestoreSettings()
+                    .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                        .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+        .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/recoveryservices/azure-resourcemanager-recoveryservices/SAMPLE.md)
 
