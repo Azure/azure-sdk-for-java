@@ -32,10 +32,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.models.SessionMode;
-import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
@@ -70,8 +67,7 @@ public final class BuilderHelper {
     }
 
     /**
-     * Constructs a {@link HttpPipeline} from values passed from a builder, with optional session-based
-     * authentication support.
+     * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential            {@link TokenCredential} if present.
@@ -88,8 +84,6 @@ public final class BuilderHelper {
      * @param configuration              Configuration store contain environment settings.
      * @param logger                     {@link ClientLogger} used to log any exception.
      * @param audience                   {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions             {@link SessionOptions} containing the session mode, container name, and account name for session-based authentication.
-     * @param serviceVersion             The service version for session creation. Required when session is active.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -97,7 +91,7 @@ public final class BuilderHelper {
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, HttpLogOptions logOptions,
         ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, BlobAudience audience,
-        ClientLogger logger, SessionOptions sessionOptions, BlobServiceVersion serviceVersion) {
+        ClientLogger logger) {
 
         CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
@@ -129,16 +123,6 @@ public final class BuilderHelper {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
 
-        // Session credentials are bound to the client's network context. When the caller doesn't provide an
-        // HttpClient, create one default instance and share it between CreateSession and data requests instead of
-        // letting each pipeline create its own transport.
-        HttpClient effectiveHttpClient
-            = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
-
-        // When sessionOptions is non-null and the resolved session mode is not SessionMode.NONE, and a tokenCredential is
-        // present, a single SessionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
-        // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
-        // the bearer token policy is added directly.
         if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
@@ -147,22 +131,7 @@ public final class BuilderHelper {
             StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
                 = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
 
-            SessionOptions effectiveSessionOptions = SessionOptions.orDefault(sessionOptions);
-
-            BlobServiceVersion effectiveServiceVersion
-                = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-
-            HttpPipeline bearerPipeline
-                = buildBearerPipeline(policies, bearerPolicy, effectiveHttpClient, clientOptions);
-            BlobSessionClient sessionClient = new BlobSessionClient(bearerPipeline, endpoint, effectiveServiceVersion,
-                effectiveSessionOptions.getAccountName(), effectiveSessionOptions.getContainerName());
-
-            if (effectiveSessionOptions.getSessionMode() == SessionMode.NONE) {
-                policies.add(bearerPolicy);
-            } else {
-                policies.add(new SessionTokenCredentialPolicy(bearerPolicy, new AutoRefreshingCache<>(sessionClient),
-                    effectiveSessionOptions));
-            }
+            policies.add(bearerPolicy);
         }
 
         if (azureSasCredential != null) {
@@ -182,36 +151,10 @@ public final class BuilderHelper {
         policies.add(new ScrubEtagPolicy());
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(effectiveHttpClient)
-            .clientOptions(clientOptions)
-            .tracer(createTracer(clientOptions))
-            .build();
-    }
-
-    /**
-     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This pipeline contains
-     * all pre-auth policies plus the bearer token policy, but no session policy.
-     */
-    private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient,
-        ClientOptions clientOptions) {
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
-        bearerPolicies.add(bearerPolicy);
-        return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .tracer(createTracer(clientOptions))
             .build();
-    }
-
-    private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
-        if (httpClient != null) {
-            return httpClient;
-        }
-
-        return clientOptions instanceof HttpClientOptions
-            ? HttpClient.createDefault((HttpClientOptions) clientOptions)
-            : HttpClient.createDefault();
     }
 
     /**
@@ -295,13 +238,6 @@ public final class BuilderHelper {
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
-    }
-
-    public static void validateSessionMode(SessionOptions sessionOptions, String containerName, ClientLogger logger) {
-        if (sessionOptions.getSessionMode().resolve() != SessionMode.NONE && CoreUtils.isNullOrEmpty(containerName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "containerName must be set when using SessionMode." + sessionOptions.getSessionMode()));
-        }
     }
 
 }

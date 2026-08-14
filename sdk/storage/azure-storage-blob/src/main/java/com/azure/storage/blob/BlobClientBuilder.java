@@ -31,8 +31,6 @@ import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.SessionMode;
-import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -94,7 +92,6 @@ public final class BlobClientBuilder
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
-    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -135,12 +132,6 @@ public final class BlobClientBuilder
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
-
-        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
-            containerName = sessionOptions.getContainerName();
-        }
-
-        BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
 
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
@@ -189,11 +180,6 @@ public final class BlobClientBuilder
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
-        if (CoreUtils.isNullOrEmpty(containerName) && !CoreUtils.isNullOrEmpty(sessionOptions.getContainerName())) {
-            containerName = sessionOptions.getContainerName();
-        }
-        BuilderHelper.validateSessionMode(sessionOptions, containerName, LOGGER);
-
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
@@ -214,16 +200,9 @@ public final class BlobClientBuilder
             return httpPipeline;
         }
 
-        if (containerName != null) {
-            sessionOptions.setContainerName(containerName);
-        }
-        if (sessionOptions.getAccountName() == null) {
-            sessionOptions.setAccountName(accountName);
-        }
-
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
+            perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -674,19 +653,4 @@ public final class BlobClientBuilder
         return this;
     }
 
-    /**
-     * Sets the {@link SessionOptions} that controls how the SDK manages session-based authentication for this blob.
-     * <p>
-     * Sessions amortize authentication and authorization cost across many requests by signing them with a lightweight
-     * HMAC key instead of a full bearer token. When the session mode within the options is set to a value other than
-     * {@link SessionMode#NONE}, this builder's configured container name is used when the options don't specify one.
-     *
-     * @param sessionOptions The session options to use. If {@code null}, defaults to {@link SessionMode#AUTO}
-     * when identity-based authentication (bearer token) is configured.
-     * @return the updated BlobClientBuilder object.
-     */
-    public BlobClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = SessionOptions.orDefault(sessionOptions);
-        return this;
-    }
 }
