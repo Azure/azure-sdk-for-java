@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysGetResiliencyInformationSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteGatewayGetResiliencyInformation.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteGatewayGetResiliencyInformation.json
      */
     /**
      * Sample code: ExpressRouteGatewayGetResiliencyInformation.

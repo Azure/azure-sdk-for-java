@@ -290,7 +290,7 @@ com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.10;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.55.3;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.9;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.54.0;2.55.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-network;2.59.1;2.60.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-network;2.59.1;2.60.0
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.9;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-resources;2.54.2;2.55.0-beta.1
@@ -355,7 +355,7 @@ com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.3;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.2.0;1.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.2.0;1.3.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0;1.1.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-mariadb;1.0.0;1.1.0-beta.1
@@ -382,7 +382,7 @@ com.azure.resourcemanager:azure-resourcemanager-managedapplications;1.0.0;1.1.0-
 com.azure.resourcemanager:azure-resourcemanager-imagebuilder;1.3.0;1.4.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-maps;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.6.0;1.7.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.6.0;1.7.0
 com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;2.0.0;2.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.1.0;1.2.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.2.0;1.3.0-beta.1
