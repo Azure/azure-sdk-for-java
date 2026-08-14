@@ -12,9 +12,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -542,6 +545,38 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     }
 
     @Test
+    @LiveOnly
+    void getTopicFilterCounts() {
+        // The topic-level SqlFilterCount / CorrelationFilterCount runtime properties are served by
+        // the 2024-05 service API version, so use an explicit V2024_05 client rather than relying on
+        // the builder default. The test is live only because the recorded modes are pinned to
+        // 2021-05 to match the existing cassettes, and no cassette covers this path yet.
+        final ServiceBusAdministrationClient client = getClient(ServiceBusServiceVersion.V2024_05);
+        final String topicName = testResourceNamer.randomName("topicfc", 10);
+        final String subscriptionName = testResourceNamer.randomName("sub", 10);
+
+        client.createTopic(topicName);
+        try {
+            client.createSubscription(topicName, subscriptionName);
+
+            // A new subscription carries a default $Default rule (a SQL TrueFilter). Add an
+            // explicit SQL rule and a correlation rule so the topic-level counts are non-zero.
+            client.createRule(topicName, "sqlRule", subscriptionName,
+                new CreateRuleOptions().setFilter(new SqlRuleFilter("1=1")));
+            client.createRule(topicName, "correlationRule", subscriptionName,
+                new CreateRuleOptions().setFilter(new CorrelationRuleFilter().setCorrelationId("abc")));
+
+            final TopicRuntimeProperties runtimeProperties = client.getTopicRuntimeProperties(topicName);
+
+            // $Default (TrueFilter) + sqlRule = 2 SQL filters; correlationRule = 1 correlation filter.
+            assertEquals(2, runtimeProperties.getSqlFilterCount());
+            assertEquals(1, runtimeProperties.getCorrelationFilterCount());
+        } finally {
+            client.deleteTopic(topicName);
+        }
+    }
+
+    @Test
     void getSubscription() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = getEntityName(getTopicBaseName(), 2);
@@ -629,6 +664,11 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .connectionString(connectionStringUpdated);
+
+        // Recorded at api-version 2021-05; pin the recorded modes so requests match the recordings.
+        if (!interceptorManager.isLiveMode()) {
+            builder.serviceVersion(ServiceBusServiceVersion.V2021_05);
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -842,9 +882,20 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getClient() {
+        return getClient(null);
+    }
+
+    // Builds a client, optionally overriding the api-version that configure() selects. Pass a
+    // version only from a @LiveOnly test: configure() pins the recorded modes to 2021-05 to match
+    // the existing cassettes, and the api-version participates in playback request matching, so
+    // overriding it in a recorded mode breaks playback.
+    private ServiceBusAdministrationClient getClient(ServiceBusServiceVersion serviceVersion) {
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         configure(builder, null, interceptorManager, credentialCached);
+        if (serviceVersion != null) {
+            builder.serviceVersion(serviceVersion);
+        }
         return builder.buildClient();
     }
 }

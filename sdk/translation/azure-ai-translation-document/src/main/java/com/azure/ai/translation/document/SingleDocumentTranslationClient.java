@@ -71,6 +71,20 @@ public final class SingleDocumentTranslationClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.

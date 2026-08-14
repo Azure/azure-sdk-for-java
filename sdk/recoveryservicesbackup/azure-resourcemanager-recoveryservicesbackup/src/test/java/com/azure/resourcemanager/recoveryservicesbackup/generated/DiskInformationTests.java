@@ -12,8 +12,8 @@ public final class DiskInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskInformation model
-            = BinaryData.fromString("{\"lun\":1678964850,\"name\":\"yczuhxacpq\"}").toObject(DiskInformation.class);
-        Assertions.assertEquals(1678964850, model.lun());
-        Assertions.assertEquals("yczuhxacpq", model.name());
+            = BinaryData.fromString("{\"lun\":1181848977,\"name\":\"qwkyhkobop\"}").toObject(DiskInformation.class);
+        Assertions.assertEquals(1181848977, model.lun());
+        Assertions.assertEquals("qwkyhkobop", model.name());
     }
 }
