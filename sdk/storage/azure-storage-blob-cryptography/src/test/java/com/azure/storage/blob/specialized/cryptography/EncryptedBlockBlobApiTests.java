@@ -610,7 +610,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         String blobName = generateBlobName();
         EncryptedBlobClient encryptedClient = new EncryptedBlobClient(getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2)
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
                 .blobName(blobName)
                 .clientSideEncryptionOptions(
                     new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(regionDataLength))

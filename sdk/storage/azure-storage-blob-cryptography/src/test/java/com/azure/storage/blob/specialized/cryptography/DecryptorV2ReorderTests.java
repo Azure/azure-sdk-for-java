@@ -186,6 +186,92 @@ public class DecryptorV2ReorderTests {
         assertArrayEquals(plaintext, recovered);
     }
 
+    // ---- Cross-SDK interoperability: Java must still decrypt (and detect reorders in) blobs written by other SDKs,
+    // which encode the region counter into the nonce differently. ----
+
+    @Test
+    public void pythonEncodedBlobDecryptsWithoutFalseReorder() {
+        byte[] cek = randomBytes(32);
+        byte[][] plaintext = {
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH) };
+        byte[] ciphertext = buildBlob(cek, DecryptorV2ReorderTests::pythonNonce, plaintext);
+
+        assertArrayEquals(flatten(plaintext), decrypt(cek, ciphertext, 0));
+    }
+
+    @Test
+    public void dotnetEncodedBlobDecryptsWithoutFalseReorder() {
+        byte[] cek = randomBytes(32);
+        byte[][] plaintext = {
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH) };
+        byte[] ciphertext = buildBlob(cek, DecryptorV2ReorderTests::dotnetNonce, plaintext);
+
+        assertArrayEquals(flatten(plaintext), decrypt(cek, ciphertext, 0));
+    }
+
+    @Test
+    public void detectsReorderInPythonEncodedBlob() {
+        byte[] cek = randomBytes(32);
+        byte[][] plaintext = {
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH) };
+        byte[] ciphertext = buildBlob(cek, DecryptorV2ReorderTests::pythonNonce, plaintext);
+        swapRegions(ciphertext, 2, 3, REGION_TOTAL_LENGTH);
+
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, ciphertext, 0));
+    }
+
+    @Test
+    public void detectsReorderInDotnetEncodedBlob() {
+        byte[] cek = randomBytes(32);
+        byte[][] plaintext = {
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH),
+            randomBytes(REGION_DATA_LENGTH) };
+        byte[] ciphertext = buildBlob(cek, DecryptorV2ReorderTests::dotnetNonce, plaintext);
+        swapRegions(ciphertext, 1, 2, REGION_TOTAL_LENGTH);
+
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, ciphertext, 0));
+    }
+
+    @Test
+    public void detectsSchemeSwitchMidBlob() {
+        // A blob whose first region uses one SDK's nonce scheme and a later region uses another's cannot be a single
+        // valid blob; the scheme is locked after the first region, so the switch is detected.
+        byte[] cek = randomBytes(32);
+        byte[] region0 = encryptRegionWithNonce(cek, dotnetNonce(0), randomBytes(REGION_DATA_LENGTH));
+        byte[] region1 = encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH));
+
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, concat(region0, region1), 0));
+    }
+
+    @Test
+    public void rejectsMixedNonceEncodingsAcrossCollidingValueSpace() {
+        // The supported SDK nonce encodings share a value space, so accepting them independently per region would
+        // weaken reorder detection. For example the Java nonce for region 1 is byte-identical to the .NET nonce for
+        // region 16,777,215, so a region could be moved across that boundary and still pass a naive per-region union
+        // check. Detection must instead lock onto a single encoding and enforce it for every region. (Mirrors the
+        // Python SDK's test_decrypt_rejects_mixed_nonce_encodings.)
+        assertArrayEquals(javaNonce(1), dotnetNonce(16_777_215));
+
+        byte[] cek = randomBytes(32);
+        // Region 0 uses the Java/Python encoding (all zeros); region 1 uses the .NET encoding. A per-region union
+        // check would accept both, but single-encoding enforcement rejects the mix.
+        byte[] region0 = encryptRegionWithNonce(cek, javaNonce(0), randomBytes(REGION_DATA_LENGTH));
+        byte[] region1 = encryptRegionWithNonce(cek, dotnetNonce(1), randomBytes(REGION_DATA_LENGTH));
+
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, concat(region0, region1), 0));
+    }
+
     private static byte[] encrypt(byte[] cek, byte[] plaintext) {
         SecretKey key = new SecretKeySpec(cek, AES);
         EncryptorV2 encryptor = new EncryptorV2(key,
@@ -196,19 +282,65 @@ public class DecryptorV2ReorderTests {
     }
 
     /**
-     * Encrypts a single region using the same nonce scheme as {@link EncryptorV2}: the region index is truncated to an
-     * int and written big-endian into the nonce. Produces {@code nonce || ciphertext || tag}. Used to craft ciphertext
-     * for arbitrary (very large) region indices without materializing all preceding regions.
+     * Encrypts a single region using the Java SDK nonce scheme (region index truncated to an int, written big-endian).
+     * Produces {@code nonce || ciphertext || tag}. Used to craft ciphertext for arbitrary (very large) region indices
+     * without materializing all preceding regions.
      */
     private static byte[] encryptRegionAt(byte[] cek, long regionIndex, byte[] plaintext) {
+        return encryptRegionWithNonce(cek, javaNonce(regionIndex), plaintext);
+    }
+
+    private static byte[] encryptRegionWithNonce(byte[] cek, byte[] nonce, byte[] plaintext) {
         try {
-            byte[] nonce = ByteBuffer.allocate(NONCE_LENGTH).putLong((int) regionIndex).array();
             Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(cek, AES), new GCMParameterSpec(TAG_LENGTH * 8, nonce));
             return concat(nonce, cipher.doFinal(plaintext));
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /** Builds a multi-region CSEv2 blob whose region i uses the nonce produced by {@code nonceForRegion}. */
+    private static byte[] buildBlob(byte[] cek, java.util.function.LongFunction<byte[]> nonceForRegion,
+        byte[][] regionPlaintext) {
+        byte[] result = new byte[0];
+        for (int i = 0; i < regionPlaintext.length; i++) {
+            result = concat(result, encryptRegionWithNonce(cek, nonceForRegion.apply(i), regionPlaintext[i]));
+        }
+        return result;
+    }
+
+    // Independent implementations of each SDK's nonce scheme, serving as cross-SDK test vectors.
+
+    private static byte[] javaNonce(long regionIndex) {
+        return ByteBuffer.allocate(NONCE_LENGTH).putLong((int) regionIndex).array();
+    }
+
+    private static byte[] pythonNonce(long regionIndex) {
+        // 12-byte big-endian integer (counter in the low bytes), 0-based.
+        byte[] nonce = new byte[NONCE_LENGTH];
+        for (int i = 0; i < Long.BYTES; i++) {
+            nonce[NONCE_LENGTH - 1 - i] = (byte) (regionIndex >>> (Byte.SIZE * i));
+        }
+        return nonce;
+    }
+
+    private static byte[] dotnetNonce(long regionIndex) {
+        // Four zero bytes then an 8-byte little-endian counter, 1-based.
+        byte[] nonce = new byte[NONCE_LENGTH];
+        long counter = regionIndex + 1;
+        for (int i = 0; i < Long.BYTES; i++) {
+            nonce[(NONCE_LENGTH - Long.BYTES) + i] = (byte) (counter >>> (Byte.SIZE * i));
+        }
+        return nonce;
+    }
+
+    private static byte[] flatten(byte[][] arrays) {
+        byte[] result = new byte[0];
+        for (byte[] a : arrays) {
+            result = concat(result, a);
+        }
+        return result;
     }
 
     private static byte[] decrypt(byte[] cek, byte[] ciphertext, long offset) {
