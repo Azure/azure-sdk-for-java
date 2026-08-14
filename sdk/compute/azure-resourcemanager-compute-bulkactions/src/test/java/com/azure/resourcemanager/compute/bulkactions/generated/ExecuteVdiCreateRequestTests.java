@@ -11,7 +11,6 @@ import com.azure.resourcemanager.compute.bulkactions.models.EvictionPolicy;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteVdiCreateRequest;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.FlexProperties;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.OsType;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityProfile;
 import com.azure.resourcemanager.compute.bulkactions.models.PriorityType;
@@ -31,37 +30,35 @@ public final class ExecuteVdiCreateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteVdiCreateRequest model = BinaryData.fromString(
-            "{\"resourceConfigParameters\":{\"baseProfile\":{\"dnsezcxtbzs\":\"\\\"datacufufsrpymz\\\"\"},\"resourceOverrides\":[{\"ewmdw\":\"\\\"datacs\\\"\"}],\"resourceCount\":870158563,\"resourcePrefix\":\"iachbo\",\"flexProperties\":{\"vmSizeProfiles\":[{\"name\":\"flnrosfqpteehzz\",\"rank\":732529011},{\"name\":\"pyqr\",\"rank\":602358321},{\"name\":\"z\",\"rank\":1071544180}],\"osType\":\"Linux\",\"priorityProfile\":{\"type\":\"Spot\",\"maxPricePerVM\":66.16210013114946,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"Prioritized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"StrictBalanced\",\"zonePreferences\":[{\"zone\":\"hc\",\"rank\":901066642}]},\"minCapacity\":1840218719}},\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":563915044,\"retryWindowInMinutes\":88014725,\"onFailureAction\":\"GetInstanceView\"},\"verifyVmAgentHealth\":true}}")
+            "{\"resourceConfigParameters\":{\"baseProfile\":{\"jeiachboosfl\":\"\\\"dataewmdw\\\"\",\"fqpte\":\"\\\"dataro\\\"\",\"i\":\"\\\"datahzzvypyq\\\"\",\"npvswjdkirso\":\"\\\"dataz\\\"\"},\"resourceOverrides\":[{\"mnoh\":\"\\\"datahc\\\"\"},{\"ifiyipjxsqwpgrj\":\"\\\"datackwhds\\\"\"}],\"resourceCount\":1493964267,\"resourcePrefix\":\"orcjxvsnby\",\"flexProperties\":{\"vmSizeProfiles\":[{\"name\":\"abnmocpcyshu\",\"rank\":818060655},{\"name\":\"afbljjgpbtoqcjmk\",\"rank\":897001974}],\"osType\":\"Windows\",\"priorityProfile\":{\"type\":\"Regular\",\"maxPricePerVM\":51.46626214406764,\"evictionPolicy\":\"Deallocate\",\"allocationStrategy\":\"LowestPrice\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"BestEffortBalanced\",\"zonePreferences\":[{\"zone\":\"kudjkrlkhb\",\"rank\":375716095}]},\"minCapacity\":194307867}},\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1382743089,\"retryWindowInMinutes\":701234104,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":false}}")
             .toObject(ExecuteVdiCreateRequest.class);
-        Assertions.assertEquals(870158563, model.resourceConfigParameters().resourceCount());
-        Assertions.assertEquals("iachbo", model.resourceConfigParameters().resourcePrefix());
-        Assertions.assertEquals("flnrosfqpteehzz",
+        Assertions.assertEquals(1493964267, model.resourceConfigParameters().resourceCount());
+        Assertions.assertEquals("orcjxvsnby", model.resourceConfigParameters().resourcePrefix());
+        Assertions.assertEquals("abnmocpcyshu",
             model.resourceConfigParameters().flexProperties().vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(732529011,
+        Assertions.assertEquals(818060655,
             model.resourceConfigParameters().flexProperties().vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.LINUX, model.resourceConfigParameters().flexProperties().osType());
-        Assertions.assertEquals(PriorityType.SPOT,
+        Assertions.assertEquals(OsType.WINDOWS, model.resourceConfigParameters().flexProperties().osType());
+        Assertions.assertEquals(PriorityType.REGULAR,
             model.resourceConfigParameters().flexProperties().priorityProfile().type());
-        Assertions.assertEquals(66.16210013114946D,
+        Assertions.assertEquals(51.46626214406764D,
             model.resourceConfigParameters().flexProperties().priorityProfile().maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE,
             model.resourceConfigParameters().flexProperties().priorityProfile().evictionPolicy());
-        Assertions.assertEquals(AllocationStrategy.PRIORITIZED,
+        Assertions.assertEquals(AllocationStrategy.LOWEST_PRICE,
             model.resourceConfigParameters().flexProperties().priorityProfile().allocationStrategy());
-        Assertions.assertEquals(DistributionStrategy.STRICT_BALANCED,
+        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED,
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("hc",
+        Assertions.assertEquals("kudjkrlkhb",
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(901066642,
+        Assertions.assertEquals(375716095,
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1840218719, model.resourceConfigParameters().flexProperties().minCapacity());
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(563915044, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(88014725, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW,
+        Assertions.assertEquals(194307867, model.resourceConfigParameters().flexProperties().minCapacity());
+        Assertions.assertEquals(1382743089, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(701234104, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
     }
 
     @org.junit.jupiter.api.Test
@@ -69,61 +66,61 @@ public final class ExecuteVdiCreateRequestTests {
         ExecuteVdiCreateRequest model = new ExecuteVdiCreateRequest()
             .withResourceConfigParameters(new ResourceProvisionVdiPayload()
                 .withBaseProfile(
-                    mapOf("dnsezcxtbzs", BinaryData.fromBytes("\"datacufufsrpymz\"".getBytes(StandardCharsets.UTF_8))))
+                    mapOf("jeiachboosfl", BinaryData.fromBytes("\"dataewmdw\"".getBytes(StandardCharsets.UTF_8)),
+                        "fqpte", BinaryData.fromBytes("\"dataro\"".getBytes(StandardCharsets.UTF_8)), "i",
+                        BinaryData.fromBytes("\"datahzzvypyq\"".getBytes(StandardCharsets.UTF_8)), "npvswjdkirso",
+                        BinaryData.fromBytes("\"dataz\"".getBytes(StandardCharsets.UTF_8))))
                 .withResourceOverrides(
-                    Arrays.asList(mapOf("ewmdw", BinaryData.fromBytes("\"datacs\"".getBytes(StandardCharsets.UTF_8)))))
-                .withResourceCount(870158563)
-                .withResourcePrefix("iachbo")
+                    Arrays.asList(mapOf("mnoh", BinaryData.fromBytes("\"datahc\"".getBytes(StandardCharsets.UTF_8))),
+                        mapOf("ifiyipjxsqwpgrj",
+                            BinaryData.fromBytes("\"datackwhds\"".getBytes(StandardCharsets.UTF_8)))))
+                .withResourceCount(1493964267)
+                .withResourcePrefix("orcjxvsnby")
                 .withFlexProperties(new FlexProperties()
-                    .withVmSizeProfiles(
-                        Arrays.asList(new VmSizeProfile().withName("flnrosfqpteehzz").withRank(732529011),
-                            new VmSizeProfile().withName("pyqr").withRank(602358321),
-                            new VmSizeProfile().withName("z").withRank(1071544180)))
-                    .withOsType(OsType.LINUX)
-                    .withPriorityProfile(new PriorityProfile().withType(PriorityType.SPOT)
-                        .withMaxPricePerVM(66.16210013114946D)
+                    .withVmSizeProfiles(Arrays.asList(new VmSizeProfile().withName("abnmocpcyshu").withRank(818060655),
+                        new VmSizeProfile().withName("afbljjgpbtoqcjmk").withRank(897001974)))
+                    .withOsType(OsType.WINDOWS)
+                    .withPriorityProfile(new PriorityProfile().withType(PriorityType.REGULAR)
+                        .withMaxPricePerVM(51.46626214406764D)
                         .withEvictionPolicy(EvictionPolicy.DEALLOCATE)
-                        .withAllocationStrategy(AllocationStrategy.PRIORITIZED))
-                    .withZoneAllocationPolicy(new ZoneAllocationPolicy()
-                        .withDistributionStrategy(DistributionStrategy.STRICT_BALANCED)
-                        .withZonePreferences(Arrays.asList(new ZonePreference().withZone("hc").withRank(901066642))))
-                    .withMinCapacity(1840218719)))
+                        .withAllocationStrategy(AllocationStrategy.LOWEST_PRICE))
+                    .withZoneAllocationPolicy(
+                        new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_BALANCED)
+                            .withZonePreferences(
+                                Arrays.asList(new ZonePreference().withZone("kudjkrlkhb").withRank(375716095))))
+                    .withMinCapacity(194307867)))
             .withExecutionParameters(
-                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(563915044)
-                        .withRetryWindowInMinutes(88014725)
-                        .withOnFailureAction(ResourceOperationType.GET_INSTANCE_VIEW))
-                    .withVerifyVmAgentHealth(true));
+                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1382743089)
+                    .withRetryWindowInMinutes(701234104)
+                    .withOnFailureAction(ResourceOperationType.DELETE)).withVerifyVmAgentHealth(false));
         model = BinaryData.fromObject(model).toObject(ExecuteVdiCreateRequest.class);
-        Assertions.assertEquals(870158563, model.resourceConfigParameters().resourceCount());
-        Assertions.assertEquals("iachbo", model.resourceConfigParameters().resourcePrefix());
-        Assertions.assertEquals("flnrosfqpteehzz",
+        Assertions.assertEquals(1493964267, model.resourceConfigParameters().resourceCount());
+        Assertions.assertEquals("orcjxvsnby", model.resourceConfigParameters().resourcePrefix());
+        Assertions.assertEquals("abnmocpcyshu",
             model.resourceConfigParameters().flexProperties().vmSizeProfiles().get(0).name());
-        Assertions.assertEquals(732529011,
+        Assertions.assertEquals(818060655,
             model.resourceConfigParameters().flexProperties().vmSizeProfiles().get(0).rank());
-        Assertions.assertEquals(OsType.LINUX, model.resourceConfigParameters().flexProperties().osType());
-        Assertions.assertEquals(PriorityType.SPOT,
+        Assertions.assertEquals(OsType.WINDOWS, model.resourceConfigParameters().flexProperties().osType());
+        Assertions.assertEquals(PriorityType.REGULAR,
             model.resourceConfigParameters().flexProperties().priorityProfile().type());
-        Assertions.assertEquals(66.16210013114946D,
+        Assertions.assertEquals(51.46626214406764D,
             model.resourceConfigParameters().flexProperties().priorityProfile().maxPricePerVM());
         Assertions.assertEquals(EvictionPolicy.DEALLOCATE,
             model.resourceConfigParameters().flexProperties().priorityProfile().evictionPolicy());
-        Assertions.assertEquals(AllocationStrategy.PRIORITIZED,
+        Assertions.assertEquals(AllocationStrategy.LOWEST_PRICE,
             model.resourceConfigParameters().flexProperties().priorityProfile().allocationStrategy());
-        Assertions.assertEquals(DistributionStrategy.STRICT_BALANCED,
+        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED,
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().distributionStrategy());
-        Assertions.assertEquals("hc",
+        Assertions.assertEquals("kudjkrlkhb",
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().zonePreferences().get(0).zone());
-        Assertions.assertEquals(901066642,
+        Assertions.assertEquals(375716095,
             model.resourceConfigParameters().flexProperties().zoneAllocationPolicy().zonePreferences().get(0).rank());
-        Assertions.assertEquals(1840218719, model.resourceConfigParameters().flexProperties().minCapacity());
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(563915044, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(88014725, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW,
+        Assertions.assertEquals(194307867, model.resourceConfigParameters().flexProperties().minCapacity());
+        Assertions.assertEquals(1382743089, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(701234104, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
     }
 
     // Use "Map.of" if available

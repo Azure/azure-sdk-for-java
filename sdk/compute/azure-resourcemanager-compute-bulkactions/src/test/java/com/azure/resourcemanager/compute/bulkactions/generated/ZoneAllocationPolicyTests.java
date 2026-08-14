@@ -15,21 +15,21 @@ public final class ZoneAllocationPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneAllocationPolicy model = BinaryData.fromString(
-            "{\"distributionStrategy\":\"BestEffortBalanced\",\"zonePreferences\":[{\"zone\":\"qsycbkbfkgu\",\"rank\":395689109}]}")
+            "{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"skanyk\",\"rank\":1937589018}]}")
             .toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED, model.distributionStrategy());
-        Assertions.assertEquals("qsycbkbfkgu", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(395689109, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(DistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("skanyk", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1937589018, model.zonePreferences().get(0).rank());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ZoneAllocationPolicy model
-            = new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.BEST_EFFORT_BALANCED)
-                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("qsycbkbfkgu").withRank(395689109)));
+            = new ZoneAllocationPolicy().withDistributionStrategy(DistributionStrategy.PRIORITIZED)
+                .withZonePreferences(Arrays.asList(new ZonePreference().withZone("skanyk").withRank(1937589018)));
         model = BinaryData.fromObject(model).toObject(ZoneAllocationPolicy.class);
-        Assertions.assertEquals(DistributionStrategy.BEST_EFFORT_BALANCED, model.distributionStrategy());
-        Assertions.assertEquals("qsycbkbfkgu", model.zonePreferences().get(0).zone());
-        Assertions.assertEquals(395689109, model.zonePreferences().get(0).rank());
+        Assertions.assertEquals(DistributionStrategy.PRIORITIZED, model.distributionStrategy());
+        Assertions.assertEquals("skanyk", model.zonePreferences().get(0).zone());
+        Assertions.assertEquals(1937589018, model.zonePreferences().get(0).rank());
     }
 }

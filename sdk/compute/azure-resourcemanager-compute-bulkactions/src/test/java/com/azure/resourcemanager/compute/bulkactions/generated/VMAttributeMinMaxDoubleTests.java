@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VMAttributeMinMaxDoubleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMAttributeMinMaxDouble model = BinaryData.fromString("{\"min\":71.06123911787623,\"max\":4.33005629706712}")
+        VMAttributeMinMaxDouble model = BinaryData.fromString("{\"min\":43.032452835512146,\"max\":17.869411204038087}")
             .toObject(VMAttributeMinMaxDouble.class);
-        Assertions.assertEquals(71.06123911787623D, model.min());
-        Assertions.assertEquals(4.33005629706712D, model.max());
+        Assertions.assertEquals(43.032452835512146D, model.min());
+        Assertions.assertEquals(17.869411204038087D, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMAttributeMinMaxDouble model
-            = new VMAttributeMinMaxDouble().withMin(71.06123911787623D).withMax(4.33005629706712D);
+            = new VMAttributeMinMaxDouble().withMin(43.032452835512146D).withMax(17.869411204038087D);
         model = BinaryData.fromObject(model).toObject(VMAttributeMinMaxDouble.class);
-        Assertions.assertEquals(71.06123911787623D, model.min());
-        Assertions.assertEquals(4.33005629706712D, model.max());
+        Assertions.assertEquals(43.032452835512146D, model.min());
+        Assertions.assertEquals(17.869411204038087D, model.max());
     }
 }

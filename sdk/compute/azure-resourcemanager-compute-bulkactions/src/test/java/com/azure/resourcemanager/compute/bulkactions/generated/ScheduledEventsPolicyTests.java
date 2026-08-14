@@ -17,31 +17,31 @@ public final class ScheduledEventsPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsPolicy model = BinaryData.fromString(
-            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":false},\"userInitiatedReboot\":{\"automaticallyApprove\":false},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":true,\"scheduledEventsApiVersion\":\"upedeojnabckhs\"}},\"allInstancesDown\":{\"automaticallyApprove\":true}}")
+            "{\"userInitiatedRedeploy\":{\"automaticallyApprove\":true},\"userInitiatedReboot\":{\"automaticallyApprove\":true},\"scheduledEventsAdditionalPublishingTargets\":{\"eventGridAndResourceGraph\":{\"enable\":true,\"scheduledEventsApiVersion\":\"ef\"}},\"allInstancesDown\":{\"automaticallyApprove\":false}}")
             .toObject(ScheduledEventsPolicy.class);
-        Assertions.assertFalse(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
-        Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
+        Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
+        Assertions.assertTrue(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
         Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("upedeojnabckhs",
+        Assertions.assertEquals("ef",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledEventsPolicy model = new ScheduledEventsPolicy()
-            .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withUserInitiatedRedeployAutomaticallyApprove(false))
-            .withUserInitiatedReboot(new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(false))
+            .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withUserInitiatedRedeployAutomaticallyApprove(true))
+            .withUserInitiatedReboot(new UserInitiatedReboot().withUserInitiatedRebootAutomaticallyApprove(true))
             .withScheduledEventsAdditionalPublishingTargets(
                 new ScheduledEventsAdditionalPublishingTargets().withEventGridAndResourceGraph(
-                    new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("upedeojnabckhs")))
-            .withAllInstancesDown(new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(true));
+                    new EventGridAndResourceGraph().withEnable(true).withScheduledEventsApiVersion("ef")))
+            .withAllInstancesDown(new AllInstancesDown().withAllInstancesDownAutomaticallyApprove(false));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsPolicy.class);
-        Assertions.assertFalse(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
-        Assertions.assertFalse(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
+        Assertions.assertTrue(model.userInitiatedRedeploy().userInitiatedRedeployAutomaticallyApprove());
+        Assertions.assertTrue(model.userInitiatedReboot().userInitiatedRebootAutomaticallyApprove());
         Assertions.assertTrue(model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().enable());
-        Assertions.assertEquals("upedeojnabckhs",
+        Assertions.assertEquals("ef",
             model.scheduledEventsAdditionalPublishingTargets().eventGridAndResourceGraph().scheduledEventsApiVersion());
-        Assertions.assertTrue(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
+        Assertions.assertFalse(model.allInstancesDown().allInstancesDownAutomaticallyApprove());
     }
 }

@@ -16,30 +16,31 @@ public final class ManagedDiskParametersContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedDiskParametersContent model = BinaryData.fromString(
-            "{\"storageAccountType\":\"Standard_LRS\",\"diskEncryptionSet\":{\"id\":\"hseyvju\"},\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\",\"diskEncryptionSet\":{\"id\":\"spkdee\"}},\"id\":\"ofmxagkvtmelmqkr\"}")
+            "{\"storageAccountType\":\"StandardSSD_LRS\",\"diskEncryptionSet\":{\"id\":\"euecivyhzceuoj\"},\"securityProfile\":{\"securityEncryptionType\":\"DiskWithVMGuestState\",\"diskEncryptionSet\":{\"id\":\"eiotwmcdytdx\"}},\"id\":\"txnrjaw\"}")
             .toObject(ManagedDiskParametersContent.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.id());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("hseyvju", model.diskEncryptionSet().id());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals("txnrjaw", model.id());
+        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.storageAccountType());
+        Assertions.assertEquals("euecivyhzceuoj", model.diskEncryptionSet().id());
+        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
             model.securityProfile().securityEncryptionType());
-        Assertions.assertEquals("spkdee", model.securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("eiotwmcdytdx", model.securityProfile().diskEncryptionSet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedDiskParametersContent model = new ManagedDiskParametersContent().withId("ofmxagkvtmelmqkr")
-            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-            .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("hseyvju"))
-            .withSecurityProfile(
-                new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)
-                    .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("spkdee")));
+        ManagedDiskParametersContent model
+            = new ManagedDiskParametersContent().withId("txnrjaw")
+                .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
+                .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("euecivyhzceuoj"))
+                .withSecurityProfile(new VMDiskSecurityProfile()
+                    .withSecurityEncryptionType(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)
+                    .withDiskEncryptionSet(new DiskEncryptionSetParametersContent().withId("eiotwmcdytdx")));
         model = BinaryData.fromObject(model).toObject(ManagedDiskParametersContent.class);
-        Assertions.assertEquals("ofmxagkvtmelmqkr", model.id());
-        Assertions.assertEquals(StorageAccountTypes.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("hseyvju", model.diskEncryptionSet().id());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals("txnrjaw", model.id());
+        Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS, model.storageAccountType());
+        Assertions.assertEquals("euecivyhzceuoj", model.diskEncryptionSet().id());
+        Assertions.assertEquals(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE,
             model.securityProfile().securityEncryptionType());
-        Assertions.assertEquals("spkdee", model.securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("eiotwmcdytdx", model.securityProfile().diskEncryptionSet().id());
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
@@ -20,45 +19,39 @@ public final class ExecuteHibernateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteHibernateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1673976399,\"retryWindowInMinutes\":148902907,\"onFailureAction\":\"Create\"},\"verifyVmAgentHealth\":true},\"resources\":{\"ids\":[\"rgqjbpfzfsinzg\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"jrwzox\",\"resourceContext\":\"j\"},{\"resourceId\":\"felluwfzitonpe\",\"resourceContext\":\"fpjkjlxofp\"},{\"resourceId\":\"vhpfxxypininmay\",\"resourceContext\":\"uybbkpodep\"},{\"resourceId\":\"oginuvamiheognar\",\"resourceContext\":\"zxtheotusivyevcc\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1977769752,\"retryWindowInMinutes\":96730142,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":true},\"resources\":{\"ids\":[\"wzo\",\"xjtfelluwfzit\",\"np\",\"qfpjk\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"ofpdvh\",\"resourceContext\":\"fxxypininmayhuy\"},{\"resourceId\":\"bkpodepooginuv\",\"resourceContext\":\"mihe\"},{\"resourceId\":\"gnarxzxtheo\",\"resourceContext\":\"usivye\"},{\"resourceId\":\"cciqihnhungbwjz\",\"resourceContext\":\"nfygxgispemvtz\"}]}}")
             .toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1673976399, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(148902907, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
+        Assertions.assertEquals(1977769752, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(96730142, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.resources().ids().get(0));
-        Assertions.assertEquals("jrwzox", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("j", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("wzo", model.resources().ids().get(0));
+        Assertions.assertEquals("ofpdvh", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("fxxypininmayhuy", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteHibernateContent model = new ExecuteHibernateContent()
             .withExecutionParameters(
-                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(1673976399)
-                        .withRetryWindowInMinutes(148902907)
-                        .withOnFailureAction(ResourceOperationType.CREATE))
-                    .withVerifyVmAgentHealth(true))
-            .withResources(new Resources().withIds(Arrays.asList("rgqjbpfzfsinzg")))
+                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1977769752)
+                    .withRetryWindowInMinutes(96730142)
+                    .withOnFailureAction(ResourceOperationType.DELETE)).withVerifyVmAgentHealth(true))
+            .withResources(new Resources().withIds(Arrays.asList("wzo", "xjtfelluwfzit", "np", "qfpjk")))
             .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays.asList(
-                new ResourceWithContext().withResourceId("jrwzox").withResourceContext("j"),
-                new ResourceWithContext().withResourceId("felluwfzitonpe").withResourceContext("fpjkjlxofp"),
-                new ResourceWithContext().withResourceId("vhpfxxypininmay").withResourceContext("uybbkpodep"),
-                new ResourceWithContext().withResourceId("oginuvamiheognar").withResourceContext("zxtheotusivyevcc"))));
+                new ResourceWithContext().withResourceId("ofpdvh").withResourceContext("fxxypininmayhuy"),
+                new ResourceWithContext().withResourceId("bkpodepooginuv").withResourceContext("mihe"),
+                new ResourceWithContext().withResourceId("gnarxzxtheo").withResourceContext("usivye"),
+                new ResourceWithContext().withResourceId("cciqihnhungbwjz").withResourceContext("nfygxgispemvtz"))));
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1673976399, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(148902907, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE,
+        Assertions.assertEquals(1977769752, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(96730142, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.resources().ids().get(0));
-        Assertions.assertEquals("jrwzox", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("j", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("wzo", model.resources().ids().get(0));
+        Assertions.assertEquals("ofpdvh", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("fxxypininmayhuy", model.resourcesWithContext().resources().get(0).resourceContext());
     }
 }
