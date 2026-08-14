@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-07-21)
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.2 (2026-07-22)
 
 - Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-07-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,12 +18,12 @@
 
 #### `models.ResourceOperation` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was removed
-* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
-* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
-* `java.lang.String resourceId()` -> `java.lang.String resourceId()`
 * `java.lang.String errorCode()` -> `java.lang.String errorCode()`
 * `fromJson(com.azure.json.JsonReader)` was removed
+* `models.ResourceOperationDetails operation()` -> `models.ResourceOperationDetails operation()`
+* `java.lang.String errorDetails()` -> `java.lang.String errorDetails()`
+* `java.lang.String resourceId()` -> `java.lang.String resourceId()`
+* `toJson(com.azure.json.JsonWriter)` was removed
 
 ### Features Added
 
@@ -35,15 +45,21 @@
 
 * `models.VirtualMachineIpTag` was added
 
+* `models.RecurringScheduledActionsExecutionParameters` was added
+
 * `models.EvictionPolicy` was added
 
 * `models.LocationBasedLaunchBulkInstancesOperation$UpdateStages` was added
 
 * `models.WindowsVMGuestPatchMode` was added
 
+* `models.ScheduledActionResources` was added
+
 * `models.LinuxPatchAssessmentMode` was added
 
 * `models.DiagnosticsProfile` was added
+
+* `models.ResourceIdentityType` was added
 
 * `models.ExecuteCreateContent` was added
 
@@ -53,11 +69,25 @@
 
 * `models.WindowsPatchAssessmentMode` was added
 
+* `models.RecurringScheduledActionsProvisioningState` was added
+
+* `models.ScheduledActionExtensions` was added
+
+* `models.ScheduledActionOperationStatus` was added
+
 * `models.DeleteOptions` was added
+
+* `models.ScheduledAction$DefinitionStages` was added
 
 * `models.AdditionalUnattendContent` was added
 
+* `models.ScheduledAction$UpdateStages` was added
+
+* `models.OccurrenceResource` was added
+
 * `models.VirtualMachinePublicIPAddressConfiguration` was added
+
+* `models.RecurringScheduledActionsDeadlineType` was added
 
 * `models.ApiError` was added
 
@@ -87,13 +117,25 @@
 
 * `models.AcknowledgeBulkOperationErrorsRequest` was added
 
+* `models.BulkInstancesInnerError` was added
+
 * `models.DiffDiskPlacement` was added
 
 * `models.KeyVaultKeyReference` was added
 
 * `models.ResourcesWithContext` was added
 
+* `models.OccurrenceProperties` was added
+
+* `models.VirtualMachineIdentity` was added
+
 * `models.DiskCreateOptionTypes` was added
+
+* `models.LocationBasedBulkCreateCustom$Definition` was added
+
+* `models.BulkCreateCustomPriorityProfile` was added
+
+* `models.OccurrenceState` was added
 
 * `models.SecurityTypes` was added
 
@@ -109,7 +151,13 @@
 
 * `models.LinuxVMGuestPatchAutomaticByPlatformSettings` was added
 
+* `models.ScheduledAction$Definition` was added
+
+* `models.BulkCreateCustoms` was added
+
 * `models.ImageReference` was added
+
+* `models.OccurrenceResultSummary` was added
 
 * `models.StorageProfile` was added
 
@@ -117,17 +165,27 @@
 
 * `models.VMDiskSecurityProfile` was added
 
+* `models.ResourceOperationResponse` was added
+
 * `models.PublicIPAddressSku` was added
 
 * `models.ApiErrorBase` was added
 
 * `models.VMGalleryApplication` was added
 
+* `models.LocationBasedBulkCreateCustom$DefinitionStages` was added
+
 * `models.SecurityEncryptionTypes` was added
+
+* `models.BulkCreateCustomOverrideBase` was added
+
+* `models.LocationBasedBulkCreateCustom` was added
 
 * `models.KeyVaultSecretReference` was added
 
 * `models.LocationBasedLaunchBulkInstancesOperation` was added
+
+* `models.ResourcePatchRequest` was added
 
 * `models.PatchSettings` was added
 
@@ -143,6 +201,8 @@
 
 * `models.OperationStatusResult` was added
 
+* `models.ResourceAttachRequest` was added
+
 * `models.AcceleratorManufacturer` was added
 
 * `models.PriorityType` was added
@@ -153,6 +213,12 @@
 
 * `models.VirtualMachineNetworkInterfaceDnsSettingsConfiguration` was added
 
+* `models.UserAssignedIdentitiesValue` was added
+
+* `models.OccurrenceExtensions` was added
+
+* `models.ResourceStatus` was added
+
 * `models.LinuxConfiguration` was added
 
 * `models.ApplicationProfile` was added
@@ -161,29 +227,47 @@
 
 * `models.ResourceNotificationDetails` was added
 
+* `models.Language` was added
+
 * `models.DiskDetachOptionTypes` was added
 
 * `models.LocationBasedLaunchBulkInstancesOperation$Definition` was added
 
 * `models.ComputeProfile` was added
 
+* `models.OccurrenceExtensionProperties` was added
+
+* `models.NotificationType` was added
+
 * `models.AllInstancesDown` was added
 
+* `models.ScheduledActionProperties` was added
+
 * `models.NetworkApiVersion` was added
+
+* `models.ScheduledAction` was added
+
+* `models.DelayRequest` was added
 
 * `models.VirtualMachineNetworkInterfaceConfiguration` was added
 
 * `models.DataDisk` was added
 
+* `models.ScheduledActionResourceInput` was added
+
 * `models.SshConfiguration` was added
 
 * `models.Modes` was added
+
+* `models.BulkCreateCustomOverridesProfile` was added
 
 * `models.ScheduledEventsPolicy` was added
 
 * `models.DistributionStrategy` was added
 
 * `models.ManagedServiceIdentityType` was added
+
+* `models.BulkCreateCustomDistributionStrategy` was added
 
 * `models.ProvisioningState` was added
 
@@ -195,6 +279,10 @@
 
 * `models.AdditionalCapabilities` was added
 
+* `models.RecurringScheduledActionsRetryPolicy` was added
+
+* `models.OptimizationPreference` was added
+
 * `models.SshPublicKey` was added
 
 * `models.InnerError` was added
@@ -205,11 +293,17 @@
 
 * `models.BulkactionVMExtension` was added
 
+* `models.ResourceProvisioningState` was added
+
 * `models.SettingNames` was added
 
 * `models.LocationBasedLaunchBulkInstancesOperation$Update` was added
 
 * `models.Plan` was added
+
+* `models.NotificationProperties` was added
+
+* `models.CancelOccurrenceRequest` was added
 
 * `models.DiffDiskSettings` was added
 
@@ -219,15 +313,27 @@
 
 * `models.UserInitiatedRedeploy` was added
 
+* `models.ScheduledActionUpdateProperties` was added
+
+* `models.BulkCreateCustomOverride` was added
+
 * `models.EncryptionIdentity` was added
 
 * `models.NetworkProfile` was added
 
+* `models.ScheduledAction$Update` was added
+
 * `models.VirtualMachineReimageParameters` was added
+
+* `models.ResourceOperationStatus` was added
+
+* `models.ResourceResultSummary` was added
 
 * `models.SecurityProfile` was added
 
 * `models.VirtualMachine` was added
+
+* `models.WeekDay` was added
 
 * `models.HostEndpointSettings` was added
 
@@ -235,7 +341,11 @@
 
 * `models.ApiEntityReference` was added
 
+* `models.LocationBasedBulkCreateCustom$Update` was added
+
 * `models.ZoneAllocationPolicy` was added
+
+* `models.Error` was added
 
 * `models.VirtualMachineNetworkInterfaceConfigurationProperties` was added
 
@@ -245,11 +355,21 @@
 
 * `models.CachingTypes` was added
 
+* `models.BulkCreateCustomProperties` was added
+
+* `models.ScheduledActionsScheduleUpdate` was added
+
+* `models.BulkCreateCustomAllocationStrategy` was added
+
 * `models.VirtualMachineNetworkInterfaceIPConfigurationProperties` was added
+
+* `models.ScheduledActionType` was added
 
 * `models.DiskEncryptionSettings` was added
 
 * `models.AdditionalUnattendContentComponentName` was added
+
+* `models.ResourceType` was added
 
 * `models.ReimageResourceOperationResponse` was added
 
@@ -263,9 +383,15 @@
 
 * `models.CapacityReservationProfile` was added
 
+* `models.Occurrence` was added
+
 * `models.CapacityType` was added
 
 * `models.CpuManufacturer` was added
+
+* `models.LocationBasedBulkCreateCustom$UpdateStages` was added
+
+* `models.BulkCreateCustomZoneAllocationPolicy` was added
 
 * `models.ScheduledEventsAdditionalPublishingTargets` was added
 
@@ -273,9 +399,17 @@
 
 * `models.VMAttributeMinMaxInteger` was added
 
+* `models.RecurringScheduledActionsResourceOperationType` was added
+
+* `models.ScheduledActionUpdate` was added
+
 * `models.VmSizeProfile` was added
 
+* `models.Month` was added
+
 * `models.ResourceProvisionPayload` was added
+
+* `models.ScheduledActionResource` was added
 
 * `models.PublicIPAddressSkuName` was added
 
@@ -287,13 +421,21 @@
 
 * `models.AllocationStrategy` was added
 
+* `models.ResourceDetachRequest` was added
+
 * `models.ArchitectureType` was added
 
 * `models.AcknowledgeBulkOperationErrorsResponse` was added
 
 * `models.LaunchBulkInstancesOperations` was added
 
+* `models.ScheduledActions` was added
+
 * `models.VirtualHardDisk` was added
+
+* `models.ScheduledActionsSchedule` was added
+
+* `models.OccurrenceExtensionResource` was added
 
 * `models.VMAttributeMinMaxDouble` was added
 
@@ -302,6 +444,8 @@
 * `models.UserAssignedIdentity` was added
 
 * `models.ManagedDiskParametersContent` was added
+
+* `models.Occurrences` was added
 
 * `models.BootDiagnostics` was added
 
@@ -323,27 +467,31 @@
 
 * `models.OsType` was added
 
+* `models.ScheduledActionsExtensionProperties` was added
+
+* `models.BulkCreateCustomVmSizeProfile` was added
+
 * `models.VMAttributes` was added
 
 * `models.HyperVGeneration` was added
 
 #### `models.VirtualMachineBulkOperations` was modified
 
-* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was added
-* `bulkReimageOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteReimageRequest,com.azure.core.util.Context)` was added
-* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was added
-* `bulkReimageOperation(java.lang.String,java.lang.String,models.ExecuteReimageRequest)` was added
 * `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
-* `bulkVdiFlexCreateOperation(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest)` was added
+* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was added
 * `bulkListOperationErrors(java.lang.String,java.lang.String)` was added
+* `bulkReimageOperation(java.lang.String,java.lang.String,models.ExecuteReimageRequest)` was added
+* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was added
+* `bulkCreateOperation(java.lang.String,java.lang.String,models.ExecuteCreateContent)` was added
+* `bulkReimageOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteReimageRequest,com.azure.core.util.Context)` was added
+* `bulkVdiFlexCreateOperation(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest)` was added
 * `bulkCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was added
 * `bulkVdiFlexCreateOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteVdiCreateRequest,com.azure.core.util.Context)` was added
-* `bulkCreateOperation(java.lang.String,java.lang.String,models.ExecuteCreateContent)` was added
 
 #### `models.ExecuteDeallocateContent` was modified
 
-* `resourcesWithContext()` was added
 * `withResourcesWithContext(models.ResourcesWithContext)` was added
+* `resourcesWithContext()` was added
 
 #### `models.ResourceOperation` was modified
 
@@ -356,8 +504,10 @@
 
 #### `models.ExecutionParameters` was modified
 
-* `verifyVmAgentHealth()` was added
 * `withVerifyVmAgentHealth(java.lang.Boolean)` was added
+* `optimizationPreference()` was added
+* `verifyVmAgentHealth()` was added
+* `withOptimizationPreference(models.OptimizationPreference)` was added
 
 #### `models.ResourceOperationType` was modified
 
@@ -365,12 +515,18 @@
 
 #### `models.ExecuteStartContent` was modified
 
-* `withResourcesWithContext(models.ResourcesWithContext)` was added
 * `resourcesWithContext()` was added
+* `withResourcesWithContext(models.ResourcesWithContext)` was added
 
 #### `ComputeBulkActionsManager` was modified
 
 * `launchBulkInstancesOperations()` was added
+* `bulkCreateCustoms()` was added
+* `occurrenceExtensions()` was added
+* `scheduledActions()` was added
+* `scheduledActionExtensions()` was added
+* `occurrences()` was added
+* `scheduledActionOperationStatus()` was added
 
 #### `models.ExecuteHibernateContent` was modified
 
@@ -379,8 +535,8 @@
 
 #### `models.ExecuteDeleteContent` was modified
 
-* `withResourcesWithContext(models.ResourcesWithContext)` was added
 * `resourcesWithContext()` was added
+* `withResourcesWithContext(models.ResourcesWithContext)` was added
 
 ## 1.0.0-beta.1 (2026-07-01)
 
@@ -389,3 +545,4 @@
 ### Features Added
 
 - Initial release for the azure-resourcemanager-compute-bulkactions Java SDK.
+

@@ -27,9 +27,7 @@ public final class VolumeQuotaRulesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.volumeQuotaRules()
-            .delete("dvwnjkgvfnmxa", "rsqftib", "yibuyvpirfqjpnqn", "owsbedenrexkxbh", "vucnulgmnh",
-                com.azure.core.util.Context.NONE);
+        manager.volumeQuotaRules().delete("rra", "eek", "s", "eh", "gdda", com.azure.core.util.Context.NONE);
 
     }
 }

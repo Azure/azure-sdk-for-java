@@ -4,15 +4,21 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
+import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRestoreRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.CopyOptions;
+import com.azure.resourcemanager.recoveryservicesbackup.models.DataDiskEncryptionSettings;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreWithRehydrationRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityBasedRestoreDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.models.PerDiskEncryptionSetId;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointRehydrationInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriority;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SecuredVMDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessOption;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessSettings;
 import java.util.Arrays;
@@ -22,7 +28,60 @@ import java.util.Arrays;
  */
 public final class RestoresTriggerSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption.json
+     */
+    /**
+     * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails and per disk
+     * encryption settings.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void
+        restoreToNewAzureIaasVmWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndPerDiskEncryptionSettings(
+            com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withTargetVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
+                    .withTargetResourceGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
+                    .withVirtualNetworkId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(false)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))
+                    .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"))
+                    .withSecuredVMDetails(new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId(
+                        "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-os")
+                        .withDataDiskEncryptionSettings(new DataDiskEncryptionSettings()
+                            .withPerDiskEncryptionSetIds(Arrays.asList(new PerDiskEncryptionSetId().withLun(0)
+                                .withDiskEncryptionSetId(
+                                    "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-0"),
+                                new PerDiskEncryptionSetId().withLun(1)
+                                    .withDiskEncryptionSetId(
+                                        "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-1"),
+                                new PerDiskEncryptionSetId().withLun(2)
+                                    .withDiskEncryptionSetId(
+                                        "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-2")))
+                            .withDataDiskEncryptionIdentity(
+                                "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourcegroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-cdde")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreWithRehydrationRequest.
@@ -61,7 +120,33 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithUAMI.json
+     */
+    /**
+     * Sample code: Restore Azure File Share to Original Location with User Assigned Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void restoreAzureFileShareToOriginalLocationWithUserAssignedManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("swaggertestvault", "SwaggerTestRg", "Azure",
+                "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare",
+                "932886657837421071",
+                new RestoreRequestResource().withProperties(new AzureFileShareRestoreRequest()
+                    .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                    .withCopyOptions(CopyOptions.OVERWRITE)
+                    .withRestoreRequestType(RestoreRequestType.FULL_SHARE_RESTORE)
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/swaggertestuami"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest.
@@ -99,7 +184,76 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+     * 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_DataDiskEncryption_SingleEntry.json
+     */
+    /**
+     * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails and Data Disk
+     * Encryption Settings.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void
+        restoreToNewAzureIaasVmWithIaasVMRestoreRequestWithIdentityBasedRestoreDetailsAndDataDiskEncryptionSettings(
+            com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withTargetVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
+                    .withTargetResourceGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
+                    .withVirtualNetworkId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(false)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))
+                    .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"))
+                    .withSecuredVMDetails(new SecuredVMDetails().withSecuredVmosDiskEncryptionSetId(
+                        "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-os")
+                        .withDataDiskEncryptionSettings(new DataDiskEncryptionSettings().withDataDiskEncryptionSetId(
+                            "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourceGroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.Compute/diskEncryptionSets/des-data-lun-0")
+                            .withDataDiskEncryptionIdentity(
+                                "/subscriptions/5288acd1-ba79-4377-9205-9f220331a44a/resourcegroups/asmaskarrg-cvm-os-cmk-3cmk-1none-data-2606040706/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-cdde")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AzureStorage/TriggerRestore_AzureFileShare_WithSAMI.json
+     */
+    /**
+     * Sample code: Restore Azure File Share to Original Location with Managed Identity.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void restoreAzureFileShareToOriginalLocationWithManagedIdentity(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.restores()
+            .trigger("swaggertestvault", "SwaggerTestRg", "Azure",
+                "StorageContainer;Storage;SwaggerTestRg;swaggertestsa", "AzureFileShare;testshare",
+                "932886657837421071",
+                new RestoreRequestResource().withProperties(new AzureFileShareRestoreRequest()
+                    .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                    .withCopyOptions(CopyOptions.OVERWRITE)
+                    .withRestoreRequestType(RestoreRequestType.FULL_SHARE_RESTORE)
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreWithRehydrationRequest.
@@ -131,7 +285,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-07-01/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails.
@@ -168,7 +322,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest.
@@ -205,7 +359,7 @@ public final class RestoresTriggerSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-01-31-preview/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * 2026-07-01/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest with IdentityBasedRestoreDetails.
@@ -236,7 +390,7 @@ public final class RestoresTriggerSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-31-preview/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/TriggerRestore_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Restore with Resource Guard Enabled.

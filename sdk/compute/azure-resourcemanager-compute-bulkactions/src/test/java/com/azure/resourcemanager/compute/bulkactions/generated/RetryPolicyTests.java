@@ -13,21 +13,21 @@ public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetryPolicy model = BinaryData
-            .fromString("{\"retryCount\":222313615,\"retryWindowInMinutes\":1846033,\"onFailureAction\":\"Delete\"}")
+            .fromString("{\"retryCount\":1846033,\"retryWindowInMinutes\":649847293,\"onFailureAction\":\"Start\"}")
             .toObject(RetryPolicy.class);
-        Assertions.assertEquals(222313615, model.retryCount());
-        Assertions.assertEquals(1846033, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.onFailureAction());
+        Assertions.assertEquals(1846033, model.retryCount());
+        Assertions.assertEquals(649847293, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withRetryCount(222313615)
-            .withRetryWindowInMinutes(1846033)
-            .withOnFailureAction(ResourceOperationType.DELETE);
+        RetryPolicy model = new RetryPolicy().withRetryCount(1846033)
+            .withRetryWindowInMinutes(649847293)
+            .withOnFailureAction(ResourceOperationType.START);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(222313615, model.retryCount());
-        Assertions.assertEquals(1846033, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DELETE, model.onFailureAction());
+        Assertions.assertEquals(1846033, model.retryCount());
+        Assertions.assertEquals(649847293, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.START, model.onFailureAction());
     }
 }

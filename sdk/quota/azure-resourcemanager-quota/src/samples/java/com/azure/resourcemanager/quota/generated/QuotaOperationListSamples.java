@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class QuotaOperationListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GetOperations.json
+     * x-ms-original-file: 2026-09-01-preview/GetOperations.json
      */
     /**
      * Sample code: GetOperations.

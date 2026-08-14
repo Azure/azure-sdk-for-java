@@ -1,14 +1,14 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.13.6 (2026-08-12)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
+- Upgraded `okio-jvm` from `3.16.0` to `3.18.1`.
 
 ## 1.13.5 (2026-06-08)
 

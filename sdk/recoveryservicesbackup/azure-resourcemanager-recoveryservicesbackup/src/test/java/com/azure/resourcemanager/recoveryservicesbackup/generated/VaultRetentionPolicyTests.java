@@ -13,16 +13,16 @@ public final class VaultRetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VaultRetentionPolicy model = BinaryData.fromString(
-            "{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":1952493795}")
+            "{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":1332011010}")
             .toObject(VaultRetentionPolicy.class);
-        Assertions.assertEquals(1952493795, model.snapshotRetentionInDays());
+        Assertions.assertEquals(1332011010, model.snapshotRetentionInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VaultRetentionPolicy model = new VaultRetentionPolicy().withVaultRetention(new RetentionPolicy())
-            .withSnapshotRetentionInDays(1952493795);
+            .withSnapshotRetentionInDays(1332011010);
         model = BinaryData.fromObject(model).toObject(VaultRetentionPolicy.class);
-        Assertions.assertEquals(1952493795, model.snapshotRetentionInDays());
+        Assertions.assertEquals(1332011010, model.snapshotRetentionInDays());
     }
 }

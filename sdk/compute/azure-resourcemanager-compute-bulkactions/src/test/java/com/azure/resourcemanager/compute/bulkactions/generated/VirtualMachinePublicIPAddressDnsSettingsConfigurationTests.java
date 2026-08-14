@@ -13,19 +13,19 @@ public final class VirtualMachinePublicIPAddressDnsSettingsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = BinaryData.fromString("{\"domainNameLabel\":\"sjervti\",\"domainNameLabelScope\":\"ResourceGroupReuse\"}")
+            = BinaryData.fromString("{\"domainNameLabel\":\"dgssofwqmzqal\",\"domainNameLabelScope\":\"NoReuse\"}")
                 .toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("sjervti", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE, model.domainNameLabelScope());
+        Assertions.assertEquals("dgssofwqmzqal", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.domainNameLabelScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("sjervti")
-                .withDomainNameLabelScope(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE);
+            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("dgssofwqmzqal")
+                .withDomainNameLabelScope(DomainNameLabelScopeTypes.NO_REUSE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("sjervti", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE, model.domainNameLabelScope());
+        Assertions.assertEquals("dgssofwqmzqal", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.NO_REUSE, model.domainNameLabelScope());
     }
 }

@@ -22,7 +22,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     private Object desired;
 
     /*
-     * Twin desired properties
+     * Twin reported properties
      */
     private Object reported;
 
@@ -53,7 +53,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     }
 
     /**
-     * Get the reported property: Twin desired properties.
+     * Get the reported property: Twin reported properties.
      * 
      * @return the reported value.
      */
@@ -62,7 +62,7 @@ public final class RoutingTwinProperties implements JsonSerializable<RoutingTwin
     }
 
     /**
-     * Set the reported property: Twin desired properties.
+     * Set the reported property: Twin reported properties.
      * 
      * @param reported the reported value to set.
      * @return the RoutingTwinProperties object itself.

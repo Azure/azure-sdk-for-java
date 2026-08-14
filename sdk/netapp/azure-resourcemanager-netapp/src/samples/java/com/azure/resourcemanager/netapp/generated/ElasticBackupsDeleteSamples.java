@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ElasticBackupsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-15-preview/ElasticBackups_Delete.json
+     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_Delete.json
      */
     /**
      * Sample code: ElasticBackups_Delete.

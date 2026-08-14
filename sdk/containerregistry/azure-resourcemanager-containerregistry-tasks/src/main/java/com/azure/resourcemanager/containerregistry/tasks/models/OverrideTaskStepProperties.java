@@ -28,6 +28,7 @@ public final class OverrideTaskStepProperties implements JsonSerializable<Overri
     private String file;
 
     /*
+     * 
      * Gets or sets the collection of override arguments to be used when
      * executing a build step.
      */
@@ -95,7 +96,8 @@ public final class OverrideTaskStepProperties implements JsonSerializable<Overri
     }
 
     /**
-     * Get the arguments property: Gets or sets the collection of override arguments to be used when
+     * Get the arguments property:
+     * Gets or sets the collection of override arguments to be used when
      * executing a build step.
      * 
      * @return the arguments value.
@@ -105,7 +107,8 @@ public final class OverrideTaskStepProperties implements JsonSerializable<Overri
     }
 
     /**
-     * Set the arguments property: Gets or sets the collection of override arguments to be used when
+     * Set the arguments property:
+     * Gets or sets the collection of override arguments to be used when
      * executing a build step.
      * 
      * @param arguments the arguments value to set.

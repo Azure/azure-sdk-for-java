@@ -12,18 +12,18 @@ public final class SnapshotRestoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotRestoreParameters model
-            = BinaryData.fromString("{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"fcpfnznth\"}")
+            = BinaryData.fromString("{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"gny\"}")
                 .toObject(SnapshotRestoreParameters.class);
         Assertions.assertFalse(model.skipAttachAndMount());
-        Assertions.assertEquals("fcpfnznth", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("gny", model.logPointInTimeForDBRecovery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotRestoreParameters model = new SnapshotRestoreParameters().withSkipAttachAndMount(false)
-            .withLogPointInTimeForDBRecovery("fcpfnznth");
+        SnapshotRestoreParameters model
+            = new SnapshotRestoreParameters().withSkipAttachAndMount(false).withLogPointInTimeForDBRecovery("gny");
         model = BinaryData.fromObject(model).toObject(SnapshotRestoreParameters.class);
         Assertions.assertFalse(model.skipAttachAndMount());
-        Assertions.assertEquals("fcpfnznth", model.logPointInTimeForDBRecovery());
+        Assertions.assertEquals("gny", model.logPointInTimeForDBRecovery());
     }
 }

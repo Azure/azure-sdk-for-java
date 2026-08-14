@@ -664,6 +664,13 @@ public final class ContentUnderstandingAsyncClient {
 
     /**
      * Delete analyzer.
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -802,6 +809,14 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1076,6 +1091,13 @@ public final class ContentUnderstandingAsyncClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>content-type</td><td>String</td><td>Response content type.</td></tr>
+     * </table>
      *
      * @param operationId Operation identifier.
      * @param path File path.
@@ -1118,6 +1140,14 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
@@ -1468,6 +1498,14 @@ public final class ContentUnderstandingAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.
@@ -1535,7 +1573,8 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param modelDeployments Specify the default mapping of model names to LLM/embedding deployments in Microsoft
      * Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
@@ -1569,7 +1608,8 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1596,7 +1636,8 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param contentType Request content type.
      * @param contentRange Range of the input to analyze (ex. `1-3,5,9-`). Document content uses 1-based page numbers,
@@ -1632,7 +1673,8 @@ public final class ContentUnderstandingAsyncClient {
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param binaryInput The binary content of the document to analyze.
-     * @param stringEncoding The string encoding format for content spans in the response.
+     * @param stringEncoding The string encoding format for content spans in
+     * the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param contentType Request content type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

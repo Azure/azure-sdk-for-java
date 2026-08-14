@@ -27,6 +27,11 @@ public final class SourceSideScanStatus extends ExpandableStringEnum<SourceSideS
     public static final SourceSideScanStatus NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
+     * Source side scan configuration failed.
+     */
+    public static final SourceSideScanStatus CONFIGURATION_FAILED = fromString("ConfigurationFailed");
+
+    /**
      * Creates a new instance of SourceSideScanStatus value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

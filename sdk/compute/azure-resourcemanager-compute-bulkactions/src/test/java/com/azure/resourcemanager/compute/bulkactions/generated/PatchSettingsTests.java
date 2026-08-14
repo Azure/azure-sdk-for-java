@@ -16,30 +16,30 @@ public final class PatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchSettings model = BinaryData.fromString(
-            "{\"patchMode\":\"AutomaticByPlatform\",\"enableHotpatching\":false,\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}}")
+            "{\"patchMode\":\"AutomaticByPlatform\",\"enableHotpatching\":true,\"assessmentMode\":\"AutomaticByPlatform\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Unknown\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
             .toObject(PatchSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertFalse(model.enableHotpatching());
-        Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertTrue(model.enableHotpatching());
+        Assertions.assertEquals(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertFalse(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchSettings model = new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-            .withEnableHotpatching(false)
-            .withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT)
+            .withEnableHotpatching(true)
+            .withAssessmentMode(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
             .withAutomaticByPlatformSettings(new WindowsVMGuestPatchAutomaticByPlatformSettings()
-                .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
-                .withBypassPlatformSafetyChecksOnUserSchedule(false));
+                .withRebootSetting(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN)
+                .withBypassPlatformSafetyChecksOnUserSchedule(true));
         model = BinaryData.fromObject(model).toObject(PatchSettings.class);
         Assertions.assertEquals(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertFalse(model.enableHotpatching());
-        Assertions.assertEquals(WindowsPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertTrue(model.enableHotpatching());
+        Assertions.assertEquals(WindowsPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
+        Assertions.assertEquals(WindowsVMGuestPatchAutomaticByPlatformRebootSetting.UNKNOWN,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertFalse(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

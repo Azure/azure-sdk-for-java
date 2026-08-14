@@ -9,7 +9,7 @@ package com.azure.resourcemanager.fabric.generated;
  */
 public final class FabricCapacitiesListUsagesSamples {
     /*
-     * x-ms-original-file: 2025-01-15-preview/FabricCapacities_ListUsagesBySubscription.json
+     * x-ms-original-file: 2026-08-01-preview/FabricCapacities_ListUsagesBySubscription.json
      */
     /**
      * Sample code: List quota usages for a subscription.

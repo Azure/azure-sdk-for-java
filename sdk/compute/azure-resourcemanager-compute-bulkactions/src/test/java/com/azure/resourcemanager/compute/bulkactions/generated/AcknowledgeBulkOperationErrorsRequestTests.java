@@ -13,15 +13,16 @@ public final class AcknowledgeBulkOperationErrorsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AcknowledgeBulkOperationErrorsRequest model
-            = BinaryData.fromString("{\"operationIds\":[\"f\"]}").toObject(AcknowledgeBulkOperationErrorsRequest.class);
-        Assertions.assertEquals("f", model.operationIds().get(0));
+            = BinaryData.fromString("{\"operationIds\":[\"ectehf\",\"qsc\",\"eypvhezrkg\"]}")
+                .toObject(AcknowledgeBulkOperationErrorsRequest.class);
+        Assertions.assertEquals("ectehf", model.operationIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AcknowledgeBulkOperationErrorsRequest model
-            = new AcknowledgeBulkOperationErrorsRequest().withOperationIds(Arrays.asList("f"));
+        AcknowledgeBulkOperationErrorsRequest model = new AcknowledgeBulkOperationErrorsRequest()
+            .withOperationIds(Arrays.asList("ectehf", "qsc", "eypvhezrkg"));
         model = BinaryData.fromObject(model).toObject(AcknowledgeBulkOperationErrorsRequest.class);
-        Assertions.assertEquals("f", model.operationIds().get(0));
+        Assertions.assertEquals("ectehf", model.operationIds().get(0));
     }
 }

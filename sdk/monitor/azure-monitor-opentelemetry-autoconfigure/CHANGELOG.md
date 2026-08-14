@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Align customer-facing SDKStats configuration and custom dimension names with the stable specification.
+
 ## 1.5.0 (2026-06-11)
 
 ### Features Added

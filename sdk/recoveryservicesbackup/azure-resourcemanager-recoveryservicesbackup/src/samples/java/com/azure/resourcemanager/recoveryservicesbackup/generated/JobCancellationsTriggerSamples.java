@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file: 2026-01-31-preview/Common/TriggerCancelJob.json
+     * x-ms-original-file: 2026-07-01/Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.

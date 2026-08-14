@@ -1,0 +1,183 @@
+name: management-autopr-reviewer-true-negatives
+description: False-positive and deduplication tests for the unattended reviewer.
+
+tags:
+  area: management-autopr-reviewer
+
+defaults:
+  runs: 3
+  timeout: "300s"
+  model: gpt-5.6-terra
+  judge_model: gpt-5.6-terra
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: additive-beta-update-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-additive-beta-update.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR. Return the workflow review comment,
+      or say no concerns when no high-confidence rule matches.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no false positive concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
+      - type: prompt
+    rubric:
+      - The beta package correctly targets a preview API.
+      - The public Java changes are additive and the POM dependency alignment is expected generated churn.
+      - No Blocking or Warning item should be raised; MGMT-API-VERSION may provide informational context.
+
+  - name: beta-breaking-changelog-is-not-main-concern
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-beta-breaking-changelog.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no beta breaking concern"
+        config:
+          pattern: "\\[MGMT-BREAKING\\]"
+  - name: generated-only-java-is-not-reviewed
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-generated-only-java.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no generated-path concern"
+        config:
+          pattern: "\\[MGMT-(FOLDER|VERSION|LRO|API-VERSION-OVERLAP|BREAKING)\\]"
+  - name: matching-service-folder-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-service-folder-match.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md. Focus on
+      service-folder and module identity.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no service folder mismatch"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The third module-name segment is compute and matches sdk/compute.
+      - The reviewer must not raise MGMT-FOLDER.
+
+  - name: prior-concern-is-carried-once
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-prior-concern.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to update the review state from
+      review-input.md. Do not repeat an unchanged question as a new concern.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "concern carried forward"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\].*Carried forward"
+      - type: output-not-matches
+        name: "not marked new"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION-OVERLAP\\]\\s+New\\b"
+      - type: prompt
+    rubric:
+      - The existing MGMT-API-VERSION-OVERLAP concern still applies.
+      - It must retain the same ID and be marked Carried forward, without restating the question as new.
+
+  - name: standard-manager-name-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-clean.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no standard manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: reordered-manager-identity-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-reordered.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no reordered manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"
+
+  - name: unchanged-legacy-manager-name-is-clean
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/tn-manager-legacy.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md as an
+      eligible generated management AutoPR.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-not-matches
+        name: "no legacy manager-name concern"
+        config:
+          pattern: "\\[MGMT-MANAGER-NAME\\]"

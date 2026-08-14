@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionIdentity model
-            = BinaryData.fromString("{\"userAssignedIdentityResourceId\":\"zpof\"}").toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("zpof", model.userAssignedIdentityResourceId());
+        EncryptionIdentity model = BinaryData.fromString("{\"userAssignedIdentityResourceId\":\"euzsoi\"}")
+            .toObject(EncryptionIdentity.class);
+        Assertions.assertEquals("euzsoi", model.userAssignedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionIdentity model = new EncryptionIdentity().withUserAssignedIdentityResourceId("zpof");
+        EncryptionIdentity model = new EncryptionIdentity().withUserAssignedIdentityResourceId("euzsoi");
         model = BinaryData.fromObject(model).toObject(EncryptionIdentity.class);
-        Assertions.assertEquals("zpof", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("euzsoi", model.userAssignedIdentityResourceId());
     }
 }

@@ -194,9 +194,13 @@ public final class SingleDocumentTranslationClientImpl {
      * This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
+     * <tr><td>deploymentName</td><td>String</td><td>No</td><td>Deployment name of the custom translation model for the
+     * translation request.</td></tr>
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -206,6 +210,20 @@ public final class SingleDocumentTranslationClientImpl {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
@@ -243,9 +261,13 @@ public final class SingleDocumentTranslationClientImpl {
      * This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
+     * <tr><td>deploymentName</td><td>String</td><td>No</td><td>Deployment name of the custom translation model for the
+     * translation request.</td></tr>
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -255,6 +277,20 @@ public final class SingleDocumentTranslationClientImpl {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
