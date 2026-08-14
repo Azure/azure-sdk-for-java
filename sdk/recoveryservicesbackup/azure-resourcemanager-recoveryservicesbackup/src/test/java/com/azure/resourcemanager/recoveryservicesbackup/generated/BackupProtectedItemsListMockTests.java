@@ -25,7 +25,7 @@ public final class BackupProtectedItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"Invalid\",\"workloadType\":\"GenericDataSource\",\"containerName\":\"obygoo\",\"sourceResourceId\":\"qa\",\"policyId\":\"xv\",\"lastRecoveryPoint\":\"2021-10-26T16:17:33Z\",\"backupSetName\":\"fucsaodjnosdkvi\",\"createMode\":\"Recover\",\"deferredDeleteTimeInUTC\":\"2021-06-08T21:08:28Z\",\"isScheduledForDeferredDelete\":true,\"deferredDeleteTimeRemaining\":\"rnzpducdaak\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"oimyfpqd\"],\"isArchiveEnabled\":false,\"policyName\":\"pnw\",\"softDeleteRetentionPeriodInDays\":907870780,\"vaultId\":\"vpctfj\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"Configured\",\"sourceSideScanSummary\":\"NotApplicable\"}},\"tags\":{\"ejjk\":\"uhznwhvuldbk\",\"azmxjqi\":\"igaw\",\"jjsbcmlzaahzbhur\":\"h\",\"lirh\":\"olk\"},\"location\":\"ojusuzgfjzcva\",\"eTag\":\"oialahfxwccokdx\",\"id\":\"kmkcz\",\"name\":\"nuhhoqeqshav\",\"type\":\"jqkx\"}]}";
+            = "{\"value\":[{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureBackupServer\",\"workloadType\":\"Invalid\",\"containerName\":\"moxsa\",\"sourceResourceId\":\"xej\",\"policyId\":\"ecywn\",\"lastRecoveryPoint\":\"2021-05-10T21:17:50Z\",\"backupSetName\":\"za\",\"createMode\":\"Invalid\",\"deferredDeleteTimeInUTC\":\"2021-12-07T02:03:22Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"nddbbozsyvr\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":true,\"resourceGuardOperationRequests\":[\"rchwudlxeei\",\"tpmnoe\",\"hqlfmsib\"],\"isArchiveEnabled\":false,\"policyName\":\"fgxkydpmypgf\",\"softDeleteRetentionPeriodInDays\":1621792370,\"sourceLocation\":\"ywhlakxpe\",\"vaultId\":\"ewp\",\"sourceSideScanInfo\":{\"sourceSideScanStatus\":\"ConfigurationFailed\",\"sourceSideScanSummary\":\"Suspicious\"}},\"tags\":{\"w\":\"qcrzgeuqxbpia\",\"gddhjkrukizyhgs\":\"aujegqdtadra\",\"fpjbqggwe\":\"tnqsktx\",\"cstu\":\"iwdhdmncgbfzu\"},\"location\":\"lhxd\",\"eTag\":\"klciichgjsysm\",\"id\":\"o\",\"name\":\"gwxfkzsi\",\"type\":\"cuvbdujgcwxvec\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,33 +34,33 @@ public final class BackupProtectedItemsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ProtectedItemResource> response = manager.backupProtectedItems()
-            .list("dcvxodkrvfsxxby", "e", "qlvge", "pwgoljt", com.azure.core.util.Context.NONE);
+        PagedIterable<ProtectedItemResource> response
+            = manager.backupProtectedItems().list("j", "xvgjbfi", "bpnjodf", "bj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("obygoo", response.iterator().next().properties().containerName());
-        Assertions.assertEquals("qa", response.iterator().next().properties().sourceResourceId());
-        Assertions.assertEquals("xv", response.iterator().next().properties().policyId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T16:17:33Z"),
+        Assertions.assertEquals("moxsa", response.iterator().next().properties().containerName());
+        Assertions.assertEquals("xej", response.iterator().next().properties().sourceResourceId());
+        Assertions.assertEquals("ecywn", response.iterator().next().properties().policyId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T21:17:50Z"),
             response.iterator().next().properties().lastRecoveryPoint());
-        Assertions.assertEquals("fucsaodjnosdkvi", response.iterator().next().properties().backupSetName());
-        Assertions.assertEquals(CreateMode.RECOVER, response.iterator().next().properties().createMode());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T21:08:28Z"),
+        Assertions.assertEquals("za", response.iterator().next().properties().backupSetName());
+        Assertions.assertEquals(CreateMode.INVALID, response.iterator().next().properties().createMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T02:03:22Z"),
             response.iterator().next().properties().deferredDeleteTimeInUtc());
-        Assertions.assertTrue(response.iterator().next().properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("rnzpducdaak", response.iterator().next().properties().deferredDeleteTimeRemaining());
+        Assertions.assertFalse(response.iterator().next().properties().isScheduledForDeferredDelete());
+        Assertions.assertEquals("nddbbozsyvr", response.iterator().next().properties().deferredDeleteTimeRemaining());
         Assertions.assertTrue(response.iterator().next().properties().isDeferredDeleteScheduleUpcoming());
-        Assertions.assertFalse(response.iterator().next().properties().isRehydrate());
-        Assertions.assertEquals("oimyfpqd",
+        Assertions.assertTrue(response.iterator().next().properties().isRehydrate());
+        Assertions.assertEquals("rchwudlxeei",
             response.iterator().next().properties().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(response.iterator().next().properties().isArchiveEnabled());
-        Assertions.assertEquals("pnw", response.iterator().next().properties().policyName());
-        Assertions.assertEquals(907870780, response.iterator().next().properties().softDeleteRetentionPeriodInDays());
-        Assertions.assertEquals(SourceSideScanStatus.CONFIGURED,
+        Assertions.assertEquals("fgxkydpmypgf", response.iterator().next().properties().policyName());
+        Assertions.assertEquals(1621792370, response.iterator().next().properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SourceSideScanStatus.CONFIGURATION_FAILED,
             response.iterator().next().properties().sourceSideScanInfo().sourceSideScanStatus());
-        Assertions.assertEquals(SourceSideScanSummary.NOT_APPLICABLE,
+        Assertions.assertEquals(SourceSideScanSummary.SUSPICIOUS,
             response.iterator().next().properties().sourceSideScanInfo().sourceSideScanSummary());
-        Assertions.assertEquals("uhznwhvuldbk", response.iterator().next().tags().get("ejjk"));
-        Assertions.assertEquals("ojusuzgfjzcva", response.iterator().next().location());
-        Assertions.assertEquals("oialahfxwccokdx", response.iterator().next().etag());
+        Assertions.assertEquals("qcrzgeuqxbpia", response.iterator().next().tags().get("w"));
+        Assertions.assertEquals("lhxd", response.iterator().next().location());
+        Assertions.assertEquals("klciichgjsysm", response.iterator().next().etag());
     }
 }

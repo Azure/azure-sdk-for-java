@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class DeletedProtectionContainersListSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/SoftDeletedContainers_List.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/SoftDeletedContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.

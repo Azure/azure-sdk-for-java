@@ -84,42 +84,4 @@ public interface RecoveryPoints {
      */
     PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String filter, Context context);
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies along with {@link Response}.
-     */
-    Response<RecoveryPointResource> updateWithResponse(String resourceGroupName, String vaultName, String fabricName,
-        String containerName, String protectedItemName, String recoveryPointId, UpdateRecoveryPointRequest parameters,
-        Context context);
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
-     */
-    RecoveryPointResource update(String resourceGroupName, String vaultName, String fabricName, String containerName,
-        String protectedItemName, String recoveryPointId, UpdateRecoveryPointRequest parameters);
 }

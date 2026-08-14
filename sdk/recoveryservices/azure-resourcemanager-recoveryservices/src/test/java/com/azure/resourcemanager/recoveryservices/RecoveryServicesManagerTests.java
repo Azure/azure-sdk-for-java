@@ -81,21 +81,25 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
         try {
             String vaultName = "vault" + randomPadding();
             // @embedmeStart
-            vault = recoveryServicesManager.vaults()
-                .define(vaultName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(resourceGroupName)
-                .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
-                .withProperties(new VaultProperties()
-                    .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
-                            .withConfiguration(
-                                new ImmutabilityConfiguration().withType(ImmutabilityType.AS_PER_POLICY))))
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withRestoreSettings(new RestoreSettings()
-                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
-                            .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
-                .create();
+            vault
+                = recoveryServicesManager.vaults()
+                    .define(vaultName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
+                    .withProperties(
+                        new VaultProperties()
+                            .withSecuritySettings(
+                                new SecuritySettings()
+                                    .withImmutabilitySettings(
+                                        new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                                            .withConfiguration(new ImmutabilityConfiguration()
+                                                .withType(ImmutabilityType.AS_PER_POLICY))))
+                            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                            .withRestoreSettings(new RestoreSettings()
+                                .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                                    .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+                    .create();
             // @embedmeEnd
             vault.refresh();
             Assertions.assertEquals(vault.name(), vaultName);

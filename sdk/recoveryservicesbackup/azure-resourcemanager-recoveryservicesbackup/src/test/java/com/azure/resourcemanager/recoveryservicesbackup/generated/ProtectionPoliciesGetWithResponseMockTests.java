@@ -21,7 +21,7 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1400257872,\"resourceGuardOperationRequests\":[\"cqydey\",\"vskiczd\",\"rjeizik\"]},\"tags\":{\"ycqsxr\":\"boohxbms\",\"ewuyqa\":\"d\",\"hdaurghooxaexb\":\"ohpjhgejkbv\"},\"location\":\"xjxjoe\",\"eTag\":\"qxrkdknko\",\"id\":\"ktmbozomtzami\",\"name\":\"bigwcdgzseznu\",\"type\":\"keuair\"}";
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":35253637,\"resourceGuardOperationRequests\":[\"zjahwriuomz\",\"zfkiceevsaaxwsp\",\"axikhfjqebglcxk\",\"gzzromv\"]},\"tags\":{\"mesrfsvpi\":\"sem\",\"wxspvckojaz\":\"kzpatqtdi\",\"esubzpvpv\":\"bgspf\",\"j\":\"ylytcovqseusr\"},\"location\":\"xzfxn\",\"eTag\":\"lbmuos\",\"id\":\"jmdihdcyyyzlw\",\"name\":\"bwzjnufzrf\",\"type\":\"m\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,14 +30,13 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ProtectionPolicyResource response = manager.protectionPolicies()
-            .getWithResponse("lusnawmhhgzotfr", "yrgkoekv", "wxxyxhighctx", com.azure.core.util.Context.NONE)
-            .getValue();
+        ProtectionPolicyResource response
+            = manager.protectionPolicies().getWithResponse("y", "it", "n", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(1400257872, response.properties().protectedItemsCount());
-        Assertions.assertEquals("cqydey", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("boohxbms", response.tags().get("ycqsxr"));
-        Assertions.assertEquals("xjxjoe", response.location());
-        Assertions.assertEquals("qxrkdknko", response.etag());
+        Assertions.assertEquals(35253637, response.properties().protectedItemsCount());
+        Assertions.assertEquals("zjahwriuomz", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("sem", response.tags().get("mesrfsvpi"));
+        Assertions.assertEquals("xzfxn", response.location());
+        Assertions.assertEquals("lbmuos", response.etag());
     }
 }

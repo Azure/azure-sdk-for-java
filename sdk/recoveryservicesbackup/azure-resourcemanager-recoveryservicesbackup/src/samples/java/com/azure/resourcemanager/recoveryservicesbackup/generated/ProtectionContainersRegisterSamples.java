@@ -16,7 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.OperationType;
  */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToUAMI.json
      */
     /**
      * Sample code: Re-register Azure Storage ProtectionContainers switching to User Assigned Managed Identity.
@@ -42,7 +42,7 @@ public final class ProtectionContainersRegisterSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.
@@ -63,7 +63,7 @@ public final class ProtectionContainersRegisterSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
      */
     /**
      * Sample code: Re-register Azure Storage ProtectionContainers switching to System Assigned Managed Identity.
@@ -87,7 +87,7 @@ public final class ProtectionContainersRegisterSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register_WithSAMI.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithSAMI.json
      */
     /**
      * Sample code: Register Azure Storage ProtectionContainers with System Assigned Managed Identity.
@@ -110,7 +110,7 @@ public final class ProtectionContainersRegisterSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureStorage/ProtectionContainers_Register_WithUAMI.json
+     * x-ms-original-file: 2026-07-01/AzureStorage/ProtectionContainers_Register_WithUAMI.json
      */
     /**
      * Sample code: Register Azure Storage ProtectionContainers with User Assigned Managed Identity.

@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -30,7 +28,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.models.RecoveryPointResourceList;
-import com.azure.resourcemanager.recoveryservicesbackup.models.UpdateRecoveryPointRequest;
 import reactor.core.publisher.Mono;
 
 /**
@@ -110,30 +107,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
             @PathParam("protectedItemName") String protectedItemName, @QueryParam("$filter") String filter,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoveryPointResourceInner>> update(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") UpdateRecoveryPointRequest parameters,
-            Context context);
-
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<RecoveryPointResourceInner> updateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
-            @PathParam("fabricName") String fabricName, @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") UpdateRecoveryPointRequest parameters,
-            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -413,105 +386,6 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         String containerName, String protectedItemName, String filter, Context context) {
         return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, fabricName, containerName,
             protectedItemName, filter, context), nextLink -> listNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryPointResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String vaultName, String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        UpdateRecoveryPointRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName,
-                protectedItemName, recoveryPointId, contentType, accept, parameters, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryPointResourceInner> updateAsync(String resourceGroupName, String vaultName, String fabricName,
-        String containerName, String protectedItemName, String recoveryPointId, UpdateRecoveryPointRequest parameters) {
-        return updateWithResponseAsync(resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoveryPointResourceInner> updateWithResponse(String resourceGroupName, String vaultName,
-        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        UpdateRecoveryPointRequest parameters, Context context) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            recoveryPointId, contentType, accept, parameters, context);
-    }
-
-    /**
-     * UpdateRecoveryPoint to update recovery point for given RecoveryPointID.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vaultName The name of the VaultResource.
-     * @param fabricName The name of the BackupFabricResource.
-     * @param containerName Name of the container whose details need to be fetched.
-     * @param protectedItemName Backed up item name whose details are to be fetched.
-     * @param recoveryPointId RecoveryPointID represents the backed up data to be fetched.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryPointResourceInner update(String resourceGroupName, String vaultName, String fabricName,
-        String containerName, String protectedItemName, String recoveryPointId, UpdateRecoveryPointRequest parameters) {
-        return updateWithResponse(resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, Context.NONE).getValue();
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupEnginesGetSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/Dpm/BackupEngines_Get.json
+     * x-ms-original-file: 2026-07-01/Dpm/BackupEngines_Get.json
      */
     /**
      * Sample code: Get Dpm/AzureBackupServer/Lajolla Backup Engine Details.

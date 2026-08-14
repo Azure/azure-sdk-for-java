@@ -131,6 +131,8 @@ public final class AzureSqlContainer extends ProtectionContainer {
                     deserializedAzureSqlContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureSqlContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureSqlContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedAzureSqlContainer.containerType
                         = ProtectableContainerType.fromString(reader.getString());
