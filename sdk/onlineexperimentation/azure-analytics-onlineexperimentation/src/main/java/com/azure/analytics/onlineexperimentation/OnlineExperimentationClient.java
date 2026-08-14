@@ -83,6 +83,15 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -158,6 +167,15 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
@@ -215,6 +233,14 @@ public final class OnlineExperimentationClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param body Experiment metric input to validate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -246,6 +272,13 @@ public final class OnlineExperimentationClient {
      * was modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param experimentMetricId Identifier for this experiment metric. Must start with a lowercase letter and contain
      * only lowercase letters, numbers, and underscores.
