@@ -42,6 +42,8 @@ public class FoundryFeaturesHeaderVerificationTest {
         .concat(Arrays.stream(AgentDefinitionOptInKeys.values()).map(AgentDefinitionOptInKeys::toString),
             Stream.of(FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V2_PREVIEW.toString()))
         .collect(Collectors.joining(","));
+    private static final String VOICE_AGENTS_PREVIEW_FEATURES
+        = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW.toString();
 
     @Test
     public void allowPreviewAddsAreaSpecificHeaders() {
@@ -72,6 +74,20 @@ public class FoundryFeaturesHeaderVerificationTest {
 
         builder.beta().buildBetaMemoryStoresClient().getMemoryStoreWithResponse("store", new RequestOptions());
         assertEquals(FoundryFeaturesOptInKeys.MEMORY_STORES_V1_PREVIEW.toString(), foundryFeatures(httpClient));
+    }
+
+    @Test
+    public void voiceClientsAddRequiredPreviewHeaderByDefault() {
+        RecordingHttpClient webSocketHttpClient
+            = new RecordingHttpClient(request -> new MockHttpResponse(request, 101));
+        createBuilder(webSocketHttpClient).buildVoiceAgentWebSocketClient()
+            .connectVoiceAgentWithResponse("agent", new RequestOptions());
+        assertEquals(VOICE_AGENTS_PREVIEW_FEATURES, foundryFeatures(webSocketHttpClient));
+
+        RecordingHttpClient conversationsHttpClient = new RecordingHttpClient();
+        createBuilder(conversationsHttpClient).buildAgentEndpointConversationsClient()
+            .getAgentConversationWithResponse("agent", "conversation", new RequestOptions());
+        assertEquals(VOICE_AGENTS_PREVIEW_FEATURES, foundryFeatures(conversationsHttpClient));
     }
 
     @Test

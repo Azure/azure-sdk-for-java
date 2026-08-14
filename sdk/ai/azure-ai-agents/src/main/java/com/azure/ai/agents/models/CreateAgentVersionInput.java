@@ -37,10 +37,11 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
-    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
+    @Beta(
+        warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     private final AgentDefinition definition;
 
     /*
@@ -114,13 +115,14 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */
     @Generated
-    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
+    @Beta(
+        warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, VoiceAgents=V1Preview, WorkflowAgents=V1Preview")
     public AgentDefinition getDefinition() {
         return this.definition;
     }

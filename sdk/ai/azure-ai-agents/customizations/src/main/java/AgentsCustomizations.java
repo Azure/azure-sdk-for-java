@@ -2,10 +2,12 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import java.io.IOException;
@@ -28,8 +30,46 @@ public class AgentsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         renameImageGenToolSize(libraryCustomization, logger);
         modifyPollingStrategies(libraryCustomization, logger);
+        addVoicePreviewHeaders(libraryCustomization, logger);
+        makeVoiceMessageDiscriminatorsFinal(libraryCustomization, logger);
         annotateBetaClients(libraryCustomization, logger);
         annotateBetaFields(libraryCustomization, loadBetaAnnotations(logger), logger);
+    }
+
+    private void addVoicePreviewHeaders(LibraryCustomization customization, Logger logger) {
+        customization.getClass("com.azure.ai.agents", "AgentsClientBuilder").customizeAst(ast ->
+            ast.getClassByName("AgentsClientBuilder").ifPresent(clazz -> {
+                ast.addImport("com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys");
+                boolean hasVoicePreviewFeatures = clazz.getFields().stream()
+                    .flatMap(field -> field.getVariables().stream())
+                    .anyMatch(variable -> "VOICE_AGENTS_PREVIEW_FEATURES".equals(variable.getNameAsString()));
+                if (!hasVoicePreviewFeatures) {
+                    clazz.addMember(StaticJavaParser.parseBodyDeclaration("private static final String "
+                        + "VOICE_AGENTS_PREVIEW_FEATURES = AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW"
+                        + ".toString();"));
+                }
+
+                for (String methodName : new String[] { "buildVoiceAgentWebSocketAsyncClient",
+                    "buildAgentEndpointConversationsAsyncClient", "buildVoiceAgentWebSocketClient",
+                    "buildAgentEndpointConversationsClient" }) {
+                    clazz.getMethodsByName(methodName).stream()
+                        .flatMap(method -> method.findAll(MethodCallExpr.class).stream())
+                        .filter(call -> "buildInnerClient".equals(call.getNameAsString())
+                            && call.getArguments().isEmpty())
+                        .forEach(call -> call.addArgument("VOICE_AGENTS_PREVIEW_FEATURES"));
+                }
+            }));
+    }
+
+    private void makeVoiceMessageDiscriminatorsFinal(LibraryCustomization customization, Logger logger) {
+        for (String className : new String[] { "VoiceMessageItem", "VoiceAssistantMessageItem",
+            "VoiceSystemMessageItem", "VoiceUserMessageItem" }) {
+            customization.getClass("com.azure.ai.agents.models", className).customizeAst(ast ->
+                ast.getClassByName(className).ifPresent(clazz -> clazz.getFields().stream()
+                    .filter(field -> field.getVariables().stream()
+                        .anyMatch(variable -> "type".equals(variable.getNameAsString())))
+                    .forEach(field -> field.addModifier(Modifier.Keyword.FINAL))));
+        }
     }
 
     private void renameImageGenToolSize(LibraryCustomization customization, Logger logger) {
