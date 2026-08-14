@@ -216,4 +216,10 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType FABRIC_DATA_AGENT_PREVIEW = fromString("fabric_dataagent_preview");
+
+    /**
+     * Static value programmatic_tool_calling for ToolType.
+     */
+    @Generated
+    public static final ToolType PROGRAMMATIC_TOOL_CALLING = fromString("programmatic_tool_calling");
 }

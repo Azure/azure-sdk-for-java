@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DPSDelete.json
+     * x-ms-original-file: 2026-03-01-preview/DPSDelete.json
      */
     /**
      * Sample code: DPSDelete.
@@ -18,6 +18,6 @@ public final class IotDpsResourceDeleteSamples {
      */
     public static void dPSDelete(com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager manager) {
         manager.iotDpsResources()
-            .delete("myFirstProvisioningService", "myResourceGroup", com.azure.core.util.Context.NONE);
+            .delete("myResourceGroup", "myFirstProvisioningService", com.azure.core.util.Context.NONE);
     }
 }

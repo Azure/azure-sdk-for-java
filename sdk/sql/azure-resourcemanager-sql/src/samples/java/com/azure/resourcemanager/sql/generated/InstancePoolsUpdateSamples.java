@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class InstancePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/PatchInstancePool.json
+     * x-ms-original-file: 2025-01-01/PatchInstancePool.json
      */
     /**
      * Sample code: Patch an instance pool.

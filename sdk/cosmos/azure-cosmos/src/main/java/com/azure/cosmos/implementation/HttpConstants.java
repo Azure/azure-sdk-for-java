@@ -435,6 +435,7 @@ public class HttpConstants {
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+        public static final int COLLECTION_NOT_AVAILABLE_FOR_READ = 1013;
 
         public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 

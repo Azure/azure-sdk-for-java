@@ -313,6 +313,20 @@ public interface ComputeManagementClient {
     CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
 
     /**
+     * Gets the SharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the SharedGalleryInvitesClient object.
+     */
+    SharedGalleryInvitesClient getSharedGalleryInvites();
+
+    /**
+     * Gets the TenantLevelSharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the TenantLevelSharedGalleryInvitesClient object.
+     */
+    TenantLevelSharedGalleryInvitesClient getTenantLevelSharedGalleryInvites();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      * 
      * @return the ResourceSkusClient object.

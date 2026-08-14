@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesStopSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/StopManagedInstance.json
+     * x-ms-original-file: 2025-01-01/StopManagedInstance.json
      */
     /**
      * Sample code: Stops the managed instance.

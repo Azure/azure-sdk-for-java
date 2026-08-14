@@ -342,6 +342,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /*
      * Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      */
     private EnableSubvolumes enableSubvolumes;
 
@@ -1390,7 +1391,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @return the enableSubvolumes value.
      */
@@ -1399,7 +1401,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume
+     * Deprecated. Subvolume operations and this flag will be removed in a future API version.
      * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeProperties object itself.

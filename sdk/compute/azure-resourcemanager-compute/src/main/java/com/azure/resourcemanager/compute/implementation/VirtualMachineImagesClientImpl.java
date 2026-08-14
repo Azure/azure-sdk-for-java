@@ -131,7 +131,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -167,7 +167,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +203,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -219,7 +219,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +236,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -251,7 +251,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -282,7 +282,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -314,7 +314,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,7 +329,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -345,7 +345,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -359,7 +359,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -395,7 +395,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,7 +431,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -447,7 +447,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,7 +465,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -480,7 +480,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -520,7 +520,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param context The context to associate with this operation.
@@ -560,7 +560,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,7 +579,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param context The context to associate with this operation.
@@ -598,7 +598,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,7 +614,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -661,7 +661,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -708,7 +708,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -731,7 +731,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -754,7 +754,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -775,7 +775,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * The listWithProperties operation.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -825,7 +825,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * The listWithProperties operation.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -874,7 +874,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * The listWithProperties operation.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -896,7 +896,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * The listWithProperties operation.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
@@ -919,7 +919,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     /**
      * The listWithProperties operation.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.

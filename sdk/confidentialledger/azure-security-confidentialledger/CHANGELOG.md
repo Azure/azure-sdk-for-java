@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.0.36 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
 ## 1.1.0-beta.3 (2026-06-05)
 
 ### Bugs Fixed

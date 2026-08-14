@@ -118,14 +118,24 @@ public class UserAgentSuffixTest extends TestSuiteBase {
 
     private void validateUserAgentSuffix(String actualUserAgent, String expectedUserAgentSuffix) {
 
-        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix:
-        // when HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix.
+        int featureValue = 0;
+
+        // ThinClient is advertised unless it is explicitly disabled (default null => enabled).
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
+
+        // When HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
         // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
         if (Configs.isHttp2Enabled()) {
-            int featureValue = UserAgentFeatureFlags.Http2.getValue();
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
             if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
                 featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
             }
+        }
+
+        if (featureValue != 0) {
             expectedUserAgentSuffix = expectedUserAgentSuffix + "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT);
         }
 

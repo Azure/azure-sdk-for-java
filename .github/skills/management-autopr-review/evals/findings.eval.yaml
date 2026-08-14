@@ -1,0 +1,418 @@
+name: management-autopr-reviewer-findings
+description: Detection tests for high-value generated management SDK concerns.
+# cspell:ignore Contianer
+
+tags:
+  area: management-autopr-reviewer
+
+defaults:
+  runs: 1
+  timeout: "300s"
+  model: gpt-5.6-terra
+  judge_model: gpt-5.6-terra
+
+scoring:
+  threshold: 0.8
+
+stimuli:
+  - name: unrelated-service-folder-collision
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-folder.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "folder collision detected"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: output-matches
+        name: "folder mismatch is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The new module's third package-name segment differs from its sdk service folder and must be flagged with MGMT-FOLDER.
+      - MGMT-FOLDER must appear under Blocking.
+
+  - name: service-folder-name-mismatch
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-service-folder-mismatch.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md. Focus on
+      service-folder and module identity.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "service folder mismatch detected"
+        config:
+          pattern: "\\[MGMT-FOLDER\\]"
+      - type: output-matches
+        name: "service folder mismatch is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-FOLDER\\]"
+      - type: prompt
+    rubric:
+      - The new azure-resourcemanager-web module is under sdk/appservice, which does not match its third segment web.
+      - The reviewer must raise MGMT-FOLDER under Blocking.
+      - The likely source must identify service-dir configuration in the upstream tspconfig.yaml.
+
+  - name: stable-package-on-preview-api
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-version.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "version mismatch detected"
+        config:
+          pattern: "\\[MGMT-VERSION\\]"
+      - type: output-matches
+        name: "version mismatch is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-VERSION\\]"
+      - type: output-matches
+        name: "blocking concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-VERSION\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "blocking concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-VERSION\\] (?:New|Carried forward|Resolved)\\b"
+      - type: prompt
+    rubric:
+      - The stable 2.1.0 package targets a preview API and must be flagged with MGMT-VERSION.
+      - MGMT-VERSION must appear under Blocking.
+
+  - name: changed-api-version-is-reported-again
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-api-version-changed.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to update the review state from
+      review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "changed API version reported"
+        config:
+          pattern: "(?s)### Informational.*\\[MGMT-API-VERSION\\].*New.*2026-09-01-preview"
+      - type: output-not-matches
+        name: "old API version not carried forward"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION\\].*Carried forward.*2026-07-01-preview"
+      - type: output-matches
+        name: "informational concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-API-VERSION\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "informational concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-API-VERSION\\] (?:New|Carried forward|Resolved)\\b"
+      - type: prompt
+    rubric:
+      - The effective API version changed from 2026-07-01-preview to 2026-09-01-preview.
+      - MGMT-API-VERSION must be emitted again as New under Informational with the current value.
+      - The item must not request corrective action.
+
+  - name: metadata-api-version-map-is-reported
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-api-version-metadata-map.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "Compute API version reported"
+        config:
+          pattern: "(?s)### Informational.*\\[MGMT-API-VERSION\\].*2026-03-01"
+      - type: output-matches
+        name: "disk API version reported"
+        config:
+          pattern: "(?s)\\[MGMT-API-VERSION\\].*2026-03-02-preview"
+      - type: output-matches
+        name: "gallery API version reported"
+        config:
+          pattern: "(?s)\\[MGMT-API-VERSION\\].*2025-12-03"
+      - type: output-matches
+        name: "SKU API version reported"
+        config:
+          pattern: "(?s)\\[MGMT-API-VERSION\\].*2021-07-01"
+      - type: output-not-matches
+        name: "metadata map keys are not versions"
+        config:
+          pattern: "(?i)\\[MGMT-API-VERSION\\].*(ComputeDisk|ComputeGallery|ComputeSku)"
+      - type: output-matches
+        name: "one metadata preview makes stable package invalid"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-VERSION\\].*2026-03-02-preview"
+      - type: prompt
+    rubric:
+      - The CHANGELOG has no API-version line, so the reviewer must fall back to apiVersions in the generated metadata.
+      - apiVersions is an object; all four distinct values, not the object keys, form the effective API-version set.
+      - The package is stable, so the single preview value requires MGMT-VERSION under Blocking even though the other values are stable.
+      - MGMT-API-VERSION must report those values under Informational without requesting corrective action.
+
+  - name: changelog-api-version-map-detects-preview
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-version-changelog-map.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "preview in CHANGELOG map detected"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-VERSION\\].*2022-07-01-preview"
+      - type: output-matches
+        name: "CHANGELOG map values reported"
+        config:
+          pattern: "(?s)### Informational.*\\[MGMT-API-VERSION\\].*2022-01-01"
+      - type: output-matches
+        name: "preview CHANGELOG value reported"
+        config:
+          pattern: "(?s)\\[MGMT-API-VERSION\\].*2022-07-01-preview"
+      - type: prompt
+    rubric:
+      - Parse the CHANGELOG service-group-to-version list by taking every value after a colon.
+      - One preview API version makes the stable package invalid even when the other API versions are stable.
+      - MGMT-VERSION must appear under Blocking and MGMT-API-VERSION under Informational.
+
+  - name: new-module-is-informational
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-new-module.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "new module context reported"
+        config:
+          pattern: "(?s)### Informational.*\\[MGMT-NEW-MODULE\\]"
+      - type: prompt
+    rubric:
+      - The PR adds a new compute management module.
+      - MGMT-NEW-MODULE must appear under Informational without implying a defect or requesting corrective action.
+
+  - name: suspicious-lro-response-shape
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-lro.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "LRO concern detected"
+        config:
+          pattern: "\\[MGMT-LRO\\]"
+      - type: output-matches
+        name: "LRO concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-LRO\\]"
+      - type: prompt
+    rubric:
+      - The newly generated response and headers types expose Location and Retry-After and must be flagged with MGMT-LRO.
+      - MGMT-LRO must appear under Warning as a request for human verification.
+
+  - name: manager-name-casing-problem
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-manager-casing.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "manager casing concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*ContainerserviceManager"
+      - type: prompt
+    rubric:
+      - The newly added public root-package ContainerserviceManager has an apparent compound-name casing problem.
+      - MGMT-MANAGER-NAME must appear under Warning and ask whether the generated entry-point name is intended.
+
+  - name: manager-name-spelling-problem
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-manager-spelling.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "manager spelling concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*ContianerServiceManager"
+      - type: prompt
+    rubric:
+      - The newly added public root-package ContianerServiceManager has an apparent spelling problem.
+      - MGMT-MANAGER-NAME must appear under Warning and ask whether the generated entry-point name is intended.
+
+  - name: manager-name-unrelated-to-package
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-manager-unrelated.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "unrelated manager concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-MANAGER-NAME\\].*WidgetManager"
+      - type: prompt
+    rubric:
+      - WidgetManager has no meaningful lexical overlap with the containerservice module or root package identity.
+      - The unrelated identity condition is independently sufficient for MGMT-MANAGER-NAME under Warning.
+
+  - name: changed-existing-return-type
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-breaking.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "breaking change detected"
+        config:
+          pattern: "\\[MGMT-BREAKING\\]"
+      - type: output-matches
+        name: "breaking concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-BREAKING\\]"
+      - type: output-matches
+        name: "warning concern ID is independently code-formatted"
+        config:
+          pattern: "(?m)^- `\\[MGMT-BREAKING\\]` (?:New|Carried forward|Resolved) — "
+      - type: output-not-matches
+        name: "warning concern does not wrap the complete message in backticks"
+        config:
+          pattern: "(?m)^- `\\[MGMT-BREAKING\\] (?:New|Carried forward|Resolved)\\b"
+      - type: prompt
+    rubric:
+      - The GA CHANGELOG is authoritative even though the break entered main during an earlier beta.
+      - The changed return type must be flagged with MGMT-BREAKING and cite the CHANGELOG release entry.
+      - MGMT-BREAKING must appear under Warning as a request for human verification.
+
+  - name: overlapping-api-version-generations
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-api-version-overlap.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "API-version overlap detected"
+        config:
+          pattern: "\\[MGMT-API-VERSION-OVERLAP\\]"
+      - type: output-matches
+        name: "API-version overlap is blocking"
+        config:
+          pattern: "(?s)### Blocking.*\\[MGMT-API-VERSION-OVERLAP\\]"
+      - type: prompt
+    rubric:
+      - The branch contains output from two API-version generations, so MGMT-API-VERSION-OVERLAP is required.
+      - The CHANGELOG is evidence of generation overlap, not the defect itself.
+      - MGMT-API-VERSION-OVERLAP must appear under Blocking.
+
+  - name: missing-release-plan
+    environment:
+      skills:
+        - ".."
+      files:
+        - src: "fixtures/positive-missing-release-plan.md"
+          dest: "review-input.md"
+    prompt: >
+      Use the management-autopr-review skill to review review-input.md.
+    constraints:
+      expect_skills:
+        - management-autopr-review
+    graders:
+      - type: output-matches
+        name: "release plan concern detected"
+        config:
+          pattern: "\\[MGMT-RELEASE-PLAN\\]"
+      - type: output-matches
+        name: "release plan concern is warning"
+        config:
+          pattern: "(?s)### Warning.*\\[MGMT-RELEASE-PLAN\\]"
+      - type: prompt
+    rubric:
+      - Missing release-plan URL must produce MGMT-RELEASE-PLAN citing the PR description.
+      - MGMT-RELEASE-PLAN must appear under Warning.
+      - The reviewer may continue other review passes.

@@ -11,7 +11,7 @@ public final class DeletedVaultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultInner model = BinaryData.fromString(
-            "{\"properties\":{\"vaultId\":\"lwtgrhpdj\",\"vaultDeletionTime\":\"2021-05-17T12:08:11Z\",\"purgeAt\":\"2021-02-17T18:41:32Z\"},\"id\":\"xazjpqyegual\",\"name\":\"b\",\"type\":\"xhejjzzvdud\"}")
+            "{\"properties\":{\"vaultId\":\"ctehfiqscjey\",\"vaultDeletionTime\":\"2021-03-08T20:07:33Z\",\"purgeAt\":\"2021-01-16T02:36:56Z\"},\"id\":\"kgqhcjrefovg\",\"name\":\"kqsleyyvxy\",\"type\":\"jpkcattpng\"}")
             .toObject(DeletedVaultInner.class);
     }
 }

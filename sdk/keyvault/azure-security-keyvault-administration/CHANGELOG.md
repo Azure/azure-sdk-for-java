@@ -1,17 +1,31 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.9.0-beta.2 (Unreleased)
 
 ### Features Added
-
-- Added support for service version `2026-01-01-preview`
-- Added support for External Key Management (EKM) features using clients `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.9.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added support for service version `2026-01-01-preview`
+- Added support for External Key Management (EKM) features using clients `KeyVaultEkmClient` and `KeyVaultEkmAsyncClient`
+
+## 4.8.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
 
 ## 4.8.0 (2026-05-27)
 

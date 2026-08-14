@@ -27,8 +27,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.recommender.fluent.ComputeRecommenderManagementClient;
 import com.azure.resourcemanager.compute.recommender.implementation.ComputeRecommenderManagementClientBuilder;
 import com.azure.resourcemanager.compute.recommender.implementation.OperationsImpl;
+import com.azure.resourcemanager.compute.recommender.implementation.SkuMixPlacementScoresImpl;
 import com.azure.resourcemanager.compute.recommender.implementation.SpotPlacementScoresImpl;
 import com.azure.resourcemanager.compute.recommender.models.Operations;
+import com.azure.resourcemanager.compute.recommender.models.SkuMixPlacementScores;
 import com.azure.resourcemanager.compute.recommender.models.SpotPlacementScores;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -44,6 +46,8 @@ import java.util.stream.Collectors;
  */
 public final class ComputeRecommenderManager {
     private Operations operations;
+
+    private SkuMixPlacementScores skuMixPlacementScores;
 
     private SpotPlacementScores spotPlacementScores;
 
@@ -272,6 +276,18 @@ public final class ComputeRecommenderManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of SkuMixPlacementScores.
+     * 
+     * @return Resource collection API of SkuMixPlacementScores.
+     */
+    public SkuMixPlacementScores skuMixPlacementScores() {
+        if (this.skuMixPlacementScores == null) {
+            this.skuMixPlacementScores = new SkuMixPlacementScoresImpl(clientObject.getSkuMixPlacementScores(), this);
+        }
+        return skuMixPlacementScores;
     }
 
     /**

@@ -112,7 +112,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -148,7 +148,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,7 +184,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -200,7 +200,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +218,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,7 +273,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -313,7 +313,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +332,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -351,7 +351,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +367,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -411,7 +411,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -455,7 +455,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -475,7 +475,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -495,7 +495,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -514,7 +514,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -566,7 +566,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -619,7 +619,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -644,7 +644,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -670,7 +670,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.

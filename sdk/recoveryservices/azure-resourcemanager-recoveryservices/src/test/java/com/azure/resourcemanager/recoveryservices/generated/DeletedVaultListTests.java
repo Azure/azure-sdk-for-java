@@ -12,8 +12,8 @@ public final class DeletedVaultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"vaultId\":\"nbacfi\",\"vaultDeletionTime\":\"2021-03-09T02:14:27Z\",\"purgeAt\":\"2021-03-20T17:28:20Z\"},\"id\":\"etqgtzxdpnq\",\"name\":\"qqwx\",\"type\":\"jfeallnwsub\"},{\"properties\":{\"vaultId\":\"jampmngnzscxaqw\",\"vaultDeletionTime\":\"2021-10-06T06:26:18Z\",\"purgeAt\":\"2021-04-26T00:03:43Z\"},\"id\":\"onq\",\"name\":\"pkvlrxn\",\"type\":\"ea\"}],\"nextLink\":\"ipheoflokeyyien\"}")
+            "{\"value\":[{\"properties\":{\"vaultId\":\"adehxnltyfsopp\",\"vaultDeletionTime\":\"2021-06-21T13:34:16Z\",\"purgeAt\":\"2020-12-22T21:06:46Z\"},\"id\":\"zwdejbavor\",\"name\":\"zdmohctbqvu\",\"type\":\"wxdndnvowgujjug\"},{\"properties\":{\"vaultId\":\"cglhslazjdyggdt\",\"vaultDeletionTime\":\"2021-02-11T01:24:38Z\",\"purgeAt\":\"2021-08-21T20:33:35Z\"},\"id\":\"uofqwe\",\"name\":\"kh\",\"type\":\"enevfyexfwhybci\"}],\"nextLink\":\"yvdcsitynnaa\"}")
             .toObject(DeletedVaultList.class);
-        Assertions.assertEquals("ipheoflokeyyien", model.nextLink());
+        Assertions.assertEquals("yvdcsitynnaa", model.nextLink());
     }
 }

@@ -51,9 +51,11 @@ import com.azure.storage.file.share.implementation.models.ShareStorageExceptionI
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePosixProperties;
+import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -69,6 +71,9 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -730,5 +735,29 @@ public class ModelHelper {
         String headerName = internal.getValue() == null ? null : internal.getValue().getHeaderName();
         return new ShareStorageException(StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(),
             internal.getResponse(), code, headerName), internal.getResponse(), internal.getValue());
+    }
+
+    /**
+     * Converts a {@link ShareFileRangeList} into a list of {@link ShareFileRangeItem}s, optionally including cleared
+     * ranges (only present on diff responses).
+     *
+     * @param rangeList The range list returned by the service.
+     * @param includeClearRanges Whether to include cleared ranges. Should be {@code true} only for diff responses.
+     * @return The combined list of {@link ShareFileRangeItem}s.
+     */
+    public static List<ShareFileRangeItem> toShareFileRangeItems(ShareFileRangeList rangeList,
+        boolean includeClearRanges) {
+        List<ShareFileRangeItem> ranges = new ArrayList<>();
+        if (rangeList.getRanges() != null) {
+            for (FileRange r : rangeList.getRanges()) {
+                ranges.add(new ShareFileRangeItem(new ShareFileRange(r.getStart(), r.getEnd()), false));
+            }
+        }
+        if (includeClearRanges && rangeList.getClearRanges() != null) {
+            for (ClearRange r : rangeList.getClearRanges()) {
+                ranges.add(new ShareFileRangeItem(new ShareFileRange(r.getStart(), r.getEnd()), true));
+            }
+        }
+        return ranges;
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
  */
 public final class ManagedInstancesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceTopQueriesList.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceTopQueriesList.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries.
@@ -28,7 +28,7 @@ public final class ManagedInstancesListByManagedInstanceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceTopQueriesListMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceTopQueriesListMax.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Full-blown request and response.
@@ -44,7 +44,7 @@ public final class ManagedInstancesListByManagedInstanceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceTopQueriesListMin.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceTopQueriesListMin.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Minimal request and response.

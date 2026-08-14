@@ -30,12 +30,14 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     private AdditionalUnattendContentComponentName componentName;
 
     /*
+     * 
      * Specifies the name of the setting to which the content applies. Possible values
      * are: FirstLogonCommands and AutoLogon.
      */
     private SettingNames settingName;
 
     /*
+     * 
      * Specifies the XML formatted content that is added to the unattend.xml file for
      * the specified path and component. The XML must be less than 4KB and must
      * include the root element for the setting or feature that is being inserted.
@@ -91,7 +93,8 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     }
 
     /**
-     * Get the settingName property: Specifies the name of the setting to which the content applies. Possible values
+     * Get the settingName property:
+     * Specifies the name of the setting to which the content applies. Possible values
      * are: FirstLogonCommands and AutoLogon.
      * 
      * @return the settingName value.
@@ -101,7 +104,8 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     }
 
     /**
-     * Set the settingName property: Specifies the name of the setting to which the content applies. Possible values
+     * Set the settingName property:
+     * Specifies the name of the setting to which the content applies. Possible values
      * are: FirstLogonCommands and AutoLogon.
      * 
      * @param settingName the settingName value to set.
@@ -113,7 +117,8 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     }
 
     /**
-     * Get the content property: Specifies the XML formatted content that is added to the unattend.xml file for
+     * Get the content property:
+     * Specifies the XML formatted content that is added to the unattend.xml file for
      * the specified path and component. The XML must be less than 4KB and must
      * include the root element for the setting or feature that is being inserted.
      * 
@@ -124,7 +129,8 @@ public final class AdditionalUnattendContent implements JsonSerializable<Additio
     }
 
     /**
-     * Set the content property: Specifies the XML formatted content that is added to the unattend.xml file for
+     * Set the content property:
+     * Specifies the XML formatted content that is added to the unattend.xml file for
      * the specified path and component. The XML must be less than 4KB and must
      * include the root element for the setting or feature that is being inserted.
      * 

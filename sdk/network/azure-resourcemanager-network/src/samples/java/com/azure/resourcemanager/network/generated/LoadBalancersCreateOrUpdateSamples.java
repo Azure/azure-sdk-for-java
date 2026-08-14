@@ -20,6 +20,7 @@ import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelProtoco
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
+import com.azure.resourcemanager.network.models.LoadBalancerMode;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.LoadBalancerScope;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
@@ -36,7 +37,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithSyncModePropertyOnPool.json
      */
     /**
      * Sample code: Create load balancer with Sync Mode Property on Pool.
@@ -89,7 +90,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerProviderWithTwoBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with two Backend Pool.
@@ -135,7 +136,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateWithInboundNatPool.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithInboundNatPool.json
      */
     /**
      * Sample code: Create load balancer with inbound nat pool.
@@ -174,7 +175,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateWithOutboundRules.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithOutboundRules.json
      */
     /**
      * Sample code: Create load balancer with outbound rules.
@@ -230,7 +231,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateWithZones.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithZones.json
      */
     /**
      * Sample code: Create load balancer with Frontend IP in Zone 1.
@@ -281,7 +282,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerProviderWithOneBackendPool.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Provider configured with one Backend Pool.
@@ -332,7 +333,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreate.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreate.json
      */
     /**
      * Sample code: Create load balancer.
@@ -382,7 +383,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateGlobalTier.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGlobalTier.json
      */
     /**
      * Sample code: Create load balancer with Global Tier and one regional load balancer in its backend pool.
@@ -428,7 +429,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateGatewayLoadBalancerConsumer.json
      */
     /**
      * Sample code: Create load balancer with Gateway Load Balancer Consumer configured.
@@ -480,7 +481,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/LoadBalancerCreateStandardSku.json
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateStandardSku.json
      */
     /**
      * Sample code: Create load balancer with Standard SKU.
@@ -526,5 +527,46 @@ public final class LoadBalancersCreateOrUpdateSamples {
                     .withEnableFloatingIp(true)))
                 .withInboundNatPools(Arrays.asList())
                 .withOutboundRules(Arrays.asList()), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-09-01/LoadBalancerCreateWithAdvancedMode.json
+     */
+    /**
+     * Sample code: Create load balancer with advanced mode.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void createLoadBalancerWithAdvancedMode(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getLoadBalancers()
+            .createOrUpdate("rg1", "lb", new LoadBalancerInner().withLocation("eastus")
+                .withSku(new LoadBalancerSku().withName(LoadBalancerSkuName.STANDARD))
+                .withFrontendIpConfigurations(Arrays.asList(new FrontendIpConfigurationInner().withName("fe-lb")
+                    .withSubnet(new SubnetInner().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"))
+                    .withEnableConnectionTracking(true)))
+                .withBackendAddressPools(Arrays.asList(new BackendAddressPoolInner().withName("be-lb")))
+                .withLoadBalancingRules(Arrays.asList(new LoadBalancingRuleInner().withName("rulelb")
+                    .withFrontendIpConfiguration(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"))
+                    .withBackendAddressPool(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"))
+                    .withProbe(new SubResource().withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"))
+                    .withProtocol(TransportProtocol.UDP)
+                    .withLoadDistribution(LoadDistribution.DEFAULT)
+                    .withFrontendPort(4789)
+                    .withBackendPort(4789)
+                    .withEnableFloatingIp(true)))
+                .withProbes(Arrays.asList(new ProbeInner().withName("probe-lb")
+                    .withProtocol(ProbeProtocol.HTTP)
+                    .withPort(80)
+                    .withIntervalInSeconds(15)
+                    .withNumberOfProbes(2)
+                    .withProbeThreshold(1)
+                    .withRequestPath("healthcheck.aspx")))
+                .withScope(LoadBalancerScope.PUBLIC)
+                .withMode(LoadBalancerMode.ADVANCED), com.azure.core.util.Context.NONE);
     }
 }

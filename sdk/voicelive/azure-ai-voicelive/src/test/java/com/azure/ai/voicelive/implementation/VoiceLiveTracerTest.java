@@ -53,7 +53,7 @@ class VoiceLiveTracerTest {
         tracer = tracerProvider.get("azure-ai-voicelive", "1.0.0-beta.6");
         Meter meter = meterProvider.get("azure-ai-voicelive");
         URI endpoint = new URI("wss://test.cognitiveservices.azure.com/voice-live/realtime");
-        voiceLiveTracer = new VoiceLiveTracer(tracer, meter, endpoint, "gpt-4o-realtime-preview", null);
+        voiceLiveTracer = new VoiceLiveTracer(tracer, meter, endpoint, "gpt-realtime", null);
     }
 
     @AfterEach
@@ -70,7 +70,7 @@ class VoiceLiveTracerTest {
         List<SpanData> spans = spanExporter.getFinishedSpanItems();
         assertEquals(1, spans.size());
         SpanData span = spans.get(0);
-        assertEquals("connect gpt-4o-realtime-preview", span.getName());
+        assertEquals("connect gpt-realtime", span.getName());
         assertEquals(SpanKind.CLIENT, span.getKind());
         assertEquals(VoiceLiveTracer.GEN_AI_SYSTEM_VALUE, span.getAttributes().get(VoiceLiveTracer.GEN_AI_SYSTEM));
         assertEquals(VoiceLiveTracer.OPERATION_CONNECT,
@@ -78,7 +78,7 @@ class VoiceLiveTracerTest {
         assertEquals(VoiceLiveTracer.AZ_NAMESPACE_VALUE, span.getAttributes().get(VoiceLiveTracer.AZ_NAMESPACE));
         assertEquals(VoiceLiveTracer.GEN_AI_PROVIDER_NAME_VALUE,
             span.getAttributes().get(VoiceLiveTracer.GEN_AI_PROVIDER_NAME));
-        assertEquals("gpt-4o-realtime-preview", span.getAttributes().get(VoiceLiveTracer.GEN_AI_REQUEST_MODEL));
+        assertEquals("gpt-realtime", span.getAttributes().get(VoiceLiveTracer.GEN_AI_REQUEST_MODEL));
         assertEquals("test.cognitiveservices.azure.com", span.getAttributes().get(VoiceLiveTracer.SERVER_ADDRESS));
         assertEquals(443L, span.getAttributes().get(VoiceLiveTracer.SERVER_PORT).longValue());
     }

@@ -8,13 +8,14 @@ import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleProperties;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
 import com.azure.resourcemanager.cloudhealth.models.ResourceGraphQuerySpecification;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 
 /**
  * Samples for DiscoveryRules CreateOrUpdate.
  */
 public final class DiscoveryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_CreateOrUpdate.json
      */
     /**
      * Sample code: DiscoveryRules_CreateOrUpdate.
@@ -23,14 +24,15 @@ public final class DiscoveryRulesCreateOrUpdateSamples {
      */
     public static void discoveryRulesCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.discoveryRules()
-            .define("myDiscoveryRule")
-            .withExistingHealthmodel("myResourceGroup", "myHealthModel")
-            .withProperties(new DiscoveryRuleProperties().withDisplayName("myDisplayName")
-                .withAuthenticationSetting("authSetting1")
+            .define("discover-web-apps")
+            .withExistingHealthmodel("online-store-rg", "online-store")
+            .withProperties(new DiscoveryRuleProperties().withDisplayName("Discover web apps")
+                .withAuthenticationSetting("default-auth")
                 .withDiscoverRelationships(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED)
                 .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
                 .withSpecification(new ResourceGraphQuerySpecification().withResourceGraphQuery(
-                    "resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'")))
+                    "resources | where type =~ 'microsoft.web/sites' and resourceGroup =~ 'online-store-rg' | project id, name, location"))
+                .withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior.ENABLED))
             .create();
     }
 }

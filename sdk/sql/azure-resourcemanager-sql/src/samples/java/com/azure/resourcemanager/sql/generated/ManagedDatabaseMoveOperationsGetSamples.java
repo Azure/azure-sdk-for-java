@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class ManagedDatabaseMoveOperationsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseMoveOperationResultGet.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseMoveOperationResultGet.json
      */
     /**
      * Sample code: Gets a managed database move operation.

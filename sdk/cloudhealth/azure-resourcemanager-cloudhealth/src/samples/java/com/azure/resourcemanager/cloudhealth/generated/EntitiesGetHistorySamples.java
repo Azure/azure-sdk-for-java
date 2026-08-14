@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class EntitiesGetHistorySamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Entities_GetHistory.json
+     * x-ms-original-file: 2026-05-01-preview/Entities_GetHistory.json
      */
     /**
      * Sample code: Entities_GetHistory.
@@ -21,9 +21,10 @@ public final class EntitiesGetHistorySamples {
      */
     public static void entitiesGetHistory(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.entities()
-            .getHistoryWithResponse("rgopenapi", "myHealthModel", "entity1",
-                new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2025-12-11T10:00:00Z"))
-                    .withEndAt(OffsetDateTime.parse("2025-12-12T10:00:00Z")),
+            .getHistoryWithResponse("online-store-rg", "online-store", "web-frontend",
+                new EntityHistoryRequest().withStartAt(OffsetDateTime.parse("2026-05-03T09:30:00Z"))
+                    .withEndAt(OffsetDateTime.parse("2026-05-04T09:30:00Z"))
+                    .withTop(100),
                 com.azure.core.util.Context.NONE);
     }
 }

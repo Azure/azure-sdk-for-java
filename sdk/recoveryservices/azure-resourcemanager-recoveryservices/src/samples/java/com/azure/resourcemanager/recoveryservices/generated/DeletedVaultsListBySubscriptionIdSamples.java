@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class DeletedVaultsListBySubscriptionIdSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_ListBySubscriptionId.json
+     * x-ms-original-file: 2026-05-01/DeletedVaults_ListBySubscriptionId.json
      */
     /**
      * Sample code: List deleted vaults in a subscription.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class RestorableDroppedDatabasesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
+     * x-ms-original-file: 2025-01-01/GetRestorableDroppedDatabaseWithExpandEqualsKeys.json
      */
     /**
      * Sample code: Gets a restorable dropped database with expand equals keys.
@@ -25,7 +25,7 @@ public final class RestorableDroppedDatabasesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetRestorableDroppedDatabase.json
+     * x-ms-original-file: 2025-01-01/GetRestorableDroppedDatabase.json
      */
     /**
      * Sample code: Gets a restorable dropped database.

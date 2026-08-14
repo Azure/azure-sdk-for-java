@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public final class GalleryScriptVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Create.json
+     * x-ms-original-file: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery Script Version.

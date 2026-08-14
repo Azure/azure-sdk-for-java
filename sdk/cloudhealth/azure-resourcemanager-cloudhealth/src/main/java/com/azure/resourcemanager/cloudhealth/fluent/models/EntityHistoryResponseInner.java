@@ -28,6 +28,11 @@ public final class EntityHistoryResponseInner implements JsonSerializable<Entity
      */
     private List<HealthStateTransition> history;
 
+    /*
+     * An opaque string value that identifies the portion of the result set to be returned with the next operation.
+     */
+    private String nextMarker;
+
     /**
      * Creates an instance of EntityHistoryResponseInner class.
      */
@@ -53,6 +58,16 @@ public final class EntityHistoryResponseInner implements JsonSerializable<Entity
     }
 
     /**
+     * Get the nextMarker property: An opaque string value that identifies the portion of the result set to be returned
+     * with the next operation.
+     * 
+     * @return the nextMarker value.
+     */
+    public String nextMarker() {
+        return this.nextMarker;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -60,6 +75,7 @@ public final class EntityHistoryResponseInner implements JsonSerializable<Entity
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("entityName", this.entityName);
         jsonWriter.writeArrayField("history", this.history, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextMarker", this.nextMarker);
         return jsonWriter.writeEndObject();
     }
 
@@ -85,6 +101,8 @@ public final class EntityHistoryResponseInner implements JsonSerializable<Entity
                     List<HealthStateTransition> history
                         = reader.readArray(reader1 -> HealthStateTransition.fromJson(reader1));
                     deserializedEntityHistoryResponseInner.history = history;
+                } else if ("nextMarker".equals(fieldName)) {
+                    deserializedEntityHistoryResponseInner.nextMarker = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

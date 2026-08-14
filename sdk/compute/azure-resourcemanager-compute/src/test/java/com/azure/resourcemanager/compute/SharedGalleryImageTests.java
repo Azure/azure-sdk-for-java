@@ -21,7 +21,6 @@ import com.azure.resourcemanager.compute.models.TargetRegion;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -389,40 +388,22 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         VirtualMachine linuxVM = prepareGeneralizedVmWith2EmptyDataDisks(rgName,
             generateRandomResourceName("muldvm", 15), region, computeManager);
 
-        final String vhdBasedImageName = generateRandomResourceName("img", 20);
+        final String imageName = generateRandomResourceName("img", 20);
         //
-        VirtualMachineCustomImage.DefinitionStages.WithCreateAndDataDiskImageOSDiskSettings creatableDisk
-            = computeManager.virtualMachineCustomImages()
-                .define(vhdBasedImageName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withLinuxFromVhd(linuxVM.osUnmanagedDiskVhdUri(), OperatingSystemStateTypes.GENERALIZED)
-                .withOSDiskCaching(linuxVM.osDiskCachingType());
-        for (VirtualMachineUnmanagedDataDisk disk : linuxVM.unmanagedDataDisks().values()) {
-            creatableDisk.defineDataDiskImage()
-                .withLun(disk.lun())
-                .fromVhd(disk.vhdUri())
-                .withDiskCaching(disk.cachingType())
-                .withDiskSizeInGB(disk.size() + 10) // Resize each data disk image by +10GB
-                .attach();
-        }
-        //
-        VirtualMachineCustomImage customImage = creatableDisk.create();
+        VirtualMachineCustomImage customImage = computeManager.virtualMachineCustomImages()
+            .define(imageName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .fromVirtualMachine(linuxVM.id())
+            .create();
         return customImage;
     }
 
     private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(String rgName, String vmName, Region region,
         ComputeManager computeManager) {
         final String uname = "javauser";
-        final String password = password();
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
-
-        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 17))
-            .withRegion(region)
-            .withNewResourceGroup(rgName)
-            .disableSharedKeyAccess();
 
         VirtualMachine virtualMachine = computeManager.virtualMachines()
             .define(vmName)
@@ -434,17 +415,9 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
             .withPopularLinuxImage(linuxImage)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks()
-            .defineUnmanagedDataDisk("disk-1")
-            .withNewVhd(30)
-            .withCaching(CachingTypes.READ_WRITE)
-            .attach()
-            .defineUnmanagedDataDisk("disk-2")
-            .withNewVhd(60)
-            .withCaching(CachingTypes.READ_ONLY)
-            .attach()
+            .withNewDataDisk(30, 0, CachingTypes.READ_WRITE)
+            .withNewDataDisk(60, 1, CachingTypes.READ_ONLY)
             .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
-            .withNewStorageAccount(storageAccountCreatable)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .create();
         //

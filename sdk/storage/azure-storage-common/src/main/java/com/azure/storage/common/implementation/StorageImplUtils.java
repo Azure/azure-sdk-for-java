@@ -398,6 +398,19 @@ public class StorageImplUtils {
     }
 
     /**
+     * Checks whether the provided header value is non-null, non-empty, and starts with the expected value.
+     *
+     * @param headerValue The header value to inspect.
+     * @param expectedHeaderValue The expected header value prefix.
+     * @return {@code true} if the header value is present and matches the expected value; otherwise {@code false}.
+     */
+    public static boolean hasMatchingHeaderValue(String headerValue, String expectedHeaderValue) {
+        return !CoreUtils.isNullOrEmpty(headerValue)
+            && !CoreUtils.isNullOrEmpty(expectedHeaderValue)
+            && headerValue.startsWith(expectedHeaderValue);
+    }
+
+    /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
      * millisecond precision.
      *

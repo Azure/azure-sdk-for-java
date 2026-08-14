@@ -7,7 +7,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 public final class HealthModelsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/HealthModels_Create.json
+     * x-ms-original-file: 2026-05-01-preview/HealthModels_Create.json
      */
     /**
      * Sample code: HealthModels_Create.
@@ -25,16 +24,12 @@ public final class HealthModelsCreateSamples {
      */
     public static void healthModelsCreate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.healthModels()
-            .define("model1")
-            .withRegion("eastus2")
-            .withExistingResourceGroup("rgopenapi")
-            .withTags(mapOf("key2961", "fakeTokenPlaceholder"))
+            .define("online-store")
+            .withRegion("eastus")
+            .withExistingResourceGroup("online-store-rg")
+            .withTags(mapOf("environment", "production", "team", "online-store"))
             .withProperties(new HealthModelProperties())
-            .withIdentity(new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1",
-                    new UserAssignedIdentity())))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
 

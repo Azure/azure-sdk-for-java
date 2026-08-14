@@ -13,21 +13,21 @@ public final class ResourceCertificateAndAadDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCertificateAndAadDetails model = BinaryData.fromString(
-            "{\"authType\":\"AzureActiveDirectory\",\"aadAuthority\":\"wankixzbi\",\"aadTenantId\":\"jeputtmrywn\",\"servicePrincipalClientId\":\"zoqftiyqzrnkcqvy\",\"servicePrincipalObjectId\":\"lwh\",\"azureManagementEndpointAudience\":\"lsicohoqqnwv\",\"serviceResourceId\":\"yav\",\"aadAudience\":\"heun\",\"friendlyName\":\"hgyxzkonoc\",\"issuer\":\"oklyaxuconuq\",\"resourceId\":5755576934787523343,\"subject\":\"eyp\",\"thumbprint\":\"rmjmwvvjektc\",\"validFrom\":\"2021-04-14T12:00:30Z\",\"validTo\":\"2021-03-21T19:21:01Z\"}")
+            "{\"authType\":\"AzureActiveDirectory\",\"aadAuthority\":\"pcyvahfnljkyqx\",\"aadTenantId\":\"vuujq\",\"servicePrincipalClientId\":\"idokgjlj\",\"servicePrincipalObjectId\":\"oxgvclt\",\"azureManagementEndpointAudience\":\"gsncghkjeszz\",\"serviceResourceId\":\"ijhtxf\",\"aadAudience\":\"xbf\",\"friendlyName\":\"nehmpvecx\",\"issuer\":\"debfqkkrbmpukgri\",\"resourceId\":1675759018761850231,\"subject\":\"fbxzpuzycisp\",\"thumbprint\":\"zahmgkbrpyydhibn\",\"validFrom\":\"2021-02-01T08:13:12Z\",\"validTo\":\"2021-03-15T23:25:16Z\"}")
             .toObject(ResourceCertificateAndAadDetails.class);
-        Assertions.assertEquals("hgyxzkonoc", model.friendlyName());
-        Assertions.assertEquals("oklyaxuconuq", model.issuer());
-        Assertions.assertEquals(5755576934787523343L, model.resourceId());
-        Assertions.assertEquals("eyp", model.subject());
-        Assertions.assertEquals("rmjmwvvjektc", model.thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T12:00:30Z"), model.validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T19:21:01Z"), model.validTo());
-        Assertions.assertEquals("wankixzbi", model.aadAuthority());
-        Assertions.assertEquals("jeputtmrywn", model.aadTenantId());
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.servicePrincipalClientId());
-        Assertions.assertEquals("lwh", model.servicePrincipalObjectId());
-        Assertions.assertEquals("lsicohoqqnwv", model.azureManagementEndpointAudience());
-        Assertions.assertEquals("yav", model.serviceResourceId());
-        Assertions.assertEquals("heun", model.aadAudience());
+        Assertions.assertEquals("nehmpvecx", model.friendlyName());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.issuer());
+        Assertions.assertEquals(1675759018761850231L, model.resourceId());
+        Assertions.assertEquals("fbxzpuzycisp", model.subject());
+        Assertions.assertEquals("zahmgkbrpyydhibn", model.thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T08:13:12Z"), model.validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T23:25:16Z"), model.validTo());
+        Assertions.assertEquals("pcyvahfnljkyqx", model.aadAuthority());
+        Assertions.assertEquals("vuujq", model.aadTenantId());
+        Assertions.assertEquals("idokgjlj", model.servicePrincipalClientId());
+        Assertions.assertEquals("oxgvclt", model.servicePrincipalObjectId());
+        Assertions.assertEquals("gsncghkjeszz", model.azureManagementEndpointAudience());
+        Assertions.assertEquals("ijhtxf", model.serviceResourceId());
+        Assertions.assertEquals("xbf", model.aadAudience());
     }
 }

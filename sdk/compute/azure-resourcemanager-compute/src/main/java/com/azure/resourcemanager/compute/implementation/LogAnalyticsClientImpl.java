@@ -87,7 +87,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -127,7 +127,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +167,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -187,7 +187,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -227,7 +227,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +245,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -263,7 +263,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,7 +282,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -299,7 +299,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +316,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -355,7 +355,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,7 +394,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -413,7 +413,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +434,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -450,7 +450,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +467,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -484,7 +484,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,7 +502,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -518,7 +518,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

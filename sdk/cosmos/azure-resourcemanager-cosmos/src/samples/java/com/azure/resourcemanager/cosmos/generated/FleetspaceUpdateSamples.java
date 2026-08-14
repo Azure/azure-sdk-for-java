@@ -7,13 +7,14 @@ package com.azure.resourcemanager.cosmos.generated;
 import com.azure.resourcemanager.cosmos.models.FleetspacePropertiesFleetspaceApiKind;
 import com.azure.resourcemanager.cosmos.models.FleetspacePropertiesThroughputPoolConfiguration;
 import com.azure.resourcemanager.cosmos.models.FleetspaceUpdate;
+import java.util.Arrays;
 
 /**
  * Samples for Fleetspace Update.
  */
 public final class FleetspaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetspaceUpdate.json
+     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetspaceUpdate.json
      */
     /**
      * Sample code: CosmosDB Fleetspace Update.
@@ -25,9 +26,10 @@ public final class FleetspaceUpdateSamples {
             .getFleetspaces()
             .update("rg1", "fleet1", "fleetspace1",
                 new FleetspaceUpdate().withFleetspaceApiKind(FleetspacePropertiesFleetspaceApiKind.NO_SQL)
+                    .withDataRegions(Arrays.asList("westus2"))
                     .withThroughputPoolConfiguration(
-                        new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(100000)
-                            .withMaxThroughput(1000000)),
+                        new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(3000)
+                            .withMaxThroughput(4000)),
                 com.azure.core.util.Context.NONE);
     }
 }

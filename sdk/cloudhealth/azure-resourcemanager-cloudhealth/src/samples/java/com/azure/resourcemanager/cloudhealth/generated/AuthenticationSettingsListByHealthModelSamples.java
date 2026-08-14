@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class AuthenticationSettingsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_ListByHealthModel.json
+     * x-ms-original-file: 2026-05-01-preview/AuthenticationSettings_ListByHealthModel.json
      */
     /**
      * Sample code: AuthenticationSettings_ListByHealthModel.
@@ -19,6 +19,6 @@ public final class AuthenticationSettingsListByHealthModelSamples {
     public static void
         authenticationSettingsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.authenticationSettings()
-            .listByHealthModel("my-resource-group", "my-health-model", com.azure.core.util.Context.NONE);
+            .listByHealthModel("online-store-rg", "online-store", com.azure.core.util.Context.NONE);
     }
 }

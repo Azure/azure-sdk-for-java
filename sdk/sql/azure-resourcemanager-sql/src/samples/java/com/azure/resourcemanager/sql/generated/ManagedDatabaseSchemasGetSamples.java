@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseSchemasGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseSchemaGet.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseSchemaGet.json
      */
     /**
      * Sample code: Get managed database schema.

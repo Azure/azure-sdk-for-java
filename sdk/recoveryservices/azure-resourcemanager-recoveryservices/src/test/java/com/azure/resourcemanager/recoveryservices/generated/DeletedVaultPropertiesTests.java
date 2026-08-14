@@ -11,7 +11,7 @@ public final class DeletedVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultProperties model = BinaryData.fromString(
-            "{\"vaultId\":\"dslfhotwmcy\",\"vaultDeletionTime\":\"2021-07-29T20:13:33Z\",\"purgeAt\":\"2021-07-05T23:51:59Z\"}")
+            "{\"vaultId\":\"rcczsqpjhvmd\",\"vaultDeletionTime\":\"2021-11-26T10:49:59Z\",\"purgeAt\":\"2021-07-30T15:20:57Z\"}")
             .toObject(DeletedVaultProperties.class);
     }
 }
