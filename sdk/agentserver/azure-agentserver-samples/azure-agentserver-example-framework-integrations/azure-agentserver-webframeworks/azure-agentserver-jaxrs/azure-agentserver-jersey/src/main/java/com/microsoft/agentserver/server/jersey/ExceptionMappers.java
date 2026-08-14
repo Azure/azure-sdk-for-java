@@ -1,6 +1,6 @@
 package com.microsoft.agentserver.server.jersey;
 
-import com.microsoft.agentserver.api.ApiError;
+import com.microsoft.agentserver.api.AgentServerError;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -29,7 +29,7 @@ public class ExceptionMappers {
 
             return Response.status(Response.Status.NOT_FOUND)
                 .type(MediaType.APPLICATION_JSON_TYPE)
-                .entity(Map.of("error", ApiError.invalidRequest("Resource not found")))
+                .entity(Map.of("error", AgentServerError.invalidRequest("Resource not found")))
                 .build();
         }
     }
@@ -48,7 +48,7 @@ public class ExceptionMappers {
 
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                 .type(MediaType.APPLICATION_JSON_TYPE)
-                .entity(Map.of("error", ApiError.serverError("An internal error occurred.")))
+                .entity(Map.of("error", AgentServerError.serverError("An internal error occurred.")))
                 .build();
         }
     }

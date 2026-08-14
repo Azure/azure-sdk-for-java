@@ -1,7 +1,7 @@
 package com.microsoft.agentserver.api.langchain4j;
 
-import com.microsoft.agentserver.api.ApiError;
-import com.microsoft.agentserver.api.ApiException;
+import com.microsoft.agentserver.api.AgentServerError;
+import com.microsoft.agentserver.api.AgentServerException;
 import com.microsoft.agentserver.api.AgentServerCreateResponse;
 import com.microsoft.agentserver.api.CreateResponse;
 import com.microsoft.agentserver.api.ResponseBuilder;
@@ -91,7 +91,7 @@ public class Langchain4jResponsesHandler implements ResponseHandler {
                 ResponseBuilder.convertOutputToResponse(request, responseOutputText);
 
             return new CreateResponse(request.agent(), response);
-        } catch (ApiException e) {
+        } catch (AgentServerException e) {
             throw new RuntimeException(e);
         }
     }
@@ -147,7 +147,7 @@ public class Langchain4jResponsesHandler implements ResponseHandler {
      * Validates the request, loads conversation history from the ResponseContext,
      * and invokes the agent with the converted input including history.
      */
-    public ResultWithAgenticScope<String> validateAndInvoke(ResponseContext responseContext, AgentServerCreateResponse createResponse) throws ApiException {
+    public ResultWithAgenticScope<String> validateAndInvoke(ResponseContext responseContext, AgentServerCreateResponse createResponse) throws AgentServerException {
         ResponseCreateParams.Body responseCreateParams = getResponseCreateParams(createResponse);
 
         Map<String, Object> input = convert(responseCreateParams);
@@ -268,9 +268,9 @@ public class Langchain4jResponsesHandler implements ResponseHandler {
         return sb.toString();
     }
 
-    private static ResponseCreateParams.Body getResponseCreateParams(AgentServerCreateResponse createResponse) throws ApiException {
+    private static ResponseCreateParams.Body getResponseCreateParams(AgentServerCreateResponse createResponse) throws AgentServerException {
         if (!createResponse.responseCreateParams().isValid()) {
-            throw new ApiException(400, ApiError.invalidRequest("Invalid request parameters"));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("Invalid request parameters"));
         }
 
         return createResponse.responseCreateParams();

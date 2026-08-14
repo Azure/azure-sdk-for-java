@@ -15,7 +15,7 @@ for creating agents that can be deployed as containers and interact with Azure A
 
 ## Prerequisites
 
-* **Java 21+** (the project targets Java 21)
+* **Java 17+** (the project targets Java 17)
 * **Docker** & **Docker Compose** (for containerized runs)
 * No local Maven installation is needed — the included **Maven Wrapper** (`./mvnw`) downloads the correct version
   automatically.

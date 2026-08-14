@@ -5,7 +5,7 @@ package com.microsoft.agentserver.server.spring;
 
 import com.microsoft.agentserver.api.AgentServerCreateResponse;
 import com.microsoft.agentserver.api.AgentServerResponseItemList;
-import com.microsoft.agentserver.api.ApiException;
+import com.microsoft.agentserver.api.AgentServerException;
 import com.microsoft.agentserver.api.CreateResponse;
 import com.microsoft.agentserver.api.ResponseEventStream;
 import com.microsoft.agentserver.api.ResponseStreamReplay;
@@ -89,13 +89,13 @@ class SpringStreamingAcceptHeaderTest {
     private static final class StubResponsesApi implements ResponsesApi {
 
         @Override
-        public CreateResponse createResponse(AgentServerCreateResponse createResponse) throws ApiException {
+        public CreateResponse createResponse(AgentServerCreateResponse createResponse) throws AgentServerException {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse)
-            throws ApiException {
+            throws AgentServerException {
             ResponseEventStream stream = org.mockito.Mockito.mock(ResponseEventStream.class);
             org.mockito.Mockito.when(stream.getResponse()).thenReturn(null);
             // subscribe(onEvent, onFailure, onComplete) → emit an empty, immediately-completed stream.
@@ -109,29 +109,29 @@ class SpringStreamingAcceptHeaderTest {
         }
 
         @Override
-        public Response getResponse(String responseId, List<String> include) throws ApiException {
+        public Response getResponse(String responseId, List<String> include) throws AgentServerException {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public Response cancelResponse(String responseId) throws ApiException {
+        public Response cancelResponse(String responseId) throws AgentServerException {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public ResponseStreamReplay replayResponseStream(String responseId, Integer startingAfter)
-            throws ApiException {
+            throws AgentServerException {
             throw new UnsupportedOperationException();
         }
 
         @Override
-        public void deleteResponse(String responseId) throws ApiException {
+        public void deleteResponse(String responseId) throws AgentServerException {
             throw new UnsupportedOperationException();
         }
 
         @Override
         public AgentServerResponseItemList listInputItems(String responseId, Integer limit, String order,
-            String after, String before, List<String> include) throws ApiException {
+            String after, String before, List<String> include) throws AgentServerException {
             throw new UnsupportedOperationException();
         }
     }

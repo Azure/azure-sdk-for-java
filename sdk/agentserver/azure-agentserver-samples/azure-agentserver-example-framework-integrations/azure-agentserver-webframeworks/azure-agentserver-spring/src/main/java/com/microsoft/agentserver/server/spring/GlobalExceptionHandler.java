@@ -3,8 +3,8 @@
 
 package com.microsoft.agentserver.server.spring;
 
-import com.microsoft.agentserver.api.ApiError;
-import com.microsoft.agentserver.api.ApiException;
+import com.microsoft.agentserver.api.AgentServerError;
+import com.microsoft.agentserver.api.AgentServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * Spring {@link RestControllerAdvice} that converts framework-agnostic
- * {@link ApiException} instances and other common exceptions into the standard
+ * {@link AgentServerException} instances and other common exceptions into the standard
  * error envelope: {@code { "error": { "message", "type", "code",... } }}.
  *
  */
@@ -27,14 +27,14 @@ public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
-     * Handles {@link ApiException} by mapping to the appropriate HTTP status code
-     * and serialising the structured {@link ApiError} body.
+     * Handles {@link AgentServerException} by mapping to the appropriate HTTP status code
+     * and serialising the structured {@link AgentServerError} body.
      */
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<Map<String, ApiError>> handleApiException(ApiException exception) {
-        ApiError error = exception.getError() != null
+    @ExceptionHandler(AgentServerException.class)
+    public ResponseEntity<Map<String, AgentServerError>> handleAgentServerException(AgentServerException exception) {
+        AgentServerError error = exception.getError() != null
             ? exception.getError()
-            : ApiError.serverError("An internal error occurred.");
+            : AgentServerError.serverError("An internal error occurred.");
         return ResponseEntity.status(exception.getStatusCode())
             .contentType(MediaType.APPLICATION_JSON)
             .body(Map.of("error", error));
@@ -44,22 +44,22 @@ public class GlobalExceptionHandler {
      * Handles 404 Not Found exceptions.
      */
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<Map<String, ApiError>> handleNotFound(NoHandlerFoundException exception) {
+    public ResponseEntity<Map<String, AgentServerError>> handleNotFound(NoHandlerFoundException exception) {
         LOGGER.warn("404 Not Found: {} {}", exception.getHttpMethod(), exception.getRequestURL());
         return ResponseEntity.status(404)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Map.of("error", ApiError.invalidRequest("Resource not found")));
+            .body(Map.of("error", AgentServerError.invalidRequest("Resource not found")));
     }
 
     /**
      * Handles all unhandled exceptions as 500 Internal Server Error.
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, ApiError>> handleGenericException(Exception exception) {
+    public ResponseEntity<Map<String, AgentServerError>> handleGenericException(Exception exception) {
         LOGGER.error("Unhandled exception: {}", exception.getMessage(), exception);
         return ResponseEntity.status(500)
             .contentType(MediaType.APPLICATION_JSON)
-            .body(Map.of("error", ApiError.serverError("An internal error occurred.")));
+            .body(Map.of("error", AgentServerError.serverError("An internal error occurred.")));
     }
 }
 

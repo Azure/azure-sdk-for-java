@@ -41,9 +41,9 @@ public interface ResponsesApi {
      *
      * @param createResponse the create-response request
      * @return the completed response
-     * @throws ApiException if the request is invalid or processing fails
+     * @throws AgentServerException if the request is invalid or processing fails
      */
-    CreateResponse createResponse(AgentServerCreateResponse createResponse) throws ApiException;
+    CreateResponse createResponse(AgentServerCreateResponse createResponse) throws AgentServerException;
 
     /**
      * Creates a synchronous (non-streaming) model response with HTTP request metadata.
@@ -53,9 +53,9 @@ public interface ResponsesApi {
      * @param createResponse the create-response request
      * @param metadata       the HTTP request metadata
      * @return the completed response
-     * @throws ApiException if the request is invalid or processing fails
+     * @throws AgentServerException if the request is invalid or processing fails
      */
-    default CreateResponse createResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws ApiException {
+    default CreateResponse createResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws AgentServerException {
         return createResponse(createResponse);
     }
 
@@ -65,9 +65,9 @@ public interface ResponsesApi {
      *
      * @param createResponse the create-response request
      * @return the event stream for streaming delivery
-     * @throws ApiException if the request is invalid or processing fails
+     * @throws AgentServerException if the request is invalid or processing fails
      */
-    ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse) throws ApiException;
+    ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse) throws AgentServerException;
 
     /**
      * Creates a streaming model response with HTTP request metadata.
@@ -77,9 +77,9 @@ public interface ResponsesApi {
      * @param createResponse the create-response request
      * @param metadata       the HTTP request metadata
      * @return the event stream for streaming delivery
-     * @throws ApiException if the request is invalid or processing fails
+     * @throws AgentServerException if the request is invalid or processing fails
      */
-    default ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws ApiException {
+    default ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws AgentServerException {
         return createStreamingResponse(createResponse);
     }
 
@@ -89,9 +89,9 @@ public interface ResponsesApi {
      * @param responseId the response identifier
      * @param include    optional list of fields to include
      * @return the stored response
-     * @throws ApiException if the response is not found or retrieval fails
+     * @throws AgentServerException if the response is not found or retrieval fails
      */
-    Response getResponse(String responseId, List<String> include) throws ApiException;
+    Response getResponse(String responseId, List<String> include) throws AgentServerException;
 
     /**
      * Variant that accepts the inbound {@link RequestMetadata} so the API layer
@@ -104,9 +104,9 @@ public interface ResponsesApi {
      * @param include    optional list of fields to include
      * @param metadata   the inbound request metadata (may be {@link RequestMetadata#EMPTY})
      * @return the stored response
-     * @throws ApiException if the response is not found or retrieval fails
+     * @throws AgentServerException if the response is not found or retrieval fails
      */
-    default Response getResponse(String responseId, List<String> include, RequestMetadata metadata) throws ApiException {
+    default Response getResponse(String responseId, List<String> include, RequestMetadata metadata) throws AgentServerException {
         return getResponse(responseId, include);
     }
 
@@ -115,13 +115,13 @@ public interface ResponsesApi {
      * <p>
      * Behaviour follows the API spec:
      * <ul>
-     *  <li>If the response does not exist (or was never persisted) → {@link ApiException} 404.</li>
-     *  <li>If the response was not created with {@code background=true} → {@link ApiException}
+     *  <li>If the response does not exist (or was never persisted) → {@link AgentServerException} 404.</li>
+     *  <li>If the response was not created with {@code background=true} → {@link AgentServerException}
      *  400 ({@code "Cannot cancel a synchronous response."}). The background check happens
      *  first, before status checks.</li>
      *  <li>If the response is already {@code cancelled} → returns it unchanged (idempotent).</li>
      *  <li>If the response is in a terminal state ({@code completed}/{@code failed}/{@code incomplete})
-     *  → {@link ApiException} 400 with the corresponding message.</li>
+     *  → {@link AgentServerException} 400 with the corresponding message.</li>
      *  <li>If the response is {@code queued} or {@code in_progress} → it winds down to
      *  {@code cancelled} with its output cleared and the cancelled
      *  {@link Response} is returned.</li>
@@ -129,9 +129,9 @@ public interface ResponsesApi {
      *
      * @param responseId the response identifier
      * @return the cancelled (or already-cancelled) response
-     * @throws ApiException with status 404 if not found, or 400 if the response cannot be cancelled
+     * @throws AgentServerException with status 404 if not found, or 400 if the response cannot be cancelled
      */
-    Response cancelResponse(String responseId) throws ApiException;
+    Response cancelResponse(String responseId) throws AgentServerException;
 
     /**
      * Signals that the HTTP client disconnected from a non-background response
@@ -158,10 +158,10 @@ public interface ResponsesApi {
      * Preconditions: the response must have been created with
      * {@code store=true}, {@code background=true} and {@code stream=true}.
      * <ul>
-     *  <li>Not found / {@code store=false} → {@link ApiException} 404.</li>
-     *  <li>{@code background=false} → {@link ApiException} 400
+     *  <li>Not found / {@code store=false} → {@link AgentServerException} 404.</li>
+     *  <li>{@code background=false} → {@link AgentServerException} 400
      *  ({@code "This response cannot be streamed because it was not created with background=true."}).</li>
-     *  <li>{@code stream=false} → {@link ApiException} 400
+     *  <li>{@code stream=false} → {@link AgentServerException} 400
      *  ({@code "This response cannot be streamed because it was not created with stream=true."}).</li>
      * </ul>
      * Otherwise returns the events with {@code sequence_number > startingAfter};
@@ -171,17 +171,17 @@ public interface ResponsesApi {
      * @param responseId    the response identifier
      * @param startingAfter replay only events with a greater sequence number, or {@code null} for all
      * @return the (possibly empty) replay event sequence
-     * @throws ApiException 404 if not found/not stored, 400 if not replayable
+     * @throws AgentServerException 404 if not found/not stored, 400 if not replayable
      */
-    ResponseStreamReplay replayResponseStream(String responseId, Integer startingAfter) throws ApiException;
+    ResponseStreamReplay replayResponseStream(String responseId, Integer startingAfter) throws AgentServerException;
 
     /**
      * Deletes a previously stored response by ID.
      *
      * @param responseId the response identifier
-     * @throws ApiException if deletion fails
+     * @throws AgentServerException if deletion fails
      */
-    void deleteResponse(String responseId) throws ApiException;
+    void deleteResponse(String responseId) throws AgentServerException;
 
     /**
      * Returns a paginated list of input items for a given response.
@@ -193,7 +193,7 @@ public interface ResponsesApi {
      * @param before     cursor for backward pagination — return items before this item ID
      * @param include    optional list of fields to include
      * @return the paginated item list
-     * @throws ApiException if the response is not found or retrieval fails
+     * @throws AgentServerException if the response is not found or retrieval fails
      */
     AgentServerResponseItemList listInputItems(
         String responseId,
@@ -201,7 +201,7 @@ public interface ResponsesApi {
         String order,
         String after,
         String before,
-        List<String> include) throws ApiException;
+        List<String> include) throws AgentServerException;
 
     /**
      * Builder for constructing {@link ResponsesApi} instances backed by

@@ -264,24 +264,24 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
      * IDs produce HTTP 400 ({@code "Malformed identifier."}) rather than 404.
      *
      * @param responseId the path parameter to validate
-     * @throws ApiException 400 if the ID is not a well-formed response ID
+     * @throws AgentServerException 400 if the ID is not a well-formed response ID
      */
-    private static void validateResponseId(String responseId) throws ApiException {
+    private static void validateResponseId(String responseId) throws AgentServerException {
         if (!IdGenerator.isValidResponseId(responseId)) {
             // param="responseId{<value>}" so clients can echo the offending value.
             String param = "responseId{" + (responseId == null ? "" : responseId) + "}";
-            throw new ApiException(400,
-                ApiError.invalidRequest("Malformed identifier.", ApiError.CODE_INVALID_PARAMETERS, param));
+            throw new AgentServerException(400,
+                AgentServerError.invalidRequest("Malformed identifier.", AgentServerError.CODE_INVALID_PARAMETERS, param));
         }
     }
 
     @Override
-    public CreateResponse createResponse(AgentServerCreateResponse createResponse) throws ApiException {
+    public CreateResponse createResponse(AgentServerCreateResponse createResponse) throws AgentServerException {
         return createResponse(createResponse, RequestMetadata.EMPTY);
     }
 
     @Override
-    public CreateResponse createResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws ApiException {
+    public CreateResponse createResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws AgentServerException {
         LOGGER.debug("createResponse called");
 
         ResponseCreateParams.Body params = createResponse.responseCreateParams();
@@ -290,7 +290,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
 
         // background=true requires store=true.
         if (background && !store) {
-            throw new ApiException(400, ApiError.invalidRequest("The 'background' parameter requires 'store' to be true.", ApiError.CODE_UNSUPPORTED_PARAMETER, "background"));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("The 'background' parameter requires 'store' to be true.", AgentServerError.CODE_UNSUPPORTED_PARAMETER, "background"));
         }
 
         String responseId = resolveResponseId(createResponse, metadata);
@@ -322,7 +322,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
             } catch (RuntimeException e) {
                 String code = e.getClass().getSimpleName();
                 String msg = e.getMessage();
-                if (e.getCause() instanceof ApiException ae) {
+                if (e.getCause() instanceof AgentServerException ae) {
                     code = ae.getError() != null ? ae.getError().code() : code;
                     msg = ae.getMessage();
                 }
@@ -468,12 +468,12 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
     }
 
     @Override
-    public ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse) throws ApiException {
+    public ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse) throws AgentServerException {
         return createStreamingResponse(createResponse, RequestMetadata.EMPTY);
     }
 
     @Override
-    public ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws ApiException {
+    public ResponseEventStream createStreamingResponse(AgentServerCreateResponse createResponse, RequestMetadata metadata) throws AgentServerException {
         LOGGER.debug("createStreamingResponse called");
 
         ResponseCreateParams.Body params = createResponse.responseCreateParams();
@@ -482,7 +482,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
 
         // background=true requires store=true (matrix C8).
         if (background && !store) {
-            throw new ApiException(400, ApiError.invalidRequest("The 'background' parameter requires 'store' to be true.", ApiError.CODE_UNSUPPORTED_PARAMETER, "background"));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("The 'background' parameter requires 'store' to be true.", AgentServerError.CODE_UNSUPPORTED_PARAMETER, "background"));
         }
 
         String responseId = resolveResponseId(createResponse, metadata);
@@ -628,12 +628,12 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
     }
 
     @Override
-    public com.openai.models.responses.Response getResponse(String responseId, List<String> include) throws ApiException {
+    public com.openai.models.responses.Response getResponse(String responseId, List<String> include) throws AgentServerException {
         return getResponse(responseId, include, RequestMetadata.EMPTY);
     }
 
     @Override
-    public com.openai.models.responses.Response getResponse(String responseId, List<String> include, RequestMetadata metadata) throws ApiException {
+    public com.openai.models.responses.Response getResponse(String responseId, List<String> include, RequestMetadata metadata) throws AgentServerException {
         LOGGER.debug("getResponse called for responseId={}", responseId);
         validateResponseId(responseId);
         com.openai.models.responses.Response resp = provider.getResponseAsync(responseId, metadata.getIsolation())
@@ -641,14 +641,14 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
             .orElse(null);
 
         if (resp == null) {
-            throw new ApiException(404, ApiError.invalidRequest(responseId + " not found"));
+            throw new AgentServerException(404, AgentServerError.invalidRequest(responseId + " not found"));
         }
 
         return resp;
     }
 
     @Override
-    public ResponseStreamReplay replayResponseStream(String responseId, Integer startingAfter) throws ApiException {
+    public ResponseStreamReplay replayResponseStream(String responseId, Integer startingAfter) throws AgentServerException {
         LOGGER.debug("replayResponseStream called for responseId={}, startingAfter={}", responseId, startingAfter);
         validateResponseId(responseId);
 
@@ -657,22 +657,22 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
             .join()
             .orElse(null);
         if (resp == null) {
-            throw new ApiException(404, ApiError.invalidRequest(responseId + " not found"));
+            throw new AgentServerException(404, AgentServerError.invalidRequest(responseId + " not found"));
         }
 
         // SSE replay requires background=true (checked before stream).
         if (!resp.background().orElse(false)) {
-            throw new ApiException(400, ApiError.invalidRequest(
+            throw new AgentServerException(400, AgentServerError.invalidRequest(
                 "This response cannot be streamed because it was not created with background=true.",
-                ApiError.CODE_INVALID_REQUEST, "stream"));
+                AgentServerError.CODE_INVALID_REQUEST, "stream"));
         }
 
         // SSE replay requires stream=true at creation. The presence of a replay
         // buffer indicates the response was created streaming.
         if (!eventReplayStore.hasBuffer(responseId)) {
-            throw new ApiException(400, ApiError.invalidRequest(
+            throw new AgentServerException(400, AgentServerError.invalidRequest(
                 "This response cannot be streamed because it was not created with stream=true.",
-                ApiError.CODE_INVALID_REQUEST, "stream"));
+                AgentServerError.CODE_INVALID_REQUEST, "stream"));
         }
 
         List<ResponseStreamReplay.ReplayEvent> events = eventReplayStore.replay(responseId, startingAfter)
@@ -681,7 +681,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
     }
 
     @Override
-    public com.openai.models.responses.Response cancelResponse(String responseId) throws ApiException {
+    public com.openai.models.responses.Response cancelResponse(String responseId) throws AgentServerException {
         LOGGER.debug("cancelResponse called for responseId={}", responseId);
         validateResponseId(responseId);
 
@@ -691,13 +691,13 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
 
         // (not found) → 404. Non-background in-flight responses are also not findable.
         if (resp == null) {
-            throw new ApiException(404, ApiError.invalidRequest(responseId + " not found"));
+            throw new AgentServerException(404, AgentServerError.invalidRequest(responseId + " not found"));
         }
 
         // the background check happens first, regardless of status.
         boolean background = resp.background().orElse(false);
         if (!background) {
-            throw new ApiException(400, ApiError.invalidRequest("Cannot cancel a synchronous response."));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("Cannot cancel a synchronous response."));
         }
 
         com.openai.models.responses.ResponseStatus status = resp.status().orElse(null);
@@ -709,13 +709,13 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
 
         // terminal states cannot be cancelled.
         if (com.openai.models.responses.ResponseStatus.COMPLETED.equals(status)) {
-            throw new ApiException(400, ApiError.invalidRequest("Cannot cancel a completed response."));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("Cannot cancel a completed response."));
         }
         if (com.openai.models.responses.ResponseStatus.FAILED.equals(status)) {
-            throw new ApiException(400, ApiError.invalidRequest("Cannot cancel a failed response."));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("Cannot cancel a failed response."));
         }
         if (com.openai.models.responses.ResponseStatus.INCOMPLETE.equals(status)) {
-            throw new ApiException(400, ApiError.invalidRequest("Cannot cancel a response in terminal state."));
+            throw new AgentServerException(400, AgentServerError.invalidRequest("Cannot cancel a response in terminal state."));
         }
 
         // queued or in_progress → wind down to cancelled with output cleared.
@@ -802,7 +802,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
     }
 
     @Override
-    public void deleteResponse(String responseId) throws ApiException {
+    public void deleteResponse(String responseId) throws AgentServerException {
         LOGGER.debug("deleteResponse called for responseId={}", responseId);
         validateResponseId(responseId);
         provider.deleteResponseAsync(responseId).join();
@@ -811,7 +811,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
     }
 
     @Override
-    public AgentServerResponseItemList listInputItems(String responseId, Integer limit, String order, String after, String before, List<String> include) throws ApiException {
+    public AgentServerResponseItemList listInputItems(String responseId, Integer limit, String order, String after, String before, List<String> include) throws AgentServerException {
         LOGGER.debug("listInputItems called for responseId={}", responseId);
         validateResponseId(responseId);
 
@@ -821,7 +821,7 @@ class AgentServerResponsesApi implements ResponsesApi, AutoCloseable {
             .orElse(null);
 
         if (resp == null) {
-            throw new ApiException(404, ApiError.invalidRequest(responseId + " not found"));
+            throw new AgentServerException(404, AgentServerError.invalidRequest(responseId + " not found"));
         }
 
         // Retrieve the stored input items (not output items)

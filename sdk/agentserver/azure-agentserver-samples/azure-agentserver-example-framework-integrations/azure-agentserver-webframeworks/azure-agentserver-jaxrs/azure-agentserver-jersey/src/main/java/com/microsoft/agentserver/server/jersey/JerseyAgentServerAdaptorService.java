@@ -1,7 +1,7 @@
 package com.microsoft.agentserver.server.jersey;
 
 import com.microsoft.agentserver.api.ResponsesApi;
-import com.microsoft.agentserver.api.jaxrs.ApiExceptionMapper;
+import com.microsoft.agentserver.api.jaxrs.AgentServerExceptionMapper;
 import com.microsoft.agentserver.api.jaxrs.HealthResource;
 import com.microsoft.agentserver.api.jaxrs.InboundRequestLoggingFilter;
 import com.microsoft.agentserver.api.jaxrs.ObjectMapperProvider;
@@ -75,7 +75,7 @@ public class JerseyAgentServerAdaptorService {
             .register(SseResponseFilter.class)
             .register(PlatformHeaderResponseFilter.class)
             .register(InboundRequestLoggingFilter.class)
-            .register(ApiExceptionMapper.class)
+            .register(AgentServerExceptionMapper.class)
             .register(ExceptionMappers.NotFoundExceptionMapper.class)
             .register(ExceptionMappers.GenericExceptionMapper.class);
 

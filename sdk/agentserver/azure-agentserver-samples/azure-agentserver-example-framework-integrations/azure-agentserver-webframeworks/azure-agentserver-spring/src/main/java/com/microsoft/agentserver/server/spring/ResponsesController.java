@@ -3,7 +3,7 @@
 
 package com.microsoft.agentserver.server.spring;
 
-import com.microsoft.agentserver.api.ApiException;
+import com.microsoft.agentserver.api.AgentServerException;
 import com.microsoft.agentserver.api.AgentServerCreateResponse;
 import com.microsoft.agentserver.api.AgentServerResponseItemList;
 import com.microsoft.agentserver.api.CreateResponse;
@@ -63,7 +63,7 @@ public class ResponsesController {
     public ResponseEntity<CreateResponse> createResponse(
         @RequestBody AgentServerCreateResponse createResponse,
         HttpServletRequest httpRequest,
-        HttpServletResponse httpResponse) throws ApiException {
+        HttpServletResponse httpResponse) throws AgentServerException {
         RequestMetadata metadata = extractMetadata(httpRequest);
         CreateResponse result = responsesApi.createResponse(createResponse, metadata);
         publishSessionId(httpRequest, httpResponse, result.response());
@@ -78,7 +78,7 @@ public class ResponsesController {
     public SseEmitter createStreamingResponse(
         @RequestBody AgentServerCreateResponse createResponse,
         HttpServletRequest httpRequest,
-        HttpServletResponse httpResponse) throws ApiException {
+        HttpServletResponse httpResponse) throws AgentServerException {
 
         RequestMetadata metadata = extractMetadata(httpRequest);
         ResponseEventStream stream = responsesApi.createStreamingResponse(createResponse, metadata);
@@ -155,7 +155,7 @@ public class ResponsesController {
         @RequestParam(value = "include_obfuscation", required = false) Boolean includeObfuscation,
         HttpServletRequest httpRequest,
         HttpServletResponse httpResponse)
-        throws ApiException {
+        throws AgentServerException {
         RequestMetadata metadata = extractMetadata(httpRequest);
         com.openai.models.responses.Response resp = responsesApi.getResponse(responseId, include, metadata);
         publishSessionId(httpRequest, httpResponse, resp);
@@ -176,9 +176,9 @@ public class ResponsesController {
     public SseEmitter getResponseStream(
         @PathVariable("responseId") String responseId,
         @RequestParam(value = "starting_after", required = false) Integer startingAfter)
-        throws ApiException {
+        throws AgentServerException {
         // Precondition validation happens BEFORE returning the emitter
-        // so ApiException (400/404) flows through the GlobalExceptionHandler.
+        // so AgentServerException (400/404) flows through the GlobalExceptionHandler.
         ResponseStreamReplay replay = responsesApi.replayResponseStream(responseId, startingAfter);
 
         // Timeout of 0 means no timeout — the stream ends when we call complete().
@@ -208,13 +208,13 @@ public class ResponsesController {
      * {@code background=true} response that is still {@code queued} or
      * {@code in_progress}, returning HTTP 200 with the cancelled response.
      * Rejections (synchronous response, terminal state, not found) surface as
-     * {@link ApiException} (400/404).
+     * {@link AgentServerException} (400/404).
      */
     @PostMapping(path = "/{responseId}/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<com.openai.models.responses.Response> cancelResponse(
         @PathVariable("responseId") String responseId,
         HttpServletRequest httpRequest,
-        HttpServletResponse httpResponse) throws ApiException {
+        HttpServletResponse httpResponse) throws AgentServerException {
         com.openai.models.responses.Response resp = responsesApi.cancelResponse(responseId);
         publishSessionId(httpRequest, httpResponse, resp);
         return ResponseEntity.ok(resp);
@@ -228,7 +228,7 @@ public class ResponsesController {
      * {@code { "id": "...", "object": "response", "deleted": true }}.
      */
     @DeleteMapping(path = "/{responseId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> deleteResponse(@PathVariable("responseId") String responseId) throws ApiException {
+    public ResponseEntity<Map<String, Object>> deleteResponse(@PathVariable("responseId") String responseId) throws AgentServerException {
         responsesApi.deleteResponse(responseId);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("id", responseId);
@@ -247,7 +247,7 @@ public class ResponsesController {
         @RequestParam(value = "order", required = false) String order,
         @RequestParam(value = "after", required = false) String after,
         @RequestParam(value = "before", required = false) String before,
-        @RequestParam(value = "include", required = false) List<String> include) throws ApiException {
+        @RequestParam(value = "include", required = false) List<String> include) throws AgentServerException {
         return responsesApi.listInputItems(responseId, limit, order, after, before, include);
     }
 

@@ -87,7 +87,7 @@ class CancelResponseIntegrationTest {
     @Test
     @DisplayName("Cancel unknown response → 404")
     void cancelNotFound() {
-        ApiException ex = assertThrows(ApiException.class, () -> api.cancelResponse(vid("missing")));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.cancelResponse(vid("missing")));
         assertEquals(404, ex.getStatusCode());
     }
 
@@ -96,7 +96,7 @@ class CancelResponseIntegrationTest {
     void cancelSynchronous() {
         String id = vid("sync");
         seed(id, false, ResponseStatus.COMPLETED);
-        ApiException ex = assertThrows(ApiException.class, () -> api.cancelResponse(id));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.cancelResponse(id));
         assertEquals(400, ex.getStatusCode());
         assertEquals("Cannot cancel a synchronous response.", ex.getError().message());
     }
@@ -141,7 +141,7 @@ class CancelResponseIntegrationTest {
     void cancelCompleted() {
         String id = vid("done");
         seed(id, true, ResponseStatus.COMPLETED);
-        ApiException ex = assertThrows(ApiException.class, () -> api.cancelResponse(id));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.cancelResponse(id));
         assertEquals(400, ex.getStatusCode());
         assertEquals("Cannot cancel a completed response.", ex.getError().message());
     }
@@ -151,7 +151,7 @@ class CancelResponseIntegrationTest {
     void cancelFailed() {
         String id = vid("failed");
         seed(id, true, ResponseStatus.FAILED);
-        ApiException ex = assertThrows(ApiException.class, () -> api.cancelResponse(id));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.cancelResponse(id));
         assertEquals(400, ex.getStatusCode());
         assertEquals("Cannot cancel a failed response.", ex.getError().message());
     }
@@ -161,7 +161,7 @@ class CancelResponseIntegrationTest {
     void cancelIncomplete() {
         String id = vid("incomplete");
         seed(id, true, ResponseStatus.INCOMPLETE);
-        ApiException ex = assertThrows(ApiException.class, () -> api.cancelResponse(id));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.cancelResponse(id));
         assertEquals(400, ex.getStatusCode());
         assertEquals("Cannot cancel a response in terminal state.", ex.getError().message());
     }

@@ -91,7 +91,7 @@ class EndToEndIntegrationTest {
 
         @Test
         @DisplayName("Three-turn conversation: create, follow-up, follow-up")
-        void threeTurnConversation() throws ApiException {
+        void threeTurnConversation() throws AgentServerException {
             // Turn 1
             CreateResponse turn1 = api.createResponse(createRequest("Hello"));
             assertNotNull(turn1.response());
@@ -119,7 +119,7 @@ class EndToEndIntegrationTest {
 
         @Test
         @DisplayName("Delete middle of conversation chain, endpoints remain accessible")
-        void deleteMiddleOfChain() throws ApiException {
+        void deleteMiddleOfChain() throws AgentServerException {
             CreateResponse turn1 = api.createResponse(createRequest("First"));
             CreateResponse turn2 = api.createResponse(
                 createRequestWithPrevious("Second", turn1.response().id()));
@@ -134,7 +134,7 @@ class EndToEndIntegrationTest {
             assertNotNull(api.getResponse(turn3.response().id(), List.of()));
 
             // Middle should be gone
-            assertThrows(ApiException.class,
+            assertThrows(AgentServerException.class,
                 () -> api.getResponse(turn2.response().id(), List.of()));
         }
     }
@@ -149,7 +149,7 @@ class EndToEndIntegrationTest {
 
         @Test
         @DisplayName("Streaming handler that emits multiple chunks assembles correct final response")
-        void streamingMultiChunkResponse() throws ApiException {
+        void streamingMultiChunkResponse() throws AgentServerException {
             ResponseHandler chunkingHandler = new ResponseHandler() {
                 @Override
                 public ResponseEventStream createAsync(ResponseContext ctx, AgentServerCreateResponse request) {
@@ -199,7 +199,7 @@ class EndToEndIntegrationTest {
 
         @Test
         @DisplayName("Streaming handler with function call + message output")
-        void streamingFunctionCallAndMessage() throws ApiException {
+        void streamingFunctionCallAndMessage() throws AgentServerException {
             ResponseHandler handler = new ResponseHandler() {
                 @Override
                 public ResponseEventStream createAsync(ResponseContext ctx, AgentServerCreateResponse request) {
@@ -263,7 +263,7 @@ class EndToEndIntegrationTest {
 
         @Test
         @DisplayName("Streaming handler that emits failure produces failed response")
-        void streamingFailure() throws ApiException {
+        void streamingFailure() throws AgentServerException {
             ResponseHandler failHandler = new ResponseHandler() {
                 @Override
                 public ResponseEventStream createAsync(ResponseContext ctx, AgentServerCreateResponse request) {
@@ -379,7 +379,7 @@ class EndToEndIntegrationTest {
                         ResponseEventStream stream = api.createStreamingResponse(
                             createRequest("Stream " + idx));
                         responses.add(stream.getResponse());
-                    } catch (ApiException e) {
+                    } catch (AgentServerException e) {
                         throw new RuntimeException(e);
                     } finally {
                         latch.countDown();
@@ -475,17 +475,17 @@ class EndToEndIntegrationTest {
     }
 
     // ══════════════════════════════════════════════════════════════
-    //  ApiException
+    //  AgentServerException
     // ══════════════════════════════════════════════════════════════
 
     @Nested
-    @DisplayName("ApiException")
-    class ApiExceptionTests {
+    @DisplayName("AgentServerException")
+    class AgentServerExceptionTests {
 
         @Test
-        @DisplayName("ApiException carries status code and structured error body")
+        @DisplayName("AgentServerException carries status code and structured error body")
         void exceptionCarriesInfo() {
-            ApiException ex = new ApiException(404, ApiError.invalidRequest("Not found"));
+            AgentServerException ex = new AgentServerException(404, AgentServerError.invalidRequest("Not found"));
             assertEquals(404, ex.getStatusCode());
             assertEquals("Not found", ex.getError().message());
             assertEquals("invalid_request_error", ex.getError().type());
@@ -494,9 +494,9 @@ class EndToEndIntegrationTest {
         }
 
         @Test
-        @DisplayName("ApiException with serverError builds a 500-style body")
+        @DisplayName("AgentServerException with serverError builds a 500-style body")
         void serverErrorBody() {
-            ApiException ex = new ApiException(500, ApiError.serverError("boom"));
+            AgentServerException ex = new AgentServerException(500, AgentServerError.serverError("boom"));
             assertEquals(500, ex.getStatusCode());
             assertEquals("server_error", ex.getError().type());
             assertEquals("server_error", ex.getError().code());

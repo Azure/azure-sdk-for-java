@@ -34,6 +34,7 @@
 
     <module>financial-agent/azure-agentserver-langchain4j-financial-sample</module>
     <module>financial-agent/azure-agentserver-langchain4j-financial-jersey-sample</module>
+    <module>financial-agent/azure-agentserver-openai-financial-sample</module>
     <module>azure-ai-agents-sdk-client-sample</module>
     <module>azure-agentserver-hosted-agent-cli</module>
 
@@ -112,13 +113,6 @@
         <groupId>dev.langchain4j</groupId>
         <artifactId>langchain4j-agentic</artifactId>
         <version>${langchain4j.agentic.version}</version>
-      </dependency>
-
-      <!-- Jackson -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-kotlin</artifactId>
-        <version>${jackson.version}</version>
       </dependency>
 
       <!-- Jersey -->

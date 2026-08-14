@@ -86,7 +86,7 @@ class ResponsesApiIntegrationTest {
 
         @Test
         @DisplayName("Create → Get → Delete full lifecycle")
-        void createGetDeleteLifecycle() throws ApiException {
+        void createGetDeleteLifecycle() throws AgentServerException {
             // Create
             AgentServerCreateResponse request = createRequest("Hello");
             CreateResponse created = api.createResponse(request);
@@ -116,7 +116,7 @@ class ResponsesApiIntegrationTest {
             api.deleteResponse(responseId);
 
             // After deletion, get should throw 404
-            ApiException ex = assertThrows(ApiException.class,
+            AgentServerException ex = assertThrows(AgentServerException.class,
                 () -> api.getResponse(responseId, List.of()));
             assertEquals(404, ex.getStatusCode());
         }
@@ -124,14 +124,14 @@ class ResponsesApiIntegrationTest {
         @Test
         @DisplayName("Get non-existent response returns 404")
         void getNonExistentResponseThrows404() {
-            ApiException ex = assertThrows(ApiException.class,
+            AgentServerException ex = assertThrows(AgentServerException.class,
                 () -> api.getResponse("caresp_" + "A".repeat(50), List.of()));
             assertEquals(404, ex.getStatusCode());
         }
 
         @Test
         @DisplayName("Multiple creates produce distinct response IDs")
-        void multipleCreatesProduceDistinctIds() throws ApiException {
+        void multipleCreatesProduceDistinctIds() throws AgentServerException {
             CreateResponse r1 = api.createResponse(createRequest("First"));
             CreateResponse r2 = api.createResponse(createRequest("Second"));
 
@@ -144,7 +144,7 @@ class ResponsesApiIntegrationTest {
 
         @Test
         @DisplayName("List input items for a stored response")
-        void listInputItemsForStoredResponse() throws ApiException {
+        void listInputItemsForStoredResponse() throws AgentServerException {
             CreateResponse created = api.createResponse(createRequest("Hello"));
             String responseId = created.response().id();
 
@@ -156,7 +156,7 @@ class ResponsesApiIntegrationTest {
 
         @Test
         @DisplayName("List input items with after/before cursors windows the result")
-        void listInputItemsCursorWindow() throws ApiException {
+        void listInputItemsCursorWindow() throws AgentServerException {
             // Seed a stored response and 5 input items in deterministic order: it1..it5
             CreateResponse created = api.createResponse(createRequest("anchor"));
             String responseId = created.response().id();
@@ -208,7 +208,7 @@ class ResponsesApiIntegrationTest {
         @Test
         @DisplayName("List input items for non-existent response throws 404")
         void listInputItemsNonExistentThrows404() {
-            assertThrows(ApiException.class,
+            assertThrows(AgentServerException.class,
                 () -> api.listInputItems("caresp_" + "A".repeat(50), null, null, null, null, List.of()));
         }
 
@@ -221,19 +221,19 @@ class ResponsesApiIntegrationTest {
         @Test
         @DisplayName("Malformed response ID is rejected with 400")
         void malformedIdReturns400() {
-            ApiException ex = assertThrows(ApiException.class,
+            AgentServerException ex = assertThrows(AgentServerException.class,
                 () -> api.getResponse("not-a-valid-id", List.of()));
             assertEquals(400, ex.getStatusCode());
             assertEquals("Malformed identifier.", ex.getError().message());
 
             // Validation happens before lookup on every response-ID endpoint.
-            assertEquals(400, assertThrows(ApiException.class,
+            assertEquals(400, assertThrows(AgentServerException.class,
                 () -> api.cancelResponse("caresp_tooshort")).getStatusCode());
-            assertEquals(400, assertThrows(ApiException.class,
+            assertEquals(400, assertThrows(AgentServerException.class,
                 () -> api.deleteResponse("resp_wrongprefix" + "A".repeat(50))).getStatusCode());
-            assertEquals(400, assertThrows(ApiException.class,
+            assertEquals(400, assertThrows(AgentServerException.class,
                 () -> api.listInputItems("bad id", null, null, null, null, List.of())).getStatusCode());
-            assertEquals(400, assertThrows(ApiException.class,
+            assertEquals(400, assertThrows(AgentServerException.class,
                 () -> api.replayResponseStream("caresp_short", 0)).getStatusCode());
         }
     }
@@ -274,7 +274,7 @@ class ResponsesApiIntegrationTest {
 
         @Test
         @DisplayName("Streaming create returns events with proper lifecycle")
-        void streamingCreateReturnsEventStream() throws ApiException {
+        void streamingCreateReturnsEventStream() throws AgentServerException {
             AgentServerCreateResponse request = createRequest("Hi");
             ResponseEventStream stream = api.createStreamingResponse(request);
 
@@ -300,7 +300,7 @@ class ResponsesApiIntegrationTest {
 
         @Test
         @DisplayName("Streaming response produces valid final Response snapshot")
-        void streamingProducesValidResponseSnapshot() throws ApiException {
+        void streamingProducesValidResponseSnapshot() throws AgentServerException {
             AgentServerCreateResponse request = createRequest("Hi");
             ResponseEventStream stream = api.createStreamingResponse(request);
 

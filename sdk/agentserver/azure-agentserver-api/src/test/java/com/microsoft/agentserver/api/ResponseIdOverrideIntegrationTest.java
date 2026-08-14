@@ -63,7 +63,7 @@ class ResponseIdOverrideIntegrationTest {
 
     @Test
     @DisplayName("Non-empty x-agent-response-id header is used as the response ID")
-    void overrideHeaderWins() throws ApiException {
+    void overrideHeaderWins() throws AgentServerException {
         String custom = vid("custom");
         CreateResponse created = api.createResponse(request(), withResponseIdHeader(custom));
         assertEquals(custom, created.response().id(),
@@ -76,7 +76,7 @@ class ResponseIdOverrideIntegrationTest {
 
     @Test
     @DisplayName("Empty x-agent-response-id header falls back to generation ( negative)")
-    void emptyOverrideFallsBackToGeneration() throws ApiException {
+    void emptyOverrideFallsBackToGeneration() throws AgentServerException {
         CreateResponse a = api.createResponse(request(), withResponseIdHeader(""));
         CreateResponse b = api.createResponse(request(), withResponseIdHeader(null));
         assertTrue(a.response().id().startsWith("caresp_"));
@@ -86,7 +86,7 @@ class ResponseIdOverrideIntegrationTest {
 
     @Test
     @DisplayName("Header override beats body metadata.response_id ( precedence)")
-    void headerBeatsBodyMetadata() throws ApiException {
+    void headerBeatsBodyMetadata() throws AgentServerException {
         String headerId = vid("hdr");
         String bodyId = vid("body");
         ResponseCreateParams.Body body = ResponseCreateParams.builder()

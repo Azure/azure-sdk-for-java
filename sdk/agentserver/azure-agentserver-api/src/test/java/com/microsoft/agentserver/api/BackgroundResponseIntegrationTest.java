@@ -125,7 +125,7 @@ class BackgroundResponseIntegrationTest {
             .provider(provider)
             .build();
 
-        ApiException ex = assertThrows(ApiException.class, () -> api.createResponse(backgroundRequest(false)));
+        AgentServerException ex = assertThrows(AgentServerException.class, () -> api.createResponse(backgroundRequest(false)));
         assertEquals(400, ex.getStatusCode());
     }
 

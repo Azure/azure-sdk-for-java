@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * Structured HTTP error body as defined by the API spec.
- * Serialised inside an outer envelope: {@code { "error": ApiError }}.
+ * Serialised inside an outer envelope: {@code { "error": AgentServerError }}.
  * <p>
  * Required fields: {@link #message}, {@link #type}, {@link #code} (which may be
  * {@code null} but is always present). Optional fields ({@link #param},
@@ -26,13 +26,13 @@ import java.util.Map;
  * @param additionalInfo arbitrary supplemental key/value context; optional
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiError(
+public record AgentServerError(
     @JsonProperty("message") String message,
     @JsonProperty("type") String type,
     // `code` is always serialised (may be null) per the envelope spec.
     @JsonInclude(JsonInclude.Include.ALWAYS) @JsonProperty("code") String code,
     @JsonProperty("param") String param,
-    @JsonProperty("details") List<ApiError> details,
+    @JsonProperty("details") List<AgentServerError> details,
     @JsonProperty("additionalInfo") Map<String, Object> additionalInfo) {
 
     /**
@@ -76,22 +76,22 @@ public record ApiError(
     /**
      * Convenience for the common 4xx case with no offending parameter.
      */
-    public static ApiError invalidRequest(String message) {
-        return new ApiError(message, TYPE_INVALID_REQUEST, CODE_INVALID_REQUEST, null, null, null);
+    public static AgentServerError invalidRequest(String message) {
+        return new AgentServerError(message, TYPE_INVALID_REQUEST, CODE_INVALID_REQUEST, null, null, null);
     }
 
     /**
      * Convenience for a 4xx case with a specific sub-code and offending parameter.
      */
-    public static ApiError invalidRequest(String message, String code, String param) {
-        return new ApiError(message, TYPE_INVALID_REQUEST, code, param, null, null);
+    public static AgentServerError invalidRequest(String message, String code, String param) {
+        return new AgentServerError(message, TYPE_INVALID_REQUEST, code, param, null, null);
     }
 
     /**
      * Convenience for a 500.
      */
-    public static ApiError serverError(String message) {
-        return new ApiError(message, TYPE_SERVER_ERROR, CODE_SERVER_ERROR, null, null, null);
+    public static AgentServerError serverError(String message) {
+        return new AgentServerError(message, TYPE_SERVER_ERROR, CODE_SERVER_ERROR, null, null, null);
     }
 }
 

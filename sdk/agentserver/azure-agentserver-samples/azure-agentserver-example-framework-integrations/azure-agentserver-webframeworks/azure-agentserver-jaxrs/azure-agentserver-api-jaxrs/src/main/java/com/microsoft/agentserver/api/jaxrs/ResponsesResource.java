@@ -3,8 +3,8 @@
 
 package com.microsoft.agentserver.api.jaxrs;
 
-import com.microsoft.agentserver.api.ApiError;
-import com.microsoft.agentserver.api.ApiException;
+import com.microsoft.agentserver.api.AgentServerError;
+import com.microsoft.agentserver.api.AgentServerException;
 import com.microsoft.agentserver.api.AgentServerCreateResponse;
 import com.microsoft.agentserver.api.AgentServerResponseItemList;
 import com.microsoft.agentserver.api.CreateResponse;
@@ -69,7 +69,7 @@ public class ResponsesResource {
         AgentServerCreateResponse createResponse,
         @Context HttpHeaders headers,
         @Context UriInfo uriInfo,
-        @Context ContainerRequestContext rc) throws ApiException {
+        @Context ContainerRequestContext rc) throws AgentServerException {
         RequestMetadata metadata = extractMetadata(headers, uriInfo);
         CreateResponse result = responsesApi.createResponse(createResponse, metadata);
         publishSessionId(rc, result.response());
@@ -88,13 +88,13 @@ public class ResponsesResource {
         @Context HttpHeaders headers,
         @Context UriInfo uriInfo,
         @Context ContainerRequestContext rc,
-        AgentServerCreateResponse createResponse) throws ApiException {
+        AgentServerCreateResponse createResponse) throws AgentServerException {
 
         if (eventSink == null) {
-            throw new ApiException(500, ApiError.serverError("SseEventSink was not injected properly"));
+            throw new AgentServerException(500, AgentServerError.serverError("SseEventSink was not injected properly"));
         }
         if (sse == null) {
-            throw new ApiException(500, ApiError.serverError("Sse context was not injected properly"));
+            throw new AgentServerException(500, AgentServerError.serverError("Sse context was not injected properly"));
         }
 
         RequestMetadata metadata = extractMetadata(headers, uriInfo);
@@ -162,7 +162,7 @@ public class ResponsesResource {
         @QueryParam("include_obfuscation") Boolean includeObfuscation,
         @Context HttpHeaders headers,
         @Context UriInfo uriInfo,
-        @Context ContainerRequestContext rc) throws ApiException {
+        @Context ContainerRequestContext rc) throws AgentServerException {
         RequestMetadata metadata = extractMetadata(headers, uriInfo);
         com.openai.models.responses.Response resp = responsesApi.getResponse(responseId, include, metadata);
         publishSessionId(rc, resp);
@@ -186,16 +186,16 @@ public class ResponsesResource {
         @PathParam("response_id") String responseId,
         @QueryParam("starting_after") Integer startingAfter,
         @Context SseEventSink eventSink,
-        @Context Sse sse) throws ApiException {
+        @Context Sse sse) throws AgentServerException {
         // Precondition validation happens BEFORE touching the sink so
-        // ApiException (400/404) flows through the standard ApiExceptionMapper.
+        // AgentServerException (400/404) flows through the standard AgentServerExceptionMapper.
         ResponseStreamReplay replay = responsesApi.replayResponseStream(responseId, startingAfter);
 
         if (eventSink == null) {
-            throw new ApiException(500, ApiError.serverError("SseEventSink was not injected properly"));
+            throw new AgentServerException(500, AgentServerError.serverError("SseEventSink was not injected properly"));
         }
         if (sse == null) {
-            throw new ApiException(500, ApiError.serverError("Sse context was not injected properly"));
+            throw new AgentServerException(500, AgentServerError.serverError("Sse context was not injected properly"));
         }
 
         OutboundSseEvent.Builder eventBuilder = sse.newEventBuilder();
@@ -224,14 +224,14 @@ public class ResponsesResource {
      * {@code background=true} response that is still {@code queued} or
      * {@code in_progress}, returning HTTP 200 with the cancelled {@link Response}.
      * Rejections (synchronous response, terminal state, not found) surface as
-     * {@link ApiException} (400/404).
+     * {@link AgentServerException} (400/404).
      */
     @POST
     @Path("/{response_id}/cancel")
     @Produces(MediaType.APPLICATION_JSON)
     public Response cancelResponse(
         @PathParam("response_id") String responseId,
-        @Context ContainerRequestContext rc) throws ApiException {
+        @Context ContainerRequestContext rc) throws AgentServerException {
         com.openai.models.responses.Response resp = responsesApi.cancelResponse(responseId);
         publishSessionId(rc, resp);
         return Response.ok().entity(resp).build();
@@ -247,7 +247,7 @@ public class ResponsesResource {
     @DELETE
     @Path("/{response_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteResponse(@PathParam("response_id") String responseId) throws ApiException {
+    public Response deleteResponse(@PathParam("response_id") String responseId) throws AgentServerException {
         responsesApi.deleteResponse(responseId);
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("id", responseId);
@@ -268,7 +268,7 @@ public class ResponsesResource {
         @QueryParam("order") String order,
         @QueryParam("after") String after,
         @QueryParam("before") String before,
-        @QueryParam("include") List<String> include) throws ApiException {
+        @QueryParam("include") List<String> include) throws AgentServerException {
         return responsesApi.listInputItems(responseId, limit, order, after, before, include);
     }
 
