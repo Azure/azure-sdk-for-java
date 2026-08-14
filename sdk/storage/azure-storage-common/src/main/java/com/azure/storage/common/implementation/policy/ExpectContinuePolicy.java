@@ -11,7 +11,7 @@ import com.azure.core.util.Configuration;
 /**
  * Pipeline policy that applies the HTTP header {@code Expect: 100-continue} to requests that carry a body.
  * <p>
- * This policy must be placed after the retry policy so that it is evaluated on every retry attempt.
+ * Must be placed after the retry policy so that it is evaluated on every retry attempt.
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
@@ -31,15 +31,13 @@ public final class ExpectContinuePolicy extends HttpPipelineSyncPolicy {
     }
 
     /**
-     * Creates a policy reading the opt out from the given configuration. For testing.
+     * Creates a policy reading the opt out from the given configuration.
      *
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
      * @param configuration The configuration to read the opt out from.
      */
     ExpectContinuePolicy(Long contentLengthThreshold, Configuration configuration) {
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
-        // Read once here rather than per request. This is a process-level opt out, so it cannot meaningfully change
-        // over the lifetime of a client.
         this.disabled = ExpectContinueSupport.isDisabled(configuration);
     }
 

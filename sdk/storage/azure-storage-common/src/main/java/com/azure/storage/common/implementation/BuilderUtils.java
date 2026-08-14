@@ -39,10 +39,8 @@ public final class BuilderUtils {
     }
 
     /**
-     * Adds the policy applying HTTP header {@code Expect: 100-continue}, if the given options call for one.
-     * <p>
-     * This must be called after the retry policy has been added so that the policy is evaluated on every retry
-     * attempt, and before the credential policies as headers may affect the string to sign of the request.
+     * Adds the policy applying HTTP header {@code Expect: 100-continue}, if the given options call for one. Must be
+     * called after the retry policy has been added, and before the credential policies.
      *
      * @param policies The pipeline policies being built up.
      * @param expectContinueOptions The options, or null to use the default behavior.

@@ -13,34 +13,22 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Pipeline policy that applies the HTTP header {@code Expect: 100-continue} to requests that carry a body, but only for
- * a window of time after the service has indicated it is under load.
+ * Pipeline policy that applies the HTTP header {@code Expect: 100-continue} to requests that carry a body, for a window
+ * of time after the service responds 429, 500, or 503.
  * <p>
- * While the service is healthy the header is omitted, so requests do not pay for the additional round trip it costs.
- * Once the service responds 429, 500, or 503, the header is applied to subsequent requests until the window elapses,
- * so that a body is not uploaded just to be rejected again.
- * <p>
- * This policy must be placed after the retry policy so that it is evaluated on every retry attempt. Placed before the
- * retry policy it would be evaluated once, before any response had been seen, and could not take effect until a later
- * call.
+ * Must be placed after the retry policy so that it is evaluated on every retry attempt.
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy {
-    /*
-     * Cap the window so that adding it to System.nanoTime() cannot overflow. Roughly 73 years, far longer than any
-     * meaningful configuration.
-     */
+    // Capped so that adding the interval to System.nanoTime() cannot overflow.
     private static final long MAX_INTERVAL_NANOS = Long.MAX_VALUE / 4;
 
     private final long throttleIntervalNanos;
     private final long contentLengthThreshold;
     private final boolean disabled;
 
-    /*
-     * The nanoTime after which the throttle window has elapsed. Initialized to now, meaning no window is open until a
-     * triggering response is seen. Compared using subtraction so that nanoTime wraparound is handled correctly.
-     */
+    // The nanoTime after which the window has elapsed. Compared by subtraction to handle nanoTime wraparound.
     private final AtomicLong windowExpiryNanos = new AtomicLong(System.nanoTime());
 
     /**
@@ -56,7 +44,7 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
     }
 
     /**
-     * Creates a policy reading the opt out from the given configuration. For testing.
+     * Creates a policy reading the opt out from the given configuration.
      *
      * @param throttleInterval The interval for which the header is applied after a triggering response.
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
@@ -66,8 +54,6 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
         Configuration configuration) {
         this.throttleIntervalNanos = toNanos(throttleInterval);
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
-        // Read once here rather than per request. This is a process-level opt out, so it cannot meaningfully change
-        // over the lifetime of a client.
         this.disabled = ExpectContinueSupport.isDisabled(configuration);
     }
 
@@ -106,7 +92,6 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
         try {
             return Math.min(throttleInterval.toNanos(), MAX_INTERVAL_NANOS);
         } catch (ArithmeticException ex) {
-            // Duration too large to express in nanoseconds.
             return MAX_INTERVAL_NANOS;
         }
     }

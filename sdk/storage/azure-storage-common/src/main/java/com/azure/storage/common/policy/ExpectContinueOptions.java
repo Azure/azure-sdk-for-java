@@ -10,21 +10,6 @@ import java.time.Duration;
 /**
  * This class contains configuration for applying the HTTP header {@code Expect: 100-continue} to requests that carry a
  * body.
- *
- * <p>When the header is applied, the request headers are sent to the service without the body, and the body is only
- * sent once the service has responded {@code 100 Continue}. This costs an additional network round trip, but it avoids
- * sending a large body that the service is going to reject anyway, which can significantly reduce the bandwidth spent
- * retrying while the service is throttling.</p>
- *
- * <p>For more information on the header itself, see
- * <a href="https://datatracker.ietf.org/doc/html/rfc9110#section-10.1.1">RFC 9110 section 10.1.1</a>.</p>
- *
- * <p><strong>Whether the header has any effect depends on the HTTP client in use.</strong> Setting it does not by
- * itself make a client wait for the service to respond before sending the body. Of the supported transports, only
- * {@code azure-core-http-okhttp} performs the handshake. {@code azure-core-http-netty} and
- * {@code azure-core-http-vertx} send the header but stream the body immediately, and
- * {@code azure-core-http-jdk-httpclient} drops the header altogether, as {@code Expect} is restricted by
- * {@code java.net.http.HttpClient}. On those transports these options are accepted but save no bandwidth.</p>
  */
 @Fluent
 public final class ExpectContinueOptions {

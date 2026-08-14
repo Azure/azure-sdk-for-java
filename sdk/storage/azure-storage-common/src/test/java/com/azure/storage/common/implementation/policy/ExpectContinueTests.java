@@ -49,33 +49,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}.
- * <p>
- * The first section mirrors {@code ExpectContinueTests.cs} in azure-sdk-for-net one test at a time, with the same names
- * and the same case values, so the two suites can be compared directly. .NET invokes {@code OnSendingRequest} on the
- * policy itself; {@link com.azure.core.http.HttpPipelineCallContext} cannot be constructed outside azure-core, so the
- * equivalent here is a pipeline holding only the policy under test plus a stub client.
- * <p>
- * The second section covers behavior .NET has no test for, most importantly that a throttling response takes effect on
- * the very next retry attempt. Wire level behavior is covered separately by {@link ExpectContinueTransportTests}.
  */
 public class ExpectContinueTests {
     private static final String CONTINUE = "100-continue";
     private static final String ENDPOINT = "https://account.blob.core.windows.net/container/blob";
     private static final byte[] BODY = new byte[1024];
 
-    /*
-     * Retry with a negligible backoff so the retry tests stay fast.
-     */
+    // Negligible backoff so the retry tests stay fast.
     private static final RequestRetryOptions FAST_RETRY_OPTIONS
         = new RequestRetryOptions(RetryPolicyType.FIXED, 4, (Integer) null, 1L, 5L, null);
 
-    // ---------------------------------------------------------------------------------------------------------------
-    // Mirrors of azure-sdk-for-net ExpectContinueTests.cs
-    // ---------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Mirrors {@code PolicyAddsHeaderOnContentBody([Values(true, false)] bool hasBody)}.
-     */
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void policyAddsHeaderOnContentBody(boolean hasBody) throws MalformedURLException {
@@ -90,9 +73,6 @@ public class ExpectContinueTests {
         assertEquals(hasBody ? CONTINUE : null, client.expectHeaders.get(0));
     }
 
-    /**
-     * Mirrors {@code PolicyRespectsThreshold(int threshold, int bodyLength, bool expectHeader)}.
-     */
     @ParameterizedTest
     @CsvSource({ "1024, 2048, true", "2048, 1024, false", "1024, 1024, true" })
     public void policyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
@@ -106,31 +86,22 @@ public class ExpectContinueTests {
         assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(0));
     }
 
-    /**
-     * Mirrors {@code ThrottlePolicyAddsHeaderOnlyAfterError([Values(429, 500, 503)] int errorStatusCode)}.
-     */
     @ParameterizedTest
     @ValueSource(ints = { 429, 500, 503 })
     public void throttlePolicyAddsHeaderOnlyAfterError(int errorStatusCode) throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(202, errorStatusCode, 202);
         HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
 
-        // message1 doesn't get expect header
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(0));
 
-        // message2 doesn't get expect header but will trigger future messages
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(1));
 
-        // message3 gets expect header
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertEquals(CONTINUE, client.expectHeaders.get(2));
     }
 
-    /**
-     * Mirrors {@code ThrottlePolicyRespectsThreshold(int threshold, int bodyLength, bool expectHeader)}.
-     */
     @ParameterizedTest
     @CsvSource({ "1024, 2048, true", "2048, 1024, false", "1024, 1024, true" })
     public void throttlePolicyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
@@ -139,20 +110,13 @@ public class ExpectContinueTests {
         HttpPipeline pipeline
             = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setContentLengthThreshold((long) threshold), client);
 
-        // message1 doesn't get expect header but will trigger future messages
         pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
         assertNull(client.expectHeaders.get(0));
 
-        // message2 gets expect header, subject to the threshold
         pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
         assertEquals(expectHeader ? CONTINUE : null, client.expectHeaders.get(1));
     }
 
-    /**
-     * Mirrors {@code ThrottlePolicyRevertsAfterBackoff}. That test is disabled in .NET
-     * (Azure/azure-sdk-for-net#41368); this one is enabled, as the window here is a monotonic
-     * {@code System.nanoTime()} deadline and oversleeping it can only close the window.
-     */
     @Test
     public void throttlePolicyRevertsAfterBackoff() throws Exception {
         Duration backoff = Duration.ofMillis(50);
@@ -160,30 +124,18 @@ public class ExpectContinueTests {
         HttpPipeline pipeline
             = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setThrottleInterval(backoff), client);
 
-        // message1 doesn't get expect header but will trigger future messages
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(0));
 
-        // message2 gets expect header
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertEquals(CONTINUE, client.expectHeaders.get(1));
 
-        // wait out policy backoff, generously so the window can only have closed
         Thread.sleep(500);
 
-        // message3 doesn't get expect header
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(2));
     }
 
-    // ---------------------------------------------------------------------------------------------------------------
-    // Java specific coverage, with no counterpart in .NET
-    // ---------------------------------------------------------------------------------------------------------------
-
-    /**
-     * The reason the policy is placed below the retry policy: a throttling response has to take effect on the very next
-     * attempt, not only on a later call. This is the behavior azure-sdk-for-net#52438 corrected.
-     */
     @SyncAsyncTest
     public void appliesHeaderOnRetryAfterThrottling() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(503, 200);
@@ -275,8 +227,6 @@ public class ExpectContinueTests {
 
     @Test
     public void unknownContentLengthIsAlwaysEligible() throws MalformedURLException {
-        // A body whose length cannot be determined ahead of time is never measured against the threshold, as doing so
-        // would require buffering it.
         RecordingHttpClient client = new RecordingHttpClient(200);
         HttpPipeline pipeline
             = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold(Long.MAX_VALUE), client);
@@ -317,14 +267,7 @@ public class ExpectContinueTests {
         assertEquals(CONTINUE, client.expectHeaders.get(0));
     }
 
-    // ---------------------------------------------------------------------------------------------------------------
-    // Helpers
-    // ---------------------------------------------------------------------------------------------------------------
-
-    /*
-     * The opt out is read with the legacy Configuration.get(String, T), which resolves against the environment
-     * configuration rather than the explicit source.
-     */
+    // The opt out is read with Configuration.get(String, T), which resolves against the environment configuration.
     private static Configuration environmentConfiguration(TestConfigurationSource environment) {
         return new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), environment)
             .build();
@@ -349,7 +292,6 @@ public class ExpectContinueTests {
     }
 
     private static HttpPipeline retryPipeline(ExpectContinueOptions options, HttpClient client) {
-        // Mirrors the production ordering, where the policy sits below the retry policy.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new RequestRetryPolicy(FAST_RETRY_OPTIONS));
         BuilderUtils.addExpectContinuePolicy(policies, options);

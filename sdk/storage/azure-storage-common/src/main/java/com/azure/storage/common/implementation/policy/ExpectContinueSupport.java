@@ -10,8 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.storage.common.implementation.Constants;
 
 /**
- * Logic shared by {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}. The two policies are
- * siblings rather than a hierarchy, so that neither advertises an extension point it does not actually support.
+ * Logic shared by {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}.
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
@@ -32,7 +31,8 @@ final class ExpectContinueSupport {
     }
 
     /**
-     * Determines whether the request carries a body large enough to be worth the additional round trip.
+     * Determines whether the request carries a body at least as large as the given threshold. A body whose length
+     * cannot be determined ahead of time is always eligible.
      *
      * @param request The request about to be sent.
      * @param contentLengthThreshold The minimum request {@code Content-Length} for applying the header.
@@ -44,8 +44,6 @@ final class ExpectContinueSupport {
             return false;
         }
 
-        // A body whose length cannot be determined ahead of time is always eligible, matching the behavior of skipping
-        // the check rather than buffering the body to measure it.
         Long contentLength = getContentLength(request, body);
         return contentLength == null || contentLength >= contentLengthThreshold;
     }
@@ -59,10 +57,6 @@ final class ExpectContinueSupport {
         request.getHeaders().set(HttpHeaderName.EXPECT, CONTINUE);
     }
 
-    /*
-     * Gets the length of the request body, preferring the Content-Length header as that is what is sent on the wire.
-     * Returns null when the length cannot be determined.
-     */
     private static Long getContentLength(HttpRequest request, BinaryData body) {
         String headerValue = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (headerValue != null) {

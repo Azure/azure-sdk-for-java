@@ -117,10 +117,6 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        // Must be after the retry policy so it is evaluated on every attempt, and before the credential policies as
-        // headers may affect the string to sign of the request.
-        BuilderUtils.addExpectContinuePolicy(policies, null);
-
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         }
@@ -180,8 +176,6 @@ public final class BuilderHelper {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         FileHeadersAndQueryParameters.getFileHeaders().forEach(defaultOptions::addAllowedHeaderName);
         FileHeadersAndQueryParameters.getFileQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        // Allowed so that it is visible in logs whether a request negotiated Expect: 100-continue.
-        defaultOptions.addAllowedHeaderName(HttpHeaderName.EXPECT.getCaseSensitiveName());
         return defaultOptions;
     }
 

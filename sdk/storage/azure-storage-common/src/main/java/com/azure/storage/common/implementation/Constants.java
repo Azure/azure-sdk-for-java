@@ -90,10 +90,6 @@ public final class Constants {
     public static final String SAS_SERVICE_VERSION
         = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2027-03-07");
 
-    /**
-     * Opt out of the HTTP header {@code Expect: 100-continue} without a code change. Honored as both a system
-     * property and an environment variable.
-     */
     public static final String PROPERTY_AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER
         = "AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER";
 

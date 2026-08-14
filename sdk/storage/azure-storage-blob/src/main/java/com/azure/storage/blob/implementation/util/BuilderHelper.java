@@ -34,8 +34,8 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
-import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.ExpectContinueOptions;
+import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
@@ -118,8 +118,7 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        // Must be after the retry policy so it is evaluated on every attempt, and before the credential policies as
-        // headers may affect the string to sign of the request.
+        // Must be after the retry policy so it is evaluated on every attempt, and before the credential policies.
         BuilderUtils.addExpectContinuePolicy(policies, expectContinueOptions);
 
         if (storageSharedKeyCredential != null) {
@@ -166,7 +165,6 @@ public final class BuilderHelper {
         HttpLogOptions defaultOptions = new HttpLogOptions();
         BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
         BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        // Allowed so that it is visible in logs whether a request negotiated Expect: 100-continue.
         defaultOptions.addAllowedHeaderName(HttpHeaderName.EXPECT.getCaseSensitiveName());
         return defaultOptions;
     }

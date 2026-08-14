@@ -43,54 +43,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
- * Wire level tests recording what each HTTP client implementation actually does with {@code Expect: 100-continue}.
- * <p>
- * The policy tests elsewhere in this package use a stubbed {@code HttpClient}, so they can only show that the header is
- * set under the right conditions. These tests run against a real socket and assert on what the transport put on the
- * wire and when, which is the only way to tell whether the handshake actually saves an upload.
- * <p>
- * Setting the header does not by itself make a client wait. Of the four transports, only OkHttp performs the handshake;
- * the others either send the body immediately anyway or drop the header. That is recorded in {@link ContinueSupport}
- * rather than hidden, so this test documents the real behavior and fails if any transport changes, in either direction.
+ * Verifies what each HTTP client puts on the wire for {@code Expect: 100-continue}, and whether it withholds the
+ * request body until the service responds. Only OkHttp performs the handshake; the behavior of each client is recorded
+ * in {@link ContinueSupport} so that these tests fail if any of them changes.
  */
 public class ExpectContinueTransportTests {
     private static final byte[] BODY = "the request body that must not be sent early".getBytes(StandardCharsets.UTF_8);
 
-    /*
-     * How long the server waits, after the headers arrive, before deciding that the client has not sent the body. Long
-     * enough that a client which streams the body immediately will have lost the race.
-     */
+    // How long the server waits after the headers arrive before deciding the client has not sent the body.
     private static final long BODY_SETTLE_MILLIS = 500;
 
     private ExpectContinueServer server;
 
-    /**
-     * What a transport is observed to do when the pipeline sets {@code Expect: 100-continue}.
-     */
     private enum ContinueSupport {
-        /**
-         * Sends the headers, waits for {@code 100 Continue}, and only then sends the body. This is the behavior the
-         * feature depends on, and the only case where a rejected upload costs nothing but headers.
-         */
+        /** Waits for {@code 100 Continue} before sending the body. */
         DEFERS_BODY,
 
-        /**
-         * Puts the header on the wire but streams the body immediately without waiting, so the service cannot reject
-         * the request before receiving it and no bandwidth is saved.
-         */
+        /** Sends the header but streams the body without waiting. */
         SENDS_HEADER_ONLY,
 
-        /**
-         * Drops the header entirely, so the handshake never happens. The JDK client treats {@code Expect} as a
-         * restricted header and additionally reports {@code expectContinue() == false} to the underlying client.
-         */
+        /** Drops the header, as {@code Expect} is restricted by {@code java.net.http.HttpClient}. */
         DROPS_HEADER
     }
 
-    /*
-     * transport x invocation path. The sync and async paths are separate code paths in every transport, so both are
-     * measured rather than assuming they agree.
-     */
     static Stream<Arguments> transports() {
         Object[][] clients = {
             { "netty", "com.azure.core.http.netty.NettyAsyncHttpClientProvider", ContinueSupport.SENDS_HEADER_ONLY },
@@ -128,20 +103,14 @@ public class ExpectContinueTransportTests {
         HttpResponse response = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block();
 
         assertNotNull(response, name + " returned no response");
-
         assertEquals(201, response.getStatusCode(), name + " did not complete the request");
         assertTrue(server.awaitRequest(), name + " never reached the server");
-
-        // Whatever the transport does with the handshake, the service must end up with the whole body.
         assertEquals(BODY.length, server.totalBodyBytes(), name + " did not deliver the full body");
 
         switch (expected) {
             case DEFERS_BODY:
                 assertEquals("100-continue", server.expectHeader, name + " did not put the header on the wire");
-                assertEquals(0, server.bodyBytesBeforeContinue,
-                    name + " streamed " + server.bodyBytesBeforeContinue + " body bytes before the server sent 100"
-                        + " Continue. It is recorded as deferring the body, so this is a regression that makes the"
-                        + " feature ineffective on this transport.");
+                assertEquals(0, server.bodyBytesBeforeContinue, name + " sent the body before 100 Continue");
                 assertEquals(BODY.length, server.bodyBytesAfterContinue,
                     name + " did not deliver the body after 100 Continue");
                 break;
@@ -149,17 +118,13 @@ public class ExpectContinueTransportTests {
             case SENDS_HEADER_ONLY:
                 assertEquals("100-continue", server.expectHeader, name + " did not put the header on the wire");
                 assertEquals(BODY.length, server.bodyBytesBeforeContinue,
-                    name + " is recorded as sending the body without waiting. If it now waits for 100 Continue, the"
-                        + " transport has gained real support and this table, plus the feature's documented"
-                        + " limitations, should be updated.");
+                    name + " is recorded as not deferring the body; update this table if that has changed");
                 break;
 
             case DROPS_HEADER:
                 assertNull(server.expectHeader,
-                    name + " is recorded as dropping the header. If it now reaches the wire, this table and the"
-                        + " feature's documented limitations should be updated.");
-                assertEquals(BODY.length, server.bodyBytesBeforeContinue,
-                    name + " dropped the header but still withheld the body, which is not expected");
+                    name + " is recorded as dropping the header; update this table if that has changed");
+                assertEquals(BODY.length, server.bodyBytesBeforeContinue, name + " unexpectedly withheld the body");
                 break;
 
             default:
@@ -175,10 +140,7 @@ public class ExpectContinueTransportTests {
             .build();
     }
 
-    /*
-     * Resolved by name so that this test compiles without a direct dependency on every transport, and skips rather
-     * than fails when one is absent from the classpath.
-     */
+    // Resolved by name so this compiles without a direct dependency on every transport, and skips when one is absent.
     private static HttpClient createHttpClient(String providerClassName) {
         try {
             Class<?> providerClass = Class.forName(providerClassName);
@@ -190,8 +152,8 @@ public class ExpectContinueTransportTests {
     }
 
     /**
-     * A minimal HTTP/1.1 server that speaks the 100-continue handshake by hand, so that the timing of the body is
-     * observable. It deliberately waits before answering, and records how many body bytes had arrived by then.
+     * A minimal HTTP/1.1 server that answers the 100-continue handshake by hand, recording how many body bytes had
+     * arrived before it responded.
      */
     private static final class ExpectContinueServer implements AutoCloseable {
         private final ServerSocket serverSocket;
@@ -232,7 +194,6 @@ public class ExpectContinueTransportTests {
 
                 int contentLength = readHeaders(in);
 
-                // Give a client that streams the body immediately every chance to do so, then look before answering.
                 Thread.sleep(BODY_SETTLE_MILLIS);
                 bodyBytesBeforeContinue = in.available();
 
@@ -252,9 +213,7 @@ public class ExpectContinueTransportTests {
             }
         }
 
-        /*
-         * Reads exactly up to the end of the headers, one byte at a time, so that no part of the body is consumed.
-         */
+        // Reads one byte at a time up to the end of the headers, so that no part of the body is consumed.
         private int readHeaders(InputStream in) throws IOException {
             ByteArrayOutputStream headerBytes = new ByteArrayOutputStream();
             int consecutiveNewlines = 0;

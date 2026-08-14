@@ -611,9 +611,6 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
     /**
      * Sets the behavior for applying the HTTP header {@code Expect: 100-continue} to requests that carry a body.
-     * <p>
-     * By default the header is applied only for a period after the service has indicated it is under load, so that
-     * a body is not uploaded just to be rejected again.
      *
      * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
      * @return the updated BlobContainerClientBuilder object

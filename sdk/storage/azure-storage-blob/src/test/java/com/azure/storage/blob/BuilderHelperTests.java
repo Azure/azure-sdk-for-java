@@ -618,10 +618,6 @@ public class BuilderHelperTests {
                 .buildBlockBlobClient());
     }
 
-    /**
-     * The expect-continue policy must sit below the retry policy so it is evaluated on every attempt, and above the
-     * credential policy as headers may affect the string to sign of the request.
-     */
     @Test
     public void expectContinuePolicyIsPerRetryAndBeforeCredentials() {
         HttpPipeline pipeline
@@ -651,10 +647,6 @@ public class BuilderHelperTests {
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
     }
 
-    /**
-     * The configured behavior must survive the whole pipeline and reach the transport, not merely be present as a
-     * policy. Notably the credential policy runs after it and must not strip or reject the header.
-     */
     @Test
     public void expectContinueHeaderReachesTransport() throws MalformedURLException {
         AtomicReference<String> expectHeader = new AtomicReference<>();
@@ -675,10 +667,6 @@ public class BuilderHelperTests {
         assertEquals("100-continue", expectHeader.get());
     }
 
-    /**
-     * The Expect header is allowed by default so that it is visible in logs whether a request negotiated the
-     * 100-continue handshake.
-     */
     @Test
     public void expectHeaderIsAllowedInDefaultLogOptions() {
         assertTrue(BuilderHelper.getDefaultHttpLogOptions()
