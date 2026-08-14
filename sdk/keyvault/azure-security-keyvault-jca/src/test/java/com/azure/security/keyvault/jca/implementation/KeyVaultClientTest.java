@@ -490,6 +490,26 @@ public class KeyVaultClientTest {
     }
 
     @Test
+    public void testCertificateChainUnterminatedPemFailureIsPropagated() throws Exception {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue(readUnterminatedCertificatePem());
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to decode certificate chain for alias: " + CERTIFICATE_ALIAS, exception.getMessage());
+            assertTrue(exception.getCause() instanceof CertificateException);
+            assertEquals("Certificate PEM block is not terminated.", exception.getCause().getMessage());
+        }
+    }
+
+    @Test
     public void testCertificateChainPkcs12DecodingFailureIsPropagated() {
         SecretBundle secretBundle = new SecretBundle();
         secretBundle.setValue(Base64.getEncoder().encodeToString(new byte[] { 1, 2, 3 }));
@@ -530,7 +550,7 @@ public class KeyVaultClientTest {
     @Test
     public void testCertificateChainDecodingFailureIsRetried() throws Exception {
         SecretBundle invalidBundle = new SecretBundle();
-        invalidBundle.setValue("-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----");
+        invalidBundle.setValue(readUnterminatedCertificatePem());
         SecretBundle validBundle = new SecretBundle();
         validBundle.setValue(new String(
             Files.readAllBytes(
@@ -551,6 +571,14 @@ public class KeyVaultClientTest {
             assertEquals(3, chain.length);
             utilities.verify(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()), times(2));
         }
+    }
+
+    private static String readUnterminatedCertificatePem() throws IOException {
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem")),
+            StandardCharsets.UTF_8);
+        return pemString.substring(0, pemString.indexOf("-----END CERTIFICATE-----"));
     }
 
     @Test
