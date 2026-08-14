@@ -432,6 +432,8 @@ public final class GenericProtectedItem extends ProtectedItem {
                 } else if ("softDeleteRetentionPeriodInDays".equals(fieldName)) {
                     deserializedGenericProtectedItem
                         .withSoftDeleteRetentionPeriodInDays(reader.getNullable(JsonReader::getInt));
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedGenericProtectedItem.withSourceLocation(reader.getString());
                 } else if ("vaultId".equals(fieldName)) {
                     deserializedGenericProtectedItem.withVaultId(reader.getString());
                 } else if ("sourceSideScanInfo".equals(fieldName)) {

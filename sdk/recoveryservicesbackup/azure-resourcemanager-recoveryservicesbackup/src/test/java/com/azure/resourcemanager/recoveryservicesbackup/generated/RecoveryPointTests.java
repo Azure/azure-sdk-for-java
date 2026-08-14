@@ -15,10 +15,10 @@ public final class RecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"Unknown\",\"threatInfo\":[{\"threatTitle\":\"fbkrvrnsvs\",\"threatDescription\":\"johxcrsb\",\"lastUpdatedTime\":\"2021-11-28T02:47:56Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-03-15T09:55:13Z\",\"threatEndTime\":\"2021-11-24T07:21:32Z\",\"threatURI\":\"bhsqfsubcgjbirxb\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"rfbjf\",\"threatDescription\":\"w\",\"lastUpdatedTime\":\"2021-01-25T00:48:06Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-03-22T01:55:17Z\",\"threatEndTime\":\"2021-01-31T07:10:37Z\",\"threatURI\":\"bexilzznfqqnv\",\"threatSeverity\":\"Informational\"},{\"threatTitle\":\"taruoujmkcj\",\"threatDescription\":\"qytjrybnwjewgd\",\"lastUpdatedTime\":\"2021-04-13T17:49:37Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-10-08T09:31:49Z\",\"threatEndTime\":\"2021-09-08T11:50:32Z\",\"threatURI\":\"pehindoygm\",\"threatSeverity\":\"High\"},{\"threatTitle\":\"nzdndslgna\",\"threatDescription\":\"igynduhavhqlk\",\"lastUpdatedTime\":\"2021-11-15T18:39:31Z\",\"threatState\":\"Resolved\",\"threatStartTime\":\"2021-08-13T06:24:50Z\",\"threatEndTime\":\"2021-04-19T22:18:17Z\",\"threatURI\":\"ycduier\",\"threatSeverity\":\"Informational\"}]}")
+            "{\"objectType\":\"RecoveryPoint\",\"threatStatus\":\"UnHealthy\",\"threatInfo\":[{\"threatTitle\":\"bunrmfqjhhk\",\"threatDescription\":\"pvjymjhxxjyng\",\"lastUpdatedTime\":\"2021-04-19T20:15:23Z\",\"threatState\":\"Ignored\",\"threatStartTime\":\"2021-04-07T12:52:17Z\",\"threatEndTime\":\"2021-10-05T00:25:34Z\",\"threatURI\":\"xqzvszjfa\",\"threatSeverity\":\"Critical\"}]}")
             .toObject(RecoveryPoint.class);
-        Assertions.assertEquals(ThreatStatus.UNKNOWN, model.threatStatus());
-        Assertions.assertEquals(ThreatState.RESOLVED, model.threatInfo().get(0).threatState());
-        Assertions.assertEquals(ThreatSeverity.HIGH, model.threatInfo().get(0).threatSeverity());
+        Assertions.assertEquals(ThreatStatus.UN_HEALTHY, model.threatStatus());
+        Assertions.assertEquals(ThreatState.IGNORED, model.threatInfo().get(0).threatState());
+        Assertions.assertEquals(ThreatSeverity.CRITICAL, model.threatInfo().get(0).threatSeverity());
     }
 }

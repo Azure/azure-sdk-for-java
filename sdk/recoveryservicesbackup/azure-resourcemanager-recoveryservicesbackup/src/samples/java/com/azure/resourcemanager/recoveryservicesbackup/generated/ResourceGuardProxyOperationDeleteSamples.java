@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ResourceGuardProxyOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file: 2026-07-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.

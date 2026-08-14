@@ -15,23 +15,23 @@ public final class BackupRequestResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRequestResource model = BinaryData.fromString(
-            "{\"location\":\"crpab\",\"tags\":{\"qugxywpmueefjzwf\":\"psbjta\",\"glaocq\":\"kqujidsuyono\",\"g\":\"tcc\"},\"eTag\":\"dxyt\",\"properties\":{\"objectType\":\"BackupRequest\"},\"id\":\"yrxvwfudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"}")
+            "{\"location\":\"krh\",\"tags\":{\"duala\":\"ljuahaquhcdh\",\"rcrgvx\":\"xqpvfadmw\"},\"eTag\":\"gomz\",\"properties\":{\"objectType\":\"BackupRequest\"},\"id\":\"isgwbnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}")
             .toObject(BackupRequestResource.class);
-        Assertions.assertEquals("crpab", model.location());
-        Assertions.assertEquals("psbjta", model.tags().get("qugxywpmueefjzwf"));
-        Assertions.assertEquals("dxyt", model.eTag());
+        Assertions.assertEquals("krh", model.location());
+        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
+        Assertions.assertEquals("gomz", model.eTag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRequestResource model = new BackupRequestResource().withLocation("crpab")
-            .withTags(mapOf("qugxywpmueefjzwf", "psbjta", "glaocq", "kqujidsuyono", "g", "tcc"))
-            .withETag("dxyt")
+        BackupRequestResource model = new BackupRequestResource().withLocation("krh")
+            .withTags(mapOf("duala", "ljuahaquhcdh", "rcrgvx", "xqpvfadmw"))
+            .withETag("gomz")
             .withProperties(new BackupRequest());
         model = BinaryData.fromObject(model).toObject(BackupRequestResource.class);
-        Assertions.assertEquals("crpab", model.location());
-        Assertions.assertEquals("psbjta", model.tags().get("qugxywpmueefjzwf"));
-        Assertions.assertEquals("dxyt", model.eTag());
+        Assertions.assertEquals("krh", model.location());
+        Assertions.assertEquals("ljuahaquhcdh", model.tags().get("duala"));
+        Assertions.assertEquals("gomz", model.eTag());
     }
 
     // Use "Map.of" if available

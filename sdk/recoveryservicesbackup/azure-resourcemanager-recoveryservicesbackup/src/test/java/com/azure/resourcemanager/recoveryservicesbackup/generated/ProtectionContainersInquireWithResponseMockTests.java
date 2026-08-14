@@ -28,7 +28,8 @@ public final class ProtectionContainersInquireWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectionContainers()
-            .inquireWithResponse("lregpq", "moj", "vr", "tnvgyshqrdgrt", "mewjzlpyk", com.azure.core.util.Context.NONE);
+            .inquireWithResponse("bdgzpagsecnad", "u", "qrgxf", "lmqiynezoel", "nkkiiwvmtumxpy",
+                com.azure.core.util.Context.NONE);
 
     }
 }

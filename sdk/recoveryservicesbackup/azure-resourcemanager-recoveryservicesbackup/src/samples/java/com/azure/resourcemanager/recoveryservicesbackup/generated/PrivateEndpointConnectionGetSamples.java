@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get PrivateEndpointConnection.

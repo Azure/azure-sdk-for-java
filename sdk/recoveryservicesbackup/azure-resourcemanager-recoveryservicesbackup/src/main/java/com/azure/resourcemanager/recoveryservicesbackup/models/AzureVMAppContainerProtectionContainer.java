@@ -186,6 +186,8 @@ public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadC
                     deserializedAzureVMAppContainerProtectionContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureVMAppContainerProtectionContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectionContainer.withSourceLocation(reader.getString());
                 } else if ("sourceResourceId".equals(fieldName)) {
                     deserializedAzureVMAppContainerProtectionContainer.withSourceResourceId(reader.getString());
                 } else if ("lastUpdatedTime".equals(fieldName)) {
