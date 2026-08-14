@@ -27,6 +27,11 @@ public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancer
     public static final LoadBalancerSkuName GATEWAY = fromString("Gateway");
 
     /**
+     * Service load balancer SKU.
+     */
+    public static final LoadBalancerSkuName SERVICE = fromString("Service");
+
+    /**
      * Creates a new instance of LoadBalancerSkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

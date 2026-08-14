@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.SubgroupProfileScope;
  */
 public final class InterconnectGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/InterconnectGroupCreate.json
+     * x-ms-original-file: 2025-09-01/InterconnectGroupCreate.json
      */
     /**
      * Sample code: Create interconnect group.

@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.InboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerMode;
 import com.azure.resourcemanager.network.models.LoadBalancerScope;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -397,6 +398,31 @@ public final class LoadBalancerInner extends Resource {
             this.innerProperties = new LoadBalancerPropertiesFormat();
         }
         this.innerProperties().withScope(scope);
+        return this;
+    }
+
+    /**
+     * Get the mode property: The load balancer mode. Set to `Advanced` to enable additional capabilities on a Standard
+     * SKU load balancer. Advanced mode must be specified at creation and cannot be changed afterward.
+     * 
+     * @return the mode value.
+     */
+    public LoadBalancerMode mode() {
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
+    }
+
+    /**
+     * Set the mode property: The load balancer mode. Set to `Advanced` to enable additional capabilities on a Standard
+     * SKU load balancer. Advanced mode must be specified at creation and cannot be changed afterward.
+     * 
+     * @param mode the mode value to set.
+     * @return the LoadBalancerInner object itself.
+     */
+    public LoadBalancerInner withMode(LoadBalancerMode mode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerPropertiesFormat();
+        }
+        this.innerProperties().withMode(mode);
         return this;
     }
 

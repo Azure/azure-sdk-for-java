@@ -209,6 +209,13 @@ public interface NetworkManagementClient {
     ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations();
 
     /**
+     * Gets the ExpressRouteLagsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagsClient object.
+     */
+    ExpressRouteLagsClient getExpressRouteLags();
+
+    /**
      * Gets the FirewallPoliciesClient object to access its operations.
      * 
      * @return the FirewallPoliciesClient object.
@@ -221,6 +228,13 @@ public interface NetworkManagementClient {
      * @return the FirewallPolicyRuleCollectionGroupsClient object.
      */
     FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
+
+    /**
+     * Gets the FirewallPolicyKubeSelectorGroupsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyKubeSelectorGroupsClient object.
+     */
+    FirewallPolicyKubeSelectorGroupsClient getFirewallPolicyKubeSelectorGroups();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
@@ -753,6 +767,20 @@ public interface NetworkManagementClient {
      * @return the SubgroupsClient object.
      */
     SubgroupsClient getSubgroups();
+
+    /**
+     * Gets the FirstPartyServiceTagsClient object to access its operations.
+     * 
+     * @return the FirstPartyServiceTagsClient object.
+     */
+    FirstPartyServiceTagsClient getFirstPartyServiceTags();
+
+    /**
+     * Gets the AddressPrefixSetsClient object to access its operations.
+     * 
+     * @return the AddressPrefixSetsClient object.
+     */
+    AddressPrefixSetsClient getAddressPrefixSets();
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.

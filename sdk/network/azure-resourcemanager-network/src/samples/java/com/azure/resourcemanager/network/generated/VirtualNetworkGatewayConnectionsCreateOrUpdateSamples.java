@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VirtualNetworkGatewayConnectionCreate.json
+     * x-ms-original-file: 2025-09-01/VirtualNetworkGatewayConnectionCreate.json
      */
     /**
      * Sample code: CreateVirtualNetworkGatewayConnection_S2S.

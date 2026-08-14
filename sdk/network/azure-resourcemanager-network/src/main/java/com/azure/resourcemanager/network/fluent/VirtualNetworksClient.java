@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResu
 import com.azure.resourcemanager.network.fluent.models.PublicIpDdosProtectionStatusResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkUsageInner;
+import com.azure.resourcemanager.network.models.MoveIpConfigurationsRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -585,4 +586,108 @@ public interface VirtualNetworksClient extends InnerSupportsGet<VirtualNetworkIn
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(String resourceGroupName,
         String virtualNetworkName, Integer top, String skipToken, Context context);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> moveIpConfigurationsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginMoveIpConfigurationsAsync(String resourceGroupName,
+        String virtualNetworkName, MoveIpConfigurationsRequest body);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMoveIpConfigurations(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMoveIpConfigurations(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body, Context context);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> moveIpConfigurationsAsync(String resourceGroupName, String virtualNetworkName,
+        MoveIpConfigurationsRequest body);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void moveIpConfigurations(String resourceGroupName, String virtualNetworkName, MoveIpConfigurationsRequest body);
+
+    /**
+     * Move IP configurations from one virtual network to another.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param body Parameters supplied to move IP configurations from one virtual network to another.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void moveIpConfigurations(String resourceGroupName, String virtualNetworkName, MoveIpConfigurationsRequest body,
+        Context context);
 }

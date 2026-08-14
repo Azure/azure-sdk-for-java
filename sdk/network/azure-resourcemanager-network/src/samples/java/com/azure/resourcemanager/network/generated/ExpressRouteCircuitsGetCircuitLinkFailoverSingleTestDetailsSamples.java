@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteCircuitsGetCircuitLinkFailoverSingleTestDetailsSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
+     * x-ms-original-file: 2025-09-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
      */
     /**
      * Sample code: ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.
