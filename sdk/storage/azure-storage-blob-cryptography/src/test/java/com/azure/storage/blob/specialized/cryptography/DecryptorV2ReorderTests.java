@@ -51,7 +51,7 @@ public class DecryptorV2ReorderTests {
 
     @AfterEach
     public void clearSwitch() {
-        System.clearProperty(CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME);
+        System.clearProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class DecryptorV2ReorderTests {
 
     @Test
     public void compatSwitchAllowsReorder() {
-        System.setProperty(CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME, "true");
+        System.setProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY, "true");
 
         byte[] cek = randomBytes(32);
         byte[] plaintext = randomBytes(REGION_DATA_LENGTH * REGION_COUNT);
@@ -175,7 +175,7 @@ public class DecryptorV2ReorderTests {
     @Test
     public void recoverySwitchAllowsPastNonceWrapBoundary() {
         // With the recovery switch, the wrap-boundary fail-closed is bypassed and plaintext is recovered.
-        System.setProperty(CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME, "true");
+        System.setProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY, "true");
 
         byte[] cek = randomBytes(32);
         long wrapRegion = NONCE_WRAP_REGION_COUNT;
@@ -270,6 +270,29 @@ public class DecryptorV2ReorderTests {
         byte[] region1 = encryptRegionWithNonce(cek, dotnetNonce(1), randomBytes(REGION_DATA_LENGTH));
 
         assertThrows(IllegalStateException.class, () -> decrypt(cek, concat(region0, region1), 0));
+    }
+
+    @Test
+    public void singleRegionRangedDownloadCannotDetectCollisionSubstitution() {
+        // KNOWN LIMITATION (documented in DecryptorV2): a download containing only one region cannot cross-check
+        // regions to establish which SDK's nonce scheme the blob uses. Because the schemes share a value space
+        // (javaNonce(1) == dotnetNonce(16,777,215)), a lone region's nonce is valid for its position under more than
+        // one scheme. Here a Java-encoded region 1 is served for a single-region ranged read of region 16,777,215; it
+        // matches the .NET scheme for that position, so it is accepted rather than flagged. A full or multi-region
+        // download anchors the scheme from earlier regions and DOES detect such substitutions (see
+        // rejectsMixedNonceEncodingsAcrossCollidingValueSpace). This matches the other SDKs' cross-SDK detection.
+        assertArrayEquals(javaNonce(1), dotnetNonce(16_777_215));
+
+        byte[] cek = randomBytes(32);
+        byte[] region1Plaintext = randomBytes(REGION_DATA_LENGTH);
+        byte[] substituted = encryptRegionWithNonce(cek, javaNonce(1), region1Plaintext);
+
+        long collidingOffset = 16_777_215L * REGION_DATA_LENGTH;
+        byte[] recovered = decrypt(cek, substituted, collidingOffset);
+
+        // The substitution is not detected on a single-region ranged download; the region still decrypts under its
+        // inline nonce. (A multi-region download would have anchored the scheme and rejected this.)
+        assertArrayEquals(region1Plaintext, recovered);
     }
 
     private static byte[] encrypt(byte[] cek, byte[] plaintext) {

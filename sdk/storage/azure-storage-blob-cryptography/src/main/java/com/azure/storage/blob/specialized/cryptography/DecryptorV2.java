@@ -33,8 +33,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_ENV_VAR;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_ENV_VAR;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
@@ -77,6 +77,13 @@ class DecryptorV2 extends Decryptor {
          * order-independent, so this remains correct even if regions are processed concurrently/out of order. If the
          * set ever becomes empty, a region is out of place. This behavior can be disabled for data recovery via a
          * compatibility switch.
+         *
+         * Limitation: a download that contains only a single region (for example an explicit one-region ranged read)
+         * cannot cross-check regions against each other, so it cannot positively establish which scheme the blob uses.
+         * Because the schemes share a value space, a lone region's nonce can be valid for its position under more than
+         * one scheme (for example the Java nonce for region 1 equals the .NET nonce for region 16,777,215). A full or
+         * multi-region download anchors the scheme from its earlier regions and therefore detects such substitutions;
+         * a single-region ranged download cannot, and matches the behavior of the other SDKs' cross-SDK detection.
          */
         final boolean detectRegionReorder = !cseV2AllowMisorderedAuthRegions();
         final AtomicReference<EnumSet<NonceScheme>> candidateSchemes
@@ -172,8 +179,8 @@ class DecryptorV2 extends Decryptor {
                 return LOGGER.logExceptionAsError(new IllegalStateException("Cannot verify the integrity of client-side"
                     + " encrypted (v2) content at or beyond " + NONCE_WRAP_REGION_COUNT + " authenticated regions"
                     + " (region index " + expectedRegion + "). For content encrypted by this (Java) SDK the encryption"
-                    + " nonce repeats past that point, resulting in GCM nonce reuse, and the blob is too large for its"
-                    + " authenticated region size to be safely verified. " + recoveryInstruction()));
+                    + " nonce repeats past that point, resulting in GCM nonce reuse, and the blob is too large for its "
+                    + "authenticated region size to be safely verified. " + recoveryInstruction()));
             }
             return reorderException(expectedRegion, actualNonce);
         }
@@ -203,8 +210,8 @@ class DecryptorV2 extends Decryptor {
     }
 
     private static String recoveryInstruction() {
-        return "To recover data from an affected blob, set the \"" + CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_ENV_VAR
-            + "\" environment variable (or the \"" + CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME
+        return "To recover data from an affected blob, set the \"" + ALLOW_MISORDERED_REGIONS_ENV_VAR
+            + "\" environment variable (or the \"" + ALLOW_MISORDERED_REGIONS_PROPERTY
             + "\" system property) to \"true\".";
     }
 
@@ -294,9 +301,9 @@ class DecryptorV2 extends Decryptor {
      * @return {@code true} if reordered authenticated regions should be allowed, {@code false} otherwise.
      */
     private static boolean cseV2AllowMisorderedAuthRegions() {
-        String value = System.getProperty(CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_SWITCH_NAME);
+        String value = System.getProperty(ALLOW_MISORDERED_REGIONS_PROPERTY);
         if (CoreUtils.isNullOrEmpty(value)) {
-            value = System.getenv(CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS_ENV_VAR);
+            value = System.getenv(ALLOW_MISORDERED_REGIONS_ENV_VAR);
         }
         return Boolean.parseBoolean(value);
     }
