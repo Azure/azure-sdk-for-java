@@ -16,8 +16,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityConfiguration;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityType;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.RestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
@@ -86,7 +88,9 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
                 .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
                 .withProperties(new VaultProperties()
                     .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                            .withConfiguration(
+                                new ImmutabilityConfiguration().withType(ImmutabilityType.AS_PER_POLICY))))
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withRestoreSettings(new RestoreSettings()
                         .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
