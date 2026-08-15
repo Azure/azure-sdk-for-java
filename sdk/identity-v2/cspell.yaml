@@ -7,3 +7,9 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
+  - "eiter"
+  - "IMDS"
+  - "jacoco"
+  - "OIDCREQUESTURI"
+  - "Toolsl"
+  - "UAMI"

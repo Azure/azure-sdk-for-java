@@ -7,3 +7,18 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
+  - "asns"
+  - "Asns"
+  - "cnames"
+  - "Cnames"
+  - "contoso"
+  - "easm"
+  - "Easm"
+  - "EASM"
+  - "guids"
+  - "Guids"
+  - "jacoco"
+  - "nxdomain"
+  - "Nxdomain"
+  - "riskiq"
+  - "rollup"

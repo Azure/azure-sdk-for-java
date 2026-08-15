@@ -190,8 +190,8 @@
 
 ### Features Added
 - Support `retry-header` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceClient` for retrying failed polling operations.
-- Added a property, `baseClassifierId` to `BuildDocumentClassfiierOptions` to specify the base classifier id to build upon.
-- Added a property, `baseClassifierId` to `DocumentClassifierDetails` to specify the base classfier if on top of which the classifier was trained.
+- Added a property, `baseClassifierId` to `BuildDocumentClassifierOptions` to specify the base classifier id to build upon.
+- Added a property, `baseClassifierId` to `DocumentClassifierDetails` to specify the base classifier if on top of which the classifier was trained.
 - Added a property, `warnings`, to `DocumentModelDetails` and `DocumentClassifierDetails`, to represent the list of warnings encountered when building the model.
 - Added a property, `valueSelectionGroup` to `DocumentField` model.
 

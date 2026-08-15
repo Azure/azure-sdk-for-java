@@ -7,3 +7,11 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
+  - "akhtabar"
+  - "Apim"
+  - "APIM"
+  - "Esto"
+  - "hudha"
+  - "jacoco"
+  - "prueba"
+  - "RAGRS"

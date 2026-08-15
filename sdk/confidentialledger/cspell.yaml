@@ -7,3 +7,14 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
+  - "contoso"
+  - "createorupdateledgeruser"
+  - "createorupdateuser"
+  - "eastus"
+  - "Funtions"
+  - "jacoco"
+  - "Merkle"
+  - "mrenclave"
+  - "myledger"
+  - "PEMPK"
+  - "TESTJS"

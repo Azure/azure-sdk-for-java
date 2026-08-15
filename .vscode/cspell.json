@@ -58,6 +58,14 @@
     ".vscode/cspell.json",
     ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
+    "**/*-perf/**",
+    "**/*-stress/**",
+    "**/*-tests/**",
+    "**/*-test-*/**",
+    "**/resourcemanager/**",
+    "**/azure-resourcemanager*/**",
+    "**/microsoft-azure-*/**",
+    "**/src/test/**",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**src/**/samples/**/*.json",
     "**/src/**/samples/**/*.ipynb",
@@ -67,8 +75,7 @@
     "sdk/core/.idea/**",
     ".github/CODEOWNERS"
   ],
-  "words": [
-  ],
+  "words": [],
   "overrides": [
     {
       "filename": "**/pom.xml",
