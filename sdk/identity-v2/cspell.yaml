@@ -8,8 +8,8 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "eiter"
-  - "IMDS"
+  - "imds"
   - "jacoco"
-  - "OIDCREQUESTURI"
-  - "Toolsl"
-  - "UAMI"
+  - "oidcrequesturi"
+  - "toolsl"
+  - "uami"

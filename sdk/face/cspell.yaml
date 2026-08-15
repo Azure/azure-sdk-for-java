@@ -8,5 +8,4 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "apim"
-  - "Apim"
   - "jacoco"

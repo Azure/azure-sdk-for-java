@@ -8,8 +8,8 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "alzimmer"
-  - "Dgenerate"
-  - "Djava"
+  - "dgenerate"
+  - "djava"
   - "endtoend"
   - "failondeprecatedstatus"
   - "graalvm"
@@ -17,4 +17,4 @@ words:
   - "mdesrc"
   - "tofile"
   - "vnext"
-  - "Xlint"
+  - "xlint"

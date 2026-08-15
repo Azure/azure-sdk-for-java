@@ -8,11 +8,9 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "asyn"
-  - "Dskip"
+  - "dskip"
   - "dtdl"
-  - "Dtdl"
-  - "DTDL"
   - "dtdtl"
   - "dtmi"
-  - "FEFF"
+  - "feff"
   - "okhttp"

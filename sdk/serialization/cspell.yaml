@@ -9,10 +9,8 @@ import:
 words:
   - "alzimmer"
   - "codehaus"
-  - "Dshade"
+  - "dshade"
   - "failondeprecatedstatus"
   - "gson"
-  - "GSON"
   - "jacoco"
   - "stax"
-  - "Stax"

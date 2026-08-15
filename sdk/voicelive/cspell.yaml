@@ -9,7 +9,5 @@ import:
 words:
   - "jacoco"
   - "logprobs"
-  - "LOGPROBS"
-  - "Probs"
+  - "probs"
   - "vnet"
-  - "Vnet"

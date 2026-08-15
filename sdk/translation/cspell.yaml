@@ -8,10 +8,9 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "akhtabar"
-  - "Apim"
-  - "APIM"
-  - "Esto"
+  - "apim"
+  - "esto"
   - "hudha"
   - "jacoco"
   - "prueba"
-  - "RAGRS"
+  - "ragrs"
