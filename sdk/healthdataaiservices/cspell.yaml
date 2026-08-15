@@ -8,12 +8,9 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "deid"
-  - "deidentification"
   - "deidentificationclient"
   - "deidentify"
   - "deidservice"
   - "deidservices"
-  - "eastus"
-  - "euap"
   - "healthdataaiservices"
   - "idnum"

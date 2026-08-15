@@ -7,16 +7,7 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
-  - "aoai"
-  - "dall"
   - "includable"
   - "includables"
-  - "jacoco"
   - "jtokkit"
-  - "logit"
-  - "logprobs"
   - "mordor"
-  - "mpga"
-  - "ocurred"
-  - "rerank"
-  - "vectorizer"

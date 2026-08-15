@@ -8,5 +8,4 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "apacheavro"
-  - "azsdk"
   - "schemaregistryapacheavroserializer"

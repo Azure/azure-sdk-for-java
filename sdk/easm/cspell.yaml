@@ -9,10 +9,6 @@ import:
 words:
   - "asns"
   - "cnames"
-  - "contoso"
   - "easm"
-  - "guids"
-  - "jacoco"
   - "nxdomain"
   - "riskiq"
-  - "rollup"

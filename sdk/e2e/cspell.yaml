@@ -9,6 +9,4 @@ import:
 words:
   - "azcli"
   - "azps"
-  - "endtoend"
-  - "imds"
   - "userresourceid"

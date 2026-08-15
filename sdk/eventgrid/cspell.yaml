@@ -8,18 +8,9 @@ import:
   - ../../.vscode/cspell.json
 words:
   - "bsuid"
-  - "contoso"
-  - "dgpg"
-  - "dicom"
-  - "dinclude"
-  - "dskip"
   - "endedby"
-  - "fhir"
-  - "gcch"
-  - "mqtt"
   - "osrolling"
   - "osscheduling"
   - "outofsync"
   - "resistry"
   - "rservice"
-  - "updation"

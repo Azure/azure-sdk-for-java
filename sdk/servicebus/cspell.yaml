@@ -7,11 +7,5 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
-  - "amqps"
-  - "jacoco"
   - "liudmila"
-  - "mgmt"
-  - "milli"
-  - "qpid"
-  - "retriable"
   - "unretriable"

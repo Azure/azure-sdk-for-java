@@ -7,15 +7,7 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
-  - "adls"
-  - "clientid"
-  - "contoso"
-  - "guids"
   - "isapproved"
   - "isrejected"
-  - "jacoco"
   - "mdoel"
   - "myparentcollection"
-  - "tenantid"
-  - "teradata"
-  - "xlsb"

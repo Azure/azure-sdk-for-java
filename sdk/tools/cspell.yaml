@@ -7,11 +7,7 @@ version: "0.2"
 import:
   - ../../.vscode/cspell.json
 words:
-  - "alzimmer"
   - "dependencis"
-  - "djava"
   - "elist"
   - "gavs"
-  - "mgmt"
   - "slist"
-  - "tofile"
