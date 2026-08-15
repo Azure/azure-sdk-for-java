@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnable
  */
 public final class ProtectionIntentValidateSamples {
     /*
-     * x-ms-original-file: 2026-05-31-preview/AzureIaasVm/ProtectionIntent_Validate.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/ProtectionIntent_Validate.json
      */
     /**
      * Sample code: Validate Enable Protection on Azure Vm.

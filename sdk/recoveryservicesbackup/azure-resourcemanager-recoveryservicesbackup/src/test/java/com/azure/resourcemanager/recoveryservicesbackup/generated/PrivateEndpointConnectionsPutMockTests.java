@@ -30,7 +30,7 @@ public final class PrivateEndpointConnectionsPutMockTests {
     @Test
     public void testPut() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"jmfmeftvhkm\"},\"groupIds\":[\"AzureSiteRecovery\",\"AzureBackup\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"w\",\"actionsRequired\":\"jgrulcfogxhcxnwj\"}},\"tags\":{\"wakukzkdtzxs\":\"dzxcouzfwo\"},\"location\":\"dnlwglihezomuc\",\"eTag\":\"g\",\"id\":\"nione\",\"name\":\"bzdrdpuenxkgt\",\"type\":\"zlm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"ztdivykpxkq\"},\"groupIds\":[\"AzureBackup\",\"AzureBackup_secondary\",\"AzureSiteRecovery\",\"AzureBackup\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"rlshxuknsykd\",\"actionsRequired\":\"iboancdrcoanvx\"}},\"tags\":{\"baqzizxzpz\":\"xonckbnlblfxlup\",\"bogvgfklqiy\":\"eghlw\"},\"location\":\"veqelsbfvds\",\"eTag\":\"kzx\",\"id\":\"tznsvl\",\"name\":\"dsmovpimy\",\"type\":\"dnox\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,34 +39,36 @@ public final class PrivateEndpointConnectionsPutMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PrivateEndpointConnectionResource response = manager.privateEndpointConnections()
-            .define("lmcskyk")
-            .withExistingVault("wlp", "yuqh")
-            .withRegion("kctd")
-            .withTags(mapOf("yep", "wk", "xkzrn", "yamnnidmdiawp"))
-            .withProperties(new PrivateEndpointConnection().withProvisioningState(ProvisioningState.SUCCEEDED)
-                .withPrivateEndpoint(new PrivateEndpoint().withId("xcn"))
-                .withGroupIds(
-                    Arrays.asList(VaultSubResourceType.AZURE_BACKUP, VaultSubResourceType.AZURE_BACKUP_SECONDARY,
-                        VaultSubResourceType.AZURE_SITE_RECOVERY, VaultSubResourceType.AZURE_SITE_RECOVERY))
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.APPROVED)
-                        .withDescription("awmpjprd")
-                        .withActionRequired("rpcfpcfjfwzl")))
-            .withEtag("osgwqpsqazihqo")
-            .create();
+        PrivateEndpointConnectionResource response
+            = manager.privateEndpointConnections()
+                .define("vmuw")
+                .withExistingVault("deayscseydzje", "exmnv")
+                .withRegion("jcfmazpzdqw")
+                .withTags(
+                    mapOf("erkeluxzsh", "zmhkdclacroczfmu", "udl", "zezbzu", "cgwfsgqkstyecu", "vzske", "jparda", "yu"))
+                .withProperties(
+                    new PrivateEndpointConnection().withProvisioningState(ProvisioningState.SUCCEEDED)
+                        .withPrivateEndpoint(new PrivateEndpoint().withId("m"))
+                        .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP))
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
+                            .withDescription("v")
+                            .withActionRequired("miphbea")))
+                .withEtag("vcmc")
+                .create();
 
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals("jmfmeftvhkm", response.properties().privateEndpoint().id());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, response.properties().groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.PENDING,
+        Assertions.assertEquals("ztdivykpxkq", response.properties().privateEndpoint().id());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, response.properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("w", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("jgrulcfogxhcxnwj",
+        Assertions.assertEquals("rlshxuknsykd",
+            response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("iboancdrcoanvx",
             response.properties().privateLinkServiceConnectionState().actionRequired());
-        Assertions.assertEquals("dzxcouzfwo", response.tags().get("wakukzkdtzxs"));
-        Assertions.assertEquals("dnlwglihezomuc", response.location());
-        Assertions.assertEquals("g", response.etag());
+        Assertions.assertEquals("xonckbnlblfxlup", response.tags().get("baqzizxzpz"));
+        Assertions.assertEquals("veqelsbfvds", response.location());
+        Assertions.assertEquals("kzx", response.etag());
     }
 
     // Use "Map.of" if available

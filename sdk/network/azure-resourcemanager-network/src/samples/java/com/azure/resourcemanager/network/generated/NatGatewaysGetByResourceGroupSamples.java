@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NatGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayGet.json
+     * x-ms-original-file: 2025-09-01/NatGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway.
@@ -23,7 +23,7 @@ public final class NatGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayWithNat64Get.json
+     * x-ms-original-file: 2025-09-01/NatGatewayWithNat64Get.json
      */
     /**
      * Sample code: Get nat gateway with nat64.
@@ -37,7 +37,7 @@ public final class NatGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayGetStandardV2Sku.json
+     * x-ms-original-file: 2025-09-01/NatGatewayGetStandardV2Sku.json
      */
     /**
      * Sample code: Get nat gateway with StandardV2 Sku.
@@ -51,7 +51,7 @@ public final class NatGatewaysGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayWithServiceGatewayGet.json
+     * x-ms-original-file: 2025-09-01/NatGatewayWithServiceGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway with service gateway.

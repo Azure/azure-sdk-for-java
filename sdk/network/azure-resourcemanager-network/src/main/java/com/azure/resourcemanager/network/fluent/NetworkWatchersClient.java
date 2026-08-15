@@ -15,6 +15,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.AvailableProvidersListInner;
 import com.azure.resourcemanager.network.fluent.models.AzureReachabilityReportInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionAnalyzerInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionAnalyzerQueryStatusResultInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkConfigurationDiagnosticResponseInner;
@@ -1697,4 +1699,511 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName,
         String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, Context context);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersCreateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, ConnectionAnalyzerInner body);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreateAsync(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreate(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionAnalyzerInner>, ConnectionAnalyzerInner> beginConnectionAnalyzersCreate(
+        String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        ConnectionAnalyzerInner body, Context context);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionAnalyzerInner> connectionAnalyzersCreateAsync(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, ConnectionAnalyzerInner body);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerInner connectionAnalyzersCreate(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, ConnectionAnalyzerInner body);
+
+    /**
+     * Creates or updates a connection analyzer in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters that define the operation to create a connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerInner connectionAnalyzersCreate(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, ConnectionAnalyzerInner body, Context context);
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersGetWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionAnalyzerInner> connectionAnalyzersGetAsync(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName);
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionAnalyzerInner> connectionAnalyzersGetWithResponse(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context);
+
+    /**
+     * Gets the specified connection analyzer by name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified connection analyzer by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerInner connectionAnalyzersGet(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersDeleteWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginConnectionAnalyzersDeleteAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConnectionAnalyzersDelete(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginConnectionAnalyzersDelete(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> connectionAnalyzersDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void connectionAnalyzersDelete(String resourceGroupName, String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Deletes the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void connectionAnalyzersDelete(String resourceGroupName, String networkWatcherName, String connectionAnalyzerName,
+        Context context);
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConnectionAnalyzerInner>> connectionAnalyzersUpdateTagsWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, TagsObject body);
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionAnalyzerInner> connectionAnalyzersUpdateTagsAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, TagsObject body);
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionAnalyzerInner> connectionAnalyzersUpdateTagsWithResponse(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, TagsObject body, Context context);
+
+    /**
+     * Updates the tags of the specified connection analyzer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param body Parameters supplied to update connection analyzer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines a connection analyzer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerInner connectionAnalyzersUpdateTags(String resourceGroupName, String networkWatcherName,
+        String connectionAnalyzerName, TagsObject body);
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ConnectionAnalyzerInner> connectionAnalyzersListAsync(String resourceGroupName,
+        String networkWatcherName);
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectionAnalyzerInner> connectionAnalyzersList(String resourceGroupName, String networkWatcherName);
+
+    /**
+     * Lists all connection analyzers in the specified network watcher.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of connection analyzers as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectionAnalyzerInner> connectionAnalyzersList(String resourceGroupName, String networkWatcherName,
+        Context context);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> connectionAnalyzersQueryWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQueryAsync(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQuery(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status result returned when querying a connection analyzer for its
+     * diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionAnalyzerQueryStatusResultInner>, ConnectionAnalyzerQueryStatusResultInner>
+        beginConnectionAnalyzersQuery(String resourceGroupName, String networkWatcherName,
+            String connectionAnalyzerName, Context context);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionAnalyzerQueryStatusResultInner> connectionAnalyzersQueryAsync(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerQueryStatusResultInner connectionAnalyzersQuery(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName);
+
+    /**
+     * Queries the specified connection analyzer for diagnostic results.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkWatcherName The name of the network watcher.
+     * @param connectionAnalyzerName The name of the connection analyzer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status result returned when querying a connection analyzer for its diagnostic results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionAnalyzerQueryStatusResultInner connectionAnalyzersQuery(String resourceGroupName,
+        String networkWatcherName, String connectionAnalyzerName, Context context);
 }
