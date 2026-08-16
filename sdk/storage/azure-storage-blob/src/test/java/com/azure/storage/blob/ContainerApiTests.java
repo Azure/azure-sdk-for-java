@@ -2495,7 +2495,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(4, allItems.size());
     }
 
-
     @Test
     @LiveOnly
     @ResourceLock("BlobSessionAuth")

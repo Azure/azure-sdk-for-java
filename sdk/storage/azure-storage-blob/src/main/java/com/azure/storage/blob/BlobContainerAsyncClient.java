@@ -1846,5 +1846,4 @@ public final class BlobContainerAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
-
 }
