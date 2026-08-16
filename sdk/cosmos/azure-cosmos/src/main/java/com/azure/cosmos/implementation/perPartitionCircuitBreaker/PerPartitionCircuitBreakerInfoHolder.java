@@ -36,7 +36,8 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
     public synchronized PerPartitionCircuitBreakerInfoHolder snapshot() {
         PerPartitionCircuitBreakerInfoHolder snapshot = new PerPartitionCircuitBreakerInfoHolder();
         if (this.initialized) {
-            snapshot.setPerPartitionCircuitBreakerInfoHolder(this.perPartitionCircuitBreakerInfoHolder.v);
+            snapshot.initialized = true;
+            snapshot.perPartitionCircuitBreakerInfoHolder.v = this.perPartitionCircuitBreakerInfoHolder.v;
         }
         return snapshot;
     }

@@ -52,6 +52,28 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
     }
 
     @Test(groups = {"unit"})
+    public void snapshotSharesImmutableStateAndRetainsStateAtSnapshotTime() {
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
+            "eastus",
+            createHealthContext(LocationHealthStatus.Unavailable)));
+
+        PerPartitionCircuitBreakerInfoHolder snapshot = holder.snapshot();
+
+        assertThat(snapshot).isNotSameAs(holder);
+        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder())
+            .isSameAs(holder.getPerPartitionCircuitBreakerInfoHolder());
+
+        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
+            "westus",
+            createHealthContext(LocationHealthStatus.Healthy)));
+
+        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder()).containsOnlyKeys("eastus");
+        assertThatThrownBy(() -> snapshot.getPerPartitionCircuitBreakerInfoHolder().clear())
+            .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test(groups = {"unit"})
     public void initializedEmptyStateIsSerialized() throws Exception {
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
         holder.setPerPartitionCircuitBreakerInfoHolder(Collections.emptyMap());
