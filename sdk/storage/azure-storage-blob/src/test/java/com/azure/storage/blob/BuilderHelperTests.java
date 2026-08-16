@@ -22,8 +22,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
-import com.azure.storage.blob.models.SessionOptions;
-import com.azure.storage.blob.models.SessionMode;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -75,10 +73,10 @@ public class BuilderHelperTests {
      */
     @Test
     public void freshDateAppliedOnRetry() {
-        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
-            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
-            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), null, null);
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
+                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -179,7 +177,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -308,7 +306,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -684,24 +682,6 @@ public class BuilderHelperTests {
         }
     }
 
-    // region buildPipeline session tests
-
-    @Test
-    public void buildPipelineWithTokenCredentialAlwaysHasSessionPolicy() {
-        HttpPipeline pipeline = buildBearerPipeline();
-
-        assertTrue(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
-            "Pipeline with tokenCredential should always contain SessionTokenCredentialPolicy");
-    }
-
-    @Test
-    public void buildPipelineWithSharedKeyDoesNotHaveSessionPolicy() {
-        HttpPipeline pipeline = buildSharedKeyPipeline();
-
-        assertFalse(hasPolicyOfType(pipeline, "SessionTokenCredentialPolicy"),
-            "Pipeline with shared key should not contain SessionTokenCredentialPolicy");
-    }
-
     /**
      * Helper to build a pipeline with bearer token auth.
      */
@@ -709,7 +689,7 @@ public class BuilderHelperTests {
         return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ClientLogger(BuilderHelperTests.class), null, BlobServiceVersion.getLatest());
+            new ClientLogger(BuilderHelperTests.class));
     }
 
     /**
@@ -718,7 +698,7 @@ public class BuilderHelperTests {
     private static HttpPipeline buildSharedKeyPipeline() {
         return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
             BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class), null, null);
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
     }
 
     /**
@@ -743,94 +723,6 @@ public class BuilderHelperTests {
             }
         }
         return -1;
-    }
-
-    // endregion
-
-    // region BlobClientBuilder sessionOptions tests
-
-    @Test
-    public void blobBuilderWithSingleSpecifiedContainerSessionBuilds() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
-
-        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .blobName("myblob")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .sessionOptions(options)
-            .buildClient());
-    }
-
-    @Test
-    public void blobBuilderWithSingleSpecifiedContainerSessionAndNoContainerNameThrows() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
-
-        assertThrows(IllegalArgumentException.class,
-            () -> new BlobClientBuilder().endpoint(ENDPOINT)
-                .blobName("myblob")
-                .credential(new MockTokenCredential())
-                .httpClient(new NoOpHttpClient())
-                .sessionOptions(options)
-                .buildClient());
-    }
-
-    @Test
-    public void blobBuilderWithoutSessionOptionsBuilds() {
-        assertDoesNotThrow(() -> new BlobClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .blobName("myblob")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .buildClient());
-    }
-
-    // endregion
-
-    // region BlobContainerClientBuilder sessionOptions tests
-
-    @Test
-    public void containerBuilderWithSessionOptionsAlwaysAndContainerNameSucceeds() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
-
-        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .sessionOptions(options)
-            .buildClient());
-    }
-
-    @Test
-    public void containerBuilderWithSessionOptionsAlwaysAndNoContainerNameThrows() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.SINGLE_SPECIFIED_CONTAINER);
-
-        assertThrows(IllegalArgumentException.class,
-            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
-                .httpClient(new NoOpHttpClient())
-                .sessionOptions(options)
-                .buildClient());
-    }
-
-    @Test
-    public void containerBuilderWithSessionOptionsNoneAndNoContainerNameSucceeds() {
-        SessionOptions options = new SessionOptions().setSessionMode(SessionMode.NONE);
-
-        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .sessionOptions(options)
-            .buildClient());
-    }
-
-    @Test
-    public void containerBuilderWithNoSessionOptionsSucceeds() {
-        assertDoesNotThrow(() -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
-            .containerName("mycontainer")
-            .credential(new MockTokenCredential())
-            .httpClient(new NoOpHttpClient())
-            .buildClient());
     }
 
     // endregion

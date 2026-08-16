@@ -52,7 +52,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
@@ -206,11 +205,7 @@ public class BlobTestBase extends TestProxyTestBase {
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
                         TestProxySanitizerType.HEADER),
-                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL),
-                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
-                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
-                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
-                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -251,7 +246,11 @@ public class BlobTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
+        BlobServiceClient cleanupClient
+            = new BlobServiceClientBuilder().httpClient(StorageCommonTestUtils.getHttpClient(interceptorManager))
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .buildClient();
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
         for (BlobContainerItem container : cleanupClient.listBlobContainers(options, null)) {
@@ -418,52 +417,19 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient() {
-        return getOAuthServiceClient(new SessionOptions());
-    }
-
-    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions) {
-        return getOAuthServiceClient(sessionOptions, (HttpPipelinePolicy[]) null);
-    }
-
-    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
-
-        if (policies != null) {
-            for (HttpPipelinePolicy policy : policies) {
-                if (policy != null) {
-                    builder.addPolicy(policy);
-                }
-            }
-        }
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
-        return getOAuthServiceAsyncClient(new SessionOptions());
-    }
-
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions) {
-        return getOAuthServiceAsyncClient(sessionOptions, (HttpPipelinePolicy[]) null);
-    }
-
-    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
-        HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        BlobServiceClientBuilder builder
+            = new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
-
-        if (policies != null) {
-            for (HttpPipelinePolicy policy : policies) {
-                if (policy != null) {
-                    builder.addPolicy(policy);
-                }
-            }
-        }
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
