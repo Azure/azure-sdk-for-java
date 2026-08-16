@@ -5,7 +5,6 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;

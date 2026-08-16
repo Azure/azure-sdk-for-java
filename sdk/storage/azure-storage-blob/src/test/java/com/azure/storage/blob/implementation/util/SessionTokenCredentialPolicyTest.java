@@ -252,7 +252,7 @@ public class SessionTokenCredentialPolicyTest {
     public void getBlobRequestProducesWellFormedSessionAuthHeader() {
         SessionCredential cred = credentialWithToken();
         HttpRequest request
-            = new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
+            = new HttpRequest(HttpMethod.GET, "https://testaccount.blob.core.windows.net/mycontainer/myblob");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-ms-version"), "2025-01-05")
             .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
@@ -354,7 +354,7 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     private static HttpRequest blobGetRequest() {
-        return new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob");
+        return new HttpRequest(HttpMethod.GET, "https://testaccount.blob.core.windows.net/mycontainer/myblob");
     }
 
     private SessionTokenCredentialPolicy createPolicy() {
@@ -377,7 +377,7 @@ public class SessionTokenCredentialPolicyTest {
 
     private static HttpPipelineCallContext createContext() {
         return createContextForRequest(
-            new HttpRequest(HttpMethod.GET, "https://myaccount.blob.core.windows.net/mycontainer/myblob"));
+            new HttpRequest(HttpMethod.GET, "https://testaccount.blob.core.windows.net/mycontainer/myblob"));
     }
 
     private static HttpPipelineCallContext createContextForRequest(HttpRequest request) {

@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class TokenCredentialSessionProviderCacheTest {
 
-    private static final String ACCOUNT_NAME = "myaccount";
+    private static final String ACCOUNT_NAME = "testaccount";
     private static final String CONTAINER_A = "container-a";
     private static final String CONTAINER_B = "container-b";
     private static final String FIRST_TOKEN = "first-session-token";

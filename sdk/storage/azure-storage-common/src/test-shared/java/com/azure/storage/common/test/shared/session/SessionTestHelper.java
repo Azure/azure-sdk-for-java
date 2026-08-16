@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 public final class SessionTestHelper {
     public static final String TEST_SESSION_KEY = "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
     public static final String TEST_SESSION_TOKEN = "test-session-token-abc123";
-    public static final String TEST_ACCOUNT_NAME = "myaccount";
+    public static final String TEST_ACCOUNT_NAME = "testaccount";
     public static final String TEST_CONTAINER_NAME = "testcontainer";
 
     /**

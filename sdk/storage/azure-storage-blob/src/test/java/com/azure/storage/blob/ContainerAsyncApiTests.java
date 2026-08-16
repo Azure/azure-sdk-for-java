@@ -35,7 +35,6 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -2254,6 +2253,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         StepVerifier.create(ccAsync.listBlobs().byPage(2)).thenConsumeWhile(page -> {
             assertEquals(2, page.getValue().size());
             return true;
+        }).verifyComplete();
+    }
+
+    @Test
     @ResourceLock("BlobSessionAuth")
     public void createSession() {
         BlobContainerAsyncClient oauthCcAsync
@@ -2527,6 +2530,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertEquals("tagvalue", item.getTags().get("tagkey"));
         }).verifyComplete();
     }
+
+    @Test
     @ResourceLock("BlobSessionAuth")
     public void createSessionWithResponse() {
         BlobContainerAsyncClient oauthCcAsync
