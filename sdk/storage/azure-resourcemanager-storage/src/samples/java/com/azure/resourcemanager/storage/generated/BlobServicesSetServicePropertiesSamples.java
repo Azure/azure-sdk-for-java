@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class BlobServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobServicesPut.json
+     * x-ms-original-file: 2026-04-01/BlobServicesPut.json
      */
     /**
      * Sample code: PutBlobServices.
@@ -62,7 +62,7 @@ public final class BlobServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobServicesPutAllowPermanentDelete.json
+     * x-ms-original-file: 2026-04-01/BlobServicesPutAllowPermanentDelete.json
      */
     /**
      * Sample code: BlobServicesPutAllowPermanentDelete.
@@ -81,7 +81,7 @@ public final class BlobServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobServicesPutLastAccessTimeBasedTracking.json
+     * x-ms-original-file: 2026-04-01/BlobServicesPutLastAccessTimeBasedTracking.json
      */
     /**
      * Sample code: BlobServicesPutLastAccessTimeBasedTracking.

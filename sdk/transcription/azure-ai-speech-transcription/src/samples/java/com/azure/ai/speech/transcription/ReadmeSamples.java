@@ -46,7 +46,7 @@ public final class ReadmeSamples {
             TranscriptionResult result = client.transcribe(options);
 
             // Process results
-            System.out.println("Duration: " + result.getDuration() + " ms");
+            System.out.println("Duration: " + result.getDuration().toMillis() + " ms");
             result.getCombinedPhrases().forEach(phrase -> {
                 System.out.println("Channel " + phrase.getChannel() + ": " + phrase.getText());
             });
@@ -149,7 +149,7 @@ public final class ReadmeSamples {
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setLocales(java.util.Arrays.asList("en-US", "es-ES"))  // Specify candidate locales
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)     // Mask profanity
-            .setDiarizationOptions(new TranscriptionDiarizationOptions()   // Enable speaker diarization
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true)   // Enable speaker diarization
                 .setMaxSpeakers(5));
 
         TranscriptionResult result = client.transcribe(options);
@@ -158,7 +158,7 @@ public final class ReadmeSamples {
         result.getPhrases().forEach(phrase -> {
             System.out.println("Speaker " + phrase.getSpeaker() + ": " + phrase.getText());
             System.out.println("Confidence: " + phrase.getConfidence());
-            System.out.println("Offset: " + phrase.getOffset() + " ms");
+            System.out.println("Offset: " + phrase.getOffset().toMillis() + " ms");
         });
         // END: com.azure.ai.speech.transcription.transcriptionoptions.advanced
     }
@@ -211,14 +211,14 @@ public final class ReadmeSamples {
             System.out.println("  Speaker: " + phrase.getSpeaker());
             System.out.println("  Locale: " + phrase.getLocale());
             System.out.println("  Confidence: " + phrase.getConfidence());
-            System.out.println("  Timing: " + phrase.getOffset() + " ms - "
-                + (phrase.getOffset() + phrase.getDuration().toMillis()) + " ms");
+            System.out.println("  Timing: " + phrase.getOffset().toMillis() + " ms - "
+                + (phrase.getOffset().toMillis() + phrase.getDuration().toMillis()) + " ms");
 
             // Process individual words with timestamps
             if (phrase.getWords() != null) {
                 phrase.getWords().forEach(word -> {
                     System.out.println("    Word: " + word.getText() + " @ "
-                        + word.getOffset() + " ms");
+                        + word.getOffset().toMillis() + " ms");
                 });
             }
         });
@@ -393,7 +393,7 @@ public final class ReadmeSamples {
         TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
             .setEnhancedModeOptions(enhancedMode)
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setDiarizationOptions(new TranscriptionDiarizationOptions()
+            .setDiarizationOptions(new TranscriptionDiarizationOptions(true)
                 .setMaxSpeakers(2));
 
         TranscriptionResult result = client.transcribe(options);

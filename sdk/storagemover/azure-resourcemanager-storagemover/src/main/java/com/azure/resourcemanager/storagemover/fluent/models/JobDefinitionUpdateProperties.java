@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
 import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
 import java.util.List;
 
@@ -43,6 +44,11 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
      * Data Integrity Validation mode.
      */
     private DataIntegrityValidation dataIntegrityValidation;
+
+    /*
+     * Schedule information for the Job Definition.
+     */
+    private ScheduleInfo schedule;
 
     /**
      * Creates an instance of JobDefinitionUpdateProperties class.
@@ -151,6 +157,26 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
     }
 
     /**
+     * Get the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    public ScheduleInfo schedule() {
+        return this.schedule;
+    }
+
+    /**
+     * Set the schedule property: Schedule information for the Job Definition.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the JobDefinitionUpdateProperties object itself.
+     */
+    public JobDefinitionUpdateProperties withSchedule(ScheduleInfo schedule) {
+        this.schedule = schedule;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -162,6 +188,7 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
         jsonWriter.writeArrayField("connections", this.connections, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("dataIntegrityValidation",
             this.dataIntegrityValidation == null ? null : this.dataIntegrityValidation.toString());
+        jsonWriter.writeJsonField("schedule", this.schedule);
         return jsonWriter.writeEndObject();
     }
 
@@ -193,6 +220,8 @@ public final class JobDefinitionUpdateProperties implements JsonSerializable<Job
                 } else if ("dataIntegrityValidation".equals(fieldName)) {
                     deserializedJobDefinitionUpdateProperties.dataIntegrityValidation
                         = DataIntegrityValidation.fromString(reader.getString());
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.schedule = ScheduleInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

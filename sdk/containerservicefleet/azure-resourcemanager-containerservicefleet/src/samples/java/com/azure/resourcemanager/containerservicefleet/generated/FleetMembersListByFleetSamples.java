@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetMembersListByFleetSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/FleetMembers_ListByFleet.json
+     * x-ms-original-file: 2026-06-01/FleetMembers_ListByFleet.json
      */
     /**
      * Sample code: Lists the members of a Fleet.

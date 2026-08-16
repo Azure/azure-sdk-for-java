@@ -3909,7 +3909,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return run command result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String resourceName,
@@ -3956,7 +3956,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return run command result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String resourceName,
@@ -4001,7 +4001,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner>
@@ -4026,7 +4026,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
@@ -4050,7 +4050,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner>
@@ -4071,7 +4071,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of run command result.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
@@ -4091,7 +4091,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return run command result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String resourceName,
@@ -4113,7 +4113,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return run command result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RunCommandResultInner> runCommandAsync(String resourceGroupName, String resourceName,
@@ -4134,7 +4134,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return run command result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunCommandResultInner runCommand(String resourceGroupName, String resourceName,
@@ -4155,7 +4155,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return run command result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RunCommandResultInner runCommand(String resourceGroupName, String resourceName,

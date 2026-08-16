@@ -166,6 +166,13 @@ public interface StorageManagementClient {
     DataSharesClient getDataShares();
 
     /**
+     * Gets the AdvancedPlatformMetricsClient object to access its operations.
+     * 
+     * @return the AdvancedPlatformMetricsClient object.
+     */
+    AdvancedPlatformMetricsClient getAdvancedPlatformMetrics();
+
+    /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
      * 
      * @return the PrivateLinkResourcesClient object.

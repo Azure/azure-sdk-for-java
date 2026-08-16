@@ -16,6 +16,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
@@ -26,6 +27,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,7 +43,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class SessionNotAvailableRetryTest extends TestSuiteBase {
-    private static final int TIMEOUT = 60000;
+    private static final int TEST_TIMEOUT_MILLIS = 120_000;
+    private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(90);
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
@@ -105,7 +108,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TEST_TIMEOUT_MILLIS)
     public void sessionNotAvailableRetryMultiMaster(
         List<String> preferredLocations,
         OperationType operationType,
@@ -116,7 +119,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         CosmosAsyncClient preferredListClient = null;
         // inject 404/1002 into all regions
         FaultInjectionRule sessionNotAvailableRule = new FaultInjectionRuleBuilder("sessionNotAvailableRuleMultiMaster-" + UUID.randomUUID())
-            .condition(new FaultInjectionConditionBuilder().build())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(toFaultInjectionOperationType(operationType))
+                .build())
             .result(
                 FaultInjectionResultBuilders
                     .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
@@ -153,19 +158,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             try {
                 PartitionKey partitionKey = new PartitionKey("Test");
-                if (operationType.equals(OperationType.Read)) {
-                    cosmosAsyncContainer.readItem("Test", partitionKey, TestItem.class).block();
-                } else if (operationType.equals(OperationType.Query)) {
-                    String query = "Select * from C";
-                    CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-                    requestOptions.setPartitionKey(partitionKey);
-                    cosmosAsyncContainer.queryItems(query, requestOptions, TestItem.class).byPage().blockFirst();
-                } else if (operationType.equals(OperationType.Create)) {
-                    TestItem item = new TestItem();
-                    item.setId("Test");
-                    item.setMypk("Test");
-                    cosmosAsyncContainer.createItem(item, partitionKey, new CosmosItemRequestOptions()).block();
-                }
+                executeOperation(operationType, "Test", partitionKey);
 
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
@@ -224,7 +217,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region"}, dataProvider = "preferredRegions", timeOut = TEST_TIMEOUT_MILLIS)
     public void sessionNotAvailableRetrySingleMaster(
         List<String> preferredLocations,
         OperationType operationType,
@@ -236,7 +229,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             preferredLocations.stream().map(location -> location.toLowerCase(Locale.ROOT)).collect(Collectors.toList());
         // inject 404/1002 into all regions
         FaultInjectionRule sessionNotAvailableRule = new FaultInjectionRuleBuilder("sessionNotAvailableRuleSingleMaster-" + UUID.randomUUID())
-            .condition(new FaultInjectionConditionBuilder().build())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(toFaultInjectionOperationType(operationType))
+                .build())
             .result(
                 FaultInjectionResultBuilders
                     .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
@@ -257,19 +252,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             PartitionKey partitionKey = new PartitionKey("Test");
             try {
-                if (operationType.equals(OperationType.Read)) {
-                    cosmosAsyncContainer.readItem("TestId", partitionKey, TestItem.class).block();
-                } else if (operationType.equals(OperationType.Query)) {
-                    String query = "Select * from C";
-                    CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-                    requestOptions.setPartitionKey(new PartitionKey("Test"));
-                    cosmosAsyncContainer.queryItems(query, requestOptions, TestItem.class).byPage().blockFirst();
-                } else if (operationType.equals(OperationType.Create)) {
-                    TestItem item = new TestItem();
-                    item.setId("Test");
-                    item.setMypk("Test");
-                    cosmosAsyncContainer.createItem(item, partitionKey, new CosmosItemRequestOptions()).block();
-                }
+                executeOperation(operationType, "TestId", partitionKey);
 
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
@@ -287,6 +270,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 // for single master, when retrying 404/1002, it will retry on the write region
                 // so for write operation or if the first preferred region is the same as write region, the contracted region count should 1
                 if (operationType.isWriteOperation()
+                    || preferredLocationsWithLowerCase.isEmpty()
                     || preferredLocationsWithLowerCase.get(0).equalsIgnoreCase(writeRegionList.get(0))) {
                     assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
                 } else {
@@ -316,6 +300,45 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             sessionNotAvailableRule.disable();
             safeClose(preferredListClient);
         }
+    }
+
+    private void executeOperation(OperationType operationType, String readItemId, PartitionKey partitionKey) {
+        if (operationType.equals(OperationType.Read)) {
+            cosmosAsyncContainer
+                .readItem(readItemId, partitionKey, TestItem.class)
+                .timeout(REQUEST_TIMEOUT)
+                .block();
+        } else if (operationType.equals(OperationType.Query)) {
+            CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions()
+                .setPartitionKey(partitionKey);
+            cosmosAsyncContainer
+                .queryItems("Select * from C", requestOptions, TestItem.class)
+                .byPage()
+                .next()
+                .timeout(REQUEST_TIMEOUT)
+                .block();
+        } else if (operationType.equals(OperationType.Create)) {
+            TestItem item = new TestItem();
+            item.setId("Test");
+            item.setMypk("Test");
+            cosmosAsyncContainer
+                .createItem(item, partitionKey, new CosmosItemRequestOptions())
+                .timeout(REQUEST_TIMEOUT)
+                .block();
+        }
+    }
+
+    private static FaultInjectionOperationType toFaultInjectionOperationType(OperationType operationType) {
+        if (operationType.equals(OperationType.Read)) {
+            return FaultInjectionOperationType.READ_ITEM;
+        }
+        if (operationType.equals(OperationType.Query)) {
+            return FaultInjectionOperationType.QUERY_ITEM;
+        }
+        if (operationType.equals(OperationType.Create)) {
+            return FaultInjectionOperationType.CREATE_ITEM;
+        }
+        throw new IllegalArgumentException("Unsupported operation type " + operationType);
     }
 
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

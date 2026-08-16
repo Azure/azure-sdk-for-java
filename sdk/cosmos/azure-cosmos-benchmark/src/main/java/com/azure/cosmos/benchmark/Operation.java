@@ -28,7 +28,6 @@ public enum Operation {
     ReadMyWrites,
     CtlWorkload,
     ReadAllItemsOfLogicalPartition,
-    LinkedInCtlWorkload,
     ReadManyThroughput;
 
     /**

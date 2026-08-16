@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class TargetTypesListSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TargetTypes_List.json
+     * x-ms-original-file: 2026-05-01-preview/TargetTypes_List.json
      */
     /**
      * Sample code: List all Target Types for westus2 location.

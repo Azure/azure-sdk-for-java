@@ -11,6 +11,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentArrayField;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.ContentSpan;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
@@ -199,6 +200,14 @@ public class Sample03_AnalyzeInvoiceAsync {
                     }
                 }
                 // END:ContentUnderstandingExtractInvoiceFieldsAsync
+
+                // BEGIN:ContentUnderstandingInvoiceToLlmInputAsync
+                String llmText = LlmInputHelper.toLlmInput(result);
+                System.out.println("\n============================================================");
+                System.out.println("LLM-READY OUTPUT (fields + markdown)");
+                System.out.println("============================================================");
+                System.out.println(llmText);
+                // END:ContentUnderstandingInvoiceToLlmInputAsync
 
                 System.out.println("\nInvoice analysis completed successfully");
             })

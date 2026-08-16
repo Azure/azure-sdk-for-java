@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,6 +33,7 @@ class AzureAppConfigDataResourceTest {
 
     private static final String TEST_ENDPOINT = "https://test.azconfig.io";
     private static final Duration TEST_REFRESH_INTERVAL = Duration.ofSeconds(30);
+    private static final Duration TEST_STARTUP_TIMEOUT = Duration.ofSeconds(100);
     
     private ConfigStore configStore;
     private AppConfigurationStoreMonitoring monitoring;
@@ -57,7 +59,7 @@ class AzureAppConfigDataResourceTest {
         configStore.setEnabled(configStoreEnabled);
 
         AzureAppConfigDataResource resource = new AzureAppConfigDataResource(
-            appConfigEnabled, configStore, mockProfiles, false, TEST_REFRESH_INTERVAL);
+            appConfigEnabled, configStore, mockProfiles, false, TEST_REFRESH_INTERVAL, TEST_STARTUP_TIMEOUT);
 
         assertEquals(expectedEnabled, resource.isConfigStoreEnabled(), description);
     }
@@ -71,7 +73,7 @@ class AzureAppConfigDataResourceTest {
         configStore.setEnabled(true);
 
         AzureAppConfigDataResource resource = new AzureAppConfigDataResource(
-            true, configStore, mockProfiles, isRefresh, TEST_REFRESH_INTERVAL);
+            true, configStore, mockProfiles, isRefresh, TEST_REFRESH_INTERVAL, TEST_STARTUP_TIMEOUT);
 
         assertTrue(resource.isConfigStoreEnabled(), 
             "Config store should be enabled in " + scenarioDescription + " when conditions are met");
@@ -91,14 +93,14 @@ class AzureAppConfigDataResourceTest {
 
         configStore.setEnabled(true);
         AzureAppConfigDataResource enabledResource = new AzureAppConfigDataResource(
-            true, configStore, mockProfiles, false, TEST_REFRESH_INTERVAL);
+            true, configStore, mockProfiles, false, TEST_REFRESH_INTERVAL, TEST_STARTUP_TIMEOUT);
 
         assertTrue(enabledResource.isConfigStoreEnabled());
         assertAllPropertiesCorrect(enabledResource, trimKeyPrefixes, selects, featureFlagSelects, true);
 
         configStore.setEnabled(false);
         AzureAppConfigDataResource disabledResource = new AzureAppConfigDataResource(
-            true, configStore, mockProfiles, true, TEST_REFRESH_INTERVAL);
+            true, configStore, mockProfiles, true, TEST_REFRESH_INTERVAL, TEST_STARTUP_TIMEOUT);
 
         assertFalse(disabledResource.isConfigStoreEnabled());
         assertAllPropertiesCorrect(disabledResource, trimKeyPrefixes, selects, featureFlagSelects, false);
@@ -123,13 +125,13 @@ class AzureAppConfigDataResourceTest {
     void testNullRefreshIntervalHandling() {
         configStore.setEnabled(true);
         AzureAppConfigDataResource enabledResource = new AzureAppConfigDataResource(
-            true, configStore, mockProfiles, false, null);
+            true, configStore, mockProfiles, false, null, TEST_STARTUP_TIMEOUT);
         assertTrue(enabledResource.isConfigStoreEnabled());
         assertNull(enabledResource.getRefreshInterval());
 
         configStore.setEnabled(false);
         AzureAppConfigDataResource disabledResource = new AzureAppConfigDataResource(
-            false, configStore, mockProfiles, true, null);
+            false, configStore, mockProfiles, true, null, TEST_STARTUP_TIMEOUT);
         assertFalse(disabledResource.isConfigStoreEnabled());
         assertNull(disabledResource.getRefreshInterval());
         assertFalse(disabledResource.isRefresh());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/OperationStatuses_Get.json
+     * x-ms-original-file: 2026-05-01-preview/OperationStatuses_Get.json
      */
     /**
      * Sample code: Gets Chaos Studio async operation status.

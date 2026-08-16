@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -16,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
@@ -229,7 +228,7 @@ public class AppConfigurationRefreshUtil {
      * @param context the operation context
      * @return true if a refresh should be triggered, false otherwise
      */
-    boolean refreshStoreFeatureFlagCheck(Boolean featureStoreEnabled,
+    boolean refreshStoreFeatureFlagCheck(boolean featureStoreEnabled,
         AppConfigurationReplicaClient client, Context context) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
@@ -382,6 +381,7 @@ public class AppConfigurationRefreshUtil {
                 LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PREFIX);
 
                 eventData.setMessage(FEATURE_FLAG_PREFIX);
+                return;
             }
 
         }

@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.doAnswer;
 
@@ -75,7 +76,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             GlobalEndpointManager globalEndpointManager,
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             HttpClient rxOrigClient,
-            ApiType apiType) {
+            ApiType apiType,
+            Map<String, String> additionalHeaders) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
@@ -93,6 +95,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 userAgentContainer,
                 globalEndpointManager,
                 spyHttpClient,
-                apiType);
+                apiType,
+                additionalHeaders);
     }
 }

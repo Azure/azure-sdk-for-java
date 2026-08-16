@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class PrincipalType extends ExpandableStringEnum<PrincipalType> {
     /**
-     * The principal type is not known or not specified.
+     * Principal type is not known or not specified.
      */
     public static final PrincipalType UNKNOWN = fromString("Unknown");
 

@@ -12,37 +12,44 @@ import java.util.Collection;
  */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
     /**
-     * Static value Default for CreateMode.
+     * If the operation is triggered on a non-existing server, it's equivalent to 'Create'. If the operation is
+     * triggered on an existing server, it's equivalent to 'Update'.
      */
     public static final CreateMode DEFAULT = fromString("Default");
 
     /**
-     * Static value Create for CreateMode.
+     * Operation creates a new server.
      */
     public static final CreateMode CREATE = fromString("Create");
 
     /**
-     * Static value Update for CreateMode.
+     * Operation updates an existing server.
      */
     public static final CreateMode UPDATE = fromString("Update");
 
     /**
-     * Static value PointInTimeRestore for CreateMode.
+     * Operation restores an existing backup of an existing server. This operation creates a new server, and then
+     * restores on it the backup of an existing server at a specific point in time.
      */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
     /**
-     * Static value GeoRestore for CreateMode.
+     * Operation restores an existing backup of an existing server, on the paired region of the existing server. This
+     * operation creates a new server on the paired region of the existing server, and then restores on it the backup of
+     * an existing server at a specific point in time, in a different region. This operation is only supported on
+     * existing servers that were created with geographically redundant backups enabled.
      */
     public static final CreateMode GEO_RESTORE = fromString("GeoRestore");
 
     /**
-     * Static value Replica for CreateMode.
+     * Operation creates a replica of an existing server. This operation creates a new server, restores a base backup of
+     * the existing server (referred to as primary), and configures physical replication to asynchronously stream all
+     * changes which are recorded in the transaction log of the primary.
      */
     public static final CreateMode REPLICA = fromString("Replica");
 
     /**
-     * Static value ReviveDropped for CreateMode.
+     * Operation creates a new server, initialized with the backup of a server that was recently deleted.
      */
     public static final CreateMode REVIVE_DROPPED = fromString("ReviveDropped");
 

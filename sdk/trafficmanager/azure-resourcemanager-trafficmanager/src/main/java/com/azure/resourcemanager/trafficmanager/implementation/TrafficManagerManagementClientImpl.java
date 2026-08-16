@@ -195,7 +195,7 @@ public final class TrafficManagerManagementClientImpl extends AzureServiceClient
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2022-04-01";
+        this.apiVersion = "2024-04-01-preview";
         this.endpoints = new EndpointsClientImpl(this);
         this.profiles = new ProfilesClientImpl(this);
         this.geographicHierarchies = new GeographicHierarchiesClientImpl(this);

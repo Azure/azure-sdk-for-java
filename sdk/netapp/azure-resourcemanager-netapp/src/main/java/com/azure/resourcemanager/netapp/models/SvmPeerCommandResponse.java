@@ -11,12 +11,11 @@ import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInne
  */
 public interface SvmPeerCommandResponse {
     /**
-     * Gets the svmPeeringCommand property: A command that needs to be run on the external ONTAP to accept svm peering.
-     * Will only be present if &lt;code&gt;svmPeeringStatus&lt;/code&gt; is &lt;code&gt;pending&lt;/code&gt;.
+     * Gets the properties property: Represents the properties of the SVM peer command response.
      * 
-     * @return the svmPeeringCommand value.
+     * @return the properties value.
      */
-    String svmPeeringCommand();
+    SvmPeerCommandResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner object.

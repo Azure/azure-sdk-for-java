@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class ExperimentsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_Update.json
+     * x-ms-original-file: 2026-05-01-preview/Experiments_Update.json
      */
     /**
      * Sample code: Update an Experiment in a resource group.

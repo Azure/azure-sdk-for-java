@@ -11,12 +11,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The request that is made for a long term retention backup.
+ * Request made for a long term retention backup.
  */
 @Fluent
 public final class BackupsLongTermRetentionRequest extends BackupRequestBase {
     /*
-     * Backup store detail for target server
+     * Backup store detail for target server.
      */
     private BackupStoreDetails targetDetails;
 

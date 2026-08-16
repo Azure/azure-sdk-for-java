@@ -12,18 +12,18 @@ public final class AkriConnectorTemplatePersistentVolumeClaimTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplatePersistentVolumeClaim model
-            = BinaryData.fromString("{\"claimName\":\"xt\",\"mountPath\":\"gumhjglikkxws\"}")
+            = BinaryData.fromString("{\"claimName\":\"tqmieox\",\"mountPath\":\"rgguf\"}")
                 .toObject(AkriConnectorTemplatePersistentVolumeClaim.class);
-        Assertions.assertEquals("xt", model.claimName());
-        Assertions.assertEquals("gumhjglikkxws", model.mountPath());
+        Assertions.assertEquals("tqmieox", model.claimName());
+        Assertions.assertEquals("rgguf", model.mountPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplatePersistentVolumeClaim model
-            = new AkriConnectorTemplatePersistentVolumeClaim().withClaimName("xt").withMountPath("gumhjglikkxws");
+            = new AkriConnectorTemplatePersistentVolumeClaim().withClaimName("tqmieox").withMountPath("rgguf");
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplatePersistentVolumeClaim.class);
-        Assertions.assertEquals("xt", model.claimName());
-        Assertions.assertEquals("gumhjglikkxws", model.mountPath());
+        Assertions.assertEquals("tqmieox", model.claimName());
+        Assertions.assertEquals("rgguf", model.mountPath());
     }
 }

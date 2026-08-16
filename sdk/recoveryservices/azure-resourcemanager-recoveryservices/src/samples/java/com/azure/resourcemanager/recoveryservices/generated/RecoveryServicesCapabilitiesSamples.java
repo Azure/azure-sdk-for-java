@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: 2025-08-01/Capabilities.json
+     * x-ms-original-file: 2026-05-01/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.

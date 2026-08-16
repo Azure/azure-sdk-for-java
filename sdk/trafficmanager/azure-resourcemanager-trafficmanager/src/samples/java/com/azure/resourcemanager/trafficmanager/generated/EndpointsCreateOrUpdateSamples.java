@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class EndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PUT-External-WithAlwaysServe.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PUT-External-WithAlwaysServe.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithAlwaysServe.
@@ -40,7 +40,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PUT-External-WithSubnetMapping.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PUT-External-WithSubnetMapping.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithSubnetMapping.
@@ -64,7 +64,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PUT-External-WithCustomHeaders.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PUT-External-WithCustomHeaders.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithCustomHeaders.
@@ -89,7 +89,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PUT-External-WithLocation.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PUT-External-WithLocation.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithLocation.
@@ -111,7 +111,7 @@ public final class EndpointsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2022-04-01/Endpoint-PUT-External-WithGeoMapping.json
+     * x-ms-original-file: 2024-04-01-preview/Endpoint-PUT-External-WithGeoMapping.json
      */
     /**
      * Sample code: Endpoint-PUT-External-WithGeoMapping.

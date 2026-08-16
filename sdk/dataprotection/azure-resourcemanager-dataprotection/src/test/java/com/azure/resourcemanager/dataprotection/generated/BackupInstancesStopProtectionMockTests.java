@@ -30,8 +30,9 @@ public final class BackupInstancesStopProtectionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .stopProtection("jqctojcmisofie", "pe", "ojyqdhcuplcplcw",
-                new StopProtectionRequest().withResourceGuardOperationRequests(Arrays.asList("hihlhzdsqtzbs")),
+            .stopProtection(
+                "wpfaj", "jwltlwtjjgu", "talhsnvkcdmxzr", new StopProtectionRequest()
+                    .withResourceGuardOperationRequests(Arrays.asList("imlnwiaaomylw", "azul", "sethwwn")),
                 com.azure.core.util.Context.NONE);
 
     }

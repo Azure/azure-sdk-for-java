@@ -12,15 +12,15 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Application Monitoring Auto Instrumentation for Kubernetes Application Container. Deploys web hook to auto-instrument
- * Azure Monitor OpenTelemetry based SDKs to collect OpenTelemetry metrics, logs and traces of the application. See
- * aka.ms/AzureMonitorApplicationMonitoring for an overview.
+ * Application Monitoring auto-instrumentation for AKS. Deploys a webhook that auto-instruments workloads with Microsoft
+ * OpenTelemetry Distros to collect OpenTelemetry metrics, logs, and traces. See https://aka.ms/AKSAppMonitoringDocs and
+ * https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
  */
 @Fluent
 public final class ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
     implements JsonSerializable<ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation> {
     /*
-     * Indicates if Application Monitoring Auto Instrumentation is enabled or not.
+     * Indicates if Application Monitoring Auto-instrumentation is enabled or not.
      */
     private Boolean enabled;
 
@@ -31,7 +31,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumenta
     }
 
     /**
-     * Get the enabled property: Indicates if Application Monitoring Auto Instrumentation is enabled or not.
+     * Get the enabled property: Indicates if Application Monitoring Auto-instrumentation is enabled or not.
      * 
      * @return the enabled value.
      */
@@ -40,7 +40,7 @@ public final class ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumenta
     }
 
     /**
-     * Set the enabled property: Indicates if Application Monitoring Auto Instrumentation is enabled or not.
+     * Set the enabled property: Indicates if Application Monitoring Auto-instrumentation is enabled or not.
      * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation object itself.

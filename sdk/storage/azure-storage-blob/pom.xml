@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.35.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+  <version>12.36.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 
   <name>Microsoft Azure client library for Blob Storage</name>
   <description>This module contains client library for Microsoft Azure Blob Storage.</description>
@@ -59,6 +59,10 @@
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
+    <!-- Exclude vendored Apache Arrow and FlatBuffers code from linting checks. -->
+    <checkstyle.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</checkstyle.excludes>
+    <spotbugs.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</spotbugs.excludes>
+
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
@@ -71,22 +75,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.58.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.34.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.35.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -101,7 +105,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.34.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.35.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -109,13 +113,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -129,17 +133,30 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-  </dependencies>
 
+    <!-- The internal ListBlobs Arrow reader uses vendored Arrow metadata accessors and the minimal FlatBuffers runtime
+         sources required by those accessors. The arrow-format artifact ships Java 11 bytecode, while this library has a
+         Java 8 baseline. Keeping both source sets internal also avoids modifying the release JAR through shading, which
+         would remove its explicit Java module descriptor.
+
+         When the Java 8 baseline is retired, additional options become available:
+         - The add-reads compiler option may provide compile-time access to an unnamed implementation dependency.
+         - A post-shade descriptor tool could rebuild module-info.class.
+         - A multi-release JAR or separate internal Azure module could isolate the dependency.
+         These options are not automatic replacements for vendoring. In particular, add-reads does not repair the
+         explicit descriptor removed by shading. Any future packaging approach must preserve Blob's module-info.class
+         and transitive Java module dependency graph, and must be validated by compiling installed downstream modules. -->
+
+  </dependencies>
   <profiles>
     <profile>
       <id>inject-sas-service-version</id>
@@ -172,13 +189,91 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
                 <AZURE_STORAGE_SAS_SERVICE_VERSION>${AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
               </systemPropertyVariables>
             </configuration>
           </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- This profile generates a sources JAR with Arrow and its matching FlatBuffers runtime relocated into the
+         internal packages where their curated source subsets are vendored. -->
+    <!-- DO NOT run this profile with release. It is only a local source-refresh tool and must never rewrite the
+         shipping azure-storage-blob JAR. -->
+    <!-- -->
+    <!-- To update the vendored sources, run Maven with '-Dshade-apache-arrow-format', extract the attached sources
+         JAR, and review the relocated apachearrow and flatbuffers packages. Copy only the source files used by the
+         internal reader, preserve their notices, and rerun the Arrow fixture and installed-consumer checks. -->
+    <profile>
+      <id>shade-apache-arrow-format</id>
+      <activation>
+        <property>
+          <name>shade-apache-arrow-format</name>
+        </property>
+      </activation>
+
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.arrow</groupId>
+          <artifactId>arrow-format</artifactId>
+          <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
+        </dependency>
+        <!-- Must match arrow-format's dep.fbs.version -->
+        <dependency>
+          <groupId>com.google.flatbuffers</groupId>
+          <artifactId>flatbuffers-java</artifactId>
+          <version>25.2.10</version> <!-- {x-version-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.6.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+
+            <executions>
+              <execution>
+                <id>shade</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>shade</goal>
+                </goals>
+              </execution>
+            </executions>
+
+            <configuration>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shade-apache-arrow-format</shadedClassifierName>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+
+              <artifactSet>
+                <includes>
+                  <include>org.apache.arrow:arrow-format</include>
+                  <include>com.google.flatbuffers:flatbuffers-java</include>
+                </includes>
+              </artifactSet>
+
+              <relocations>
+                <relocation>
+                  <pattern>org.apache.arrow.flatbuf</pattern>
+                  <shadedPattern>com.azure.storage.blob.implementation.util.apachearrow</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.google.flatbuffers</pattern>
+                  <shadedPattern>com.azure.storage.blob.implementation.util.flatbuffers</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </plugin>
+
         </plugins>
       </build>
     </profile>

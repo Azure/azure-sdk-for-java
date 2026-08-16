@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.

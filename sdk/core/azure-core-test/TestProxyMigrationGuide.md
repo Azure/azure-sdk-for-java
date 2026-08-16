@@ -202,8 +202,6 @@ regarding test resource deployment.
 Once your tests have been migrated to the test proxy, they can also have their recordings moved out of the
 `azure-sdk-for-java` repo. Refer to the [recording migration guide][recording_migration] for more details.
 
-After recordings are moved, you can refer to the instructions in [`TestProxyMigration.md`][test_proxy_migration] to manage them.
-
 ## Advanced details
 
 ### What does the test proxy do?
@@ -237,7 +235,6 @@ More details can be found [here][detailed_docs].
 
 [sanitizers]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#session-and-test-level-transforms-sanitiziers-and-matchers
 
-[test_proxy_migration]: https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration#3-using-test-proxy-going-forward
 [test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
 [test_proxy_manager]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyManager.java
 [test_proxy_base]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestProxyTestBase.java

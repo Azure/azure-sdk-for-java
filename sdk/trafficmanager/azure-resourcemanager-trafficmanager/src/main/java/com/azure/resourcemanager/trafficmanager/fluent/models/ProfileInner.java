@@ -13,6 +13,7 @@ import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
+import com.azure.resourcemanager.trafficmanager.models.RecordType;
 import com.azure.resourcemanager.trafficmanager.models.TrafficRoutingMethod;
 import com.azure.resourcemanager.trafficmanager.models.TrafficViewEnrollmentStatus;
 import java.io.IOException;
@@ -326,6 +327,31 @@ public final class ProfileInner extends Resource {
             this.innerProperties = new ProfileProperties();
         }
         this.innerProperties().withMaxReturn(maxReturn);
+        return this;
+    }
+
+    /**
+     * Get the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
+     * match this type.
+     * 
+     * @return the recordType value.
+     */
+    public RecordType recordType() {
+        return this.innerProperties() == null ? null : this.innerProperties().recordType();
+    }
+
+    /**
+     * Set the recordType property: When record type is set, a traffic manager profile will allow only endpoints that
+     * match this type.
+     * 
+     * @param recordType the recordType value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withRecordType(RecordType recordType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withRecordType(recordType);
         return this;
     }
 

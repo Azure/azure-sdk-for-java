@@ -1,14 +1,48 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.12.0-beta.2 (Unreleased)
 
 ### Features Added
+
+- Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.12.0-beta.1 (2026-07-03)
+
+### Features Added
+
+- Added the `ExternalKey` model and the `CreateExternalKeyOptions` options class, along with the `KeyClient.createExternalKey` and `KeyAsyncClient.createExternalKey` methods (and their `WithResponse` variants), for registering a Managed HSM key whose material is held in an external HSM (External Key Management). Only supported on Managed HSM with service version `2026-01-01-preview` or newer.
+- Added support for service version `2026-01-01-preview`.
+
+## 4.11.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+
+## 4.11.0 (2026-05-27)
+
+### Features Added
+
+- Added support for service version `2025-07-01`
+
+## 4.10.7 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
 ## 4.10.6 (2026-03-23)
 

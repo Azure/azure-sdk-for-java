@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public final class KeyValuesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateKeyValue.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateKeyValue.json
      */
     /**
      * Sample code: KeyValues_CreateOrUpdate.

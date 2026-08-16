@@ -93,7 +93,8 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return generateResponse is the response of a generate request along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> generateUpdateRunWithResponseAsync(String resourceGroupName,
@@ -114,7 +115,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return generateResponse is the response of a generate request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateUpdateRunWithResponse(String resourceGroupName, String fleetName,
@@ -135,7 +136,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return generateResponse is the response of a generate request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateUpdateRunWithResponse(String resourceGroupName, String fleetName,
@@ -154,7 +155,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenerateResponseInner>, GenerateResponseInner>
@@ -175,7 +176,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner>
@@ -196,7 +197,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner> beginGenerateUpdateRun(
@@ -216,7 +217,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return generateResponse is the response of a generate request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenerateResponseInner> generateUpdateRunAsync(String resourceGroupName, String fleetName,
@@ -234,7 +235,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,
@@ -252,7 +253,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,

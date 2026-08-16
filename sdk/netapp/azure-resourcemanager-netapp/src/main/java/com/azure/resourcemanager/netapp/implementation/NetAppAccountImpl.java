@@ -229,6 +229,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         serviceManager.accounts().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
+    public void refreshLdapBindPassword() {
+        serviceManager.accounts().refreshLdapBindPassword(resourceGroupName, accountName);
+    }
+
+    public void refreshLdapBindPassword(Context context) {
+        serviceManager.accounts().refreshLdapBindPassword(resourceGroupName, accountName, context);
+    }
+
     public NetAppAccountImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -301,11 +309,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
         this.updateBody.withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
-    public NetAppAccountImpl withMultiAdStatus(MultiAdStatus multiAdStatus) {
-        this.updateBody.withMultiAdStatus(multiAdStatus);
         return this;
     }
 

@@ -15,7 +15,7 @@ import java.io.IOException;
  * emitted when a Response is interrupted, incomplete, or cancelled.
  */
 @Immutable
-public final class SessionUpdateResponseTextDone extends SessionUpdate {
+public final class SessionUpdateResponseTextDone extends SessionServerEvent {
 
     /*
      * The type of event.

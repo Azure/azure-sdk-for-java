@@ -11,7 +11,7 @@ import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType
  */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/CreateCluster.json
+     * x-ms-original-file: 2026-04-30/CreateCluster.json
      */
     /**
      * Sample code: Create cluster.

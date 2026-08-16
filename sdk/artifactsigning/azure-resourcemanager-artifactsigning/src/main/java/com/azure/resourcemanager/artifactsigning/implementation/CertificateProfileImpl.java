@@ -13,7 +13,7 @@ import com.azure.resourcemanager.artifactsigning.models.CertificateProfile;
 import com.azure.resourcemanager.artifactsigning.models.CertificateProfileStatus;
 import com.azure.resourcemanager.artifactsigning.models.ProfileType;
 import com.azure.resourcemanager.artifactsigning.models.ProvisioningState;
-import com.azure.resourcemanager.artifactsigning.models.RevokeCertificate;
+import com.azure.resourcemanager.artifactsigning.models.RevokeCertificateList;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,6 +70,10 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
 
     public String identityValidationId() {
         return this.innerModel().identityValidationId();
+    }
+
+    public String programType() {
+        return this.innerModel().programType();
     }
 
     public ProvisioningState provisioningState() {
@@ -146,13 +150,13 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
         return this;
     }
 
-    public Response<Void> revokeCertificateWithResponse(RevokeCertificate body, Context context) {
+    public Response<Void> revokeCertificatesWithResponse(RevokeCertificateList body, Context context) {
         return serviceManager.certificateProfiles()
-            .revokeCertificateWithResponse(resourceGroupName, accountName, profileName, body, context);
+            .revokeCertificatesWithResponse(resourceGroupName, accountName, profileName, body, context);
     }
 
-    public void revokeCertificate(RevokeCertificate body) {
-        serviceManager.certificateProfiles().revokeCertificate(resourceGroupName, accountName, profileName, body);
+    public void revokeCertificates(RevokeCertificateList body) {
+        serviceManager.certificateProfiles().revokeCertificates(resourceGroupName, accountName, profileName, body);
     }
 
     public CertificateProfileImpl withProfileType(ProfileType profileType) {
@@ -187,6 +191,11 @@ public final class CertificateProfileImpl implements CertificateProfile, Certifi
 
     public CertificateProfileImpl withIdentityValidationId(String identityValidationId) {
         this.innerModel().withIdentityValidationId(identityValidationId);
+        return this;
+    }
+
+    public CertificateProfileImpl withProgramType(String programType) {
+        this.innerModel().withProgramType(programType);
         return this;
     }
 }

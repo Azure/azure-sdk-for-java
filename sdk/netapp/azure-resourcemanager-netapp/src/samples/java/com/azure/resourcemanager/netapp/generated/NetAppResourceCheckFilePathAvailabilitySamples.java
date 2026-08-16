@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
  */
 public final class NetAppResourceCheckFilePathAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/CheckFilePathAvailability.json
+     * x-ms-original-file: 2026-05-15-preview/CheckFilePathAvailability.json
      */
     /**
      * Sample code: CheckFilePathAvailability.

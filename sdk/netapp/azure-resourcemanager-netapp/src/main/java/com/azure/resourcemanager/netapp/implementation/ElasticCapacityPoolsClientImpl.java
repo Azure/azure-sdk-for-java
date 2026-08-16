@@ -1278,7 +1278,8 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return netApp Elastic Capacity Pool resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> changeZoneWithResponseAsync(String resourceGroupName, String accountName,
@@ -1325,7 +1326,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return netApp Elastic Capacity Pool resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeZoneWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -1375,7 +1376,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return netApp Elastic Capacity Pool resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> changeZoneWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -1424,7 +1425,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ElasticCapacityPoolInner>, ElasticCapacityPoolInner>
@@ -1446,7 +1447,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticCapacityPoolInner>, ElasticCapacityPoolInner>
@@ -1467,7 +1468,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticCapacityPoolInner>, ElasticCapacityPoolInner> beginChangeZone(
@@ -1487,7 +1488,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return netApp Elastic Capacity Pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ElasticCapacityPoolInner> changeZoneAsync(String resourceGroupName, String accountName,
@@ -1506,7 +1507,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticCapacityPoolInner changeZone(String resourceGroupName, String accountName, String poolName,
@@ -1525,7 +1526,7 @@ public final class ElasticCapacityPoolsClientImpl implements ElasticCapacityPool
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return netApp Elastic Capacity Pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticCapacityPoolInner changeZone(String resourceGroupName, String accountName, String poolName,

@@ -14,8 +14,10 @@ import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateExternalKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ExternalKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -94,6 +96,16 @@ public class ReadmeSamples {
             .setExpiresOn(OffsetDateTime.now().plusYears(1)));
         System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
         // END: readme-sample-createKey
+    }
+
+    public void createExternalKey() {
+        // BEGIN: readme-sample-createExternalKey
+        // External keys are only supported on a Managed HSM configured to use External Key Management (EKM).
+        KeyVaultKey externalKey = keyClient.createExternalKey(
+            new CreateExternalKeyOptions("CloudExternalKey", new ExternalKey("external-key-reference-id"))
+                .setExpiresOn(OffsetDateTime.now().plusYears(1)));
+        System.out.printf("Key created with name \"%s\" and id %s%n", externalKey.getName(), externalKey.getId());
+        // END: readme-sample-createExternalKey
     }
 
     public void retrieveKey() {

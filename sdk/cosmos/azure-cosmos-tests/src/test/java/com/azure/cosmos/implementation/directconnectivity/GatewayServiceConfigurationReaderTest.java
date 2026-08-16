@@ -72,6 +72,9 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal,
             new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()), new Configs());
         ReflectionUtils.setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
+        // Disable jitter so the background refresh fires within the 2-second sleep windows
+        // used by this test. Default jitter (0-15s) would push the refresh beyond the sleep.
+        ReflectionUtils.setBackgroundRefreshJitterMaxInSeconds(globalEndpointManager, 0);
         globalEndpointManager.init();
 
         GatewayServiceConfigurationReader configurationReader = new GatewayServiceConfigurationReader(globalEndpointManager);

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservices.generated;
  */
 public final class DeletedVaultsGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_Get.json
+     * x-ms-original-file: 2026-05-01/DeletedVaults_Get.json
      */
     /**
      * Sample code: Gets Deleted vault.

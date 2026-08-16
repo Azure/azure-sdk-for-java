@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class TableCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/TableOperationPut.json
+     * x-ms-original-file: 2026-04-01/TableOperationPut.json
      */
     /**
      * Sample code: TableOperationPut.
@@ -29,7 +29,7 @@ public final class TableCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/TableOperationPutOrPatchAclsTableCreate.json
+     * x-ms-original-file: 2026-04-01/TableOperationPutOrPatchAclsTableCreate.json
      */
     /**
      * Sample code: TableOperationPutOrPatchAcls.

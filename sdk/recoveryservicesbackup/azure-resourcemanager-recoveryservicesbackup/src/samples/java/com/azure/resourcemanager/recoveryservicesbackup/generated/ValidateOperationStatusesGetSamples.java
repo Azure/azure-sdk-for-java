@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ValidateOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ValidateOperationStatus.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/ValidateOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Validate Operation.

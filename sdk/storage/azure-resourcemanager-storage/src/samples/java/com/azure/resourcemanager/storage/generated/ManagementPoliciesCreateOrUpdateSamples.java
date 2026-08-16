@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class ManagementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicyColdTierActions.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicyColdTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyColdTierActions.
@@ -72,7 +72,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyWithSnapshotAndVersion.
@@ -121,7 +121,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyForBlockAndAppendBlobs.
@@ -156,7 +156,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicyHotTierActions.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicyHotTierActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicyHotTierActions.
@@ -191,7 +191,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.
@@ -228,7 +228,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicy.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicies.
@@ -283,7 +283,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.
@@ -319,7 +319,7 @@ public final class ManagementPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+     * x-ms-original-file: 2026-04-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
      */
     /**
      * Sample code: StorageAccountSetManagementPolicy_LastTierChangeTimeActions.

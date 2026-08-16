@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class OperationResultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"urbuhhlkyqltq\"}";
+        String responseStr = "{\"objectType\":\"OperationJobExtendedInfo\",\"jobId\":\"inqcymczngnbdxxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class OperationResultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OperationJobExtendedInfo response = manager.operationResults()
-            .getWithResponse("xejw", "bmdujtmvcopexc", com.azure.core.util.Context.NONE)
+            .getWithResponse("yfedevjbo", "lcqxypokk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("urbuhhlkyqltq", response.jobId());
+        Assertions.assertEquals("inqcymczngnbdxxe", response.jobId());
     }
 }

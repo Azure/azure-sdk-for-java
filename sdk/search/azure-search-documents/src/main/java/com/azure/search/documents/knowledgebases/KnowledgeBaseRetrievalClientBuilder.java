@@ -297,8 +297,9 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         SearchServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : SearchServiceVersion.getLatest();
-        KnowledgeBaseRetrievalClientImpl client = new KnowledgeBaseRetrievalClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
+        KnowledgeBaseRetrievalClientImpl client
+            = new KnowledgeBaseRetrievalClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),
+                this.endpoint, this.knowledgeBaseName, localServiceVersion);
         return client;
     }
 
@@ -307,6 +308,7 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        Objects.requireNonNull(knowledgeBaseName, "'knowledgeBaseName' cannot be null.");
     }
 
     @Generated
@@ -374,4 +376,22 @@ public final class KnowledgeBaseRetrievalClientBuilder implements HttpTrait<Know
 
     @Generated
     private String[] scopes = DEFAULT_SCOPES;
+
+    /*
+     * The name of the knowledge base.
+     */
+    @Generated
+    private String knowledgeBaseName;
+
+    /**
+     * Sets The name of the knowledge base.
+     *
+     * @param knowledgeBaseName the knowledgeBaseName value.
+     * @return the KnowledgeBaseRetrievalClientBuilder.
+     */
+    @Generated
+    public KnowledgeBaseRetrievalClientBuilder knowledgeBaseName(String knowledgeBaseName) {
+        this.knowledgeBaseName = knowledgeBaseName;
+        return this;
+    }
 }

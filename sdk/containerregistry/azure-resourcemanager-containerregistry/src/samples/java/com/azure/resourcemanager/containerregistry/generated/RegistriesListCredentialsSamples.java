@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class RegistriesListCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryListCredentials.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryListCredentials.json
      */
     /**
      * Sample code: RegistryListCredentials.

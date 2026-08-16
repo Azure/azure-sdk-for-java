@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager</artifactId>
-    <version>2.60.0</version>
+    <version>2.62.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,6 +60,8 @@ See [API design][design] for general introduction on design and key concepts on 
 
 See [Samples][sample] for code snippets and samples.
 
+See [runnable samples][samples_readme] for self-contained programs demonstrating common management scenarios.
+
 ## Troubleshooting
 
 ## Next steps
@@ -82,4 +84,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/src/samples/README.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

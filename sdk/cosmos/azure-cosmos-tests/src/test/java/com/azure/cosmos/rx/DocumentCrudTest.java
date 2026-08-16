@@ -4,12 +4,12 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentCrudTest extends TestSuiteBase {
 
-    private String databaseIdForTest = DatabaseForTest.generateId();
+    private String databaseIdForTest = CosmosDatabaseForTest.generateId();
 
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;

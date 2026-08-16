@@ -4,7 +4,7 @@
 package com.azure.ai.agents.memory;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -15,10 +15,10 @@ public class GetMemoryStore {
         String memoryStoreName = "my_memory_store_java";
 
         // Code sample for getting a memory store
-        MemoryStoresClient memoryStoresClient = new AgentsClientBuilder()
+        BetaMemoryStoresClient memoryStoresClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildMemoryStoresClient();
+                .beta().buildBetaMemoryStoresClient();
 
         MemoryStoreDetails memoryStore = memoryStoresClient.getMemoryStore(memoryStoreName);
 

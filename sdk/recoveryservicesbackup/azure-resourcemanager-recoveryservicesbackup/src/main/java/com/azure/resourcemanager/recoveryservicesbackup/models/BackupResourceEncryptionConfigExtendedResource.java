@@ -34,7 +34,7 @@ public interface BackupResourceEncryptionConfigExtendedResource {
     String type();
 
     /**
-     * Gets the properties property: BackupResourceEncryptionConfigExtendedResource properties.
+     * Gets the properties property: The properties of the backup resource encryption config extended resource.
      * 
      * @return the properties value.
      */

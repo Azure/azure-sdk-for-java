@@ -87,12 +87,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportRequestRateByIntervalWithResponseAsync(String location,
@@ -113,7 +114,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -126,13 +127,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportRequestRateByIntervalWithResponseAsync(String location,
@@ -153,7 +155,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -165,12 +167,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -185,13 +187,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -208,12 +210,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -225,13 +227,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -243,12 +245,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(String location,
@@ -261,13 +263,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(String location,
@@ -280,12 +282,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportRequestRateByInterval(String location,
@@ -297,13 +299,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportRequestRateByInterval(String location,
@@ -314,12 +316,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(String location,
@@ -340,7 +343,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -352,13 +355,14 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(String location,
@@ -379,7 +383,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -390,12 +394,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -409,13 +413,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -430,12 +434,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -446,13 +450,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
@@ -463,12 +467,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(String location,
@@ -480,13 +484,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(String location,
@@ -498,12 +502,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportThrottledRequests(String location,
@@ -514,13 +518,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogAnalyticsOperationResultInner exportThrottledRequests(String location, ThrottledRequestsInput parameters,

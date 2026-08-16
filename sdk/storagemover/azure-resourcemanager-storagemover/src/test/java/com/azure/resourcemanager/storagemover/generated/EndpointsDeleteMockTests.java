@@ -27,7 +27,7 @@ public final class EndpointsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.endpoints().delete("wmewzsyy", "euzsoi", "judpfrxt", com.azure.core.util.Context.NONE);
+        manager.endpoints().delete("xsdszuempsb", "kfzbeyvpnqicvi", "v", com.azure.core.util.Context.NONE);
 
     }
 }

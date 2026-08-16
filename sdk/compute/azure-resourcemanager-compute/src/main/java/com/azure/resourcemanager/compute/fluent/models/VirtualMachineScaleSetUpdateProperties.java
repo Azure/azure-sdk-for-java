@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.LifecycleHooksProfile;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
@@ -103,6 +104,11 @@ public final class VirtualMachineScaleSetUpdateProperties
      * Specifies the sku profile for the virtual machine scale set.
      */
     private SkuProfile skuProfile;
+
+    /*
+     * Specifies the lifecycle hooks profile for the virtual machine scale set.
+     */
+    private LifecycleHooksProfile lifecycleHooksProfile;
 
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateProperties class.
@@ -416,6 +422,27 @@ public final class VirtualMachineScaleSetUpdateProperties
     }
 
     /**
+     * Get the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @return the lifecycleHooksProfile value.
+     */
+    public LifecycleHooksProfile lifecycleHooksProfile() {
+        return this.lifecycleHooksProfile;
+    }
+
+    /**
+     * Set the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @param lifecycleHooksProfile the lifecycleHooksProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties
+        withLifecycleHooksProfile(LifecycleHooksProfile lifecycleHooksProfile) {
+        this.lifecycleHooksProfile = lifecycleHooksProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -448,6 +475,9 @@ public final class VirtualMachineScaleSetUpdateProperties
         if (skuProfile() != null) {
             skuProfile().validate();
         }
+        if (lifecycleHooksProfile() != null) {
+            lifecycleHooksProfile().validate();
+        }
     }
 
     /**
@@ -472,6 +502,7 @@ public final class VirtualMachineScaleSetUpdateProperties
         jsonWriter.writeStringField("zonalPlatformFaultDomainAlignMode",
             this.zonalPlatformFaultDomainAlignMode == null ? null : this.zonalPlatformFaultDomainAlignMode.toString());
         jsonWriter.writeJsonField("skuProfile", this.skuProfile);
+        jsonWriter.writeJsonField("lifecycleHooksProfile", this.lifecycleHooksProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -530,6 +561,9 @@ public final class VirtualMachineScaleSetUpdateProperties
                         = ZonalPlatformFaultDomainAlignMode.fromString(reader.getString());
                 } else if ("skuProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateProperties.skuProfile = SkuProfile.fromJson(reader);
+                } else if ("lifecycleHooksProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.lifecycleHooksProfile
+                        = LifecycleHooksProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

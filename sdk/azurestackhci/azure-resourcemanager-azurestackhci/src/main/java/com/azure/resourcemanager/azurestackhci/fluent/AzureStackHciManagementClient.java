@@ -131,6 +131,13 @@ public interface AzureStackHciManagementClient {
     UpdatesClient getUpdates();
 
     /**
+     * Gets the UpdateSummariesOperationGroupsClient object to access its operations.
+     * 
+     * @return the UpdateSummariesOperationGroupsClient object.
+     */
+    UpdateSummariesOperationGroupsClient getUpdateSummariesOperationGroups();
+
+    /**
      * Gets the ValidatedSolutionRecipesClient object to access its operations.
      * 
      * @return the ValidatedSolutionRecipesClient object.

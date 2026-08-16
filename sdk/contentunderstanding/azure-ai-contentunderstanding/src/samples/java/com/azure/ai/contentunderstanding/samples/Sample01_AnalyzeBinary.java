@@ -9,6 +9,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
 import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -30,7 +31,8 @@ import java.nio.file.Paths;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
- * 5. Using ContentRange to analyze specific pages
+ * 5. Converting results to LLM-ready text using toLlmInput
+ * 6. Using ContentRange to analyze specific pages
  */
 public class Sample01_AnalyzeBinary {
 
@@ -126,6 +128,19 @@ public class Sample01_AnalyzeBinary {
             System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
         }
         // END:ContentUnderstandingAccessDocumentProperties
+
+        // BEGIN:ContentUnderstandingConvertToLlmInput
+        // The markdown above can be consumed directly by LLMs. For convenience, the SDK
+        // provides LlmInputHelper.toLlmInput() which packages the result into a single
+        // text block with YAML front matter (content type, pages, fields, optional metadata)
+        // followed by the markdown body — ready for LLM prompts, vector stores, or agentic tools.
+        System.out.println("\n============================================================");
+        System.out.println("LLM-READY OUTPUT");
+        System.out.println("============================================================");
+
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingConvertToLlmInput
 
         System.out.println("\nBinary document analysis completed successfully");
 

@@ -297,6 +297,43 @@ def set_or_default_version(
     return stable_version, current_version
 
 
+def is_first_release(sdk_root: str, group: str, module: str) -> bool:
+    """Return True when the package has never been released.
+
+    A package is considered "never released" when either of the following is true
+    based solely on ``eng/versioning/version_client.txt``:
+
+    - The ``{group}:{module}`` entry is missing.
+    - Both the stable and current version columns equal ``DEFAULT_VERSION``
+      (``1.0.0-beta.1``), i.e. only the initial placeholder is present.
+
+    No side effects, no network calls.
+    """
+    version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
+    project = "{0}:{1}".format(group, module)
+    try:
+        with open(version_file, "r") as fin:
+            for version_line in fin:
+                version_line = version_line.strip()
+                if not version_line or version_line.startswith("#"):
+                    continue
+                versions = version_line.split(";")
+                if versions[0] != project:
+                    continue
+                if len(versions) != 3:
+                    # Malformed line: be conservative and treat as not-first-release
+                    # so we don't override existing release semantics.
+                    return False
+                stable_version = versions[1].strip()
+                current_version = versions[2].strip()
+                return stable_version == DEFAULT_VERSION and current_version == DEFAULT_VERSION
+        # Entry not found at all -> never released
+        return True
+    except FileNotFoundError:
+        # Without the version file we cannot decide; be conservative.
+        return False
+
+
 def set_or_increase_version(
     sdk_root: str,
     group: str,

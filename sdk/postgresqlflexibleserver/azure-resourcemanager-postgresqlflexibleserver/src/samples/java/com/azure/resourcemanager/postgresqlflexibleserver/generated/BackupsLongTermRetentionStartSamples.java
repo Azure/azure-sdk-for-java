@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class BackupsLongTermRetentionStartSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupsLongTermRetentionStart.json
+     * x-ms-original-file: 2026-04-01-preview/BackupsLongTermRetentionStart.json
      */
     /**
      * Sample code: Initiate a long term retention backup.

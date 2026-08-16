@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class OriginClusterInformation implements JsonSerializable<OriginClusterInformation> {
     /*
-     * ONTAP cluster name of external cluster hosting the origin volume
+     * ONTAP cluster name of external cluster hosting the origin volume. Must match the exact cluster name.
      */
     private String peerClusterName;
 
@@ -45,7 +45,8 @@ public final class OriginClusterInformation implements JsonSerializable<OriginCl
     }
 
     /**
-     * Get the peerClusterName property: ONTAP cluster name of external cluster hosting the origin volume.
+     * Get the peerClusterName property: ONTAP cluster name of external cluster hosting the origin volume. Must match
+     * the exact cluster name.
      * 
      * @return the peerClusterName value.
      */
@@ -54,7 +55,8 @@ public final class OriginClusterInformation implements JsonSerializable<OriginCl
     }
 
     /**
-     * Set the peerClusterName property: ONTAP cluster name of external cluster hosting the origin volume.
+     * Set the peerClusterName property: ONTAP cluster name of external cluster hosting the origin volume. Must match
+     * the exact cluster name.
      * 
      * @param peerClusterName the peerClusterName value to set.
      * @return the OriginClusterInformation object itself.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class DeletedAccountsListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeletedAccountList.json
+     * x-ms-original-file: 2026-04-01/DeletedAccountList.json
      */
     /**
      * Sample code: DeletedAccountList.

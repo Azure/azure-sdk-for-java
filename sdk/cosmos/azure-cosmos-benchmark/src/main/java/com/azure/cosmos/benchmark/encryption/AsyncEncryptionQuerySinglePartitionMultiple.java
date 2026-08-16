@@ -10,7 +10,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 
@@ -20,8 +19,8 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     private CosmosQueryRequestOptions options;
     private int pageCount = 0;
 
-    public AsyncEncryptionQuerySinglePartitionMultiple(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
-        super(workloadCfg, scheduler);
+    public AsyncEncryptionQuerySinglePartitionMultiple(TenantWorkloadConfig workloadCfg) throws IOException {
+        super(workloadCfg);
         options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
     }

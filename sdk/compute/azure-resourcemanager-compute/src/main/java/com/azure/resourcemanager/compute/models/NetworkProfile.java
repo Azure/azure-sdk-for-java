@@ -33,6 +33,11 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
      */
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
 
+    /*
+     * Specifies the interconnect group profile to associate with the virtual machine. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectGroupProfile interconnectGroupProfile;
+
     /**
      * Creates an instance of NetworkProfile class.
      */
@@ -107,6 +112,28 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     }
 
     /**
+     * Get the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the virtual
+     * machine. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectGroupProfile value.
+     */
+    public InterconnectGroupProfile interconnectGroupProfile() {
+        return this.interconnectGroupProfile;
+    }
+
+    /**
+     * Set the interconnectGroupProfile property: Specifies the interconnect group profile to associate with the virtual
+     * machine. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectGroupProfile the interconnectGroupProfile value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withInterconnectGroupProfile(InterconnectGroupProfile interconnectGroupProfile) {
+        this.interconnectGroupProfile = interconnectGroupProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +144,9 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
         }
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
+        }
+        if (interconnectGroupProfile() != null) {
+            interconnectGroupProfile().validate();
         }
     }
 
@@ -132,6 +162,7 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
             this.networkApiVersion == null ? null : this.networkApiVersion.toString());
         jsonWriter.writeArrayField("networkInterfaceConfigurations", this.networkInterfaceConfigurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("interconnectGroupProfile", this.interconnectGroupProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -160,6 +191,8 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
                     List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations
                         = reader.readArray(reader1 -> VirtualMachineNetworkInterfaceConfiguration.fromJson(reader1));
                     deserializedNetworkProfile.networkInterfaceConfigurations = networkInterfaceConfigurations;
+                } else if ("interconnectGroupProfile".equals(fieldName)) {
+                    deserializedNetworkProfile.interconnectGroupProfile = InterconnectGroupProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -11,7 +11,7 @@ public final class MccCacheNodeAutoUpdateInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccCacheNodeAutoUpdateInfo model = BinaryData.fromString(
-            "{\"imageUriBeforeUpdate\":\"bzoggigrx\",\"imageUriTargeted\":\"ur\",\"imageUriTerminal\":\"xxjnspydptk\",\"autoUpdateRingType\":1482419493,\"movedToTerminalStateDateTime\":\"2021-12-09T16:13:48Z\",\"ruleRequestedWeek\":766027408,\"ruleRequestedDay\":1110747875,\"createdDateTimeUtc\":\"2021-02-16T10:50:56Z\",\"updatedRegistryDateTimeUtc\":\"2021-04-09T12:14:42Z\",\"planChangeLogText\":\"ukbldngkpo\",\"autoUpdateLastAppliedStatus\":655680628,\"autoUpdateLastAppliedStatusText\":\"z\",\"autoUpdateLastAppliedStatusDetailedText\":\"o\",\"planId\":7699505413324678544,\"timeToGoLiveDateTime\":\"jnpiucgyg\",\"ruleRequestedMinute\":\"qzntypm\",\"ruleRequestedHour\":\"p\"}")
+            "{\"imageUriBeforeUpdate\":\"pyd\",\"imageUriTargeted\":\"yhxdeoejzicwi\",\"imageUriTerminal\":\"jttgzf\",\"autoUpdateRingType\":2101457273,\"movedToTerminalStateDateTime\":\"2021-09-13T12:21:33Z\",\"ruleRequestedWeek\":1055355134,\"ruleRequestedDay\":1409405599,\"createdDateTimeUtc\":\"2021-05-05T10:08:59Z\",\"updatedRegistryDateTimeUtc\":\"2020-12-31T23:44:32Z\",\"planChangeLogText\":\"md\",\"autoUpdateLastAppliedStatus\":1995660983,\"autoUpdateLastAppliedStatusText\":\"alpbuxwgipwhon\",\"autoUpdateLastAppliedStatusDetailedText\":\"kgshwa\",\"planId\":9069419469544491752,\"timeToGoLiveDateTime\":\"bin\",\"ruleRequestedMinute\":\"pu\",\"ruleRequestedHour\":\"mryw\"}")
             .toObject(MccCacheNodeAutoUpdateInfo.class);
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class QueueListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/QueueOperationList.json
+     * x-ms-original-file: 2026-04-01/QueueOperationList.json
      */
     /**
      * Sample code: QueueOperationList.

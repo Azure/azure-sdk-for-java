@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
@@ -146,12 +147,21 @@ public abstract class HttpResponse implements Closeable {
     public abstract Mono<String> getBodyAsString(Charset charset);
 
     /**
-     * Gets the response content as an {@link InputStream}.
+     * Gets the response content as an {@link InputStream} wrapped in a {@link Mono}.
      *
-     * @return The response content as an {@link InputStream}.
+     * @return The response content as an {@link InputStream} wrapped in a {@link Mono}.
      */
     public Mono<InputStream> getBodyAsInputStream() {
         return getBodyAsByteArray().map(ByteArrayInputStream::new);
+    }
+
+    /**
+     * Returns the response content as an {@link InputStream}.
+     *
+     * @return The response content as an {@link InputStream}.
+     */
+    public InputStream getBodyAsInputStreamSync() {
+        return new FluxInputStream(getBody());
     }
 
     /**

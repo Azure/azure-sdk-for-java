@@ -10,7 +10,8 @@ import com.azure.resourcemanager.azurestackhci.models.HciStorageProfile;
 public final class HciStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HciStorageProfile model
-            = BinaryData.fromString("{\"poolableDisksCount\":8841068024570630650}").toObject(HciStorageProfile.class);
+        HciStorageProfile model = BinaryData.fromString(
+            "{\"poolableDisksCount\":5513165918276447064,\"disks\":[{\"id\":\"nictteajo\",\"sizeInBytes\":\"ygspnbonhpczykm\",\"type\":\"p\",\"model\":\"xqcsehch\",\"manufacturer\":\"ufmpqumqyjgy\",\"isSupported\":true}]}")
+            .toObject(HciStorageProfile.class);
     }
 }

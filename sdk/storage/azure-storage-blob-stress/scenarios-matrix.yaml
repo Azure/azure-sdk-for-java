@@ -108,6 +108,150 @@ matrix:
       durationMin: 60
       imageBuildDir: "../../.."
 
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation
+    crc64downloadstreamsm:
+      testScenario: downloadstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and async client
+    crc64downloadstreamasyncsm:
+      testScenario: downloadstreamwithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation and large payload
+    crc64downloadstreamlg:
+      testScenario: downloadstreamwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadStreamOptions with CRC64 validation, async client, and large payload
+    crc64downloadstreamasynclg:
+      testScenario: downloadstreamwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation
+    crc64downloadcontentsm:
+      testScenario: downloadcontentwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation and async client
+    crc64downloadcontentasyncsm:
+      testScenario: downloadcontentwithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation and large payload
+    crc64downloadcontentlg:
+      testScenario: downloadcontentwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadContentOptions with CRC64 validation, async client, and large payload
+    crc64downloadcontentasynclg:
+      testScenario: downloadcontentwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation
+    crc64downloadfilesm:
+      testScenario: downloadtofilewithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and async client
+    crc64downloadfileasyncsm:
+      testScenario: downloadtofilewithcrc64
+      sync: false
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation and multi-block payload
+    crc64downloadfilemd:
+      testScenario: downloadtofilewithcrc64
+      sync: true
+      sizeBytes: "16777216"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobDownloadToFileOptions with CRC64 validation, async client, and multi-block payload
+    crc64downloadfileasyncmd:
+      testScenario: downloadtofilewithcrc64
+      sync: false
+      sizeBytes: "16777216"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobInputStreamOptions with CRC64 validation
+    crc64inputstreamsm:
+      testScenario: openinputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobInputStreamOptions with CRC64 validation and large payload
+    crc64inputstreamlg:
+      testScenario: openinputstreamwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation
+    crc64bytechannelreadsm:
+      testScenario: openseekablebytechannelreadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      downloadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # content validation downloads using BlobSeekableByteChannelReadOptions with CRC64 validation and large payload
+    crc64bytechannelreadlg:
+      testScenario: openseekablebytechannelreadwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      downloadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
     # this test uploads 1KB (1024 bytes) to append blob, no chunking
     appendblocksmall:
       testScenario: appendblock
@@ -319,6 +463,246 @@ matrix:
     uploadfromfilelarge:
       testScenario: uploadfromfile
       sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64appendblock-sm:
+      testScenario: appendblockwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendblock-lg:
+      testScenario: appendblockwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 30
+      imageBuildDir: "../../.."
+
+    crc64appendblockasync-sm:
+      testScenario: appendblockwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendblockasync-lg:
+      testScenario: appendblockwithcrc64
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 30
+      imageBuildDir: "../../.."
+
+    crc64appendoutputstream-sm:
+      testScenario: appendbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64appendoutputstream-lg:
+      testScenario: appendbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "10240"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64blockblobupload-sm:
+      testScenario: blockblobuploadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64blockblobupload-lg:
+      testScenario: blockblobuploadwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64blockoutputstream-sm:
+      testScenario: blockbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64blockoutputstream-lg:
+      testScenario: blockbloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64bytechannelwrite-sm:
+      testScenario: seekablebytechannelwritewithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    crc64bytechannelwrite-lg:
+      testScenario: seekablebytechannelwritewithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64stageblock-sm:
+      testScenario: stageblockwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64stageblock-lg:
+      testScenario: stageblockwithcrc64
+      sync: true
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64stageblockasync-sm:
+      testScenario: stageblockwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64stageblockasync-lg:
+      testScenario: stageblockwithcrc64
+      sync: false
+      sizeBytes: "26214400"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64pageoutputstream-sm:
+      testScenario: pagebloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64pageoutputstream-lg:
+      testScenario: pagebloboutputstreamwithcrc64
+      sync: true
+      sizeBytes: "10240"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadpages-sm:
+      testScenario: uploadpageswithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadpages-lg:
+      testScenario: uploadpageswithcrc64
+      sync: true
+      sizeBytes: "4194304"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadpagesasync-sm:
+      testScenario: uploadpageswithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadpagesasync-lg:
+      testScenario: uploadpageswithcrc64
+      sync: false
+      sizeBytes: "4194304"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64upload-sm:
+      testScenario: uploadwithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64upload-lg:
+      testScenario: uploadwithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadasync-sm:
+      testScenario: uploadwithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadasync-lg:
+      testScenario: uploadwithcrc64
+      sync: false
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfile-sm:
+      testScenario: uploadfromfilewithcrc64
+      sync: true
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfile-lg:
+      testScenario: uploadfromfilewithcrc64
+      sync: true
+      sizeBytes: "52428800"
+      uploadFaults: true
+      durationMin: 60
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfileasync-sm:
+      testScenario: uploadfromfilewithcrc64
+      sync: false
+      sizeBytes: 1024
+      uploadFaults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    crc64uploadfromfileasync-lg:
+      testScenario: uploadfromfilewithcrc64
+      sync: false
       sizeBytes: "52428800"
       uploadFaults: true
       durationMin: 60

@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Mode used to perform the migration: Online or Offline.
+ * Mode used to perform the migration.
  */
 public final class MigrationMode extends ExpandableStringEnum<MigrationMode> {
     /**
-     * Static value Offline for MigrationMode.
+     * Offline migration mode.
      */
     public static final MigrationMode OFFLINE = fromString("Offline");
 
     /**
-     * Static value Online for MigrationMode.
+     * Online migration mode.
      */
     public static final MigrationMode ONLINE = fromString("Online");
 

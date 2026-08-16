@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CredentialsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Update_Credentials.json
+     * x-ms-original-file: 2026-03-01-preview/Update_Credentials.json
      */
     /**
      * Sample code: Update_Credentials.

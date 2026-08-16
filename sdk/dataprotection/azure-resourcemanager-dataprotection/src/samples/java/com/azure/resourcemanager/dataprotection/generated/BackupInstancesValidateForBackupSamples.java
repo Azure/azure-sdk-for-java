@@ -19,7 +19,7 @@ import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
  */
 public final class BackupInstancesValidateForBackupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/ValidateForBackup.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/ValidateForBackup.json
      */
     /**
      * Sample code: Validate For Backup.

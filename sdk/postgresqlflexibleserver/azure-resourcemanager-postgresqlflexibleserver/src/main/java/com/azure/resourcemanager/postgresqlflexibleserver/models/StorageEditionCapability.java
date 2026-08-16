@@ -32,12 +32,12 @@ public final class StorageEditionCapability extends CapabilityBase {
     private List<StorageMbCapability> supportedStorageMb;
 
     /*
-     * The reason for the capability not being available.
+     * Reason for the capability not being available.
      */
     private String reason;
 
     /*
-     * The status of the capability.
+     * Status of the capability.
      */
     private CapabilityStatus status;
 
@@ -75,7 +75,7 @@ public final class StorageEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being available.
+     * Get the reason property: Reason for the capability not being available.
      * 
      * @return the reason value.
      */
@@ -85,7 +85,7 @@ public final class StorageEditionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the status property: The status of the capability.
+     * Get the status property: Status of the capability.
      * 
      * @return the status value.
      */

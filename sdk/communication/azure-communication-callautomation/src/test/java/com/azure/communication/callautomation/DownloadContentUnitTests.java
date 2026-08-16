@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DownloadContentUnitTests {
 
     private static final String CONTENT = "VideoContents";
-    private static final String AMS_ENDPOINT = "https://url.com";
+    private static final String AMS_ENDPOINT = "https://url.asm.skype.com";
     private CallRecording callRecording;
 
     @BeforeEach

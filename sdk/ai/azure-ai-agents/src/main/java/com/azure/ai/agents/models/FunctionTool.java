@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -132,6 +133,16 @@ public final class FunctionTool extends Tool {
         jsonWriter.writeBooleanField("strict", this.strict);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("output_schema", this.outputSchema, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeBooleanField("defer_loading", this.deferLoading);
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +163,9 @@ public final class FunctionTool extends Tool {
             Boolean strict = null;
             ToolType type = ToolType.FUNCTION;
             String description = null;
+            Map<String, BinaryData> outputSchema = null;
+            Boolean deferLoading = null;
+            List<CallableToolAllowedCaller> allowedCallers = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -166,6 +180,14 @@ public final class FunctionTool extends Tool {
                     type = ToolType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("output_schema".equals(fieldName)) {
+                    outputSchema = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
+                } else if ("defer_loading".equals(fieldName)) {
+                    deferLoading = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowed_callers".equals(fieldName)) {
+                    allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
                 } else {
                     reader.skipChildren();
                 }
@@ -173,6 +195,9 @@ public final class FunctionTool extends Tool {
             FunctionTool deserializedFunctionTool = new FunctionTool(name, parameters, strict);
             deserializedFunctionTool.type = type;
             deserializedFunctionTool.description = description;
+            deserializedFunctionTool.outputSchema = outputSchema;
+            deserializedFunctionTool.deferLoading = deferLoading;
+            deserializedFunctionTool.allowedCallers = allowedCallers;
             return deserializedFunctionTool;
         });
     }
@@ -189,5 +214,89 @@ public final class FunctionTool extends Tool {
         this.name = name;
         this.parameters = parameters;
         this.strict = strict;
+    }
+
+    /*
+     * Whether this function is deferred and loaded via tool search.
+     */
+    @Generated
+    private Boolean deferLoading;
+
+    /**
+     * Get the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @return the deferLoading value.
+     */
+    @Generated
+    public Boolean isDeferLoading() {
+        return this.deferLoading;
+    }
+
+    /**
+     * Set the deferLoading property: Whether this function is deferred and loaded via tool search.
+     *
+     * @param deferLoading the deferLoading value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setDeferLoading(Boolean deferLoading) {
+        this.deferLoading = deferLoading;
+        return this;
+    }
+
+    /*
+     * The output_schema property.
+     */
+    @Generated
+    private Map<String, BinaryData> outputSchema;
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /**
+     * Get the outputSchema property: The output_schema property.
+     *
+     * @return the outputSchema value.
+     */
+    @Generated
+    public Map<String, BinaryData> getOutputSchema() {
+        return this.outputSchema;
+    }
+
+    /**
+     * Set the outputSchema property: The output_schema property.
+     *
+     * @param outputSchema the outputSchema value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setOutputSchema(Map<String, BinaryData> outputSchema) {
+        this.outputSchema = outputSchema;
+        return this;
+    }
+
+    /**
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
+     */
+    @Generated
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
+    }
+
+    /**
+     * Set the allowedCallers property: The allowed_callers property.
+     *
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the FunctionTool object itself.
+     */
+    @Generated
+    public FunctionTool setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
 }

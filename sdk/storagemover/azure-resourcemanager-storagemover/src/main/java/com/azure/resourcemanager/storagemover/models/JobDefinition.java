@@ -439,7 +439,7 @@ public interface JobDefinition {
      * The template for JobDefinition update.
      */
     interface Update extends UpdateStages.WithDescription, UpdateStages.WithCopyMode, UpdateStages.WithAgentName,
-        UpdateStages.WithConnections, UpdateStages.WithDataIntegrityValidation {
+        UpdateStages.WithConnections, UpdateStages.WithDataIntegrityValidation, UpdateStages.WithSchedule {
         /**
          * Executes the update request.
          * 
@@ -523,6 +523,19 @@ public interface JobDefinition {
              * @return the next definition stage.
              */
             Update withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify schedule.
+         */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Schedule information for the Job Definition..
+             * 
+             * @param schedule Schedule information for the Job Definition.
+             * @return the next definition stage.
+             */
+            Update withSchedule(ScheduleInfo schedule);
         }
     }
 

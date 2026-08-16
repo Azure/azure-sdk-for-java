@@ -42,7 +42,7 @@ public class StateHolder {
     private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
 
     /** Number of client-level refresh attempts for backoff calculation. */
-    private Integer clientRefreshAttempts = 1;
+    private int clientRefreshAttempts = 1;
 
     /** The next time a forced refresh should occur across all stores. */
     private Instant nextForcedRefresh;
@@ -155,7 +155,7 @@ public class StateHolder {
         }
         long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
 
-        long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
+        long timeLeft = ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
             state.put(originEndpoint, new State(oldState, Instant.now().plusSeconds(wait)));
         }
@@ -165,7 +165,7 @@ public class StateHolder {
      * @param originEndpoint the configuration store connected to.
      * @param loaded true if the configuration store was loaded.
      */
-    public void setLoadState(String originEndpoint, Boolean loaded) {
+    public void setLoadState(String originEndpoint, boolean loaded) {
         loadState.put(originEndpoint, loaded);
     }
 

@@ -25,7 +25,7 @@ public final class ProfanityFilterMode extends ExpandableStringEnum<ProfanityFil
     public static final ProfanityFilterMode REMOVED = fromString("Removed");
 
     /**
-     * Add "profanity" XML tags&lt;/Profanity&gt;.
+     * Add "profanity" XML tags &lt;Profanity&gt;&lt;/Profanity&gt;.
      */
     @Generated
     public static final ProfanityFilterMode TAGS = fromString("Tags");

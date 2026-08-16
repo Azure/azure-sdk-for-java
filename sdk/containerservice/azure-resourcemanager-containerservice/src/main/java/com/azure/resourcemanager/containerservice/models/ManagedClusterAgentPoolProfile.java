@@ -31,11 +31,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     private String provisioningState;
 
     /*
-     * The version of node image
-     */
-    private String nodeImageVersion;
-
-    /*
      * The version of Kubernetes the Agent Pool is running. If orchestratorVersion is a fully specified version
      * <major.minor.patch>, this field will be exactly equal to it. If orchestratorVersion is <major.minor>, this field
      * will contain the full <major.minor.patch> version being used.
@@ -85,16 +80,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the nodeImageVersion property: The version of node image.
-     * 
-     * @return the nodeImageVersion value.
-     */
-    @Override
-    public String nodeImageVersion() {
-        return this.nodeImageVersion;
     }
 
     /**
@@ -299,6 +284,15 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOrchestratorVersion(String orchestratorVersion) {
         super.withOrchestratorVersion(orchestratorVersion);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedClusterAgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
+        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 
@@ -625,8 +619,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
      */
     @Override
     public ManagedClusterAgentPoolProfile
-        withNodeCustomizationProfile(NodeCustomizationProfile nodeCustomizationProfile) {
-        super.withNodeCustomizationProfile(nodeCustomizationProfile);
+        withPreparedImageSpecificationProfile(PreparedImageSpecificationProfile preparedImageSpecificationProfile) {
+        super.withPreparedImageSpecificationProfile(preparedImageSpecificationProfile);
         return this;
     }
 
@@ -690,8 +684,8 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         if (localDnsProfile() != null) {
             localDnsProfile().validate();
         }
-        if (nodeCustomizationProfile() != null) {
-            nodeCustomizationProfile().validate();
+        if (preparedImageSpecificationProfile() != null) {
+            preparedImageSpecificationProfile().validate();
         }
     }
 
@@ -724,6 +718,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
         jsonWriter.writeStringField("type", type() == null ? null : type().toString());
         jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
         jsonWriter.writeStringField("orchestratorVersion", orchestratorVersion());
+        jsonWriter.writeStringField("nodeImageVersion", nodeImageVersion());
         jsonWriter.writeStringField("upgradeStrategy", upgradeStrategy() == null ? null : upgradeStrategy().toString());
         jsonWriter.writeBooleanField("enableOSDiskFullCaching", enableOSDiskFullCaching());
         jsonWriter.writeJsonField("upgradeSettings", upgradeSettings());
@@ -765,7 +760,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", status());
         jsonWriter.writeJsonField("localDNSProfile", localDnsProfile());
-        jsonWriter.writeJsonField("nodeCustomizationProfile", nodeCustomizationProfile());
+        jsonWriter.writeJsonField("preparedImageSpecificationProfile", preparedImageSpecificationProfile());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -838,7 +833,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                 } else if ("currentOrchestratorVersion".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.currentOrchestratorVersion = reader.getString();
                 } else if ("nodeImageVersion".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfile.nodeImageVersion = reader.getString();
+                    deserializedManagedClusterAgentPoolProfile.withNodeImageVersion(reader.getString());
                 } else if ("upgradeStrategy".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
                         .withUpgradeStrategy(UpgradeStrategy.fromString(reader.getString()));
@@ -936,9 +931,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                     deserializedManagedClusterAgentPoolProfile.withStatus(AgentPoolStatus.fromJson(reader));
                 } else if ("localDNSProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.withLocalDnsProfile(LocalDnsProfile.fromJson(reader));
-                } else if ("nodeCustomizationProfile".equals(fieldName)) {
+                } else if ("preparedImageSpecificationProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile
-                        .withNodeCustomizationProfile(NodeCustomizationProfile.fromJson(reader));
+                        .withPreparedImageSpecificationProfile(PreparedImageSpecificationProfile.fromJson(reader));
                 } else if ("name".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfile.name = reader.getString();
                 } else {

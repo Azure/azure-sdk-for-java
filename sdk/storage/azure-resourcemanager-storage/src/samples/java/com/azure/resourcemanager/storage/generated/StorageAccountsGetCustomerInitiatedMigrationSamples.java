@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.MigrationName;
  */
 public final class StorageAccountsGetCustomerInitiatedMigrationSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetMigrationInProgress.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetMigrationInProgress.json
      */
     /**
      * Sample code: StorageAccountGetMigrationInProgress.
@@ -26,7 +26,7 @@ public final class StorageAccountsGetCustomerInitiatedMigrationSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountGetMigrationFailed.json
+     * x-ms-original-file: 2026-04-01/StorageAccountGetMigrationFailed.json
      */
     /**
      * Sample code: StorageAccountGetMigrationFailed.

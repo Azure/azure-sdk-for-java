@@ -12,10 +12,10 @@ public final class SchemaVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"btuodxeszabbel\",\"description\":\"umuaslzkwrrwoycq\",\"schemaContent\":\"cwyhahno\",\"hash\":\"rkywuhpsvfuu\",\"provisioningState\":\"Failed\"},\"id\":\"we\",\"name\":\"xwlalniexzsrzpg\",\"type\":\"pqtybb\"},{\"properties\":{\"uuid\":\"gdakchz\",\"description\":\"lixqnrkcxkjibn\",\"schemaContent\":\"mysu\",\"hash\":\"wq\",\"provisioningState\":\"Succeeded\"},\"id\":\"lwi\",\"name\":\"psttexoq\",\"type\":\"pwcyyufmhr\"}],\"nextLink\":\"cuwmqsp\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"ihchrphkmcrjdqn\",\"description\":\"fzpbgtgkyl\",\"schemaContent\":\"dgh\",\"hash\":\"euutlwxezwzh\",\"provisioningState\":\"Succeeded\"},\"id\":\"wnhhtqlgehgppip\",\"name\":\"fhpfeoajvgcxtx\",\"type\":\"csheafidltugsr\"},{\"properties\":{\"uuid\":\"kssjhoiftxfk\",\"description\":\"egprhptil\",\"schemaContent\":\"ucb\",\"hash\":\"tgdqohmcwsldriz\",\"provisioningState\":\"Failed\"},\"id\":\"bra\",\"name\":\"llibphbqzmizak\",\"type\":\"kan\"},{\"properties\":{\"uuid\":\"dnjzh\",\"description\":\"oylhjlmuoyxprimr\",\"schemaContent\":\"opteecj\",\"hash\":\"islstv\",\"provisioningState\":\"Failed\"},\"id\":\"wxdzaumweoohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"},{\"properties\":{\"uuid\":\"ahlxveabfqxnm\",\"description\":\"qtibxyijddtv\",\"schemaContent\":\"cttadi\",\"hash\":\"eukmr\",\"provisioningState\":\"Succeeded\"},\"id\":\"kpn\",\"name\":\"zaapmudqmeqwi\",\"type\":\"pibudqwyxebeybpm\"}],\"nextLink\":\"nrtffyaqi\"}")
             .toObject(SchemaVersionListResult.class);
-        Assertions.assertEquals("umuaslzkwrrwoycq", model.value().get(0).properties().description());
-        Assertions.assertEquals("cwyhahno", model.value().get(0).properties().schemaContent());
-        Assertions.assertEquals("cuwmqsp", model.nextLink());
+        Assertions.assertEquals("fzpbgtgkyl", model.value().get(0).properties().description());
+        Assertions.assertEquals("dgh", model.value().get(0).properties().schemaContent());
+        Assertions.assertEquals("nrtffyaqi", model.nextLink());
     }
 }

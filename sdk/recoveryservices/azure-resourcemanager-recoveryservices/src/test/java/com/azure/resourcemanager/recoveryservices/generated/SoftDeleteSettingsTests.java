@@ -14,21 +14,21 @@ public final class SoftDeleteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SoftDeleteSettings model = BinaryData.fromString(
-            "{\"softDeleteState\":\"Enabled\",\"softDeleteRetentionPeriodInDays\":1018660183,\"enhancedSecurityState\":\"Disabled\"}")
+            "{\"softDeleteState\":\"Invalid\",\"softDeleteRetentionPeriodInDays\":1154409847,\"enhancedSecurityState\":\"Disabled\"}")
             .toObject(SoftDeleteSettings.class);
-        Assertions.assertEquals(SoftDeleteState.ENABLED, model.softDeleteState());
-        Assertions.assertEquals(1018660183, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SoftDeleteState.INVALID, model.softDeleteState());
+        Assertions.assertEquals(1154409847, model.softDeleteRetentionPeriodInDays());
         Assertions.assertEquals(EnhancedSecurityState.DISABLED, model.enhancedSecurityState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SoftDeleteSettings model = new SoftDeleteSettings().withSoftDeleteState(SoftDeleteState.ENABLED)
-            .withSoftDeleteRetentionPeriodInDays(1018660183)
+        SoftDeleteSettings model = new SoftDeleteSettings().withSoftDeleteState(SoftDeleteState.INVALID)
+            .withSoftDeleteRetentionPeriodInDays(1154409847)
             .withEnhancedSecurityState(EnhancedSecurityState.DISABLED);
         model = BinaryData.fromObject(model).toObject(SoftDeleteSettings.class);
-        Assertions.assertEquals(SoftDeleteState.ENABLED, model.softDeleteState());
-        Assertions.assertEquals(1018660183, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals(SoftDeleteState.INVALID, model.softDeleteState());
+        Assertions.assertEquals(1154409847, model.softDeleteRetentionPeriodInDays());
         Assertions.assertEquals(EnhancedSecurityState.DISABLED, model.enhancedSecurityState());
     }
 }

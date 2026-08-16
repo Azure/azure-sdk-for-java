@@ -11,7 +11,6 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
-import com.azure.resourcemanager.recoveryservicesbackup.models.OkResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,12 +30,12 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        OkResponse response = manager.resourceProviders()
-            .bmsPrepareDataMove("jsc", "fp",
-                new PrepareDataMoveRequest().withTargetResourceId("qwtygevgwmseharx")
-                    .withTargetRegion("fv")
-                    .withDataMoveLevel(DataMoveLevel.VAULT)
-                    .withSourceContainerArmIds(Arrays.asList("tmbpjp"))
+        manager.resourceProviders()
+            .bmsPrepareDataMove("kpeexpgeumilh", "uitrdexyiono",
+                new PrepareDataMoveRequest().withTargetResourceId("ninbdbzsxcwqqrs")
+                    .withTargetRegion("pcbbprtugav")
+                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                    .withSourceContainerArmIds(Arrays.asList("yksivmfogdrtbfc", "krftsjcwjjxsg", "bawvif"))
                     .withIgnoreMoved(true),
                 com.azure.core.util.Context.NONE);
 

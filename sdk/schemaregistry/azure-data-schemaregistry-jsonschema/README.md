@@ -157,7 +157,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [register_aad_app]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [aad_grant_access]: https://learn.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

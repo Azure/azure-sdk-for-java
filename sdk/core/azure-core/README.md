@@ -66,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core</artifactId>
-    <version>1.57.1</version>
+    <version>1.59.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -219,6 +219,14 @@ Azure SDKs for Java provide a consistent logging story to help aid in troublesho
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] documentation for guidance about enabling logging.
 
+### GraalVM Native Image
+
+Azure Core includes reachability metadata for GraalVM Native Image. Logging APIs and providers are initialized at
+application runtime so that the provider configured by the application or framework is selected correctly. Applications
+should not need Azure-specific build-time initialization arguments for `org.slf4j.LoggerFactory` or
+`com.azure.core.util.logging.ClientLogger`. Configuration specific to a logging provider remains the responsibility of
+the application or framework.
+
 #### HTTP Request and Response Logging
 
 HTTP request and response logging can be enabled by setting `HttpLogDetailLevel` in the `HttpLogOptions` used to create
@@ -263,5 +271,4 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
-
 

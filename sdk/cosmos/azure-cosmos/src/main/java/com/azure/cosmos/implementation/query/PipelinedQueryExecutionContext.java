@@ -21,9 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
 public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecutionContextBase<T> {
-
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private final IDocumentQueryExecutionComponent<T> component;
 
@@ -47,7 +47,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         CosmosQueryRequestOptions requestOptions = initParams.getCosmosQueryRequestOptions();
 
         return (continuationToken, documentQueryParams) -> {
-            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = qryOptAccessor.clone(requestOptions);
+            CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = qryOptAccessor().clone(requestOptions);
             ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
             initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);

@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum PlanetaryComputerServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2025-04-30-preview.
+     * Enum value 2026-04-15.
      */
-    V2025_04_30_PREVIEW("2025-04-30-preview");
+    V2026_04_15("2026-04-15");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum PlanetaryComputerServiceVersion implements ServiceVersion {
      * @return The latest {@link PlanetaryComputerServiceVersion}.
      */
     public static PlanetaryComputerServiceVersion getLatest() {
-        return V2025_04_30_PREVIEW;
+        return V2026_04_15;
     }
 }

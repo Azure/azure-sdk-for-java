@@ -15,7 +15,7 @@ import java.io.IOException;
  * there is an error.
  */
 @Immutable
-public final class SessionUpdateSessionUpdated extends SessionUpdate {
+public final class SessionUpdateSessionUpdated extends SessionServerEvent {
 
     /*
      * The type of event.

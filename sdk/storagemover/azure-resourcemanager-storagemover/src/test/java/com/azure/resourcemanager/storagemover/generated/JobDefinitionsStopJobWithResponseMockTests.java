@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class JobDefinitionsStopJobWithResponseMockTests {
     @Test
     public void testStopJobWithResponse() throws Exception {
-        String responseStr = "{\"jobRunResourceId\":\"fwynwcvtbvkay\"}";
+        String responseStr = "{\"jobRunResourceId\":\"mtdh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class JobDefinitionsStopJobWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobRunResourceId response = manager.jobDefinitions()
-            .stopJobWithResponse("otzi", "gamv", "phoszqz", "dphqamv", com.azure.core.util.Context.NONE)
+            .stopJobWithResponse("pbqpcrfkbwccsn", "vcdwxlpqekftn", "htjsying", "fq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

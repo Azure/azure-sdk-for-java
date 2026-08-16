@@ -462,7 +462,8 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
@@ -478,7 +479,8 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
@@ -494,7 +496,7 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return model representing the result of the export dependencies asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
@@ -510,7 +512,7 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return model representing the result of the export dependencies asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,

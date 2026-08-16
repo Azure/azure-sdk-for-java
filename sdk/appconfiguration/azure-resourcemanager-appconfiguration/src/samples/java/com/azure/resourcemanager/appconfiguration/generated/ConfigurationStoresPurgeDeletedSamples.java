@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class ConfigurationStoresPurgeDeletedSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeletedConfigurationStoresPurge.json
+     * x-ms-original-file: 2025-08-01-preview/DeletedConfigurationStoresPurge.json
      */
     /**
      * Sample code: Purge a deleted configuration store.

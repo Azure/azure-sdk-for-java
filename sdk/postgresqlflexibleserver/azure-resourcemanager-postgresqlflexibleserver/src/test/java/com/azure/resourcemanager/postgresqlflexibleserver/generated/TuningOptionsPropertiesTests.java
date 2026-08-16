@@ -11,6 +11,6 @@ public final class TuningOptionsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TuningOptionsProperties model
-            = BinaryData.fromString("{\"state\":\"neqsxvmh\"}").toObject(TuningOptionsProperties.class);
+            = BinaryData.fromString("{\"state\":\"lcsethwwnpj\"}").toObject(TuningOptionsProperties.class);
     }
 }

@@ -27,7 +27,7 @@ public final class SnapshotInner extends ProxyResource {
     /*
      * All snapshot properties.
      */
-    private SnapshotProperties innerProperties;
+    private SnapshotProperties innerProperties = new SnapshotProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.

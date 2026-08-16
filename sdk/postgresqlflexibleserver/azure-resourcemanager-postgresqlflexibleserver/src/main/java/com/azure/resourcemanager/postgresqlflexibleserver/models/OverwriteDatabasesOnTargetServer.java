@@ -8,17 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates if databases on the target server can be overwritten when already present. If set to 'False', when the
- * migration workflow detects that the database already exists on the target server, it will wait for a confirmation.
+ * Indicates if databases on the target server can be overwritten when already present.
  */
 public final class OverwriteDatabasesOnTargetServer extends ExpandableStringEnum<OverwriteDatabasesOnTargetServer> {
     /**
-     * Static value True for OverwriteDatabasesOnTargetServer.
+     * Databases on the target server can be overwritten when already present.
      */
     public static final OverwriteDatabasesOnTargetServer TRUE = fromString("True");
 
     /**
-     * Static value False for OverwriteDatabasesOnTargetServer.
+     * Databases on the target server cannot be overwritten when already present. When the migration workflow detects
+     * that the database already exists on the target server, it will wait for a confirmation.
      */
     public static final OverwriteDatabasesOnTargetServer FALSE = fromString("False");
 

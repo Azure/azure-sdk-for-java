@@ -9,7 +9,7 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class GroupQuotasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/DeleteGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/DeleteGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Delete_Request_ForCompute.

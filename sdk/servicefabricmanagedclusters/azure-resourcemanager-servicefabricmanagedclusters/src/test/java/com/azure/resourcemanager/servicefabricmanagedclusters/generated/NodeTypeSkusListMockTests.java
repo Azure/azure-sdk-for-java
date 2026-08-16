@@ -21,7 +21,7 @@ public final class NodeTypeSkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"xs\",\"sku\":{\"name\":\"fujg\",\"tier\":\"gaao\"},\"capacity\":{\"minimum\":476503731,\"maximum\":276782508,\"default\":1296917092,\"scaleType\":\"None\"}}]}";
+            = "{\"value\":[{\"resourceType\":\"j\",\"sku\":{\"name\":\"vwkpqh\",\"tier\":\"enuygbq\"},\"capacity\":{\"minimum\":2014474860,\"maximum\":583877472,\"default\":1588755577,\"scaleType\":\"Manual\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NodeTypeSkusListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NodeTypeAvailableSku> response
-            = manager.nodeTypeSkus().list("ksh", "bffmbmxz", "rgywwp", com.azure.core.util.Context.NONE);
+            = manager.nodeTypeSkus().list("ians", "arujt", "iqxf", com.azure.core.util.Context.NONE);
 
     }
 }

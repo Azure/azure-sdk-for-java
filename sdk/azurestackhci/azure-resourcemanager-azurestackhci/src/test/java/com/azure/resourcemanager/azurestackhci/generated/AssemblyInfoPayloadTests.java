@@ -11,7 +11,7 @@ public final class AssemblyInfoPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssemblyInfoPayload model = BinaryData.fromString(
-            "{\"identifier\":\"uzqogsexnevf\",\"hash\":\"wnwmewzs\",\"fileName\":\"ceuzsoibjudpfr\",\"url\":\"rthzvaytdwkqbrqu\"}")
+            "{\"identifier\":\"mlwpazt\",\"hash\":\"ofncckwyfzqwhxxb\",\"fileName\":\"qa\",\"url\":\"feqztppriol\"}")
             .toObject(AssemblyInfoPayload.class);
     }
 }

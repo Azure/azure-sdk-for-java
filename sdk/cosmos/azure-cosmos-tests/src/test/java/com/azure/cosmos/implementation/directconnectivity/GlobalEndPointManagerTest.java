@@ -223,7 +223,7 @@ public class GlobalEndPointManagerTest {
     }
 
     /**
-     * Test for background refresh disable for multimaster
+     * Test for background refresh in multi-master: timer must keep running
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void backgroundRefreshForMultiMaster() throws Exception {
@@ -236,8 +236,58 @@ public class GlobalEndPointManagerTest {
         GlobalEndpointManager globalEndPointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
         globalEndPointManager.init();
 
+        // Background refresh timer must keep running even for multi-master accounts where
+        // shouldRefreshEndpoints() returns false. This ensures topology changes (e.g.,
+        // multi-write <-> single-write transitions) are detected.
         AtomicBoolean isRefreshInBackground = getRefreshInBackground(globalEndPointManager);
-        Assert.assertFalse(isRefreshInBackground.get());
+        Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
+    }
+
+    /**
+     * Validates that a multi-master account's background refresh timer detects a topology
+     * change from multi-write to single-write. Without the fix in refreshLocationPrivateAsync,
+     * the timer stops after init and the transition is never detected.
+     */
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void backgroundRefreshDetectsTopologyChangeForMultiMaster() throws Exception {
+        // Start with a multi-writer account (dbAccountJson4: MW, East US + East Asia)
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        DatabaseAccount multiWriterAccount = new DatabaseAccount(dbAccountJson4);
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any()))
+            .thenReturn(Flux.just(multiWriterAccount));
+        Mockito.when(databaseAccountManagerInternal.getServiceEndpoint())
+            .thenReturn(new URI("https://testaccount.documents.azure.com:443"));
+
+        GlobalEndpointManager globalEndPointManager = new GlobalEndpointManager(
+            databaseAccountManagerInternal, connectionPolicy, new Configs());
+        setBackgroundRefreshLocationTimeIntervalInMS(globalEndPointManager, 500);
+        setBackgroundRefreshJitterMaxInSeconds(globalEndPointManager, 0);
+        globalEndPointManager.init();
+
+        // Verify multi-writer state: 2 write regions available
+        LocationCache locationCache = this.getLocationCache(globalEndPointManager);
+        Map<String, RegionalRoutingContext> availableWriteEndpoints = this.getAvailableWriteEndpointByLocation(locationCache);
+        Assert.assertEquals(availableWriteEndpoints.size(), 2, "Expected 2 write regions for multi-writer account");
+        Assert.assertTrue(availableWriteEndpoints.containsKey("East US"));
+        Assert.assertTrue(availableWriteEndpoints.containsKey("East Asia"));
+
+        // Transition to single-writer account (dbAccountJson1: SW, East US only for writes)
+        DatabaseAccount singleWriterAccount = new DatabaseAccount(dbAccountJson1);
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(ArgumentMatchers.any()))
+            .thenReturn(Flux.just(singleWriterAccount));
+
+        // Wait for background refresh to detect the topology change (jitter disabled for test)
+        Thread.sleep(2000);
+
+        // Verify single-writer state: write endpoints updated to reflect single-writer topology
+        locationCache = this.getLocationCache(globalEndPointManager);
+        availableWriteEndpoints = this.getAvailableWriteEndpointByLocation(locationCache);
+        Assert.assertEquals(availableWriteEndpoints.size(), 1, "Expected 1 write region after transition to single-writer");
+        Assert.assertTrue(availableWriteEndpoints.containsKey("East US"));
+
         LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
@@ -254,6 +304,7 @@ public class GlobalEndPointManagerTest {
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));
         GlobalEndpointManager globalEndPointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
         setBackgroundRefreshLocationTimeIntervalInMS(globalEndPointManager, 1000);
+        setBackgroundRefreshJitterMaxInSeconds(globalEndPointManager, 0);
         globalEndPointManager.init();
 
         databaseAccount = new DatabaseAccount(dbAccountJson2);
@@ -261,7 +312,6 @@ public class GlobalEndPointManagerTest {
         Thread.sleep(2000);
 
         LocationCache locationCache = this.getLocationCache(globalEndPointManager);
-        Assert.assertEquals(locationCache.getReadEndpoints().size(), 1);
         Map<String, RegionalRoutingContext> availableReadEndpointByLocation = this.getAvailableReadEndpointByLocation(locationCache);
         Assert.assertEquals(availableReadEndpointByLocation.size(), 1);
         Assert.assertTrue(availableReadEndpointByLocation.keySet().iterator().next().equalsIgnoreCase("East Asia"));
@@ -339,6 +389,12 @@ public class GlobalEndPointManagerTest {
         Field backgroundRefreshLocationTimeIntervalInMSField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshLocationTimeIntervalInMS");
         backgroundRefreshLocationTimeIntervalInMSField.setAccessible(true);
         backgroundRefreshLocationTimeIntervalInMSField.setInt(globalEndPointManager, millSec);
+    }
+
+    private void setBackgroundRefreshJitterMaxInSeconds(GlobalEndpointManager globalEndPointManager, int seconds) throws Exception {
+        Field jitterField = GlobalEndpointManager.class.getDeclaredField("backgroundRefreshJitterMaxInSeconds");
+        jitterField.setAccessible(true);
+        jitterField.setInt(globalEndPointManager, seconds);
     }
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {

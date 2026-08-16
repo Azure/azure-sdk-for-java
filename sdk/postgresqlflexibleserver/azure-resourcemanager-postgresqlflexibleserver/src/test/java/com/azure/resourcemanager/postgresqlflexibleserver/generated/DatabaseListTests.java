@@ -12,10 +12,10 @@ public final class DatabaseListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"charset\":\"byuqerpqlp\",\"collation\":\"cciuqgbdbutau\"},\"id\":\"btkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}],\"nextLink\":\"bpkkpwdre\"}")
+            "{\"value\":[{\"properties\":{\"charset\":\"vq\",\"collation\":\"vljxywsu\"},\"id\":\"yrs\",\"name\":\"dsytgadgvr\",\"type\":\"ea\"},{\"properties\":{\"charset\":\"qnzarrwl\",\"collation\":\"uijfqk\"},\"id\":\"e\",\"name\":\"iipfpubj\",\"type\":\"bwwift\"},{\"properties\":{\"charset\":\"kvpuvksgplsaknyn\",\"collation\":\"ynl\"},\"id\":\"huopxodlqiynto\",\"name\":\"zihleosjswsr\",\"type\":\"slyzrpzbchckqq\"}],\"nextLink\":\"ioxiysuiizyn\"}")
             .toObject(DatabaseList.class);
-        Assertions.assertEquals("byuqerpqlp", model.value().get(0).charset());
-        Assertions.assertEquals("cciuqgbdbutau", model.value().get(0).collation());
-        Assertions.assertEquals("bpkkpwdre", model.nextLink());
+        Assertions.assertEquals("vq", model.value().get(0).charset());
+        Assertions.assertEquals("vljxywsu", model.value().get(0).collation());
+        Assertions.assertEquals("ioxiysuiizyn", model.nextLink());
     }
 }

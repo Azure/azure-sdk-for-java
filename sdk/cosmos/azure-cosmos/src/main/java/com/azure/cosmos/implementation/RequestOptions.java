@@ -654,9 +654,15 @@ public class RequestOptions implements OverridableRequestOptions {
         this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
         this.keywordIdentifiers = overrideOption(cosmosCommonRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+        this.effectiveItemSerializer = overrideOption(cosmosCommonRequestOptions.getCustomItemSerializer(), this.effectiveItemSerializer);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer;
+    }
+
+    @Override
+    public CosmosItemSerializer getCustomItemSerializer() {
         return this.effectiveItemSerializer;
     }
 

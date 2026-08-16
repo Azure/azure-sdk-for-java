@@ -339,7 +339,8 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return deletedVault information as returned by the resource provider along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> undeleteWithResponseAsync(String location, String deletedVaultName,
@@ -361,7 +362,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return deletedVault information as returned by the resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> undeleteWithResponse(String location, String deletedVaultName,
@@ -382,7 +383,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return deletedVault information as returned by the resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> undeleteWithResponse(String location, String deletedVaultName,
@@ -402,7 +403,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of deletedVault information as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUndeleteAsync(String location, String deletedVaultName,
@@ -421,7 +422,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of deletedVault information as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
@@ -440,7 +441,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of deletedVault information as returned by the resource provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUndelete(String location, String deletedVaultName,
@@ -458,7 +459,7 @@ public final class DeletedVaultsClientImpl implements DeletedVaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return deletedVault information as returned by the resource provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> undeleteAsync(String location, String deletedVaultName, DeletedVaultUndeleteInput body) {

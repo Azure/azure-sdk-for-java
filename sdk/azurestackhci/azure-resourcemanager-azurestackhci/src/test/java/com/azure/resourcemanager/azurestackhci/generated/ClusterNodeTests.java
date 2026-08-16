@@ -11,7 +11,7 @@ public final class ClusterNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterNode model = BinaryData.fromString(
-            "{\"name\":\"jfcn\",\"id\":4.609222895527343,\"windowsServerSubscription\":\"Disabled\",\"nodeType\":\"ThirdParty\",\"ehcResourceId\":\"ttkphywpnvjtoqne\",\"manufacturer\":\"clfp\",\"model\":\"hoxus\",\"osName\":\"pabgyeps\",\"osVersion\":\"tazqugxywpmueefj\",\"osDisplayVersion\":\"fqkquj\",\"serialNumber\":\"suyonobglaocq\",\"coreCount\":15.741170001214488,\"memoryInGiB\":1.921075020730334,\"lastLicensingTimestamp\":\"2021-02-11T06:40:02Z\",\"oemActivation\":\"Enabled\"}")
+            "{\"name\":\"k\",\"id\":1.7329070285957315,\"windowsServerSubscription\":\"Disabled\",\"nodeType\":\"ThirdParty\",\"ehcResourceId\":\"phywpnvj\",\"manufacturer\":\"qnermclfplphoxu\",\"model\":\"rpabg\",\"osName\":\"psbjta\",\"osVersion\":\"ugxywpmueef\",\"osDisplayVersion\":\"wfqkquj\",\"serialNumber\":\"suyonobglaocq\",\"coreCount\":15.741170001214488,\"memoryInGiB\":1.921075020730334,\"lastLicensingTimestamp\":\"2021-02-11T06:40:02Z\",\"oemActivation\":\"Enabled\"}")
             .toObject(ClusterNode.class);
     }
 }

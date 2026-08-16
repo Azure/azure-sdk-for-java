@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsMockTests {
     @Test
     public void testGetBackupSecurityPinRequestsObjects() throws Exception {
-        String responseStr = "{\"value\":[{\"id\":\"pctf\",\"name\":\"mdxotngfdgu\",\"type\":\"eyzihgrky\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"mzlbiojlvfhrb\",\"name\":\"pn\",\"type\":\"qvcww\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ResourceGuardsGetBackupSecurityPinRequestsObjectsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DppBaseResource> response = manager.resourceGuards()
-            .getBackupSecurityPinRequestsObjects("fdvruz", "lzo", com.azure.core.util.Context.NONE);
+            .getBackupSecurityPinRequestsObjects("sbostzel", "dlat", com.azure.core.util.Context.NONE);
 
     }
 }

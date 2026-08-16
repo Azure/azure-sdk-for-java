@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.ResourceGuardProxyBase;
  */
 public final class DppResourceGuardProxyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file: 2026-03-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.

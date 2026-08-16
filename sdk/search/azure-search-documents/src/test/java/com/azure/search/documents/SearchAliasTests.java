@@ -23,9 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Tests {@link SearchAlias}-based operations.
- */
 public class SearchAliasTests extends SearchTestBase {
     private static final String HOTEL_INDEX_NAME1 = "search-alias-shared-hotel-instance-one";
     private static final String HOTEL_INDEX_NAME2 = "search-alias-shared-hotel-instance-two";

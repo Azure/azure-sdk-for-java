@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionIntentDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/BackupProtectionIntent_Delete.json
+     * x-ms-original-file: 2026-07-01/AzureWorkload/BackupProtectionIntent_Delete.json
      */
     /**
      * Sample code: Delete Protection intent from item.

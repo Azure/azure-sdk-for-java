@@ -564,7 +564,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(generateRandomResourceName("aks", 15))
             .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.32.4")
+            .withVersion(K8S_VERSION_OLD)
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -575,14 +575,15 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withPremiumSku() // use older K8S LTS version requires Premium tier
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.32.4", kubernetesCluster.version());
+        Assertions.assertEquals(K8S_VERSION_OLD, kubernetesCluster.version());
 
-        kubernetesCluster.update().withVersion("1.33.1").apply();
+        kubernetesCluster.update().withVersion(K8S_VERSION_NEW).apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.33.1", kubernetesCluster.version());
+        Assertions.assertEquals(K8S_VERSION_NEW, kubernetesCluster.version());
     }
 
     @Test
@@ -593,7 +594,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .define(aksName)
             .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.32.4")
+            .withDefaultVersion()
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class FleetsCreateSamples {
     /*
-     * x-ms-original-file: 2026-02-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2026-06-01/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates a Fleet resource with a long running operation.

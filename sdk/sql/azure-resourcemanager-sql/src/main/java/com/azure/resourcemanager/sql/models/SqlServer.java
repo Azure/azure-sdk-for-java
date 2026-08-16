@@ -158,6 +158,16 @@ public interface SqlServer
     void removeActiveDirectoryAdministrator();
 
     /**
+     * Checks whether Azure Active Directory (AAD) only authentication enabled.
+     *
+     * @return true if Azure Active Directory (AAD) only authentication enabled
+     */
+    default boolean isAzureActiveDirectoryOnlyAuthenticationEnabled() {
+        throw new UnsupportedOperationException(
+            "[isAzureActiveDirectoryOnlyAuthenticationEnabled] is not supported in " + getClass());
+    }
+
+    /**
      * Gets a SQL server automatic tuning state and options.
      *
      * @return the SQL server automatic tuning state and options
@@ -234,10 +244,9 @@ public interface SqlServer
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAdministratorLogin,
-        DefinitionStages.WithAdministratorPassword, DefinitionStages.WithElasticPool, DefinitionStages.WithDatabase,
-        DefinitionStages.WithFirewallRule, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup,
+        DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorPassword,
+        DefinitionStages.WithExternalActiveDirectoryAdministrator, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -251,7 +260,7 @@ public interface SqlServer
         }
 
         /** A SQL Server definition setting administrator user name. */
-        interface WithAdministratorLogin {
+        interface WithAdministratorLogin extends WithAzureActiveDirectoryOnlyAuthentication {
             /**
              * Sets the administrator login user name.
              *
@@ -259,6 +268,39 @@ public interface SqlServer
              * @return Next stage of the SQL Server definition
              */
             WithAdministratorPassword withAdministratorLogin(String administratorLogin);
+        }
+
+        /**
+         * A SQL Server definition stage allowing Microsoft Entra-only authentication to be enabled at creation time.
+         *
+         * <p>When Microsoft Entra-only authentication is enabled, the SQL authentication (login/password)
+         * administrator is not configured on the server. This is required when the target subscription or management
+         * group enforces a policy that mandates Microsoft Entra-only authentication on Azure SQL Server creation.</p>
+         */
+        interface WithAzureActiveDirectoryOnlyAuthentication {
+            /**
+             * Enables Microsoft Entra (Azure Active Directory) only authentication on the SQL Server.
+             *
+             * <p>An external Microsoft Entra administrator must be specified on the next stage.</p>
+             *
+             * @return Next stage of the SQL Server definition
+             */
+            WithExternalActiveDirectoryAdministrator withAzureActiveDirectoryOnlyAuthentication();
+        }
+
+        /** A SQL Server definition stage setting the external Microsoft Entra administrator on the server. */
+        interface WithExternalActiveDirectoryAdministrator {
+            /**
+             * Sets the external Microsoft Entra (Azure Active Directory) administrator on the SQL Server.
+             *
+             * @param adminLogin the user, group, or application login name
+             * @param sid the user, group, or application object ID
+             * @param principalType the principal type (User, Group, or Application). Must be specified explicitly, since
+             *                      the service does not reliably infer it from the SID
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withExternalActiveDirectoryAdministrator(String adminLogin, String sid,
+                PrincipalType principalType);
         }
 
         /** A SQL Server definition setting admin user password. */
@@ -295,6 +337,22 @@ public interface SqlServer
              * @return Next stage of the SQL Server definition
              */
             WithCreate withSystemAssignedManagedServiceIdentity();
+        }
+
+        /** A SQL Server definition setting a user-assigned managed service identity as the primary identity. */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Sets the specified user-assigned managed identity (UAMI) on the SQL server and marks it as the
+             * primary identity. If a system-assigned identity is also enabled, the resulting identity type is
+             * {@code SystemAssigned,UserAssigned}; otherwise it is {@code UserAssigned}.
+             *
+             * @param identityResourceId the Azure resource ID of the user-assigned managed identity
+             * @return Next stage of the SQL Server definition
+             */
+            default WithCreate withPrimaryUserAssignedManagedServiceIdentity(String identityResourceId) {
+                throw new UnsupportedOperationException(
+                    "[withPrimaryUserAssignedManagedServiceIdentity] is not supported in " + getClass());
+            }
         }
 
         /** A SQL Server definition for specifying elastic pool. */
@@ -366,8 +424,9 @@ public interface SqlServer
          * A SQL Server definition with sufficient inputs to create a new SQL Server in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<SqlServer>, WithActiveDirectoryAdministrator,
-            WithSystemAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
+        interface WithCreate
+            extends Creatable<SqlServer>, WithActiveDirectoryAdministrator, WithSystemAssignedManagedServiceIdentity,
+            WithUserAssignedManagedServiceIdentity, WithElasticPool, WithDatabase, WithFirewallRule,
             WithVirtualNetworkRule, WithPublicNetworkAccess, DefinitionWithTags<WithCreate> {
         }
     }

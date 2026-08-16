@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersGetWithPrivateEndpoints.json
+     * x-ms-original-file: 2026-04-01-preview/ServersGetWithPrivateEndpoints.json
      */
     /**
      * Sample code: Get information about an existing server that isn't integrated into a virtual network provided by
@@ -25,7 +25,7 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersGetWithVnet.json
+     * x-ms-original-file: 2026-04-01-preview/ServersGetWithVnet.json
      */
     /**
      * Sample code: Get information about an existing server that is integrated into a virtual network provided by
@@ -40,7 +40,7 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersGet.json
+     * x-ms-original-file: 2026-04-01-preview/ServersGet.json
      */
     /**
      * Sample code: Get information about an existing server.

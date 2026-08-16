@@ -30,7 +30,7 @@ public final class DataProtectionsCheckFeatureSupportWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FeatureValidationResponseBase response = manager.dataProtections()
-            .checkFeatureSupportWithResponse("iqxf", new FeatureValidationRequestBase(),
+            .checkFeatureSupportWithResponse("lyokrrrou", new FeatureValidationRequestBase(),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

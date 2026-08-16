@@ -50,6 +50,10 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.Exceptions.isSubStatusCode;
 
 public class StoreReader {
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     private final Logger logger = LoggerFactory.getLogger(StoreReader.class);
     private final TransportClient transportClient;
     private final AddressSelector addressSelector;
@@ -259,7 +263,6 @@ public class StoreReader {
 
         replicasToRead.set(readStoreTasks.size() >= replicasToRead.get() ? 0 : replicasToRead.get() - readStoreTasks.size());
 
-
         List<Flux<StoreResult>> storeResult = readStoreTasks
                 .stream()
                 .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList))
@@ -365,9 +368,7 @@ public class StoreReader {
         // record the diagnostics for in-progress requests
         for (CosmosException cosmosException : request.requestContext.rntbdCancelledRequestMap.values()) {
             Uri storePhysicalAddress =
-                ImplementationBridgeHelpers
-                    .CosmosExceptionHelper
-                    .getCosmosExceptionAccessor()
+                cosmosExceptionAccessor()
                     .getRequestUri(cosmosException);
 
             this.createAndRecordStoreResult(
@@ -779,7 +780,6 @@ public class StoreReader {
         }
     }
 
-
     private static Mono<StoreResponse> completeActivity(Mono<StoreResponse> task, Object activity) {
         // TODO: client statistics
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/258624
@@ -951,9 +951,7 @@ public class StoreReader {
                 long globalNRegionCommittedLSN = -1;
 
                 if (replicaStatusList != null) {
-                    ImplementationBridgeHelpers
-                            .CosmosExceptionHelper
-                            .getCosmosExceptionAccessor()
+                    cosmosExceptionAccessor()
                             .getReplicaStatusList(cosmosException)
                             .putAll(replicaStatusList);
                 }
@@ -1050,7 +1048,7 @@ public class StoreReader {
                         && lsn >= 0),
                         // TODO: verify where exception.RequestURI is supposed to be set in .Net
                         /* storePhysicalAddress: */ storePhysicalAddress == null
-                            ? ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getRequestUri(cosmosException)
+                            ? cosmosExceptionAccessor().getRequestUri(cosmosException)
                             : storePhysicalAddress,
                         /* globalCommittedLSN: */ globalCommittedLSN,
                         /* globalNRegionCommittedLSN: */ globalNRegionCommittedLSN,

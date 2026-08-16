@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -33,6 +34,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +43,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.rx.ThinClientTestBase.assertGatewayEndpointUsed;
+import static com.azure.cosmos.rx.ThinClientTestBase.assertThinClientEndpointUsed;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosMultiHashTest extends TestSuiteBase {
@@ -51,6 +55,10 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
     private CosmosContainer createdMultiHashContainer;
+    private CosmosContainer createdNestedPathContainer;
+    // Reflects the active @BeforeClass lifecycle: true under the thinclient group, false under emulator.
+    // Drives mode-aware endpoint-routing assertions and the continuation-token client selection below.
+    private boolean thinClientEnabled;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosMultiHashTest(CosmosClientBuilder clientBuilder) {
@@ -59,7 +67,25 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosMultiHashTest() {
+        thinClientEnabled = false;
         client = getClientBuilder().buildClient();
+        initDatabaseAndContainers();
+    }
+
+    // Enrolls the MULTI_HASH prefix over-span coverage into the thin-client (GatewayV2, proxy :10250) group.
+    // The class-level @Factory yields a plain gateway builder without HTTP/2, which cannot route to the thin
+    // client, so this lifecycle builds an explicit HTTP/2 gateway client (mirrors clientBuildersWithGatewayAndHttp2)
+    // so the same test bodies exercise the RNTBD prefix-EPK header path. COSMOS.THINCLIENT_ENABLED is supplied by
+    // the thin-client CI lane (see sdk/cosmos/tests.yml); IDE/standalone runs must pass -DCOSMOS.THINCLIENT_ENABLED=true.
+    @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosMultiHashTest_thinClient() {
+        thinClientEnabled = true;
+        client = createGatewayRxDocumentClient(
+            TestConfigurations.HOST, null, true, null, true, true, true).buildClient();
+        initDatabaseAndContainers();
+    }
+
+    private void initDatabaseAndContainers() {
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         String collectionName = UUID.randomUUID().toString();
 
@@ -79,6 +105,19 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         //MultiHash collection read
         createdMultiHashContainer = createdDatabase.getContainer(collectionName);
+
+        String nestedPathCollectionName = UUID.randomUUID().toString();
+        PartitionKeyDefinition nestedPartitionKeyDefinition = new PartitionKeyDefinition();
+        nestedPartitionKeyDefinition.setKind(PartitionKind.HASH);
+        nestedPartitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        nestedPartitionKeyDefinition.setPaths(Collections.singletonList("/address/city"));
+
+        CosmosContainerProperties nestedPathContainerProperties = getCollectionDefinition(
+            nestedPathCollectionName,
+            nestedPartitionKeyDefinition);
+
+        createdDatabase.createContainer(nestedPathContainerProperties);
+        createdNestedPathContainer = createdDatabase.getContainer(nestedPathCollectionName);
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -88,7 +127,24 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass_thinClient() {
+        logger.info("starting cleanup (thin client)....");
+        safeDeleteSyncDatabase(createdDatabase);
+        safeCloseSyncClient(client);
+    }
+
+    // Mode-aware endpoint routing assertion. Under the thinclient group every non-QueryPlan (data) request
+    // must route through the thin-client proxy endpoint (:10250); under the emulator group no request may.
+    private void assertEndpointRouting(CosmosDiagnostics diagnostics) {
+        if (thinClientEnabled) {
+            assertThinClientEndpointUsed(diagnostics);
+        } else {
+            assertGatewayEndpointUsed(diagnostics);
+        }
+    }
+
+    @Test(groups = {"emulator", "thinclient"}, timeOut = TIMEOUT)
     public void itemCRUD() {
         CityItem cityItem = new CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
 
@@ -105,6 +161,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             cityItem.getId(), partitionKey, CityItem.class);
 
         assertThat(readResponse.getItem().toString()).isEqualTo(cityItem.toString());
+        assertEndpointRouting(readResponse.getDiagnostics());
         createdMultiHashContainer.deleteItem(cityItem.getId(), partitionKey, new CosmosItemRequestOptions());
     }
 
@@ -154,6 +211,49 @@ public class CosmosMultiHashTest extends TestSuiteBase {
                     .map(itemIdentity -> itemIdentity.getId())
                     .collect(Collectors.toList())
         );
+    }
+    @Test(groups = { "emulator", "thinclient" }, timeOut = TIMEOUT)
+    public void readManySupportsNestedPartitionKeyPaths() {
+        String city = "nested-readmany-" + UUID.randomUUID();
+
+        ObjectNode firstItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "downtown");
+        ObjectNode secondItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "overlake");
+
+        createdNestedPathContainer.createItem(firstItem);
+        createdNestedPathContainer.createItem(secondItem);
+
+        List<CosmosItemIdentity> itemList = new ArrayList<>();
+        itemList.add(new CosmosItemIdentity(new PartitionKey(city), firstItem.get("id").asText()));
+        itemList.add(new CosmosItemIdentity(new PartitionKey(city), secondItem.get("id").asText()));
+
+        FeedResponse<ObjectNode> documentFeedResponse = createdNestedPathContainer.readMany(itemList, ObjectNode.class);
+        validateResponse(documentFeedResponse, itemList);
+        assertEndpointRouting(documentFeedResponse.getCosmosDiagnostics());
+    }
+
+    @Test(groups = { "emulator", "thinclient" }, timeOut = TIMEOUT)
+    public void readAllItemsSupportsNestedPartitionKeyPaths() {
+        String city = "nested-readall-" + UUID.randomUUID();
+
+        ObjectNode firstItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "north");
+        ObjectNode secondItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city, "south");
+        ObjectNode otherItem = createNestedPartitionKeyItem(UUID.randomUUID().toString(), city + "-other", "east");
+
+        createdNestedPathContainer.createItem(firstItem);
+        createdNestedPathContainer.createItem(secondItem);
+        createdNestedPathContainer.createItem(otherItem);
+
+        CosmosPagedIterable<ObjectNode> readAllResults =
+            createdNestedPathContainer.readAllItems(new PartitionKey(city), ObjectNode.class);
+
+        List<String> readAllIds = new ArrayList<>();
+        for (FeedResponse<ObjectNode> page : readAllResults.iterableByPage()) {
+            page.getResults().forEach(item -> readAllIds.add(item.get("id").asText()));
+            assertEndpointRouting(page.getCosmosDiagnostics());
+        }
+
+        assertThat(readAllIds)
+            .containsExactlyInAnyOrder(firstItem.get("id").asText(), secondItem.get("id").asText());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -394,7 +494,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         deleteAllItems();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "thinclient" }, timeOut = TIMEOUT)
     private void multiHashQueryTests() {
         ArrayList<CityItem> docs = createItems();
 
@@ -479,6 +579,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         FeedResponse<ObjectNode> feedResponse = feedResponses.iterator().next();
         assertThat(feedResponse.getResults().size()).isEqualTo(2);
         assertThat(feedResponse.getResults().get(0).get("zipcode").asInt() < feedResponse.getResults().get(1).get("zipcode").asInt()).isTrue();
+        assertEndpointRouting(feedResponse.getCosmosDiagnostics());
 
         //Using continuation token
         testPartialPKContinuationToken();
@@ -550,6 +651,19 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
     }
 
+    private ObjectNode createNestedPartitionKeyItem(String id, String city, String neighborhood) {
+        ObjectNode item = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        item.put("id", id);
+        item.put("type", "nestedPartitionKeyRegression");
+
+        ObjectNode address = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
+        address.put("city", city);
+        address.put("neighborhood", neighborhood);
+        item.set("address", address);
+
+        return item;
+    }
+
     private ArrayList<CityItem> createItems() {
 
         ArrayList<CityItem> docs = new ArrayList<>();
@@ -581,7 +695,13 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     private void testPartialPKContinuationToken() {
         String requestContinuation = null;
         List<ObjectNode> receivedDocuments = new ArrayList<>();
-        CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+        // Under the thinclient group build an explicit HTTP/2 gateway client so this prefix continuation-token
+        // pass also routes to the thin client (:10250) instead of the plain gateway; the emulator group uses the
+        // factory-provided builder. thinClientEnabled mirrors the active @BeforeClass lifecycle.
+        CosmosAsyncClient asyncClient =
+            thinClientEnabled
+                ? createGatewayRxDocumentClient(TestConfigurations.HOST, null, true, null, true, true, true).buildAsyncClient()
+                : getClientBuilder().buildAsyncClient();
         CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase(createdDatabase.getId(), asyncClient);
         CosmosAsyncContainer cosmosAsyncContainer = new CosmosAsyncContainer(createdMultiHashContainer.getId(), cosmosAsyncDatabase);
         String query = "SELECT * FROM c ORDER BY c.zipcode ASC";
@@ -607,6 +727,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
             assertThat(firstPage.getResults().size()).isEqualTo(1);
+            assertEndpointRouting(firstPage.getCosmosDiagnostics());
         } while (requestContinuation != null);
         assertThat(receivedDocuments.size()).isEqualTo(3);
         asyncClient.close();

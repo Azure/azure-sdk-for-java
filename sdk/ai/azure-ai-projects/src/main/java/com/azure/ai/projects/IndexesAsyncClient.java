@@ -45,6 +45,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -78,6 +80,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -110,6 +114,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Get a version
+     *
      * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -135,7 +141,9 @@ public final class IndexesAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
+     * @return a version
+     *
+     * Get the specific version of the Index along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -145,6 +153,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Delete a version
+     *
      * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
      * successfully or if the Index does not exist.
      *
@@ -165,6 +175,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing Index with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -218,6 +230,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given Index.
      *
      * @param name The name of the resource.
@@ -250,6 +264,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each Index.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -280,6 +296,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Get a version
+     *
      * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      *
      * @param name The name of the resource.
@@ -290,7 +308,9 @@ public final class IndexesAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the Index on successful completion of {@link Mono}.
+     * @return a version
+     *
+     * Get the specific version of the Index on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -302,6 +322,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Delete a version
+     *
      * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
      * successfully or if the Index does not exist.
      *
@@ -324,6 +346,8 @@ public final class IndexesAsyncClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing Index with the given version id.
      *
      * @param name The name of the resource.

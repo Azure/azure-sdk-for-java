@@ -12,17 +12,17 @@ public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricSpecification model = BinaryData.fromString(
-            "{\"name\":\"uzbpzkafku\",\"displayName\":\"crnwbmeh\",\"displayDescription\":\"eyvjusrtslhspkde\",\"unit\":\"aofmxagkvtme\",\"aggregationType\":\"qkrhahvljua\",\"internalMetricName\":\"quhcdhmduala\",\"dimensions\":[{\"name\":\"vfadmws\",\"displayName\":\"r\",\"internalName\":\"xpvgo\"}],\"fillGapWithZero\":false}")
+            "{\"name\":\"fvpdbo\",\"displayName\":\"cizsjqlhkrribdei\",\"displayDescription\":\"ipqkghvxndzwm\",\"unit\":\"efajpj\",\"aggregationType\":\"wkqnyhg\",\"internalMetricName\":\"j\",\"dimensions\":[{\"name\":\"fxzsjabibsyst\",\"displayName\":\"fsdjpvkvp\",\"internalName\":\"xbkzbzkdvncj\"},{\"name\":\"udurgkakmokz\",\"displayName\":\"jk\",\"internalName\":\"fhmouwq\"},{\"name\":\"zrfze\",\"displayName\":\"ebizikayuh\",\"internalName\":\"bjbsybb\"},{\"name\":\"r\",\"displayName\":\"ldgmfpgvmpip\",\"internalName\":\"ltha\"}],\"fillGapWithZero\":false}")
             .toObject(MetricSpecification.class);
-        Assertions.assertEquals("uzbpzkafku", model.name());
-        Assertions.assertEquals("crnwbmeh", model.displayName());
-        Assertions.assertEquals("eyvjusrtslhspkde", model.displayDescription());
-        Assertions.assertEquals("aofmxagkvtme", model.unit());
-        Assertions.assertEquals("qkrhahvljua", model.aggregationType());
-        Assertions.assertEquals("quhcdhmduala", model.internalMetricName());
-        Assertions.assertEquals("vfadmws", model.dimensions().get(0).name());
-        Assertions.assertEquals("r", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("xpvgo", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("fvpdbo", model.name());
+        Assertions.assertEquals("cizsjqlhkrribdei", model.displayName());
+        Assertions.assertEquals("ipqkghvxndzwm", model.displayDescription());
+        Assertions.assertEquals("efajpj", model.unit());
+        Assertions.assertEquals("wkqnyhg", model.aggregationType());
+        Assertions.assertEquals("j", model.internalMetricName());
+        Assertions.assertEquals("fxzsjabibsyst", model.dimensions().get(0).name());
+        Assertions.assertEquals("fsdjpvkvp", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("xbkzbzkdvncj", model.dimensions().get(0).internalName());
         Assertions.assertFalse(model.fillGapWithZero());
     }
 }

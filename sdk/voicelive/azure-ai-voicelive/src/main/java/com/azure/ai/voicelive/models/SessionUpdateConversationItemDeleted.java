@@ -16,7 +16,7 @@ import java.io.IOException;
  * server's understanding of the conversation history with the client's view.
  */
 @Immutable
-public final class SessionUpdateConversationItemDeleted extends SessionUpdate {
+public final class SessionUpdateConversationItemDeleted extends SessionServerEvent {
 
     /*
      * The type of event.

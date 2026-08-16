@@ -28,6 +28,11 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
     private List<AkriConnectorAllocatedDevice> allocatedDevices;
 
     /*
+     * The status for the connector.
+     */
+    private AkriConnectorStatus status;
+
+    /*
      * The health state of the resource.
      */
     private ResourceHealthState healthState;
@@ -54,6 +59,15 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
      */
     public List<AkriConnectorAllocatedDevice> allocatedDevices() {
         return this.allocatedDevices;
+    }
+
+    /**
+     * Get the status property: The status for the connector.
+     * 
+     * @return the status value.
+     */
+    public AkriConnectorStatus status() {
+        return this.status;
     }
 
     /**
@@ -96,6 +110,8 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
                     List<AkriConnectorAllocatedDevice> allocatedDevices
                         = reader.readArray(reader1 -> AkriConnectorAllocatedDevice.fromJson(reader1));
                     deserializedAkriConnectorProperties.allocatedDevices = allocatedDevices;
+                } else if ("status".equals(fieldName)) {
+                    deserializedAkriConnectorProperties.status = AkriConnectorStatus.fromJson(reader);
                 } else if ("healthState".equals(fieldName)) {
                     deserializedAkriConnectorProperties.healthState
                         = ResourceHealthState.fromString(reader.getString());

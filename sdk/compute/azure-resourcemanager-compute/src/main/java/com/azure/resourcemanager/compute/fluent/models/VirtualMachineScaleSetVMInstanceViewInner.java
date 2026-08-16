@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InterconnectInstanceView;
 import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
@@ -113,6 +114,11 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
      * The hypervisor generation of the Virtual Machine [V1, V2]
      */
     private HyperVGeneration hyperVGeneration;
+
+    /*
+     * The Interconnect runtime view of the Scale Set VM instance. Minimum api-version: 2026-03-01.
+     */
+    private InterconnectInstanceView interconnectInstanceView;
 
     /**
      * Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class.
@@ -274,6 +280,16 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
     }
 
     /**
+     * Get the interconnectInstanceView property: The Interconnect runtime view of the Scale Set VM instance. Minimum
+     * api-version: 2026-03-01.
+     * 
+     * @return the interconnectInstanceView value.
+     */
+    public InterconnectInstanceView interconnectInstanceView() {
+        return this.interconnectInstanceView;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -299,6 +315,9 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
         }
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
+        }
+        if (interconnectInstanceView() != null) {
+            interconnectInstanceView().validate();
         }
     }
 
@@ -386,6 +405,9 @@ public final class VirtualMachineScaleSetVMInstanceViewInner
                 } else if ("hyperVGeneration".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInstanceViewInner.hyperVGeneration
                         = HyperVGeneration.fromString(reader.getString());
+                } else if ("interconnectInstanceView".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInstanceViewInner.interconnectInstanceView
+                        = InterconnectInstanceView.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

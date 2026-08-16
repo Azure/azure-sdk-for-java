@@ -11,10 +11,10 @@ import com.azure.json.JsonReader;
 import com.azure.search.documents.implementation.batching.SearchIndexingAsyncPublisher;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.azure.search.documents.options.OnActionAddedOptions;
-import com.azure.search.documents.options.OnActionErrorOptions;
-import com.azure.search.documents.options.OnActionSentOptions;
-import com.azure.search.documents.options.OnActionSucceededOptions;
+import com.azure.search.documents.models.OnActionAddedOptions;
+import com.azure.search.documents.models.OnActionErrorOptions;
+import com.azure.search.documents.models.OnActionSentOptions;
+import com.azure.search.documents.models.OnActionSucceededOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

@@ -4,6 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,6 +61,147 @@ public class TracingInfoTest {
 
         tracingInfo = new TracingInfo(false, 0, getConfiguration("random string"));
         assertNotEquals("", tracingInfo.getValue(false, false, null));
+    }
+
+    @Test
+    public void loadBalancingTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.setUsesLoadBalancing();
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=LB"));
+    }
+
+    @Test
+    public void aiConfigurationTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("application/json; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=AI"));
+    }
+
+    @Test
+    public void aiChatCompletionTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing(
+            "application/json; profile=\"https://azconfig.io/mime-profiles/ai-chat-completion\"");
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("AI+AICC"));
+    }
+
+    @Test
+    public void aiConfigurationTracingNullContentTypeTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing(null);
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingResetTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("application/json; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        tracingInfo.resetAiConfigurationTracing();
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingNonJsonContentTypeTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("text/plain; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingNoProfileParameterTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing("application/json; charset=utf-8");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void aiConfigurationTracingFeatureFlagContentTypeTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.updateAiConfigurationTracing(
+            "application/vnd.microsoft.appconfig.ff+json;charset=utf-8");
+        String value = tracingInfo.getValue(false, false, null);
+        assertEquals("RequestType=Startup", value);
+    }
+
+    @Test
+    public void multipleFeaturesTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.setUsesLoadBalancing();
+        tracingInfo.updateAiConfigurationTracing("application/json; profile=\"https://azconfig.io/mime-profiles/ai\"");
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Features=LB+AI"));
+    }
+
+    @Test
+    public void failoverTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        tracingInfo.setFailoverRequest();
+        String value = tracingInfo.getValue(false, false, null);
+        assertTrue(value.contains("Failover"));
+    }
+
+    @Test
+    public void maxVariantsTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        FeatureFlagTracing ffTracing = new FeatureFlagTracing();
+        ffTracing.updateMaxVariants(5);
+        String value = tracingInfo.getValue(false, false, ffTracing);
+        assertTrue(value.contains("MaxVariants=5"));
+    }
+
+    @Test
+    public void ffFeaturesTracingTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
+        FeatureFlagTracing ffTracing = new FeatureFlagTracing();
+        ffTracing.setUsesTelemetry();
+        ffTracing.setUsesSeed();
+        String value = tracingInfo.getValue(false, false, ffTracing);
+        assertTrue(value.contains("FFFeatures=Seed+Telemetry"));
+    }
+
+    @Test
+    public void fullCorrelationContextTest() {
+        Configuration configuration = getConfiguration("false");
+        TracingInfo tracingInfo = new TracingInfo(true, 2, configuration);
+        tracingInfo.setUsesLoadBalancing();
+        tracingInfo.setFailoverRequest();
+
+        FeatureFlagTracing ffTracing = new FeatureFlagTracing();
+        ffTracing.updateFeatureFilterTelemetry("Targeting");
+        ffTracing.setUsesTelemetry();
+        ffTracing.updateMaxVariants(3);
+
+        String value = tracingInfo.getValue(false, true, ffTracing);
+
+        // Verify ordering: key-value pairs first, then tags
+        assertTrue(value.startsWith("RequestType=Startup"));
+        assertTrue(value.contains("ReplicaCount=2"));
+        assertTrue(value.contains("Filter=TRGT"));
+        assertTrue(value.contains("MaxVariants=3"));
+        assertTrue(value.contains("FFFeatures=Telemetry"));
+        assertTrue(value.contains("Features=LB"));
+        assertTrue(value.contains("UsesKeyVault"));
+        assertTrue(value.contains("PushRefresh"));
+        assertTrue(value.contains("Failover"));
     }
 
     private static final ConfigurationSource EMPTY_SOURCE = new ConfigurationSource() {

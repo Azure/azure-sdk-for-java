@@ -23,12 +23,17 @@ import java.util.function.BiFunction;
  */
 public class PipelinedDocumentQueryExecutionContext<T>
     extends PipelinedQueryExecutionContextBase<T> {
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
 
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private final IDocumentQueryExecutionComponent<Document> component;
 
@@ -58,19 +63,18 @@ public class PipelinedDocumentQueryExecutionContext<T>
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
-                    qryOptAccessor.clone(requestOptions);
+                    cloneOptionsForInternalPipeline(requestOptions);
                 if (queryInfo.hasNonStreamingOrderBy()) {
                     if (continuationToken != null) {
                         throw new NonStreamingOrderByBadRequestException(
                             HttpConstants.StatusCodes.BADREQUEST,
                             "Can not use a continuation token for a vector search query");
                     }
-                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+
                     documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
                     return NonStreamingOrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
                 } else {
                     ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
                     documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
                     return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
                 }
@@ -78,9 +82,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
         } else {
 
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
-                CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
-                    qryOptAccessor.clone(requestOptions);
-                qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                CosmosQueryRequestOptions parallelCosmosQueryRequestOptions = cloneOptionsForInternalPipeline(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
                 documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
@@ -117,14 +119,13 @@ public class PipelinedDocumentQueryExecutionContext<T>
 
         createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
             CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
-                qryOptAccessor.clone(requestOptions);
+                cloneOptionsForInternalPipeline(requestOptions);
 
             documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
             return HybridSearchDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
         };
         return createBaseComponentFunction;
     }
-
 
     private static
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
@@ -260,15 +261,33 @@ public class PipelinedDocumentQueryExecutionContext<T>
         return this
             .component
             .drainAsync(this.actualPageSize)
-            .map(documentFeedResponse -> ImplementationBridgeHelpers
-                .FeedResponseHelper
-                .getFeedResponseAccessor().convertGenericType(
+            .map(documentFeedResponse -> feedResponseAccessor().convertGenericType(
                     documentFeedResponse,
-                    (document) -> itemSerializerAccessor.deserializeSafe(
+                    (document) -> itemSerializerAccessor().deserializeSafe(
                         this.itemSerializer,
                         new ObjectNodeMap(document.getPropertyBag()),
                         this.classOfT)
                 )
             );
+    }
+
+    /**
+     * Clones query request options and neutralizes the custom item serializer to
+     * DEFAULT_SERIALIZER. Internal pipeline stages must always use the default
+     * serializer; custom serialization is applied at the top-level pipeline boundary.
+     *
+     * All internal pipeline stages that work with Document/intermediate types MUST
+     * use this method rather than cloning options directly via
+     * {@code qryOptAccessor().clone(...)}. Bypassing this method would leave the
+     * custom serializer active in the inner pipeline, causing incorrect
+     * serialization of intermediate results. See PR #48811 for context.
+     */
+    private static CosmosQueryRequestOptions cloneOptionsForInternalPipeline(
+        CosmosQueryRequestOptions source) {
+
+        CosmosQueryRequestOptions cloned = qryOptAccessor().clone(source);
+        qryOptAccessor().getImpl(cloned)
+            .setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+        return cloned;
     }
 }

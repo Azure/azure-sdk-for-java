@@ -42,13 +42,15 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * The resultInformation property.
      */
     @Generated
     private ResultInformation resultInformation;
 
     /*
-     * Participant
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel participant;
@@ -153,7 +155,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: The resultInformation property.
      * 
      * @return the resultInformation value.
      */
@@ -163,7 +165,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Set the resultInformation property: The resultInformation property.
      * 
      * @param resultInformation the resultInformation value to set.
      * @return the RemoveParticipantFailed object itself.
@@ -175,7 +177,9 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Get the participant property: Participant.
+     * Get the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @return the participant value.
      */
@@ -185,7 +189,9 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     }
 
     /**
-     * Set the participant property: Participant.
+     * Set the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @param participant the participant value to set.
      * @return the RemoveParticipantFailed object itself.

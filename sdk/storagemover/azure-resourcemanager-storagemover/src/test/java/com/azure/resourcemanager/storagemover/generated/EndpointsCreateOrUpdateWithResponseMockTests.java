@@ -28,7 +28,7 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"juetaebur\",\"endpointKind\":\"Source\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"mz\",\"tenantId\":\"wabm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ndo\":{\"principalId\":\"ifrvtpu\",\"clientId\":\"jmqlgkfb\"},\"tcje\":{\"principalId\":\"n\",\"clientId\":\"jcntuj\"}}},\"id\":\"twwaezkojvdcpzf\",\"name\":\"qouicybxarzgsz\",\"type\":\"foxciq\"}";
+            = "{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"xkhnzbonlwnto\",\"endpointKind\":\"Source\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"whkszzcmrvexztvb\",\"tenantId\":\"gsfraoyzkoow\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ldsyuuximerqfob\":{\"principalId\":\"ux\",\"clientId\":\"q\"},\"dlmkkzevdl\":{\"principalId\":\"znkbykutwpfhpagm\",\"clientId\":\"skdsnfdsdoakg\"},\"m\":{\"principalId\":\"wpusdsttwvogv\",\"clientId\":\"ejdcngqqmoakuf\"}}},\"id\":\"rwr\",\"name\":\"grtwae\",\"type\":\"u\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,17 +38,14 @@ public final class EndpointsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Endpoint response = manager.endpoints()
-            .define("v")
-            .withExistingStorageMover("xsdszuempsb", "kfzbeyvpnqicvi")
-            .withProperties(
-                new EndpointBaseProperties().withDescription("jxdxrbuukz").withEndpointKind(EndpointKind.SOURCE))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf("ppriol", new UserAssignedIdentity(), "ucqdpfuvglsb", new UserAssignedIdentity(),
-                        "ncormrlxqtvcof", new UserAssignedIdentity(), "n", new UserAssignedIdentity())))
+            .define("aeburuvdmo")
+            .withExistingStorageMover("mkycgra", "wjue")
+            .withProperties(new EndpointBaseProperties().withDescription("mz").withEndpointKind(EndpointKind.SOURCE))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ezkojvdcp", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("juetaebur", response.properties().description());
+        Assertions.assertEquals("xkhnzbonlwnto", response.properties().description());
         Assertions.assertEquals(EndpointKind.SOURCE, response.properties().endpointKind());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }

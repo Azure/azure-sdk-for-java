@@ -9,27 +9,26 @@ import java.util.Collection;
 
 /**
  * Indicates the replication state of a read replica. This property is returned only when the target server is a read
- * replica. Possible values are Active, Broken, Catchup, Provisioning, Reconfiguring, and Updating.
+ * replica.
  */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
     /**
-     * The read replica server is fully synchronized and actively replicating data from the primary server.
+     * Read replica server is fully synchronized and actively replicating data from the primary server.
      */
     public static final ReplicationState ACTIVE = fromString("Active");
 
     /**
-     * The read replica server is behind the primary server and is currently catching up with pending changes.
+     * Read replica server is behind the primary server and is currently catching up with pending changes.
      */
     public static final ReplicationState CATCHUP = fromString("Catchup");
 
     /**
-     * The read replica server is being created and is in process of getting initialized.
+     * Read replica server is being created and is in process of getting initialized.
      */
     public static final ReplicationState PROVISIONING = fromString("Provisioning");
 
     /**
-     * The read replica server is undergoing some changes it can be changing compute size of promoting it to primary
-     * server.
+     * Read replica server is undergoing some changes it can be changing compute size of promoting it to primary server.
      */
     public static final ReplicationState UPDATING = fromString("Updating");
 
@@ -39,7 +38,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
     public static final ReplicationState BROKEN = fromString("Broken");
 
     /**
-     * The read replica server is being reconfigured, possibly due to changes in source or settings.
+     * Read replica server is being reconfigured, possibly due to changes in source or settings.
      */
     public static final ReplicationState RECONFIGURING = fromString("Reconfiguring");
 

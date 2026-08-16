@@ -12,8 +12,8 @@ public final class ConnectionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"ktrmgucnapkt\",\"connectionStatus\":\"Approved\",\"privateLinkServiceId\":\"llwptfdy\",\"privateEndpointName\":\"fqbuaceopzf\",\"privateEndpointResourceId\":\"hhuao\",\"jobList\":[\"cq\",\"qxolzdahzx\"],\"provisioningState\":\"Failed\"},\"id\":\"gbkdmoizpos\",\"name\":\"mgrcfbu\",\"type\":\"rmfqjhhkxbpvj\"}],\"nextLink\":\"jhxxjyn\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"uaceopzfqrhhu\",\"connectionStatus\":\"Stale\",\"privateLinkServiceId\":\"ppcqeqxolz\",\"privateEndpointName\":\"hzxct\",\"privateEndpointResourceId\":\"gbkdmoizpos\",\"jobList\":[\"rcfbunrm\",\"qjhhkxbpv\"],\"provisioningState\":\"Succeeded\"},\"id\":\"hx\",\"name\":\"j\",\"type\":\"n\"},{\"properties\":{\"description\":\"divkrt\",\"connectionStatus\":\"Stale\",\"privateLinkServiceId\":\"xqzvszjfa\",\"privateEndpointName\":\"j\",\"privateEndpointResourceId\":\"xxivetv\",\"jobList\":[\"aqtdoqmcbx\",\"wvxysl\",\"bhsfxob\",\"ytkblmpew\"],\"provisioningState\":\"Failed\"},\"id\":\"krvrns\",\"name\":\"shqjohxcrsbf\",\"type\":\"vasrruvwb\"},{\"properties\":{\"description\":\"qfsubcgjbirx\",\"connectionStatus\":\"Approved\",\"privateLinkServiceId\":\"bsrfbj\",\"privateEndpointName\":\"twss\",\"privateEndpointResourceId\":\"ftpvjzbexil\",\"jobList\":[\"fqqnvwpmqtaruo\",\"jmkcjhwqytj\"],\"provisioningState\":\"Succeeded\"},\"id\":\"wj\",\"name\":\"wgdrjervnaenqp\",\"type\":\"hin\"}],\"nextLink\":\"ygmi\"}")
             .toObject(ConnectionList.class);
-        Assertions.assertEquals("jhxxjyn", model.nextLink());
+        Assertions.assertEquals("ygmi", model.nextLink());
     }
 }

@@ -116,7 +116,8 @@ def update_versions(version_map: Dict[str, CodeModule], ext_dep_map, target_file
                             try:
                                 module = ext_dep_map[module_name]
                                 new_version = module.external_dependency
-                                newline = re.sub(external_dependency_version_regex, new_version, line)
+                                newline = external_dependency_version_regex.sub(
+                                    lambda m: '<{0}>{1}</{0}>'.format(m.group(1), new_version), line)
                             except (KeyError, AttributeError):
                                 raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     else:

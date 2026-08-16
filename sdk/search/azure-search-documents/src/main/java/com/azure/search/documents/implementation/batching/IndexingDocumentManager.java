@@ -3,7 +3,7 @@
 package com.azure.search.documents.implementation.batching;
 
 import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.options.OnActionAddedOptions;
+import com.azure.search.documents.models.OnActionAddedOptions;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 

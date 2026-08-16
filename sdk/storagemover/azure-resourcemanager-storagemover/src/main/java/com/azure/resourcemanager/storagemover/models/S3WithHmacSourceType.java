@@ -17,24 +17,29 @@ public final class S3WithHmacSourceType extends ExpandableStringEnum<S3WithHmacS
     public static final S3WithHmacSourceType MINIO = fromString("MINIO");
 
     /**
-     * Static value BACKBLAZE for S3WithHmacSourceType.
-     */
-    public static final S3WithHmacSourceType BACKBLAZE = fromString("BACKBLAZE");
-
-    /**
      * Static value IBM for S3WithHmacSourceType.
      */
     public static final S3WithHmacSourceType IBM = fromString("IBM");
 
     /**
-     * Static value CLOUDFLARE for S3WithHmacSourceType.
-     */
-    public static final S3WithHmacSourceType CLOUDFLARE = fromString("CLOUDFLARE");
-
-    /**
      * Static value GCS for S3WithHmacSourceType.
      */
     public static final S3WithHmacSourceType GCS = fromString("GCS");
+
+    /**
+     * Static value ALIBABA for S3WithHmacSourceType.
+     */
+    public static final S3WithHmacSourceType ALIBABA = fromString("ALIBABA");
+
+    /**
+     * Static value DELL_EMC for S3WithHmacSourceType.
+     */
+    public static final S3WithHmacSourceType DELL_EMC = fromString("DELL_EMC");
+
+    /**
+     * Static value OTHER for S3WithHmacSourceType.
+     */
+    public static final S3WithHmacSourceType OTHER = fromString("OTHER");
 
     /**
      * Creates a new instance of S3WithHmacSourceType value.

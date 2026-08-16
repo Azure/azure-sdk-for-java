@@ -12,19 +12,18 @@ public final class QueryNetworkSiblingSetRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QueryNetworkSiblingSetRequest model
-            = BinaryData.fromString("{\"networkSiblingSetId\":\"uiaclkiexhajlfn\",\"subnetId\":\"hiqfyuttdiy\"}")
+            = BinaryData.fromString("{\"networkSiblingSetId\":\"y\",\"subnetId\":\"es\"}")
                 .toObject(QueryNetworkSiblingSetRequest.class);
-        Assertions.assertEquals("uiaclkiexhajlfn", model.networkSiblingSetId());
-        Assertions.assertEquals("hiqfyuttdiy", model.subnetId());
+        Assertions.assertEquals("y", model.networkSiblingSetId());
+        Assertions.assertEquals("es", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QueryNetworkSiblingSetRequest model
-            = new QueryNetworkSiblingSetRequest().withNetworkSiblingSetId("uiaclkiexhajlfn")
-                .withSubnetId("hiqfyuttdiy");
+            = new QueryNetworkSiblingSetRequest().withNetworkSiblingSetId("y").withSubnetId("es");
         model = BinaryData.fromObject(model).toObject(QueryNetworkSiblingSetRequest.class);
-        Assertions.assertEquals("uiaclkiexhajlfn", model.networkSiblingSetId());
-        Assertions.assertEquals("hiqfyuttdiy", model.subnetId());
+        Assertions.assertEquals("y", model.networkSiblingSetId());
+        Assertions.assertEquals("es", model.subnetId());
     }
 }

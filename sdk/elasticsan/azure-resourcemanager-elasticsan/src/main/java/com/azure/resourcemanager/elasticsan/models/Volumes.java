@@ -113,7 +113,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     PreValidationResponse preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeNameList parameters);
@@ -130,7 +130,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     PreValidationResponse preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
         VolumeNameList parameters, Context context);
@@ -146,7 +146,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     PreValidationResponse preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,
         DiskSnapshotList parameters);
@@ -163,7 +163,7 @@ public interface Volumes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     PreValidationResponse preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,
         DiskSnapshotList parameters, Context context);

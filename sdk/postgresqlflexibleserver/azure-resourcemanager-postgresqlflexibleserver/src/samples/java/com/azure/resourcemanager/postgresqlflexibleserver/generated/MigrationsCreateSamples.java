@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class MigrationsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateWithOtherUsers.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateWithOtherUsers.json
      */
     /**
      * Sample code: Create a migration specifying user names.
@@ -46,7 +46,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
      */
     /**
      * Sample code: Create a migration with other source type for validating and migrating.
@@ -74,7 +74,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateWithPrivateEndpointServers.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateWithPrivateEndpointServers.json
      */
     /**
      * Sample code: Create a migration with private endpoint.
@@ -102,7 +102,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreate.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreate.json
      */
     /**
      * Sample code: Create a migration.
@@ -127,7 +127,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateWithRoles.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateWithRoles.json
      */
     /**
      * Sample code: Create a migration with roles.
@@ -154,7 +154,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
      */
     /**
      * Sample code: Create a migration with fully qualified domain names for source and target servers.
@@ -182,7 +182,7 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsCreateValidateOnly.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsCreateValidateOnly.json
      */
     /**
      * Sample code: Create a migration for validating only.

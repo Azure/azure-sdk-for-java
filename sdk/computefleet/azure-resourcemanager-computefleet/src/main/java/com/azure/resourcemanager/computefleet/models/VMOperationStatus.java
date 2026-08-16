@@ -12,20 +12,14 @@ import java.util.Collection;
  */
 public final class VMOperationStatus extends ExpandableStringEnum<VMOperationStatus> {
     /**
+     * Indicates that the virtual machine has not been accepted by Compute yet and is still scheduled to be created.
+     */
+    public static final VMOperationStatus LAUNCHING = fromString("Launching");
+
+    /**
      * Indicates that the virtual machine is either in the process of being created or is scheduled to be created.
      */
     public static final VMOperationStatus CREATING = fromString("Creating");
-
-    /**
-     * Indicates that the cancellation request was successful because the virtual machine had not been created yet.
-     */
-    public static final VMOperationStatus CANCELED = fromString("Canceled");
-
-    /**
-     * Indicates that the cancellation request could not be applied because the virtual machine had already been
-     * created.
-     */
-    public static final VMOperationStatus CANCEL_FAILED_STATUS_UNKNOWN = fromString("CancelFailedStatusUnknown");
 
     /**
      * Indicates that the virtual machine operation failed.

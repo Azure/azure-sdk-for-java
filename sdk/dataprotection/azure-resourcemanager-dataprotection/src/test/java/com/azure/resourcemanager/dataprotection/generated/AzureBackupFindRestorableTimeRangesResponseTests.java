@@ -12,11 +12,11 @@ public final class AzureBackupFindRestorableTimeRangesResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupFindRestorableTimeRangesResponse model = BinaryData.fromString(
-            "{\"restorableTimeRanges\":[{\"startTime\":\"wntoegokdwbwh\",\"endTime\":\"szzcmrvexztv\",\"objectType\":\"qgsfraoyzkoow\"},{\"startTime\":\"lmnguxaw\",\"endTime\":\"aldsy\",\"objectType\":\"ximerqfobwyznk\"}],\"objectType\":\"kutwpf\"}")
+            "{\"restorableTimeRanges\":[{\"startTime\":\"xqi\",\"endTime\":\"y\",\"objectType\":\"nyowxwlmdjrkvfg\"},{\"startTime\":\"vfvpdbodaciz\",\"endTime\":\"j\",\"objectType\":\"hkr\"}],\"objectType\":\"bdeibqipqk\"}")
             .toObject(AzureBackupFindRestorableTimeRangesResponse.class);
-        Assertions.assertEquals("wntoegokdwbwh", model.restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("szzcmrvexztv", model.restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("qgsfraoyzkoow", model.restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("kutwpf", model.objectType());
+        Assertions.assertEquals("xqi", model.restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("y", model.restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("nyowxwlmdjrkvfg", model.restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("bdeibqipqk", model.objectType());
     }
 }

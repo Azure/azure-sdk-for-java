@@ -43,6 +43,11 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
     private ProvisioningState provisioningState;
 
     /*
+     * The status for the dataflow graph.
+     */
+    private DataflowGraphStatus status;
+
+    /*
      * The health state of the resource.
      */
     private ResourceHealthState healthState;
@@ -143,6 +148,15 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
     }
 
     /**
+     * Get the status property: The status for the dataflow graph.
+     * 
+     * @return the status value.
+     */
+    public DataflowGraphStatus status() {
+        return this.status;
+    }
+
+    /**
      * Get the healthState property: The health state of the resource.
      * 
      * @return the healthState value.
@@ -197,6 +211,8 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowGraphProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataflowGraphProperties.status = DataflowGraphStatus.fromJson(reader);
                 } else if ("healthState".equals(fieldName)) {
                     deserializedDataflowGraphProperties.healthState
                         = ResourceHealthState.fromString(reader.getString());

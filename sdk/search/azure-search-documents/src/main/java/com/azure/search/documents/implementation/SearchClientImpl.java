@@ -46,12 +46,12 @@ public final class SearchClientImpl {
     private final SearchClientService service;
 
     /**
-     * Service host.
+     * The endpoint URL of the search service.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets The endpoint URL of the search service.
      * 
      * @return the endpoint value.
      */
@@ -118,7 +118,7 @@ public final class SearchClientImpl {
     /**
      * Initializes an instance of SearchClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */
@@ -131,7 +131,7 @@ public final class SearchClientImpl {
      * Initializes an instance of SearchClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */
@@ -145,7 +145,7 @@ public final class SearchClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */

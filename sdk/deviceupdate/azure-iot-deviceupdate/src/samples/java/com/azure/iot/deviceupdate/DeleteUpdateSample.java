@@ -5,6 +5,7 @@ package com.azure.iot.deviceupdate;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
@@ -25,7 +26,8 @@ public class DeleteUpdateSample {
             String updateVersion = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_UPDATE_VERSION");
 
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
-            SyncPoller<BinaryData, BinaryData> response = client.beginDeleteUpdate(updateProvider, updateName, updateVersion, null);
+            SyncPoller<BinaryData, BinaryData> response = client.beginDeleteUpdate(updateProvider, updateName,
+                updateVersion, new RequestOptions());
             response.waitForCompletion();
             // END: com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
 

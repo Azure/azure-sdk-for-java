@@ -580,7 +580,7 @@ the client library to use the Netty HTTP client. Configuring or changing the HTT
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
 better performance compared to the default SSL implementation within the JDK. For more information, including how to 
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+reduce the dependency size, refer to the [performance tuning][performance_tuning] documentation.
 
 ## Next steps
 
@@ -612,7 +612,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/README.md

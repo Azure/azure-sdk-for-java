@@ -86,6 +86,17 @@ public final class MachineInner extends ProxyResource {
     }
 
     /**
+     * Set the zones property: The Availability zone in which machine is located.
+     * 
+     * @param zones the zones value to set.
+     * @return the MachineInner object itself.
+     */
+    public MachineInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -142,6 +153,7 @@ public final class MachineInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

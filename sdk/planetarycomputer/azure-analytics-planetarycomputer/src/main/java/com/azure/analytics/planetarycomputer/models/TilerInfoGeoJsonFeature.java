@@ -29,7 +29,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
      * Geometry object defining the feature's shape
      */
     @Generated
-    private final Geometry geometry;
+    private final GeoJsonGeometry geometry;
 
     /*
      * Properties
@@ -57,7 +57,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
      * @param properties the properties value to set.
      */
     @Generated
-    private TilerInfoGeoJsonFeature(FeatureType type, Geometry geometry, Map<String, TilerInfo> properties) {
+    private TilerInfoGeoJsonFeature(FeatureType type, GeoJsonGeometry geometry, Map<String, TilerInfo> properties) {
         this.type = type;
         this.geometry = geometry;
         this.properties = properties;
@@ -79,7 +79,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
      * @return the geometry value.
      */
     @Generated
-    public Geometry getGeometry() {
+    public GeoJsonGeometry getGeometry() {
         return this.geometry;
     }
 
@@ -141,7 +141,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
     public static TilerInfoGeoJsonFeature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FeatureType type = null;
-            Geometry geometry = null;
+            GeoJsonGeometry geometry = null;
             Map<String, TilerInfo> properties = null;
             String id = null;
             List<Double> boundingBox = null;
@@ -152,7 +152,7 @@ public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfo
                 if ("type".equals(fieldName)) {
                     type = FeatureType.fromString(reader.getString());
                 } else if ("geometry".equals(fieldName)) {
-                    geometry = Geometry.fromJson(reader);
+                    geometry = GeoJsonGeometry.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     properties = reader.readMap(reader1 -> TilerInfo.fromJson(reader1));
                 } else if ("id".equals(fieldName)) {

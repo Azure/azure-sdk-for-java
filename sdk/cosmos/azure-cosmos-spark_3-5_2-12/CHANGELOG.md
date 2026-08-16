@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.47.0-beta.1 (Unreleased)
+### 4.50.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,45 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.49.2 (2026-07-27)
+
+#### Bugs Fixed
+* Fixed `ItemPatch`/`ItemPatchIfExists` write strategies to skip documents excluded by a conditional `spark.cosmos.write.patch.filter` instead of failing the write with `412 Precondition Failed`. - See [PR 49700](https://github.com/Azure/azure-sdk-for-java/pull/49700)
+* Fixed bounded change feed reads hanging after partition splits when stale feed-range metadata collapsed child continuation LSNs into a single `endLsn`. - See [PR 49883](https://github.com/Azure/azure-sdk-for-java/pull/49883)
+
+### 4.49.1 (2026-07-03)
+
+#### Bugs Fixed
+* Added a defensive guard in bounded change feed reads (with `endLsn`) that fails the Spark task with `IllegalStateException` when the underlying paginator stops before the latest continuation token has advanced to `endLsn`. - See [PR 49393](https://github.com/Azure/azure-sdk-for-java/pull/49393)
+* Fixed an issue in the `readManyByPartitionKeys` API in the Spark connector which could result in duplicates and missing the first record. - See [PR 49694](https://github.com/Azure/azure-sdk-for-java/pull/49694)
+
+### 4.49.0 (2026-06-08)
+
+#### Bugs Fixed
+* Improved partition planning performance for change feed with large number of feed ranges. - See [PR 49086](https://github.com/Azure/azure-sdk-for-java/pull/49086)
+* Fixed `UnsupportedOperationException` when using `readManyByPartitionKeys` for empty pages. - See [PR 49311](https://github.com/Azure/azure-sdk-for-java/pull/49311)
+* Fixed `OperationCancelledException` ("End-to-end timeout hit") on sparse cross-partition queries by opting into the SDK's `allowEmptyPages` behavior, so the per-page timeout applies per page instead of being exceeded by serial empty-page drains. Note: this surfaces one iterator callback per empty page where previously a single callback could drain many. - See [PR 49276](https://github.com/Azure/azure-sdk-for-java/pull/49276)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
+
+### 4.48.0 (2026-05-01)
+
+#### Features Added
+* Added `additionalHeaders` support to allow setting additional headers (e.g., `x-ms-cosmos-workload-id`) that are sent with every request. - See [PR 48128](https://github.com/Azure/azure-sdk-for-java/pull/48128)
+* Added new `CosmosItemsDataSource.readManyByPartitionKeys` Spark function to execute bulk queries by a list of pk-values with better efficiency. Configure null handling via `spark.cosmos.read.readManyByPk.nullHandling` - default `Null` treats a null PK column as JSON null (`addNullValue`), `None` treats it as `PartitionKey.NONE` (`addNoneValue` / `NOT IS_DEFINED`). These route to different physical partitions - picking the wrong mode silently returns zero rows. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added Spark config `spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch` (default `1`) to bound the per-task prefetch parallelism the SDK uses inside `readManyByPartitionKeys`. See [PR 48801](https://github.com/Azure/azure-sdk-for-java/pull/48801)
+* Added Spark config `spark.cosmos.read.readManyByPk.maxBatchSize` (default `100`) to set the max. number of partition keys used for a single batch. See [PR 48930](https://github.com/Azure/azure-sdk-for-java/pull/48930)
+
+### 4.47.0 (2026-04-17)
+
+#### Features Added
+* Added support for change feed with `startFrom` point-in-time on merged partitions by enabling the `CHANGE_FEED_WITH_START_TIME_POST_MERGE` SDK capability in the azure-cosmos SDK. - See [PR 48752](https://github.com/Azure/azure-sdk-for-java/pull/48752)
+
+#### Bugs Fixed
+* Fixed an issue where `readContainerThroughput` was always called even when `targetThroughput` is explicitly configured, requiring unnecessary `throughputSettings/read` permission for AAD principals. - See [PR 48800](https://github.com/Azure/azure-sdk-for-java/pull/48800)
+* Fixed JVM `<clinit>` deadlock when multiple threads concurrently trigger Cosmos SDK class loading for the first time. - See [PR 48689](https://github.com/Azure/azure-sdk-for-java/pull/48689)
 
 ### 4.46.0 (2026-03-27)
 

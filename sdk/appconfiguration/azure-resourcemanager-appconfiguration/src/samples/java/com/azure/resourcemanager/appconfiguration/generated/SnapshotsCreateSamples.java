@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class SnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateSnapshot.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateSnapshot.json
      */
     /**
      * Sample code: Snapshots_Create.

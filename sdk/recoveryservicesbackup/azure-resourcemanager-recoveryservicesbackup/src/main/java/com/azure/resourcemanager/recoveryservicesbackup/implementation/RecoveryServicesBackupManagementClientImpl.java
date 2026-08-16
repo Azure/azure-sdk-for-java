@@ -43,6 +43,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupUsageSummar
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ConfigureSourceScansClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
@@ -287,6 +288,20 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
      */
     public BackupsClient getBackups() {
         return this.backups;
+    }
+
+    /**
+     * The ConfigureSourceScansClient object to access its operations.
+     */
+    private final ConfigureSourceScansClient configureSourceScans;
+
+    /**
+     * Gets the ConfigureSourceScansClient object to access its operations.
+     * 
+     * @return the ConfigureSourceScansClient object.
+     */
+    public ConfigureSourceScansClient getConfigureSourceScans() {
+        return this.configureSourceScans;
     }
 
     /**
@@ -922,7 +937,7 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01-preview";
+        this.apiVersion = "2026-07-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
@@ -931,6 +946,7 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.backupResourceEncryptionConfigs = new BackupResourceEncryptionConfigsClientImpl(this);
         this.protectedItems = new ProtectedItemsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
+        this.configureSourceScans = new ConfigureSourceScansClientImpl(this);
         this.recoveryPointsRecommendedForMoves = new RecoveryPointsRecommendedForMovesClientImpl(this);
         this.protectedItemOperationStatuses = new ProtectedItemOperationStatusesClientImpl(this);
         this.protectedItemOperationResults = new ProtectedItemOperationResultsClientImpl(this);
@@ -1089,7 +1105,7 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

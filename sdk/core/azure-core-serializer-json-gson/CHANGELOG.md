@@ -1,14 +1,29 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.6 (2026-08-12)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+
+## 1.4.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Gson from `2.13.1` to `2.14.0`.
+
+## 1.4.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
 
 ## 1.4.3 (2026-01-15)
 

@@ -146,7 +146,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return a disk access SAS uri along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> grantAccessWithResponseAsync(String resourceGroupName,
@@ -164,7 +164,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(String resourceGroupName,
@@ -182,7 +182,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
@@ -201,7 +201,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(String resourceGroupName,
@@ -219,7 +219,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return a disk access SAS uri on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AccessUriInner> grantAccessAsync(String resourceGroupName, String restorePointCollectionName,
@@ -236,7 +236,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessUriInner grantAccess(String resourceGroupName, String restorePointCollectionName, String vmRestorePointName,
@@ -254,7 +254,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AccessUriInner grantAccess(String resourceGroupName, String restorePointCollectionName, String vmRestorePointName,

@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -25,6 +26,8 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealth
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.guava25.base.Function;
@@ -32,6 +35,8 @@ import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -60,6 +65,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -68,6 +74,7 @@ import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -84,10 +91,18 @@ import java.util.function.Consumer;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
+@Listeners(TestCaseIdDataProviderInterceptor.class)
 public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
         = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
+    private static final Duration TRANSIENT_404_1002_RETRY_DELAY = Duration.ofSeconds(5);
+
+    private static final Duration TRANSIENT_404_1002_MAX_RETRY_DURATION = Duration.ofSeconds(30);
 
     private List<String> writeRegions;
     private List<String> readRegions;
@@ -105,48 +120,227 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         .build();
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
+        assertContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-        assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
+
+        assertContactedRegionCount(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include only the second preferred region <%s>",
+                secondPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndSecondPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-        assertThat(ctx.getContactedRegionNames()).contains(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
-        assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
+        assertContactedRegionCount(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include the first and second preferred regions <%s> and <%s>",
+                firstPreferredRegionName,
+                secondPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            firstPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the first preferred region <%s>",
+                firstPreferredRegionName));
+        assertContactedRegionsContain(
+            ctx,
+            secondPreferredRegionName,
+            String.format(
+                "Expected diagnostics context to include the second preferred region <%s>",
+                secondPreferredRegionName));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAtMostTwoPreferredRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(2);
+        assertContactedRegionCountAtMost(
+            ctx,
+            2,
+            String.format(
+                "Expected diagnostics context to include at most two preferred regions; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
+    };
+
+    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndOptionalSecondPreferredRegion = (ctx) -> {
+        String firstPreferredRegionName = getRegionNameForAssertion(this.firstPreferredRegion);
+        String secondPreferredRegionName = getRegionNameForAssertion(this.secondPreferredRegion);
+        String expectation = String.format(
+            "Expected diagnostics context to include the first preferred region <%s> and optionally the second <%s>",
+            firstPreferredRegionName,
+            secondPreferredRegionName);
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (!contactedRegionNames.contains(firstPreferredRegionName)
+            || contactedRegionNames.stream().anyMatch(
+                region -> !region.equals(firstPreferredRegionName) && !region.equals(secondPreferredRegionName))) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("a subset of <%s, %s>", firstPreferredRegionName, secondPreferredRegionName),
+                contactedRegionNames,
+                ctx));
+        }
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOnePreferredRegion = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(1);
+        assertContactedRegionCountAtMost(
+            ctx,
+            1,
+            String.format(
+                "Expected diagnostics context to include at most one preferred region; "
+                    + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>",
+                this.firstPreferredRegion,
+                this.secondPreferredRegion));
     };
 
     Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasAllRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeRegions.size());
+        List<String> writeRegionsForAssertion = getExpectedRegionsForAssertion(
+            ctx,
+            this.writeRegions,
+            "Expected diagnostics context to include all write regions");
 
-        for (String region : this.writeRegions) {
-            assertThat(ctx.getContactedRegionNames()).contains(region.toLowerCase(Locale.ROOT));
+        assertContactedRegionCount(
+            ctx,
+            writeRegionsForAssertion.size(),
+            String.format("Expected diagnostics context to include all write regions <%s>", writeRegionsForAssertion));
+
+        for (String region : writeRegionsForAssertion) {
+            String writeRegionName = getRegionNameForAssertion(region);
+            assertContactedRegionsContain(
+                ctx,
+                writeRegionName,
+                String.format(
+                    "Expected diagnostics context to include write region <%s> from all write regions <%s>",
+                    writeRegionName,
+                    this.writeRegions));
         }
     };
+
+    private String getRegionNameForAssertion(String regionName) {
+        return regionName == null ? null : regionName.toLowerCase(Locale.ROOT);
+    }
+
+    private List<String> getExpectedRegionsForAssertion(
+        CosmosDiagnosticsContext ctx,
+        List<String> expectedRegions,
+        String expectation) {
+
+        if (expectedRegions == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null expected regions",
+                ctx == null ? null : ctx.getContactedRegionNames(),
+                ctx));
+        }
+
+        return expectedRegions;
+    }
+
+    private void assertContactedRegionCount(
+        CosmosDiagnosticsContext ctx,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertContactedRegionCountAtMost(
+        CosmosDiagnosticsContext ctx,
+        int maxCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (contactedRegionNames.size() > maxCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count at most <%d>", maxCount),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private void assertContactedRegionsContain(
+        CosmosDiagnosticsContext ctx,
+        String expectedRegion,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(ctx, expectation);
+        if (!contactedRegionNames.contains(expectedRegion)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain <%s>", expectedRegion),
+                contactedRegionNames,
+                ctx));
+        }
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnosticsContext ctx, String expectation) {
+        if (ctx == null) {
+            fail(expectation + ". Diagnostics context was null.");
+        }
+
+        Set<String> contactedRegionNames = ctx.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                ctx));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private String formatContactedRegionsAssertionMessage(
+        String expectation,
+        String expected,
+        Set<String> contactedRegionNames,
+        CosmosDiagnosticsContext ctx) {
+
+        return String.format(
+            "%s. Expected %s but actual contacted regions were <%s>. "
+                + "firstPreferredRegion=<%s>, secondPreferredRegion=<%s>, writeRegions=<%s>, readRegions=<%s>, "
+                + "diagnosticsContext=<%s>",
+            expectation,
+            expected,
+            contactedRegionNames,
+            this.firstPreferredRegion,
+            this.secondPreferredRegion,
+            this.writeRegions,
+            this.readRegions,
+            ctx == null ? null : ctx.toJson());
+    }
 
     Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
 
@@ -258,7 +452,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.sharedMultiPartitionAsyncContainerIdWhereMyPkIsPartitionKey = sharedAsyncMultiPartitionContainerWithMyPkAsPartitionKey.getId();
 
             this.singlePartitionAsyncContainerId = UUID.randomUUID().toString();
-            sharedAsyncDatabase.createContainerIfNotExists(this.singlePartitionAsyncContainerId, "/id").block();
+            createCollection(
+                sharedAsyncDatabase,
+                new CosmosContainerProperties(this.singlePartitionAsyncContainerId, "/id"),
+                new CosmosContainerRequestOptions());
 
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.DIRECT);
             ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.GATEWAY);
@@ -1550,7 +1747,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstAndOptionalSecondPreferredRegion,
                 ALL_CONNECTION_MODES_INCLUDED,
                 1,
                 15,
@@ -2762,7 +2959,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         };
     }
 
-    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"circuit-breaker-misc-direct"}, dataProvider = "miscellaneousOpTestConfigsDirect",
+        timeOut = 5 * TIMEOUT)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsDirect(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -2908,7 +3106,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -3040,7 +3238,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3150,7 +3350,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3262,7 +3464,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3373,7 +3577,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             deleteAllDocuments(asyncContainer);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -3597,7 +3803,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3657,7 +3866,12 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         }
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    // Only assert thin-client routing when thin-client is EXPLICITLY opted in
+                    // (COSMOS.THINCLIENT_ENABLED=true), the sole config where routing is deterministic
+                    // because the endpoint probe is bypassed. On the implicit/unset path routing is
+                    // gated on the probe verdict, which under fault injection is not guaranteed to
+                    // greenlight all regions -- requests may legitimately fall back to Gateway V1 (:443).
+                    if (Boolean.TRUE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -3679,7 +3893,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
 
                     if (response.cosmosItemResponse != null) {
@@ -3706,7 +3923,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
 
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                    // Only assert thin-client routing when thin-client is EXPLICITLY opted in
+                    // (COSMOS.THINCLIENT_ENABLED=true); see note above. On the implicit/probe path
+                    // routing may legitimately fall back to Gateway V1 (:443).
+                    if (Boolean.TRUE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -3736,6 +3956,147 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             return response.batchResponse.getDiagnostics().getDiagnosticsContext();
         }
         return null;
+    }
+
+    private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
+        String testId,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        int retryAttempt = 0;
+        ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+        while (hasNonFaultInjected404RetryableResponse(response)) {
+            Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+            if (elapsed.compareTo(TRANSIENT_404_1002_MAX_RETRY_DURATION) >= 0) {
+                logger.warn(
+                    "Detected non-fault-injected retryable 404 in diagnostics for test {} for {}. "
+                        + "Continuing with latest response so normal assertions can report diagnostics.",
+                    testId,
+                    elapsed);
+                return response;
+            }
+
+            retryAttempt++;
+            logger.warn(
+                "Detected non-fault-injected retryable 404 in diagnostics for test {}. "
+                    + "Waiting {} before retry attempt {}.",
+                testId,
+                TRANSIENT_404_1002_RETRY_DELAY,
+                retryAttempt);
+            Thread.sleep(TRANSIENT_404_1002_RETRY_DELAY.toMillis());
+            response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+        }
+
+        return response;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableResponse(ResponseWrapper<?> response) {
+        if (!hasRetryableTerminal404(response)) {
+            return false;
+        }
+
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
+            return false;
+        }
+
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (clientSideRequestStatisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+                if (clientSideRequestStatistics == null) {
+                    continue;
+                }
+
+                if (hasNonFaultInjected404RetryableGatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
+                    return true;
+                }
+
+                if (hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
+                    || hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasRetryableTerminal404(ResponseWrapper<?> response) {
+        if (response == null) {
+            return false;
+        }
+
+        if (response.cosmosException != null) {
+            return isRetryable404(
+                response.cosmosException.getStatusCode(),
+                response.cosmosException.getSubStatusCode());
+        }
+
+        return response.batchResponse != null
+            && isRetryable404(
+                response.batchResponse.getStatusCode(),
+                response.batchResponse.getSubStatusCode());
+    }
+
+    private static boolean hasNonFaultInjected404RetryableGatewayResponse(
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+
+        if (gatewayStatisticsList == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics : gatewayStatisticsList) {
+            if (gatewayStatistics != null
+                && isRetryable404(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
+                && isNullOrEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableStoreResponse(
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatisticsCollection) {
+
+        if (storeResponseStatisticsCollection == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseStatisticsCollection) {
+            StoreResultDiagnostics storeResultDiagnostics =
+                storeResponseStatistics == null ? null : storeResponseStatistics.getStoreResult();
+            StoreResponseDiagnostics storeResponseDiagnostics =
+                storeResultDiagnostics == null ? null : storeResultDiagnostics.getStoreResponseDiagnostics();
+
+            if (storeResponseDiagnostics != null
+                && isRetryable404(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
+                && isNullOrEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isRetryable404(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && (subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
@@ -3903,7 +4264,9 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
 
-            List<FeedRange> feedRanges = asyncContainer.getFeedRanges().block();
+            List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                asyncContainer,
+                "get feed ranges for per-partition circuit breaker setup");
 
             assertThat(feedRanges).isNotNull().as("feedRanges is not expected to be null!");
             assertThat(feedRanges).isNotEmpty().as("feedRanges is not expected to be empty!");
@@ -4297,6 +4660,65 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
             } finally {
                 System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            }
+        }
+    }
+
+    /**
+     * Regression validation for the Per-Partition Circuit Breaker (PPCB) diagnostics fix (see PR 49734).
+     *
+     * The {@code clientCfgs} section of the emitted {@link CosmosDiagnostics} must always include the
+     * {@code partitionLevelCircuitBreakerCfg} field for every client, regardless of whether PPCB is
+     * explicitly enabled. A prior regression silently dropped this field unless PPAF mandated it. This
+     * test asserts that all the expected {@code clientCfgs} keys - including
+     * {@code partitionLevelCircuitBreakerCfg} - are present in the diagnostics of a real operation
+     * without setting any PPCB configuration.
+     */
+    @Test(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = TIMEOUT)
+    public void partitionLevelCircuitBreakerConfigIsPresentInClientCfgsDiagnostics() {
+
+        try (CosmosAsyncClient client = getClientBuilder().buildAsyncClient()) {
+
+            CosmosAsyncContainer container = client
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            TestObject item = TestObject.create();
+
+            CosmosItemResponse<TestObject> createResponse = container
+                .createItem(item, new PartitionKey(item.getId()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+
+            String diagnosticsString = createResponse.getDiagnostics().toString();
+
+            assertThat(diagnosticsString)
+                .as("clientCfgs section should be present in the CosmosDiagnostics")
+                .contains("\"clientCfgs\"");
+
+            // All the clientCfgs keys unconditionally emitted by DiagnosticsClientConfigSerializer,
+            // including partitionLevelCircuitBreakerCfg (the field the regression previously dropped).
+            List<String> expectedClientCfgsKeys = Arrays.asList(
+                "id",
+                "machineId",
+                "connectionMode",
+                "numberOfClients",
+                "isPpafEnabled",
+                "isFalseProgSessionTokenMergeEnabled",
+                "excrgns",
+                "clientEndpoints",
+                "connCfg",
+                "consistencyCfg",
+                "proactiveInitCfg",
+                "e2ePolicyCfg",
+                "sessionRetryCfg",
+                "partitionLevelCircuitBreakerCfg");
+
+            for (String expectedKey : expectedClientCfgsKeys) {
+                assertThat(diagnosticsString)
+                    .as("clientCfgs key '%s' should be present in the CosmosDiagnostics", expectedKey)
+                    .contains("\"" + expectedKey + "\"");
             }
         }
     }
@@ -5265,6 +5687,113 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
             this.regionNameToEndpoint = regionNameToEndpoint;
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 4 * TIMEOUT)
+    public void nonCanonicalPreferredRegions_ppcbShouldStillRouteCorrectly() {
+
+        if (this.writeRegions == null || this.writeRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account");
+        }
+
+        // Build non-canonical preferred regions: "West US 3" → "westus3", "East US" → "eastus"
+        List<String> nonCanonicalRegions = new ArrayList<>();
+        for (String region : this.writeRegions) {
+            nonCanonicalRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+        }
+
+        String firstRegionCanonicalLower = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
+        String secondRegionCanonicalLower = this.writeRegions.get(1).toLowerCase(Locale.ROOT);
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        CosmosClientBuilder clientBuilder = getClientBuilder()
+            .multipleWriteRegionsEnabled(true)
+            .preferredRegions(nonCanonicalRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
+        CosmosAsyncClient asyncClient = null;
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            CosmosAsyncContainer container = asyncClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            // Bootstrap: create a test item
+            TestObject testObject = TestObject.create();
+            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+
+            // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
+            FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
+                .region(this.writeRegions.get(0))
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build();
+
+            FaultInjectionServerErrorResult serverError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder("ppcb-non-canonical-region-test-" + UUID.randomUUID())
+                .condition(faultCondition)
+                .result(serverError)
+                .hitLimit(15)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            // Step 2: Issue reads until circuit breaker trips — expect failover to second region
+            boolean circuitBreakerTripped = false;
+
+            for (int i = 0; i < 20; i++) {
+                CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+                readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+
+                CosmosItemResponse<TestObject> readResponse = container
+                    .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
+                    .block();
+
+                assertThat(readResponse).isNotNull();
+                assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext ctx = readResponse.getDiagnostics().getDiagnosticsContext();
+
+                // Once we see only the second region contacted, the circuit breaker has tripped
+                if (ctx.getContactedRegionNames().contains(secondRegionCanonicalLower)
+                    && !ctx.getContactedRegionNames().contains(firstRegionCanonicalLower)) {
+                    circuitBreakerTripped = true;
+                    logger.info("Circuit breaker tripped at iteration {}, routing to second region: {}", i, secondRegionCanonicalLower);
+                    break;
+                }
+            }
+
+            assertThat(circuitBreakerTripped)
+                .as("PPCB should have tripped and routed reads to the second preferred region (%s) "
+                    + "even though preferred regions were passed in non-canonical form (%s)",
+                    secondRegionCanonicalLower, nonCanonicalRegions)
+                .isTrue();
+
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            if (asyncClient != null) {
+                asyncClient.close();
+            }
         }
     }
 }

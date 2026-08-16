@@ -45,17 +45,31 @@ public final class KnowledgeBaseRetrievalClientImpl {
     private final KnowledgeBaseRetrievalClientService service;
 
     /**
-     * Service host.
+     * The endpoint URL of the search service.
      */
     private final String endpoint;
 
     /**
-     * Gets Service host.
+     * Gets The endpoint URL of the search service.
      * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * The name of the knowledge base.
+     */
+    private final String knowledgeBaseName;
+
+    /**
+     * Gets The name of the knowledge base.
+     * 
+     * @return the knowledgeBaseName value.
+     */
+    public String getKnowledgeBaseName() {
+        return this.knowledgeBaseName;
     }
 
     /**
@@ -103,24 +117,28 @@ public final class KnowledgeBaseRetrievalClientImpl {
     /**
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
-    public KnowledgeBaseRetrievalClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
+    public KnowledgeBaseRetrievalClientImpl(String endpoint, String knowledgeBaseName,
+        SearchServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, knowledgeBaseName, serviceVersion);
     }
 
     /**
      * Initializes an instance of KnowledgeBaseRetrievalClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
-    public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint,
+    public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, String endpoint, String knowledgeBaseName,
         SearchServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, knowledgeBaseName,
+            serviceVersion);
     }
 
     /**
@@ -128,14 +146,16 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint Service host.
+     * @param endpoint The endpoint URL of the search service.
+     * @param knowledgeBaseName The name of the knowledge base.
      * @param serviceVersion Service version.
      */
     public KnowledgeBaseRetrievalClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, SearchServiceVersion serviceVersion) {
+        String endpoint, String knowledgeBaseName, SearchServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.knowledgeBaseName = knowledgeBaseName;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(KnowledgeBaseRetrievalClientService.class, this.httpPipeline,
             this.getSerializerAdapter());
@@ -148,7 +168,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "KnowledgeBaseRetrievalClient")
     public interface KnowledgeBaseRetrievalClientService {
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -159,7 +179,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
             @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
 
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -203,6 +223,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
      *     maxOutputSize: Integer (Optional)
+     *     maxOutputDocuments: Integer (Optional)
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     retrievalReasoningEffort (Optional): {
      *         kind: String(minimal/low/medium) (Required)
      *     }
@@ -210,12 +232,15 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
+     *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
+     *             maxOutputDocuments: Integer (Optional)
+     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -239,7 +264,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -258,11 +283,12 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                     }
      *                 ]
      *             }
+     *             warning: String (Optional)
      *         }
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -271,11 +297,18 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
+     *     responseSensitivityLabelInfo (Optional): {
+     *         displayName: String (Optional)
+     *         sensitivityLabelId: String (Optional)
+     *         toolTip: String (Optional)
+     *         priority: Integer (Optional)
+     *         color: String (Optional)
+     *         isEncrypted: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
      * 
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -286,13 +319,13 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retrieveWithResponseAsync(String knowledgeBaseName, BinaryData retrievalRequest,
+    public Mono<Response<BinaryData>> retrieveWithResponseAsync(BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                knowledgeBaseName, contentType, retrievalRequest, requestOptions, context));
+                this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, context));
     }
 
     /**
@@ -327,6 +360,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     maxRuntimeInSeconds: Integer (Optional)
      *     maxOutputSize: Integer (Optional)
+     *     maxOutputDocuments: Integer (Optional)
+     *     maxOutputSizeInTokens: Integer (Optional)
      *     retrievalReasoningEffort (Optional): {
      *         kind: String(minimal/low/medium) (Required)
      *     }
@@ -334,12 +369,15 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     outputMode: String(extractiveData/answerSynthesis) (Optional)
      *     knowledgeSourceParams (Optional): [
      *          (Optional){
-     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/indexedSql/web/remoteSharePoint/workIQ/file/mcpServer/fabricDataAgent/fabricOntology) (Required)
      *             knowledgeSourceName: String (Required)
      *             includeReferences: Boolean (Optional)
      *             includeReferenceSourceData: Boolean (Optional)
      *             alwaysQuerySource: Boolean (Optional)
+     *             failOnError: Boolean (Optional)
      *             rerankerThreshold: Float (Optional)
+     *             maxOutputDocuments: Integer (Optional)
+     *             enableImageServing: Boolean (Optional)
      *         }
      *     ]
      * }
@@ -363,7 +401,7 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *     ]
      *     activity (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/modelQueryPlanning/modelAnswerSynthesis/agenticReasoning) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql/modelQueryPlanning/modelAnswerSynthesis/modelWebSummarization/agenticReasoning) (Required)
      *             id: int (Required)
      *             elapsedMs: Integer (Optional)
      *             error (Optional): {
@@ -382,11 +420,12 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *                     }
      *                 ]
      *             }
+     *             warning: String (Optional)
      *         }
      *     ]
      *     references (Optional): [
      *          (Optional){
-     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *             type: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint/workIQ/fabricDataAgent/fabricOntology/mcpServer/file/indexedSql) (Required)
      *             id: String (Required)
      *             activitySource: int (Required)
      *             sourceData (Optional): {
@@ -395,11 +434,18 @@ public final class KnowledgeBaseRetrievalClientImpl {
      *             rerankerScore: Float (Optional)
      *         }
      *     ]
+     *     responseSensitivityLabelInfo (Optional): {
+     *         displayName: String (Optional)
+     *         sensitivityLabelId: String (Optional)
+     *         toolTip: String (Optional)
+     *         priority: Integer (Optional)
+     *         color: String (Optional)
+     *         isEncrypted: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
      * 
-     * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -409,11 +455,10 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * @return the output contract for the retrieval response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> retrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> retrieveWithResponse(BinaryData retrievalRequest, RequestOptions requestOptions) {
         final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            knowledgeBaseName, contentType, retrievalRequest, requestOptions, Context.NONE);
+            this.getKnowledgeBaseName(), contentType, retrievalRequest, requestOptions, Context.NONE);
     }
 }

@@ -27,7 +27,7 @@ public final class ConfigurationStoresPurgeDeletedMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.configurationStores().purgeDeleted("smv", "xwyjsflhhc", com.azure.core.util.Context.NONE);
+        manager.configurationStores().purgeDeleted("bnhlmc", "l", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trafficmanager.generated;
  */
 public final class GeographicHierarchiesGetDefaultSamples {
     /*
-     * x-ms-original-file: 2022-04-01/GeographicHierarchy-GET-default.json
+     * x-ms-original-file: 2024-04-01-preview/GeographicHierarchy-GET-default.json
      */
     /**
      * Sample code: GeographicHierarchy-GET-default.

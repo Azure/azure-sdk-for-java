@@ -4,11 +4,11 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
 
     private final Random r;
 
-    AsyncReadManyBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
-        super(cfg, scheduler);
+    AsyncReadManyBenchmark(TenantWorkloadConfig cfg) {
+        super(cfg);
         r = new Random();
     }
 
@@ -38,6 +38,8 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
             cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
         }
 
-        return cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
+        CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions();
+        options.setExcludedRegions(workloadConfig.getExcludedRegionsList());
+        return cosmosAsyncContainer.readMany(cosmosItemIdentities, options, PojoizedJson.class);
     }
 }

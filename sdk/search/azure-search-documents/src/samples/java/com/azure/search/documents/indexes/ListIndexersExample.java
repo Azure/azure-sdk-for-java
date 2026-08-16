@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.models.SearchIndexer;
 
 public class ListIndexersExample {
 
@@ -31,13 +30,8 @@ public class ListIndexersExample {
     }
 
     private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
-        indexerAsyncClient.listIndexersWithResponse(null).subscribe(response -> {
-            System.out.printf("Response code: %s%n", response.getStatusCode());
-
-            System.out.println("Found the following indexers:");
-            for (SearchIndexer indexer : response.getValue().getIndexers()) {
-                System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag());
-            }
-        });
+        System.out.println("Found the following indexers:");
+        indexerAsyncClient.listIndexers().subscribe(indexer ->
+            System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag()));
     }
 }

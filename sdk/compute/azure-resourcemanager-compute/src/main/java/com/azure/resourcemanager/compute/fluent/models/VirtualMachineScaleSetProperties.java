@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.ExternalHealthPolicy;
 import com.azure.resourcemanager.compute.models.HighSpeedInterconnectPlacement;
+import com.azure.resourcemanager.compute.models.LifecycleHooksProfile;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
@@ -160,6 +162,16 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
      * Specifies the high speed interconnect placement for the virtual machine scale set.
      */
     private HighSpeedInterconnectPlacement highSpeedInterconnectPlacement;
+
+    /*
+     * Specifies the lifecycle hooks profile for the virtual machine scale set.
+     */
+    private LifecycleHooksProfile lifecycleHooksProfile;
+
+    /*
+     * Specifies the external health policy for the virtual machine scale set.
+     */
+    private ExternalHealthPolicy externalHealthPolicy;
 
     /**
      * Creates an instance of VirtualMachineScaleSetProperties class.
@@ -648,6 +660,46 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
     }
 
     /**
+     * Get the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @return the lifecycleHooksProfile value.
+     */
+    public LifecycleHooksProfile lifecycleHooksProfile() {
+        return this.lifecycleHooksProfile;
+    }
+
+    /**
+     * Set the lifecycleHooksProfile property: Specifies the lifecycle hooks profile for the virtual machine scale set.
+     * 
+     * @param lifecycleHooksProfile the lifecycleHooksProfile value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withLifecycleHooksProfile(LifecycleHooksProfile lifecycleHooksProfile) {
+        this.lifecycleHooksProfile = lifecycleHooksProfile;
+        return this;
+    }
+
+    /**
+     * Get the externalHealthPolicy property: Specifies the external health policy for the virtual machine scale set.
+     * 
+     * @return the externalHealthPolicy value.
+     */
+    public ExternalHealthPolicy externalHealthPolicy() {
+        return this.externalHealthPolicy;
+    }
+
+    /**
+     * Set the externalHealthPolicy property: Specifies the external health policy for the virtual machine scale set.
+     * 
+     * @param externalHealthPolicy the externalHealthPolicy value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withExternalHealthPolicy(ExternalHealthPolicy externalHealthPolicy) {
+        this.externalHealthPolicy = externalHealthPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -683,6 +735,12 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
         if (skuProfile() != null) {
             skuProfile().validate();
         }
+        if (lifecycleHooksProfile() != null) {
+            lifecycleHooksProfile().validate();
+        }
+        if (externalHealthPolicy() != null) {
+            externalHealthPolicy().validate();
+        }
     }
 
     /**
@@ -716,6 +774,8 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
         jsonWriter.writeJsonField("skuProfile", this.skuProfile);
         jsonWriter.writeStringField("highSpeedInterconnectPlacement",
             this.highSpeedInterconnectPlacement == null ? null : this.highSpeedInterconnectPlacement.toString());
+        jsonWriter.writeJsonField("lifecycleHooksProfile", this.lifecycleHooksProfile);
+        jsonWriter.writeJsonField("externalHealthPolicy", this.externalHealthPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -797,6 +857,12 @@ public final class VirtualMachineScaleSetProperties implements JsonSerializable<
                 } else if ("highSpeedInterconnectPlacement".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetProperties.highSpeedInterconnectPlacement
                         = HighSpeedInterconnectPlacement.fromString(reader.getString());
+                } else if ("lifecycleHooksProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.lifecycleHooksProfile
+                        = LifecycleHooksProfile.fromJson(reader);
+                } else if ("externalHealthPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.externalHealthPolicy
+                        = ExternalHealthPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

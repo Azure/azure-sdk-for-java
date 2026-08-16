@@ -18,13 +18,41 @@ import java.util.List;
 @Fluent
 public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     /*
-     * Repeating time interval which only support the following ISO 8601 format [R/startDateTime/Duration]. Example:
-     * R/2007-03-01T13:00:00Z/P1Y2M10DT2H30M
+     * Repeating time intervals that define the backup schedule.
+     * 
+     * Each value must follow the format: `R/YYYY-MM-DDThh:mm:ss[.fff][Z|(+/-)hh:mm]/Duration`
+     * 
+     * Only the exact formats listed below are supported. Other ISO 8601 variations are not accepted.
+     * 
+     * Supported time formats:
+     * - `Thh:mm:ss.fff` (with milliseconds)
+     * - `Thh:mm:ss` (with seconds)
+     * - `Thh:mm` (hours and minutes only)
+     * 
+     * A timezone indicator (`Z`, `+hh:mm`, or `-hh:mm`) may be appended to any of the above.
+     * 
+     * Unsupported formats include compact notation such as `T1430`, `T143045`, or `T14.5`.
+     * 
+     * Examples:
+     * - `R/2023-10-15T14:30:00Z/P1W`
+     * - `R/2023-10-15T14:30:45.123+05:30/P1D`
+     * - `R/2023-10-15T14:30Z/P1D`
      */
     private List<String> repeatingTimeIntervals;
 
     /*
-     * Time zone for a schedule. Example: Pacific Standard Time
+     * Time Zone for a schedule.
+     * 
+     * Supported timezone indicators include:
+     * - 'Z' for UTC
+     * - '+00:00'
+     * - '+05:30'
+     * - '-08:00'
+     * 
+     * Examples:
+     * - 2023-10-15T14:30:45Z
+     * - 2023-10-15T14:30:45.123+05:30
+     * - 2023-10-15T14:30-08:00
      */
     private String timeZone;
 
@@ -35,8 +63,25 @@ public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     }
 
     /**
-     * Get the repeatingTimeIntervals property: Repeating time interval which only support the following ISO 8601 format
-     * [R/startDateTime/Duration]. Example: R/2007-03-01T13:00:00Z/P1Y2M10DT2H30M.
+     * Get the repeatingTimeIntervals property: Repeating time intervals that define the backup schedule.
+     * 
+     * Each value must follow the format: `R/YYYY-MM-DDThh:mm:ss[.fff][Z|(+/-)hh:mm]/Duration`
+     * 
+     * Only the exact formats listed below are supported. Other ISO 8601 variations are not accepted.
+     * 
+     * Supported time formats:
+     * - `Thh:mm:ss.fff` (with milliseconds)
+     * - `Thh:mm:ss` (with seconds)
+     * - `Thh:mm` (hours and minutes only)
+     * 
+     * A timezone indicator (`Z`, `+hh:mm`, or `-hh:mm`) may be appended to any of the above.
+     * 
+     * Unsupported formats include compact notation such as `T1430`, `T143045`, or `T14.5`.
+     * 
+     * Examples:
+     * - `R/2023-10-15T14:30:00Z/P1W`
+     * - `R/2023-10-15T14:30:45.123+05:30/P1D`
+     * - `R/2023-10-15T14:30Z/P1D`.
      * 
      * @return the repeatingTimeIntervals value.
      */
@@ -45,8 +90,25 @@ public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     }
 
     /**
-     * Set the repeatingTimeIntervals property: Repeating time interval which only support the following ISO 8601 format
-     * [R/startDateTime/Duration]. Example: R/2007-03-01T13:00:00Z/P1Y2M10DT2H30M.
+     * Set the repeatingTimeIntervals property: Repeating time intervals that define the backup schedule.
+     * 
+     * Each value must follow the format: `R/YYYY-MM-DDThh:mm:ss[.fff][Z|(+/-)hh:mm]/Duration`
+     * 
+     * Only the exact formats listed below are supported. Other ISO 8601 variations are not accepted.
+     * 
+     * Supported time formats:
+     * - `Thh:mm:ss.fff` (with milliseconds)
+     * - `Thh:mm:ss` (with seconds)
+     * - `Thh:mm` (hours and minutes only)
+     * 
+     * A timezone indicator (`Z`, `+hh:mm`, or `-hh:mm`) may be appended to any of the above.
+     * 
+     * Unsupported formats include compact notation such as `T1430`, `T143045`, or `T14.5`.
+     * 
+     * Examples:
+     * - `R/2023-10-15T14:30:00Z/P1W`
+     * - `R/2023-10-15T14:30:45.123+05:30/P1D`
+     * - `R/2023-10-15T14:30Z/P1D`.
      * 
      * @param repeatingTimeIntervals the repeatingTimeIntervals value to set.
      * @return the BackupSchedule object itself.
@@ -57,7 +119,18 @@ public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     }
 
     /**
-     * Get the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
+     * Get the timeZone property: Time Zone for a schedule.
+     * 
+     * Supported timezone indicators include:
+     * - 'Z' for UTC
+     * - '+00:00'
+     * - '+05:30'
+     * - '-08:00'
+     * 
+     * Examples:
+     * - 2023-10-15T14:30:45Z
+     * - 2023-10-15T14:30:45.123+05:30
+     * - 2023-10-15T14:30-08:00.
      * 
      * @return the timeZone value.
      */
@@ -66,7 +139,18 @@ public final class BackupSchedule implements JsonSerializable<BackupSchedule> {
     }
 
     /**
-     * Set the timeZone property: Time zone for a schedule. Example: Pacific Standard Time.
+     * Set the timeZone property: Time Zone for a schedule.
+     * 
+     * Supported timezone indicators include:
+     * - 'Z' for UTC
+     * - '+00:00'
+     * - '+05:30'
+     * - '-08:00'
+     * 
+     * Examples:
+     * - 2023-10-15T14:30:45Z
+     * - 2023-10-15T14:30:45.123+05:30
+     * - 2023-10-15T14:30-08:00.
      * 
      * @param timeZone the timeZone value to set.
      * @return the BackupSchedule object itself.

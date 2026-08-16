@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DataSharesCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Create.json
+     * x-ms-original-file: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Create.json
      */
     /**
      * Sample code: CreateDataShare.
@@ -33,7 +33,7 @@ public final class DataSharesCreateSamples {
                             .withAccessPolicies(Arrays.asList(new StorageDataShareAccessPolicy()
                                 .withPrincipalId("00000000-0000-0000-0000-000000000000")
                                 .withTenantId("00000000-0000-0000-0000-000000000000")
-                                .withPermission(StorageDataShareAccessPolicyPermission.fromString("r"))))
+                                .withPermission(StorageDataShareAccessPolicyPermission.READ)))
                             .withAssets(Arrays.asList(new StorageDataShareAsset().withAssetPath("/container/folder/foo")
                                 .withDisplayName("virtualFoo")))),
                 com.azure.core.util.Context.NONE);

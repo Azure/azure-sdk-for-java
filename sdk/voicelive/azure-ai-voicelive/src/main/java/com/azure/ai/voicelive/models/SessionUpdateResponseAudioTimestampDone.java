@@ -14,7 +14,7 @@ import java.io.IOException;
  * Indicates completion of audio timestamp delivery for a response.
  */
 @Immutable
-public final class SessionUpdateResponseAudioTimestampDone extends SessionUpdate {
+public final class SessionUpdateResponseAudioTimestampDone extends SessionServerEvent {
 
     /*
      * The type of event.

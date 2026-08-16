@@ -9,22 +9,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.function.Function;
 
+/**
+ * Minimal CLI argument holder.
+ * Only the path to the JSON config file and help flag are CLI arguments.
+ * All other settings live in the JSON config (see {@link BenchmarkConfig}).
+ */
 public class Configuration {
 
-    @Parameter(names = "-suppressCleanup", description = "Skip deleting database/container on shutdown (for multi-cycle CHURN)")
-    private boolean suppressCleanup = false;
-
-    @Parameter(names = "-workloadConfig", description = "Path to workload configuration JSON file")
+    @Parameter(names = "-workloadConfig", description = "Path to workload configuration JSON file (required)", required = true)
     private String workloadConfig;
-
-    @Parameter(names = "-cycles", description = "Number of create/destroy cycles (1 = single run)")
-    private int cycles = 1;
-
-    @Parameter(names = "-settleTimeMs", description = "Milliseconds to wait between cycles for thread/resource cleanup. Default: 90000 when cycles>1, 0 otherwise.")
-    private long settleTimeMs = -1;
-
-    @Parameter(names = "-gcBetweenCycles", description = "Force GC during settle period between cycles")
-    private boolean gcBetweenCycles = true;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -33,28 +26,8 @@ public class Configuration {
         return help;
     }
 
-    public boolean isGcBetweenCycles() {
-        return gcBetweenCycles;
-    }
-
     public String getWorkloadConfig() {
         return workloadConfig;
-    }
-
-    public int getCycles() {
-        return cycles;
-    }
-
-    public long getSettleTimeMs() {
-        return settleTimeMs;
-    }
-
-    public boolean isSuppressCleanup() {
-        return this.suppressCleanup;
-    }
-
-    public void setSuppressCleanup(boolean suppressCleanup) {
-        this.suppressCleanup = suppressCleanup;
     }
 
     public String toString() {

@@ -21,7 +21,7 @@ public final class RecoveryPointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"ozihmipgawt\",\"name\":\"xp\",\"type\":\"y\"}]}";
+            = "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"i\",\"name\":\"flqo\",\"type\":\"quvre\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class RecoveryPointsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AzureBackupRecoveryPointResource> response = manager.recoveryPoints()
-            .list("lzok", "coxpelnjeta", "ltsxoatf", "g", "pnpbswveflocc", com.azure.core.util.Context.NONE);
+            .list("hkwfbkgozxwop", "bydpizqaclnapxb", "yg", "ugjknf", "mfcttux", com.azure.core.util.Context.NONE);
 
     }
 }

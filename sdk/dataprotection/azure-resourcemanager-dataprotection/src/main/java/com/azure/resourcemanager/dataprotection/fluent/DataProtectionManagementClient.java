@@ -68,6 +68,13 @@ public interface DataProtectionManagementClient {
     BackupVaultOperationResultsClient getBackupVaultOperationResults();
 
     /**
+     * Gets the DeletedBackupVaultsClient object to access its operations.
+     * 
+     * @return the DeletedBackupVaultsClient object.
+     */
+    DeletedBackupVaultsClient getDeletedBackupVaults();
+
+    /**
      * Gets the ResourceGuardsClient object to access its operations.
      * 
      * @return the ResourceGuardsClient object.

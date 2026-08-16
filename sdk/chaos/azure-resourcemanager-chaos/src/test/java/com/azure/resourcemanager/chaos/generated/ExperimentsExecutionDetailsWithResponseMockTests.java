@@ -20,7 +20,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
     @Test
     public void testExecutionDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"type\":\"eacvl\",\"id\":\"ygdyftumrtw\",\"name\":\"wjslbiwkojgcyzt\",\"properties\":{\"status\":\"z\",\"startedAt\":\"2021-07-03T06:16:35Z\",\"stoppedAt\":\"2021-03-07T16:28:02Z\",\"failureReason\":\"hchqnrnrpx\",\"lastActionAt\":\"2021-08-04T01:59:45Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"qgaifmviklbydv\",\"stepId\":\"bejdznxcv\",\"status\":\"rhnj\",\"branches\":[{},{},{}]},{\"stepName\":\"v\",\"stepId\":\"ovqfzge\",\"status\":\"dftuljltduce\",\"branches\":[{},{},{},{}]},{\"stepName\":\"czu\",\"stepId\":\"ejwcwwqiok\",\"status\":\"sx\",\"branches\":[{},{}]}]}}}";
+            = "{\"type\":\"havpmhbrbqgvg\",\"id\":\"pbbttefjoknss\",\"name\":\"zqedikdfrdbi\",\"properties\":{\"status\":\"jgeihfqlggwfi\",\"startedAt\":\"2021-11-27T16:20:17Z\",\"stoppedAt\":\"2021-03-10T16:18:21Z\",\"provisioningState\":\"Running\",\"failureReason\":\"yephmgtvljvrcmyf\",\"lastActionAt\":\"2021-07-04T14:58:40Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"pomyqwcabvnuile\",\"stepId\":\"aswlp\",\"status\":\"gm\",\"branches\":[{},{},{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecutionDetails response = manager.experiments()
-            .executionDetailsWithResponse("fqntcyp", "xjvfoimwksl", "rcizjxvyd", com.azure.core.util.Context.NONE)
+            .executionDetailsWithResponse("gniiprglvaw", "wzdufypivlsbb", "pmcubkmifoxxkub",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

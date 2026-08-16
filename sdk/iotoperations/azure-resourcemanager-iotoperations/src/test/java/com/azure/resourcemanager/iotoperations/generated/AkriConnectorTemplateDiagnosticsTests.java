@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AkriConnectorTemplateDiagnosticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AkriConnectorTemplateDiagnostics model
-            = BinaryData.fromString("{\"logs\":{\"level\":\"elfk\"}}").toObject(AkriConnectorTemplateDiagnostics.class);
-        Assertions.assertEquals("elfk", model.logs().level());
+        AkriConnectorTemplateDiagnostics model = BinaryData.fromString("{\"logs\":{\"level\":\"jbibg\"}}")
+            .toObject(AkriConnectorTemplateDiagnostics.class);
+        Assertions.assertEquals("jbibg", model.logs().level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateDiagnostics model
-            = new AkriConnectorTemplateDiagnostics().withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("elfk"));
+            = new AkriConnectorTemplateDiagnostics().withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("jbibg"));
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateDiagnostics.class);
-        Assertions.assertEquals("elfk", model.logs().level());
+        Assertions.assertEquals("jbibg", model.logs().level());
     }
 }

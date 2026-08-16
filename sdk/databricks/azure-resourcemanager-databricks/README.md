@@ -1,8 +1,8 @@
-# Azure Resource Manager AzureDatabricks client library for Java
+# Azure Resource Manager Azure Databricks client library for Java
 
-Azure Resource Manager AzureDatabricks client library for Java.
+Azure Resource Manager Azure Databricks client library for Java.
 
-This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace / Access Connector resources. Package tag package-2023-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Azure Databricks Management SDK. ARM Databricks. Package api-version 2026-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -52,7 +52,7 @@ Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment 
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -60,7 +60,7 @@ AzureDatabricksManager manager = AzureDatabricksManager
     .authenticate(credential, profile);
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+The sample code assumes global Azure. Please change the `AzureCloud.AZURE_PUBLIC_CLOUD` variable if otherwise.
 
 See [Authentication][authenticate] for more options.
 
@@ -75,8 +75,8 @@ workspace = databricksManager.workspaces()
     .define(workspaceName)
     .withRegion(REGION)
     .withExistingResourceGroup(resourceGroupName)
-    .withManagedResourceGroupId(managedResourceGroupId)
-    .withSku(new Sku().withName("standard"))
+    .withComputeMode(ComputeMode.SERVERLESS)
+    .withSku(new Sku().withName("premium"))
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/databricks/azure-resourcemanager-databricks/SAMPLE.md)
@@ -109,5 +109,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-

@@ -15,8 +15,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ClientEncryptionKeyGetResultsInner;
-import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionStorageInfoCollectionInner;
-import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionThroughputInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResultsInner;
@@ -27,9 +25,6 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlUserDefinedFunctionGetR
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
-import com.azure.resourcemanager.cosmos.models.MergeParameters;
-import com.azure.resourcemanager.cosmos.models.RedistributeThroughputParameters;
-import com.azure.resourcemanager.cosmos.models.RetrieveThroughputParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlRoleAssignmentCreateUpdateParameters;
@@ -371,128 +366,6 @@ public interface SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(String resourceGroupName, String accountName,
         Context context);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> sqlDatabasePartitionMergeWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginSqlDatabasePartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
-            MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginSqlDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
-            MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginSqlDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
-            MergeParameters mergeParameters, Context context);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionStorageInfoCollectionInner> sqlDatabasePartitionMergeAsync(String resourceGroupName,
-        String accountName, String databaseName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionStorageInfoCollectionInner sqlDatabasePartitionMerge(String resourceGroupName, String accountName,
-        String databaseName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionStorageInfoCollectionInner sqlDatabasePartitionMerge(String resourceGroupName, String accountName,
-        String databaseName, MergeParameters mergeParameters, Context context);
 
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
@@ -899,260 +772,6 @@ public interface SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName,
         String databaseName, Context context);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRetrieveThroughputDistributionWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName,
-        RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
-            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
-            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
-            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters, Context context);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRetrieveThroughputDistributionAsync(
-        String resourceGroupName, String accountName, String databaseName,
-        RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlDatabaseRetrieveThroughputDistribution(String resourceGroupName,
-        String accountName, String databaseName, RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlDatabaseRetrieveThroughputDistribution(String resourceGroupName,
-        String accountName, String databaseName, RetrieveThroughputParameters retrieveThroughputParameters,
-        Context context);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRedistributeThroughputWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
-            RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
-            RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
-            RedistributeThroughputParameters redistributeThroughputParameters, Context context);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRedistributeThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlDatabaseRedistributeThroughput(String resourceGroupName,
-        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL database.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlDatabaseRedistributeThroughput(String resourceGroupName,
-        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters,
-        Context context);
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
@@ -1585,279 +1204,6 @@ public interface SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName,
         String accountName, String databaseName, String containerName, Context context);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> sqlContainerRetrieveThroughputDistributionWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName,
-        RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
-            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
-            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
-            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters,
-            Context context);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRetrieveThroughputDistributionAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName,
-        RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlContainerRetrieveThroughputDistribution(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RetrieveThroughputParameters retrieveThroughputParameters);
-
-    /**
-     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
-     * current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlContainerRetrieveThroughputDistribution(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RetrieveThroughputParameters retrieveThroughputParameters, Context context);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> sqlContainerRedistributeThroughputWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName, RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
-        beginSqlContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName, RedistributeThroughputParameters redistributeThroughputParameters, Context context);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRedistributeThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlContainerRedistributeThroughput(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RedistributeThroughputParameters redistributeThroughputParameters);
-
-    /**
-     * Redistribute throughput for an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
-     * SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionThroughputInfoResultInner sqlContainerRedistributeThroughput(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        RedistributeThroughputParameters redistributeThroughputParameters, Context context);
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
@@ -2469,136 +1815,6 @@ public interface SqlResourcesClient {
         String databaseName, Context context);
 
     /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listSqlContainerPartitionMergeWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginListSqlContainerPartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginListSqlContainerPartitionMerge(String resourceGroupName, String accountName, String databaseName,
-            String containerName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
-     * merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
-        beginListSqlContainerPartitionMerge(String resourceGroupName, String accountName, String databaseName,
-            String containerName, MergeParameters mergeParameters, Context context);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PhysicalPartitionStorageInfoCollectionInner> listSqlContainerPartitionMergeAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionStorageInfoCollectionInner listSqlContainerPartitionMerge(String resourceGroupName,
-        String accountName, String databaseName, String containerName, MergeParameters mergeParameters);
-
-    /**
-     * Merges the partitions of a SQL Container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param mergeParameters The parameters for the merge operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of physical partitions and their properties returned by a merge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PhysicalPartitionStorageInfoCollectionInner listSqlContainerPartitionMerge(String resourceGroupName,
-        String accountName, String databaseName, String containerName, MergeParameters mergeParameters,
-        Context context);
-
-    /**
      * Retrieves continuous backup information for a container resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2609,7 +1825,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName,
@@ -2626,7 +1842,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
@@ -2644,7 +1860,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
@@ -2663,7 +1879,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
@@ -2681,7 +1897,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName,
@@ -2698,7 +1914,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
@@ -2716,7 +1932,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,

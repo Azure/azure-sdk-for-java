@@ -26,12 +26,22 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computelimit.fluent.ComputeLimitClient;
 import com.azure.resourcemanager.computelimit.implementation.ComputeLimitClientBuilder;
+import com.azure.resourcemanager.computelimit.implementation.FeaturesImpl;
 import com.azure.resourcemanager.computelimit.implementation.GuestSubscriptionsImpl;
+import com.azure.resourcemanager.computelimit.implementation.MemberCapOverridesImpl;
 import com.azure.resourcemanager.computelimit.implementation.OperationsImpl;
+import com.azure.resourcemanager.computelimit.implementation.SharedLimitCapsImpl;
 import com.azure.resourcemanager.computelimit.implementation.SharedLimitsImpl;
+import com.azure.resourcemanager.computelimit.implementation.TrustedHostSubscriptionsImpl;
+import com.azure.resourcemanager.computelimit.implementation.VmFamiliesImpl;
+import com.azure.resourcemanager.computelimit.models.Features;
 import com.azure.resourcemanager.computelimit.models.GuestSubscriptions;
+import com.azure.resourcemanager.computelimit.models.MemberCapOverrides;
 import com.azure.resourcemanager.computelimit.models.Operations;
+import com.azure.resourcemanager.computelimit.models.SharedLimitCaps;
 import com.azure.resourcemanager.computelimit.models.SharedLimits;
+import com.azure.resourcemanager.computelimit.models.TrustedHostSubscriptions;
+import com.azure.resourcemanager.computelimit.models.VmFamilies;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -49,7 +59,17 @@ public final class ComputeLimitManager {
 
     private GuestSubscriptions guestSubscriptions;
 
+    private TrustedHostSubscriptions trustedHostSubscriptions;
+
     private SharedLimits sharedLimits;
+
+    private Features features;
+
+    private VmFamilies vmFamilies;
+
+    private SharedLimitCaps sharedLimitCaps;
+
+    private MemberCapOverrides memberCapOverrides;
 
     private final ComputeLimitClient clientObject;
 
@@ -291,6 +311,19 @@ public final class ComputeLimitManager {
     }
 
     /**
+     * Gets the resource collection API of TrustedHostSubscriptions. It manages TrustedHostSubscription.
+     * 
+     * @return Resource collection API of TrustedHostSubscriptions.
+     */
+    public TrustedHostSubscriptions trustedHostSubscriptions() {
+        if (this.trustedHostSubscriptions == null) {
+            this.trustedHostSubscriptions
+                = new TrustedHostSubscriptionsImpl(clientObject.getTrustedHostSubscriptions(), this);
+        }
+        return trustedHostSubscriptions;
+    }
+
+    /**
      * Gets the resource collection API of SharedLimits. It manages SharedLimit.
      * 
      * @return Resource collection API of SharedLimits.
@@ -300,6 +333,54 @@ public final class ComputeLimitManager {
             this.sharedLimits = new SharedLimitsImpl(clientObject.getSharedLimits(), this);
         }
         return sharedLimits;
+    }
+
+    /**
+     * Gets the resource collection API of Features.
+     * 
+     * @return Resource collection API of Features.
+     */
+    public Features features() {
+        if (this.features == null) {
+            this.features = new FeaturesImpl(clientObject.getFeatures(), this);
+        }
+        return features;
+    }
+
+    /**
+     * Gets the resource collection API of VmFamilies.
+     * 
+     * @return Resource collection API of VmFamilies.
+     */
+    public VmFamilies vmFamilies() {
+        if (this.vmFamilies == null) {
+            this.vmFamilies = new VmFamiliesImpl(clientObject.getVmFamilies(), this);
+        }
+        return vmFamilies;
+    }
+
+    /**
+     * Gets the resource collection API of SharedLimitCaps. It manages SharedLimitCap.
+     * 
+     * @return Resource collection API of SharedLimitCaps.
+     */
+    public SharedLimitCaps sharedLimitCaps() {
+        if (this.sharedLimitCaps == null) {
+            this.sharedLimitCaps = new SharedLimitCapsImpl(clientObject.getSharedLimitCaps(), this);
+        }
+        return sharedLimitCaps;
+    }
+
+    /**
+     * Gets the resource collection API of MemberCapOverrides. It manages MemberCapOverride.
+     * 
+     * @return Resource collection API of MemberCapOverrides.
+     */
+    public MemberCapOverrides memberCapOverrides() {
+        if (this.memberCapOverrides == null) {
+            this.memberCapOverrides = new MemberCapOverridesImpl(clientObject.getMemberCapOverrides(), this);
+        }
+        return memberCapOverrides;
     }
 
     /**

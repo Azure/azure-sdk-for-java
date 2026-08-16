@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Configuration for the ingress managed gateway. See https://aka.ms/k8s-gateway-api for more details.
+ * Configuration for managed Gateway API CRDs. See https://aka.ms/k8s-gateway-api for more details.
  */
 @Fluent
 public final class ManagedClusterIngressProfileGatewayConfiguration

@@ -5,7 +5,7 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.BetaMemoryStoresClient;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
@@ -56,7 +56,7 @@ public class MemorySearchAsync {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
         ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Memory store operations use sync client for setup/teardown
-        MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
+        BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
 
         String memoryStoreName = "my_memory_store";
         String scope = "user_123";

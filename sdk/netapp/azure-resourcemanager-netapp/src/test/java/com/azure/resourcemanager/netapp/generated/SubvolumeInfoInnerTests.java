@@ -12,21 +12,21 @@ public final class SubvolumeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"path\":\"lkwzdqybxceakxcp\",\"size\":2916503884742775477,\"parentPath\":\"yiaseqchkrttzraz\",\"provisioningState\":\"gyki\"},\"id\":\"mvanbwzo\",\"name\":\"mnrxxbsojkl\",\"type\":\"nhmdptysprqs\"}")
+            "{\"properties\":{\"path\":\"wqrjzfrg\",\"size\":1666719420079000960,\"parentPath\":\"cmbuocnjrohmbpy\",\"provisioningState\":\"xameblydyvkfkm\"},\"id\":\"cxneh\",\"name\":\"sm\",\"type\":\"odlfpyapucygvo\"}")
             .toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("lkwzdqybxceakxcp", model.path());
-        Assertions.assertEquals(2916503884742775477L, model.size());
-        Assertions.assertEquals("yiaseqchkrttzraz", model.parentPath());
+        Assertions.assertEquals("wqrjzfrg", model.path());
+        Assertions.assertEquals(1666719420079000960L, model.size());
+        Assertions.assertEquals("cmbuocnjrohmbpy", model.parentPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubvolumeInfoInner model = new SubvolumeInfoInner().withPath("lkwzdqybxceakxcp")
-            .withSize(2916503884742775477L)
-            .withParentPath("yiaseqchkrttzraz");
+        SubvolumeInfoInner model = new SubvolumeInfoInner().withPath("wqrjzfrg")
+            .withSize(1666719420079000960L)
+            .withParentPath("cmbuocnjrohmbpy");
         model = BinaryData.fromObject(model).toObject(SubvolumeInfoInner.class);
-        Assertions.assertEquals("lkwzdqybxceakxcp", model.path());
-        Assertions.assertEquals(2916503884742775477L, model.size());
-        Assertions.assertEquals("yiaseqchkrttzraz", model.parentPath());
+        Assertions.assertEquals("wqrjzfrg", model.path());
+        Assertions.assertEquals(1666719420079000960L, model.size());
+        Assertions.assertEquals("cmbuocnjrohmbpy", model.parentPath());
     }
 }

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
@@ -48,7 +48,7 @@ public final class BackupVaultsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/VaultCRUD/PatchBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-03-01/VaultCRUD/PatchBackupVaultWithCMK.json
      */
     /**
      * Sample code: Patch BackupVault with CMK.

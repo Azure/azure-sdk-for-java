@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class BlobContainersGetSamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersGet.json
+     * x-ms-original-file: 2026-04-01/BlobContainersGet.json
      */
     /**
      * Sample code: GetContainers.
@@ -23,7 +23,7 @@ public final class BlobContainersGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
+     * x-ms-original-file: 2026-04-01/BlobContainersGetWithAllowProtectedAppendWritesAll.json
      */
     /**
      * Sample code: GetBlobContainersGetWithAllowProtectedAppendWritesAll.

@@ -3,7 +3,12 @@
 
 
 import os
-from termcolor import colored
+
+try:
+    from termcolor import colored
+except ImportError:
+    def colored(content, *args, **kwargs):
+        return content
 
 
 class Log:

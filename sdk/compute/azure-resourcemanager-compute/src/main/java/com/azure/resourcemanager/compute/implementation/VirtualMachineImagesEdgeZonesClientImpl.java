@@ -112,7 +112,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -137,7 +137,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (edgeZone == null) {
             return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPublishers(this.client.getEndpoint(), apiVersion,
@@ -148,7 +148,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +174,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (edgeZone == null) {
             return Mono.error(new IllegalArgumentException("Parameter edgeZone is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listPublishers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -184,7 +184,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -200,7 +200,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +218,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location and edge zone.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +262,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOffers(this.client.getEndpoint(), apiVersion,
@@ -273,7 +273,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -303,7 +303,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listOffers(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -313,7 +313,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +332,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -351,7 +351,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image offers for the specified location, edge zone and publisher.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +367,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -400,7 +400,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (offer == null) {
             return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), apiVersion,
@@ -411,7 +411,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -445,7 +445,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (offer == null) {
             return Mono.error(new IllegalArgumentException("Parameter offer is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listSkus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -455,7 +455,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -475,7 +475,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -495,7 +495,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -514,7 +514,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -554,7 +554,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (skus == null) {
             return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -566,7 +566,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -608,7 +608,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
         if (skus == null) {
             return Mono.error(new IllegalArgumentException("Parameter skus is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, edgeZone,
@@ -619,7 +619,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -644,7 +644,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -670,7 +670,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * Gets a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
      * SKU.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param edgeZone The name of the edge zone.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -735,7 +735,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, location, edgeZone,
@@ -788,7 +788,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, location, edgeZone, publisherName, offer, skus,

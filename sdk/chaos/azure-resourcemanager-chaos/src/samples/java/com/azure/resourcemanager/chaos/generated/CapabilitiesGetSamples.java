@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class CapabilitiesGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Capabilities_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Capabilities_Get.json
      */
     /**
      * Sample code: Get a Capability that extends a virtual machine Target resource.

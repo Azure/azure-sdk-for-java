@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
@@ -21,6 +22,8 @@ import java.util.Objects;
 public final class TopicRuntimeProperties {
     private final String name;
     private final int subscriptionCount;
+    private final int sqlFilterCount;
+    private final int correlationFilterCount;
     private final long sizeInBytes;
     private final OffsetDateTime accessedAt;
     private final OffsetDateTime createdAt;
@@ -39,6 +42,8 @@ public final class TopicRuntimeProperties {
 
         this.name = topicProperties.getName();
         this.subscriptionCount = topicProperties.getSubscriptionCount();
+        this.sqlFilterCount = topicProperties.getSqlFilterCount();
+        this.correlationFilterCount = topicProperties.getCorrelationFilterCount();
         this.sizeInBytes = topicProperties.getSizeInBytes();
         this.accessedAt = topicProperties.getAccessedAt();
         this.createdAt = topicProperties.getCreatedAt();
@@ -99,6 +104,32 @@ public final class TopicRuntimeProperties {
      */
     public int getSubscriptionCount() {
         return subscriptionCount;
+    }
+
+    /**
+     * Gets the total number of SQL filters across all subscriptions of the topic.
+     *
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
+     *
+     * @return The total number of SQL filters across all subscriptions of the topic.
+     */
+    public int getSqlFilterCount() {
+        return sqlFilterCount;
+    }
+
+    /**
+     * Gets the total number of correlation filters across all subscriptions of the topic.
+     *
+     * <p>The service supplies this count only from api-version {@code 2024-05} onwards, and only in regions that
+     * have deployed the topic filter count feature. The value is {@code 0} when the client targets an earlier
+     * {@link ServiceBusServiceVersion} or the region does not supply it.</p>
+     *
+     * @return The total number of correlation filters across all subscriptions of the topic.
+     */
+    public int getCorrelationFilterCount() {
+        return correlationFilterCount;
     }
 
     /**

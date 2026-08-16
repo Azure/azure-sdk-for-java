@@ -13,14 +13,14 @@ import java.util.Collection;
  */
 public final class ReadReplicaPromoteOption extends ExpandableStringEnum<ReadReplicaPromoteOption> {
     /**
-     * The operation will wait for data in the read replica to be fully synchronized with its source server, before it
-     * initiates the operation.
+     * Wait for data in the read replica to be fully synchronized with its source server before it initiates the
+     * operation.
      */
     public static final ReadReplicaPromoteOption PLANNED = fromString("Planned");
 
     /**
-     * The operation will not wait for data in the read replica to be synchronized with its source server, before it
-     * initiates the operation.
+     * Initiate the operation immediately, without waiting for data in the read replica to be synchronized with its
+     * source server.
      */
     public static final ReadReplicaPromoteOption FORCED = fromString("Forced");
 

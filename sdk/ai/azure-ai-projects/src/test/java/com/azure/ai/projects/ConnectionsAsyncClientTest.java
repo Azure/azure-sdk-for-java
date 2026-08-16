@@ -6,6 +6,7 @@ import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -78,6 +79,28 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetConnectionWithResponseWithoutCredentialsAsync(HttpClient httpClient,
+        AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        // Discover a real connection name from the list
+        String connectionName
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
+        Assertions.assertNotNull(connectionName, "Expected at least one connection");
+
+        StepVerifier
+            .create(connectionsAsyncClient.getConnectionWithResponse(connectionName, false, new RequestOptions()))
+            .assertNext(response -> {
+                Connection connection = response.getValue().toObject(Connection.class);
+                assertValidConnection(connection, connectionName, null, null);
+                Assertions.assertNotNull(connection.getCredential().getType());
+                System.out.println("Connection retrieved successfully: " + connection.getName());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testGetConnectionWithCredentialsAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
 
@@ -88,6 +111,29 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         StepVerifier.create(connectionsAsyncClient.getConnectionWithCredentials(connectionName))
             .assertNext(connection -> {
+                assertValidConnection(connection, connectionName, null, null);
+                Assertions.assertNotNull(connection.getCredential().getType());
+                System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
+                System.out.println("Credential type: " + connection.getCredential().getType());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetConnectionWithResponseWithCredentialsAsync(HttpClient httpClient,
+        AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        // Discover a real connection name from the list
+        String connectionName
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
+        Assertions.assertNotNull(connectionName, "Expected at least one connection");
+
+        StepVerifier
+            .create(connectionsAsyncClient.getConnectionWithResponse(connectionName, true, new RequestOptions()))
+            .assertNext(response -> {
+                Connection connection = response.getValue().toObject(Connection.class);
                 assertValidConnection(connection, connectionName, null, null);
                 Assertions.assertNotNull(connection.getCredential().getType());
                 System.out.println("Connection with credentials retrieved successfully: " + connection.getName());

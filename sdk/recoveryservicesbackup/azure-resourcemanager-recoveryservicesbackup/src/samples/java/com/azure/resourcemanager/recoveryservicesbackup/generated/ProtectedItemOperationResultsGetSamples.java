@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectedItemOperationResultsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureIaasVm/ProtectedItemOperationResults.json
+     * x-ms-original-file: 2026-07-01/AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Protected Vm.

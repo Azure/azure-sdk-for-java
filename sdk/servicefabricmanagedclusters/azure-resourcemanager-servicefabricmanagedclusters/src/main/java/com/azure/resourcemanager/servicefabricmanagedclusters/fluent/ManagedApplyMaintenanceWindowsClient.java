@@ -8,17 +8,18 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMaintenanceWindowRequest;
 
 /**
  * An instance of this class provides access to all the operations defined in ManagedApplyMaintenanceWindowsClient.
  */
 public interface ManagedApplyMaintenanceWindowsClient {
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,11 +27,11 @@ public interface ManagedApplyMaintenanceWindowsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> postWithResponse(String resourceGroupName, String clusterName, Context context);
+    Response<Void> postWithResponse(String resourceGroupName, String clusterName, ApplyMaintenanceWindowRequest body,
+        Context context);
 
     /**
-     * Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-     * applied.
+     * Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster resource.

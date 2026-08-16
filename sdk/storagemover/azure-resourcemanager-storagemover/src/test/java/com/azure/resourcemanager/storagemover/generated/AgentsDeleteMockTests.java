@@ -27,7 +27,7 @@ public final class AgentsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.agents().delete("lkdmtncvokotllxd", "h", "syocogjltdtbnnha", com.azure.core.util.Context.NONE);
+        manager.agents().delete("xrtfudxep", "gyqagvrvmnpkuk", "himdbl", com.azure.core.util.Context.NONE);
 
     }
 }

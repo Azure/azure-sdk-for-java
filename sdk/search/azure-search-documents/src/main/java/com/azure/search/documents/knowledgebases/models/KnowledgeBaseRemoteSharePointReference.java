@@ -30,10 +30,10 @@ public final class KnowledgeBaseRemoteSharePointReference extends KnowledgeBaseR
     private String webUrl;
 
     /*
-     * Information about the sensitivity label applied to the SharePoint document.
+     * The sensitivity label information for the reference.
      */
     @Generated
-    private SharePointSensitivityLabelInfo searchSensitivityLabelInfo;
+    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
 
     /**
      * Creates an instance of KnowledgeBaseRemoteSharePointReference class.
@@ -68,13 +68,12 @@ public final class KnowledgeBaseRemoteSharePointReference extends KnowledgeBaseR
     }
 
     /**
-     * Get the searchSensitivityLabelInfo property: Information about the sensitivity label applied to the SharePoint
-     * document.
+     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
      *
      * @return the searchSensitivityLabelInfo value.
      */
     @Generated
-    public SharePointSensitivityLabelInfo getSearchSensitivityLabelInfo() {
+    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
         return this.searchSensitivityLabelInfo;
     }
 
@@ -113,7 +112,7 @@ public final class KnowledgeBaseRemoteSharePointReference extends KnowledgeBaseR
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.REMOTE_SHARE_POINT;
             String webUrl = null;
-            SharePointSensitivityLabelInfo searchSensitivityLabelInfo = null;
+            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -130,7 +129,7 @@ public final class KnowledgeBaseRemoteSharePointReference extends KnowledgeBaseR
                 } else if ("webUrl".equals(fieldName)) {
                     webUrl = reader.getString();
                 } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
-                    searchSensitivityLabelInfo = SharePointSensitivityLabelInfo.fromJson(reader);
+                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

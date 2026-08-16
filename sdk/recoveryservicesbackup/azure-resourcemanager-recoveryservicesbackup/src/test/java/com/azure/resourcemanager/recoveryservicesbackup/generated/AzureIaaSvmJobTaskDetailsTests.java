@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"psfxsf\",\"startTime\":\"2021-06-27T03:41:35Z\",\"endTime\":\"2021-07-16T14:55:45Z\",\"instanceId\":\"mvagbwidqlvhuko\",\"duration\":\"PT100H15M24S\",\"status\":\"i\",\"progressPercentage\":21.16068549152601,\"taskExecutionDetails\":\"nmjmvlwyzgiblk\"}")
+            "{\"taskId\":\"xv\",\"startTime\":\"2021-03-17T06:48:24Z\",\"endTime\":\"2021-01-20T08:10:48Z\",\"instanceId\":\"rymo\",\"duration\":\"PT123H18M20S\",\"status\":\"xkl\",\"progressPercentage\":6.0931556754500455,\"taskExecutionDetails\":\"azpmkmlmv\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("psfxsf", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T03:41:35Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T14:55:45Z"), model.endTime());
-        Assertions.assertEquals("mvagbwidqlvhuko", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT100H15M24S"), model.duration());
-        Assertions.assertEquals("i", model.status());
-        Assertions.assertEquals(21.16068549152601D, model.progressPercentage());
-        Assertions.assertEquals("nmjmvlwyzgiblk", model.taskExecutionDetails());
+        Assertions.assertEquals("xv", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T06:48:24Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T08:10:48Z"), model.endTime());
+        Assertions.assertEquals("rymo", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT123H18M20S"), model.duration());
+        Assertions.assertEquals("xkl", model.status());
+        Assertions.assertEquals(6.0931556754500455D, model.progressPercentage());
+        Assertions.assertEquals("azpmkmlmv", model.taskExecutionDetails());
     }
 }

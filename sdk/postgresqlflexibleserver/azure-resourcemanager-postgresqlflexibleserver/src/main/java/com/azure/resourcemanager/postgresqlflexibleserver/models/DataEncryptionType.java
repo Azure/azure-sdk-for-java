@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class DataEncryptionType extends ExpandableStringEnum<DataEncryptionType> {
     /**
-     * Static value SystemManaged for DataEncryptionType.
+     * Encryption managed by Azure using platform managed keys for simplicity and compliance.
      */
     public static final DataEncryptionType SYSTEM_MANAGED = fromString("SystemManaged");
 
     /**
-     * Static value AzureKeyVault for DataEncryptionType.
+     * Encryption using customer managed keys stored in Azure Key Vault for enhanced control and security.
      */
     public static final DataEncryptionType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 

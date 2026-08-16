@@ -285,7 +285,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginSwitchover(String resourceGroupName,
@@ -301,7 +301,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginSwitchover(String resourceGroupName,
@@ -316,7 +316,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body);
@@ -331,7 +331,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner switchover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
@@ -346,7 +346,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginFailover(String resourceGroupName,
@@ -362,7 +362,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginFailover(String resourceGroupName,
@@ -377,7 +377,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body);
@@ -392,7 +392,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner failover(String resourceGroupName, String autonomousdatabasename, PeerDbDetails body,
@@ -438,7 +438,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(String resourceGroupName,
@@ -454,7 +454,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(String resourceGroupName,
@@ -469,7 +469,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
@@ -485,7 +485,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
@@ -499,7 +499,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginShrink(String resourceGroupName,
@@ -514,7 +514,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginShrink(String resourceGroupName,
@@ -528,7 +528,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename);
@@ -542,7 +542,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename, Context context);
@@ -556,7 +556,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginChangeDisasterRecoveryConfiguration(
@@ -572,7 +572,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginChangeDisasterRecoveryConfiguration(
@@ -588,7 +588,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
@@ -604,7 +604,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner changeDisasterRecoveryConfiguration(String resourceGroupName, String autonomousdatabasename,
@@ -619,7 +619,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginAction(String resourceGroupName,
@@ -635,7 +635,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginAction(String resourceGroupName,
@@ -650,7 +650,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,
@@ -666,7 +666,7 @@ public interface AutonomousDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseInner action(String resourceGroupName, String autonomousdatabasename,

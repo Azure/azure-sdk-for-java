@@ -22,7 +22,7 @@ public final class CredentialsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"w\",\"tags\":{\"rngbtcjuahokqtob\":\"dfgkmtdh\",\"pnulaiywzej\":\"auxofshfph\",\"llndnpd\":\"whslwkoj\",\"fugsnnfhyetefy\":\"rpqaf\"},\"id\":\"oc\",\"name\":\"ctfjgtixr\",\"type\":\"vzuyturmlmu\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"hnmnahmnx\",\"tags\":{\"ooxf\":\"jqirwrw\",\"hx\":\"i\",\"hsycxhxzgaz\":\"rsnewmozqvbubqma\"},\"id\":\"taboidvmf\",\"name\":\"hppubowsepdfgkmt\",\"type\":\"herngb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class CredentialsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Credential> response = manager.credentials()
-            .listByResourceGroup("qmamhsycxhxzga", "ttaboidvmfqh", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("kkholvdndvia", "ogphuartvtiu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.iterator().next().location());
-        Assertions.assertEquals("dfgkmtdh", response.iterator().next().tags().get("rngbtcjuahokqtob"));
+        Assertions.assertEquals("hnmnahmnx", response.iterator().next().location());
+        Assertions.assertEquals("jqirwrw", response.iterator().next().tags().get("ooxf"));
     }
 }

@@ -27,7 +27,13 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
      * The document URL for the reference.
      */
     @Generated
-    private String docUrl;
+    private String documentUrl;
+
+    /*
+     * The sensitivity label information for the reference.
+     */
+    @Generated
+    private PurviewSensitivityLabelInfo searchSensitivityLabelInfo;
 
     /**
      * Creates an instance of KnowledgeBaseIndexedSharePointReference class.
@@ -52,13 +58,23 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
     }
 
     /**
-     * Get the docUrl property: The document URL for the reference.
+     * Get the documentUrl property: The document URL for the reference.
      *
-     * @return the docUrl value.
+     * @return the documentUrl value.
      */
     @Generated
-    public String getDocUrl() {
-        return this.docUrl;
+    public String getDocumentUrl() {
+        return this.documentUrl;
+    }
+
+    /**
+     * Get the searchSensitivityLabelInfo property: The sensitivity label information for the reference.
+     *
+     * @return the searchSensitivityLabelInfo value.
+     */
+    @Generated
+    public PurviewSensitivityLabelInfo getSearchSensitivityLabelInfo() {
+        return this.searchSensitivityLabelInfo;
     }
 
     /**
@@ -73,7 +89,8 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
         jsonWriter.writeMapField("sourceData", getSourceData(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeNumberField("rerankerScore", getRerankerScore());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("docUrl", this.docUrl);
+        jsonWriter.writeStringField("docUrl", this.documentUrl);
+        jsonWriter.writeJsonField("searchSensitivityLabelInfo", this.searchSensitivityLabelInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -94,7 +111,8 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
             Map<String, Object> sourceData = null;
             Float rerankerScore = null;
             KnowledgeBaseReferenceType type = KnowledgeBaseReferenceType.INDEXED_SHARE_POINT;
-            String docUrl = null;
+            String documentUrl = null;
+            PurviewSensitivityLabelInfo searchSensitivityLabelInfo = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -109,7 +127,9 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseReferenceType.fromString(reader.getString());
                 } else if ("docUrl".equals(fieldName)) {
-                    docUrl = reader.getString();
+                    documentUrl = reader.getString();
+                } else if ("searchSensitivityLabelInfo".equals(fieldName)) {
+                    searchSensitivityLabelInfo = PurviewSensitivityLabelInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -119,7 +139,8 @@ public final class KnowledgeBaseIndexedSharePointReference extends KnowledgeBase
             deserializedKnowledgeBaseIndexedSharePointReference.setSourceData(sourceData);
             deserializedKnowledgeBaseIndexedSharePointReference.setRerankerScore(rerankerScore);
             deserializedKnowledgeBaseIndexedSharePointReference.type = type;
-            deserializedKnowledgeBaseIndexedSharePointReference.docUrl = docUrl;
+            deserializedKnowledgeBaseIndexedSharePointReference.documentUrl = documentUrl;
+            deserializedKnowledgeBaseIndexedSharePointReference.searchSensitivityLabelInfo = searchSensitivityLabelInfo;
             return deserializedKnowledgeBaseIndexedSharePointReference;
         });
     }

@@ -14,9 +14,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
+
+    @Disabled("Temporarily disabled, due to change of query order in authorization lib")
     @Test
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
         final String userPrincipalName = this.azureCliSignedInUser().userPrincipalName();

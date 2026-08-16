@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsListAssociatedResourcesSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
      */
     /**
      * Sample code: list all resources that are encrypted with this disk encryption set.

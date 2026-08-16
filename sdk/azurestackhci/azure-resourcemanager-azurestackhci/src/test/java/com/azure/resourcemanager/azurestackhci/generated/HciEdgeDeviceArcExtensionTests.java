@@ -11,7 +11,7 @@ public final class HciEdgeDeviceArcExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HciEdgeDeviceArcExtension model = BinaryData.fromString(
-            "{\"extensionName\":\"paugmrmfjlrxwt\",\"state\":\"Updating\",\"errorDetails\":[{\"exception\":\"kvci\"},{\"exception\":\"zmoaeds\"},{\"exception\":\"wuived\"},{\"exception\":\"gyeewxeiq\"}],\"extensionResourceId\":\"smgomguaml\",\"typeHandlerVersion\":\"l\",\"managedBy\":\"Azure\"}")
+            "{\"extensionName\":\"k\",\"state\":\"Failed\",\"errorDetails\":[{\"exception\":\"hrpqhv\"},{\"exception\":\"lcouqehbhbcdszir\"}],\"extensionResourceId\":\"an\",\"typeHandlerVersion\":\"ypmbltoormkfq\",\"managedBy\":\"Azure\"}")
             .toObject(HciEdgeDeviceArcExtension.class);
     }
 }

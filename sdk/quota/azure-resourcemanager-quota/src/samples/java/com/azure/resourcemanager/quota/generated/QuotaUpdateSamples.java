@@ -14,7 +14,7 @@ import com.azure.resourcemanager.quota.models.ResourceName;
  */
 public final class QuotaUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/patchComputeQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/patchComputeQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForCompute.
@@ -34,7 +34,7 @@ public final class QuotaUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/patchNetworkOneSkuQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/patchNetworkOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForNetwork.

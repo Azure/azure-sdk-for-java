@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class MicrosoftEntraAuth extends ExpandableStringEnum<MicrosoftEntraAuth> {
     /**
-     * Static value Enabled for MicrosoftEntraAuth.
+     * Server supports Microsoft Entra authentication.
      */
     public static final MicrosoftEntraAuth ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for MicrosoftEntraAuth.
+     * Server does not support Microsoft Entra authentication.
      */
     public static final MicrosoftEntraAuth DISABLED = fromString("Disabled");
 

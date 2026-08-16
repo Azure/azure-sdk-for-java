@@ -37,7 +37,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
         System.out.println("Testing getConformanceClass (STAC API conformance)");
 
         // Act
-        StacConformanceClasses conformance = stacClient.getConformanceClass();
+        StacConformanceClasses conformance = stacClient.getConformanceClasses();
 
         // Assert
         assertNotNull(conformance, "Conformance should not be null");
@@ -186,7 +186,7 @@ public class TestPlanetaryComputer04aStacSpecificationTests extends PlanetaryCom
         System.out.println("Testing getItemCollection for collection: " + collectionId);
 
         // Act
-        StacItemCollection itemsResponse = stacClient.getItemCollection(collectionId, 10, null, null);
+        StacItemCollection itemsResponse = stacClient.getItemCollection(collectionId, 10, null, null, null, null, null);
 
         // Assert
         assertNotNull(itemsResponse, "Items response should not be null");

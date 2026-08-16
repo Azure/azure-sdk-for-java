@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesMigrateMongoDBCollectionToAutoscaleSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBCollectionMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionMigrateToAutoscale.

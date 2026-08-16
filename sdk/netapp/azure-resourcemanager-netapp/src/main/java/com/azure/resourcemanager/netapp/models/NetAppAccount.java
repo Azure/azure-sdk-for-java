@@ -339,8 +339,8 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEntraIdConfig, UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain,
-        UpdateStages.WithMultiAdStatus, UpdateStages.WithLdapConfiguration {
+        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithEntraIdConfig,
+        UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -366,7 +366,7 @@ public interface NetAppAccount {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags.
+             * Specifies the tags property: Resource tags..
              * 
              * @param tags Resource tags.
              * @return the next definition stage.
@@ -379,9 +379,9 @@ public interface NetAppAccount {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The identity used for the resource..
+             * Specifies the identity property: The managed service identities assigned to this resource..
              * 
-             * @param identity The identity used for the resource.
+             * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
@@ -398,19 +398,6 @@ public interface NetAppAccount {
              * @return the next definition stage.
              */
             Update withActiveDirectories(List<ActiveDirectory> activeDirectories);
-        }
-
-        /**
-         * The stage of the NetAppAccount update allowing to specify entraIdConfig.
-         */
-        interface WithEntraIdConfig {
-            /**
-             * Specifies the entraIdConfig property: Entra ID configuration for the account..
-             * 
-             * @param entraIdConfig Entra ID configuration for the account.
-             * @return the next definition stage.
-             */
-            Update withEntraIdConfig(EntraIdConfigPatch entraIdConfig);
         }
 
         /**
@@ -442,16 +429,16 @@ public interface NetAppAccount {
         }
 
         /**
-         * The stage of the NetAppAccount update allowing to specify multiAdStatus.
+         * The stage of the NetAppAccount update allowing to specify entraIdConfig.
          */
-        interface WithMultiAdStatus {
+        interface WithEntraIdConfig {
             /**
-             * Specifies the multiAdStatus property: MultiAD Status for the account.
+             * Specifies the entraIdConfig property: Entra ID configuration for the account..
              * 
-             * @param multiAdStatus MultiAD Status for the account.
+             * @param entraIdConfig Entra ID configuration for the account.
              * @return the next definition stage.
              */
-            Update withMultiAdStatus(MultiAdStatus multiAdStatus);
+            Update withEntraIdConfig(EntraIdConfigPatch entraIdConfig);
         }
 
         /**
@@ -568,4 +555,22 @@ public interface NetAppAccount {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void changeKeyVault(ChangeKeyVault body, Context context);
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshLdapBindPassword();
+
+    /**
+     * Refresh LDAP Bind DN password by fetching the latest password from Azure Key Vault.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void refreshLdapBindPassword(Context context);
 }

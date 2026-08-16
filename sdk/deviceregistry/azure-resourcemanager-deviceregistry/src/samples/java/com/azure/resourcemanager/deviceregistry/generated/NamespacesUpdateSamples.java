@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class NamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Update_Namespace_Endpoints.json
+     * x-ms-original-file: 2026-03-01-preview/Update_Namespace_Endpoints.json
      */
     /**
      * Sample code: Update_Namespace_Endpoints.
@@ -31,9 +31,9 @@ public final class NamespacesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("eventGridEndpoint",
-                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                        .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                new NamespaceUpdateProperties().withMessaging(new Messaging().withEndpoints(mapOf("iothubEndpoint",
+                    new MessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                        .withAddress("https://iothub-for-dps.azure-devices.net")))))
             .apply();
     }
 

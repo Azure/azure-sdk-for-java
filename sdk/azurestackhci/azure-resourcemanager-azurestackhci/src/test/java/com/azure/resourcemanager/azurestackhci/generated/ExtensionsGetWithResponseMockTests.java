@@ -21,7 +21,7 @@ public final class ExtensionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"InProgress\",\"extensionParameters\":{\"forceUpdateTag\":\"s\",\"publisher\":\"cm\",\"type\":\"wmlgicvnpv\",\"typeHandlerVersion\":\"hgjnaq\",\"autoUpgradeMinorVersion\":false,\"settings\":\"\\\"dataslz\\\"\",\"protectedSettings\":\"\\\"datacdsvmwbitek\\\"\",\"enableAutomaticUpgrade\":true},\"aggregateState\":\"InProgress\",\"perNodeExtensionDetails\":[{\"name\":\"ybxq\",\"extension\":\"hgybfzdqekivycpz\",\"typeHandlerVersion\":\"diz\",\"state\":\"Deleting\",\"instanceView\":{\"name\":\"bhtrezpzlpryfm\",\"type\":\"dutzfkg\",\"typeHandlerVersion\":\"no\",\"status\":{}}},{\"name\":\"cgndjgdp\",\"extension\":\"ggqqyeqfcb\",\"typeHandlerVersion\":\"lpyuflqjf\",\"state\":\"Failed\",\"instanceView\":{\"name\":\"cyohigimwdcs\",\"type\":\"kqnqvkixnmbzme\",\"typeHandlerVersion\":\"yrzwim\",\"status\":{}}},{\"name\":\"yspzvrie\",\"extension\":\"fphmdzxplg\",\"typeHandlerVersion\":\"vdvatlzmgsc\",\"state\":\"Error\",\"instanceView\":{\"name\":\"bkkz\",\"type\":\"lzdmnfmfwsxafo\",\"typeHandlerVersion\":\"worimmovzwdehk\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"fovanyrvapr\",\"name\":\"gelg\",\"type\":\"ewikfyaqandmym\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"extensionParameters\":{\"forceUpdateTag\":\"t\",\"publisher\":\"eerscdxrnrnjrcu\",\"type\":\"bgacnr\",\"typeHandlerVersion\":\"dtncmsps\",\"autoUpgradeMinorVersion\":false,\"settings\":\"\\\"datameub\\\"\",\"protectedSettings\":\"\\\"dataiqmlfvhlqcskkqj\\\"\",\"enableAutomaticUpgrade\":false},\"aggregateState\":\"Deleted\",\"perNodeExtensionDetails\":[{\"name\":\"uugkw\",\"extension\":\"qmrpahuuonjk\",\"typeHandlerVersion\":\"ukguehvvp\",\"state\":\"Connected\",\"instanceView\":{\"name\":\"cjo\",\"type\":\"leuidpmton\",\"typeHandlerVersion\":\"gnhtmeplhbpjbap\",\"status\":{}}},{\"name\":\"mmkvav\",\"extension\":\"gjiuaiqpmnufzhrc\",\"typeHandlerVersion\":\"wwuzd\",\"state\":\"Succeeded\",\"instanceView\":{\"name\":\"vivjm\",\"type\":\"litqdsjipdvi\",\"typeHandlerVersion\":\"otyxbrii\",\"status\":{}}},{\"name\":\"ndslvrqoemwsie\",\"extension\":\"ilwdqmqfy\",\"typeHandlerVersion\":\"otmfxlkdlgwgna\",\"state\":\"PartiallyConnected\",\"instanceView\":{\"name\":\"i\",\"type\":\"uafixlxicwgp\",\"typeHandlerVersion\":\"dc\",\"status\":{}}}],\"managedBy\":\"User\"},\"id\":\"fasfod\",\"name\":\"opalvngtwyu\",\"type\":\"kwgqrn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class ExtensionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Extension response = manager.extensions()
-            .getWithResponse("ny", "lleiq", "cbgvsbt", "ertoxadhxuvj", com.azure.core.util.Context.NONE)
+            .getWithResponse("sckhbmc", "rmoyfxxkwykuq", "ndx", "ykhkg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("s", response.forceUpdateTag());
-        Assertions.assertEquals("cm", response.publisher());
-        Assertions.assertEquals("wmlgicvnpv", response.typePropertiesType());
-        Assertions.assertEquals("hgjnaq", response.typeHandlerVersion());
+        Assertions.assertEquals("t", response.forceUpdateTag());
+        Assertions.assertEquals("eerscdxrnrnjrcu", response.publisher());
+        Assertions.assertEquals("bgacnr", response.typePropertiesType());
+        Assertions.assertEquals("dtncmsps", response.typeHandlerVersion());
         Assertions.assertFalse(response.autoUpgradeMinorVersion());
-        Assertions.assertTrue(response.enableAutomaticUpgrade());
+        Assertions.assertFalse(response.enableAutomaticUpgrade());
     }
 }

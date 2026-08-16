@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/relationships/ci.yml
+      - sdk/relationships/azure-resourcemanager-relationships/
+    exclude:
+      - sdk/relationships/pom.xml
+      - sdk/relationships/azure-resourcemanager-relationships/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/relationships/ci.yml
+      - sdk/relationships/azure-resourcemanager-relationships/
+    exclude:
+      - sdk/relationships/pom.xml
+      - sdk/relationships/azure-resourcemanager-relationships/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerrelationships
+    displayName: azure-resourcemanager-relationships
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: relationships
+    Artifacts:
+      - name: azure-resourcemanager-relationships
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerrelationships
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerrelationships }}

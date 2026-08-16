@@ -9,7 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class ProtectionContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AzureWorkload/ProtectionContainers_Get.json
+     * x-ms-original-file: 2026-07-01/AzureWorkload/ProtectionContainers_Get.json
      */
     /**
      * Sample code: Get Protection Container Details.

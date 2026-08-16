@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class BackupsAutomaticAndOnDemandCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupsAutomaticAndOnDemandCreate.json
+     * x-ms-original-file: 2026-04-01-preview/BackupsAutomaticAndOnDemandCreate.json
      */
     /**
      * Sample code: Create an on demand backup of a server.

@@ -12,8 +12,8 @@ public final class AdvancedThreatProtectionSettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdvancedThreatProtectionSettingsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-01-10T09:45:55Z\"},\"id\":\"njwltlwtjjgu\",\"name\":\"talhsnvkcdmxzr\",\"type\":\"oaimlnw\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-12-05T18:05:26Z\"},\"id\":\"l\",\"name\":\"eazulcs\",\"type\":\"thwwn\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-12-09T19:28:59Z\"},\"id\":\"swpchwahfbousn\",\"name\":\"epgfew\",\"type\":\"twly\"},{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-11-09T13:27:54Z\"},\"id\":\"kxhdjhlimmbcx\",\"name\":\"h\",\"type\":\"cporxvxcjz\"}],\"nextLink\":\"izxfpxt\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-09-09T06:37:18Z\"},\"id\":\"wogfnzjvu\",\"name\":\"fzldmozu\",\"type\":\"ylfsbtk\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-03-28T22:59:24Z\"},\"id\":\"wn\",\"name\":\"tgkbugrjqctojc\",\"type\":\"isofieypefojyqd\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-01-18T11:32:45Z\"},\"id\":\"plcwkhi\",\"name\":\"ihlhzdsqtzb\",\"type\":\"rgnowcjhfgm\"},{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-01-09T06:40:14Z\"},\"id\":\"xmwoteyowcluqo\",\"name\":\"ekqvgqouwif\",\"type\":\"mpjw\"}],\"nextLink\":\"vqikfxcvhrfsphu\"}")
             .toObject(AdvancedThreatProtectionSettingsList.class);
-        Assertions.assertEquals("izxfpxt", model.nextLink());
+        Assertions.assertEquals("vqikfxcvhrfsphu", model.nextLink());
     }
 }

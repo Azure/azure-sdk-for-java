@@ -28,12 +28,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Generated
     private final String text;
 
-    /*
-     * Can be configured to let a generative model rewrite the query before sending it to be vectorized.
-     */
-    @Generated
-    private QueryRewritesType queryRewrites;
-
     /**
      * Creates an instance of VectorizableTextQuery class.
      *
@@ -63,30 +57,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Generated
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Get the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
-     * to be vectorized.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public QueryRewritesType getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
-     * to be vectorized.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the VectorizableTextQuery object itself.
-     */
-    @Generated
-    public VectorizableTextQuery setQueryRewrites(QueryRewritesType queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
     }
 
     /**
@@ -126,36 +96,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Override
     public VectorizableTextQuery setOversampling(Double oversampling) {
         super.setOversampling(oversampling);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setThreshold(VectorThreshold threshold) {
-        super.setThreshold(threshold);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setFilterOverride(String filterOverride) {
-        super.setFilterOverride(filterOverride);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public VectorizableTextQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
-        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
         return this;
     }
 
@@ -254,6 +194,66 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Override
     public VectorizableTextQuery setWeight(Float weight) {
         super.setWeight(weight);
+        return this;
+    }
+
+    /*
+     * Can be configured to let a generative model rewrite the query before sending it to be vectorized.
+     */
+    @Generated
+    private QueryRewritesType queryRewrites;
+
+    /**
+     * Get the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
+     * to be vectorized.
+     *
+     * @return the queryRewrites value.
+     */
+    @Generated
+    public QueryRewritesType getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
+     * to be vectorized.
+     *
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the VectorizableTextQuery object itself.
+     */
+    @Generated
+    public VectorizableTextQuery setQueryRewrites(QueryRewritesType queryRewrites) {
+        this.queryRewrites = queryRewrites;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableTextQuery setThreshold(VectorThreshold threshold) {
+        super.setThreshold(threshold);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableTextQuery setFilterOverride(String filterOverride) {
+        super.setFilterOverride(filterOverride);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public VectorizableTextQuery setPerDocumentVectorLimit(Integer perDocumentVectorLimit) {
+        super.setPerDocumentVectorLimit(perDocumentVectorLimit);
         return this;
     }
 }

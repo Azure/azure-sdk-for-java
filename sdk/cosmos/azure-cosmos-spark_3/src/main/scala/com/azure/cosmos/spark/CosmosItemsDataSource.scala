@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey, PartitionKeyBuilder}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
@@ -111,5 +111,125 @@ object CosmosItemsDataSource {
       }))
 
     readManyReader.readMany(df.rdd, readManyFilterExtraction)
+  }
+
+  def readManyByPartitionKeys(df: DataFrame, userConfig: java.util.Map[String, String]): DataFrame = {
+    readManyByPartitionKeys(df, userConfig, null)
+  }
+
+  def readManyByPartitionKeys(
+    df: DataFrame,
+    userConfig: java.util.Map[String, String],
+    userProvidedSchema: StructType): DataFrame = {
+
+    val readManyReader = new CosmosReadManyByPartitionKeyReader(
+      userProvidedSchema,
+      userConfig.asScala.toMap)
+
+    // Initialize reader state once: resolves PK paths, infers schema, broadcasts client caches,
+    // and returns the resolved treatNullAsNone flag from the reader's parsed config - avoiding
+    // duplicate config parsing between the data source and the reader.
+    val readerState = readManyReader.initializeReaderState()
+    val (pkPaths, _, _, sharedTreatNullAsNone) = readerState
+
+    // Option 1: Look for the _partitionKeyIdentity column (produced by GetCosmosPartitionKeyValue UDF)
+    val pkIdentityFieldExtraction = df
+      .schema
+      .find(field => field.name.equals(CosmosConstants.Properties.PartitionKeyIdentity) && field.dataType.equals(StringType))
+      .map(field => (row: Row) => {
+        val rawValue = row.getString(row.fieldIndex(field.name))
+        CosmosPartitionKeyHelper.tryParsePartitionKey(rawValue, sharedTreatNullAsNone)
+          .getOrElse(throw new IllegalArgumentException(
+            s"Invalid _partitionKeyIdentity value in row: '$rawValue'. " +
+              "Expected format: pk([...json...])"))
+      })
+
+    // Option 2: Detect PK columns by matching the container's partition key paths against the DataFrame schema
+    val pkColumnExtraction: Option[Row => PartitionKey] = if (pkIdentityFieldExtraction.isDefined) {
+      None // no need to resolve PK paths - _partitionKeyIdentity column takes precedence
+    } else {
+      val treatNullAsNone = sharedTreatNullAsNone
+
+      // Nested PK paths (containing /) cannot be resolved from top-level DataFrame columns.
+      if (pkPaths.exists(_.contains("/"))) {
+        throw new IllegalArgumentException(
+          "Container has nested partition key path(s) " + pkPaths.mkString("[", ",", "]") + ". " +
+            "Nested paths cannot be resolved from DataFrame columns automatically - add a " +
+            "'_partitionKeyIdentity' column produced by the GetCosmosPartitionKeyValue UDF.")
+      }
+
+      // Allow DataFrames to provide a contiguous top-level prefix of the container's
+      // hierarchical partition key paths. For example: tenant, or tenant + region.
+      val dfFieldNames = df.schema.fieldNames.toSet
+      val matchedPrefix = pkPaths.takeWhile(path => dfFieldNames.contains(path))
+      val hasNonPrefixMatch = pkPaths.drop(matchedPrefix.size).exists(path => dfFieldNames.contains(path))
+
+      if (hasNonPrefixMatch) {
+        throw new IllegalArgumentException(
+          "DataFrame columns matching the container's partition key paths must form a contiguous top-level prefix " +
+            "(for example: tenant, or tenant + region). " +
+            "For nested or non-prefix partition key extraction, add a '_partitionKeyIdentity' column produced " +
+            "by the GetCosmosPartitionKeyValue UDF.")
+      }
+
+      if (matchedPrefix.nonEmpty) {
+        Some((row: Row) => {
+          if (matchedPrefix.size == 1) {
+            buildPartitionKey(row.getAs[Any](matchedPrefix.head), treatNullAsNone)
+          } else {
+            val builder = new PartitionKeyBuilder()
+            for (path <- matchedPrefix) {
+              addPartitionKeyComponent(builder, row.getAs[Any](path), treatNullAsNone, matchedPrefix.size)
+            }
+            builder.build()
+          }
+        })
+      } else {
+        None
+      }
+    }
+
+    val pkExtraction = pkIdentityFieldExtraction
+      .orElse(pkColumnExtraction)
+      .getOrElse(
+        throw new IllegalArgumentException(
+          "Cannot determine partition key extraction from the input DataFrame. " +
+            "Either add a '_partitionKeyIdentity' column (using the GetCosmosPartitionKeyValue UDF) " +
+            "or ensure the DataFrame contains columns matching a top-level prefix of the container's partition key paths."))
+
+    readManyReader.readManyByPartitionKeys(df.rdd, pkExtraction, readerState)
+  }
+
+  private def addPartitionKeyComponent(
+    builder: PartitionKeyBuilder,
+    value: Any,
+    treatNullAsNone: Boolean,
+    partitionKeyComponentCount: Int): Unit = {
+    value match {
+      case s: String => builder.add(s)
+      case n: Number => builder.add(n.doubleValue())
+      case b: Boolean => builder.add(b)
+      case null =>
+        CosmosPartitionKeyHelper.validateNoneHandlingForPartitionKeyComponentCount(
+          partitionKeyComponentCount,
+          treatNullAsNone)
+        if (treatNullAsNone) builder.addNoneValue()
+        else builder.addNullValue()
+      case other =>
+        // Reject unknown types rather than silently .toString-ing them - the document field
+        // was stored with its original type and a stringified value will never match.
+        // Supported types: String, Number (Byte/Short/Int/Long/Float/Double/BigDecimal), Boolean, null.
+        throw new IllegalArgumentException(
+          s"Unsupported partition key column type '${other.getClass.getName}' with value '$other'. " +
+            "Supported types are String, Number (integral or floating-point), Boolean, and null. " +
+            "For other source types, convert the column before calling readManyByPartitionKeys or use " +
+            "the GetCosmosPartitionKeyValue UDF to produce a '_partitionKeyIdentity' column.")
+    }
+  }
+
+  private def buildPartitionKey(value: Any, treatNullAsNone: Boolean): PartitionKey = {
+    val builder = new PartitionKeyBuilder()
+    addPartitionKeyComponent(builder, value, treatNullAsNone, 1)
+    builder.build()
   }
 }

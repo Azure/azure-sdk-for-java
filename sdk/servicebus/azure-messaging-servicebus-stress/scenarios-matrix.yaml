@@ -1,7 +1,7 @@
 matrix:
   scenarios:
     composite:
-      imageBuildDir: ..\..\..\
+      imageBuildDir: .\
       testDurationMin: 15
       senderTestClass: MessageSenderAsync
       senderConcurrency: 5
@@ -16,7 +16,7 @@ matrix:
       lockDurationInSec: 5
       messageSizeInBytes: 16
     happy-case:
-      imageBuildDir: ..\..\..\
+      imageBuildDir: .\
       testDurationMin: 15
       senderTestClass: MessageSenderAsync
       sendRate: 8000

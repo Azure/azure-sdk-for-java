@@ -154,6 +154,29 @@ public final class JobDefinitionUpdateParameters implements JsonSerializable<Job
     }
 
     /**
+     * Get the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    public ScheduleInfo schedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
+    }
+
+    /**
+     * Set the schedule property: Schedule information for the Job Definition.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the JobDefinitionUpdateParameters object itself.
+     */
+    public JobDefinitionUpdateParameters withSchedule(ScheduleInfo schedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionUpdateProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

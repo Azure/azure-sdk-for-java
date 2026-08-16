@@ -24,12 +24,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
  */
 public final class ConnectionPolicy {
+    private static ImplementationBridgeHelpers.DirectConnectionConfigHelper.DirectConnectionConfigAccessor directConnectionConfigAccessor() {
+        return ImplementationBridgeHelpers.DirectConnectionConfigHelper.getDirectConnectionConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor() {
+        return ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+    }
 
     private static final int defaultGatewayMaxConnectionPoolSize = GatewayConnectionConfig.getDefaultConfig()
         .getMaxConnectionPoolSize();
-
-    private static final ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor httpCfgAccessor =
-        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
 
     private ConnectionMode connectionMode;
     private boolean endpointDiscoveryEnabled;
@@ -93,31 +97,23 @@ public final class ConnectionPolicy {
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.tcpNetworkRequestTimeout = directConnectionConfig.getNetworkRequestTimeout();
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
-        this.ioThreadCountPerCoreFactor = ImplementationBridgeHelpers
-            .DirectConnectionConfigHelper
-            .getDirectConnectionConfigAccessor()
+        this.ioThreadCountPerCoreFactor = directConnectionConfigAccessor()
             .getIoThreadCountPerCoreFactor(directConnectionConfig);
-        this.ioThreadPriority = ImplementationBridgeHelpers
-            .DirectConnectionConfigHelper
-            .getDirectConnectionConfigAccessor()
+        this.ioThreadPriority = directConnectionConfigAccessor()
             .getIoThreadPriority(directConnectionConfig);
         this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
         this.tcpHealthCheckTimeoutDetectionEnabled =
-            ImplementationBridgeHelpers
-                .DirectConnectionConfigHelper
-                .getDirectConnectionConfigAccessor()
+            directConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
         this.http2ConnectionConfig = gatewayConnectionConfig.getHttp2ConnectionConfig();
 
         // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
         // read during client initialization before connections are created for the container
         this.minConnectionPoolSizePerEndpoint =
-                Math.max(ImplementationBridgeHelpers
-                    .DirectConnectionConfigHelper
-                    .getDirectConnectionConfigAccessor()
+                Math.max(directConnectionConfigAccessor()
                     .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
 
         this.pendingAcquireMaxCount = Configs.getPendingAcquireMaxCount();
@@ -156,7 +152,6 @@ public final class ConnectionPolicy {
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         return this;
     }
-
 
     /**
      * Gets the default connection policy.
@@ -699,7 +694,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", http2ConnectionConfig=" + httpCfgAccessor.toDiagnosticsString(this.http2ConnectionConfig) +
+            ", http2ConnectionConfig=" + httpCfgAccessor().toDiagnosticsString(this.http2ConnectionConfig) +
             ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
             '}';
     }

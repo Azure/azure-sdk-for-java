@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/programenrollment/ci.yml
+      - sdk/programenrollment/azure-resourcemanager-programenrollment/
+    exclude:
+      - sdk/programenrollment/pom.xml
+      - sdk/programenrollment/azure-resourcemanager-programenrollment/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/programenrollment/ci.yml
+      - sdk/programenrollment/azure-resourcemanager-programenrollment/
+    exclude:
+      - sdk/programenrollment/pom.xml
+      - sdk/programenrollment/azure-resourcemanager-programenrollment/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerprogramenrollment
+    displayName: azure-resourcemanager-programenrollment
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: programenrollment
+    Artifacts:
+      - name: azure-resourcemanager-programenrollment
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprogramenrollment
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerprogramenrollment }}

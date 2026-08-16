@@ -13,23 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertConfiguration model = BinaryData
-            .fromString(
-                "{\"severity\":\"Sev4\",\"description\":\"rhhuaopppcqeqx\",\"actionGroupIds\":[\"dahzxctobg\"]}")
+        AlertConfiguration model = BinaryData.fromString(
+            "{\"severity\":\"Sev0\",\"description\":\"zejntps\",\"actionGroupIds\":[\"ioilqukrydxtq\",\"ieoxorggufhyaomt\"]}")
             .toObject(AlertConfiguration.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.severity());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.description());
-        Assertions.assertEquals("dahzxctobg", model.actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV0, model.severity());
+        Assertions.assertEquals("zejntps", model.description());
+        Assertions.assertEquals("ioilqukrydxtq", model.actionGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertConfiguration model = new AlertConfiguration().withSeverity(AlertSeverity.SEV4)
-            .withDescription("rhhuaopppcqeqx")
-            .withActionGroupIds(Arrays.asList("dahzxctobg"));
+        AlertConfiguration model = new AlertConfiguration().withSeverity(AlertSeverity.SEV0)
+            .withDescription("zejntps")
+            .withActionGroupIds(Arrays.asList("ioilqukrydxtq", "ieoxorggufhyaomt"));
         model = BinaryData.fromObject(model).toObject(AlertConfiguration.class);
-        Assertions.assertEquals(AlertSeverity.SEV4, model.severity());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.description());
-        Assertions.assertEquals("dahzxctobg", model.actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV0, model.severity());
+        Assertions.assertEquals("zejntps", model.description());
+        Assertions.assertEquals("ioilqukrydxtq", model.actionGroupIds().get(0));
     }
 }

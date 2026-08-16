@@ -290,6 +290,6 @@ For details on contributing to this repository, see the [contributing guide][con
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [secrets_samples]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-secrets/src/samples/java/com/azure/v2/security/keyvault/secrets
 [samples_readme]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-secrets/src/samples/README.md
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [source_code]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-secrets/src
 [troubleshooting_guide]: https://github.com/vcolin7/azure-sdk-for-java/blob/feature/vicolina/keyvault/v2/sdk/keyvault-v2/azure-security-keyvault-secrets/TROUBLESHOOTING.md

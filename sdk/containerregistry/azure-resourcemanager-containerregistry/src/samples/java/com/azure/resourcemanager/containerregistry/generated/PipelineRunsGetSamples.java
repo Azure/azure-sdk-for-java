@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class PipelineRunsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PipelineRunGet.json
+     * x-ms-original-file: 2026-03-01-preview/PipelineRunGet.json
      */
     /**
      * Sample code: PipelineRunGet.

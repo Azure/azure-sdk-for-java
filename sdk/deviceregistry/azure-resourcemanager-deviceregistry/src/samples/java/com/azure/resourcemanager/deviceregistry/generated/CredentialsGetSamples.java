@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class CredentialsGetSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Get_Credentials.json
+     * x-ms-original-file: 2026-03-01-preview/Get_Credentials.json
      */
     /**
      * Sample code: Get_Credentials.

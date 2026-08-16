@@ -18,12 +18,14 @@ import java.util.List;
 @Fluent
 public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     /*
+     * 
      * Name of the group.
      * It must match a group name of an existing fleet member.
      */
     private String name;
 
     /*
+     * 
      * The max number of upgrades that can run concurrently in this specific group.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
      * at a time.
@@ -59,7 +61,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Get the name property: Name of the group.
+     * Get the name property:
+     * Name of the group.
      * It must match a group name of an existing fleet member.
      * 
      * @return the name value.
@@ -69,7 +72,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Set the name property: Name of the group.
+     * Set the name property:
+     * Name of the group.
      * It must match a group name of an existing fleet member.
      * 
      * @param name the name value to set.
@@ -81,7 +85,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Get the maxConcurrency property: The max number of upgrades that can run concurrently in this specific group.
+     * Get the maxConcurrency property:
+     * The max number of upgrades that can run concurrently in this specific group.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
      * at a time.
      * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
@@ -104,7 +109,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Set the maxConcurrency property: The max number of upgrades that can run concurrently in this specific group.
+     * Set the maxConcurrency property:
+     * The max number of upgrades that can run concurrently in this specific group.
      * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
      * at a time.
      * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.

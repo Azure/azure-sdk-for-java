@@ -22,7 +22,7 @@ public final class SecuritySettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Compliant\",\"wdacCompliance\":\"Compliant\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"Compliant\",\"lastUpdated\":\"2021-04-12T20:37:27Z\"},\"provisioningState\":\"Connected\"},\"id\":\"wjwdsdlzmkxer\",\"name\":\"xx\",\"type\":\"teehk\"}";
+            = "{\"properties\":{\"securedCoreComplianceAssignment\":\"ApplyAndAutoCorrect\",\"wdacComplianceAssignment\":\"Audit\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"Compliant\",\"dataAtRestEncrypted\":\"Pending\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-10-12T13:25:20Z\"},\"provisioningState\":\"Deleted\"},\"id\":\"arlcjiwgsxfaiocw\",\"name\":\"gujjgn\",\"type\":\"grzxbarcbpaefzqs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecuritySettingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecuritySetting response = manager.securitySettings()
-            .getWithResponse("gtnse", "ouxly", "s", com.azure.core.util.Context.NONE)
+            .getWithResponse("dxckdl", "zwhcukvb", "sjjfd", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,

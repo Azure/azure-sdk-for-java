@@ -7,8 +7,10 @@ import java.util.Arrays;
 
 import com.azure.ai.translation.text.models.TranslateInputItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
+import com.azure.ai.translation.text.models.TranslationGender;
 import com.azure.ai.translation.text.models.TranslationTarget;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.models.TranslationTone;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -44,8 +46,8 @@ public class TranslateLlm {
 
         TranslationTarget target = new TranslationTarget("es")
             .setDeploymentName("gpt-4o-mini")
-            .setTone("formal")
-            .setGender("female");
+            .setTone(TranslationTone.FORMAL)
+            .setGender(TranslationGender.FEMALE);
         TranslateInputItem input = new TranslateInputItem(
             "Doctor is available next Monday. Do you want to schedule an appointment?",
             Arrays.asList(target));

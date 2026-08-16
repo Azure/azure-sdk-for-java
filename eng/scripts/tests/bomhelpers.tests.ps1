@@ -12,7 +12,8 @@
 .NOTES
     How to run:
     1. Install Pester if not already installed:
-       Install-Module Pester -Force -MinimumVersion 5.3.3
+       . "$PSScriptRoot/../../common/scripts/Helpers/PSModule-Helpers.ps1"
+       Install-ModuleIfNotInstalled "Pester" "5.3.3" | Import-Module
     
     2. Run the tests:
        Invoke-Pester ./bomhelpers.tests.ps1

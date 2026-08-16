@@ -14,7 +14,7 @@ import java.io.IOException;
  * Marks the end of an audio input turn.
  */
 @Fluent
-public final class ClientEventInputAudioTurnEnd extends ClientEvent {
+public final class ClientEventInputAudioTurnEnd extends SessionClientEvent {
 
     /*
      * The type of event.

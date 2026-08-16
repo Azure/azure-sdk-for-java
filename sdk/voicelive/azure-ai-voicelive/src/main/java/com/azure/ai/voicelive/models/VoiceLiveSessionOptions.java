@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base for session configuration shared between request and response.
@@ -30,12 +31,6 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
      */
     @Generated
     private List<InteractionModality> modalities;
-
-    /*
-     * The animation configuration for the session.
-     */
-    @Generated
-    private AnimationOptions animation;
 
     /*
      * The voice configuration for the session.
@@ -88,12 +83,6 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
      */
     @Generated
     private AudioEchoCancellation inputAudioEchoCancellation;
-
-    /*
-     * Configuration for avatar streaming and behavior during the session.
-     */
-    @Generated
-    private AvatarConfiguration avatar;
 
     /*
      * Configuration for input audio transcription.
@@ -179,28 +168,6 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     public VoiceLiveSessionOptions setModalities(List<InteractionModality> modalities) {
         this.modalities = modalities;
-        return this;
-    }
-
-    /**
-     * Get the animation property: The animation configuration for the session.
-     *
-     * @return the animation value.
-     */
-    @Generated
-    public AnimationOptions getAnimation() {
-        return this.animation;
-    }
-
-    /**
-     * Set the animation property: The animation configuration for the session.
-     *
-     * @param animation the animation value to set.
-     * @return the VoiceLiveSessionOptions object itself.
-     */
-    @Generated
-    public VoiceLiveSessionOptions setAnimation(AnimationOptions animation) {
-        this.animation = animation;
         return this;
     }
 
@@ -379,28 +346,6 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     }
 
     /**
-     * Get the avatar property: Configuration for avatar streaming and behavior during the session.
-     *
-     * @return the avatar value.
-     */
-    @Generated
-    public AvatarConfiguration getAvatar() {
-        return this.avatar;
-    }
-
-    /**
-     * Set the avatar property: Configuration for avatar streaming and behavior during the session.
-     *
-     * @param avatar the avatar value to set.
-     * @return the VoiceLiveSessionOptions object itself.
-     */
-    @Generated
-    public VoiceLiveSessionOptions setAvatar(AvatarConfiguration avatar) {
-        this.avatar = avatar;
-        return this;
-    }
-
-    /**
      * Get the inputAudioTranscription property: Configuration for input audio transcription.
      *
      * @return the inputAudioTranscription value.
@@ -519,7 +464,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeArrayField("modalities", this.modalities,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeJsonField("animation", this.animation);
+        jsonWriter.writeJsonField("animation", this.animationOptions);
         if (this.voice != null) {
             jsonWriter.writeFieldName("voice");
             this.voice.writeTo(jsonWriter);
@@ -533,7 +478,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
         jsonWriter.writeJsonField("turn_detection", this.turnDetection);
         jsonWriter.writeJsonField("input_audio_noise_reduction", this.inputAudioNoiseReduction);
         jsonWriter.writeJsonField("input_audio_echo_cancellation", this.inputAudioEchoCancellation);
-        jsonWriter.writeJsonField("avatar", this.avatar);
+        jsonWriter.writeJsonField("avatar", this.avatarOptions);
         jsonWriter.writeJsonField("input_audio_transcription", this.inputAudioTranscription);
         jsonWriter.writeArrayField("output_audio_timestamp_types", this.outputAudioTimestampTypes,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
@@ -542,6 +487,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
             jsonWriter.writeFieldName("tool_choice");
             this.toolChoice.writeTo(jsonWriter);
         }
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeNumberField("temperature", this.temperature);
         if (this.maxResponseOutputTokens != null) {
             jsonWriter.writeFieldName("max_response_output_tokens");
@@ -553,6 +499,9 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
             jsonWriter.writeFieldName("interim_response");
             this.interimResponse.writeTo(jsonWriter);
         }
+        jsonWriter.writeArrayField("include", this.include,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -578,7 +527,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                         = reader.readArray(reader1 -> InteractionModality.fromString(reader1.getString()));
                     deserializedVoiceLiveSessionOptions.modalities = modalities;
                 } else if ("animation".equals(fieldName)) {
-                    deserializedVoiceLiveSessionOptions.animation = AnimationOptions.fromJson(reader);
+                    deserializedVoiceLiveSessionOptions.animationOptions = AnimationOptions.fromJson(reader);
                 } else if ("voice".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.voice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
@@ -600,7 +549,7 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                     deserializedVoiceLiveSessionOptions.inputAudioEchoCancellation
                         = AudioEchoCancellation.fromJson(reader);
                 } else if ("avatar".equals(fieldName)) {
-                    deserializedVoiceLiveSessionOptions.avatar = AvatarConfiguration.fromJson(reader);
+                    deserializedVoiceLiveSessionOptions.avatarOptions = AvatarOptions.fromJson(reader);
                 } else if ("input_audio_transcription".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.inputAudioTranscription
                         = AudioInputTranscriptionOptions.fromJson(reader);
@@ -615,6 +564,8 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("tool_choice".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.toolChoice
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    deserializedVoiceLiveSessionOptions.parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("temperature".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("max_response_output_tokens".equals(fieldName)) {
@@ -626,6 +577,13 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
                 } else if ("interim_response".equals(fieldName)) {
                     deserializedVoiceLiveSessionOptions.interimResponse
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("include".equals(fieldName)) {
+                    List<SessionIncludeOption> include
+                        = reader.readArray(reader1 -> SessionIncludeOption.fromString(reader1.getString()));
+                    deserializedVoiceLiveSessionOptions.include = include;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVoiceLiveSessionOptions.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }
@@ -730,6 +688,160 @@ public final class VoiceLiveSessionOptions implements JsonSerializable<VoiceLive
     @Generated
     public VoiceLiveSessionOptions setInterimResponse(BinaryData interimResponse) {
         this.interimResponse = interimResponse;
+        return this;
+    }
+
+    /*
+     * List of include options for the session (e.g., logprobs, phrases, file search results).
+     */
+    @Generated
+    private List<SessionIncludeOption> include;
+
+    /*
+     * Set of up to 16 key-value pairs that can be attached to the session. This is useful for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /**
+     * Get the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @return the include value.
+     */
+    @Generated
+    public List<SessionIncludeOption> getInclude() {
+        return this.include;
+    }
+
+    /**
+     * Set the include property: List of include options for the session (e.g., logprobs, phrases, file search results).
+     *
+     * @param include the include value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setInclude(List<SessionIncludeOption> include) {
+        this.include = include;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Set of up to 16 key-value pairs that can be attached to the session. This is useful
+     * for
+     * storing additional information about the session in a structured format, such as tracking IDs,
+     * user context, or application-specific labels. These key-value pairs are also included in
+     * Foundry resource logs for tracing and diagnostics. Keys can be a maximum of 64 characters
+     * long and values can be a maximum of 512 characters long.
+     *
+     * @param metadata the metadata value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /*
+     * The animation configuration for the session.
+     */
+    @Generated
+    private AnimationOptions animationOptions;
+
+    /*
+     * Configuration for avatar streaming and behavior during the session.
+     */
+    @Generated
+    private AvatarOptions avatarOptions;
+
+    /**
+     * Get the animationOptions property: The animation configuration for the session.
+     *
+     * @return the animationOptions value.
+     */
+    @Generated
+    public AnimationOptions getAnimationOptions() {
+        return this.animationOptions;
+    }
+
+    /**
+     * Set the animationOptions property: The animation configuration for the session.
+     *
+     * @param animationOptions the animationOptions value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setAnimationOptions(AnimationOptions animationOptions) {
+        this.animationOptions = animationOptions;
+        return this;
+    }
+
+    /**
+     * Get the avatarOptions property: Configuration for avatar streaming and behavior during the session.
+     *
+     * @return the avatarOptions value.
+     */
+    @Generated
+    public AvatarOptions getAvatarOptions() {
+        return this.avatarOptions;
+    }
+
+    /**
+     * Set the avatarOptions property: Configuration for avatar streaming and behavior during the session.
+     *
+     * @param avatarOptions the avatarOptions value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setAvatarOptions(AvatarOptions avatarOptions) {
+        this.avatarOptions = avatarOptions;
+        return this;
+    }
+
+    /*
+     * Whether the model is allowed to call tools in parallel.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
+
+    /**
+     * Get the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether the model is allowed to call tools in parallel.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the VoiceLiveSessionOptions object itself.
+     */
+    @Generated
+    public VoiceLiveSessionOptions setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
         return this;
     }
 }

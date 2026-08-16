@@ -16,4 +16,14 @@ public interface ServiceBusProcessorClientProperties extends ServiceBusReceiverC
 
     Duration getSessionIdleTimeout();
 
+    /**
+     * Returns the maximum time the processor will wait for in-flight message handlers to
+     * complete before disposing the underlying receiver during shutdown. Mirrors the
+     * {@code drainTimeout(Duration)} setter on the underlying Service Bus processor builder.
+     *
+     * @return the configured drain timeout, or {@code null} if not set (the underlying SDK
+     *     applies its own default in that case).
+     */
+    Duration getDrainTimeout();
+
 }

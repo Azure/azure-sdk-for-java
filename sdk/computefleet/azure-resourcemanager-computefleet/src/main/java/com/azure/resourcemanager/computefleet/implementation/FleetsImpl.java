@@ -100,14 +100,6 @@ public final class FleetsImpl implements Fleets {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public void cancel(String resourceGroupName, String fleetName) {
-        this.serviceClient().cancel(resourceGroupName, fleetName);
-    }
-
-    public void cancel(String resourceGroupName, String fleetName, Context context) {
-        this.serviceClient().cancel(resourceGroupName, fleetName, context);
-    }
-
     public Fleet getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

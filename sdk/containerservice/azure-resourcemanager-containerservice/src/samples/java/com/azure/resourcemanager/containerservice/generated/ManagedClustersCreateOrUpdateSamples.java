@@ -12,11 +12,14 @@ import com.azure.resourcemanager.containerservice.models.AdvancedNetworkingSecur
 import com.azure.resourcemanager.containerservice.models.AdvancedNetworkingSecurityTransitEncryption;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.BastionProfile;
+import com.azure.resourcemanager.containerservice.models.BastionSku;
 import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPublicKey;
+import com.azure.resourcemanager.containerservice.models.ControlPlaneScalingSize;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.Expander;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
@@ -36,6 +39,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfil
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterControlPlaneScalingProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
@@ -50,7 +54,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefender;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityGating;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityGatingIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfileDefenderSecurityMonitoring;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
@@ -82,7 +86,7 @@ import java.util.Map;
  */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DualStackNetworking.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_DualStackNetworking.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with dual-stack networking.
@@ -140,7 +144,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PodIdentity.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_PodIdentity.json
      */
     /**
      * Sample code: Create Managed Cluster with PodIdentity enabled.
@@ -187,7 +191,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UserAssignedNATGateway.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_UserAssignedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
@@ -231,7 +235,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_MCSnapshot.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_MCSnapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using a managed cluster snapshot.
@@ -267,7 +271,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Update.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_Update.json
      */
     /**
      * Sample code: Create/Update Managed Cluster.
@@ -327,7 +331,47 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_ControlPlaneScalingProfile.json
+     */
+    /**
+     * Sample code: Create Managed Cluster with ControlPlaneScalingProfile.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedClusterWithControlPlaneScalingProfile(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1",
+                new ManagedClusterInner().withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.BASE)
+                        .withTier(ManagedClusterSkuTier.STANDARD))
+                    .withKubernetesVersion("1.33.0")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                        .withVmSize("Standard_DS2_v2")
+                        .withOsType(OSType.LINUX)
+                        .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                        .withMode(AgentPoolMode.SYSTEM)
+                        .withEnableNodePublicIp(true)
+                        .withName("nodepool1")))
+                    .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                        .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                            Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                    .withNetworkProfile(new ContainerServiceNetworkProfile().withNetworkPlugin(NetworkPlugin.AZURE)
+                        .withNetworkPluginMode(NetworkPluginMode.OVERLAY)
+                        .withOutboundType(OutboundType.LOAD_BALANCER)
+                        .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                        .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
+                            new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
+                    .withControlPlaneScalingProfile(
+                        new ManagedClusterControlPlaneScalingProfile().withScalingSize(ControlPlaneScalingSize.H4)),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
      */
     /**
      * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
@@ -374,7 +418,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_ManagedNATGateway.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_ManagedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
@@ -420,7 +464,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Premium.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_Premium.json
      */
     /**
      * Sample code: Create Managed Cluster with LongTermSupport.
@@ -466,7 +510,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
      */
     /**
      * Sample code: Create Managed Cluster with Azure Key Vault Secrets Provider Addon.
@@ -518,7 +562,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersAssociate_CRG.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersAssociate_CRG.json
      */
     /**
      * Sample code: Associate Managed Cluster with Capacity Reservation Group.
@@ -565,7 +609,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_NodeAutoProvisioning.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_NodeAutoProvisioning.json
      */
     /**
      * Sample code: Create Managed Cluster with Node Auto Provisioning.
@@ -608,7 +652,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_NodePublicIPPrefix.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_NodePublicIPPrefix.json
      */
     /**
      * Sample code: Create Managed Cluster with Node Public IP Prefix.
@@ -655,7 +699,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
@@ -701,7 +745,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_PrivateClusterPublicFQDN.json
      */
     /**
      * Sample code: Create Managed Private Cluster with Public FQDN specified.
@@ -747,7 +791,48 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_HTTPProxy.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_EnableManagedBastion.json
+     */
+    /**
+     * Sample code: Create Managed Private Cluster With Managed Bastion.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void createManagedPrivateClusterWithManagedBastion(
+        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getManagedClusters()
+            .createOrUpdate("rg1", "clustername1", new ManagedClusterInner().withLocation("location1")
+                .withTags(mapOf("archv2", "", "tier", "production"))
+                .withSku(new ManagedClusterSku().withName(ManagedClusterSkuName.fromString("Basic"))
+                    .withTier(ManagedClusterSkuTier.FREE))
+                .withKubernetesVersion("")
+                .withDnsPrefix("dnsprefix1")
+                .withAgentPoolProfiles(Arrays.asList(new ManagedClusterAgentPoolProfile().withCount(3)
+                    .withVmSize("Standard_DS2_v2")
+                    .withOsType(OSType.LINUX)
+                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withMode(AgentPoolMode.SYSTEM)
+                    .withEnableEncryptionAtHost(true)
+                    .withName("nodepool1")))
+                .withLinuxProfile(new ContainerServiceLinuxProfile().withAdminUsername("azureuser")
+                    .withSsh(new ContainerServiceSshConfiguration().withPublicKeys(
+                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
+                .withWindowsProfile(new ManagedClusterWindowsProfile().withAdminUsername("azureuser")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withServicePrincipalProfile(new ManagedClusterServicePrincipalProfile().withClientId("clientid")
+                    .withSecret("fakeTokenPlaceholder"))
+                .withAddonProfiles(mapOf())
+                .withNetworkProfile(new ContainerServiceNetworkProfile().withBastionProfile(
+                    new BastionProfile().withEnabled(true).withSku(BastionSku.PREMIUM).withScaleUnits(3)))
+                .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
+                    .withScaleDownDelayAfterAdd("15m"))
+                .withApiServerAccessProfile(new ManagedClusterApiServerAccessProfile().withEnablePrivateCluster(true)),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_HTTPProxy.json
      */
     /**
      * Sample code: Create Managed Cluster with HTTP proxy configured.
@@ -796,7 +881,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_UpdateWithEnableNamespaceResources.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableNamespaceResources.
@@ -843,7 +928,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DedicatedHostGroup.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Managed Cluster with Dedicated Host Group.
@@ -889,7 +974,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableAIToolchainOperator.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_EnableAIToolchainOperator.json
      */
     /**
      * Sample code: Create Managed Cluster with AI Toolchain Operator enabled.
@@ -933,7 +1018,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_IngressProfile_ApplicationLoadBalancer.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_IngressProfile_ApplicationLoadBalancer.json
      */
     /**
      * Sample code: Create Managed Cluster with Application Load Balancer Profile configured.
@@ -970,7 +1055,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnabledFIPS.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_EnabledFIPS.json
      */
     /**
      * Sample code: Create Managed Cluster with FIPS enabled OS.
@@ -1016,7 +1101,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_SecurityProfile.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_SecurityProfile.json
      */
     /**
      * Sample code: Create Managed Cluster with Security Profile configured.
@@ -1054,7 +1139,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                             new ManagedClusterSecurityProfileDefenderSecurityMonitoring().withEnabled(true))
                         .withSecurityGating(new ManagedClusterSecurityProfileDefenderSecurityGating().withEnabled(true)
                             .withIdentities(
-                                Arrays.asList(new ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem()
+                                Arrays.asList(new ManagedClusterSecurityProfileDefenderSecurityGatingIdentity()
                                     .withAzureContainerRegistry("registry1")
                                     .withIdentity(new UserAssignedIdentity().withResourceId(
                                         "/subscriptions/SUB_ID/resourceGroups/RG_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/IDENTITY_NAME")
@@ -1064,7 +1149,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_PPG.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_PPG.json
      */
     /**
      * Sample code: Create Managed Cluster with PPG.
@@ -1111,7 +1196,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_IngressProfile_WebAppRouting.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_IngressProfile_WebAppRouting.json
      */
     /**
      * Sample code: Create Managed Cluster with Web App Routing Ingress Profile configured.
@@ -1150,7 +1235,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithAHUB.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableAHUB.
@@ -1201,7 +1286,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_DisableRunCommand.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_DisableRunCommand.json
      */
     /**
      * Sample code: Create Managed Cluster with RunCommand disabled.
@@ -1246,7 +1331,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_AzureServiceMesh.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_AzureServiceMesh.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Azure Service Mesh.
@@ -1312,7 +1397,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_Snapshot.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_Snapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using an agent pool snapshot.
@@ -1360,7 +1445,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_OSSKU.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_OSSKU.json
      */
     /**
      * Sample code: Create Managed Cluster with OSSKU.
@@ -1410,7 +1495,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_VirtualMachines.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_VirtualMachines.json
      */
     /**
      * Sample code: Create Managed Cluster with VirtualMachines pool type.
@@ -1451,7 +1536,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/AdvancedNetworkingTransitEncryption.json
+     * x-ms-original-file: 2026-05-02-preview/AdvancedNetworkingTransitEncryption.json
      */
     /**
      * Sample code: Create Managed Cluster with Advanced Networking Transit Encryption.
@@ -1500,7 +1585,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
      * Sample code: Create/Update AAD Managed Cluster with EnableAzureRBAC.
@@ -1547,7 +1632,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_EnableUltraSSD.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Managed Cluster with UltraSSD enabled.
@@ -1593,7 +1678,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_CustomCATrustCertificates.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_CustomCATrustCertificates.json
      */
     /**
      * Sample code: Create Managed Cluster with CustomCATrustCertificates populated.
@@ -1640,7 +1725,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_UpdateWindowsGmsa.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Windows gMSA enabled.
@@ -1691,7 +1776,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-02-preview/ManagedClustersCreate_GPUMIG.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClustersCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Managed Cluster with GPUMIG.
