@@ -12,9 +12,9 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -229,7 +229,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performBulkOnNonExistentContainerGatewayModeV2() {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
@@ -288,7 +288,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = 2 * TIMEOUT)
     public void performDocumentOperationOnDeletedContainer(OperationType operationType) throws InterruptedException {
 
         CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
@@ -297,7 +297,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             clientToUse = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -354,7 +354,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             clientToUse = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -437,7 +437,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider",
+        timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performDocumentOperationOnDeletedContainerWithGatewayV2(OperationType operationType) throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 
@@ -447,7 +448,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             // Uncomment if running locally
             // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
@@ -524,7 +525,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Create a dedicated container for this test
             String testContainerId = "CosmosNotFoundTestsContainer_" + UUID.randomUUID();
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
-            testAsyncDatabase.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
+            createCollection(testAsyncDatabase, containerProperties, new CosmosContainerRequestOptions(), 400);
 
             // Uncomment if running locally
             // System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");

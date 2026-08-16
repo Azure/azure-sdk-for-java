@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskEncryptionSetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Get.json
      */
     /**
      * Sample code: get information about a disk encryption set.
@@ -23,7 +23,7 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-02/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
+     * x-ms-original-file: 2026-03-02/diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
      */
     /**
      * Sample code: get information about a disk encryption set when auto-key rotation failed.

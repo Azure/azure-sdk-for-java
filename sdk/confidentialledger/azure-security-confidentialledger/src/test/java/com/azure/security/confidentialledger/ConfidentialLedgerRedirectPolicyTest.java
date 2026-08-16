@@ -25,7 +25,6 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit tests for {@link ConfidentialLedgerRedirectPolicy}.
@@ -105,7 +104,7 @@ public class ConfidentialLedgerRedirectPolicyTest {
     }
 
     @Test
-    public void authorizationHeaderStrippedOnCrossOriginRedirect() throws Exception {
+    public void crossOriginRedirectNotFollowed() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals(ORIGINAL_URL)) {
                 HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, CROSS_ORIGIN_URL);
@@ -122,9 +121,10 @@ public class ConfidentialLedgerRedirectPolicyTest {
 
         try (HttpResponse response = pipeline.send(request).block()) {
             assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            // The authorization header should be stripped for cross-origin redirect
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // A cross-origin redirect is refused: the 307 is returned as-is and never followed,
+            // so the disallowed host is never contacted.
+            assertEquals(307, response.getStatusCode());
+            assertEquals(1, httpClient.getCount());
         }
     }
 
@@ -239,7 +239,7 @@ public class ConfidentialLedgerRedirectPolicyTest {
     }
 
     @Test
-    public void authorizationHeaderStrippedOnCrossOriginRedirectSync() throws Exception {
+    public void crossOriginRedirectNotFollowedSync() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals(ORIGINAL_URL)) {
                 HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, CROSS_ORIGIN_URL);
@@ -255,8 +255,9 @@ public class ConfidentialLedgerRedirectPolicyTest {
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(200, response.getStatusCode());
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // A cross-origin redirect is refused: the 307 is returned as-is and never followed.
+            assertEquals(307, response.getStatusCode());
+            assertEquals(1, httpClient.getCount());
         }
     }
 
@@ -318,8 +319,8 @@ public class ConfidentialLedgerRedirectPolicyTest {
     }
 
     @Test
-    public void authorizationStrippedWhenSchemeChanges() throws Exception {
-        // http vs https = different origin, auth should be stripped
+    public void schemeChangeRedirectNotFollowed() throws Exception {
+        // http vs https = different origin; the redirect must not be followed.
         String httpRedirectUrl = "http://ledger.confidential-ledger.azure.com/primary";
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals(ORIGINAL_URL)) {
@@ -337,8 +338,9 @@ public class ConfidentialLedgerRedirectPolicyTest {
 
         try (HttpResponse response = pipeline.send(request).block()) {
             assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // A scheme downgrade (https -> http) is refused and never followed.
+            assertEquals(307, response.getStatusCode());
+            assertEquals(1, httpClient.getCount());
         }
     }
 
@@ -427,8 +429,41 @@ public class ConfidentialLedgerRedirectPolicyTest {
     }
 
     @Test
-    public void authorizationStrippedOnUnrelatedHostRedirect() throws Exception {
-        // Redirect to a completely different host that is not a subdomain — auth should be stripped.
+    public void multipleSubdomainRedirectsFollowedAndValidatedAgainstOriginalHost() throws Exception {
+        // A node may redirect to another node; every hop is validated against the ORIGINAL ledger
+        // host (not the previous hop), so both subdomains of the original host are followed.
+        String node1 = "https://node-1.ledger.confidential-ledger.azure.com:16385/app/transactions";
+        String node2 = "https://node-2.ledger.confidential-ledger.azure.com:16385/app/transactions";
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            String url = request.getUrl().toString();
+            if (url.equals(ORIGINAL_URL)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, node1);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else if (url.equals(node1)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, node2);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = createPipeline(httpClient);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL(ORIGINAL_URL));
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
+
+        try (HttpResponse response = pipeline.send(request).block()) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertEquals(3, httpClient.getCount());
+            // Both subdomains of the original host are trusted, so auth is preserved across hops.
+            assertEquals(AUTH_TOKEN, response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void unrelatedHostRedirectNotFollowed() throws Exception {
+        // Redirect to a completely different host that is not a subdomain — must not be followed.
         String unrelatedUrl = "https://malicious.example.com/steal-token";
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals(ORIGINAL_URL)) {
@@ -446,18 +481,17 @@ public class ConfidentialLedgerRedirectPolicyTest {
 
         try (HttpResponse response = pipeline.send(request).block()) {
             assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // An unrelated host is refused: the redirect is never followed and the host is never contacted.
+            assertEquals(307, response.getStatusCode());
+            assertEquals(1, httpClient.getCount());
         }
     }
 
     @Test
-    public void authorizationStrippedOnPartialHostMatchRedirect() throws Exception {
-        // "evil-ledger.confidential-ledger.azure.com" ends with the original host string
-        // but is NOT a subdomain of "ledger.confidential-ledger.azure.com" (no dot separator).
-        // This verifies the subdomain check uses "." + originalHost.
-        String partialMatchUrl = "https://evil-ledger.confidential-ledger.azure.com/target";
-        // Use a shorter original so the partial match is meaningful
+    public void partialHostMatchRedirectNotFollowed() throws Exception {
+        // "notmyacl.azure.com" ends with "myacl.azure.com" but is NOT a subdomain of it
+        // (no dot separator). This verifies the subdomain check uses "." + originalHost and that a
+        // look-alike suffix host is refused.
         String shortOriginal = "https://myacl.azure.com";
         String evilRedirect = "https://notmyacl.azure.com/steal";
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
@@ -476,9 +510,9 @@ public class ConfidentialLedgerRedirectPolicyTest {
 
         try (HttpResponse response = pipeline.send(request).block()) {
             assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-            // "notmyacl.azure.com" is not a subdomain of "myacl.azure.com" — auth stripped.
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // "notmyacl.azure.com" is not a subdomain of "myacl.azure.com" — redirect refused.
+            assertEquals(307, response.getStatusCode());
+            assertEquals(1, httpClient.getCount());
         }
     }
 

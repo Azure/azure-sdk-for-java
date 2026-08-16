@@ -11,7 +11,7 @@ import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreJobRequ
  */
 public final class FetchCrossRegionRestoreJobGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/CrossRegionRestore/FetchCrossRegionRestoreJob.json
+     * x-ms-original-file: 2026-03-01/CrossRegionRestore/FetchCrossRegionRestoreJob.json
      */
     /**
      * Sample code: Get Cross Region Restore Job.

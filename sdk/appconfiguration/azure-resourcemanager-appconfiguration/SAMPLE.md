@@ -21,6 +21,12 @@
 - [Delete](#keyvalues_delete)
 - [Get](#keyvalues_get)
 
+## NetworkSecurityPerimeterConfigurations
+
+- [Get](#networksecurityperimeterconfigurations_get)
+- [ListByConfigurationStore](#networksecurityperimeterconfigurations_listbyconfigurationstore)
+- [Reconcile](#networksecurityperimeterconfigurations_reconcile)
+
 ## Operations
 
 - [CheckNameAvailability](#operations_checknameavailability)
@@ -70,7 +76,7 @@ import java.util.Map;
  */
 public final class ConfigurationStoresCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreate.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreate.json
      */
     /**
      * Sample code: ConfigurationStores_Create.
@@ -89,7 +95,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithIdentity.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithIdentity.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Identity.
@@ -112,7 +118,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Data_Plane_Proxy.
@@ -132,7 +138,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_AzureFrontDoor.
@@ -153,7 +159,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithTelemetry.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithTelemetry.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Telemetry.
@@ -174,7 +180,7 @@ public final class ConfigurationStoresCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
      */
     /**
      * Sample code: ConfigurationStores_Create_With_Local_Auth_Disabled.
@@ -216,7 +222,7 @@ public final class ConfigurationStoresCreateSamples {
  */
 public final class ConfigurationStoresDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDelete.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDelete.json
      */
     /**
      * Sample code: ConfigurationStores_Delete.
@@ -238,7 +244,7 @@ public final class ConfigurationStoresDeleteSamples {
  */
 public final class ConfigurationStoresGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGet.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGet.json
      */
     /**
      * Sample code: ConfigurationStores_Get.
@@ -261,7 +267,7 @@ public final class ConfigurationStoresGetByResourceGroupSamples {
  */
 public final class ConfigurationStoresGetDeletedSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeletedConfigurationStoresGet.json
+     * x-ms-original-file: 2025-08-01-preview/DeletedConfigurationStoresGet.json
      */
     /**
      * Sample code: DeletedConfigurationStores_Get.
@@ -283,7 +289,7 @@ public final class ConfigurationStoresGetDeletedSamples {
  */
 public final class ConfigurationStoresListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresList.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresList.json
      */
     /**
      * Sample code: ConfigurationStores_List.
@@ -305,7 +311,7 @@ public final class ConfigurationStoresListSamples {
  */
 public final class ConfigurationStoresListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresListByResourceGroup.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresListByResourceGroup.json
      */
     /**
      * Sample code: ConfigurationStores_ListByResourceGroup.
@@ -327,7 +333,7 @@ public final class ConfigurationStoresListByResourceGroupSamples {
  */
 public final class ConfigurationStoresListDeletedSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeletedConfigurationStoresList.json
+     * x-ms-original-file: 2025-08-01-preview/DeletedConfigurationStoresList.json
      */
     /**
      * Sample code: DeletedConfigurationStores_List.
@@ -349,7 +355,7 @@ public final class ConfigurationStoresListDeletedSamples {
  */
 public final class ConfigurationStoresListKeysSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresListKeys.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresListKeys.json
      */
     /**
      * Sample code: ConfigurationStores_ListKeys.
@@ -371,7 +377,7 @@ public final class ConfigurationStoresListKeysSamples {
  */
 public final class ConfigurationStoresPurgeDeletedSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DeletedConfigurationStoresPurge.json
+     * x-ms-original-file: 2025-08-01-preview/DeletedConfigurationStoresPurge.json
      */
     /**
      * Sample code: Purge a deleted configuration store.
@@ -395,7 +401,7 @@ import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters
  */
 public final class ConfigurationStoresRegenerateKeySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresRegenerateKey.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresRegenerateKey.json
      */
     /**
      * Sample code: ConfigurationStores_RegenerateKey.
@@ -427,7 +433,7 @@ import java.util.Map;
  */
 public final class ConfigurationStoresUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
      */
     /**
      * Sample code: ConfigurationStores_Update_Disable_Local_Auth.
@@ -443,7 +449,7 @@ public final class ConfigurationStoresUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdate.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdate.json
      */
     /**
      * Sample code: ConfigurationStores_Update.
@@ -459,7 +465,7 @@ public final class ConfigurationStoresUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdateWithIdentity.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdateWithIdentity.json
      */
     /**
      * Sample code: ConfigurationStores_Update_With_Identity.
@@ -506,7 +512,7 @@ import java.util.Map;
  */
 public final class KeyValuesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateKeyValue.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateKeyValue.json
      */
     /**
      * Sample code: KeyValues_CreateOrUpdate.
@@ -545,7 +551,7 @@ public final class KeyValuesCreateOrUpdateSamples {
  */
 public final class KeyValuesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeleteKeyValue.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeleteKeyValue.json
      */
     /**
      * Sample code: KeyValues_Delete.
@@ -566,7 +572,7 @@ public final class KeyValuesDeleteSamples {
  */
 public final class KeyValuesGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetKeyValue.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetKeyValue.json
      */
     /**
      * Sample code: KeyValues_Get.
@@ -576,6 +582,77 @@ public final class KeyValuesGetSamples {
     public static void keyValuesGet(com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
         manager.keyValues()
             .getWithResponse("myResourceGroup", "contoso", "myKey$myLabel", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkSecurityPerimeterConfigurations_Get
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations Get.
+ */
+public final class NetworkSecurityPerimeterConfigurationsGetSamples {
+    /*
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetNetworkSecurityPerimeterConfiguration.json
+     */
+    /**
+     * Sample code: NetworkSecurityPerimeterConfigurations_GetNetworkSecurityPerimeterConfiguration.
+     * 
+     * @param manager Entry point to AppConfigurationManager.
+     */
+    public static void networkSecurityPerimeterConfigurationsGetNetworkSecurityPerimeterConfiguration(
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
+        manager.networkSecurityPerimeterConfigurations()
+            .getWithResponse("myResourceGroup", "contoso", "804a12bb-1349-4228-81be-8fe888aae04e.myAssociationName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkSecurityPerimeterConfigurations_ListByConfigurationStore
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations ListByConfigurationStore.
+ */
+public final class NetworkSecurityPerimeterConfigurationsListByConfigurationStoreSamples {
+    /*
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresListNetworkSecurityPerimeterConfigurations.json
+     */
+    /**
+     * Sample code: NetworkSecurityPerimeterConfigurations_List.
+     * 
+     * @param manager Entry point to AppConfigurationManager.
+     */
+    public static void networkSecurityPerimeterConfigurationsList(
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
+        manager.networkSecurityPerimeterConfigurations()
+            .listByConfigurationStore("myResourceGroup", "contoso", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkSecurityPerimeterConfigurations_Reconcile
+
+```java
+/**
+ * Samples for NetworkSecurityPerimeterConfigurations Reconcile.
+ */
+public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
+    /*
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresReconcileNetworkSecurityPerimeterConfiguration.json
+     */
+    /**
+     * Sample code: NetworkSecurityPerimeterConfigurations_Reconcile.
+     * 
+     * @param manager Entry point to AppConfigurationManager.
+     */
+    public static void networkSecurityPerimeterConfigurationsReconcile(
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
+        manager.networkSecurityPerimeterConfigurations()
+            .reconcile("myResourceGroup", "contoso", "804a12bb-1349-4228-81be-8fe888aae04e.myAssociationName",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -591,7 +668,7 @@ import com.azure.resourcemanager.appconfiguration.models.ConfigurationResourceTy
  */
 public final class OperationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/CheckNameAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/CheckNameAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameAvailable.
@@ -608,7 +685,7 @@ public final class OperationsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/CheckNameNotAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/CheckNameNotAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameNotAvailable.
@@ -634,7 +711,7 @@ public final class OperationsCheckNameAvailabilitySamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/OperationsList.json
+     * x-ms-original-file: 2025-08-01-preview/OperationsList.json
      */
     /**
      * Sample code: Operations_List.
@@ -658,7 +735,7 @@ import com.azure.resourcemanager.appconfiguration.models.ConfigurationResourceTy
  */
 public final class OperationsRegionalCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/RegionalCheckNameAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/RegionalCheckNameAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameAvailable.
@@ -675,7 +752,7 @@ public final class OperationsRegionalCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/RegionalCheckNameNotAvailable.json
+     * x-ms-original-file: 2025-08-01-preview/RegionalCheckNameNotAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameNotAvailable.
@@ -705,7 +782,7 @@ import com.azure.resourcemanager.appconfiguration.models.PrivateLinkServiceConne
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresUpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresUpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.
@@ -734,7 +811,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeletePrivateEndpointConnection.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
@@ -757,7 +834,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetPrivateEndpointConnection.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_GetConnection.
@@ -780,7 +857,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresListPrivateEndpointConnections.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnection_List.
@@ -803,7 +880,7 @@ public final class PrivateEndpointConnectionsListByConfigurationStoreSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/PrivateLinkResourceGet.json
+     * x-ms-original-file: 2025-08-01-preview/PrivateLinkResourceGet.json
      */
     /**
      * Sample code: PrivateLinkResources_Get.
@@ -826,7 +903,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/PrivateLinkResourcesListByConfigurationStore.json
+     * x-ms-original-file: 2025-08-01-preview/PrivateLinkResourcesListByConfigurationStore.json
      */
     /**
      * Sample code: PrivateLinkResources_ListGroupIds.
@@ -849,7 +926,7 @@ public final class PrivateLinkResourcesListByConfigurationStoreSamples {
  */
 public final class ReplicasCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateReplica.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateReplica.json
      */
     /**
      * Sample code: Replicas_Create.
@@ -874,7 +951,7 @@ public final class ReplicasCreateSamples {
  */
 public final class ReplicasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDeleteReplica.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDeleteReplica.json
      */
     /**
      * Sample code: Replicas_Delete.
@@ -895,7 +972,7 @@ public final class ReplicasDeleteSamples {
  */
 public final class ReplicasGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetReplica.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetReplica.json
      */
     /**
      * Sample code: Replicas_Get.
@@ -917,7 +994,7 @@ public final class ReplicasGetSamples {
  */
 public final class ReplicasListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresListReplicas.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresListReplicas.json
      */
     /**
      * Sample code: Replicas_ListByConfigurationStore.
@@ -943,7 +1020,7 @@ import java.util.Arrays;
  */
 public final class SnapshotsCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresCreateSnapshot.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresCreateSnapshot.json
      */
     /**
      * Sample code: Snapshots_Create.
@@ -969,7 +1046,7 @@ public final class SnapshotsCreateSamples {
  */
 public final class SnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetSnapshot.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetSnapshot.json
      */
     /**
      * Sample code: Snapshots_Get.

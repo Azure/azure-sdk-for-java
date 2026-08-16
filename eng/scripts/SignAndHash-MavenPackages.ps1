@@ -151,24 +151,28 @@ foreach ($packageDetail in $packageDetails) {
   $urlOption = "-Durl=$destinationPathUri"
   Write-Host "URL Option is: $urlOption"
 
-  $settingsOption = "--settings=$(Join-Path $PSScriptRoot '..' 'maven.publish.settings.xml' -Resolve)"
+  $settingsOption = "--global-settings=$(Join-Path $PSScriptRoot '..' 'maven.publish.settings.xml' -Resolve)"
   Write-Host "Settings Option is: $settingsOption"
+
+  # Use fully-qualified plugin coordinates to avoid prefix resolution against incomplete
+  # mirror metadata. This matches the approach used in Publish-MavenPackages.ps1.
+  $gpgSignAndDeployGoal = "org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file"
 
   Write-Host ""
   Write-Host "Signing package"
 
   if ($additionalArtifacts) {
     Write-Host @"
-    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+    mvn $gpgSignAndDeployGoal "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
 "@
-    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+    mvn $gpgSignAndDeployGoal "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" "$classifiersOption" "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
   } else {
     # Track 1 libraries do not require $filesOption, $classifiersOption and $typesOption variables which
     # will only be set if there's a changelog for one or more of the libraries being released
     Write-Host @"
-    mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+    mvn $gpgSignAndDeployGoal "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
 "@
-      mvn gpg:sign-and-deploy-file "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
+      mvn $gpgSignAndDeployGoal "--batch-mode" "-Daether.checksums.algorithms=SHA-256,MD5,SHA-1" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "$settingsOption"
   }
 
   if ($LASTEXITCODE) { exit $LASTEXITCODE }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PrivateEndpointConnectionsGet.json
+     * x-ms-original-file: 2026-04-01-preview/PrivateEndpointConnectionsGet.json
      */
     /**
      * Sample code: Get a private endpoint connection.

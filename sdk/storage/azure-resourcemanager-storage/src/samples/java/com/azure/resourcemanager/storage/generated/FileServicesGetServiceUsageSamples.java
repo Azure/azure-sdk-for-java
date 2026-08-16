@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class FileServicesGetServiceUsageSamples {
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesGetUsage.json
+     * x-ms-original-file: 2026-04-01/FileServicesGetUsage.json
      */
     /**
      * Sample code: GetFileServiceUsage.

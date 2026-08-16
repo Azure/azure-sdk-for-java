@@ -17,7 +17,7 @@ public class StacCollectionThumbnailsGet {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildStacClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.stac-get-collection-thumbnail.stac-collection-thumbnails-get
-        BinaryData response = stacClient.getCollectionThumbnail("naip-atl", null);
+        BinaryData response = stacClient.getCollectionThumbnail("naip-atl");
         // END:com.azure.analytics.planetarycomputer.generated.stac-get-collection-thumbnail.stac-collection-thumbnails-get
     }
 }

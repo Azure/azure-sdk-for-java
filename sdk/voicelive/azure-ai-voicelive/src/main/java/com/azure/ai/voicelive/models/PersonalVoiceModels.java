@@ -25,12 +25,6 @@ public final class PersonalVoiceModels extends ExpandableStringEnum<PersonalVoic
     public static final PersonalVoiceModels PHOENIX_LATEST_NEURAL = fromString("PhoenixLatestNeural");
 
     /**
-     * Use the Phoenix V2 model.
-     */
-    @Generated
-    public static final PersonalVoiceModels PHOENIX_V2NEURAL = fromString("PhoenixV2Neural");
-
-    /**
      * Creates a new instance of PersonalVoiceModels value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -60,4 +54,22 @@ public final class PersonalVoiceModels extends ExpandableStringEnum<PersonalVoic
     public static Collection<PersonalVoiceModels> values() {
         return values(PersonalVoiceModels.class);
     }
+
+    /**
+     * Use the latest Dragon HD Omni model.
+     */
+    @Generated
+    public static final PersonalVoiceModels DRAGON_HDOMNI_LATEST_NEURAL = fromString("DragonHDOmniLatestNeural");
+
+    /**
+     * Use the MAI-Voice-1 model.
+     */
+    @Generated
+    public static final PersonalVoiceModels MAI_VOICE_1 = fromString("MAI-Voice-1");
+
+    /**
+     * Use the Phoenix V2 model.
+     */
+    @Generated
+    public static final PersonalVoiceModels PHOENIX_V2NEURAL = fromString("PhoenixV2Neural");
 }

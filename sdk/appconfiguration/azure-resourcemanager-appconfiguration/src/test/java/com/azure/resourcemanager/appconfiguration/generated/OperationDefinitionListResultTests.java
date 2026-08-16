@@ -12,13 +12,13 @@ public final class OperationDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDefinitionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"pwlbjnpg\",\"isDataAction\":true,\"display\":{\"provider\":\"dehxnltyfsoppu\",\"resource\":\"esnzwde\",\"operation\":\"avo\",\"description\":\"zdmohctbqvu\"},\"origin\":\"xdn\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}],\"metricSpecifications\":[{},{},{}]}}},{\"name\":\"jugwdkcglhsl\",\"isDataAction\":true,\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\",\"description\":\"vdcsitynn\"},\"origin\":\"mdectehfiqscjey\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}],\"metricSpecifications\":[{},{},{}]}}}],\"nextLink\":\"q\"}")
+            "{\"value\":[{\"name\":\"osytxitcskfckt\",\"isDataAction\":true,\"display\":{\"provider\":\"kkezzikhlyfjhdgq\",\"resource\":\"ebdunyg\",\"operation\":\"qidbqfatpxllrxcy\",\"description\":\"oadsuvar\"},\"origin\":\"wdmjsjqbjhhyx\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}],\"metricSpecifications\":[{},{}]}}},{\"name\":\"uhpkxkgymar\",\"isDataAction\":false,\"display\":{\"provider\":\"xqugjhkycubedd\",\"resource\":\"sofwqmzqalkrmnji\",\"operation\":\"xacqqudfnbyx\",\"description\":\"aabjyvayffimrz\"},\"origin\":\"uzqogsexnevf\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"zsyyceuzso\",\"isDataAction\":false,\"display\":{\"provider\":\"pfrxtrthzvay\",\"resource\":\"wkqbrqu\",\"operation\":\"axhexiilivp\",\"description\":\"iirqtd\"},\"origin\":\"axoruzfgsquy\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{},{}]}}},{\"name\":\"tramxjez\",\"isDataAction\":true,\"display\":{\"provider\":\"xuqlcvydypat\",\"resource\":\"oa\",\"operation\":\"kniod\",\"description\":\"oebwnujhemms\"},\"origin\":\"dkcrodt\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}],\"metricSpecifications\":[{},{}]}}}],\"nextLink\":\"lt\"}")
             .toObject(OperationDefinitionListResult.class);
-        Assertions.assertEquals("pwlbjnpg", model.value().get(0).name());
+        Assertions.assertEquals("osytxitcskfckt", model.value().get(0).name());
         Assertions.assertTrue(model.value().get(0).isDataAction());
-        Assertions.assertEquals("esnzwde", model.value().get(0).display().resource());
-        Assertions.assertEquals("avo", model.value().get(0).display().operation());
-        Assertions.assertEquals("zdmohctbqvu", model.value().get(0).display().description());
-        Assertions.assertEquals("xdn", model.value().get(0).origin());
+        Assertions.assertEquals("ebdunyg", model.value().get(0).display().resource());
+        Assertions.assertEquals("qidbqfatpxllrxcy", model.value().get(0).display().operation());
+        Assertions.assertEquals("oadsuvar", model.value().get(0).display().description());
+        Assertions.assertEquals("wdmjsjqbjhhyx", model.value().get(0).origin());
     }
 }

@@ -26,6 +26,13 @@ public final class AmqpConstants {
 
     public static final Symbol CLIENT_RECEIVER_IDENTIFIER = Symbol.getSymbol(VENDOR + ":receiver-name");
 
+    /**
+     * Vendor property advertised on the sender link by Service Bus to indicate the maximum batch payload size,
+     * which may differ from the standard AMQP {@code max-message-size} (e.g., on Premium large-message entities
+     * the link reports {@code max-message-size} up to 100 MB but enforces 1 MB for batched sends).
+     */
+    public static final Symbol MAX_MESSAGE_BATCH_SIZE = Symbol.getSymbol(VENDOR + ":max-message-batch-size");
+
     private AmqpConstants() {
     }
 }

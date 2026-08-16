@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservices.models.DeletedVaultUndeleteInp
  */
 public final class DeletedVaultsUndeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01/DeletedVaults_Undelete.json
+     * x-ms-original-file: 2026-05-01/DeletedVaults_Undelete.json
      */
     /**
      * Sample code: Undelete a deleted vault.

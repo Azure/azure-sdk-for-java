@@ -4,9 +4,9 @@ Represents stress tests for Event Hubs client.
 
 ## Getting started
 
-The stress tests for event hubs client is developed from [azure-sdk-chaos][azure_sdk_chaos]. 
+The stress tests for the Event Hubs client are developed from [azure-sdk-chaos][azure_sdk_chaos].
 
-To know how to develop a stress test project, you should first go through the [Azure SDK Stress Test Wiki][azure_sdk_stress_test].
+To learn how to develop a stress test project, first review the [Azure SDK Stress Test Wiki][azure_sdk_stress_test].
 
 ### Prerequisites
 
@@ -18,77 +18,51 @@ To know how to develop a stress test project, you should first go through the [A
 - [Azure CLI][azure_cli]
 - [Powershell 7.0+][powershell]
 
-### Deploy Stress Test
+### Deploying stress tests
 
-Cd into `azure-sdk-for-java` root folder and run command to deploy the package to cluster
+1. In a terminal, navigate to the `azure-sdk-for-java` root folder
+2. Execute: `.\sdk\eventhubs\azure-messaging-eventhubs-stress\New-StressTestRun.ps1 -Namespace <stress test namespace>`
+> NOTE: The default environment for stress test deployments is "storage". This may change depending on EngSys resources.
 
-```shell
-..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -SearchDirectory .\sdk\eventhubs\
-``` 
+### Monitoring and validating stress tests
 
-### Validate Status
+#### Azure portal
 
-Only the most frequently used commands are listed below. See [Deploying A Stress Test][deploy_stress_test] for more details. 
+1. Navigate to: https://ms.portal.azure.com/#settings/directory
+2. Select the TME directory
+3. Choose the resource group
+4. Open the Azure Workbook named "Azure SDK Stress Testing - storage"
+5. Filter the "Namespace" by `<stress test namespace>` used to deploy the tests
 
-List deployed packages:
+Validate the events in the dashboard and examine "Container Logs" at the bottom of the dashboard.
 
-```shell
-helm list -n <stress test namespace>
-helm list --all-namespaces -l deployId=<your deployment id>
-```
+#### Command-line
 
-Get stress test pods and status:
+See [Deploying A Stress Test][deploy_stress_test] for more commands.
 
-```shell
-kubectl get pods -n <stress test namespace>
-```
+| Command | Description | 
+|--|--|
+| `helm list -n <stress test namespace>` | List deployed packages |
+| `kubectl get pods -n <stress test namespace>` | Get stress test pods and status |
+| `kubectl logs -n <stress test namespace> <stress test pod name>` | Get stress test pod logs |
+| `kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>`| Get logs for a specific container (ex. "sender" and "receiver") |
+| `helm uninstall <stress test name> -n <stress test namespace>` | Stop and remove deployed package |
 
-Get stress test pod logs:
+### Additional Monitoring
 
-```shell
-kubectl logs -n <stress test namespace> <stress test pod name>
-# Note that we may define multiple containers (for example, sender and receiver)
-kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>
-```
+After deployment, monitor telemetry and SDK metrics in the stress test resource group's Application Insights. SDK metrics are available through the
+[Azure OpenTelemetry Metrics plugin][azure_core_metrics_opentelemetry] dependency.
 
-If stress test pod is in `Error` status, check logs from init container:
+Use the dashboards in the stress test resource group to monitor AKS pods and stress test status.
 
-```shell
-kubectl logs -n <stress test namespace> <stress test pod name> -c init-azure-deployer
-```
-
-If above command output is empty, there may have been startup failures:
-
-```shell
-kubectl describe pod -n <stress test namespace> <stress test pod name>
-```
-
-Stop and remove deployed package:
-
-```shell
-helm uninstall <stress test name> -n <stress test namespace>
-```
-### Monitoring
-
-After the stress test is deployed on the cluster, we can monitor the telemetry data on the application insights which is
-inside the stress test resource group.
-
-The SDK metrics can also be monitored on application insights as we have imported
-[Azure OpenTelemetry Metrics plugin][azure_core_metrics_opentelemetry] as project dependency.
-
-There are several dashboards within the stress test resource group that we can use to monitor the AKS pod and stress test status.
-
-If you want do the local test and enable application insights, you can follow the [steps][enable_application_insights] to set the java agent.
-Make sure you have added the JVM parameters when you start the test.
-
+For local runs, follow the [steps][enable_application_insights] to enable the Java agent for Application Insights, and start tests with the required JVM parameters.
 
 ### Logging
 
-We use [logback.xml][logback_xml] to configure the logging. By default, the stress test run on cluster will output
-`INFO` level log to the file share. The container console only save the `WARN` and `ERROR` level log.
+We use [logback.xml][logback_xml] to configure logging. By default, stress tests running on the cluster output
+`INFO` level logs to the file share. The container console only saves `WARN` and `ERROR` level logs.
 
 Follow the steps in [Stress Test File Share][stress_test_file_share] to find the file share logs.
-
 
 ### Configure Faults
 
@@ -113,34 +87,18 @@ Below is the current structure of project:
 └── README.md
 ```
 
-### Cluster Namespace 
-
-The cluster namespace is defined in `Chart.yaml`. The default value we set is `java-eh`.
-
-```yaml
-name: <stress test name>
-...
-annotations:
-  namespace: <stress test namespace>
-```
-
-For local deployment with script, if the namespace option is not specified, the value will be overridden by the shell username.
-
-```shell
-..\..\..\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Namespace <stress test namespace>
-```
-
 ## Examples
 
-### Update EventSender
+### Configuring EventSender
 
 Change `SEND_TIMES` and `SEND_EVENTS` to the number of events you want to send.
 
-### Run EventProcessorWithOptions
+### Configuring EventProcessor for different receiver scenarios
 
-Modify receiver command in `job.yaml` to run stress test in different scenarios:
+Modify [`job.yaml`][job_yaml] to run stress test in different scenarios.
 
-Scenario 1: receiver does not checkpoint and not write to another new event hub.
+<details>
+<summary>Scenario: Receiving events without checkpointing</summary>
 
 ```yaml
     - name: receiver
@@ -153,10 +111,15 @@ Scenario 1: receiver does not checkpoint and not write to another new event hub.
               source $ENV_FILE &&
               java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
               "org.springframework.boot.loader.JarLauncher" \
-              --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=false --NEED_SEND_EVENT_HUB=false
+              --TEST_CLASS=EventProcessor --ENABLE_CHECKPOINT=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
-Scenario 2: receiver does checkpoint and not write to another new event hub.
+</details>
+
+<details>
+<summary>Scenario: Receiving and forwarding events to another Event Hub</summary>
+
+The EventProcessor receives events, checkpoints them, and then publishes them to another Event Hub, `eventHubBeta`.
 
 ```yaml
     - name: receiver
@@ -169,28 +132,12 @@ Scenario 2: receiver does checkpoint and not write to another new event hub.
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
+          --TEST_CLASS=EventForwarder --FORWARD_EVENT_HUB_NAME=eventHubBeta
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
-
-Scenario 3: receiver does checkpoint and write to another event hub.
-
-```yaml
-    - name: receiver
-      image: {{ .Values.image }}
-      imagePullPolicy: Always
-      command: ['sh', '-c']
-      args:
-        - |
-          set -a &&
-          source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
-          "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=true
-      {{- include "stress-test-addons.container-env" . | nindent 6 }}
-```
-
-Scenario 4: Four receiver does checkpoint and not write to another new event hub.
+</details>
+<details>
+<summary>Scenario: Receiving from multiple EventProcessors</summary>
 
 ```yaml
     - name: receiver1
@@ -203,7 +150,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
+          --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver2
       image: {{ .Values.image }}
@@ -215,7 +162,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
+          --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver3
       image: {{ .Values.image }}
@@ -227,7 +174,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
+          --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver4
       image: {{ .Values.image }}
@@ -239,28 +186,23 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
           source $ENV_FILE &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
-          --TEST_CLASS=EventProcessorWithOptions --NEED_UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
+          --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 ```
+</details>
 
 ### Add New Test Scenario
 
-Add a new test class under `\scenarios`.
-
-Extend `EventHubsScenarios` and implement test logic in `run()` method.
-
-Configure new class as bean and use class name as its bean name.
-
-Update `args` field in `job.yaml` to execute the new test class.
-
-Build out jar package and redeploy to cluster.
+1. Add a new test class under the [`scenarios`][scenarios_folder] folder.
+1. Extend [`EventHubsScenario`][EventHubsScenario] and implement test logic in `run()` method.
+1. Configure new class as bean and use class name as its bean name.
+1. Update `args` field in [`templates/job.yaml`][job_yaml] to execute the new test class.
+1. Build out jar package and redeploy to cluster.
 
 ### Add New Scenario Option
 
-We use [Spring][spring_configuration] to inject environment variable or 
-command line arguments as the scenario options. 
-
-You can add new scenario option in [ScenarioOptions][ScenarioOptions] with below format: 
+We use [Spring][spring_configuration] to inject environment variables or
+command-line arguments as scenario options. You can add a new scenario option in [ScenarioOptions][ScenarioOptions] with the format below:
 
 ```java
 @Value("NEW_OPTION: default value")
@@ -271,7 +213,7 @@ public Type getNewOption() {
 }
 ```
 
-It is recommended to provide a default value for the new option, as it will not have any impact 
+It is recommended to provide a default value for the new option, as it will not have any impact
 on the existing job configuration.
 
 ## Troubleshooting
@@ -307,3 +249,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout
 [spring_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config
 [ScenarioOptions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/java/com/azure/messaging/eventhubs/stress/util/ScenarioOptions.java
+[scenarios_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/java/com/azure/messaging/eventhubs/stress/scenarios
+[EventHubsScenario]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/java/com/azure/messaging/eventhubs/stress/scenarios/EventHubsScenario.java
+[job_yaml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/templates/job.yaml

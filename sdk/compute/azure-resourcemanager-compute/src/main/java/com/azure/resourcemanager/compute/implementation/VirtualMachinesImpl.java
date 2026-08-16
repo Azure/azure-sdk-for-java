@@ -80,12 +80,12 @@ public class VirtualMachinesImpl extends
 
     @Override
     public void deallocate(String groupName, String name, boolean hibernate) {
-        this.inner().deallocate(groupName, name, hibernate, Context.NONE);
+        this.inner().deallocate(groupName, name, hibernate, null, Context.NONE);
     }
 
     @Override
     public Mono<Void> deallocateAsync(String groupName, String name, boolean hibernate) {
-        return this.inner().deallocateAsync(groupName, name, hibernate);
+        return this.inner().deallocateAsync(groupName, name, hibernate, null);
     }
 
     @Override

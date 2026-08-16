@@ -12,7 +12,6 @@ import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProp
 import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,6 +21,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 

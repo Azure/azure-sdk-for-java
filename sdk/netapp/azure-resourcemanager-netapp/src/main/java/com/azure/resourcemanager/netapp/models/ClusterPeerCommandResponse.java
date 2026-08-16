@@ -11,13 +11,11 @@ import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponse
  */
 public interface ClusterPeerCommandResponse {
     /**
-     * Gets the peerAcceptCommand property: A command that needs to be run on the external ONTAP to accept cluster
-     * peering. Will only be present if &lt;code&gt;clusterPeeringStatus&lt;/code&gt; is
-     * &lt;code&gt;pending&lt;/code&gt;.
+     * Gets the properties property: Represents the properties of the cluster peer command response.
      * 
-     * @return the peerAcceptCommand value.
+     * @return the properties value.
      */
-    String peerAcceptCommand();
+    ClusterPeerCommandResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner object.

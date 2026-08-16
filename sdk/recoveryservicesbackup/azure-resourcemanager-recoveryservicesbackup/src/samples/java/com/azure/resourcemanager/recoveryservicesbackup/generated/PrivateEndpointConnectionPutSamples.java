@@ -18,7 +18,7 @@ import java.util.Arrays;
  */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.

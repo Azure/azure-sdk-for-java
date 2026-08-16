@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class CapabilitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Capabilities_Delete.json
+     * x-ms-original-file: 2026-05-01-preview/Capabilities_Delete.json
      */
     /**
      * Sample code: Delete a Capability that extends a virtual machine Target resource.

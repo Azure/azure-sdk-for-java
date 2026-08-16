@@ -9,12 +9,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerservice.fluent.AlertConfigurationsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.IdentityBindingsClient;
 import com.azure.resourcemanager.containerservice.fluent.JWTAuthenticatorsClient;
 import com.azure.resourcemanager.containerservice.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
 import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
+import com.azure.resourcemanager.containerservice.fluent.MaintenanceWindowsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClusterSnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
@@ -161,6 +163,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
         return this.maintenanceConfigurations;
+    }
+
+    /**
+     * The MaintenanceWindowsClient object to access its operations.
+     */
+    private final MaintenanceWindowsClient maintenanceWindows;
+
+    /**
+     * Gets the MaintenanceWindowsClient object to access its operations.
+     * 
+     * @return the MaintenanceWindowsClient object.
+     */
+    public MaintenanceWindowsClient getMaintenanceWindows() {
+        return this.maintenanceWindows;
     }
 
     /**
@@ -318,6 +334,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
+     * The AlertConfigurationsClient object to access its operations.
+     */
+    private final AlertConfigurationsClient alertConfigurations;
+
+    /**
+     * Gets the AlertConfigurationsClient object to access its operations.
+     * 
+     * @return the AlertConfigurationsClient object.
+     */
+    public AlertConfigurationsClient getAlertConfigurations() {
+        return this.alertConfigurations;
+    }
+
+    /**
      * The OperationStatusResultsClient object to access its operations.
      */
     private final OperationStatusResultsClient operationStatusResults;
@@ -405,10 +435,11 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-02-preview";
+        this.apiVersion = "2026-05-02-preview";
         this.agentPools = new AgentPoolsClientImpl(this);
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
+        this.maintenanceWindows = new MaintenanceWindowsClientImpl(this);
         this.managedNamespaces = new ManagedNamespacesClientImpl(this);
         this.machines = new MachinesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
@@ -420,6 +451,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.jWTAuthenticators = new JWTAuthenticatorsClientImpl(this);
         this.meshMemberships = new MeshMembershipsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.alertConfigurations = new AlertConfigurationsClientImpl(this);
         this.operationStatusResults = new OperationStatusResultsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);

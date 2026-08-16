@@ -88,7 +88,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> {
         }, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -141,7 +141,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedMessages.add(messageContext.getMessage());
         };
         final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern()).thenAwait(Duration.ofSeconds(30)).verifyErrorSatisfies(e -> {
@@ -191,7 +191,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedMessages.add(messageContext.getMessage());
         };
         final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> {
-        }, 1, false);
+        }, 1, false, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern()).thenAwait(Duration.ofSeconds(30)).verifyErrorSatisfies(e -> {
@@ -263,7 +263,8 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedErrors.add(errorContext.getException());
         };
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, false);
+        final RollingMessagePump pump
+            = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, false, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern()).thenAwait(Duration.ofSeconds(30)).verifyErrorSatisfies(e -> {
@@ -316,7 +317,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedMessages.add(messageContext.getMessage());
         };
         final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> {
-        }, 1, true);
+        }, 1, true, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern()).thenAwait().thenCancel().verify();
@@ -355,7 +356,8 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedErrors.add(errorContext.getException());
         };
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, true);
+        final RollingMessagePump pump
+            = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, true, Duration.ofSeconds(30));
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern()).thenAwait().thenCancel().verify();

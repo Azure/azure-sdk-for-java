@@ -22,7 +22,7 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":8898749754136420685,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"rvzb\"},\"location\":\"yrsrziuctixgb\",\"tags\":{\"apezkiswqjmdghs\":\"ifrevk\"},\"id\":\"parybjufpt\",\"name\":\"jczjnciuiyqv\",\"type\":\"daswvpp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":7582580137587684684,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"telexhv\"},\"location\":\"b\",\"tags\":{\"zqocarku\":\"o\",\"nx\":\"lbcnndt\",\"llhdyzm\":\"wqy\",\"nxakckyw\":\"ckze\"},\"id\":\"mxgaabjkdtfohfao\",\"name\":\"zvkiwrsiwdy\",\"type\":\"quryk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,14 @@ public final class VolumeQuotaRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .getWithResponse("fynn", "muii", "ri", "fohyk", "kxbbcbrwjiutgnj", com.azure.core.util.Context.NONE)
+            .getWithResponse("evdyz", "fajs", "kskmqozzkivyhjrl", "izjixlq", "hefkwabsolronqq",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yrsrziuctixgb", response.location());
-        Assertions.assertEquals("ifrevk", response.tags().get("apezkiswqjmdghs"));
-        Assertions.assertEquals(8898749754136420685L, response.quotaSizeInKiBs());
+        Assertions.assertEquals("b", response.location());
+        Assertions.assertEquals("o", response.tags().get("zqocarku"));
+        Assertions.assertEquals(7582580137587684684L, response.quotaSizeInKiBs());
         Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, response.quotaType());
-        Assertions.assertEquals("rvzb", response.quotaTarget());
+        Assertions.assertEquals("telexhv", response.quotaTarget());
     }
 }

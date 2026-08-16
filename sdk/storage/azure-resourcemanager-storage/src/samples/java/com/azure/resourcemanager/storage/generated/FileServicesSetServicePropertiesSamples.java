@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 public final class FileServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesPut.json
+     * x-ms-original-file: 2026-04-01/FileServicesPut.json
      */
     /**
      * Sample code: PutFileServices.
@@ -55,7 +55,7 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesPut_EnableSecureSmbFeatures.json
+     * x-ms-original-file: 2026-04-01/FileServicesPut_EnableSecureSmbFeatures.json
      */
     /**
      * Sample code: PutFileServices_EnableSecureSmbFeatures.
@@ -76,7 +76,7 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesPut_EnableSMBMultichannel.json
+     * x-ms-original-file: 2026-04-01/FileServicesPut_EnableSMBMultichannel.json
      */
     /**
      * Sample code: PutFileServices_EnableSMBMultichannel.
@@ -93,7 +93,7 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/FileServicesPut_EncryptionInTransitRequired.json
+     * x-ms-original-file: 2026-04-01/FileServicesPut_EncryptionInTransitRequired.json
      */
     /**
      * Sample code: PutFileServices_EncryptionInTransitRequired.

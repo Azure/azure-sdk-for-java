@@ -17,30 +17,30 @@ public final class ElasticExportPolicyRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticExportPolicyRule model = BinaryData.fromString(
-            "{\"ruleIndex\":1699732408,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Disabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"ijpxtx\"],\"rootAccess\":\"Enabled\"}")
+            "{\"ruleIndex\":307378678,\"unixAccessRule\":\"NoAccess\",\"nfsv3\":\"Enabled\",\"nfsv4\":\"Disabled\",\"allowedClients\":[\"hfbousnfepgfew\",\"twly\"],\"rootAccess\":\"Disabled\"}")
             .toObject(ElasticExportPolicyRule.class);
-        Assertions.assertEquals(1699732408, model.ruleIndex());
+        Assertions.assertEquals(307378678, model.ruleIndex());
         Assertions.assertEquals(ElasticUnixAccessRule.NO_ACCESS, model.unixAccessRule());
-        Assertions.assertEquals(ElasticNfsv3Access.DISABLED, model.nfsv3());
+        Assertions.assertEquals(ElasticNfsv3Access.ENABLED, model.nfsv3());
         Assertions.assertEquals(ElasticNfsv4Access.DISABLED, model.nfsv4());
-        Assertions.assertEquals("ijpxtx", model.allowedClients().get(0));
-        Assertions.assertEquals(ElasticRootAccess.ENABLED, model.rootAccess());
+        Assertions.assertEquals("hfbousnfepgfew", model.allowedClients().get(0));
+        Assertions.assertEquals(ElasticRootAccess.DISABLED, model.rootAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticExportPolicyRule model = new ElasticExportPolicyRule().withRuleIndex(1699732408)
+        ElasticExportPolicyRule model = new ElasticExportPolicyRule().withRuleIndex(307378678)
             .withUnixAccessRule(ElasticUnixAccessRule.NO_ACCESS)
-            .withNfsv3(ElasticNfsv3Access.DISABLED)
+            .withNfsv3(ElasticNfsv3Access.ENABLED)
             .withNfsv4(ElasticNfsv4Access.DISABLED)
-            .withAllowedClients(Arrays.asList("ijpxtx"))
-            .withRootAccess(ElasticRootAccess.ENABLED);
+            .withAllowedClients(Arrays.asList("hfbousnfepgfew", "twly"))
+            .withRootAccess(ElasticRootAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticExportPolicyRule.class);
-        Assertions.assertEquals(1699732408, model.ruleIndex());
+        Assertions.assertEquals(307378678, model.ruleIndex());
         Assertions.assertEquals(ElasticUnixAccessRule.NO_ACCESS, model.unixAccessRule());
-        Assertions.assertEquals(ElasticNfsv3Access.DISABLED, model.nfsv3());
+        Assertions.assertEquals(ElasticNfsv3Access.ENABLED, model.nfsv3());
         Assertions.assertEquals(ElasticNfsv4Access.DISABLED, model.nfsv4());
-        Assertions.assertEquals("ijpxtx", model.allowedClients().get(0));
-        Assertions.assertEquals(ElasticRootAccess.ENABLED, model.rootAccess());
+        Assertions.assertEquals("hfbousnfepgfew", model.allowedClients().get(0));
+        Assertions.assertEquals(ElasticRootAccess.DISABLED, model.rootAccess());
     }
 }

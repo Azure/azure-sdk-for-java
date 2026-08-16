@@ -14,22 +14,21 @@ public final class ConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"nxipeil\",\"connectionStatus\":\"Stale\",\"privateLinkServiceId\":\"uaejxdultsk\",\"privateEndpointName\":\"btdzumveekg\",\"privateEndpointResourceId\":\"ozuhkfp\",\"jobList\":[\"yofd\",\"luu\",\"dttouwaboekqvkel\",\"smv\"],\"provisioningState\":\"Deleting\"},\"id\":\"jsflhhcaalnjix\",\"name\":\"sxyawjoyaqcs\",\"type\":\"yjpkiidzyexz\"}")
+            "{\"properties\":{\"description\":\"ofd\",\"connectionStatus\":\"Disconnected\",\"privateLinkServiceId\":\"us\",\"privateEndpointName\":\"touwaboekqv\",\"privateEndpointResourceId\":\"lns\",\"jobList\":[\"xwyjsflhhc\",\"aln\",\"ixisxyawjoy\",\"qcslyjpkiid\"],\"provisioningState\":\"Failed\"},\"id\":\"znelixhnrztfolh\",\"name\":\"nxknalaulp\",\"type\":\"ggdtpnapnyiro\"}")
             .toObject(ConnectionInner.class);
-        Assertions.assertEquals("nxipeil", model.properties().description());
-        Assertions.assertEquals("uaejxdultsk", model.properties().privateLinkServiceId());
-        Assertions.assertEquals("yofd", model.properties().jobList().get(0));
+        Assertions.assertEquals("ofd", model.properties().description());
+        Assertions.assertEquals("us", model.properties().privateLinkServiceId());
+        Assertions.assertEquals("xwyjsflhhc", model.properties().jobList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionInner model
-            = new ConnectionInner().withProperties(new ConnectionProperties().withDescription("nxipeil")
-                .withPrivateLinkServiceId("uaejxdultsk")
-                .withJobList(Arrays.asList("yofd", "luu", "dttouwaboekqvkel", "smv")));
+        ConnectionInner model = new ConnectionInner().withProperties(new ConnectionProperties().withDescription("ofd")
+            .withPrivateLinkServiceId("us")
+            .withJobList(Arrays.asList("xwyjsflhhc", "aln", "ixisxyawjoy", "qcslyjpkiid")));
         model = BinaryData.fromObject(model).toObject(ConnectionInner.class);
-        Assertions.assertEquals("nxipeil", model.properties().description());
-        Assertions.assertEquals("uaejxdultsk", model.properties().privateLinkServiceId());
-        Assertions.assertEquals("yofd", model.properties().jobList().get(0));
+        Assertions.assertEquals("ofd", model.properties().description());
+        Assertions.assertEquals("us", model.properties().privateLinkServiceId());
+        Assertions.assertEquals("xwyjsflhhc", model.properties().jobList().get(0));
     }
 }

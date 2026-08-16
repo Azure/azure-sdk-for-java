@@ -38,6 +38,12 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
     private String senderDisplayName;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The original compose time of the message
      */
     @Generated
@@ -127,6 +133,28 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
     }
 
     /**
+     * Get the sequenceId property: The Sequence id of the message.
+     * 
+     * @return the sequenceId value.
+     */
+    @Generated
+    public Long getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
+     * Set the sequenceId property: The Sequence id of the message.
+     * 
+     * @param sequenceId the sequenceId value to set.
+     * @return the AcsChatMessageEventBaseProperties object itself.
+     */
+    @Generated
+    AcsChatMessageEventBaseProperties setSequenceId(Long sequenceId) {
+        this.sequenceId = sequenceId;
+        return this;
+    }
+
+    /**
      * Get the composeTime property: The original compose time of the message.
      * 
      * @return the composeTime value.
@@ -184,6 +212,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeLongField("version", this.version);
         jsonWriter.writeStringField("senderDisplayName", this.senderDisplayName);
+        jsonWriter.writeNumberField("sequenceId", this.sequenceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -208,6 +237,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
             String type = null;
             long version = 0L;
             String senderDisplayName = null;
+            Long sequenceId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -231,6 +261,8 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
                     version = reader.getLong();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
+                } else if ("sequenceId".equals(fieldName)) {
+                    sequenceId = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
@@ -240,6 +272,7 @@ public class AcsChatMessageEventBaseProperties extends AcsChatEventBasePropertie
                     senderCommunicationIdentifier, composeTime, type, version);
             deserializedAcsChatMessageEventBaseProperties.transactionId = transactionId;
             deserializedAcsChatMessageEventBaseProperties.senderDisplayName = senderDisplayName;
+            deserializedAcsChatMessageEventBaseProperties.sequenceId = sequenceId;
 
             return deserializedAcsChatMessageEventBaseProperties;
         });

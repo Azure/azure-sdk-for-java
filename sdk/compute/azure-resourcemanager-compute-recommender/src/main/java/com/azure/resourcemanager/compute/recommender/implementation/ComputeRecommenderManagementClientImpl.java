@@ -28,6 +28,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.recommender.fluent.ComputeRecommenderManagementClient;
 import com.azure.resourcemanager.compute.recommender.fluent.OperationsClient;
+import com.azure.resourcemanager.compute.recommender.fluent.SkuMixPlacementScoresClient;
 import com.azure.resourcemanager.compute.recommender.fluent.SpotPlacementScoresClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -142,6 +143,20 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
     }
 
     /**
+     * The SkuMixPlacementScoresClient object to access its operations.
+     */
+    private final SkuMixPlacementScoresClient skuMixPlacementScores;
+
+    /**
+     * Gets the SkuMixPlacementScoresClient object to access its operations.
+     * 
+     * @return the SkuMixPlacementScoresClient object.
+     */
+    public SkuMixPlacementScoresClient getSkuMixPlacementScores() {
+        return this.skuMixPlacementScores;
+    }
+
+    /**
      * The SpotPlacementScoresClient object to access its operations.
      */
     private final SpotPlacementScoresClient spotPlacementScores;
@@ -172,8 +187,9 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-05";
+        this.apiVersion = "2026-05-05-preview";
         this.operations = new OperationsClientImpl(this);
+        this.skuMixPlacementScores = new SkuMixPlacementScoresClientImpl(this);
         this.spotPlacementScores = new SpotPlacementScoresClientImpl(this);
     }
 
@@ -288,7 +304,7 @@ public final class ComputeRecommenderManagementClientImpl implements ComputeReco
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

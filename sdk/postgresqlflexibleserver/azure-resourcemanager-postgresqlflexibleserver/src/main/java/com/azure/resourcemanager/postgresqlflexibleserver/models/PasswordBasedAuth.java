@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class PasswordBasedAuth extends ExpandableStringEnum<PasswordBasedAuth> {
     /**
-     * Static value Enabled for PasswordBasedAuth.
+     * Server supports password based authentication.
      */
     public static final PasswordBasedAuth ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for PasswordBasedAuth.
+     * Server does not support password based authentication.
      */
     public static final PasswordBasedAuth DISABLED = fromString("Disabled");
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.SnapshotUsage;
  */
 public final class ElasticBackupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-15-preview/ElasticBackups_CreateOrUpdate.json
      */
     /**
      * Sample code: ElasticBackups_CreateOrUpdate.

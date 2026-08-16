@@ -164,7 +164,7 @@ public final class SearchAsyncClient {
         // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Long.class));
+            .map(protocolMethodData -> Long.parseLong(protocolMethodData.toString()));
     }
 
     /**
@@ -241,49 +241,6 @@ public final class SearchAsyncClient {
      * Retrieves a document from the index.
      *
      * @param key The key of the document to retrieve.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param enableElevatedRead A value that enables elevated read that bypass document level permission checks for the
-     * query operation.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     * from the returned document.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
-        List<String> selectedFields) {
-        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (enableElevatedRead != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
-                String.valueOf(enableElevatedRead));
-        }
-        if (selectedFields != null) {
-            requestOptions.addQueryParam("$select",
-                selectedFields.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
-    }
-
-    /**
-     * Retrieves a document from the index.
-     *
-     * @param key The key of the document to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -299,6 +256,27 @@ public final class SearchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
+    }
+
+    /**
+     * Retrieves a document from the Azure AI Search index.
+     * <p>
+     * This overload preserves backward compatibility with the 12.0.0 GA signature.
+     *
+     * @param key The key of the document to retrieve.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
+     * default as its corresponding value in the returned object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LookupDocument> getDocument(String key, List<String> selectedFields) {
+        return getDocument(key, null, null, selectedFields);
     }
 
     /**
@@ -1035,5 +1013,48 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> hiddenGeneratedGetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param enableElevatedRead A value that enables elevated read that bypass document level permission checks for the
+     * query operation.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     * from the returned document.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a document retrieved via a document lookup operation on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
+        List<String> selectedFields) {
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (enableElevatedRead != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                String.valueOf(enableElevatedRead));
+        }
+        if (selectedFields != null) {
+            requestOptions.addQueryParam("$select",
+                selectedFields.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 }

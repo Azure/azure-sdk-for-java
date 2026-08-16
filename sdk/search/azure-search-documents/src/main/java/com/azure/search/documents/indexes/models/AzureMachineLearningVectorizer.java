@@ -23,12 +23,6 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
     @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AML;
 
-    /*
-     * Specifies the properties of the AML vectorizer.
-     */
-    @Generated
-    private AzureMachineLearningParameters aMLParameters;
-
     /**
      * Creates an instance of AzureMachineLearningVectorizer class.
      *
@@ -51,28 +45,6 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
     }
 
     /**
-     * Get the aMLParameters property: Specifies the properties of the AML vectorizer.
-     *
-     * @return the aMLParameters value.
-     */
-    @Generated
-    public AzureMachineLearningParameters getAMLParameters() {
-        return this.aMLParameters;
-    }
-
-    /**
-     * Set the aMLParameters property: Specifies the properties of the AML vectorizer.
-     *
-     * @param aMLParameters the aMLParameters value to set.
-     * @return the AzureMachineLearningVectorizer object itself.
-     */
-    @Generated
-    public AzureMachineLearningVectorizer setAMLParameters(AzureMachineLearningParameters aMLParameters) {
-        this.aMLParameters = aMLParameters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -81,7 +53,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getVectorizerName());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("amlParameters", this.aMLParameters);
+        jsonWriter.writeJsonField("amlParameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,7 +71,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
         return jsonReader.readObject(reader -> {
             String vectorizerName = null;
             VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AML;
-            AzureMachineLearningParameters aMLParameters = null;
+            AzureMachineLearningParameters parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -108,7 +80,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorSearchVectorizerKind.fromString(reader.getString());
                 } else if ("amlParameters".equals(fieldName)) {
-                    aMLParameters = AzureMachineLearningParameters.fromJson(reader);
+                    parameters = AzureMachineLearningParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -116,8 +88,36 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
             AzureMachineLearningVectorizer deserializedAzureMachineLearningVectorizer
                 = new AzureMachineLearningVectorizer(vectorizerName);
             deserializedAzureMachineLearningVectorizer.kind = kind;
-            deserializedAzureMachineLearningVectorizer.aMLParameters = aMLParameters;
+            deserializedAzureMachineLearningVectorizer.parameters = parameters;
             return deserializedAzureMachineLearningVectorizer;
         });
+    }
+
+    /*
+     * Specifies the properties of the AML vectorizer.
+     */
+    @Generated
+    private AzureMachineLearningParameters parameters;
+
+    /**
+     * Get the parameters property: Specifies the properties of the AML vectorizer.
+     *
+     * @return the parameters value.
+     */
+    @Generated
+    public AzureMachineLearningParameters getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: Specifies the properties of the AML vectorizer.
+     *
+     * @param parameters the parameters value to set.
+     * @return the AzureMachineLearningVectorizer object itself.
+     */
+    @Generated
+    public AzureMachineLearningVectorizer setParameters(AzureMachineLearningParameters parameters) {
+        this.parameters = parameters;
+        return this;
     }
 }

@@ -96,13 +96,6 @@ public interface Route extends ExternalChildResource<Route, AfdEndpoint>, HasInn
     EnabledState enabledState();
 
     /**
-     * Gets the gRPC state for this route.
-     *
-     * @return the gRPC state
-     */
-    AfdRouteGrpcState grpcState();
-
-    /**
      * Gets the provisioning state reported by the service.
      *
      * @return the provisioning state
@@ -220,14 +213,6 @@ public interface Route extends ExternalChildResource<Route, AfdEndpoint>, HasInn
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withEnabledState(EnabledState enabledState);
-
-            /**
-             * Specifies the gRPC state for this route.
-             *
-             * @param grpcState the gRPC state
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withGrpcState(AfdRouteGrpcState grpcState);
         }
 
         /**
@@ -358,14 +343,6 @@ public interface Route extends ExternalChildResource<Route, AfdEndpoint>, HasInn
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withEnabledState(EnabledState enabledState);
-
-            /**
-             * Specifies the gRPC state for this route.
-             *
-             * @param grpcState the gRPC state
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withGrpcState(AfdRouteGrpcState grpcState);
         }
 
         /**
@@ -466,13 +443,5 @@ public interface Route extends ExternalChildResource<Route, AfdEndpoint>, HasInn
          * @return the next stage of the update
          */
         Update withEnabledState(EnabledState enabledState);
-
-        /**
-         * Specifies the gRPC state for this route.
-         *
-         * @param grpcState the gRPC state
-         * @return the next stage of the update
-         */
-        Update withGrpcState(AfdRouteGrpcState grpcState);
     }
 }

@@ -1309,6 +1309,270 @@ public final class ColorMapNames extends ExpandableStringEnum<ColorMapNames> {
     public static final ColorMapNames YLORRD_R = fromString("ylorrd_r");
 
     /**
+     * Algae colormap - sequential green colormap for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames ALGAE = fromString("algae");
+
+    /**
+     * Reversed algae colormap.
+     */
+    @Generated
+    public static final ColorMapNames ALGAE_R = fromString("algae_r");
+
+    /**
+     * Amp colormap - sequential magenta colormap for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames AMP = fromString("amp");
+
+    /**
+     * Reversed amp colormap.
+     */
+    @Generated
+    public static final ColorMapNames AMP_R = fromString("amp_r");
+
+    /**
+     * Balance colormap - diverging blue to red for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames BALANCE = fromString("balance");
+
+    /**
+     * Reversed balance colormap.
+     */
+    @Generated
+    public static final ColorMapNames BALANCE_R = fromString("balance_r");
+
+    /**
+     * Curl colormap - diverging teal to red for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames CURL = fromString("curl");
+
+    /**
+     * Reversed curl colormap.
+     */
+    @Generated
+    public static final ColorMapNames CURL_R = fromString("curl_r");
+
+    /**
+     * Deep colormap - sequential blue colormap for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames DEEP = fromString("deep");
+
+    /**
+     * Reversed deep colormap.
+     */
+    @Generated
+    public static final ColorMapNames DEEP_R = fromString("deep_r");
+
+    /**
+     * Delta colormap - diverging blue to green for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames DELTA = fromString("delta");
+
+    /**
+     * Reversed delta colormap.
+     */
+    @Generated
+    public static final ColorMapNames DELTA_R = fromString("delta_r");
+
+    /**
+     * Dense colormap - sequential purple colormap for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames DENSE = fromString("dense");
+
+    /**
+     * Reversed dense colormap.
+     */
+    @Generated
+    public static final ColorMapNames DENSE_R = fromString("dense_r");
+
+    /**
+     * Diff colormap - diverging colormap for difference data.
+     */
+    @Generated
+    public static final ColorMapNames DIFF = fromString("diff");
+
+    /**
+     * Reversed diff colormap.
+     */
+    @Generated
+    public static final ColorMapNames DIFF_R = fromString("diff_r");
+
+    /**
+     * Haline colormap - sequential blue to yellow for salinity data.
+     */
+    @Generated
+    public static final ColorMapNames HALINE = fromString("haline");
+
+    /**
+     * Reversed haline colormap.
+     */
+    @Generated
+    public static final ColorMapNames HALINE_R = fromString("haline_r");
+
+    /**
+     * Ice colormap - sequential blue colormap for ice data.
+     */
+    @Generated
+    public static final ColorMapNames ICE = fromString("ice");
+
+    /**
+     * Reversed ice colormap.
+     */
+    @Generated
+    public static final ColorMapNames ICE_R = fromString("ice_r");
+
+    /**
+     * Matter colormap - sequential yellow to brown for ocean data.
+     */
+    @Generated
+    public static final ColorMapNames MATTER = fromString("matter");
+
+    /**
+     * Reversed matter colormap.
+     */
+    @Generated
+    public static final ColorMapNames MATTER_R = fromString("matter_r");
+
+    /**
+     * Oxy colormap - diverging colormap for oxygen data.
+     */
+    @Generated
+    public static final ColorMapNames OXY = fromString("oxy");
+
+    /**
+     * Reversed oxy colormap.
+     */
+    @Generated
+    public static final ColorMapNames OXY_R = fromString("oxy_r");
+
+    /**
+     * Phase colormap - circular colormap for phase data.
+     */
+    @Generated
+    public static final ColorMapNames PHASE = fromString("phase");
+
+    /**
+     * Reversed phase colormap.
+     */
+    @Generated
+    public static final ColorMapNames PHASE_R = fromString("phase_r");
+
+    /**
+     * Rain colormap - sequential colormap for precipitation data.
+     */
+    @Generated
+    public static final ColorMapNames RAIN = fromString("rain");
+
+    /**
+     * Reversed rain colormap.
+     */
+    @Generated
+    public static final ColorMapNames RAIN_R = fromString("rain_r");
+
+    /**
+     * Solar colormap - sequential colormap for solar radiation data.
+     */
+    @Generated
+    public static final ColorMapNames SOLAR = fromString("solar");
+
+    /**
+     * Reversed solar colormap.
+     */
+    @Generated
+    public static final ColorMapNames SOLAR_R = fromString("solar_r");
+
+    /**
+     * Speed colormap - sequential colormap for velocity data.
+     */
+    @Generated
+    public static final ColorMapNames SPEED = fromString("speed");
+
+    /**
+     * Reversed speed colormap.
+     */
+    @Generated
+    public static final ColorMapNames SPEED_R = fromString("speed_r");
+
+    /**
+     * Tarn colormap - sequential colormap for topographic data.
+     */
+    @Generated
+    public static final ColorMapNames TARN = fromString("tarn");
+
+    /**
+     * Reversed tarn colormap.
+     */
+    @Generated
+    public static final ColorMapNames TARN_R = fromString("tarn_r");
+
+    /**
+     * Tempo colormap - sequential colormap for temporal data.
+     */
+    @Generated
+    public static final ColorMapNames TEMPO = fromString("tempo");
+
+    /**
+     * Reversed tempo colormap.
+     */
+    @Generated
+    public static final ColorMapNames TEMPO_R = fromString("tempo_r");
+
+    /**
+     * Thermal colormap - sequential colormap for temperature data.
+     */
+    @Generated
+    public static final ColorMapNames THERMAL = fromString("thermal");
+
+    /**
+     * Reversed thermal colormap.
+     */
+    @Generated
+    public static final ColorMapNames THERMAL_R = fromString("thermal_r");
+
+    /**
+     * Topo colormap - sequential colormap for topographic data.
+     */
+    @Generated
+    public static final ColorMapNames TOPO = fromString("topo");
+
+    /**
+     * Reversed topo colormap.
+     */
+    @Generated
+    public static final ColorMapNames TOPO_R = fromString("topo_r");
+
+    /**
+     * Turbid colormap - sequential colormap for turbidity data.
+     */
+    @Generated
+    public static final ColorMapNames TURBID = fromString("turbid");
+
+    /**
+     * Reversed turbid colormap.
+     */
+    @Generated
+    public static final ColorMapNames TURBID_R = fromString("turbid_r");
+
+    /**
+     * Turbo colormap - improved rainbow colormap.
+     */
+    @Generated
+    public static final ColorMapNames TURBO = fromString("turbo");
+
+    /**
+     * Reversed turbo colormap.
+     */
+    @Generated
+    public static final ColorMapNames TURBO_R = fromString("turbo_r");
+
+    /**
      * Creates a new instance of ColorMapNames value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -15,7 +15,9 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.services.async.ConversationServiceAsync;
+import com.openai.services.async.ResponseServiceAsync;
 import com.openai.services.blocking.ConversationService;
+import com.openai.services.blocking.ResponseService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,10 +44,10 @@ public class ClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080").credential(new MockTokenCredential());
         } else if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         } else {
-            builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT"))
+            builder.endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT"))
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
@@ -84,23 +86,33 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, agentsServiceVersion).buildResponsesAsyncClient();
     }
 
-    protected MemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+    protected ResponseService getResponseServiceSyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIClient().responses();
     }
 
-    protected MemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+    protected ResponseServiceAsync getResponseServiceAsyncClient(HttpClient httpClient,
         AgentsServiceVersion agentsServiceVersion) {
-        return getClientBuilder(httpClient, agentsServiceVersion).buildMemoryStoresAsyncClient();
+        return getClientBuilder(httpClient, agentsServiceVersion).buildOpenAIAsyncClient().responses();
+    }
+
+    protected BetaMemoryStoresClient getMemoryStoresSyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresClient();
+    }
+
+    protected BetaMemoryStoresAsyncClient getMemoryStoresAsyncClient(HttpClient httpClient,
+        AgentsServiceVersion agentsServiceVersion) {
+        return getClientBuilder(httpClient, agentsServiceVersion).beta().buildBetaMemoryStoresAsyncClient();
     }
 
     private void addTestRecordCustomSanitizers() {
 
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..image", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
-        sanitizers.add(new TestProxySanitizer("Content-Type",
-            "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+        sanitizers.add(new TestProxySanitizer("Content-Type", "^multipart\\/form-data(; charset=[^;]+)?; boundary=.*",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
 
         interceptorManager.addSanitizers(sanitizers);
@@ -108,9 +120,10 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie",
-            "X-Stainless-Arch", "X-Stainless-Lang", "X-Stainless-OS", "X-Stainless-OS-Version",
-            "X-Stainless-Package-Version", "X-Stainless-Runtime", "X-Stainless-Runtime-Version")));
+        interceptorManager.addMatchers(new CustomMatcher()
+            .setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie", "Accept", "X-Stainless-Arch", "X-Stainless-Lang",
+                "X-Stainless-OS", "X-Stainless-OS-Version", "X-Stainless-Package-Version", "X-Stainless-Runtime",
+                "X-Stainless-Runtime-Version", "X-Stainless-Kotlin-Version", "X-Stainless-Retry-Count")));
     }
 
     protected void sleep(long millis) {

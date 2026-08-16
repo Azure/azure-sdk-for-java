@@ -13,16 +13,16 @@ public final class StreamStorageDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamStorageDestination model
-            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"qtayri\"}}")
+            = BinaryData.fromString("{\"target\":\"Storage\",\"configuration\":{\"path\":\"xongmtsavjcbpwxq\"}}")
                 .toObject(StreamStorageDestination.class);
-        Assertions.assertEquals("qtayri", model.configuration().path());
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.configuration().path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamStorageDestination model = new StreamStorageDestination()
-            .withConfiguration(new StorageDestinationConfiguration().withPath("qtayri"));
+            .withConfiguration(new StorageDestinationConfiguration().withPath("xongmtsavjcbpwxq"));
         model = BinaryData.fromObject(model).toObject(StreamStorageDestination.class);
-        Assertions.assertEquals("qtayri", model.configuration().path());
+        Assertions.assertEquals("xongmtsavjcbpwxq", model.configuration().path());
     }
 }

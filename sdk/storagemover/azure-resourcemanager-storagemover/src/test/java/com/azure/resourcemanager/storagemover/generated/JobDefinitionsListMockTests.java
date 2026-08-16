@@ -27,7 +27,7 @@ public final class JobDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"r\",\"jobType\":\"CloudToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"gmfpgvmp\",\"sourceResourceId\":\"as\",\"sourceSubpath\":\"haq\",\"targetName\":\"x\",\"targetResourceId\":\"mwutwbdsre\",\"targetSubpath\":\"drhneuyow\",\"latestJobRunName\":\"d\",\"latestJobRunResourceId\":\"t\",\"latestJobRunStatus\":\"Failed\",\"agentName\":\"ircgpikpz\",\"agentResourceId\":\"ejzanlfz\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Failed\",\"connections\":[\"onok\",\"xrjqcirgzpfrlazs\",\"rnwoiindfp\"],\"schedule\":{\"frequency\":\"Daily\",\"isActive\":true,\"executionTime\":{\"hour\":1007403747,\"minute\":30},\"startDate\":\"2021-05-08T16:18:37Z\",\"daysOfWeek\":[\"sj\"],\"daysOfMonth\":[1421362478,402907816],\"cronExpression\":\"jvfbgofelja\",\"endDate\":\"2021-09-13T20:46:53Z\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":true},\"id\":\"vriiio\",\"name\":\"nalghfkvtvsexso\",\"type\":\"ueluqhhahhxvrhmz\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"flsjc\",\"jobType\":\"CloudToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"fjvfbgofeljagr\",\"sourceResourceId\":\"qhl\",\"sourceSubpath\":\"riiiojnalghfkv\",\"targetName\":\"vsexsowuelu\",\"targetResourceId\":\"hahhxvrhmzkwpj\",\"targetSubpath\":\"wspughftqsxhqx\",\"latestJobRunName\":\"xukndxdigr\",\"latestJobRunResourceId\":\"uufzdmsyqtfihw\",\"latestJobRunStatus\":\"CancelRequested\",\"agentName\":\"z\",\"agentResourceId\":\"gamv\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Canceled\",\"connections\":[\"udphqamvdkfwyn\",\"cvtbv\",\"ayhmtnvyqiatkz\",\"pcnp\"],\"schedule\":{\"frequency\":\"Weekly\",\"isActive\":true,\"executionTime\":{\"hour\":691812304,\"minute\":30},\"startDate\":\"2021-07-14T16:40:38Z\",\"daysOfWeek\":[\"jguq\",\"hwyg\"],\"daysOfMonth\":[1249464934,307379599,826622083],\"cronExpression\":\"xu\",\"endDate\":\"2021-10-16T01:46:34Z\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":true},\"id\":\"uh\",\"name\":\"pfcqdp\",\"type\":\"qxqvpsvuoymgc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,27 +37,27 @@ public final class JobDefinitionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JobDefinition> response
-            = manager.jobDefinitions().list("gzrf", "eeyebi", "ikayuhqlbjbsybb", com.azure.core.util.Context.NONE);
+            = manager.jobDefinitions().list("szrnwo", "indfpwpjyl", "bt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("r", response.iterator().next().description());
+        Assertions.assertEquals("flsjc", response.iterator().next().description());
         Assertions.assertEquals(JobType.CLOUD_TO_CLOUD, response.iterator().next().jobType());
         Assertions.assertEquals(CopyMode.MIRROR, response.iterator().next().copyMode());
-        Assertions.assertEquals("gmfpgvmp", response.iterator().next().sourceName());
-        Assertions.assertEquals("haq", response.iterator().next().sourceSubpath());
-        Assertions.assertEquals("x", response.iterator().next().targetName());
-        Assertions.assertEquals("drhneuyow", response.iterator().next().targetSubpath());
-        Assertions.assertEquals("ircgpikpz", response.iterator().next().agentName());
-        Assertions.assertEquals("onok", response.iterator().next().connections().get(0));
-        Assertions.assertEquals(Frequency.DAILY, response.iterator().next().schedule().frequency());
+        Assertions.assertEquals("fjvfbgofeljagr", response.iterator().next().sourceName());
+        Assertions.assertEquals("riiiojnalghfkv", response.iterator().next().sourceSubpath());
+        Assertions.assertEquals("vsexsowuelu", response.iterator().next().targetName());
+        Assertions.assertEquals("wspughftqsxhqx", response.iterator().next().targetSubpath());
+        Assertions.assertEquals("z", response.iterator().next().agentName());
+        Assertions.assertEquals("udphqamvdkfwyn", response.iterator().next().connections().get(0));
+        Assertions.assertEquals(Frequency.WEEKLY, response.iterator().next().schedule().frequency());
         Assertions.assertTrue(response.iterator().next().schedule().isActive());
-        Assertions.assertEquals(1007403747, response.iterator().next().schedule().executionTime().hour());
+        Assertions.assertEquals(691812304, response.iterator().next().schedule().executionTime().hour());
         Assertions.assertEquals(Minute.THREE_ZERO, response.iterator().next().schedule().executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-08T16:18:37Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T16:40:38Z"),
             response.iterator().next().schedule().startDate());
-        Assertions.assertEquals("sj", response.iterator().next().schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(1421362478, response.iterator().next().schedule().daysOfMonth().get(0));
-        Assertions.assertEquals("jvfbgofelja", response.iterator().next().schedule().cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T20:46:53Z"),
+        Assertions.assertEquals("jguq", response.iterator().next().schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1249464934, response.iterator().next().schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("xu", response.iterator().next().schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T01:46:34Z"),
             response.iterator().next().schedule().endDate());
         Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5,
             response.iterator().next().dataIntegrityValidation());

@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BucketServerPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BucketServerPatchProperties model = BinaryData
-            .fromString(
-                "{\"fqdn\":\"zauorsuk\",\"certificateObject\":\"wbqpl\",\"onCertificateConflictAction\":\"Update\"}")
+        BucketServerPatchProperties model = BinaryData.fromString(
+            "{\"fqdn\":\"p\",\"certificateObject\":\"prvkwcfzqljyxgtc\",\"onCertificateConflictAction\":\"Update\"}")
             .toObject(BucketServerPatchProperties.class);
-        Assertions.assertEquals("zauorsuk", model.fqdn());
-        Assertions.assertEquals("wbqpl", model.certificateObject());
+        Assertions.assertEquals("p", model.fqdn());
+        Assertions.assertEquals("prvkwcfzqljyxgtc", model.certificateObject());
         Assertions.assertEquals(OnCertificateConflictAction.UPDATE, model.onCertificateConflictAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BucketServerPatchProperties model = new BucketServerPatchProperties().withFqdn("zauorsuk")
-            .withCertificateObject("wbqpl")
+        BucketServerPatchProperties model = new BucketServerPatchProperties().withFqdn("p")
+            .withCertificateObject("prvkwcfzqljyxgtc")
             .withOnCertificateConflictAction(OnCertificateConflictAction.UPDATE);
         model = BinaryData.fromObject(model).toObject(BucketServerPatchProperties.class);
-        Assertions.assertEquals("zauorsuk", model.fqdn());
-        Assertions.assertEquals("wbqpl", model.certificateObject());
+        Assertions.assertEquals("p", model.fqdn());
+        Assertions.assertEquals("prvkwcfzqljyxgtc", model.certificateObject());
         Assertions.assertEquals(OnCertificateConflictAction.UPDATE, model.onCertificateConflictAction());
     }
 }

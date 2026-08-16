@@ -309,7 +309,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -327,7 +327,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreBackup(
@@ -345,7 +345,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -363,7 +363,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preBackup(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -380,7 +380,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -398,7 +398,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PreValidationResponseInner>, PreValidationResponseInner> beginPreRestore(
@@ -416,7 +416,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,
@@ -434,7 +434,7 @@ public interface VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return response object for pre validation api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PreValidationResponseInner preRestore(String resourceGroupName, String elasticSanName, String volumeGroupName,

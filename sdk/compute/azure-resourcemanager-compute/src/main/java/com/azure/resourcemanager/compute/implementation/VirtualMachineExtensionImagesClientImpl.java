@@ -91,7 +91,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -123,7 +123,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (version == null) {
             return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -134,7 +134,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -167,7 +167,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (version == null) {
             return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -177,7 +177,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -196,7 +196,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -215,7 +215,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a virtual machine extension image.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param version The version parameter.
@@ -232,7 +232,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -257,7 +257,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listTypes(this.client.getEndpoint(), apiVersion,
@@ -268,7 +268,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,7 +294,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listTypes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -304,7 +304,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -319,7 +319,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +336,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -351,7 +351,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -383,7 +383,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (type == null) {
             return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVersions(this.client.getEndpoint(), apiVersion,
@@ -394,7 +394,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -427,7 +427,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (type == null) {
             return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -437,7 +437,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,7 +458,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -479,7 +479,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The location name.
+     * @param location The name of the Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

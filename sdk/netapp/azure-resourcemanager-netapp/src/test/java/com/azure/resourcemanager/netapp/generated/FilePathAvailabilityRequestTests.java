@@ -12,21 +12,21 @@ public final class FilePathAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilePathAvailabilityRequest model = BinaryData
-            .fromString("{\"name\":\"yyvpkpatlb\",\"subnetId\":\"jp\",\"availabilityZone\":\"sksrfhfvolmknbn\"}")
+            .fromString("{\"name\":\"qllizstac\",\"subnetId\":\"jvhrweft\",\"availabilityZone\":\"qejpmvssehaepwa\"}")
             .toObject(FilePathAvailabilityRequest.class);
-        Assertions.assertEquals("yyvpkpatlb", model.name());
-        Assertions.assertEquals("jp", model.subnetId());
-        Assertions.assertEquals("sksrfhfvolmknbn", model.availabilityZone());
+        Assertions.assertEquals("qllizstac", model.name());
+        Assertions.assertEquals("jvhrweft", model.subnetId());
+        Assertions.assertEquals("qejpmvssehaepwa", model.availabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilePathAvailabilityRequest model = new FilePathAvailabilityRequest().withName("yyvpkpatlb")
-            .withSubnetId("jp")
-            .withAvailabilityZone("sksrfhfvolmknbn");
+        FilePathAvailabilityRequest model = new FilePathAvailabilityRequest().withName("qllizstac")
+            .withSubnetId("jvhrweft")
+            .withAvailabilityZone("qejpmvssehaepwa");
         model = BinaryData.fromObject(model).toObject(FilePathAvailabilityRequest.class);
-        Assertions.assertEquals("yyvpkpatlb", model.name());
-        Assertions.assertEquals("jp", model.subnetId());
-        Assertions.assertEquals("sksrfhfvolmknbn", model.availabilityZone());
+        Assertions.assertEquals("qllizstac", model.name());
+        Assertions.assertEquals("jvhrweft", model.subnetId());
+        Assertions.assertEquals("qejpmvssehaepwa", model.availabilityZone());
     }
 }

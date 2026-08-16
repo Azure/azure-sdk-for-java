@@ -17,9 +17,14 @@ public final class DependenciesAggregationType extends ExpandableStringEnum<Depe
     public static final DependenciesAggregationType WORST_OF = fromString("WorstOf");
 
     /**
-     * Based on configurable thresholds.
+     * Healthy if the count/percentage of healthy children meets the threshold.
      */
-    public static final DependenciesAggregationType THRESHOLDS = fromString("Thresholds");
+    public static final DependenciesAggregationType MIN_HEALTHY = fromString("MinHealthy");
+
+    /**
+     * Healthy if the count/percentage of not-healthy children stays below the threshold.
+     */
+    public static final DependenciesAggregationType MAX_NOT_HEALTHY = fromString("MaxNotHealthy");
 
     /**
      * Creates a new instance of DependenciesAggregationType value.

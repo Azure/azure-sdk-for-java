@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class ScopeMapsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ScopeMapList.json
+     * x-ms-original-file: 2026-03-01-preview/ScopeMapList.json
      */
     /**
      * Sample code: ScopeMapList.

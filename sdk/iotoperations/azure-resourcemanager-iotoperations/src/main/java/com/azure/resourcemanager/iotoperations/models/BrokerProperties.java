@@ -44,6 +44,19 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     private GenerateResourceLimits generateResourceLimits;
 
     /*
+     * Handling of high-priority
+     * messages in the event that regular-priority messages are being backpressured.
+     * 
+     * When set to "Accept", the broker continues to accept high-priority messages even while regular-priority messages
+     * are rejected due to backpressure.
+     * 
+     * When set to "Reject", backpressure also affects high-priority messages.
+     * 
+     * Defaults to "Accept".
+     */
+    private HighPriorityMessagesBackpressureHandling highPriorityMessagesBackpressureHandling;
+
+    /*
      * Memory profile of Broker.
      */
     private BrokerMemoryProfile memoryProfile;
@@ -57,6 +70,11 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The status for the broker.
+     */
+    private BrokerStatus status;
 
     /*
      * The health state of the resource.
@@ -174,6 +192,43 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
+     * Get the highPriorityMessagesBackpressureHandling property: Handling of high-priority
+     * messages in the event that regular-priority messages are being backpressured.
+     * 
+     * When set to "Accept", the broker continues to accept high-priority messages even while regular-priority messages
+     * are rejected due to backpressure.
+     * 
+     * When set to "Reject", backpressure also affects high-priority messages.
+     * 
+     * Defaults to "Accept".
+     * 
+     * @return the highPriorityMessagesBackpressureHandling value.
+     */
+    public HighPriorityMessagesBackpressureHandling highPriorityMessagesBackpressureHandling() {
+        return this.highPriorityMessagesBackpressureHandling;
+    }
+
+    /**
+     * Set the highPriorityMessagesBackpressureHandling property: Handling of high-priority
+     * messages in the event that regular-priority messages are being backpressured.
+     * 
+     * When set to "Accept", the broker continues to accept high-priority messages even while regular-priority messages
+     * are rejected due to backpressure.
+     * 
+     * When set to "Reject", backpressure also affects high-priority messages.
+     * 
+     * Defaults to "Accept".
+     * 
+     * @param highPriorityMessagesBackpressureHandling the highPriorityMessagesBackpressureHandling value to set.
+     * @return the BrokerProperties object itself.
+     */
+    public BrokerProperties withHighPriorityMessagesBackpressureHandling(
+        HighPriorityMessagesBackpressureHandling highPriorityMessagesBackpressureHandling) {
+        this.highPriorityMessagesBackpressureHandling = highPriorityMessagesBackpressureHandling;
+        return this;
+    }
+
+    /**
      * Get the memoryProfile property: Memory profile of Broker.
      * 
      * @return the memoryProfile value.
@@ -223,6 +278,15 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
     }
 
     /**
+     * Get the status property: The status for the broker.
+     * 
+     * @return the status value.
+     */
+    public BrokerStatus status() {
+        return this.status;
+    }
+
+    /**
      * Get the healthState property: The health state of the resource.
      * 
      * @return the healthState value.
@@ -242,6 +306,10 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
         jsonWriter.writeJsonField("diagnostics", this.diagnostics);
         jsonWriter.writeJsonField("diskBackedMessageBuffer", this.diskBackedMessageBuffer);
         jsonWriter.writeJsonField("generateResourceLimits", this.generateResourceLimits);
+        jsonWriter.writeStringField("highPriorityMessagesBackpressureHandling",
+            this.highPriorityMessagesBackpressureHandling == null
+                ? null
+                : this.highPriorityMessagesBackpressureHandling.toString());
         jsonWriter.writeStringField("memoryProfile", this.memoryProfile == null ? null : this.memoryProfile.toString());
         jsonWriter.writeJsonField("persistence", this.persistence);
         return jsonWriter.writeEndObject();
@@ -272,12 +340,17 @@ public final class BrokerProperties implements JsonSerializable<BrokerProperties
                     deserializedBrokerProperties.diskBackedMessageBuffer = DiskBackedMessageBuffer.fromJson(reader);
                 } else if ("generateResourceLimits".equals(fieldName)) {
                     deserializedBrokerProperties.generateResourceLimits = GenerateResourceLimits.fromJson(reader);
+                } else if ("highPriorityMessagesBackpressureHandling".equals(fieldName)) {
+                    deserializedBrokerProperties.highPriorityMessagesBackpressureHandling
+                        = HighPriorityMessagesBackpressureHandling.fromString(reader.getString());
                 } else if ("memoryProfile".equals(fieldName)) {
                     deserializedBrokerProperties.memoryProfile = BrokerMemoryProfile.fromString(reader.getString());
                 } else if ("persistence".equals(fieldName)) {
                     deserializedBrokerProperties.persistence = BrokerPersistence.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBrokerProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedBrokerProperties.status = BrokerStatus.fromJson(reader);
                 } else if ("healthState".equals(fieldName)) {
                     deserializedBrokerProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {

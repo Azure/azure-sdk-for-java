@@ -109,6 +109,16 @@ public final class State extends ExpandableStringEnum<State> {
     public static final State ADDITIONAL_CONTENT_REQUIRED = fromString("AdditionalContentRequired");
 
     /**
+     * The health check has expired and needs to be redone.
+     */
+    public static final State HEALTH_CHECK_EXPIRED = fromString("HealthCheckExpired");
+
+    /**
+     * The update is pending OEM validation before it can proceed.
+     */
+    public static final State PENDING_OEMVALIDATION = fromString("PendingOEMValidation");
+
+    /**
      * Creates a new instance of State value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

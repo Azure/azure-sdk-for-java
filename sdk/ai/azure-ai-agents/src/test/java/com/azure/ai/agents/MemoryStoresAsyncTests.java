@@ -40,7 +40,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicMemoryStoresCrud(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store_java";
         String initialDescription = "Example memory store for conversations";
@@ -102,7 +102,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
@@ -162,7 +162,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void advancedMemoryStores(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        MemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
+        BetaMemoryStoresAsyncClient memoryStoreClient = getMemoryStoresAsyncClient(httpClient, serviceVersion);
 
         String memoryStoreName = "my_memory_store";
         String description = "Example memory store for conversations";
@@ -257,7 +257,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
         StepVerifier.create(testMono).verifyComplete();
     }
 
-    private static Mono<Void> cleanupBeforeTest(MemoryStoresAsyncClient memoryStoreClient, String memoryStoreName) {
+    private static Mono<Void> cleanupBeforeTest(BetaMemoryStoresAsyncClient memoryStoreClient, String memoryStoreName) {
         return memoryStoreClient.deleteMemoryStore(memoryStoreName)
             .onErrorResume(ResourceNotFoundException.class, ex -> Mono.empty())
             .then();

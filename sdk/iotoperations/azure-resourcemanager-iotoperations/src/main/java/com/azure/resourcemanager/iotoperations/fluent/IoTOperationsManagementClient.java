@@ -136,4 +136,11 @@ public interface IoTOperationsManagementClient {
      * @return the AkriConnectorsClient object.
      */
     AkriConnectorsClient getAkriConnectors();
+
+    /**
+     * Gets the AkriServicesClient object to access its operations.
+     * 
+     * @return the AkriServicesClient object.
+     */
+    AkriServicesClient getAkriServices();
 }

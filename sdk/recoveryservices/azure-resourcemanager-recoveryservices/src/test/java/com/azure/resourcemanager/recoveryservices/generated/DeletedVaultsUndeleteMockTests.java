@@ -30,9 +30,9 @@ public final class DeletedVaultsUndeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deletedVaults()
-            .undelete("aolps", "lqlfm",
-                new DeletedVaultUndeleteInput()
-                    .withProperties(new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("dnbbglzps")),
+            .undelete("rpkhjwn", "yqsluic",
+                new DeletedVaultUndeleteInput().withProperties(
+                    new DeletedVaultUndeleteInputProperties().withRecoveryResourceGroupId("dggkzzlvmbmpa")),
                 com.azure.core.util.Context.NONE);
 
     }

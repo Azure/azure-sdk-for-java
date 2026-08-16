@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when the model-generated function call arguments are updated.
  */
 @Immutable
-public final class SessionUpdateResponseFunctionCallArgumentsDelta extends SessionUpdate {
+public final class SessionUpdateResponseFunctionCallArgumentsDelta extends SessionServerEvent {
 
     /*
      * The type of event.

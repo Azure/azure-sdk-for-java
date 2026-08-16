@@ -114,7 +114,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get unsupported vm size for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param vmSize VM Size name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -134,7 +134,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get unsupported vm size for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param vmSize VM Size name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -149,7 +149,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get unsupported vm size for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param vmSize VM Size name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +167,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get unsupported vm size for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param vmSize VM Size name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,7 +182,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,7 +203,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +218,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,7 +236,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,7 +255,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,7 +270,7 @@ public final class ManagedUnsupportedVMSizesClientImpl implements ManagedUnsuppo
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Managed Clusters.
      * 
-     * @param location The location for the cluster code versions. This is different from cluster location.
+     * @param location The location for the unsupported VM sizes. This is different from cluster location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

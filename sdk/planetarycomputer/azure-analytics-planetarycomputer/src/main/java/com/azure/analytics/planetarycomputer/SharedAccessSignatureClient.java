@@ -75,8 +75,8 @@ public final class SharedAccessSignatureClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSignWithResponse(String href, RequestOptions requestOptions) {
-        return this.serviceClient.getSignWithResponse(href, requestOptions);
+    public Response<BinaryData> getUrlWithResponse(String href, RequestOptions requestOptions) {
+        return this.serviceClient.getUrlWithResponse(href, requestOptions);
     }
 
     /**
@@ -174,13 +174,13 @@ public final class SharedAccessSignatureClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessSignatureSignedLink getSign(String href, Integer durationInMinutes) {
-        // Generated convenience method for getSignWithResponse
+    public SharedAccessSignatureSignedLink getUrl(String href, Integer durationInMinutes) {
+        // Generated convenience method for getUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (durationInMinutes != null) {
             requestOptions.addQueryParam("duration", String.valueOf(durationInMinutes), false);
         }
-        return getSignWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
+        return getUrlWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
     }
 
     /**
@@ -203,10 +203,10 @@ public final class SharedAccessSignatureClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessSignatureSignedLink getSign(String href) {
-        // Generated convenience method for getSignWithResponse
+    public SharedAccessSignatureSignedLink getUrl(String href) {
+        // Generated convenience method for getUrlWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSignWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
+        return getUrlWithResponse(href, requestOptions).getValue().toObject(SharedAccessSignatureSignedLink.class);
     }
 
     /**

@@ -74,17 +74,25 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class DiagnosticsProvider {
-    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
-    private static final
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-            ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor
-        = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
+    private static ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor batchResponseAccessor() {
+        return ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -115,7 +123,6 @@ public final class DiagnosticsProvider {
 
     final Supplier<Double> samplingRateSnapshotSupplier;
 
-
     public DiagnosticsProvider(
         CosmosClientTelemetryConfig clientTelemetryConfig,
         String clientId,
@@ -130,12 +137,12 @@ public final class DiagnosticsProvider {
         this.telemetryConfig = clientTelemetryConfig;
 
         this.samplingRateSnapshotSupplier =  () -> isEnabled()
-            ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig)
+            ? clientTelemetryConfigAccessor().getSamplingRate(this.telemetryConfig)
             : 0;
 
         this.diagnosticHandlers = new ArrayList<>(
-            clientTelemetryConfigAccessor.getDiagnosticHandlers(clientTelemetryConfig));
-        Tracer tracerCandidate = clientTelemetryConfigAccessor.getOrCreateTracer(clientTelemetryConfig);
+            clientTelemetryConfigAccessor().getDiagnosticHandlers(clientTelemetryConfig));
+        Tracer tracerCandidate = clientTelemetryConfigAccessor().getOrCreateTracer(clientTelemetryConfig);
 
         LOGGER.debug(
             "TracerCandidate: {} - {}",
@@ -154,7 +161,7 @@ public final class DiagnosticsProvider {
         }
 
         if (this.tracer.isEnabled()) {
-            if (clientTelemetryConfigAccessor.isLegacyTracingEnabled(clientTelemetryConfig)) {
+            if (clientTelemetryConfigAccessor().isLegacyTracingEnabled(clientTelemetryConfig)) {
                 this.cosmosTracer = new LegacyCosmosTracer(this.tracer);
             } else {
                 this.cosmosTracer = new OpenTelemetryCosmosTracer(
@@ -255,7 +262,7 @@ public final class DiagnosticsProvider {
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
-        ctxAccessor.startOperation(cosmosCtx);
+        ctxAccessor().startOperation(cosmosCtx);
         Context local = Objects
             .requireNonNull(context, "'context' cannot be null.")
             .addData(COSMOS_DIAGNOSTICS_CONTEXT_KEY, cosmosCtx);
@@ -330,7 +337,7 @@ public final class DiagnosticsProvider {
                     diagnostics,
                     null,
                     context,
-                    ctxAccessor.isEmptyCompletion(cosmosCtx),
+                    ctxAccessor().isEmptyCompletion(cosmosCtx),
                     isSampledOut);
                 break;
             case ON_NEXT:
@@ -370,7 +377,7 @@ public final class DiagnosticsProvider {
                         }
                         effectiveDiagnostics = exception.getDiagnostics();
                         if (effectiveDiagnostics != null) {
-                            diagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(effectiveDiagnostics).set(true);
+                            diagAccessor().isDiagnosticsCapturedInPagedFlux(effectiveDiagnostics).set(true);
                         }
                     }
                 }
@@ -474,7 +481,7 @@ public final class DiagnosticsProvider {
         Integer actualItemCount,
         Double requestCharge
     ) {
-        ctxAccessor.recordOperation(
+        ctxAccessor().recordOperation(
             cosmosCtx, 200, 0, actualItemCount, requestCharge, diagnostics, null);
     }
 
@@ -575,7 +582,7 @@ public final class DiagnosticsProvider {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
-        String accountName = clientAccessor.getAccountTagValue(client);
+        String accountName = clientAccessor().getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -596,7 +603,7 @@ public final class DiagnosticsProvider {
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getDiagnostics();
                 if (diagnostics != null) {
-                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                    diagAccessor().setSamplingRateSnapshot(diagnostics, samplingRate);
                 }
 
                 return diagnostics;
@@ -624,7 +631,7 @@ public final class DiagnosticsProvider {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
-        String accountName = clientAccessor.getAccountTagValue(client);
+        String accountName = clientAccessor().getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -645,15 +652,15 @@ public final class DiagnosticsProvider {
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getDiagnostics();
                 if (diagnostics != null) {
-                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                    diagAccessor().setSamplingRateSnapshot(diagnostics, samplingRate);
                 }
 
                 return diagnostics;
             },
-            cosmosBatchResponseAccessor::getOpCountPerEvaluation,
-            cosmosBatchResponseAccessor::getRetriedOpCountPerEvaluation,
-            cosmosBatchResponseAccessor::getGlobalOpCount,
-            cosmosBatchResponseAccessor::getTargetMaxMicroBatchSize,
+            batchResponseAccessor()::getOpCountPerEvaluation,
+            batchResponseAccessor()::getRetriedOpCountPerEvaluation,
+            batchResponseAccessor()::getGlobalOpCount,
+            batchResponseAccessor()::getTargetMaxMicroBatchSize,
             requestOptions,
             null);
     }
@@ -674,7 +681,7 @@ public final class DiagnosticsProvider {
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         checkNotNull(client, "Argument 'client' must not be null.");
 
-        String accountName = clientAccessor.getAccountTagValue(client);
+        String accountName = clientAccessor().getAccountTagValue(client);
 
         return publisherWithDiagnostics(
             resultPublisher,
@@ -695,7 +702,7 @@ public final class DiagnosticsProvider {
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getDiagnostics();
                 if (diagnostics != null) {
-                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                    diagAccessor().setSamplingRateSnapshot(diagnostics, samplingRate);
                 }
 
                 return diagnostics;
@@ -719,13 +726,13 @@ public final class DiagnosticsProvider {
         final double samplingRateSnapshot = this.samplingRateSnapshotSupplier.get();
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         final CosmosDiagnosticsContext ctx = state.getDiagnosticsContextSnapshot();
-        ctxAccessor.setSamplingRateSnapshot(ctx, samplingRateSnapshot, isSampledOut);
+        ctxAccessor().setSamplingRateSnapshot(ctx, samplingRateSnapshot, isSampledOut);
 
         if (ctx == null || isSampledOut) {
             return publisher.map(r -> {
                 CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
                 if (diagnostics != null) {
-                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
+                    diagAccessor().setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
                 }
                 return r;
             });
@@ -740,8 +747,8 @@ public final class DiagnosticsProvider {
             ctx.getAccountName(),
             client,
             ctx.getEffectiveConsistencyLevel(),
-            ctxAccessor.getOperationType(ctx),
-            ctxAccessor.getResourceType(ctx),
+            ctxAccessor().getOperationType(ctx),
+            ctxAccessor().getResourceType(ctx),
             null,
             itemIdentityList.size(),
             (r) -> HttpConstants.StatusCodes.OK, // FeedResponse would only ever be created in success case
@@ -750,7 +757,7 @@ public final class DiagnosticsProvider {
             (r, samplingRate) -> {
                 CosmosDiagnostics diagnostics = r.getCosmosDiagnostics();
                 if (diagnostics != null) {
-                    diagnosticsAccessor.setSamplingRateSnapshot(diagnostics, samplingRate);
+                    diagAccessor().setSamplingRateSnapshot(diagnostics, samplingRate);
                 }
 
                 return diagnostics;
@@ -782,13 +789,13 @@ public final class DiagnosticsProvider {
             response.getResults().size() : null;
 
         if (diagnostics != null &&
-            diagnosticsAccessor
+            diagAccessor()
                 .isDiagnosticsCapturedInPagedFlux(diagnostics)
                 .compareAndSet(false, true)) {
 
             Double samplingRateSnapshot = samplingRateSnapshotSupplier.get();
             if (samplingRateSnapshot != null && samplingRateSnapshot < 1) {
-                diagnosticsAccessor
+                diagAccessor()
                     .setSamplingRateSnapshot(diagnostics, samplingRateSnapshot);
             }
 
@@ -826,7 +833,7 @@ public final class DiagnosticsProvider {
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         checkNotNull(client, "Argument 'client' must not be null.");
 
-        String accountName = clientAccessor.getAccountTagValue(client);
+        String accountName = clientAccessor().getAccountTagValue(client);
 
         return wrapReadManyFeedResponseWithTracingIfEnabled(
             client,
@@ -851,7 +858,7 @@ public final class DiagnosticsProvider {
     }
 
     public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
-        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        final double samplingRateSnapshot = clientTelemetryConfigAccessor().getSamplingRate(this.telemetryConfig);
         boolean result = shouldSampleOutOperation(samplingRateSnapshot);
         options.setSamplingRateSnapshot(samplingRateSnapshot, result);
         return result;
@@ -883,10 +890,10 @@ public final class DiagnosticsProvider {
       Function<T, Long> globalOpCountPerEvaluationPeriodFunc,
       Function<T, Integer> targetMaxMicroBatchSizeFunc) {
 
-        final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
+        final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor().getSamplingRate(this.telemetryConfig) : 0;
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, isSampledOut);
+            ctxAccessor().setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, isSampledOut);
         }
 
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
@@ -964,8 +971,8 @@ public final class DiagnosticsProvider {
                                                  CosmosDiagnosticsContext cosmosCtxFromUpstream) {
 
         CosmosDiagnosticsThresholds thresholds = requestOptions != null
-            ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
-            : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
+            ? clientAccessor().getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
+            : clientAccessor().getEffectiveDiagnosticsThresholds(client, null);
 
         ReadConsistencyStrategy requestLevelReadConsistencyStrategy = requestOptions != null
             ? requestOptions.getReadConsistencyStrategy()
@@ -973,7 +980,7 @@ public final class DiagnosticsProvider {
 
         CosmosDiagnosticsContext cosmosCtx = cosmosCtxFromUpstream != null
             ? cosmosCtxFromUpstream
-            : ctxAccessor.create(
+            : ctxAccessor().create(
                 spanName,
                 accountName,
                 BridgeInternal.getServiceEndpoint(client),
@@ -982,13 +989,13 @@ public final class DiagnosticsProvider {
                 resourceType,
                 operationType,
                 null,
-                clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
-                clientAccessor.getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestLevelReadConsistencyStrategy),
+                clientAccessor().getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
+                clientAccessor().getEffectiveReadConsistencyStrategy(client, resourceType, operationType, requestLevelReadConsistencyStrategy),
                 maxItemCount,
                 thresholds,
                 trackingId,
-                clientAccessor.getConnectionMode(client),
-                clientAccessor.getUserAgent(client),
+                clientAccessor().getConnectionMode(client),
+                clientAccessor().getUserAgent(client),
                 null,
                 null,
                 requestOptions);
@@ -1031,7 +1038,7 @@ public final class DiagnosticsProvider {
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
         // endOperation can be called from two places in Reactor - making sure we process completion only once
-        if (ctxAccessor.endOperation(
+        if (ctxAccessor().endOperation(
             cosmosCtx,
             statusCode,
             subStatusCode,
@@ -1126,11 +1133,10 @@ public final class DiagnosticsProvider {
             checkNotNull(spanName, "Argument 'spanName' must not be null.");
             checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
-
             StartSpanOptions spanOptions = this.startSpanOptions(
                 spanName,
                 cosmosCtx.getDatabaseName(),
-                ctxAccessor.getEndpoint(cosmosCtx));
+                ctxAccessor().getEndpoint(cosmosCtx));
 
             // start the span and return the started span
             return tracer.start(spanName, spanOptions, context);
@@ -1283,7 +1289,6 @@ public final class DiagnosticsProvider {
             this.addEvent("RegionContacted", attributes,
                 OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 
-
             //adding systemInformation
             attributes = new HashMap<>();
             attributes.put(JSON_STRING,
@@ -1325,7 +1330,7 @@ public final class DiagnosticsProvider {
 
             Map<String, Object> attributes;
             FeedResponseDiagnostics feedResponseDiagnostics =
-                diagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+                diagAccessor().getFeedResponseDiagnostics(cosmosDiagnostics);
             if (feedResponseDiagnostics != null) {
                 QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnostics = feedResponseDiagnostics
                     .getQueryPlanDiagnosticsContext();
@@ -1402,16 +1407,16 @@ public final class DiagnosticsProvider {
             this.clientId = clientId;
             this.userAgent = userAgent;
             this.connectionMode = connectionMode;
-            this.namingSchemes = clientTelemetryConfigAccessor.getOtelSpanAttributeNamingSchema(config);
+            this.namingSchemes = clientTelemetryConfigAccessor().getOtelSpanAttributeNamingSchema(config);
         }
 
         private boolean isTransportLevelTracingEnabled() {
-            return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
+            return clientTelemetryConfigAccessor().isTransportLevelTracingEnabled(this.config);
         }
 
         private boolean showQueryStatement() {
-            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
-                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
+            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor().showQueryMode(this.config))
+                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor().showQueryMode(this.config))) {
                    return true;
             }
             return false;
@@ -1475,7 +1480,7 @@ public final class DiagnosticsProvider {
                     }
 
                     if (!cosmosCtx.getOperationId().isEmpty() &&
-                        !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
+                        !cosmosCtx.getOperationId().equals(ctxAccessor().getSpanName(cosmosCtx))) {
 
                         spanOptions = spanOptions
                             .setAttribute(AttributeNamesPreV1.CDB_OPERATION_ID.toString(), cosmosCtx.getOperationId());
@@ -1628,7 +1633,7 @@ public final class DiagnosticsProvider {
                 context);
 
             if (cosmosCtx.getEffectiveReadConsistencyStrategy() != null
-                && ctxAccessor.getOperationType(cosmosCtx).isReadOnlyOperation()) {
+                && ctxAccessor().getOperationType(cosmosCtx).isReadOnlyOperation()) {
 
                 tracer.setAttribute(
                     AttributeNamesV1.CDB_READ_CONSISTENCY_STRATEGY.toString(),
@@ -1865,7 +1870,7 @@ public final class DiagnosticsProvider {
             // HTTP calls are automatically captured as well
 
             Collection<ClientSideRequestStatistics> combinedClientSideRequestStatistics =
-                ctxAccessor.getDistinctCombinedClientSideRequestStatistics(diagnosticsContext);
+                ctxAccessor().getDistinctCombinedClientSideRequestStatistics(diagnosticsContext);
 
             traceTransportLevelRequests(
                 combinedClientSideRequestStatistics,

@@ -6,6 +6,7 @@ package com.azure.ai.agents.implementation.models;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -29,7 +30,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
      * Items for which to search for relevant memories.
      */
     @Generated
-    private List<InputItem> items;
+    private List<BinaryData> items;
 
     /*
      * The unique ID of the previous search request, enabling incremental memory search from where the last operation
@@ -70,7 +71,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
      * @return the items value.
      */
     @Generated
-    public List<InputItem> getItems() {
+    public List<BinaryData> getItems() {
         return this.items;
     }
 
@@ -81,7 +82,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
      * @return the SearchMemoriesRequest object itself.
      */
     @Generated
-    public SearchMemoriesRequest setItems(List<InputItem> items) {
+    public SearchMemoriesRequest setItems(List<BinaryData> items) {
         this.items = items;
         return this;
     }
@@ -140,7 +141,13 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scope", this.scope);
-        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("previous_search_id", this.previousSearchId);
         jsonWriter.writeJsonField("options", this.options);
         return jsonWriter.writeEndObject();
@@ -159,7 +166,7 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
     public static SearchMemoriesRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String scope = null;
-            List<InputItem> items = null;
+            List<BinaryData> items = null;
             String previousSearchId = null;
             MemorySearchOptions options = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -168,7 +175,8 @@ public final class SearchMemoriesRequest implements JsonSerializable<SearchMemor
                 if ("scope".equals(fieldName)) {
                     scope = reader.getString();
                 } else if ("items".equals(fieldName)) {
-                    items = reader.readArray(reader1 -> InputItem.fromJson(reader1));
+                    items = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("previous_search_id".equals(fieldName)) {
                     previousSearchId = reader.getString();
                 } else if ("options".equals(fieldName)) {

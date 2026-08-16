@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class GalleryImagesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImage_UpdateFeatures.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImage_UpdateFeatures.json
      */
     /**
      * Sample code: Update a gallery image feature.
@@ -42,7 +42,7 @@ public final class GalleryImagesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryImage_Update.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryImage_Update.json
      */
     /**
      * Sample code: Update a simple gallery image.

@@ -98,4 +98,5 @@ public class ConflictTests {
             assertThat(ex.getMessage()).isEqualTo("sprocName cannot be null");
         }
     }
+
 }

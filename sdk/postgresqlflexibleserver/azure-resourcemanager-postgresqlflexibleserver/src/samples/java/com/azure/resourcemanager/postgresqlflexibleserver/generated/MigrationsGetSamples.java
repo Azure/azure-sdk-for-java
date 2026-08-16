@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MigrationsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
      */
     /**
      * Sample code: Get information about a migration with successful validation only.
@@ -24,7 +24,7 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
      */
     /**
      * Sample code: Get information about a migration with successful validation and successful migration.
@@ -39,7 +39,7 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
      */
     /**
      * Sample code: Get information about a migration with successful validation but failed migration.
@@ -54,7 +54,7 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsGetMigrationWithValidationFailures.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsGetMigrationWithValidationFailures.json
      */
     /**
      * Sample code: Get information about a migration with validation failures.
@@ -69,7 +69,7 @@ public final class MigrationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/MigrationsGet.json
+     * x-ms-original-file: 2026-04-01-preview/MigrationsGet.json
      */
     /**
      * Sample code: Get information about a migration.

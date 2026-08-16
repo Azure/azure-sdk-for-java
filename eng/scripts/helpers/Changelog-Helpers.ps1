@@ -241,6 +241,87 @@ function Get-BuiltJarPath {
     return $selectedJar
 }
 
+function ConvertTo-ProcessArgumentString {
+    <#
+    .SYNOPSIS
+        Formats process arguments into a single command-line string.
+
+    .DESCRIPTION
+        Quotes individual arguments when they contain whitespace, quotes, or are empty,
+        so that ProcessStartInfo.Arguments preserves each token when launching a process.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments
+    )
+
+    $formattedArgs = foreach ($argument in $Arguments) {
+        if ([string]::IsNullOrEmpty($argument)) {
+            '""'
+        }
+        elseif ($argument -match '[\s"]') {
+            '"' + ($argument -replace '(\\*)"', '$1$1\"' -replace '(\\+)$', '$1$1') + '"'
+        }
+        else {
+            $argument
+        }
+    }
+
+    return $formattedArgs -join " "
+}
+
+function Invoke-CommandAndCaptureOutput {
+    <#
+    .SYNOPSIS
+        Executes a command and captures stdout, stderr, and exit code.
+
+    .DESCRIPTION
+        Wraps Windows batch launchers such as mvn.cmd/mvn.bat via cmd.exe when UseShellExecute is false,
+        while preserving exact argument boundaries for paths that contain spaces.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$FilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments
+    )
+
+    $formattedArgs = ConvertTo-ProcessArgumentString -Arguments $Arguments
+    $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+    $pinfo.RedirectStandardError = $true
+    $pinfo.RedirectStandardOutput = $true
+    $pinfo.UseShellExecute = $false
+
+    $extension = [System.IO.Path]::GetExtension($FilePath)
+    if ($extension -in @(".cmd", ".bat")) {
+        $batchArguments = @($FilePath) + $Arguments
+        $batchInvocation = ConvertTo-ProcessArgumentString -Arguments $batchArguments
+        $pinfo.FileName = $env:ComSpec
+        $pinfo.Arguments = "/c $batchInvocation"
+    } else {
+        $pinfo.FileName = $FilePath
+        $pinfo.Arguments = $formattedArgs
+    }
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $pinfo
+    $process.Start() | Out-Null
+
+    $stdout = $process.StandardOutput.ReadToEnd()
+    $stderr = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+
+    return [PSCustomObject]@{
+        StdOut = $stdout
+        StdErr = $stderr
+        ExitCode = $process.ExitCode
+        DisplayArguments = $formattedArgs
+    }
+}
+
 function Invoke-ChangelogGeneration {
     <#
     .SYNOPSIS
@@ -320,25 +401,13 @@ function Invoke-ChangelogGeneration {
     )
     
     if (Get-Command LogDebug -ErrorAction SilentlyContinue) {
-        LogDebug "Executing Maven command: $($mvnPath.Source) $($mvnArgs -join ' ')"
+        LogDebug "Executing Maven command: $($mvnPath.Source) $(ConvertTo-ProcessArgumentString -Arguments $mvnArgs)"
     }
-    
-    # Execute the Maven command and capture output
-    $pinfo = New-Object System.Diagnostics.ProcessStartInfo
-    $pinfo.FileName = $mvnPath.Source
-    $pinfo.RedirectStandardError = $true
-    $pinfo.RedirectStandardOutput = $true
-    $pinfo.UseShellExecute = $false
-    $pinfo.Arguments = $mvnArgs -join " "
-    
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $pinfo
-    $process.Start() | Out-Null
-    
-    $stdout = $process.StandardOutput.ReadToEnd()
-    $stderr = $process.StandardError.ReadToEnd()
-    $process.WaitForExit()
-    $exitCode = $process.ExitCode
+
+    $commandResult = Invoke-CommandAndCaptureOutput -FilePath $mvnPath.Source -Arguments $mvnArgs
+    $stdout = $commandResult.StdOut
+    $stderr = $commandResult.StdErr
+    $exitCode = $commandResult.ExitCode
     
     if ($exitCode -ne 0) {
         if (Get-Command LogError -ErrorAction SilentlyContinue) {

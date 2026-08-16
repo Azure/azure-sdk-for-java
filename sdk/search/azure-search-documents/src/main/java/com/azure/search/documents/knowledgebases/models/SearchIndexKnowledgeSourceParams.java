@@ -97,16 +97,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public SearchIndexKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -123,7 +113,10 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
         jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
+        jsonWriter.writeBooleanField("failOnError", isFailOnError());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
+        jsonWriter.writeNumberField("maxOutputDocuments", getMaxOutputDocuments());
+        jsonWriter.writeBooleanField("enableImageServing", isEnableImageServing());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("filterAddOn", this.filterAddOn);
         return jsonWriter.writeEndObject();
@@ -145,7 +138,10 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
             Boolean alwaysQuerySource = null;
+            Boolean failOnError = null;
             Float rerankerThreshold = null;
+            Integer maxOutputDocuments = null;
+            Boolean enableImageServing = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
             String filterAddOn = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -159,8 +155,14 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alwaysQuerySource".equals(fieldName)) {
                     alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failOnError".equals(fieldName)) {
+                    failOnError = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxOutputDocuments".equals(fieldName)) {
+                    maxOutputDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("enableImageServing".equals(fieldName)) {
+                    enableImageServing = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kind".equals(fieldName)) {
                     kind = KnowledgeSourceKind.fromString(reader.getString());
                 } else if ("filterAddOn".equals(fieldName)) {
@@ -174,10 +176,53 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
             deserializedSearchIndexKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
+            deserializedSearchIndexKnowledgeSourceParams.setFailOnError(failOnError);
             deserializedSearchIndexKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
+            deserializedSearchIndexKnowledgeSourceParams.setMaxOutputDocuments(maxOutputDocuments);
+            deserializedSearchIndexKnowledgeSourceParams.setEnableImageServing(enableImageServing);
             deserializedSearchIndexKnowledgeSourceParams.kind = kind;
             deserializedSearchIndexKnowledgeSourceParams.filterAddOn = filterAddOn;
             return deserializedSearchIndexKnowledgeSourceParams;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
+        super.setAlwaysQuerySource(alwaysQuerySource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setFailOnError(Boolean failOnError) {
+        super.setFailOnError(failOnError);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setMaxOutputDocuments(Integer maxOutputDocuments) {
+        super.setMaxOutputDocuments(maxOutputDocuments);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public SearchIndexKnowledgeSourceParams setEnableImageServing(Boolean enableImageServing) {
+        super.setEnableImageServing(enableImageServing);
+        return this;
     }
 }

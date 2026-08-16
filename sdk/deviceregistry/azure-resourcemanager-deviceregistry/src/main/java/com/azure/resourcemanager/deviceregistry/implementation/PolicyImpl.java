@@ -4,16 +4,14 @@
 
 package com.azure.resourcemanager.deviceregistry.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceregistry.fluent.models.PolicyInner;
+import com.azure.resourcemanager.deviceregistry.models.ActivateBringYourOwnRootRequest;
 import com.azure.resourcemanager.deviceregistry.models.Policy;
 import com.azure.resourcemanager.deviceregistry.models.PolicyProperties;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdate;
 import com.azure.resourcemanager.deviceregistry.models.PolicyUpdateProperties;
-import java.util.Collections;
-import java.util.Map;
 
 public final class PolicyImpl implements Policy, Policy.Definition, Policy.Update {
     private PolicyInner innerObject;
@@ -32,33 +30,12 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
         return this.innerModel().type();
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public PolicyProperties properties() {
         return this.innerModel().properties();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
     }
 
     public String resourceGroupName() {
@@ -150,24 +127,20 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
         return this;
     }
 
-    public PolicyImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
-        return this;
+    public void revokeIssuer() {
+        serviceManager.policies().revokeIssuer(resourceGroupName, namespaceName, policyName);
     }
 
-    public PolicyImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
-        return this;
+    public void revokeIssuer(Context context) {
+        serviceManager.policies().revokeIssuer(resourceGroupName, namespaceName, policyName, context);
     }
 
-    public PolicyImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateProperties.withTags(tags);
-            return this;
-        }
+    public void activateBringYourOwnRoot(ActivateBringYourOwnRootRequest body) {
+        serviceManager.policies().activateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body);
+    }
+
+    public void activateBringYourOwnRoot(ActivateBringYourOwnRootRequest body, Context context) {
+        serviceManager.policies().activateBringYourOwnRoot(resourceGroupName, namespaceName, policyName, body, context);
     }
 
     public PolicyImpl withProperties(PolicyProperties properties) {
@@ -178,9 +151,5 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     public PolicyImpl withProperties(PolicyUpdateProperties properties) {
         this.updateProperties.withProperties(properties);
         return this;
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

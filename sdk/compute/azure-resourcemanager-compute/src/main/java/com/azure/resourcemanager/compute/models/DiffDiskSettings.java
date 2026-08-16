@@ -32,6 +32,12 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      */
     private DiffDiskPlacement placement;
 
+    /*
+     * Specifies whether or not to enable full caching for this VM which will cache the OS disk locally on the host and
+     * make this VM more resilient to storage outages
+     */
+    private Boolean enableFullCaching;
+
     /**
      * Creates an instance of DiffDiskSettings class.
      */
@@ -89,6 +95,28 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
     }
 
     /**
+     * Get the enableFullCaching property: Specifies whether or not to enable full caching for this VM which will cache
+     * the OS disk locally on the host and make this VM more resilient to storage outages.
+     * 
+     * @return the enableFullCaching value.
+     */
+    public Boolean enableFullCaching() {
+        return this.enableFullCaching;
+    }
+
+    /**
+     * Set the enableFullCaching property: Specifies whether or not to enable full caching for this VM which will cache
+     * the OS disk locally on the host and make this VM more resilient to storage outages.
+     * 
+     * @param enableFullCaching the enableFullCaching value to set.
+     * @return the DiffDiskSettings object itself.
+     */
+    public DiffDiskSettings withEnableFullCaching(Boolean enableFullCaching) {
+        this.enableFullCaching = enableFullCaching;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,6 +132,7 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("option", this.option == null ? null : this.option.toString());
         jsonWriter.writeStringField("placement", this.placement == null ? null : this.placement.toString());
+        jsonWriter.writeBooleanField("enableFullCaching", this.enableFullCaching);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,6 +155,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
                     deserializedDiffDiskSettings.option = DiffDiskOptions.fromString(reader.getString());
                 } else if ("placement".equals(fieldName)) {
                     deserializedDiffDiskSettings.placement = DiffDiskPlacement.fromString(reader.getString());
+                } else if ("enableFullCaching".equals(fieldName)) {
+                    deserializedDiffDiskSettings.enableFullCaching = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

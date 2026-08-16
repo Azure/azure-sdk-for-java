@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesReplicationStatusSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/Volumes_ReplicationStatus.json
+     * x-ms-original-file: 2026-05-15-preview/Volumes_ReplicationStatus.json
      */
     /**
      * Sample code: Volumes_ReplicationStatus.

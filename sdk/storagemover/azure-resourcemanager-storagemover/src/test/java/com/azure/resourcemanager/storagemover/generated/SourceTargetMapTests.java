@@ -12,14 +12,14 @@ public final class SourceTargetMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceTargetMap model = BinaryData.fromString(
-            "{\"sourceEndpoint\":{\"properties\":{\"name\":\"xjvuujqgidokg\",\"sourceEndpointResourceId\":\"jyoxgvclt\",\"awsS3BucketId\":\"sncghkjeszz\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"jhtxfvgxbfsmxne\",\"targetEndpointResourceId\":\"pvecxgodeb\",\"azureStorageAccountResourceId\":\"kk\",\"azureStorageBlobContainerName\":\"mpukgriw\"}}}")
+            "{\"sourceEndpoint\":{\"properties\":{\"name\":\"dybyxczfclhaa\",\"sourceEndpointResourceId\":\"babphlwrqlfk\",\"awsS3BucketId\":\"thsu\"}},\"targetEndpoint\":{\"properties\":{\"name\":\"mnyyazt\",\"targetEndpointResourceId\":\"twwrqp\",\"azureStorageAccountResourceId\":\"dckzywbiexz\",\"azureStorageBlobContainerName\":\"yueaxibxujwb\"}}}")
             .toObject(SourceTargetMap.class);
-        Assertions.assertEquals("xjvuujqgidokg", model.sourceEndpoint().properties().name());
-        Assertions.assertEquals("jyoxgvclt", model.sourceEndpoint().properties().sourceEndpointResourceId());
-        Assertions.assertEquals("sncghkjeszz", model.sourceEndpoint().properties().awsS3BucketId());
-        Assertions.assertEquals("jhtxfvgxbfsmxne", model.targetEndpoint().properties().name());
-        Assertions.assertEquals("pvecxgodeb", model.targetEndpoint().properties().targetEndpointResourceId());
-        Assertions.assertEquals("kk", model.targetEndpoint().properties().azureStorageAccountResourceId());
-        Assertions.assertEquals("mpukgriw", model.targetEndpoint().properties().azureStorageBlobContainerName());
+        Assertions.assertEquals("dybyxczfclhaa", model.sourceEndpoint().properties().name());
+        Assertions.assertEquals("babphlwrqlfk", model.sourceEndpoint().properties().sourceEndpointResourceId());
+        Assertions.assertEquals("thsu", model.sourceEndpoint().properties().awsS3BucketId());
+        Assertions.assertEquals("mnyyazt", model.targetEndpoint().properties().name());
+        Assertions.assertEquals("twwrqp", model.targetEndpoint().properties().targetEndpointResourceId());
+        Assertions.assertEquals("dckzywbiexz", model.targetEndpoint().properties().azureStorageAccountResourceId());
+        Assertions.assertEquals("yueaxibxujwb", model.targetEndpoint().properties().azureStorageBlobContainerName());
     }
 }

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.util.IllegalReferenceCountException;
@@ -29,6 +30,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class StoreResponse {
     private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
+
+    // Initial capacity for the replica-status map. Chosen to avoid resizing in
+    // the common case where only a handful of replica status entries are tracked.
+    private static final int REPLICA_STATUS_MAP_INITIAL_CAPACITY = 6;
+
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
@@ -68,23 +74,48 @@ public class StoreResponse {
         }
 
         this.status = status;
-        replicaStatusList = new HashMap<>();
-        if (contentStream != null) {
-            try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
-            } finally {
-                try {
-                    contentStream.close();
-                } catch (Throwable e) {
-                    if (!(e instanceof IllegalReferenceCountException)) {
-                        // Log as warning instead of debug to make ByteBuf leak issues more visible
-                        logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
-                    }
-                }
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
+    }
+
+    /**
+     * Creates a StoreResponse directly from HttpHeaders, avoiding intermediate HashMap allocation.
+     * Header names are stored as lowercase keys (matching HttpHeaders internal representation).
+     * The OWNER_FULL_NAME header value is URL-decoded inline (equivalent to HttpUtils.unescape).
+     */
+    public StoreResponse(
+            String endpoint,
+            int status,
+            HttpHeaders httpHeaders,
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+
+        int headerCount = httpHeaders.size();
+        responseHeaderNames = new String[headerCount];
+        responseHeaderValues = new String[headerCount];
+        this.endpoint = endpoint != null ? endpoint : "";
+
+        httpHeaders.populateLowerCaseHeaders(responseHeaderNames, responseHeaderValues);
+
+        // URL-decode OWNER_FULL_NAME header value inline (replaces HttpUtils.unescape).
+        // This is kept separate from populateLowerCaseHeaders because HttpHeaders is a
+        // general-purpose HTTP class and should not contain Cosmos-specific URL-decoding logic.
+        for (int i = 0; i < headerCount; i++) {
+            if (HttpConstants.HttpHeaders.OWNER_FULL_NAME.equalsIgnoreCase(responseHeaderNames[i])) {
+                responseHeaderValues[i] = HttpUtils.urlDecode(responseHeaderValues[i]);
+                break;
             }
-        } else {
-            this.responsePayload = null;
         }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
+        this.responsePayload = parseResponsePayload(
+            contentStream, responsePayloadLength, responseHeaderNames, responseHeaderValues);
     }
 
     private StoreResponse(
@@ -108,8 +139,30 @@ public class StoreResponse {
         }
 
         this.status = status;
-        replicaStatusList = new HashMap<>();
+        replicaStatusList = new HashMap<>(REPLICA_STATUS_MAP_INITIAL_CAPACITY);
         this.responsePayload = responsePayload;
+    }
+
+    private static JsonNodeStorePayload parseResponsePayload(
+        ByteBufInputStream contentStream,
+        int responsePayloadLength,
+        String[] headerNames,
+        String[] headerValues) {
+
+        if (contentStream == null) {
+            return null;
+        }
+        try {
+            return new JsonNodeStorePayload(contentStream, responsePayloadLength, headerNames, headerValues);
+        } finally {
+            try {
+                contentStream.close();
+            } catch (Throwable e) {
+                if (!(e instanceof IllegalReferenceCountException)) {
+                    logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                }
+            }
+        }
     }
 
     public int getStatus() {
@@ -310,7 +363,7 @@ public class StoreResponse {
 
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<>(HttpUtils.mapCapacityForSize(this.responseHeaderNames.length));
         for (int i = 0; i < this.responseHeaderNames.length; i++) {
             String headerName = this.responseHeaderNames[i];
             if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {

@@ -12,24 +12,29 @@ import java.util.Collection;
  */
 public final class SourceSideScanSummary extends ExpandableStringEnum<SourceSideScanSummary> {
     /**
-     * Static value Unknown for SourceSideScanSummary.
+     * Scan summary is unknown.
      */
     public static final SourceSideScanSummary UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value NotApplicable for SourceSideScanSummary.
+     * Scan summary is not applicable.
      */
     public static final SourceSideScanSummary NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
-     * Static value Suspicious for SourceSideScanSummary.
+     * Scan summary is suspicious.
      */
     public static final SourceSideScanSummary SUSPICIOUS = fromString("Suspicious");
 
     /**
-     * Static value Healthy for SourceSideScanSummary.
+     * Scan summary indicates healthy state.
      */
     public static final SourceSideScanSummary HEALTHY = fromString("Healthy");
+
+    /**
+     * No threats reported.
+     */
+    public static final SourceSideScanSummary NO_THREATS_REPORTED = fromString("NoThreatsReported");
 
     /**
      * Creates a new instance of SourceSideScanSummary value.

@@ -12,34 +12,44 @@ import java.util.Collection;
  */
 public final class HighAvailabilityState extends ExpandableStringEnum<HighAvailabilityState> {
     /**
-     * Static value NotEnabled for HighAvailabilityState.
+     * High availability is not enabled for the server.
      */
     public static final HighAvailabilityState NOT_ENABLED = fromString("NotEnabled");
 
     /**
-     * Static value CreatingStandby for HighAvailabilityState.
+     * Standby server is being created.
      */
     public static final HighAvailabilityState CREATING_STANDBY = fromString("CreatingStandby");
 
     /**
-     * Static value ReplicatingData for HighAvailabilityState.
+     * Data is being replicated to the standby server.
      */
     public static final HighAvailabilityState REPLICATING_DATA = fromString("ReplicatingData");
 
     /**
-     * Static value FailingOver for HighAvailabilityState.
+     * Failover operation to the standby server is in progress.
      */
     public static final HighAvailabilityState FAILING_OVER = fromString("FailingOver");
 
     /**
-     * Static value Healthy for HighAvailabilityState.
+     * Standby server is healthy and ready to take over in case of a failover.
      */
     public static final HighAvailabilityState HEALTHY = fromString("Healthy");
 
     /**
-     * Static value RemovingStandby for HighAvailabilityState.
+     * Standby server is being removed.
      */
     public static final HighAvailabilityState REMOVING_STANDBY = fromString("RemovingStandby");
+
+    /**
+     * Standby server is being recreated.
+     */
+    public static final HighAvailabilityState RECREATING_STANDBY = fromString("RecreatingStandby");
+
+    /**
+     * Compute is being updated due to a failover.
+     */
+    public static final HighAvailabilityState COMPUTE_UPDATING_BY_FAILOVER = fromString("ComputeUpdatingByFailover");
 
     /**
      * Creates a new instance of HighAvailabilityState value.

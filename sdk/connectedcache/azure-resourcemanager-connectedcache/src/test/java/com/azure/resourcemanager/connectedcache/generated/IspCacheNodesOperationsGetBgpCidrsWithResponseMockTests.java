@@ -21,7 +21,7 @@ public final class IspCacheNodesOperationsGetBgpCidrsWithResponseMockTests {
     @Test
     public void testGetBgpCidrsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"bgpCidrs\":[\"j\",\"lwuenvrkp\"]},\"location\":\"uaibrebqaaysj\",\"tags\":{\"zlwfffiakp\":\"qtnqtt\",\"tmmjihyeozph\":\"pqqmted\"},\"id\":\"wau\",\"name\":\"qncygupkvi\",\"type\":\"mdscwxqupev\"}";
+            = "{\"properties\":{\"bgpCidrs\":[\"z\"]},\"location\":\"bycnunvjsrtkf\",\"tags\":{\"ejnt\":\"opqgikyzirtxdyux\",\"dxtqmieoxo\":\"sewgioilqukr\",\"hhavgrvkffovjz\":\"ggufhyaomtb\",\"gjmfxumvfcl\":\"pjbi\"},\"id\":\"yo\",\"name\":\"wxnb\",\"type\":\"fezzxscyhwzdg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IspCacheNodesOperationsGetBgpCidrsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MccCacheNodeBgpCidrDetails response = manager.ispCacheNodesOperations()
-            .getBgpCidrsWithResponse("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", com.azure.core.util.Context.NONE)
+            .getBgpCidrsWithResponse("kgthrrghxjbd", "qxvcxgfrpdsofb", "hrnsvbu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uaibrebqaaysj", response.location());
-        Assertions.assertEquals("qtnqtt", response.tags().get("zlwfffiakp"));
+        Assertions.assertEquals("bycnunvjsrtkf", response.location());
+        Assertions.assertEquals("opqgikyzirtxdyux", response.tags().get("ejnt"));
     }
 }

@@ -21,7 +21,7 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeTlsCertificateHi
     @Test
     public void testGetCacheNodeTlsCertificateHistoryWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"customerId\":\"nkjpdnjzha\",\"cacheNodeId\":\"ylhjlm\",\"tlsCertificateHistory\":[{\"actionRequired\":\"primr\",\"certificateFileName\":\"pteecjme\",\"thumbprint\":\"ls\",\"expiryDate\":\"2021-03-15T14:52:41Z\",\"notBeforeDate\":\"2021-10-17T18:13:46Z\",\"subject\":\"wxdzaumweoohgu\",\"subjectAltName\":\"uzboyjathw\"}]},\"location\":\"olbaemwmdx\",\"tags\":{\"xveabf\":\"wjscjpah\",\"qcttadijaeukmrsi\":\"xnmwmqtibxyijddt\",\"eqw\":\"ekpndzaapmudq\",\"bu\":\"gp\"},\"id\":\"qwyxebeybpm\",\"name\":\"znrtffyaqit\",\"type\":\"hheioqaqhvseuf\"}";
+            = "{\"properties\":{\"customerId\":\"ovvacqpbt\",\"cacheNodeId\":\"dxe\",\"tlsCertificateHistory\":[{\"actionRequired\":\"belawumuaslzkwr\",\"certificateFileName\":\"oycqucwy\",\"certType\":\"hnomdrkywuh\",\"thumbprint\":\"vfuuru\",\"expiryDate\":\"2021-02-19T02:51:01Z\",\"notBeforeDate\":\"2021-04-15T11:42:24Z\",\"subject\":\"wlalniexzsrzp\",\"subjectAltName\":\"pqtybb\"},{\"actionRequired\":\"pgdakchzyvli\",\"certificateFileName\":\"nrkcxkj\",\"certType\":\"nxm\",\"thumbprint\":\"uxswqrntvl\",\"expiryDate\":\"2021-01-20T04:09:54Z\",\"notBeforeDate\":\"2021-02-06T14:09:09Z\",\"subject\":\"texoqqpwc\",\"subjectAltName\":\"ufmhrunc\"},{\"actionRequired\":\"mqspkcdqzhlctdd\",\"certificateFileName\":\"qn\",\"certType\":\"fpch\",\"thumbprint\":\"bnjj\",\"expiryDate\":\"2021-06-20T13:20:36Z\",\"notBeforeDate\":\"2021-05-23T21:17:08Z\",\"subject\":\"dcwboxjum\",\"subjectAltName\":\"qoli\"},{\"actionRequired\":\"raiouaubrjtl\",\"certificateFileName\":\"xfuojrn\",\"certType\":\"flrzpas\",\"thumbprint\":\"biuimzdlyjdfq\",\"expiryDate\":\"2021-06-05T17:26:54Z\",\"notBeforeDate\":\"2021-08-09T15:01:14Z\",\"subject\":\"ufdvruz\",\"subjectAltName\":\"zojhpctfnmd\"}]},\"location\":\"tngfdgugeyzihgr\",\"tags\":{\"absnmfpp\":\"i\"},\"id\":\"ojeevy\",\"name\":\"yhsgz\",\"type\":\"czbgomfgbeg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class EnterpriseMccCacheNodesOperationsGetCacheNodeTlsCertificateHi
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MccCacheNodeTlsCertificateHistory response = manager.enterpriseMccCacheNodesOperations()
-            .getCacheNodeTlsCertificateHistoryWithResponse("tpwb", "a", "llibphbqzmizak",
+            .getCacheNodeTlsCertificateHistoryWithResponse("xcudchxgsr", "oldforobw", "lvizb",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("olbaemwmdx", response.location());
-        Assertions.assertEquals("wjscjpah", response.tags().get("xveabf"));
+        Assertions.assertEquals("tngfdgugeyzihgr", response.location());
+        Assertions.assertEquals("i", response.tags().get("absnmfpp"));
     }
 }

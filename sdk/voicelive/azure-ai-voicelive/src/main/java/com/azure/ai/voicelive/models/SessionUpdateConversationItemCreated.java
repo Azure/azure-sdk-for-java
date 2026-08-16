@@ -22,7 +22,7 @@ import java.io.IOException;
  * to the Conversation.
  */
 @Immutable
-public final class SessionUpdateConversationItemCreated extends SessionUpdate {
+public final class SessionUpdateConversationItemCreated extends SessionServerEvent {
 
     /*
      * The type of event.

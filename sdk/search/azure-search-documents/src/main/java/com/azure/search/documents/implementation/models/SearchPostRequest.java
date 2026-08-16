@@ -158,18 +158,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     private SearchMode searchMode;
 
     /*
-     * A value that specifies the language of the search query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType querySpeller;
-
-    /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
@@ -233,18 +221,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     private QueryCaptionType captions;
 
     /*
-     * A value that specifies whether query rewrites should be generated to augment the search query.
-     */
-    @Generated
-    private QueryRewritesType queryRewrites;
-
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    @Generated
-    private List<String> semanticFields;
-
-    /*
      * The query parameters for vector and hybrid search queries.
      */
     @Generated
@@ -256,12 +232,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
      */
     @Generated
     private VectorFilterMode vectorFilterMode;
-
-    /*
-     * The query parameters to configure hybrid search behaviors.
-     */
-    @Generated
-    private HybridSearch hybridSearch;
 
     /**
      * Creates an instance of SearchPostRequest class.
@@ -699,52 +669,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     }
 
     /**
-     * Get the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @return the querySpeller value.
-     */
-    @Generated
-    public QuerySpellerType getQuerySpeller() {
-        return this.querySpeller;
-    }
-
-    /**
-     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @param querySpeller the querySpeller value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQuerySpeller(QuerySpellerType querySpeller) {
-        this.querySpeller = querySpeller;
-        return this;
-    }
-
-    /**
      * Get the select property: The comma-separated list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      *
@@ -967,52 +891,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     }
 
     /**
-     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public QueryRewritesType getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setQueryRewrites(QueryRewritesType queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    @Generated
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
      * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
      * @return the vectorQueries value.
@@ -1055,28 +933,6 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
     @Generated
     public SearchPostRequest setVectorFilterMode(VectorFilterMode vectorFilterMode) {
         this.vectorFilterMode = vectorFilterMode;
-        return this;
-    }
-
-    /**
-     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @return the hybridSearch value.
-     */
-    @Generated
-    public HybridSearch getHybridSearch() {
-        return this.hybridSearch;
-    }
-
-    /**
-     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @param hybridSearch the hybridSearch value to set.
-     * @return the SearchPostRequest object itself.
-     */
-    @Generated
-    public SearchPostRequest setHybridSearch(HybridSearch hybridSearch) {
-        this.hybridSearch = hybridSearch;
         return this;
     }
 
@@ -1270,5 +1126,149 @@ public final class SearchPostRequest implements JsonSerializable<SearchPostReque
             }
             return deserializedSearchPostRequest;
         });
+    }
+
+    /*
+     * A value that specifies the language of the search query.
+     */
+    @Generated
+    private QueryLanguage queryLanguage;
+
+    /*
+     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
+     */
+    @Generated
+    private QuerySpellerType querySpeller;
+
+    /*
+     * A value that specifies whether query rewrites should be generated to augment the search query.
+     */
+    @Generated
+    private QueryRewritesType queryRewrites;
+
+    /*
+     * The comma-separated list of field names used for semantic ranking.
+     */
+    @Generated
+    private List<String> semanticFields;
+
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    @Generated
+    private HybridSearch hybridSearch;
+
+    /**
+     * Get the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @return the queryLanguage value.
+     */
+    @Generated
+    public QueryLanguage getQueryLanguage() {
+        return this.queryLanguage;
+    }
+
+    /**
+     * Set the queryLanguage property: A value that specifies the language of the search query.
+     *
+     * @param queryLanguage the queryLanguage value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQueryLanguage(QueryLanguage queryLanguage) {
+        this.queryLanguage = queryLanguage;
+        return this;
+    }
+
+    /**
+     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @return the querySpeller value.
+     */
+    @Generated
+    public QuerySpellerType getQuerySpeller() {
+        return this.querySpeller;
+    }
+
+    /**
+     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
+     * search query terms.
+     *
+     * @param querySpeller the querySpeller value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQuerySpeller(QuerySpellerType querySpeller) {
+        this.querySpeller = querySpeller;
+        return this;
+    }
+
+    /**
+     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @return the queryRewrites value.
+     */
+    @Generated
+    public QueryRewritesType getQueryRewrites() {
+        return this.queryRewrites;
+    }
+
+    /**
+     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
+     * search query.
+     *
+     * @param queryRewrites the queryRewrites value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setQueryRewrites(QueryRewritesType queryRewrites) {
+        this.queryRewrites = queryRewrites;
+        return this;
+    }
+
+    /**
+     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @return the semanticFields value.
+     */
+    @Generated
+    public List<String> getSemanticFields() {
+        return this.semanticFields;
+    }
+
+    /**
+     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
+     *
+     * @param semanticFields the semanticFields value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setSemanticFields(List<String> semanticFields) {
+        this.semanticFields = semanticFields;
+        return this;
+    }
+
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @return the hybridSearch value.
+     */
+    @Generated
+    public HybridSearch getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchPostRequest object itself.
+     */
+    @Generated
+    public SearchPostRequest setHybridSearch(HybridSearch hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
     }
 }

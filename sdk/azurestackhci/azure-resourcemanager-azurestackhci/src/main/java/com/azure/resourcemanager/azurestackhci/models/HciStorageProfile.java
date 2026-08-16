@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Storage configurations for HCI device.
@@ -20,6 +21,11 @@ public final class HciStorageProfile implements JsonSerializable<HciStorageProfi
      * Number of storage disks in the device with $CanPool as true.
      */
     private Long poolableDisksCount;
+
+    /*
+     * List of storage disks on the device.
+     */
+    private List<EdgeDeviceDisks> disks;
 
     /**
      * Creates an instance of HciStorageProfile class.
@@ -34,6 +40,15 @@ public final class HciStorageProfile implements JsonSerializable<HciStorageProfi
      */
     public Long poolableDisksCount() {
         return this.poolableDisksCount;
+    }
+
+    /**
+     * Get the disks property: List of storage disks on the device.
+     * 
+     * @return the disks value.
+     */
+    public List<EdgeDeviceDisks> disks() {
+        return this.disks;
     }
 
     /**
@@ -62,6 +77,9 @@ public final class HciStorageProfile implements JsonSerializable<HciStorageProfi
 
                 if ("poolableDisksCount".equals(fieldName)) {
                     deserializedHciStorageProfile.poolableDisksCount = reader.getNullable(JsonReader::getLong);
+                } else if ("disks".equals(fieldName)) {
+                    List<EdgeDeviceDisks> disks = reader.readArray(reader1 -> EdgeDeviceDisks.fromJson(reader1));
+                    deserializedHciStorageProfile.disks = disks;
                 } else {
                     reader.skipChildren();
                 }

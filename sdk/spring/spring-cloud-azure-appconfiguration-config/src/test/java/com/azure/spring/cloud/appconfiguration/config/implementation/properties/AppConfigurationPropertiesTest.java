@@ -98,7 +98,7 @@ public class AppConfigurationPropertiesTest {
         newStore.setConnectionString(TEST_CONN_STRING);
         
         java.lang.IllegalArgumentException e = assertThrows(java.lang.IllegalArgumentException.class, () -> properties.validateAndInit());
-        assertEquals("Duplicate store name exists.", e.getMessage());
+        assertEquals("Duplicate endpoint exists: https://fake.test.config.io", e.getMessage());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class AppConfigurationPropertiesTest {
         endpoints.add(TEST_ENDPOINT);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> properties.validateAndInit());
-        assertEquals("Duplicate store name exists.", e.getMessage());
+        assertEquals("Duplicate endpoint exists: " + TEST_ENDPOINT, e.getMessage());
     }
 
     @Test

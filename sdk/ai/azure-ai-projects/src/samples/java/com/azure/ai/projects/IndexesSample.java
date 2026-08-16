@@ -86,7 +86,7 @@ public class IndexesSample {
     public static void deleteIndex() {
         // BEGIN:com.azure.ai.projects.IndexesDeleteSample.deleteIndex
 
-        String indexName = "test-index"; //Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
+        String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
         // Delete the index version

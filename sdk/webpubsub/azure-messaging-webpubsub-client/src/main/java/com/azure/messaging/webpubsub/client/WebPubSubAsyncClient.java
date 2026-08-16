@@ -315,7 +315,7 @@ final class WebPubSubAsyncClient implements Closeable {
         if (ackId == null) {
             ackId = nextAckId();
         }
-        return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId)).then(waitForAckMessage(ackId))
+        return sendMessageAndWaitForAck(new JoinGroupMessage().setGroup(group).setAckId(ackId), ackId)
             .retryWhen(sendMessageRetrySpec)
             .map(result -> {
                 groups.compute(group,
@@ -346,7 +346,7 @@ final class WebPubSubAsyncClient implements Closeable {
         if (ackId == null) {
             ackId = nextAckId();
         }
-        return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId)).then(waitForAckMessage(ackId))
+        return sendMessageAndWaitForAck(new LeaveGroupMessage().setGroup(group).setAckId(ackId), ackId)
             .retryWhen(sendMessageRetrySpec)
             .map(result -> {
                 groups.compute(group,
@@ -414,8 +414,7 @@ final class WebPubSubAsyncClient implements Closeable {
             .setAckId(ackId)
             .setNoEcho(options.isEchoDisabled());
 
-        Mono<Void> sendMessageMono = sendMessage(message);
-        Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));
+        Mono<WebPubSubResult> responseMono = sendMessageAndWaitForAck(message, ackId);
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
@@ -454,8 +453,7 @@ final class WebPubSubAsyncClient implements Closeable {
             .setDataType(dataFormat.toString())
             .setAckId(ackId);
 
-        Mono<Void> sendMessageMono = sendMessage(message);
-        Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));
+        Mono<WebPubSubResult> responseMono = sendMessageAndWaitForAck(message, ackId);
         return responseMono.retryWhen(sendMessageRetrySpec);
     }
 
@@ -514,13 +512,7 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private long nextAckId() {
-        return ackId.getAndUpdate(value -> {
-            // keep positive
-            if (++value < 0) {
-                value = 0;
-            }
-            return value;
-        });
+        return ackId.updateAndGet(value -> value == Long.MAX_VALUE ? 1 : Math.max(0, value) + 1);
     }
 
     private Flux<AckMessage> receiveAckMessages() {
@@ -538,6 +530,11 @@ final class WebPubSubAsyncClient implements Closeable {
                 }
             });
         }));
+    }
+
+    private Mono<WebPubSubResult> sendMessageAndWaitForAck(WebPubSubMessage message, Long ackId) {
+        return Mono.defer(() -> Mono.zip(waitForAckMessage(ackId), sendMessage(message).thenReturn(true))
+            .map(tuple -> tuple.getT1()));
     }
 
     private Mono<Void> checkStateBeforeSend() {

@@ -4,6 +4,8 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeInner;
@@ -491,6 +493,22 @@ public interface NodeType {
     Boolean enableResilientEphemeralOsDisk();
 
     /**
+     * Gets the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale
+     * in happens on the cluster. If not specified, the default is Default which means the platform will decide which
+     * nodes to remove during scale in.
+     * 
+     * @return the scaleInPolicy value.
+     */
+    ScaleInPolicy scaleInPolicy();
+
+    /**
+     * Gets the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @return the proxyAgentSettings value.
+     */
+    ProxyAgentSettings proxyAgentSettings();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -562,7 +580,8 @@ public interface NodeType {
             DefinitionStages.WithServiceArtifactReferenceId, DefinitionStages.WithDscpConfigurationId,
             DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
             DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly,
-            DefinitionStages.WithEnableResilientEphemeralOsDisk {
+            DefinitionStages.WithEnableResilientEphemeralOsDisk, DefinitionStages.WithScaleInPolicy,
+            DefinitionStages.WithProxyAgentSettings {
             /**
              * Executes the create request.
              * 
@@ -1416,6 +1435,36 @@ public interface NodeType {
              */
             WithCreate withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk);
         }
+
+        /**
+         * The stage of the NodeType definition allowing to specify scaleInPolicy.
+         */
+        interface WithScaleInPolicy {
+            /**
+             * Specifies the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used
+             * when scale in happens on the cluster. If not specified, the default is Default which means the platform
+             * will decide which nodes to remove during scale in..
+             * 
+             * @param scaleInPolicy Specifies the scale in policy for the node type, which will be used when scale in
+             * happens on the cluster. If not specified, the default is Default which means the platform will decide
+             * which nodes to remove during scale in.
+             * @return the next definition stage.
+             */
+            WithCreate withScaleInPolicy(ScaleInPolicy scaleInPolicy);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify proxyAgentSettings.
+         */
+        interface WithProxyAgentSettings {
+            /**
+             * Specifies the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type..
+             * 
+             * @param proxyAgentSettings Specifies the settings for the proxy agent on the node type.
+             * @return the next definition stage.
+             */
+            WithCreate withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings);
+        }
     }
 
     /**
@@ -1628,4 +1677,93 @@ public interface NodeType {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void start(NodeTypeActionParameters parameters, Context context);
+
+    /**
+     * Starts a fault simulation on the node type.
+     * 
+     * @param parameters parameters describing the fault simulation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters);
+
+    /**
+     * Starts a fault simulation on the node type.
+     * 
+     * @param parameters parameters describing the fault simulation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context);
+
+    /**
+     * Stops a fault simulation on the node type.
+     * 
+     * @param parameters parameter with fault simulation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters);
+
+    /**
+     * Stops a fault simulation on the node type.
+     * 
+     * @param parameters parameter with fault simulation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context);
+
+    /**
+     * Gets a fault simulation by the simulationId.
+     * 
+     * @param parameters parameter with fault simulation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a fault simulation by the simulationId along with {@link Response}.
+     */
+    Response<FaultSimulation> getFaultSimulationWithResponse(FaultSimulationIdContent parameters, Context context);
+
+    /**
+     * Gets a fault simulation by the simulationId.
+     * 
+     * @param parameters parameter with fault simulation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a fault simulation by the simulationId.
+     */
+    FaultSimulation getFaultSimulation(FaultSimulationIdContent parameters);
+
+    /**
+     * Gets the list of recent fault simulations for the node type.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<FaultSimulation> listFaultSimulation();
+
+    /**
+     * Gets the list of recent fault simulations for the node type.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<FaultSimulation> listFaultSimulation(Context context);
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storage.models.LeaseContainerRequestAction;
  */
 public final class BlobContainersLeaseSamples {
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersLease_Break.json
+     * x-ms-original-file: 2026-04-01/BlobContainersLease_Break.json
      */
     /**
      * Sample code: Break a lease on a container.
@@ -29,7 +29,7 @@ public final class BlobContainersLeaseSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/BlobContainersLease_Acquire.json
+     * x-ms-original-file: 2026-04-01/BlobContainersLease_Acquire.json
      */
     /**
      * Sample code: Acquire a lease on a container.

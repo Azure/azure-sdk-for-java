@@ -37,12 +37,6 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     @Generated
     private RankingOrder rankingOrder;
 
-    /*
-     * Determines which semantic or query rewrite models to use during model flighting/upgrades.
-     */
-    @Generated
-    private Boolean flightingOptIn;
-
     /**
      * Creates an instance of SemanticConfiguration class.
      *
@@ -100,30 +94,6 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
     }
 
     /**
-     * Get the flightingOptIn property: Determines which semantic or query rewrite models to use during model
-     * flighting/upgrades.
-     *
-     * @return the flightingOptIn value.
-     */
-    @Generated
-    public Boolean isFlightingOptIn() {
-        return this.flightingOptIn;
-    }
-
-    /**
-     * Set the flightingOptIn property: Determines which semantic or query rewrite models to use during model
-     * flighting/upgrades.
-     *
-     * @param flightingOptIn the flightingOptIn value to set.
-     * @return the SemanticConfiguration object itself.
-     */
-    @Generated
-    public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
-        this.flightingOptIn = flightingOptIn;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -174,5 +144,35 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
             deserializedSemanticConfiguration.flightingOptIn = flightingOptIn;
             return deserializedSemanticConfiguration;
         });
+    }
+
+    /*
+     * Determines which semantic or query rewrite models to use during model flighting/upgrades.
+     */
+    @Generated
+    private Boolean flightingOptIn;
+
+    /**
+     * Get the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     *
+     * @return the flightingOptIn value.
+     */
+    @Generated
+    public Boolean isFlightingOptIn() {
+        return this.flightingOptIn;
+    }
+
+    /**
+     * Set the flightingOptIn property: Determines which semantic or query rewrite models to use during model
+     * flighting/upgrades.
+     *
+     * @param flightingOptIn the flightingOptIn value to set.
+     * @return the SemanticConfiguration object itself.
+     */
+    @Generated
+    public SemanticConfiguration setFlightingOptIn(Boolean flightingOptIn) {
+        this.flightingOptIn = flightingOptIn;
+        return this;
     }
 }

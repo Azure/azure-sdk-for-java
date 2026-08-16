@@ -32,6 +32,11 @@ public final class Frequency extends ExpandableStringEnum<Frequency> {
     public static final Frequency ONETIME = fromString("Onetime");
 
     /**
+     * No schedule frequency. The job definition will not run on a schedule.
+     */
+    public static final Frequency NONE = fromString("None");
+
+    /**
      * Creates a new instance of Frequency value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

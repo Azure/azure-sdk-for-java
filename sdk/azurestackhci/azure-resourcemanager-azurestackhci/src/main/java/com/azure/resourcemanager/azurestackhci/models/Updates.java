@@ -116,6 +116,31 @@ public interface Updates {
     void post(String resourceGroupName, String clusterName, String updateName, Context context);
 
     /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void prepare(String resourceGroupName, String clusterName, String updateName);
+
+    /**
+     * Prepare Update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param updateName The name of the Update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void prepare(String resourceGroupName, String clusterName, String updateName, Context context);
+
+    /**
      * Get specified Update.
      * 
      * @param id the resource ID.

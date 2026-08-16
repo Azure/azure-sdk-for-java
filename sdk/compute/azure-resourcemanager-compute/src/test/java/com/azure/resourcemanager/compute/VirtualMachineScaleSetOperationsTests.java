@@ -113,12 +113,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .disableSharedKeyAccess()
             .create();
 
-        Creatable<StorageAccount> storageAccountCreatable = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 15))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess();
-
         List<StorageAccountKey> keys = storageAccount.getKeys();
         Assertions.assertNotNull(keys);
         Assertions.assertTrue(keys.size() > 0);
@@ -143,9 +137,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks()
-            .withNewStorageAccount(storageAccountCreatable)
-            .withExistingStorageAccount(storageAccount)
             .defineNewExtension("CustomScriptForLinux")
             .withPublisher("Microsoft.OSTCExtensions")
             .withType("CustomScriptForLinux")
@@ -211,18 +202,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        Creatable<StorageAccount> storageAccountCreatable1 = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 15))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess();
-
-        Creatable<StorageAccount> storageAccountCreatable2 = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("stg", 15))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess();
-
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
@@ -235,9 +214,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
             .withRootUsername(uname)
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks()
-            .withNewStorageAccount(storageAccountCreatable1)
-            .withNewStorageAccount(storageAccountCreatable2)
             .defineNewExtension("CustomScriptForLinux")
             .withPublisher("Microsoft.Azure.Extensions")
             .withType("CustomScript")
@@ -487,18 +463,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        StorageAccount.DefinitionStages.WithCreate storageAccountCreatable1 = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("jvcsrg", 10))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess();
-
-        StorageAccount.DefinitionStages.WithCreate storageAccountCreatable2 = this.storageManager.storageAccounts()
-            .define(generateRandomResourceName("jvcsrg", 10))
-            .withRegion(region)
-            .withExistingResourceGroup(resourceGroup)
-            .disableSharedKeyAccess();
-
         VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -511,9 +475,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withUnmanagedDisks()
-            .withNewStorageAccount(storageAccountCreatable1)
-            .withNewStorageAccount(storageAccountCreatable2)
             .create();
 
         // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
@@ -580,7 +541,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Validate other properties
         //
-        Assertions.assertEquals(virtualMachineScaleSet.vhdContainers().size(), 2);
+        Assertions.assertEquals(virtualMachineScaleSet.vhdContainers().size(), 0);
         Assertions.assertEquals(virtualMachineScaleSet.sku(), VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2);
         // Check defaults
         Assertions.assertTrue(virtualMachineScaleSet.upgradeModel() == UpgradeMode.AUTOMATIC);
@@ -921,6 +882,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    @Disabled("Require Owner for role-assignment")
     public void canEnableMSIOnVirtualMachineScaleSetWithMultipleRoleAssignment() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -1311,8 +1273,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assertions.assertEquals(vm.osType(), OperatingSystemTypes.LINUX);
             Assertions.assertNotNull(vm.computerName().startsWith(vmScaleSet.computerNamePrefix()));
             Assertions.assertTrue(vm.isOSBasedOnPlatformImage());
-            Assertions.assertNull(vm.osDiskId()); // VMSS is un-managed, so osDiskId must be null
-            Assertions.assertNotNull(vm.osUnmanagedDiskVhdUri()); // VMSS is un-managed, so osVhd should not be null
+            Assertions.assertNotNull(vm.osDiskId()); // VMSS is managed, so osDiskId must not be null
+            Assertions.assertNull(vm.osUnmanagedDiskVhdUri()); // VMSS is managed, so osVhd should be null
             Assertions.assertNull(vm.storedImageUnmanagedVhdUri());
             Assertions.assertFalse(vm.isWindowsAutoUpdateEnabled());
             Assertions.assertFalse(vm.isWindowsVMAgentProvisioned());

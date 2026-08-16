@@ -36,26 +36,24 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
-
-import reactor.core.publisher.Mono;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.publisher.Mono;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
@@ -76,9 +74,7 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
-    /*
-    * Test TypeSpec Shared model among GET-PUT Roundtrip operation
-    * */
+    // Test TypeSpec Shared model among GET-PUT Roundtrip operation
     @SyncAsyncTest
     public void testTaskUnifiedModel() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
@@ -429,16 +425,15 @@ public class TaskTests extends BatchClientTestBase {
 
             Assertions.assertTrue(true, "Should not here");
         } catch (RuntimeException ex) {
-            System.out.printf("Expect exception %s", ex.toString());
+            System.out.printf("Expect exception %s", ex);
         }
     }
 
+    // This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
+    // Linux machines are causing issues. This issue is under investigation.
+    @DisabledIf(value = "skipInPlayback")
     @Test
-    public void failIfPoisonTaskTooLargeSync() throws Exception {
-        //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
-        // Linux machines are causing issues. This issue is under investigation.
-        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
-
+    public void failIfPoisonTaskTooLargeSync() {
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-sync");
         String taskId = "mytask-sync";
 
@@ -447,9 +442,9 @@ public class TaskTests extends BatchClientTestBase {
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(parameters);
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
         BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
-        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        List<ResourceFile> resourceFiles = new ArrayList<>();
         ResourceFile resourceFile;
 
         // If this test fails try increasing the size of the Task in case maximum size increase
@@ -501,12 +496,11 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    // This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
+    // Linux machines are causing issues. This issue is under investigation.
+    @DisabledIf(value = "skipInPlayback")
     @Test
-    public void failIfPoisonTaskTooLargeAsync() throws Exception {
-        //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
-        // Linux machines are causing issues. This issue is under investigation.
-        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
-
+    public void failIfPoisonTaskTooLargeAsync() {
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-async");
         String taskId = "mytask-async";
 
@@ -515,9 +509,9 @@ public class TaskTests extends BatchClientTestBase {
         BatchJobCreateParameters parameters = new BatchJobCreateParameters(jobId, poolInfo);
         batchAsyncClient.createJob(parameters).block();
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
         BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "sleep 1");
-        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        List<ResourceFile> resourceFiles = new ArrayList<>();
         ResourceFile resourceFile;
 
         // If this test fails try increasing the size of the Task in case maximum size increase
@@ -560,13 +554,12 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    // This test does not run in Playback mode. It only runs in Record/Live mode.
+    // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
+    // Hence Playback of this test is disabled.
+    @DisabledIf(value = "skipInPlayback")
     @Test
     public void succeedWithRetrySync() {
-        //This test does not run in Playback mode. It only runs in Record/Live mode.
-        // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
-        // Hence Playback of this test is disabled.
-        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
-
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-sync");
         String taskId = "mytask-sync";
 
@@ -575,9 +568,9 @@ public class TaskTests extends BatchClientTestBase {
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchClient.createJob(jobToCreate);
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
         BatchTaskCreateParameters taskToAdd;
-        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        List<ResourceFile> resourceFiles = new ArrayList<>();
         ResourceFile resourceFile;
 
         BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
@@ -612,13 +605,12 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    // This test does not run in Playback mode. It only runs in Record/Live mode.
+    // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
+    // Hence Playback of this test is disabled.
+    @DisabledIf(value = "skipInPlayback")
     @Test
     public void succeedWithRetryAsync() {
-        //This test does not run in Playback mode. It only runs in Record/Live mode.
-        // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
-        // Hence Playback of this test is disabled.
-        Assumptions.assumeFalse(getTestMode() == TestMode.PLAYBACK, "This Test only runs in Live/Record mode");
-
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-async");
         String taskId = "mytask-async";
 
@@ -627,9 +619,9 @@ public class TaskTests extends BatchClientTestBase {
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
         batchAsyncClient.createJob(jobToCreate).block();
 
-        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<BatchTaskCreateParameters>();
+        List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
         BatchTaskCreateParameters taskToAdd;
-        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        List<ResourceFile> resourceFiles = new ArrayList<>();
         ResourceFile resourceFile;
 
         BatchTaskBulkCreateOptions option = new BatchTaskBulkCreateOptions();
@@ -879,16 +871,15 @@ public class TaskTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testDeserializationOfBatchTaskStatistics() {
+    public void testDeserializationOfBatchTaskStatistics() throws IOException {
         // Simulated JSON response with numbers as strings
-        String jsonResponse = "{" + "\"url\":\"http://example.com/statistics\","
-            + "\"startTime\":\"2022-01-01T00:00:00Z\"," + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
-            + "\"userCPUTime\":\"PT1H\"," + "\"kernelCPUTime\":\"PT2H\"," + "\"wallClockTime\":\"PT3H\","
-            + "\"readIOps\":\"1000\"," + "\"writeIOps\":\"500\"," + "\"readIOGiB\":0.5," + "\"writeIOGiB\":0.25,"
-            + "\"waitTime\":\"PT30M\"" + "}";
+        String jsonResponse = "{\"url\":\"http://example.com/statistics\",\"startTime\":\"2022-01-01T00:00:00Z\","
+            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\",\"userCPUTime\":\"PT1H\",\"kernelCPUTime\":\"PT2H\","
+            + "\"wallClockTime\":\"PT3H\",\"readIOps\":\"1000\",\"writeIOps\":\"500\",\"readIOGiB\":0.5,"
+            + "\"writeIOGiB\":0.25,\"waitTime\":\"PT30M\"}";
 
         // Deserialize JSON response using JsonReader from JsonProviders
-        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {
+        try (JsonReader jsonReader = JsonProviders.createReader(jsonResponse)) {
             BatchTaskStatistics stats = BatchTaskStatistics.fromJson(jsonReader);
 
             // Assertions
@@ -904,8 +895,20 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(0.5, stats.getReadIoGiB());
             Assertions.assertEquals(0.25, stats.getWriteIoGiB());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+    }
+
+    private static boolean skipInPlayback() {
+        final String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US)) == TestMode.PLAYBACK;
+            } catch (IllegalArgumentException e) {
+                return true; // TestMode unknown, default is PLAYBACK.
+            }
+        }
+
+        return true; // TestMode unknown, default is PLAYBACK.
     }
 }

@@ -27,7 +27,7 @@ public final class ReplicasDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.replicas().delete("tbobz", "opcjwvnhd", "d", com.azure.core.util.Context.NONE);
+        manager.replicas().delete("bywdxsmicc", "rwfscjfnynszquj", "zdvoqytibyowbb", com.azure.core.util.Context.NONE);
 
     }
 }

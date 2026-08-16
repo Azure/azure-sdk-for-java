@@ -130,6 +130,8 @@ public class BarrierRequestHelperTest {
         assertThat(getTargetGlobalLsn(barrierRequest)).isEqualTo(10l);
         assertThat(getTargetLsn(barrierRequest)).isEqualTo(11l);
         assertThat(barrierRequest.getIsNameBased()).isEqualTo(true);
+        assertThat(getHeaderValue(barrierRequest, HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES))
+            .isEqualTo(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
     }
 

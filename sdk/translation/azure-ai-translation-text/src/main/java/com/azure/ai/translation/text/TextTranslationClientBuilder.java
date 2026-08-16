@@ -51,8 +51,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = { TextTranslationClient.class, TextTranslationAsyncClient.class })
 public final class TextTranslationClientBuilder implements HttpTrait<TextTranslationClientBuilder>,
-    ConfigurationTrait<TextTranslationClientBuilder>, EndpointTrait<TextTranslationClientBuilder>,
-    KeyCredentialTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder> {
+    ConfigurationTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder>,
+    KeyCredentialTrait<TextTranslationClientBuilder>, EndpointTrait<TextTranslationClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -74,8 +74,16 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private TextTranslationAudience audience;
 
-    private KeyCredential credential;
+    /*
+     * The KeyCredential used for authentication.
+     */
+    @Generated
+    private KeyCredential keyCredential;
 
+    /*
+     * The TokenCredential used for authentication.
+     */
+    @Generated
     private TokenCredential tokenCredential;
 
     @Generated
@@ -256,16 +264,12 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     }
 
     /**
-     * Sets the {@link KeyCredential} used to authorize requests sent to the service.
-     *
-     * @param credential {@link KeyCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code credential} is null.
+     * {@inheritDoc}.
      */
+    @Generated
     @Override
-    public TextTranslationClientBuilder credential(KeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
+    public TextTranslationClientBuilder credential(KeyCredential keyCredential) {
+        this.keyCredential = keyCredential;
         return this;
     }
 
@@ -309,17 +313,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
-     *
-     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
+     * {@inheritDoc}.
      */
+    @Generated
     @Override
     public TextTranslationClientBuilder credential(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -351,11 +349,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
             Objects.requireNonNull(this.region, "'region' cannot be null.");
             Objects.requireNonNull(this.resourceId, "'resourceId' cannot be null.");
         }
-        if (this.credential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
+        if (this.keyCredential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null."));
         }
-        if (tokenCredential != null && this.credential != null) {
+        if (tokenCredential != null && this.keyCredential != null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Both token credential and key credential cannot be set."));
         }
@@ -401,8 +399,8 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
                 policies.add(new AddHeadersPolicy(aadHeaders));
             }
         }
-        if (this.credential != null) {
-            policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        if (this.keyCredential != null) {
+            policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, keyCredential));
             if (this.region != null) {
                 HttpHeaders regionHeaders = new HttpHeaders();
                 regionHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
@@ -449,4 +447,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 }

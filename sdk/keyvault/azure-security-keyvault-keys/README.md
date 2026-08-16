@@ -107,6 +107,7 @@ The cryptography client performs the cryptographic operations locally or calls t
 ### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Key service tasks, including:
 - [Create a key](#create-a-key)
+- [Create an external key](#create-an-external-key)
 - [Retrieve a key](#retrieve-a-key)
 - [Update an existing key](#update-an-existing-key)
 - [Delete a key](#delete-a-key)
@@ -128,6 +129,18 @@ KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
     .setCurveName(KeyCurveName.P_256)
     .setExpiresOn(OffsetDateTime.now().plusYears(1)));
 System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
+```
+
+#### Create an external key
+Register an external key with a Managed HSM. An external key references key material that is owned by an external Hardware Security Module (HSM); the Managed HSM stores only a reference to that material.
+- `createExternalKey` registers the external key in the Managed HSM. This is only supported on a Managed HSM configured to use External Key Management (EKM).
+
+```java readme-sample-createExternalKey
+// External keys are only supported on a Managed HSM configured to use External Key Management (EKM).
+KeyVaultKey externalKey = keyClient.createExternalKey(
+    new CreateExternalKeyOptions("CloudExternalKey", new ExternalKey("external-key-reference-id"))
+        .setExpiresOn(OffsetDateTime.now().plusYears(1)));
+System.out.printf("Key created with name \"%s\" and id %s%n", externalKey.getName(), externalKey.getId());
 ```
 
 #### Retrieve a key
@@ -364,7 +377,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/java/com/azure/security/keyvault/keys
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/src/samples/README.md
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [jwk_specification]: https://tools.ietf.org/html/rfc7517
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients

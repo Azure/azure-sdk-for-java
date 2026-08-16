@@ -12,24 +12,24 @@ public final class NamespaceDatasetDataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDatasetDataPoint model = BinaryData.fromString(
-            "{\"name\":\"o\",\"dataSource\":\"hb\",\"dataPointConfiguration\":\"knalaulppg\",\"typeRef\":\"tpnapnyiropuhpig\"}")
+            "{\"name\":\"waboe\",\"dataSource\":\"qvkelnsm\",\"dataPointConfiguration\":\"xwyjsflhhc\",\"typeRef\":\"lnjixisxya\"}")
             .toObject(NamespaceDatasetDataPoint.class);
-        Assertions.assertEquals("o", model.name());
-        Assertions.assertEquals("hb", model.dataSource());
-        Assertions.assertEquals("knalaulppg", model.dataPointConfiguration());
-        Assertions.assertEquals("tpnapnyiropuhpig", model.typeRef());
+        Assertions.assertEquals("waboe", model.name());
+        Assertions.assertEquals("qvkelnsm", model.dataSource());
+        Assertions.assertEquals("xwyjsflhhc", model.dataPointConfiguration());
+        Assertions.assertEquals("lnjixisxya", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDatasetDataPoint model = new NamespaceDatasetDataPoint().withName("o")
-            .withDataSource("hb")
-            .withDataPointConfiguration("knalaulppg")
-            .withTypeRef("tpnapnyiropuhpig");
+        NamespaceDatasetDataPoint model = new NamespaceDatasetDataPoint().withName("waboe")
+            .withDataSource("qvkelnsm")
+            .withDataPointConfiguration("xwyjsflhhc")
+            .withTypeRef("lnjixisxya");
         model = BinaryData.fromObject(model).toObject(NamespaceDatasetDataPoint.class);
-        Assertions.assertEquals("o", model.name());
-        Assertions.assertEquals("hb", model.dataSource());
-        Assertions.assertEquals("knalaulppg", model.dataPointConfiguration());
-        Assertions.assertEquals("tpnapnyiropuhpig", model.typeRef());
+        Assertions.assertEquals("waboe", model.name());
+        Assertions.assertEquals("qvkelnsm", model.dataSource());
+        Assertions.assertEquals("xwyjsflhhc", model.dataPointConfiguration());
+        Assertions.assertEquals("lnjixisxya", model.typeRef());
     }
 }

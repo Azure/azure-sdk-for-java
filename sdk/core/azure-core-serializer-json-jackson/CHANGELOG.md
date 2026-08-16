@@ -1,14 +1,30 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.6.6 (2026-08-12)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded Jackson from `2.18.7` to `2.18.9`.
+
+## 1.6.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Jackson from `2.18.6` to `2.18.7`.
+
+## 1.6.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
 
 ## 1.6.3 (2026-01-15)
 

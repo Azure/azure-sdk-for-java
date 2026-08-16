@@ -69,6 +69,11 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     private Integer diskSizeGB;
 
     /*
+     * Specifies the storage fault domain alignment type for the disk.
+     */
+    private StorageFaultDomainAlignmentType storageFaultDomainAlignment;
+
+    /*
      * The managed disk parameters.
      */
     private ManagedDiskParameters managedDisk;
@@ -304,6 +309,26 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     }
 
     /**
+     * Get the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @return the storageFaultDomainAlignment value.
+     */
+    public StorageFaultDomainAlignmentType storageFaultDomainAlignment() {
+        return this.storageFaultDomainAlignment;
+    }
+
+    /**
+     * Set the storageFaultDomainAlignment property: Specifies the storage fault domain alignment type for the disk.
+     * 
+     * @param storageFaultDomainAlignment the storageFaultDomainAlignment value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withStorageFaultDomainAlignment(StorageFaultDomainAlignmentType storageFaultDomainAlignment) {
+        this.storageFaultDomainAlignment = storageFaultDomainAlignment;
+        return this;
+    }
+
+    /**
      * Get the managedDisk property: The managed disk parameters.
      * 
      * @return the managedDisk value.
@@ -507,6 +532,8 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
         jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
         jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
         jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("storageFaultDomainAlignment",
+            this.storageFaultDomainAlignment == null ? null : this.storageFaultDomainAlignment.toString());
         jsonWriter.writeJsonField("managedDisk", this.managedDisk);
         jsonWriter.writeJsonField("sourceResource", this.sourceResource);
         jsonWriter.writeBooleanField("toBeDetached", this.toBeDetached);
@@ -549,6 +576,9 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
                     deserializedDataDisk.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("diskSizeGB".equals(fieldName)) {
                     deserializedDataDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("storageFaultDomainAlignment".equals(fieldName)) {
+                    deserializedDataDisk.storageFaultDomainAlignment
+                        = StorageFaultDomainAlignmentType.fromString(reader.getString());
                 } else if ("managedDisk".equals(fieldName)) {
                     deserializedDataDisk.managedDisk = ManagedDiskParameters.fromJson(reader);
                 } else if ("sourceResource".equals(fieldName)) {

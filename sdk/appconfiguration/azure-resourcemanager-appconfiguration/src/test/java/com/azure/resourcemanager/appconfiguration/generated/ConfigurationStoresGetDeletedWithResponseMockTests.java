@@ -20,7 +20,7 @@ public final class ConfigurationStoresGetDeletedWithResponseMockTests {
     @Test
     public void testGetDeletedWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurationStoreId\":\"eilpjzuaejxdu\",\"location\":\"skzbb\",\"deletionDate\":\"2021-08-12T02:58:19Z\",\"scheduledPurgeDate\":\"2020-12-20T17:44:54Z\",\"tags\":{\"wozuhkf\":\"ekg\"},\"purgeProtectionEnabled\":false},\"id\":\"yofd\",\"name\":\"luu\",\"type\":\"dttouwaboekqvkel\"}";
+            = "{\"properties\":{\"configurationStoreId\":\"csnjvcdwxlpqekft\",\"location\":\"htjsying\",\"deletionDate\":\"2021-09-07T12:42:11Z\",\"scheduledPurgeDate\":\"2021-02-12T13:20:36Z\",\"tags\":{\"szywkbirryu\":\"dhtmdvypgikd\",\"nrvgoupmfiibfgg\":\"hlhkjoqrvqqaatj\",\"wjygvjayvblmhvk\":\"ioolvrwxkvtkkgll\"},\"purgeProtectionEnabled\":true},\"id\":\"xvvy\",\"name\":\"gsopbyrqufegxu\",\"type\":\"wz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ConfigurationStoresGetDeletedWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeletedConfigurationStore response = manager.configurationStores()
-            .getDeletedWithResponse("hzovawjvzunlut", "nnprn", com.azure.core.util.Context.NONE)
+            .getDeletedWithResponse("kyhkobopg", "edkowepbqpcrfk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

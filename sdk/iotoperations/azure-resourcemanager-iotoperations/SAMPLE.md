@@ -15,6 +15,13 @@
 - [Get](#akriconnectortemplate_get)
 - [ListByInstanceResource](#akriconnectortemplate_listbyinstanceresource)
 
+## AkriService
+
+- [CreateOrUpdate](#akriservice_createorupdate)
+- [Delete](#akriservice_delete)
+- [Get](#akriservice_get)
+- [ListByInstanceResource](#akriservice_listbyinstanceresource)
+
 ## Broker
 
 - [CreateOrUpdate](#broker_createorupdate)
@@ -102,7 +109,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
  */
 public final class AkriConnectorCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_CreateOrUpdate_MaximumSet.
@@ -131,7 +138,7 @@ public final class AkriConnectorCreateOrUpdateSamples {
  */
 public final class AkriConnectorDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnector_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnector_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_Delete_MaximumSet.
@@ -155,7 +162,7 @@ public final class AkriConnectorDeleteSamples {
  */
 public final class AkriConnectorGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnector_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnector_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_Get_MaximumSet.
@@ -179,7 +186,7 @@ public final class AkriConnectorGetSamples {
  */
 public final class AkriConnectorListByTemplateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnector_ListByTemplate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnector_ListByTemplate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnector_ListByTemplate_MaximumSet.
@@ -201,8 +208,10 @@ public final class AkriConnectorListByTemplateSamples {
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateAioMetadata;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDiagnostics;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateExecAction;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateManagedConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateProperties;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateReadinessProbe;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfigurationSettings;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistry;
@@ -224,7 +233,7 @@ import java.util.Arrays;
  */
 public final class AkriConnectorTemplateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_CreateOrUpdate_MaximumSet.
@@ -243,6 +252,14 @@ public final class AkriConnectorTemplateCreateOrUpdateSamples {
                     .withManagedConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfiguration()
                         .withImageConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfigurationSettings()
                             .withImageName("akri-connectors/rest")
+                            .withReadinessProbe(new AkriConnectorTemplateReadinessProbe()
+                                .withExec(new AkriConnectorTemplateExecAction()
+                                    .withCommand(Arrays.asList("cat", "/tmp/ready")))
+                                .withFailureThreshold(3)
+                                .withInitialDelaySeconds(5)
+                                .withPeriodSeconds(10)
+                                .withSuccessThreshold(1)
+                                .withTimeoutSeconds(2))
                             .withRegistrySettings(new AkriConnectorsContainerRegistry().withContainerRegistrySettings(
                                 new AkriConnectorsContainerRegistrySettings().withRegistry("akribuilds.azurecr.io")))
                             .withTagDigestSettings(new AkriConnectorsTag().withTag("0.5.0-20250825.4")))))
@@ -278,7 +295,7 @@ public final class AkriConnectorTemplateCreateOrUpdateSamples {
  */
 public final class AkriConnectorTemplateDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_Delete_MaximumSet.
@@ -301,7 +318,7 @@ public final class AkriConnectorTemplateDeleteSamples {
  */
 public final class AkriConnectorTemplateGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_Get_MaximumSet.
@@ -316,7 +333,7 @@ public final class AkriConnectorTemplateGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_Get_Managed_Rest.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Get_Managed_Rest.json
      */
     /**
      * Sample code: AkriConnectorTemplate_Get_Managed_Rest.
@@ -340,7 +357,7 @@ public final class AkriConnectorTemplateGetSamples {
  */
 public final class AkriConnectorTemplateListByInstanceResourceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_ListByInstanceResource_MaximumSet.
@@ -350,6 +367,108 @@ public final class AkriConnectorTemplateListByInstanceResourceSamples {
     public static void akriConnectorTemplateListByInstanceResourceMaximumSet(
         com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
         manager.akriConnectorTemplates()
+            .listByInstanceResource("rgiotoperations", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.AkriServiceProperties;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+
+/**
+ * Samples for AkriService CreateOrUpdate.
+ */
+public final class AkriServiceCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_CreateOrUpdate_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceCreateOrUpdateMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .define("resource-name123")
+            .withExistingInstance("rgiotoperations", "resource-name123")
+            .withProperties(new AkriServiceProperties())
+            .withExtendedLocation(new ExtendedLocation().withName("cseunvoinpjfvuyoewmzlr")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### AkriService_Delete
+
+```java
+/**
+ * Samples for AkriService Delete.
+ */
+public final class AkriServiceDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_Delete_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceDeleteMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .delete("rgiotoperations", "resource-name123", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_Get
+
+```java
+/**
+ * Samples for AkriService Get.
+ */
+public final class AkriServiceGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_Get_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceGetMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .getWithResponse("rgiotoperations", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_ListByInstanceResource
+
+```java
+/**
+ * Samples for AkriService ListByInstanceResource.
+ */
+public final class AkriServiceListByInstanceResourceSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_ListByInstanceResource_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_ListByInstanceResource_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceListByInstanceResourceMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
             .listByInstanceResource("rgiotoperations", "resource-name123", com.azure.core.util.Context.NONE);
     }
 }
@@ -373,6 +492,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.Frontend;
 import com.azure.resourcemanager.iotoperations.models.GenerateResourceLimits;
+import com.azure.resourcemanager.iotoperations.models.HighPriorityMessagesBackpressureHandling;
 import com.azure.resourcemanager.iotoperations.models.KubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.LocalKubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.Metrics;
@@ -398,7 +518,7 @@ import java.util.Map;
  */
 public final class BrokerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Broker_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Minimal.
@@ -418,7 +538,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Broker_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Complex.
@@ -444,7 +564,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate.
@@ -526,6 +646,7 @@ public final class BrokerCreateOrUpdateSamples {
                                         .withValues(Arrays.asList("slmpajlywqvuyknipgztsonqyybt"))))
                                 .withMatchLabels(mapOf("key6673", "fakeTokenPlaceholder")))))
                     .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
+                    .withHighPriorityMessagesBackpressureHandling(HighPriorityMessagesBackpressureHandling.ACCEPT)
                     .withMemoryProfile(BrokerMemoryProfile.TINY))
             .withExtendedLocation(new ExtendedLocation().withName(
                 "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
@@ -534,7 +655,7 @@ public final class BrokerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Broker_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Simple.
@@ -580,7 +701,7 @@ public final class BrokerCreateOrUpdateSamples {
  */
 public final class BrokerDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Broker_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Delete.
@@ -602,7 +723,7 @@ public final class BrokerDeleteSamples {
  */
 public final class BrokerGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Broker_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Get.
@@ -625,7 +746,7 @@ public final class BrokerGetSamples {
  */
 public final class BrokerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_ListByResourceGroup.
@@ -661,7 +782,7 @@ import java.util.Map;
  */
 public final class BrokerAuthenticationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate.
@@ -699,7 +820,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate_Complex.
@@ -755,7 +876,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
  */
 public final class BrokerAuthenticationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Delete.
@@ -779,7 +900,7 @@ public final class BrokerAuthenticationDeleteSamples {
  */
 public final class BrokerAuthenticationGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthentication_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Get.
@@ -802,7 +923,7 @@ public final class BrokerAuthenticationGetSamples {
  */
 public final class BrokerAuthenticationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_ListByResourceGroup.
@@ -842,7 +963,7 @@ import java.util.Map;
  */
 public final class BrokerAuthorizationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate.
@@ -876,7 +997,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Simple.
@@ -909,7 +1030,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Complex.
@@ -971,7 +1092,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
  */
 public final class BrokerAuthorizationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Delete.
@@ -994,7 +1115,7 @@ public final class BrokerAuthorizationDeleteSamples {
  */
 public final class BrokerAuthorizationGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Get.
@@ -1017,7 +1138,7 @@ public final class BrokerAuthorizationGetSamples {
  */
 public final class BrokerAuthorizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_ListByResourceGroup.
@@ -1059,7 +1180,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -1097,7 +1218,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -1117,7 +1238,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.
@@ -1164,7 +1285,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
  */
 public final class BrokerListenerDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Delete.
@@ -1187,7 +1308,7 @@ public final class BrokerListenerDeleteSamples {
  */
 public final class BrokerListenerGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Get.
@@ -1210,7 +1331,7 @@ public final class BrokerListenerGetSamples {
  */
 public final class BrokerListenerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_ListByResourceGroup.
@@ -1252,7 +1373,7 @@ import java.util.Arrays;
  */
 public final class DataflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_FilterToTopic.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_FilterToTopic.
@@ -1297,7 +1418,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate.
@@ -1349,7 +1470,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexContextualization.
@@ -1394,7 +1515,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexEventHub.
@@ -1459,7 +1580,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_SimpleFabric.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleFabric.
@@ -1497,7 +1618,7 @@ public final class DataflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleEventGrid.
@@ -1537,7 +1658,7 @@ public final class DataflowCreateOrUpdateSamples {
  */
 public final class DataflowDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Delete.
@@ -1560,7 +1681,7 @@ public final class DataflowDeleteSamples {
  */
 public final class DataflowGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Get.
@@ -1583,7 +1704,7 @@ public final class DataflowGetSamples {
  */
 public final class DataflowListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_ListByProfileResource.
@@ -1647,7 +1768,7 @@ import com.azure.resourcemanager.iotoperations.models.TlsProperties;
  */
 public final class DataflowEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventGrid.
@@ -1674,7 +1795,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADLSv2.
@@ -1702,7 +1823,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventHub.
@@ -1730,7 +1851,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate.
@@ -1856,7 +1977,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_ADX.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_ADX.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADX.
@@ -1884,7 +2005,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Fabric.
@@ -1913,7 +2034,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_LocalStorage.
@@ -1935,7 +2056,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_AIO.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_AIO.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_AIO.
@@ -1964,7 +2085,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_MQTT.
@@ -1998,7 +2119,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Kafka.
@@ -2045,7 +2166,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
  */
 public final class DataflowEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Delete.
@@ -2067,7 +2188,7 @@ public final class DataflowEndpointDeleteSamples {
  */
 public final class DataflowEndpointGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Get.
@@ -2090,7 +2211,7 @@ public final class DataflowEndpointGetSamples {
  */
 public final class DataflowEndpointListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_ListByResourceGroup.
@@ -2131,7 +2252,7 @@ import java.util.Arrays;
  */
 public final class DataflowGraphCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowGraph_CreateOrUpdate_MaximumSet.
@@ -2209,7 +2330,7 @@ public final class DataflowGraphCreateOrUpdateSamples {
  */
 public final class DataflowGraphDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowGraph_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowGraph_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowGraph_Delete_MaximumSet.
@@ -2233,7 +2354,7 @@ public final class DataflowGraphDeleteSamples {
  */
 public final class DataflowGraphGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowGraph_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowGraph_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowGraph_Get_MaximumSet.
@@ -2257,7 +2378,7 @@ public final class DataflowGraphGetSamples {
  */
 public final class DataflowGraphListByDataflowProfileSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowGraph_ListByDataflowProfile_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowGraph_ListByDataflowProfile_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowGraph_ListByDataflowProfile_MaximumSet.
@@ -2287,7 +2408,7 @@ import com.azure.resourcemanager.iotoperations.models.ProfileDiagnostics;
  */
 public final class DataflowProfileCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate.
@@ -2310,7 +2431,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Minimal.
@@ -2330,7 +2451,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_CreateOrUpdate_Multi.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_Multi.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Multi.
@@ -2359,7 +2480,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
  */
 public final class DataflowProfileDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Delete.
@@ -2381,7 +2502,7 @@ public final class DataflowProfileDeleteSamples {
  */
 public final class DataflowProfileGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Get.
@@ -2404,7 +2525,7 @@ public final class DataflowProfileGetSamples {
  */
 public final class DataflowProfileListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_ListByResourceGroup.
@@ -2436,7 +2557,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.
@@ -2482,7 +2603,7 @@ public final class InstanceCreateOrUpdateSamples {
  */
 public final class InstanceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Delete.
@@ -2503,7 +2624,7 @@ public final class InstanceDeleteSamples {
  */
 public final class InstanceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Get.
@@ -2525,7 +2646,7 @@ public final class InstanceGetByResourceGroupSamples {
  */
 public final class InstanceListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListBySubscription.
@@ -2547,7 +2668,7 @@ public final class InstanceListSamples {
  */
 public final class InstanceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListByResourceGroup.
@@ -2575,7 +2696,7 @@ import java.util.Map;
  */
 public final class InstanceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Instance_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Update.
@@ -2615,7 +2736,7 @@ public final class InstanceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-10-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -2645,7 +2766,7 @@ import java.util.Arrays;
  */
 public final class RegistryEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_CreateOrUpdate_MaximumSet.
@@ -2679,7 +2800,7 @@ public final class RegistryEndpointCreateOrUpdateSamples {
  */
 public final class RegistryEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2025-10-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_Delete_MaximumSet.
@@ -2702,7 +2823,7 @@ public final class RegistryEndpointDeleteSamples {
  */
 public final class RegistryEndpointGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01/RegistryEndpoint_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_Get_MaximumSet.
@@ -2725,7 +2846,7 @@ public final class RegistryEndpointGetSamples {
  */
 public final class RegistryEndpointListByInstanceResourceSamples {
     /*
-     * x-ms-original-file: 2025-10-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_ListByInstanceResource_MaximumSet.

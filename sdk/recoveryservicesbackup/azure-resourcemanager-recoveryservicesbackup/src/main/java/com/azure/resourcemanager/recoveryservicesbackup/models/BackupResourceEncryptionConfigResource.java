@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public final class BackupResourceEncryptionConfigResource extends ProxyResource {
     /*
-     * BackupResourceEncryptionConfigResource properties
+     * The properties of the backup resource encryption config
      */
     private BackupResourceEncryptionConfig properties;
 
@@ -65,7 +65,7 @@ public final class BackupResourceEncryptionConfigResource extends ProxyResource 
     }
 
     /**
-     * Get the properties property: BackupResourceEncryptionConfigResource properties.
+     * Get the properties property: The properties of the backup resource encryption config.
      * 
      * @return the properties value.
      */
@@ -74,7 +74,7 @@ public final class BackupResourceEncryptionConfigResource extends ProxyResource 
     }
 
     /**
-     * Set the properties property: BackupResourceEncryptionConfigResource properties.
+     * Set the properties property: The properties of the backup resource encryption config.
      * 
      * @param properties the properties value to set.
      * @return the BackupResourceEncryptionConfigResource object itself.

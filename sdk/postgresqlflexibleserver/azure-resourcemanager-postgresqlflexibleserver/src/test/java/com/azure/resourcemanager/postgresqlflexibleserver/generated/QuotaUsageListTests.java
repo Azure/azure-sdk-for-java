@@ -12,8 +12,8 @@ public final class QuotaUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"name\":{\"value\":\"cgyypro\",\"localizedValue\":\"ypundmbxhugc\"},\"limit\":299484230763503241,\"unit\":\"lgorb\",\"currentValue\":2304427621056901546,\"id\":\"dtzfjltfvnzcy\"}],\"nextLink\":\"otp\"}")
+            "{\"value\":[{\"name\":{\"value\":\"anashc\",\"localizedValue\":\"pmjerbdkelvidiz\"},\"limit\":8950212108583362641,\"unit\":\"ccxjm\",\"currentValue\":7281631473511160743,\"id\":\"nwncypuuw\"}],\"nextLink\":\"tvuqjctzenkeifzz\"}")
             .toObject(QuotaUsageList.class);
-        Assertions.assertEquals("otp", model.nextLink());
+        Assertions.assertEquals("tvuqjctzenkeifzz", model.nextLink());
     }
 }

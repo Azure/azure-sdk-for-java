@@ -16,7 +16,7 @@ import java.io.IOException;
  * event with the user message item that is created from the audio buffer.
  */
 @Immutable
-public final class SessionUpdateInputAudioBufferSpeechStopped extends SessionUpdate {
+public final class SessionUpdateInputAudioBufferSpeechStopped extends SessionServerEvent {
 
     /*
      * The type of event.

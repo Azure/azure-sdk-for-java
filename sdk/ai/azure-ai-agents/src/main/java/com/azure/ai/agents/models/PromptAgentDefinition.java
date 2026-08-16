@@ -43,7 +43,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /*
      * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while
      * lower values like 0.2 will make it more focused and deterministic.
-     * We generally recommend altering this or `top_p` but not both.
+     * We generally recommend altering this or `top_p` but not both. Defaults to `1`.
      */
     @Generated
     private Double temperature;
@@ -52,9 +52,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * An alternative to sampling with temperature, called nucleus sampling,
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
-     * are considered.
-     * 
-     * We generally recommend altering this or `temperature` but not both.
+     * are considered. We generally recommend altering this or `temperature` but not both.
+     * Defaults to `1`.
      */
     @Generated
     private Double topP;
@@ -137,7 +136,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
      * the output more random, while lower values like 0.2 will make it more focused and deterministic.
-     * We generally recommend altering this or `top_p` but not both.
+     * We generally recommend altering this or `top_p` but not both. Defaults to `1`.
      *
      * @return the temperature value.
      */
@@ -149,7 +148,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * Set the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
      * the output more random, while lower values like 0.2 will make it more focused and deterministic.
-     * We generally recommend altering this or `top_p` but not both.
+     * We generally recommend altering this or `top_p` but not both. Defaults to `1`.
      *
      * @param temperature the temperature value to set.
      * @return the PromptAgentDefinition object itself.
@@ -164,9 +163,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * Get the topP property: An alternative to sampling with temperature, called nucleus sampling,
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
-     * are considered.
-     *
-     * We generally recommend altering this or `temperature` but not both.
+     * are considered. We generally recommend altering this or `temperature` but not both.
+     * Defaults to `1`.
      *
      * @return the topP value.
      */
@@ -179,9 +177,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * Set the topP property: An alternative to sampling with temperature, called nucleus sampling,
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
-     * are considered.
-     *
-     * We generally recommend altering this or `temperature` but not both.
+     * are considered. We generally recommend altering this or `temperature` but not both.
+     * Defaults to `1`.
      *
      * @param topP the topP value to set.
      * @return the PromptAgentDefinition object itself.

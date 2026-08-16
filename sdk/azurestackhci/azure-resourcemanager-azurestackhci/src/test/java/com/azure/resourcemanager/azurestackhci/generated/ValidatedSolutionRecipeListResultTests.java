@@ -12,12 +12,12 @@ public final class ValidatedSolutionRecipeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidatedSolutionRecipeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"xljtxbusqtbxxn\",\"version\":\"uisdzhgbdgz\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"secnadbuwqrgxf\"},{\"capabilityName\":\"lmqiynezoel\"},{\"capabilityName\":\"nkkiiwvmtumxpy\"},{\"capabilityName\":\"djf\"}],\"nodeCapabilities\":[{\"capabilityName\":\"xroq\"},{\"capabilityName\":\"qpilrgu\"},{\"capabilityName\":\"canlduwzorxs\"},{\"capabilityName\":\"mxaqklxym\"}]},\"components\":[{\"name\":\"qvfqepdxc\",\"type\":\"tuubwyvpjb\",\"tags\":[]}]},\"signature\":\"cpj\"},\"id\":\"uqgixex\",\"name\":\"ydfbwlj\",\"type\":\"vhuerkjddvrglieg\"},{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"cvbiiftksdw\",\"version\":\"dnkefgm\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"c\"},{\"capabilityName\":\"buvczldbglzoutb\"},{\"capabilityName\":\"aqgzekajclyzgs\"},{\"capabilityName\":\"orbjg\"}],\"nodeCapabilities\":[{\"capabilityName\":\"zjotvmrxkhlo\"},{\"capabilityName\":\"vvjbhvhdiqayf\"}]},\"components\":[{\"name\":\"iyu\",\"type\":\"snuudtelvhyibdr\",\"tags\":[]},{\"name\":\"rswhbuubpyro\",\"type\":\"tjoxztfw\",\"tags\":[]}]},\"signature\":\"chvczev\"},\"id\":\"nctagfyvrtpqpem\",\"name\":\"z\",\"type\":\"gkrepdqhqyhw\"}],\"nextLink\":\"e\"}")
+            "{\"value\":[{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"wzjwotnxlkfhg\",\"version\":\"h\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"x\"},{\"capabilityName\":\"wecr\"},{\"capabilityName\":\"nhpcselqx\"},{\"capabilityName\":\"vppqi\"}],\"nodeCapabilities\":[{\"capabilityName\":\"kklvzrlrmlccmet\"},{\"capabilityName\":\"scz\"},{\"capabilityName\":\"vfqbqna\"}]},\"components\":[{\"name\":\"sye\",\"type\":\"zsieuscplhyvd\",\"tags\":[]},{\"name\":\"xlyzkxit\",\"type\":\"shezs\",\"tags\":[]},{\"name\":\"kol\",\"type\":\"upjo\",\"tags\":[]},{\"name\":\"mozsayebrazwz\",\"type\":\"pzbtzuyk\",\"tags\":[]}]},\"signature\":\"ip\"},\"id\":\"dyepfno\",\"name\":\"mbezacfpztg\",\"type\":\"zwyqejga\"},{\"properties\":{\"recipeContent\":{\"info\":{\"solutionType\":\"kctgkp\",\"version\":\"gkqzkcyzmffngdyf\"},\"capabilities\":{\"clusterCapabilities\":[{\"capabilityName\":\"rhlc\"},{\"capabilityName\":\"vhoej\"},{\"capabilityName\":\"oiutgwrmkahpq\"},{\"capabilityName\":\"azyntacihncogm\"}],\"nodeCapabilities\":[{\"capabilityName\":\"nmliqmvlbhi\"},{\"capabilityName\":\"eaqgrvgpomxpupd\"}]},\"components\":[{\"name\":\"dfj\",\"type\":\"i\",\"tags\":[]},{\"name\":\"socwiqbuout\",\"type\":\"py\",\"tags\":[]},{\"name\":\"gleofjsbgbw\",\"type\":\"zvdajfwnncf\",\"tags\":[]}]},\"signature\":\"ciqgjjrlhiqlwixv\"},\"id\":\"ougu\",\"name\":\"tnd\",\"type\":\"pg\"}],\"nextLink\":\"tbasu\"}")
             .toObject(ValidatedSolutionRecipeListResult.class);
-        Assertions.assertEquals("xljtxbusqtbxxn",
+        Assertions.assertEquals("wzjwotnxlkfhg",
             model.value().get(0).properties().recipeContent().info().solutionType());
-        Assertions.assertEquals("uisdzhgbdgz", model.value().get(0).properties().recipeContent().info().version());
-        Assertions.assertEquals("secnadbuwqrgxf",
+        Assertions.assertEquals("h", model.value().get(0).properties().recipeContent().info().version());
+        Assertions.assertEquals("x",
             model.value()
                 .get(0)
                 .properties()
@@ -26,7 +26,7 @@ public final class ValidatedSolutionRecipeListResultTests {
                 .clusterCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("xroq",
+        Assertions.assertEquals("kklvzrlrmlccmet",
             model.value()
                 .get(0)
                 .properties()
@@ -35,11 +35,10 @@ public final class ValidatedSolutionRecipeListResultTests {
                 .nodeCapabilities()
                 .get(0)
                 .capabilityName());
-        Assertions.assertEquals("qvfqepdxc",
-            model.value().get(0).properties().recipeContent().components().get(0).name());
-        Assertions.assertEquals("tuubwyvpjb",
+        Assertions.assertEquals("sye", model.value().get(0).properties().recipeContent().components().get(0).name());
+        Assertions.assertEquals("zsieuscplhyvd",
             model.value().get(0).properties().recipeContent().components().get(0).type());
-        Assertions.assertEquals("cpj", model.value().get(0).properties().signature());
-        Assertions.assertEquals("e", model.nextLink());
+        Assertions.assertEquals("ip", model.value().get(0).properties().signature());
+        Assertions.assertEquals("tbasu", model.nextLink());
     }
 }

@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.serde.jackson;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.StdConverter;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.util.StdConverter;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.Constants.ON_BEHALF_OF;
 

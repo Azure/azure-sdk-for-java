@@ -19,6 +19,7 @@ import java.io.IOException;
 public final class WindowsVMGuestPatchAutomaticByPlatformSettings
     implements JsonSerializable<WindowsVMGuestPatchAutomaticByPlatformSettings> {
     /*
+     * 
      * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      */
@@ -36,7 +37,8 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
     }
 
     /**
-     * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
+     * Get the rebootSetting property:
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      * 
      * @return the rebootSetting value.
@@ -46,7 +48,8 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings
     }
 
     /**
-     * Set the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
+     * Set the rebootSetting property:
+     * Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.
      * 
      * @param rebootSetting the rebootSetting value to set.

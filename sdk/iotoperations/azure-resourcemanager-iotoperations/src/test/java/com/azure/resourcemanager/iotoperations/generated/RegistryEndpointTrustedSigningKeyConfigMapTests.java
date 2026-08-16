@@ -12,16 +12,16 @@ public final class RegistryEndpointTrustedSigningKeyConfigMapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryEndpointTrustedSigningKeyConfigMap model
-            = BinaryData.fromString("{\"type\":\"ConfigMap\",\"configMapRef\":\"dl\"}")
+            = BinaryData.fromString("{\"type\":\"ConfigMap\",\"configMapRef\":\"akgtdlmkkzevdlh\"}")
                 .toObject(RegistryEndpointTrustedSigningKeyConfigMap.class);
-        Assertions.assertEquals("dl", model.configMapRef());
+        Assertions.assertEquals("akgtdlmkkzevdlh", model.configMapRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointTrustedSigningKeyConfigMap model
-            = new RegistryEndpointTrustedSigningKeyConfigMap().withConfigMapRef("dl");
+            = new RegistryEndpointTrustedSigningKeyConfigMap().withConfigMapRef("akgtdlmkkzevdlh");
         model = BinaryData.fromObject(model).toObject(RegistryEndpointTrustedSigningKeyConfigMap.class);
-        Assertions.assertEquals("dl", model.configMapRef());
+        Assertions.assertEquals("akgtdlmkkzevdlh", model.configMapRef());
     }
 }

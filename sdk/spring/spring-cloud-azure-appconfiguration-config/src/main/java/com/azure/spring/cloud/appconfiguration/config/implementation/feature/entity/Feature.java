@@ -44,8 +44,9 @@ public final class Feature {
     /**
      * Feature Flag object.
      *
-     * @param key Name of the Feature Flag
-     * @param featureItem Configurations of the Feature Flag.
+     * @param featureFlag Feature Flag configuration setting.
+     * @param requirementType Requirement type for the feature flag conditions.
+     * @param telemetry Telemetry configuration for the feature flag.
      */
     public Feature(FeatureFlagConfigurationSetting featureFlag, String requirementType, FeatureTelemetry telemetry) {
         this.id = featureFlag.getFeatureId();

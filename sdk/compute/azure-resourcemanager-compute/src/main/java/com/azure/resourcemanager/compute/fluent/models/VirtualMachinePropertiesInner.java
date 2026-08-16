@@ -17,8 +17,10 @@ import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
+import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
+import com.azure.resourcemanager.compute.models.ResiliencyProfile;
 import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
@@ -195,6 +197,12 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
     private CapacityReservationProfile capacityReservation;
 
     /*
+     * Specifies information about the Interconnect Block that is used to allocate the Virtual Machine. Minimum
+     * api-version: 2026-03-01.
+     */
+    private InterconnectBlockProfile interconnectBlockProfile;
+
+    /*
      * Specifies the gallery applications that should be made available to the VM/VMSS.
      */
     private ApplicationProfile applicationProfile;
@@ -203,6 +211,11 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
      * Specifies the time at which the Virtual Machine resource was created. Minimum api-version: 2021-11-01.
      */
     private OffsetDateTime timeCreated;
+
+    /*
+     * Resiliency profile for the virtual machine.
+     */
+    private ResiliencyProfile resiliencyProfile;
 
     /**
      * Creates an instance of VirtualMachinePropertiesInner class.
@@ -759,6 +772,29 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
     }
 
     /**
+     * Get the interconnectBlockProfile property: Specifies information about the Interconnect Block that is used to
+     * allocate the Virtual Machine. Minimum api-version: 2026-03-01.
+     * 
+     * @return the interconnectBlockProfile value.
+     */
+    public InterconnectBlockProfile interconnectBlockProfile() {
+        return this.interconnectBlockProfile;
+    }
+
+    /**
+     * Set the interconnectBlockProfile property: Specifies information about the Interconnect Block that is used to
+     * allocate the Virtual Machine. Minimum api-version: 2026-03-01.
+     * 
+     * @param interconnectBlockProfile the interconnectBlockProfile value to set.
+     * @return the VirtualMachinePropertiesInner object itself.
+     */
+    public VirtualMachinePropertiesInner
+        withInterconnectBlockProfile(InterconnectBlockProfile interconnectBlockProfile) {
+        this.interconnectBlockProfile = interconnectBlockProfile;
+        return this;
+    }
+
+    /**
      * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
      * 
@@ -788,6 +824,26 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
      */
     public OffsetDateTime timeCreated() {
         return this.timeCreated;
+    }
+
+    /**
+     * Get the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @return the resiliencyProfile value.
+     */
+    public ResiliencyProfile resiliencyProfile() {
+        return this.resiliencyProfile;
+    }
+
+    /**
+     * Set the resiliencyProfile property: Resiliency profile for the virtual machine.
+     * 
+     * @param resiliencyProfile the resiliencyProfile value to set.
+     * @return the VirtualMachinePropertiesInner object itself.
+     */
+    public VirtualMachinePropertiesInner withResiliencyProfile(ResiliencyProfile resiliencyProfile) {
+        this.resiliencyProfile = resiliencyProfile;
+        return this;
     }
 
     /**
@@ -832,8 +888,14 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
         if (capacityReservation() != null) {
             capacityReservation().validate();
         }
+        if (interconnectBlockProfile() != null) {
+            interconnectBlockProfile().validate();
+        }
         if (applicationProfile() != null) {
             applicationProfile().validate();
+        }
+        if (resiliencyProfile() != null) {
+            resiliencyProfile().validate();
         }
     }
 
@@ -866,7 +928,9 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
         jsonWriter.writeJsonField("scheduledEventsProfile", this.scheduledEventsProfile);
         jsonWriter.writeStringField("userData", this.userData);
         jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
+        jsonWriter.writeJsonField("interconnectBlockProfile", this.interconnectBlockProfile);
         jsonWriter.writeJsonField("applicationProfile", this.applicationProfile);
+        jsonWriter.writeJsonField("resiliencyProfile", this.resiliencyProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -944,11 +1008,16 @@ public final class VirtualMachinePropertiesInner implements JsonSerializable<Vir
                 } else if ("capacityReservation".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.capacityReservation
                         = CapacityReservationProfile.fromJson(reader);
+                } else if ("interconnectBlockProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.interconnectBlockProfile
+                        = InterconnectBlockProfile.fromJson(reader);
                 } else if ("applicationProfile".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.applicationProfile = ApplicationProfile.fromJson(reader);
                 } else if ("timeCreated".equals(fieldName)) {
                     deserializedVirtualMachinePropertiesInner.timeCreated = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resiliencyProfile".equals(fieldName)) {
+                    deserializedVirtualMachinePropertiesInner.resiliencyProfile = ResiliencyProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

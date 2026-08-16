@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ServersListByResourceGroup.json
+     * x-ms-original-file: 2026-04-01-preview/ServersListByResourceGroup.json
      */
     /**
      * Sample code: List all servers in a resource group.

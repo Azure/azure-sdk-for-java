@@ -430,7 +430,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [key]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor
 [metrics_advisor_doc]: https://learn.microsoft.com/azure/cognitive-services/Metrics-advisor/glossary
 [mvn_package]: https://central.sonatype.com/artifact/com.azure/azure-ai-metricsadvisor

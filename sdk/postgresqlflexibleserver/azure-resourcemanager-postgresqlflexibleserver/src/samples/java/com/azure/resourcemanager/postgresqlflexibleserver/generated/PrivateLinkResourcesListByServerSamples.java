@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class PrivateLinkResourcesListByServerSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/PrivateLinkResourcesList.json
+     * x-ms-original-file: 2026-04-01-preview/PrivateLinkResourcesList.json
      */
     /**
      * Sample code: Gets private link resources for PostgreSQL.

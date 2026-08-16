@@ -44,6 +44,47 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
      */
     private String certificateCNHost;
 
+    /*
+     * List of DNS server IPv4 addresses for resolving the CN host certificate. This parameter is used when LDAP over
+     * TLS is enabled.
+     */
+    private List<String> dnsServers;
+
+    /*
+     * Port number for LDAP communication. Default is 389 for LDAP.
+     */
+    private Integer ldapPort;
+
+    /*
+     * This specifies the user DN (Distinguished Name), which overrides the base DN for user lookups.
+     */
+    private String userDN;
+
+    /*
+     * This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
+     */
+    private String groupDN;
+
+    /*
+     * This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
+     */
+    private String netGroupDN;
+
+    /*
+     * The authentication level to use when binding to the LDAP server, defaults to Anonymous.
+     */
+    private BindAuthenticationLevel bindAuthenticationLevel;
+
+    /*
+     * The distinguished name (DN) to bind as when performing LDAP operations.
+     */
+    private String bindDN;
+
+    /*
+     * The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is stored.
+     */
+    private BindPasswordAkvConfig bindPasswordAkvConfig;
+
     /**
      * Creates an instance of LdapConfiguration class.
      */
@@ -155,11 +196,186 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
     }
 
     /**
+     * Get the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @return the dnsServers value.
+     */
+    public List<String> dnsServers() {
+        return this.dnsServers;
+    }
+
+    /**
+     * Set the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @param dnsServers the dnsServers value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withDnsServers(List<String> dnsServers) {
+        this.dnsServers = dnsServers;
+        return this;
+    }
+
+    /**
+     * Get the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @return the ldapPort value.
+     */
+    public Integer ldapPort() {
+        return this.ldapPort;
+    }
+
+    /**
+     * Set the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @param ldapPort the ldapPort value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withLdapPort(Integer ldapPort) {
+        this.ldapPort = ldapPort;
+        return this;
+    }
+
+    /**
+     * Get the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @return the userDN value.
+     */
+    public String userDN() {
+        return this.userDN;
+    }
+
+    /**
+     * Set the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @param userDN the userDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withUserDN(String userDN) {
+        this.userDN = userDN;
+        return this;
+    }
+
+    /**
+     * Get the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @return the groupDN value.
+     */
+    public String groupDN() {
+        return this.groupDN;
+    }
+
+    /**
+     * Set the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @param groupDN the groupDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withGroupDN(String groupDN) {
+        this.groupDN = groupDN;
+        return this;
+    }
+
+    /**
+     * Get the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @return the netGroupDN value.
+     */
+    public String netGroupDN() {
+        return this.netGroupDN;
+    }
+
+    /**
+     * Set the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @param netGroupDN the netGroupDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withNetGroupDN(String netGroupDN) {
+        this.netGroupDN = netGroupDN;
+        return this;
+    }
+
+    /**
+     * Get the bindAuthenticationLevel property: The authentication level to use when binding to the LDAP server,
+     * defaults to Anonymous.
+     * 
+     * @return the bindAuthenticationLevel value.
+     */
+    public BindAuthenticationLevel bindAuthenticationLevel() {
+        return this.bindAuthenticationLevel;
+    }
+
+    /**
+     * Set the bindAuthenticationLevel property: The authentication level to use when binding to the LDAP server,
+     * defaults to Anonymous.
+     * 
+     * @param bindAuthenticationLevel the bindAuthenticationLevel value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withBindAuthenticationLevel(BindAuthenticationLevel bindAuthenticationLevel) {
+        this.bindAuthenticationLevel = bindAuthenticationLevel;
+        return this;
+    }
+
+    /**
+     * Get the bindDN property: The distinguished name (DN) to bind as when performing LDAP operations.
+     * 
+     * @return the bindDN value.
+     */
+    public String bindDN() {
+        return this.bindDN;
+    }
+
+    /**
+     * Set the bindDN property: The distinguished name (DN) to bind as when performing LDAP operations.
+     * 
+     * @param bindDN the bindDN value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withBindDN(String bindDN) {
+        this.bindDN = bindDN;
+        return this;
+    }
+
+    /**
+     * Get the bindPasswordAkvConfig property: The Azure Key Vault configuration where the Bind DN (Distinguished Name)
+     * user password is stored.
+     * 
+     * @return the bindPasswordAkvConfig value.
+     */
+    public BindPasswordAkvConfig bindPasswordAkvConfig() {
+        return this.bindPasswordAkvConfig;
+    }
+
+    /**
+     * Set the bindPasswordAkvConfig property: The Azure Key Vault configuration where the Bind DN (Distinguished Name)
+     * user password is stored.
+     * 
+     * @param bindPasswordAkvConfig the bindPasswordAkvConfig value to set.
+     * @return the LdapConfiguration object itself.
+     */
+    public LdapConfiguration withBindPasswordAkvConfig(BindPasswordAkvConfig bindPasswordAkvConfig) {
+        this.bindPasswordAkvConfig = bindPasswordAkvConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (bindPasswordAkvConfig() != null) {
+            bindPasswordAkvConfig().validate();
+        }
     }
 
     /**
@@ -173,6 +389,15 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
         jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTLS);
         jsonWriter.writeStringField("serverCACertificate", this.serverCACertificate);
         jsonWriter.writeStringField("certificateCNHost", this.certificateCNHost);
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("ldapPort", this.ldapPort);
+        jsonWriter.writeStringField("userDN", this.userDN);
+        jsonWriter.writeStringField("groupDN", this.groupDN);
+        jsonWriter.writeStringField("netGroupDN", this.netGroupDN);
+        jsonWriter.writeStringField("bindAuthenticationLevel",
+            this.bindAuthenticationLevel == null ? null : this.bindAuthenticationLevel.toString());
+        jsonWriter.writeStringField("bindDN", this.bindDN);
+        jsonWriter.writeJsonField("bindPasswordAkvConfig", this.bindPasswordAkvConfig);
         return jsonWriter.writeEndObject();
     }
 
@@ -202,6 +427,24 @@ public final class LdapConfiguration implements JsonSerializable<LdapConfigurati
                     deserializedLdapConfiguration.serverCACertificate = reader.getString();
                 } else if ("certificateCNHost".equals(fieldName)) {
                     deserializedLdapConfiguration.certificateCNHost = reader.getString();
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLdapConfiguration.dnsServers = dnsServers;
+                } else if ("ldapPort".equals(fieldName)) {
+                    deserializedLdapConfiguration.ldapPort = reader.getNullable(JsonReader::getInt);
+                } else if ("userDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.userDN = reader.getString();
+                } else if ("groupDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.groupDN = reader.getString();
+                } else if ("netGroupDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.netGroupDN = reader.getString();
+                } else if ("bindAuthenticationLevel".equals(fieldName)) {
+                    deserializedLdapConfiguration.bindAuthenticationLevel
+                        = BindAuthenticationLevel.fromString(reader.getString());
+                } else if ("bindDN".equals(fieldName)) {
+                    deserializedLdapConfiguration.bindDN = reader.getString();
+                } else if ("bindPasswordAkvConfig".equals(fieldName)) {
+                    deserializedLdapConfiguration.bindPasswordAkvConfig = BindPasswordAkvConfig.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

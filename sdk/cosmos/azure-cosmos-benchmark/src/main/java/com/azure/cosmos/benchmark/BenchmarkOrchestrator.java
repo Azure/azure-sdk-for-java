@@ -8,7 +8,6 @@ import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
-import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
@@ -21,19 +20,19 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Benchmark orchestrator. Sets up infrastructure (metrics, reporters, system properties),
@@ -118,30 +117,20 @@ public class BenchmarkOrchestrator {
         int totalCycles = config.getCycles();
         List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
 
-        logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
+        logger.info("Starting benchmark: {} cycles x {} tenants, concurrency={}, numberOfOperations={}",
+            totalCycles, tenants.size(), config.getConcurrency(), config.getNumberOfOperations());
         long startTime = System.currentTimeMillis();
 
-        Scheduler benchmarkScheduler = Schedulers.parallel();
-
-        AtomicInteger threadCounter = new AtomicInteger(0);
-        ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
-            Thread t = new Thread(r, "tenant-worker-" + threadCounter.getAndIncrement());
-            t.setDaemon(false);
-            return t;
-        });
+        Scheduler benchmarkScheduler = BenchmarkSchedulers.BENCHMARK_DISPATCH;
 
         try {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // --- Fresh per-cycle metrics infrastructure ---
-                // Each cycle gets its own registry + reporter. The Cosmos SDK calls
-                // registry.clear() + registry.close() when a CosmosClient is destroyed,
-                // so we give it a disposable registry that we flush before shutdown.
                 CompositeMeterRegistry cycleRegistry = new CompositeMeterRegistry();
                 cycleRegistry.add(loggingRegistry);
 
-                // Netty HTTP connection pool metrics
                 boolean addedToGlobal = false;
                 if (config.isEnableNettyHttpMetrics()) {
                     Metrics.addRegistry(cycleRegistry);
@@ -168,14 +157,12 @@ public class BenchmarkOrchestrator {
                                 SimpleMeterRegistry cosmosSimpleRegistry = new SimpleMeterRegistry();
                                 cycleRegistry.add(cosmosSimpleRegistry);
                                 Set<String> ops = new LinkedHashSet<>();
-                                int totalConcurrency = 0;
                                 for (TenantWorkloadConfig t : tenants) {
                                     ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-                                    totalConcurrency += t.getConcurrency();
                                 }
                                 cosmosReporter = CosmosMetricsReporter.create(
                                     cosmosSimpleRegistry, config.getCosmosReporterConfig(),
-                                    String.join("+", ops), totalConcurrency);
+                                    String.join("+", ops), config.getConcurrency());
                                 cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                                 break;
 
@@ -201,15 +188,16 @@ public class BenchmarkOrchestrator {
                     double baselineCpu = CpuMonitor.captureProcessCpuLoad();
 
                     // 2. Create clients (constructors perform data ingestion)
-                    List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
+                    List<Benchmark> benchmarks = createBenchmarks(config);
+
                     logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                         cycle, benchmarks.size(), Instant.now());
 
                     // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
                     CpuMonitor.awaitCoolDown(baselineCpu);
 
-                    // 4. Run workload in parallel
-                    runWorkload(benchmarks, cycle, executor);
+                    // 4. Run workload — orchestrator dispatches operations across tenants
+                    runWorkload(benchmarks, cycle, config, benchmarkScheduler);
                     logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
                     // 5. Flush reporters before shutdown destroys the registry
@@ -236,7 +224,6 @@ public class BenchmarkOrchestrator {
                         appInsightsRegistry = null;
                     }
                 } finally {
-                    // Ensure cleanup even if an exception occurred mid-cycle
                     if (csvReporter != null) {
                         try { csvReporter.stop(); } catch (Exception e) { /* already stopped or best-effort */ }
                     }
@@ -268,21 +255,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
-            logger.info("[LIFECYCLE] Shutting down executor...");
-            executor.shutdown();
-            try {
-                if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
-                    logger.warn("Executor did not terminate within the timeout");
-                    executor.shutdownNow();
-                    if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
-                        logger.error("Executor did not terminate after shutdownNow");
-                    }
-                }
-            } catch (InterruptedException e) {
-                logger.warn("Interrupted while awaiting executor termination", e);
-                executor.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
+            // BenchmarkSchedulers.BENCHMARK_DISPATCH is a static shared scheduler — do not dispose it.
         }
 
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
@@ -290,29 +263,74 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<Benchmark> createBenchmarks(BenchmarkConfig config, Scheduler scheduler) throws Exception {
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config) throws Exception {
         List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant, scheduler));
+            benchmarks.add(createBenchmarkForOperation(tenant));
         }
         return benchmarks;
     }
 
-    private void runWorkload(List<Benchmark> benchmarks, int cycle, ExecutorService executor) throws Exception {
-        List<Future<?>> futures = new ArrayList<>();
-        final int currentCycle = cycle;
-        for (Benchmark benchmark : benchmarks) {
-            futures.add(executor.submit(() -> {
-                try {
-                    benchmark.run();
-                } catch (Exception e) {
-                    logger.error("Benchmark failed in cycle " + currentCycle, e);
-                }
-            }));
+    /**
+     * Run workload by dispatching operations from the orchestrator.
+     * The orchestrator randomly picks a tenant for each operation slot in a single Flux dispatch loop.
+     */
+    private void runWorkload(List<Benchmark> benchmarks, int cycle, BenchmarkConfig config,
+                             Scheduler benchmarkScheduler) throws Exception {
+        int concurrency = config.getConcurrency();
+        long numberOfOps = config.getNumberOfOperations();
+        Duration maxDuration = config.getMaxRunningTimeDuration();
+        long workloadStartTime = System.currentTimeMillis();
+
+        Flux<Long> source;
+        if (maxDuration != null) {
+            final long deadline = workloadStartTime + maxDuration.toMillis();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    if (System.currentTimeMillis() < deadline) {
+                        sink.next(state.getAndIncrement());
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
+        } else {
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    long current = state.getAndIncrement();
+                    if (current < numberOfOps) {
+                        sink.next(current);
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
         }
-        for (Future<?> f : futures) {
-            f.get();
-        }
+
+        AtomicLong completedCount = new AtomicLong(0);
+        int tenantCount = benchmarks.size();
+
+        source
+            .flatMap(globalIndex -> {
+                int tenantIndex = ThreadLocalRandom.current().nextInt(tenantCount);
+                Benchmark selected = benchmarks.get(tenantIndex);
+                return Mono.defer(selected::performSingleOperation)
+                    .subscribeOn(benchmarkScheduler)
+                    .doOnTerminate(completedCount::incrementAndGet)
+                    .onErrorResume(e -> {
+                        logger.error("Operation failed for {}: {}",
+                            selected.getClass().getSimpleName(), e.getMessage(), e);
+                        return Mono.empty();
+                    });
+            }, concurrency)
+            .blockLast();
+
+        long endTime = System.currentTimeMillis();
+        logger.info("[DISPATCH] {} operations dispatched across {} tenants in {}s (cycle={})",
+            completedCount.get(), tenantCount,
+            (int) ((endTime - workloadStartTime) / 1000), cycle);
     }
 
     private void shutdownBenchmarks(List<Benchmark> benchmarks, int cycle) {
@@ -352,7 +370,7 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, Scheduler scheduler) throws Exception {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg) throws Exception {
         // Sync benchmarks
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
@@ -368,28 +386,25 @@ public class BenchmarkOrchestrator {
 
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
-            return new AsyncCtlWorkload(cfg, scheduler);
-        }
-        if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
-            return new LICtlWorkload(cfg);
+            return new AsyncCtlWorkload(cfg);
         }
 
         // Encryption benchmarks
         if (cfg.isEncryptionEnabled()) {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
-                    return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionWriteBenchmark(cfg);
                 case ReadThroughput:
-                    return new AsyncEncryptionReadBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionReadBenchmark(cfg);
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    return new AsyncEncryptionQueryBenchmark(cfg, scheduler);
+                    return new AsyncEncryptionQueryBenchmark(cfg);
                 case QuerySingleMany:
-                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, scheduler);
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
                 default:
                     throw new IllegalArgumentException(
                         "Encryption is not supported for operation: " + cfg.getOperationType());
@@ -399,9 +414,9 @@ public class BenchmarkOrchestrator {
         // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
-                return new AsyncReadBenchmark(cfg, scheduler);
+                return new AsyncReadBenchmark(cfg);
             case WriteThroughput:
-                return new AsyncWriteBenchmark(cfg, scheduler);
+                return new AsyncWriteBenchmark(cfg);
             case QueryCross:
             case QuerySingle:
             case QueryParallel:
@@ -411,15 +426,15 @@ public class BenchmarkOrchestrator {
             case QueryAggregateTopOrderby:
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
-                return new AsyncQueryBenchmark(cfg, scheduler);
+                return new AsyncQueryBenchmark(cfg);
             case ReadManyThroughput:
-                return new AsyncReadManyBenchmark(cfg, scheduler);
+                return new AsyncReadManyBenchmark(cfg);
             case Mixed:
-                return new AsyncMixedBenchmark(cfg, scheduler);
+                return new AsyncMixedBenchmark(cfg);
             case QuerySingleMany:
-                return new AsyncQuerySinglePartitionMultiple(cfg, scheduler);
+                return new AsyncQuerySinglePartitionMultiple(cfg);
             case ReadMyWrites:
-                return new ReadMyWriteWorkflow(cfg, scheduler);
+                return new ReadMyWriteWorkflow(cfg);
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + cfg.getOperationType());
         }

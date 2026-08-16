@@ -39,9 +39,11 @@ import java.util.function.Function;
  * @see FeedResponse
  */
 final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    }
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosPagedFluxStaticListImpl.class);
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
     private final AtomicReference<Consumer<FeedResponse<T>>> feedResponseConsumer;
@@ -206,7 +208,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
 
                             CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
 
-                            ctxAccessor
+                            ctxAccessor()
                                 .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
 
                             tracerProvider.recordFeedResponseConsumerLatency(
@@ -214,7 +216,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                                 ctxSnapshot,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot), isSampledOut);
+                            tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor().isEmptyCompletion(ctxSnapshot), isSampledOut);
 
                             break;
                         case ON_NEXT:
@@ -227,7 +229,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                                 feedResponseConsumerLatencyInNanos);
                             state.mergeDiagnosticsContext();
                             CosmosDiagnosticsContext ctxSnapshotOnNext = state.getDiagnosticsContextSnapshot();
-                            ctxAccessor
+                            ctxAccessor()
                                 .setSamplingRateSnapshot(ctxSnapshotOnNext, samplingRateSnapshot, isSampledOut);
                             tracerProvider.endSpan(ctxSnapshotOnNext, traceCtx, false, isSampledOut);
                             state.resetDiagnosticsContext();
@@ -243,7 +245,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                         case ON_ERROR:
                             state.mergeDiagnosticsContext();
                             CosmosDiagnosticsContext ctxSnapshotOnError = state.getDiagnosticsContextSnapshot();
-                            ctxAccessor
+                            ctxAccessor()
                                 .setSamplingRateSnapshot(ctxSnapshotOnError, samplingRateSnapshot, isSampledOut);
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
@@ -274,7 +276,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                         state.mergeDiagnosticsContext();
                         CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
 
-                        ctxAccessor
+                        ctxAccessor()
                             .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
 
                         tracerProvider.endSpan(ctxSnapshot, traceCtx, false, isSampledOut);
@@ -286,9 +288,9 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
                         state.mergeDiagnosticsContext();
 
                         CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
-                        ctxAccessor
+                        ctxAccessor()
                             .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
-                        tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot), isSampledOut);
+                        tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor().isEmptyCompletion(ctxSnapshot), isSampledOut);
                     }
                 }))
             .contextWrite(DiagnosticsProvider.setContextInReactor(

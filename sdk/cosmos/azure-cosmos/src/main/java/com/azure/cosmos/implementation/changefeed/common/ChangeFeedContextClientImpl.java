@@ -45,6 +45,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
 
     private final AsyncDocumentClient documentClient;
@@ -139,9 +143,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         // PKRange cache will run into 410/1002s (PartitionKeyRangeGone) if disable split handling is true
         // in getCurrentState and getEstimatedLag scenarios therefore disable split handling should explicitly be set to false
         if (isSplitHandlingDisabled) {
-            ImplementationBridgeHelpers
-                .CosmosChangeFeedRequestOptionsHelper
-                .getCosmosChangeFeedRequestOptionsAccessor()
+            changeFeedOptionsAccessor()
                 .disableSplitHandling(changeFeedRequestOptions);
         }
         return collectionLink

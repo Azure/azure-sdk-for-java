@@ -26,7 +26,7 @@ public final class ServicesListByApplicationsMockTests {
     @Test
     public void testListByApplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"kjsqzhzbezkgi\",\"serviceTypeName\":\"sidxasicdd\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"skgfmocwahpq\",\"placementConstraints\":\"tjeaahhvjhh\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"ybbjjidjksyx\"}],\"serviceLoadMetrics\":[{\"name\":\"vxevblb\",\"weight\":\"Zero\",\"primaryDefaultLoad\":901132598,\"secondaryDefaultLoad\":602295715,\"defaultLoad\":1767709112},{\"name\":\"euaulxu\",\"weight\":\"Low\",\"primaryDefaultLoad\":416674095,\"secondaryDefaultLoad\":1705117078,\"defaultLoad\":1698067391},{\"name\":\"xynenl\",\"weight\":\"Low\",\"primaryDefaultLoad\":2106245085,\"secondaryDefaultLoad\":380639738,\"defaultLoad\":913388828},{\"name\":\"klnsrmffey\",\"weight\":\"Zero\",\"primaryDefaultLoad\":750514021,\"secondaryDefaultLoad\":1565970230,\"defaultLoad\":1424863309}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Medium\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"doj\":\"xqiekkkzddrtk\"},\"location\":\"xv\",\"id\":\"refdee\",\"name\":\"vecuijpx\",\"type\":\"xs\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"pghriypoqeyhl\",\"serviceTypeName\":\"h\",\"partitionDescription\":{\"partitionScheme\":\"Partition\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"lpyznuciqdsmexi\",\"placementConstraints\":\"dfuxtya\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"miybnn\"}],\"serviceLoadMetrics\":[{\"name\":\"gnljhnmgixhcm\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1356013965,\"secondaryDefaultLoad\":1277274936,\"defaultLoad\":308634203},{\"name\":\"rhc\",\"weight\":\"Low\",\"primaryDefaultLoad\":2013772338,\"secondaryDefaultLoad\":713166484,\"defaultLoad\":812539177},{\"name\":\"pundmbxhug\",\"weight\":\"Low\",\"primaryDefaultLoad\":914185865,\"secondaryDefaultLoad\":1134791831,\"defaultLoad\":493820197},{\"name\":\"rb\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1074216267,\"secondaryDefaultLoad\":1682577006,\"defaultLoad\":1730011842}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicy\"},{\"type\":\"ServicePlacementPolicy\"}],\"defaultMoveCost\":\"Zero\",\"scalingPolicies\":[{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}},{\"scalingMechanism\":{\"kind\":\"ScalingMechanism\"},\"scalingTrigger\":{\"kind\":\"ScalingTrigger\"}}]},\"tags\":{\"otp\":\"yj\",\"bdb\":\"opv\",\"ibcysihsgqc\":\"qgqqihedsvqwthmk\"},\"location\":\"hohsd\",\"id\":\"cdzsu\",\"name\":\"cohdx\",\"type\":\"zlmcmuapcvhdb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,29 +35,30 @@ public final class ServicesListByApplicationsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ServiceResource> response = manager.services()
-            .listByApplications("yqhlwigdivbkbx", "omfaj", "wasqvdaeyyg", com.azure.core.util.Context.NONE);
+        PagedIterable<ServiceResource> response
+            = manager.services().listByApplications("afgaoqlt", "aeylinm", "gv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tjeaahhvjhh", response.iterator().next().properties().placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY,
+        Assertions.assertEquals("dfuxtya", response.iterator().next().properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
             response.iterator().next().properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("ybbjjidjksyx",
+        Assertions.assertEquals("miybnn",
             response.iterator().next().properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("vxevblb", response.iterator().next().properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO,
+        Assertions.assertEquals("gnljhnmgixhcm",
+            response.iterator().next().properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
             response.iterator().next().properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(901132598,
+        Assertions.assertEquals(1356013965,
             response.iterator().next().properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(602295715,
+        Assertions.assertEquals(1277274936,
             response.iterator().next().properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1767709112,
+        Assertions.assertEquals(308634203,
             response.iterator().next().properties().serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.MEDIUM, response.iterator().next().properties().defaultMoveCost());
-        Assertions.assertEquals("sidxasicdd", response.iterator().next().properties().serviceTypeName());
-        Assertions.assertEquals(ServicePackageActivationMode.EXCLUSIVE_PROCESS,
+        Assertions.assertEquals(MoveCost.ZERO, response.iterator().next().properties().defaultMoveCost());
+        Assertions.assertEquals("h", response.iterator().next().properties().serviceTypeName());
+        Assertions.assertEquals(ServicePackageActivationMode.SHARED_PROCESS,
             response.iterator().next().properties().servicePackageActivationMode());
-        Assertions.assertEquals("skgfmocwahpq", response.iterator().next().properties().serviceDnsName());
-        Assertions.assertEquals("xqiekkkzddrtk", response.iterator().next().tags().get("doj"));
-        Assertions.assertEquals("xv", response.iterator().next().location());
+        Assertions.assertEquals("lpyznuciqdsmexi", response.iterator().next().properties().serviceDnsName());
+        Assertions.assertEquals("yj", response.iterator().next().tags().get("otp"));
+        Assertions.assertEquals("hohsd", response.iterator().next().location());
     }
 }

@@ -32,6 +32,7 @@ import com.azure.resourcemanager.compute.fluent.GalleryScriptVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryScriptsClient;
 import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
+import com.azure.resourcemanager.compute.fluent.InterconnectBlocksClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
@@ -41,9 +42,11 @@ import com.azure.resourcemanager.compute.fluent.RestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryInvitesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SoftDeletedResourcesClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
+import com.azure.resourcemanager.compute.fluent.TenantLevelSharedGalleryInvitesClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionsClient;
@@ -51,6 +54,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesEdgeZonesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetLifeCycleHookEventsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
@@ -176,6 +180,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public VirtualMachineScaleSetExtensionsClient getVirtualMachineScaleSetExtensions() {
         return this.virtualMachineScaleSetExtensions;
+    }
+
+    /**
+     * The VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     */
+    private final VirtualMachineScaleSetLifeCycleHookEventsClient virtualMachineScaleSetLifeCycleHookEvents;
+
+    /**
+     * Gets the VirtualMachineScaleSetLifeCycleHookEventsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetLifeCycleHookEventsClient object.
+     */
+    public VirtualMachineScaleSetLifeCycleHookEventsClient getVirtualMachineScaleSetLifeCycleHookEvents() {
+        return this.virtualMachineScaleSetLifeCycleHookEvents;
     }
 
     /**
@@ -358,6 +376,20 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public CapacityReservationsClient getCapacityReservations() {
         return this.capacityReservations;
+    }
+
+    /**
+     * The InterconnectBlocksClient object to access its operations.
+     */
+    private final InterconnectBlocksClient interconnectBlocks;
+
+    /**
+     * Gets the InterconnectBlocksClient object to access its operations.
+     * 
+     * @return the InterconnectBlocksClient object.
+     */
+    public InterconnectBlocksClient getInterconnectBlocks() {
+        return this.interconnectBlocks;
     }
 
     /**
@@ -655,6 +687,34 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The SharedGalleryInvitesClient object to access its operations.
+     */
+    private final SharedGalleryInvitesClient sharedGalleryInvites;
+
+    /**
+     * Gets the SharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the SharedGalleryInvitesClient object.
+     */
+    public SharedGalleryInvitesClient getSharedGalleryInvites() {
+        return this.sharedGalleryInvites;
+    }
+
+    /**
+     * The TenantLevelSharedGalleryInvitesClient object to access its operations.
+     */
+    private final TenantLevelSharedGalleryInvitesClient tenantLevelSharedGalleryInvites;
+
+    /**
+     * Gets the TenantLevelSharedGalleryInvitesClient object to access its operations.
+     * 
+     * @return the TenantLevelSharedGalleryInvitesClient object.
+     */
+    public TenantLevelSharedGalleryInvitesClient getTenantLevelSharedGalleryInvites() {
+        return this.tenantLevelSharedGalleryInvites;
+    }
+
+    /**
      * The ResourceSkusClient object to access its operations.
      */
     private final ResourceSkusClient resourceSkus;
@@ -843,6 +903,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineScaleSets = new VirtualMachineScaleSetsClientImpl(this);
         this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsClientImpl(this);
+        this.virtualMachineScaleSetLifeCycleHookEvents = new VirtualMachineScaleSetLifeCycleHookEventsClientImpl(this);
         this.virtualMachineScaleSetVMExtensions = new VirtualMachineScaleSetVMExtensionsClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionsClientImpl(this);
@@ -856,6 +917,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.restorePoints = new RestorePointsClientImpl(this);
         this.capacityReservationGroups = new CapacityReservationGroupsClientImpl(this);
         this.capacityReservations = new CapacityReservationsClientImpl(this);
+        this.interconnectBlocks = new InterconnectBlocksClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
         this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
         this.disks = new DisksClientImpl(this);
@@ -877,6 +939,8 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.communityGalleries = new CommunityGalleriesClientImpl(this);
         this.communityGalleryImages = new CommunityGalleryImagesClientImpl(this);
         this.communityGalleryImageVersions = new CommunityGalleryImageVersionsClientImpl(this);
+        this.sharedGalleryInvites = new SharedGalleryInvitesClientImpl(this);
+        this.tenantLevelSharedGalleryInvites = new TenantLevelSharedGalleryInvitesClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesClientImpl(this);
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);

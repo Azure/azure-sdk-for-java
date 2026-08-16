@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class ConfigurationStoresDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresDelete.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresDelete.json
      */
     /**
      * Sample code: ConfigurationStores_Delete.

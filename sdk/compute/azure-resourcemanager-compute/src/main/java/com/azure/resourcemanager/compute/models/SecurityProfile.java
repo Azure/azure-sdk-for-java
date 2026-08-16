@@ -32,7 +32,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
 
     /*
      * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable
-     * UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set.
+     * UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set and is not
+     * Standard. If not specified, Standard will be returned starting api version 2025-11-01.
      */
     private SecurityTypes securityType;
 
@@ -103,7 +104,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Get the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
      * specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this
-     * property is set.
+     * property is set and is not Standard. If not specified, Standard will be returned starting api version 2025-11-01.
      * 
      * @return the securityType value.
      */
@@ -114,7 +115,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     /**
      * Set the securityType property: Specifies the SecurityType of the virtual machine. It has to be set to any
      * specified value to enable UefiSettings. The default behavior is: UefiSettings will not be enabled unless this
-     * property is set.
+     * property is set and is not Standard. If not specified, Standard will be returned starting api version 2025-11-01.
      * 
      * @param securityType the securityType value to set.
      * @return the SecurityProfile object itself.

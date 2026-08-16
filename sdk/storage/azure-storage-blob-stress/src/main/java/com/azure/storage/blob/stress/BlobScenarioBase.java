@@ -38,6 +38,19 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private Instant startTime;
 
     public BlobScenarioBase(TOptions options) {
+        this(options, StressHttpClientFactory.suggestedTimeout(options.getSize()));
+    }
+
+    /**
+     * Secondary constructor that lets a subclass provide an explicit I/O timeout.
+     * Useful for scenarios whose single logical iteration issues many HTTP requests
+     * (for example {@code AppendBlobOutputStream}) where timeout intent is clearer
+     * as a fixed duration than as a synthetic payload-size tier.
+     *
+     * @param options        scenario options.
+     * @param requestTimeout timeout applied to response/read/write I/O timeouts.
+     */
+    protected BlobScenarioBase(TOptions options, Duration requestTimeout) {
         super(options);
 
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -46,6 +59,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .credential(defaultAzureCredential)
             .endpoint(endpoint)
+            .httpClient(StressHttpClientFactory.buildHttpClient(requestTimeout))
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();

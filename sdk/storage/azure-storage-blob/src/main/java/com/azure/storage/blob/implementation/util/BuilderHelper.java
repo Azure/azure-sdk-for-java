@@ -42,6 +42,8 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
+import com.azure.storage.common.policy.StorageContentValidationDecodingPolicy;
+import com.azure.storage.common.policy.StorageContentValidationEncodingPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
@@ -118,6 +120,9 @@ public final class BuilderHelper {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
+
+        policies.add(new StorageContentValidationEncodingPolicy());
+        policies.add(new StorageContentValidationDecodingPolicy());
 
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));

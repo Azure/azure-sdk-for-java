@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,6 +22,11 @@ public final class StorageTaskAssignmentInner extends ProxyResource {
      * Properties of the storage task assignment.
      */
     private StorageTaskAssignmentProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -65,6 +70,15 @@ public final class StorageTaskAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the type property: The type of the resource.
      * 
      * @return the type value.
@@ -100,16 +114,10 @@ public final class StorageTaskAssignmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property properties in model StorageTaskAssignmentInner"));
-        } else {
+        if (properties() != null) {
             properties().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentInner.class);
 
     /**
      * {@inheritDoc}
@@ -146,6 +154,8 @@ public final class StorageTaskAssignmentInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedStorageTaskAssignmentInner.properties
                         = StorageTaskAssignmentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

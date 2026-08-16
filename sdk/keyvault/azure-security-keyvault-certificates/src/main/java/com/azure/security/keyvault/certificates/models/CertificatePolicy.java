@@ -427,6 +427,36 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
     }
 
     /**
+     * Get the platform managed certificate configuration.
+     *
+     * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It is only populated when the policy was created against the preview service version
+     * {@code 2026-03-01-preview}. Third-party callers should not rely on this property; the underlying
+     * service contract may change without notice.
+     *
+     * @return the platform managed certificate configuration.
+     */
+    public PlatformManaged getPlatformManaged() {
+        return impl.getPlatformManaged();
+    }
+
+    /**
+     * Set the platform managed certificate configuration.
+     *
+     * <p><strong>Warning: this property is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It is exposed under the preview service version {@code 2026-03-01-preview} and is not generally available.
+     * Third-party calls that supply a {@link PlatformManaged} configuration will be rejected by the service.
+     * Do not use this setter in production code.
+     *
+     * @param platformManaged the platform managed certificate configuration.
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setPlatformManaged(PlatformManaged platformManaged) {
+        impl.setPlatformManaged(platformManaged);
+        return this;
+    }
+
+    /**
      * Set the lifetime actions
      * @param actions the lifetime actions to set.
      * @return the updated certificate policy object itself.
@@ -470,6 +500,26 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      */
     public static CertificatePolicy getDefault() {
         return new CertificatePolicy("Self", "CN=DefaultPolicy");
+    }
+
+    /**
+     * Creates a certificate policy for a platform-managed certificate. The returned policy contains
+     * only the platform-managed configuration (and optionally key properties set via subsequent calls
+     * such as {@link #setKeyType(CertificateKeyType)} or {@link #setKeySize(Integer)}). Issuer and
+     * X.509 certificate properties are intentionally left unset — the service rejects create requests
+     * that specify them when {@code platformManaged} is set.
+     *
+     * <p><strong>Warning: this factory is currently intended for internal (first-party) Key Vault use only.</strong>
+     * It targets the preview service version {@code 2026-03-01-preview} and is not generally available. Third-party
+     * calls will be rejected by the service. Do not use in production code.
+     *
+     * @param platformManaged the platform-managed certificate configuration.
+     * @return a {@link CertificatePolicy} suitable for creating a platform-managed certificate.
+     */
+    public static CertificatePolicy forPlatformManaged(PlatformManaged platformManaged) {
+        return new CertificatePolicy(
+            new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
+                .setPlatformManaged(platformManaged));
     }
 
     @Override

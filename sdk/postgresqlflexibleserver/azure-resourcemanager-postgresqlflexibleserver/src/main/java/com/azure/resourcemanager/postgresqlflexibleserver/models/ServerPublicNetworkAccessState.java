@@ -12,12 +12,15 @@ import java.util.Collection;
  */
 public final class ServerPublicNetworkAccessState extends ExpandableStringEnum<ServerPublicNetworkAccessState> {
     /**
-     * Static value Enabled for ServerPublicNetworkAccessState.
+     * Public network access is enabled. This allows the server to be accessed from the public internet, provided the
+     * necessary firewall rule that allows incoming traffic originating from the connecting client is in place. This is
+     * compatible with the use of private endpoints to connect to this server.
      */
     public static final ServerPublicNetworkAccessState ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for ServerPublicNetworkAccessState.
+     * Public network access is disabled. This means the server cannot be accessed from the public internet, but only
+     * via private endpoints.
      */
     public static final ServerPublicNetworkAccessState DISABLED = fromString("Disabled");
 

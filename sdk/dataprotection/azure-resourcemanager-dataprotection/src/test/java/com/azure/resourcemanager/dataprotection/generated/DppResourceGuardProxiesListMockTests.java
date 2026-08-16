@@ -22,7 +22,7 @@ public final class DppResourceGuardProxiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"hokq\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"auxofshfph\",\"defaultResourceRequest\":\"nulaiywzejywhsl\"}],\"lastUpdatedTime\":\"ojpllndnpdwrpqaf\",\"description\":\"ug\"},\"id\":\"n\",\"name\":\"hyet\",\"type\":\"fypococtfjgti\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"dujtmvcope\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"urbuhhlkyqltq\",\"defaultResourceRequest\":\"ogtu\"}],\"lastUpdatedTime\":\"ffdjktsysidfvclg\",\"description\":\"n\"},\"id\":\"ijtk\",\"name\":\"usqogsfikayia\",\"type\":\"sharujtj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class DppResourceGuardProxiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceGuardProxyBaseResource> response
-            = manager.dppResourceGuardProxies().list("herngb", "c", com.azure.core.util.Context.NONE);
+            = manager.dppResourceGuardProxies().list("dirazf", "xejw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hokq", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions.assertEquals("auxofshfph",
+        Assertions.assertEquals("dujtmvcope", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions.assertEquals("urbuhhlkyqltq",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("nulaiywzejywhsl",
+        Assertions.assertEquals("ogtu",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("ojpllndnpdwrpqaf", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("ug", response.iterator().next().properties().description());
+        Assertions.assertEquals("ffdjktsysidfvclg", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("n", response.iterator().next().properties().description());
     }
 }

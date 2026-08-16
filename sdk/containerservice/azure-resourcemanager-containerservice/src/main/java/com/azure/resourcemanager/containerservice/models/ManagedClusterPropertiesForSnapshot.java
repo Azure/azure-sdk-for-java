@@ -99,9 +99,6 @@ public final class ManagedClusterPropertiesForSnapshot
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
-        jsonWriter.writeJsonField("sku", this.sku);
-        jsonWriter.writeBooleanField("enableRbac", this.enableRbac);
         return jsonWriter.writeEndObject();
     }
 

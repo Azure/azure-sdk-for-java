@@ -22,7 +22,7 @@ import java.io.IOException;
  * event.
  */
 @Fluent
-public final class ClientEventConversationItemTruncate extends ClientEvent {
+public final class ClientEventConversationItemTruncate extends SessionClientEvent {
 
     /*
      * The type of event.

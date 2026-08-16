@@ -1,5 +1,9 @@
 # Azure Resource Manager Deployment client library for Java
 
+> Please note, this package has been deprecated and will no longer be maintained after 2026-01-27.
+> The Azure Deployment Manager service has been permanently retired. Refer to our
+> [deprecation policy](https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager Deployment client library for Java.
 
 This package contains Microsoft Azure SDK for Deployment Management SDK. REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). Package tag package-2019-11-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

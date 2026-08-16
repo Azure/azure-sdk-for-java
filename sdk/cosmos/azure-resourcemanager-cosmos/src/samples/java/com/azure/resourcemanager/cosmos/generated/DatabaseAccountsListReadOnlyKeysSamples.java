@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListReadOnlyKeysSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseAccountListReadOnlyKeys.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListReadOnlyKeys.

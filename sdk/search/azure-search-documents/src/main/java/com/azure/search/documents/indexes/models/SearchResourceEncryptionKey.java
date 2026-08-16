@@ -22,20 +22,13 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * The name of your Azure Key Vault key to be used to encrypt your data at rest.
      */
     @Generated
-    private final String keyName;
+    private String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data at rest.
      */
     @Generated
     private String keyVersion;
-
-    /*
-     * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
-     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-     */
-    @Generated
-    private final String vaultUri;
 
     /*
      * Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using
@@ -56,12 +49,12 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * Creates an instance of SearchResourceEncryptionKey class.
      *
      * @param keyName the keyName value to set.
-     * @param vaultUri the vaultUri value to set.
+     * @param vaultUrl the vaultUrl value to set.
      */
     @Generated
-    public SearchResourceEncryptionKey(String keyName, String vaultUri) {
+    public SearchResourceEncryptionKey(String keyName, String vaultUrl) {
         this.keyName = keyName;
-        this.vaultUri = vaultUri;
+        this.vaultUrl = vaultUrl;
     }
 
     /**
@@ -94,17 +87,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public SearchResourceEncryptionKey setKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
         return this;
-    }
-
-    /**
-     * Get the vaultUri property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
-     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
-     *
-     * @return the vaultUri value.
-     */
-    @Generated
-    public String getVaultUri() {
-        return this.vaultUri;
     }
 
     /**
@@ -168,10 +150,11 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keyVaultKeyName", this.keyName);
-        jsonWriter.writeStringField("keyVaultUri", this.vaultUri);
+        jsonWriter.writeStringField("keyVaultUri", this.vaultUrl);
         jsonWriter.writeStringField("keyVaultKeyVersion", this.keyVersion);
         jsonWriter.writeJsonField("accessCredentials", this.accessCredentials);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeBooleanField("isServiceLevelKey", this.isServiceLevelKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -188,33 +171,94 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     public static SearchResourceEncryptionKey fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String keyName = null;
-            String vaultUri = null;
+            String vaultUrl = null;
             String keyVersion = null;
             AzureActiveDirectoryApplicationCredentials accessCredentials = null;
             SearchIndexerDataIdentity identity = null;
+            Boolean isServiceLevelKey = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("keyVaultKeyName".equals(fieldName)) {
                     keyName = reader.getString();
                 } else if ("keyVaultUri".equals(fieldName)) {
-                    vaultUri = reader.getString();
+                    vaultUrl = reader.getString();
                 } else if ("keyVaultKeyVersion".equals(fieldName)) {
                     keyVersion = reader.getString();
                 } else if ("accessCredentials".equals(fieldName)) {
                     accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("isServiceLevelKey".equals(fieldName)) {
+                    isServiceLevelKey = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
             SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey
-                = new SearchResourceEncryptionKey(keyName, vaultUri);
+                = new SearchResourceEncryptionKey(keyName, vaultUrl);
             deserializedSearchResourceEncryptionKey.keyVersion = keyVersion;
             deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
             deserializedSearchResourceEncryptionKey.identity = identity;
+            deserializedSearchResourceEncryptionKey.isServiceLevelKey = isServiceLevelKey;
             return deserializedSearchResourceEncryptionKey;
         });
+    }
+
+    /*
+     * The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your
+     * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
+     */
+    @Generated
+    private String vaultUrl;
+
+    /**
+     * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
+     * to be used to encrypt your data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
+     *
+     * @return the vaultUrl value.
+     */
+    @Generated
+    public String getVaultUrl() {
+        return this.vaultUrl;
+    }
+
+    /*
+     * An optional value indicating whether this key is a service-level key. Default is false.
+     */
+    @Generated
+    private Boolean isServiceLevelKey;
+
+    /**
+     * Get the isServiceLevelKey property: An optional value indicating whether this key is a service-level key. Default
+     * is false.
+     *
+     * @return the isServiceLevelKey value.
+     */
+    @Generated
+    public Boolean isServiceLevelKey() {
+        return this.isServiceLevelKey;
+    }
+
+    /**
+     * Set the isServiceLevelKey property: An optional value indicating whether this key is a service-level key. Default
+     * is false.
+     *
+     * @param isServiceLevelKey the isServiceLevelKey value to set.
+     * @return the SearchResourceEncryptionKey object itself.
+     */
+    @Generated
+    public SearchResourceEncryptionKey setIsServiceLevelKey(Boolean isServiceLevelKey) {
+        this.isServiceLevelKey = isServiceLevelKey;
+        return this;
+    }
+
+    /**
+     * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is
+     * set to true, in which case keyName and vaultUrl are not required.
+     */
+    public SearchResourceEncryptionKey() {
+        this.keyName = null;
+        this.vaultUrl = null;
     }
 }

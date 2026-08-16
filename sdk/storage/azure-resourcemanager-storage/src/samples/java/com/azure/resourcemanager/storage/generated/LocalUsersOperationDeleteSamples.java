@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class LocalUsersOperationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-08-01/LocalUserDelete.json
+     * x-ms-original-file: 2026-04-01/LocalUserDelete.json
      */
     /**
      * Sample code: DeleteLocalUser.

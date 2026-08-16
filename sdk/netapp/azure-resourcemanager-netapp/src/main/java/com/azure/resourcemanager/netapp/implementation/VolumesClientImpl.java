@@ -1895,7 +1895,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> populateAvailabilityZoneWithResponseAsync(String resourceGroupName,
@@ -1939,7 +1939,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
@@ -1987,7 +1987,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> populateAvailabilityZoneWithResponse(String resourceGroupName, String accountName,
@@ -2033,7 +2033,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZoneAsync(
@@ -2054,7 +2054,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -2076,7 +2076,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginPopulateAvailabilityZone(String resourceGroupName,
@@ -2097,7 +2097,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return volume resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> populateAvailabilityZoneAsync(String resourceGroupName, String accountName,
@@ -2116,7 +2116,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -2135,7 +2135,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
@@ -2680,7 +2680,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return volume resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> splitCloneFromParentWithResponseAsync(String resourceGroupName,
@@ -2723,7 +2723,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> splitCloneFromParentWithResponse(String resourceGroupName, String accountName,
@@ -2771,7 +2771,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return volume resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> splitCloneFromParentWithResponse(String resourceGroupName, String accountName,
@@ -2817,7 +2817,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParentAsync(String resourceGroupName,
@@ -2838,7 +2838,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -2860,7 +2860,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of volume resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginSplitCloneFromParent(String resourceGroupName,
@@ -2881,7 +2881,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return volume resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VolumeInner> splitCloneFromParentAsync(String resourceGroupName, String accountName, String poolName,
@@ -2900,7 +2900,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName,
@@ -2919,7 +2919,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return volume resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VolumeInner splitCloneFromParent(String resourceGroupName, String accountName, String poolName,
@@ -3268,7 +3268,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return group Id list for Ldap user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listGetGroupIdListForLdapUserWithResponseAsync(String resourceGroupName,
@@ -3319,7 +3319,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return group Id list for Ldap user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
@@ -3374,7 +3374,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return group Id list for Ldap user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> listGetGroupIdListForLdapUserWithResponse(String resourceGroupName, String accountName,
@@ -3428,7 +3428,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3452,7 +3452,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3477,7 +3477,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
@@ -3501,7 +3501,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return group Id list for Ldap user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(String resourceGroupName,
@@ -3522,7 +3522,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,
@@ -3543,7 +3543,7 @@ public final class VolumesClientImpl implements VolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return group Id list for Ldap user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetGroupIdListForLdapUserResponseInner listGetGroupIdListForLdapUser(String resourceGroupName,

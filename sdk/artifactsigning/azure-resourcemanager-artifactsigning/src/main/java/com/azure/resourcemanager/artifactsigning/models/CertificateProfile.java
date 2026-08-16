@@ -95,6 +95,13 @@ public interface CertificateProfile {
     String identityValidationId();
 
     /**
+     * Gets the programType property: Indicates whether the resource is intended for a specific usage scenario.
+     * 
+     * @return the programType value.
+     */
+    String programType();
+
+    /**
      * Gets the provisioningState property: Status of the current operation on certificate profile.
      * 
      * @return the provisioningState value.
@@ -159,7 +166,8 @@ public interface CertificateProfile {
          */
         interface WithCreate extends DefinitionStages.WithProfileType, DefinitionStages.WithIncludeStreetAddress,
             DefinitionStages.WithIncludeCity, DefinitionStages.WithIncludeState, DefinitionStages.WithIncludeCountry,
-            DefinitionStages.WithIncludePostalCode, DefinitionStages.WithIdentityValidationId {
+            DefinitionStages.WithIncludePostalCode, DefinitionStages.WithIdentityValidationId,
+            DefinitionStages.WithProgramType {
             /**
              * Executes the create request.
              * 
@@ -273,6 +281,20 @@ public interface CertificateProfile {
              */
             WithCreate withIdentityValidationId(String identityValidationId);
         }
+
+        /**
+         * The stage of the CertificateProfile definition allowing to specify programType.
+         */
+        interface WithProgramType {
+            /**
+             * Specifies the programType property: Indicates whether the resource is intended for a specific usage
+             * scenario..
+             * 
+             * @param programType Indicates whether the resource is intended for a specific usage scenario.
+             * @return the next definition stage.
+             */
+            WithCreate withProgramType(String programType);
+        }
     }
 
     /**
@@ -291,24 +313,24 @@ public interface CertificateProfile {
     CertificateProfile refresh(Context context);
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> revokeCertificateWithResponse(RevokeCertificate body, Context context);
+    Response<Void> revokeCertificatesWithResponse(RevokeCertificateList body, Context context);
 
     /**
-     * Revoke a certificate under a certificate profile.
+     * Revokes certificates under a certificate profile.
      * 
-     * @param body Parameters to revoke the certificate profile.
+     * @param body Parameters to revoke the certificates in the certificate profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void revokeCertificate(RevokeCertificate body);
+    void revokeCertificates(RevokeCertificateList body);
 }

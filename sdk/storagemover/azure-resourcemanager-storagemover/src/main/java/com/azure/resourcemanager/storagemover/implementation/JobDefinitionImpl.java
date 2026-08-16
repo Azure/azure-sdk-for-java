@@ -321,8 +321,13 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     }
 
     public JobDefinitionImpl withSchedule(ScheduleInfo schedule) {
-        this.innerModel().withSchedule(schedule);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSchedule(schedule);
+            return this;
+        } else {
+            this.updateJobDefinition.withSchedule(schedule);
+            return this;
+        }
     }
 
     public JobDefinitionImpl withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {

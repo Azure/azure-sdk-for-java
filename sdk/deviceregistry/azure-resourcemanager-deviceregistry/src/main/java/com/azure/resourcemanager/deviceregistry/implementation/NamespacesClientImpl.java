@@ -1007,7 +1007,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return response for the migrate asset resources operation into Namespace resource along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> migrateWithResponseAsync(String resourceGroupName, String namespaceName,
@@ -1029,7 +1030,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response for the migrate asset resources operation into Namespace resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateWithResponse(String resourceGroupName, String namespaceName,
@@ -1050,7 +1051,7 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return response for the migrate asset resources operation into Namespace resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> migrateWithResponse(String resourceGroupName, String namespaceName,
@@ -1070,7 +1071,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of response for the migrate asset resources operation into Namespace
+     * resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(String resourceGroupName, String namespaceName,
@@ -1089,7 +1091,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for the migrate asset resources operation into Namespace
+     * resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String namespaceName,
@@ -1108,7 +1111,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of response for the migrate asset resources operation into Namespace
+     * resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String namespaceName,
@@ -1126,7 +1130,8 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return response for the migrate asset resources operation into Namespace resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> migrateAsync(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {

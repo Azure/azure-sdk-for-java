@@ -16,13 +16,13 @@ public final class FileFormatType extends ExpandableStringEnum<FileFormatType> {
      * Document type file format.
      */
     @Generated
-    public static final FileFormatType DOCUMENT = fromString("document");
+    public static final FileFormatType DOCUMENT = fromString("Document");
 
     /**
      * Glossary type file format.
      */
     @Generated
-    public static final FileFormatType GLOSSARY = fromString("glossary");
+    public static final FileFormatType GLOSSARY = fromString("Glossary");
 
     /**
      * Creates a new instance of FileFormatType value.

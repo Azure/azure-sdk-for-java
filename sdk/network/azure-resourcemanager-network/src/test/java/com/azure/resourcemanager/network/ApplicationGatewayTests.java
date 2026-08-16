@@ -39,6 +39,7 @@ import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -177,6 +178,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertEquals(hostnames, gateway.listeners().get(listener1).hostnames());
     }
 
+    @Disabled("Create secret is forbidden")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canCreateApplicationGatewayWithSecret() throws Exception {
@@ -233,6 +235,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertEquals(secret2.id(), appGateway.sslCertificates().get("ssl2").keyVaultSecretId());
     }
 
+    @Disabled("Create certificate is forbidden")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canCreateApplicationGatewayWithSslCertificate() throws Exception {

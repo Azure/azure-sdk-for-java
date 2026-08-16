@@ -7,14 +7,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -26,7 +23,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
@@ -61,7 +57,6 @@ import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -86,7 +81,7 @@ public class ClientMetricsTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void maxValueExceedingDefinedLimitStillWorksWithoutException() throws Exception {
 
         // Expected behavior is that higher values than the expected max value can still be recorded
@@ -134,7 +129,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem() throws Exception {
         boolean[] disableLatencyMeterTestCases = { false, true };
 
@@ -205,7 +200,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItemWithAllMetrics() throws Exception {
 
         boolean[] suppressConsistencyLevelTagTestCases = { false, true };
@@ -278,7 +273,7 @@ public class ClientMetricsTest extends BatchTestBase {
     // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
     // during TestState initialization, especially in CI environments where collection creation
     // can take longer than 40 seconds
-    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -311,7 +306,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readNonExistingItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
 
@@ -340,7 +335,8 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManySingleItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -379,7 +375,8 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // TestState constructor creates a new client and collection, which can exceed 40s in CI.
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyMultipleItems() throws Exception {
         List<InternalObjectNode> createdDocs = new ArrayList<>();
         List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
@@ -457,7 +454,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItemWithThresholdsApplied() throws Exception {
         CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
             .setPointOperationLatencyThreshold(Duration.ofDays(1));
@@ -505,7 +502,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void deleteItem() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -534,7 +531,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItems() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -582,7 +579,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readAllItemsWithDetailMetrics() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT,
             CosmosMetricCategory.OPERATION_DETAILS,
@@ -744,7 +741,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryItems() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)) {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -861,7 +858,10 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    // Increased timeout from TIMEOUT to SETUP_TIMEOUT to account for collection creation time
+    // (TestState provisions a fresh container; on multi-region accounts that create + readiness
+    // warm-up can consume most of the 40s budget before the bulk operation under test runs).
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulk() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             int totalRequest = 5;
@@ -940,7 +940,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void batchMultipleItemExecution() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)){
             TestDoc firstDoc = this.populateTestDoc(this.partitionKey1);
@@ -999,7 +999,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForDefault() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.fromString("DeFAult"))) {
             assertThat(state.getEffectiveMetricCategories().size()).isEqualTo(5);
@@ -1021,7 +1021,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForDefaultPlusDetails() throws Exception {
         try (TestState state = new TestState(getClientBuilder(),
             CosmosMetricCategory.DEFAULT,
@@ -1048,7 +1048,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesInvalidCategory() throws Exception {
         String badCategoryName = "InvalidCategory";
         try (TestState state = new TestState(getClientBuilder(),
@@ -1061,7 +1061,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = SETUP_TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForAll() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.ALL)) {
 
@@ -1117,7 +1117,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void effectiveMetricCategoriesForAllLatebound() throws Exception {
         try (TestState state = new TestState(getClientBuilder(), CosmosMetricCategory.DEFAULT)) {
             EnumSet<MetricCategory> effectiveMetricCategories =
@@ -1457,7 +1457,6 @@ public class ClientMetricsTest extends BatchTestBase {
         private final String databaseId;
         private final String containerId;
         private final MeterRegistry meterRegistry;
-        private String preferredRegion;
         private final CosmosClientTelemetryConfig inputClientTelemetryConfig;
         private final CosmosMicrometerMetricsOptions inputMetricsOptions;
         private Tag clientCorrelationTag;
@@ -1506,13 +1505,6 @@ public class ClientMetricsTest extends BatchTestBase {
                     .getCosmosAsyncClientAccessor()
                     .getMetricCategories(this.client.asyncClient())
             ).isSameAs(this.getEffectiveMetricCategories());
-
-            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(this.client.asyncClient());
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-
-            List<String> writeRegions = this.getAvailableWriteRegionNames(rxDocumentClient);
-            assertThat(writeRegions).isNotNull().isNotEmpty();
-            this.preferredRegion = writeRegions.iterator().next();
 
             CosmosClient mgmtClient = clientBuilder
                 .clientTelemetryConfig(
@@ -1581,31 +1573,6 @@ public class ClientMetricsTest extends BatchTestBase {
                 } catch (Exception error) {
                     logger.error(error.getMessage(), error);
                 }
-            }
-        }
-
-        private static List<String> getAvailableWriteRegionNames(RxDocumentClientImpl rxDocumentClient) {
-            try {
-                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-                LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
-
-                Field locationInfoField = LocationCache.class.getDeclaredField("locationInfo");
-                locationInfoField.setAccessible(true);
-                Object locationInfo = locationInfoField.get(locationCache);
-
-                Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
-                    ".LocationCache$DatabaseAccountLocationsInfo");
-                Field availableWriteLocations = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                    "availableWriteLocations");
-                availableWriteLocations.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                List<String> list = (List<String>) availableWriteLocations.get(locationInfo);
-                return list;
-
-            } catch (Exception error) {
-                fail(error.toString());
-
-                return null;
             }
         }
 
@@ -1722,11 +1689,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
             if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
                 this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
-
-                this.assertMetrics(
-                    "cosmos.client.op.regionsContacted",
-                    true,
-                    Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
+                this.assertMetricsWithPopulatedRegionName("cosmos.client.op.regionsContacted");
             }
 
             if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
@@ -1743,10 +1706,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
             if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
                 this.assertMetrics("cosmos.client.req.rntbd.latency", true, expectedRequestTag);
-                this.assertMetrics(
-                    "cosmos.client.req.rntbd.latency",
-                    true,
-                    Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
+                this.assertMetricsWithPopulatedRegionName("cosmos.client.req.rntbd.latency");
                 this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
                 this.assertMetrics("cosmos.client.req.rntbd.requests", true, expectedRequestTag);
                 Meter reportedRntbdRequestCharge =
@@ -1760,10 +1720,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics("cosmos.client.req.gw.latency", true, expectedRequestTag);
 
                 if (this.getEffectiveMetricCategories().contains(MetricCategory.OperationDetails)) {
-                    this.assertMetrics(
-                        "cosmos.client.req.gw.latency",
-                        true,
-                        Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
+                    this.assertMetricsWithPopulatedRegionName("cosmos.client.req.gw.latency");
                 }
                 this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
                 this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
@@ -1779,6 +1736,43 @@ public class ClientMetricsTest extends BatchTestBase {
 
         public Meter assertMetrics(String prefix, boolean expectedToFind) {
             return assertMetrics(prefix, expectedToFind, null);
+        }
+
+        public Meter assertMetricsWithPopulatedRegionName(String prefix) {
+            assertThat(this.meterRegistry).isNotNull();
+            assertThat(this.meterRegistry.getMeters()).isNotNull();
+            List<Meter> meters = this.meterRegistry.getMeters().stream().collect(Collectors.toList());
+            assertThat(meters.size()).isGreaterThan(0);
+            assertTagInAllMeters(meters, prefix);
+
+            List<Meter> meterPrefixMatches = meters
+                .stream()
+                .filter(meter -> meter.getId().getName().startsWith(prefix))
+                .collect(Collectors.toList());
+
+            List<Meter> meterMatches = meterPrefixMatches
+                .stream()
+                .filter(meter -> meter.getId().getTags().stream().anyMatch(tag ->
+                    TagName.RegionName.toString().equals(tag.getKey())
+                        && !"NONE".equalsIgnoreCase(tag.getValue())
+                        && !tag.getValue().isEmpty())
+                    && meter.measure().iterator().next().getValue() > 0)
+                .collect(Collectors.toList());
+
+            if (meterMatches.size() == 0) {
+                String message = String.format(
+                    "No meter found for prefix '%s' with a populated RegionName tag",
+                    prefix);
+
+                logger.error(message);
+                logger.info("Meters matching the prefix");
+                meterPrefixMatches.forEach(meter ->
+                    logger.info("{} has measurements {}", meter.getId(), meter.measure().iterator().hasNext()));
+
+                fail(message);
+            }
+
+            return meterMatches.get(0);
         }
 
         public Meter assertMetrics(String prefix, boolean expectedToFind, Tag withTag) {

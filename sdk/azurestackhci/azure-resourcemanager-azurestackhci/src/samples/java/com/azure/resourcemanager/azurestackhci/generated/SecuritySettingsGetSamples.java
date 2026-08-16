@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class SecuritySettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/GetSecuritySettings.json
+     * x-ms-original-file: 2026-04-30/GetSecuritySettings.json
      */
     /**
      * Sample code: Get Security Settings.

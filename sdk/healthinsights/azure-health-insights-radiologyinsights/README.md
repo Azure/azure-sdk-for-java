@@ -1005,5 +1005,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples
 [azure_credential]: https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference

@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to ConnectedCacheManager.
- * Microsoft Connected Cache Rest Api version 2023-05-01-preview.
+ * Microsoft Connected Cache Rest APIs.
  */
 public final class ConnectedCacheManager {
     private Operations operations;

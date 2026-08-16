@@ -17,7 +17,7 @@ import com.azure.resourcemanager.storage.models.StorageConnectorState;
  */
 public final class ConnectorsCreateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Create.json
+     * x-ms-original-file: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Create.json
      */
     /**
      * Sample code: CreateConnector.

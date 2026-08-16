@@ -134,8 +134,8 @@ public interface Snapshot {
     /**
      * The entirety of the Snapshot definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithFilters, DefinitionStages.WithCreate {
     }
 
     /**
@@ -159,15 +159,29 @@ public interface Snapshot {
              * @param configStoreName The name of the configuration store.
              * @return the next definition stage.
              */
-            WithCreate withExistingConfigurationStore(String resourceGroupName, String configStoreName);
+            WithFilters withExistingConfigurationStore(String resourceGroupName, String configStoreName);
+        }
+
+        /**
+         * The stage of the Snapshot definition allowing to specify filters.
+         */
+        interface WithFilters {
+            /**
+             * Specifies the filters property: A list of filters used to filter the key-values included in the
+             * snapshot..
+             * 
+             * @param filters A list of filters used to filter the key-values included in the snapshot.
+             * @return the next definition stage.
+             */
+            WithCreate withFilters(List<KeyValueFilter> filters);
         }
 
         /**
          * The stage of the Snapshot definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithFilters,
-            DefinitionStages.WithCompositionType, DefinitionStages.WithRetentionPeriod {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithCompositionType,
+            DefinitionStages.WithRetentionPeriod {
             /**
              * Executes the create request.
              * 
@@ -195,20 +209,6 @@ public interface Snapshot {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the Snapshot definition allowing to specify filters.
-         */
-        interface WithFilters {
-            /**
-             * Specifies the filters property: A list of filters used to filter the key-values included in the
-             * snapshot..
-             * 
-             * @param filters A list of filters used to filter the key-values included in the snapshot.
-             * @return the next definition stage.
-             */
-            WithCreate withFilters(List<KeyValueFilter> filters);
         }
 
         /**

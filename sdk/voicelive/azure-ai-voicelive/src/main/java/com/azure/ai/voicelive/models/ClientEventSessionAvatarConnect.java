@@ -16,7 +16,7 @@ import java.io.IOException;
  * for avatar-related media negotiation.
  */
 @Fluent
-public final class ClientEventSessionAvatarConnect extends ClientEvent {
+public final class ClientEventSessionAvatarConnect extends SessionClientEvent {
 
     /*
      * The type of event.

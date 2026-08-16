@@ -30,8 +30,9 @@ import java.util.Map;
  */
 public abstract class RxCollectionCache {
 
-    private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
-        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
 
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
@@ -201,7 +202,7 @@ public abstract class RxCollectionCache {
                                 com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
                                 com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
 
-                                cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                                cosmosExceptionAccessor().setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
 
                                 return cosmosException;
                             }
@@ -279,7 +280,7 @@ public abstract class RxCollectionCache {
                 if (!ResourceType.DocumentCollection.equals(request.getResourceType()) &&
                     com.azure.cosmos.implementation.Exceptions.isNotFound(cosmosException) &&
                     com.azure.cosmos.implementation.Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.UNKNOWN)) {
-                    cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                    cosmosExceptionAccessor().setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
                 }
 
                 return cosmosException;

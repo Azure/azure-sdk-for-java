@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class PoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Delete_Policies.json
+     * x-ms-original-file: 2026-03-01-preview/Delete_Policies.json
      */
     /**
      * Sample code: Delete_Policies.

@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.SharePointConnectorAppRegistration;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -122,18 +123,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
      */
     @Generated
     private VectorSearch vectorSearch;
-
-    /*
-     * A value indicating whether permission filtering is enabled for the index.
-     */
-    @Generated
-    private SearchIndexPermissionFilterOption permissionFilterOption;
-
-    /*
-     * A value indicating whether Purview is enabled for the index.
-     */
-    @Generated
-    private Boolean purviewEnabled;
 
     /*
      * The ETag of the index.
@@ -590,52 +579,6 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
-     * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
-     * index.
-     *
-     * @return the permissionFilterOption value.
-     */
-    @Generated
-    public SearchIndexPermissionFilterOption getPermissionFilterOption() {
-        return this.permissionFilterOption;
-    }
-
-    /**
-     * Set the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
-     * index.
-     *
-     * @param permissionFilterOption the permissionFilterOption value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setPermissionFilterOption(SearchIndexPermissionFilterOption permissionFilterOption) {
-        this.permissionFilterOption = permissionFilterOption;
-        return this;
-    }
-
-    /**
-     * Get the purviewEnabled property: A value indicating whether Purview is enabled for the index.
-     *
-     * @return the purviewEnabled value.
-     */
-    @Generated
-    public Boolean isPurviewEnabled() {
-        return this.purviewEnabled;
-    }
-
-    /**
-     * Set the purviewEnabled property: A value indicating whether Purview is enabled for the index.
-     *
-     * @param purviewEnabled the purviewEnabled value to set.
-     * @return the SearchIndex object itself.
-     */
-    @Generated
-    public SearchIndex setPurviewEnabled(Boolean purviewEnabled) {
-        this.purviewEnabled = purviewEnabled;
-        return this;
-    }
-
-    /**
      * Get the eTag property: The ETag of the index.
      *
      * @return the eTag value.
@@ -684,6 +627,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeStringField("permissionFilterOption",
             this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
         jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
+        jsonWriter.writeJsonField("sharePointConnectorAppRegistration", this.sharePointConnectorAppRegistration);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -718,6 +662,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             VectorSearch vectorSearch = null;
             SearchIndexPermissionFilterOption permissionFilterOption = null;
             Boolean purviewEnabled = null;
+            SharePointConnectorAppRegistration sharePointConnectorAppRegistration = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -758,6 +703,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
                 } else if ("purviewEnabled".equals(fieldName)) {
                     purviewEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sharePointConnectorAppRegistration".equals(fieldName)) {
+                    sharePointConnectorAppRegistration = SharePointConnectorAppRegistration.fromJson(reader);
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -781,8 +728,101 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             deserializedSearchIndex.vectorSearch = vectorSearch;
             deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
             deserializedSearchIndex.purviewEnabled = purviewEnabled;
+            deserializedSearchIndex.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
             deserializedSearchIndex.eTag = eTag;
             return deserializedSearchIndex;
         });
+    }
+
+    /*
+     * A value indicating whether permission filtering is enabled for the index.
+     */
+    @Generated
+    private SearchIndexPermissionFilterOption permissionFilterOption;
+
+    /*
+     * A value indicating whether Purview is enabled for the index.
+     */
+    @Generated
+    private Boolean purviewEnabled;
+
+    /*
+     * Configures a SharePoint connector app registration for the index, enabling document-level permissions from
+     * SharePoint. If provided, the applicationId and federatedCredentialId properties are required.
+     */
+    @Generated
+    private SharePointConnectorAppRegistration sharePointConnectorAppRegistration;
+
+    /**
+     * Get the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
+     * index.
+     *
+     * @return the permissionFilterOption value.
+     */
+    @Generated
+    public SearchIndexPermissionFilterOption getPermissionFilterOption() {
+        return this.permissionFilterOption;
+    }
+
+    /**
+     * Set the permissionFilterOption property: A value indicating whether permission filtering is enabled for the
+     * index.
+     *
+     * @param permissionFilterOption the permissionFilterOption value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setPermissionFilterOption(SearchIndexPermissionFilterOption permissionFilterOption) {
+        this.permissionFilterOption = permissionFilterOption;
+        return this;
+    }
+
+    /**
+     * Get the purviewEnabled property: A value indicating whether Purview is enabled for the index.
+     *
+     * @return the purviewEnabled value.
+     */
+    @Generated
+    public Boolean isPurviewEnabled() {
+        return this.purviewEnabled;
+    }
+
+    /**
+     * Set the purviewEnabled property: A value indicating whether Purview is enabled for the index.
+     *
+     * @param purviewEnabled the purviewEnabled value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setPurviewEnabled(Boolean purviewEnabled) {
+        this.purviewEnabled = purviewEnabled;
+        return this;
+    }
+
+    /**
+     * Get the sharePointConnectorAppRegistration property: Configures a SharePoint connector app registration for the
+     * index, enabling document-level permissions from SharePoint. If provided, the applicationId and
+     * federatedCredentialId properties are required.
+     *
+     * @return the sharePointConnectorAppRegistration value.
+     */
+    @Generated
+    public SharePointConnectorAppRegistration getSharePointConnectorAppRegistration() {
+        return this.sharePointConnectorAppRegistration;
+    }
+
+    /**
+     * Set the sharePointConnectorAppRegistration property: Configures a SharePoint connector app registration for the
+     * index, enabling document-level permissions from SharePoint. If provided, the applicationId and
+     * federatedCredentialId properties are required.
+     *
+     * @param sharePointConnectorAppRegistration the sharePointConnectorAppRegistration value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex
+        setSharePointConnectorAppRegistration(SharePointConnectorAppRegistration sharePointConnectorAppRegistration) {
+        this.sharePointConnectorAppRegistration = sharePointConnectorAppRegistration;
+        return this;
     }
 }

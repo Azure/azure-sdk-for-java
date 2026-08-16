@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * TThe query parameters to configure hybrid search behaviors.
+ * The query parameters to configure hybrid search behaviors.
  */
 @Fluent
 public final class HybridSearch implements JsonSerializable<HybridSearch> {

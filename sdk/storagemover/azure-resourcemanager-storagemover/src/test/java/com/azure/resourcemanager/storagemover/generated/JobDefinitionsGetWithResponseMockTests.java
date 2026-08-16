@@ -26,7 +26,7 @@ public final class JobDefinitionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"ggicccnxqhue\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"tlstvlzywem\",\"sourceResourceId\":\"rncsdtclu\",\"sourceSubpath\":\"ypbsfgytguslfead\",\"targetName\":\"ygqukyhejh\",\"targetResourceId\":\"sx\",\"targetSubpath\":\"pelol\",\"latestJobRunName\":\"vk\",\"latestJobRunResourceId\":\"pqvujzraehtwdwrf\",\"latestJobRunStatus\":\"Running\",\"agentName\":\"byrcdlbhshfwp\",\"agentResourceId\":\"cstwity\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Succeeded\",\"connections\":[\"dcpnmdyodnw\",\"xltjcvnhltiu\",\"cxnavv\",\"xqi\"],\"schedule\":{\"frequency\":\"Onetime\",\"isActive\":false,\"executionTime\":{\"hour\":88106486,\"minute\":30},\"startDate\":\"2021-06-28T16:16:43Z\",\"daysOfWeek\":[\"djrkvfgbvfvpd\",\"odacizs\",\"q\",\"hkr\"],\"daysOfMonth\":[1873747723,991301746,1915789936],\"cronExpression\":\"qipqkghvxndz\",\"endDate\":\"2021-01-31T16:39:26Z\"},\"dataIntegrityValidation\":\"SaveFileMD5\",\"preservePermissions\":false},\"id\":\"pjorwkqnyhg\",\"name\":\"ij\",\"type\":\"jivfxzsjabib\"}";
+            = "{\"properties\":{\"description\":\"daciz\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"hkr\",\"sourceResourceId\":\"bdeibqipqk\",\"sourceSubpath\":\"vxndz\",\"targetName\":\"mkrefajpjorwkq\",\"targetResourceId\":\"hgbijt\",\"targetSubpath\":\"vfxzsjab\",\"latestJobRunName\":\"systawfsdjp\",\"latestJobRunResourceId\":\"vp\",\"latestJobRunStatus\":\"Running\",\"agentName\":\"kzbzkdvncjabudu\",\"agentResourceId\":\"kakmokzh\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}},{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Canceled\",\"connections\":[\"ouw\",\"lgzrfzeeyeb\",\"zi\",\"ayuhqlbjbsy\"],\"schedule\":{\"frequency\":\"None\",\"isActive\":true,\"executionTime\":{\"hour\":1583288095,\"minute\":0},\"startDate\":\"2021-06-20T07:23:19Z\",\"daysOfWeek\":[\"mpipaslthaqfxs\"],\"daysOfMonth\":[236380813,1198185628,1174161651],\"cronExpression\":\"dsrezpdrhneuyow\",\"endDate\":\"2021-05-29T05:28:10Z\"},\"dataIntegrityValidation\":\"None\",\"preservePermissions\":false},\"id\":\"ib\",\"name\":\"rcgp\",\"type\":\"kpzi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,28 +36,28 @@ public final class JobDefinitionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JobDefinition response = manager.jobDefinitions()
-            .getWithResponse("scywuggwoluhc", "bwemhairs", "rgzdwmsweyp", "w", com.azure.core.util.Context.NONE)
+            .getWithResponse("xqi", "y", "unyowxwl", "djrkvfgbvfvpd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ggicccnxqhue", response.description());
+        Assertions.assertEquals("daciz", response.description());
         Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, response.jobType());
         Assertions.assertEquals(CopyMode.MIRROR, response.copyMode());
-        Assertions.assertEquals("tlstvlzywem", response.sourceName());
-        Assertions.assertEquals("ypbsfgytguslfead", response.sourceSubpath());
-        Assertions.assertEquals("ygqukyhejh", response.targetName());
-        Assertions.assertEquals("pelol", response.targetSubpath());
-        Assertions.assertEquals("byrcdlbhshfwp", response.agentName());
-        Assertions.assertEquals("dcpnmdyodnw", response.connections().get(0));
-        Assertions.assertEquals(Frequency.ONETIME, response.schedule().frequency());
-        Assertions.assertFalse(response.schedule().isActive());
-        Assertions.assertEquals(88106486, response.schedule().executionTime().hour());
-        Assertions.assertEquals(Minute.THREE_ZERO, response.schedule().executionTime().minute());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T16:16:43Z"), response.schedule().startDate());
-        Assertions.assertEquals("djrkvfgbvfvpd", response.schedule().daysOfWeek().get(0));
-        Assertions.assertEquals(1873747723, response.schedule().daysOfMonth().get(0));
-        Assertions.assertEquals("qipqkghvxndz", response.schedule().cronExpression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T16:39:26Z"), response.schedule().endDate());
-        Assertions.assertEquals(DataIntegrityValidation.SAVE_FILE_MD5, response.dataIntegrityValidation());
+        Assertions.assertEquals("hkr", response.sourceName());
+        Assertions.assertEquals("vxndz", response.sourceSubpath());
+        Assertions.assertEquals("mkrefajpjorwkq", response.targetName());
+        Assertions.assertEquals("vfxzsjab", response.targetSubpath());
+        Assertions.assertEquals("kzbzkdvncjabudu", response.agentName());
+        Assertions.assertEquals("ouw", response.connections().get(0));
+        Assertions.assertEquals(Frequency.NONE, response.schedule().frequency());
+        Assertions.assertTrue(response.schedule().isActive());
+        Assertions.assertEquals(1583288095, response.schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.ZERO, response.schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T07:23:19Z"), response.schedule().startDate());
+        Assertions.assertEquals("mpipaslthaqfxs", response.schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(236380813, response.schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("dsrezpdrhneuyow", response.schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T05:28:10Z"), response.schedule().endDate());
+        Assertions.assertEquals(DataIntegrityValidation.NONE, response.dataIntegrityValidation());
         Assertions.assertFalse(response.preservePermissions());
     }
 }

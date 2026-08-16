@@ -12,15 +12,15 @@ public final class ReplicaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicaInner model = BinaryData.fromString(
-            "{\"properties\":{\"endpoint\":\"pmivkwlzu\",\"provisioningState\":\"Canceled\"},\"location\":\"wnfnbacf\",\"id\":\"nlebxetqgtzxd\",\"name\":\"nqbqqwxr\",\"type\":\"feallnwsu\"}")
+            "{\"properties\":{\"endpoint\":\"atmelwui\",\"provisioningState\":\"Succeeded\"},\"location\":\"jzkzi\",\"id\":\"vvcnayr\",\"name\":\"yrnxxmueedn\",\"type\":\"rdvstkwqqtch\"}")
             .toObject(ReplicaInner.class);
-        Assertions.assertEquals("wnfnbacf", model.location());
+        Assertions.assertEquals("jzkzi", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaInner model = new ReplicaInner().withLocation("wnfnbacf");
+        ReplicaInner model = new ReplicaInner().withLocation("jzkzi");
         model = BinaryData.fromObject(model).toObject(ReplicaInner.class);
-        Assertions.assertEquals("wnfnbacf", model.location());
+        Assertions.assertEquals("jzkzi", model.location());
     }
 }

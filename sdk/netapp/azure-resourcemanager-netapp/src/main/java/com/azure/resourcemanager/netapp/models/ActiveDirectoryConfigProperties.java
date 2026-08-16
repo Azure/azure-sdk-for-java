@@ -320,6 +320,11 @@ public final class ActiveDirectoryConfigProperties implements JsonSerializable<A
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (site() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property site in model ActiveDirectoryConfigProperties"));
+        }
         if (domain() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -342,13 +347,13 @@ public final class ActiveDirectoryConfigProperties implements JsonSerializable<A
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("site", this.site);
         jsonWriter.writeStringField("domain", this.domain);
         jsonWriter.writeJsonField("secretPassword", this.secretPassword);
         jsonWriter.writeStringField("userName", this.userName);
         jsonWriter.writeArrayField("dns", this.dns, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("smbServerName", this.smbServerName);
         jsonWriter.writeStringField("organizationalUnit", this.organizationalUnit);
-        jsonWriter.writeStringField("site", this.site);
         jsonWriter.writeArrayField("backupOperators", this.backupOperators,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("administrators", this.administrators,
@@ -375,7 +380,9 @@ public final class ActiveDirectoryConfigProperties implements JsonSerializable<A
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("domain".equals(fieldName)) {
+                if ("site".equals(fieldName)) {
+                    deserializedActiveDirectoryConfigProperties.site = reader.getString();
+                } else if ("domain".equals(fieldName)) {
                     deserializedActiveDirectoryConfigProperties.domain = reader.getString();
                 } else if ("secretPassword".equals(fieldName)) {
                     deserializedActiveDirectoryConfigProperties.secretPassword = SecretPassword.fromJson(reader);
@@ -388,8 +395,6 @@ public final class ActiveDirectoryConfigProperties implements JsonSerializable<A
                     deserializedActiveDirectoryConfigProperties.smbServerName = reader.getString();
                 } else if ("organizationalUnit".equals(fieldName)) {
                     deserializedActiveDirectoryConfigProperties.organizationalUnit = reader.getString();
-                } else if ("site".equals(fieldName)) {
-                    deserializedActiveDirectoryConfigProperties.site = reader.getString();
                 } else if ("backupOperators".equals(fieldName)) {
                     List<String> backupOperators = reader.readArray(reader1 -> reader1.getString());
                     deserializedActiveDirectoryConfigProperties.backupOperators = backupOperators;

@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class ThreatState extends ExpandableStringEnum<ThreatState> {
     /**
-     * Static value Active for ThreatState.
+     * Threat is active.
      */
     public static final ThreatState ACTIVE = fromString("Active");
 
     /**
-     * Static value InProgress for ThreatState.
+     * Threat remediation is in progress.
      */
     public static final ThreatState IN_PROGRESS = fromString("InProgress");
 
     /**
-     * Static value Ignored for ThreatState.
+     * Threat has been ignored.
      */
     public static final ThreatState IGNORED = fromString("Ignored");
 
     /**
-     * Static value Resolved for ThreatState.
+     * Threat has been resolved.
      */
     public static final ThreatState RESOLVED = fromString("Resolved");
 

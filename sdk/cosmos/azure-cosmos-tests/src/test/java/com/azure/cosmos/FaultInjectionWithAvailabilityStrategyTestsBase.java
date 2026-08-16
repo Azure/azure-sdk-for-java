@@ -21,7 +21,9 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import org.testng.SkipException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -31,6 +33,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.CosmosReadManyByPartitionKeysRequestOptions;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -48,11 +51,13 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
+import reactor.core.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -80,7 +85,9 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTestsBase.class);
     private final static Integer NO_QUERY_PAGE_SUB_STATUS_CODE = 9999;
-    private final static Duration ONE_SECOND_DURATION = Duration.ofSeconds(1);
+    // Successful fault-injection recovery paths have been observed close to 800 ms. With the eager availability
+    // strategy starting cross-region work after 500 ms, a 1-second E2E timeout is too aggressive for CI.
+    private final static Duration ONE_AND_HALF_SECOND_DURATION = Duration.ofMillis(1500);
     private final static Duration TWO_SECOND_DURATION = Duration.ofSeconds(2);
     private final static Duration THREE_SECOND_DURATION = Duration.ofSeconds(3);
 
@@ -91,9 +98,13 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private final static CosmosRegionSwitchHint noRegionSwitchHint = null;
     private final static  ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
     private final static ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
+    private final static CosmosEndToEndOperationLatencyPolicyConfig disabledEndToEndTimeoutPolicy =
+        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5))
+            .enable(false)
+            .build();
     private final static ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy =
         new ThresholdBasedAvailabilityStrategy(
-            Duration.ofMillis(1), Duration.ofMillis(10)
+            Duration.ofMillis(500), Duration.ofMillis(100)
         );
     private final static ThresholdBasedAvailabilityStrategy reluctantThresholdAvailabilityStrategy =
         new ThresholdBasedAvailabilityStrategy(
@@ -192,6 +203,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     private String SECOND_REGION_NAME = null;
 
     private List<String> writeableRegions;
+    private List<String> nonCanonicalWriteableRegions;
 
     private String testDatabaseId;
     private String testContainerId;
@@ -234,6 +246,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.writeableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions;
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
+
+            // Build non-canonical (space-stripped) region names for normalization tests
+            this.nonCanonicalWriteableRegions = new ArrayList<>();
+            for (String region : this.writeableRegions) {
+                this.nonCanonicalWriteableRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+            }
 
             FIRST_REGION_NAME = this.writeableRegions.get(0).toLowerCase(Locale.ROOT);
             SECOND_REGION_NAME = this.writeableRegions.get(1).toLowerCase(Locale.ROOT);
@@ -338,6 +356,111 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             safeClose(dummyClient);
         }
     }
+
+    @Test(groups = {"fi-multi-master"})
+    public void readAfterCreation_nonCanonicalPreferredRegions_shouldRouteCorrectly() {
+        // Verify that a client built with space-stripped preferred regions (e.g., "westus3")
+        // routes correctly with availability strategy — fault injection in first region
+        // should cause failover to second region via hedging
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(10))
+                .enable(true)
+                .availabilityStrategy(eagerThresholdAvailabilityStrategy)
+                .build();
+
+        CosmosAsyncClient clientWithNonCanonicalRegions = null;
+
+        try {
+            clientWithNonCanonicalRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .preferredRegions(this.nonCanonicalWriteableRegions)
+                .multipleWriteRegionsEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = clientWithNonCanonicalRegions
+                .getDatabase(this.testDatabaseId)
+                .getContainer(this.testContainerId);
+
+            ObjectNode testItem = Utils.getSimpleObjectMapper().createObjectNode();
+            testItem.put("id", UUID.randomUUID().toString());
+            testItem.put("mypk", testItem.get("id").asText());
+
+            CosmosItemResponse<ObjectNode> createResponse = container
+                .createItem(testItem, new PartitionKey(testItem.get("mypk").asText()), new CosmosItemRequestOptions())
+                .block();
+
+            assertThat(createResponse).isNotNull();
+            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+
+            // Step 1: Read without fault injection — should contact first preferred region
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+            readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosItemResponse<ObjectNode> readResponse = container
+                .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                .block();
+
+            assertThat(readResponse).isNotNull();
+            assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+            CosmosDiagnosticsContext diagnosticsContext = readResponse.getDiagnostics().getDiagnosticsContext();
+            assertThat(diagnosticsContext).isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames())
+                .as("Without faults, should contact first preferred region")
+                .isNotNull();
+            assertThat(diagnosticsContext.getContactedRegionNames().contains(FIRST_REGION_NAME))
+                .as("Without faults, should contact first preferred region")
+                .isTrue();
+
+            // Step 2: Inject 503 into first region — availability strategy should hedge to second region
+            String ruleName = "nonCanonical-503-" + UUID.randomUUID();
+            FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .delay(Duration.ofMillis(5))
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder(ruleName)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .region(this.writeableRegions.get(0))
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build())
+                .result(serviceUnavailableResult)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            try {
+                CosmosItemResponse<ObjectNode> readWithFaultResponse = container
+                    .readItem(testItem.get("id").asText(), new PartitionKey(testItem.get("mypk").asText()), readOptions, ObjectNode.class)
+                    .block();
+
+                assertThat(readWithFaultResponse).isNotNull();
+                assertThat(readWithFaultResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext faultDiagnostics = readWithFaultResponse.getDiagnostics().getDiagnosticsContext();
+                assertThat(faultDiagnostics).isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames())
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isNotNull();
+                assertThat(faultDiagnostics.getContactedRegionNames().contains(SECOND_REGION_NAME))
+                    .as("With 503 in first region + eager availability strategy, "
+                        + "should hedge to second region even with non-canonical preferred regions (%s)",
+                        this.nonCanonicalWriteableRegions)
+                    .isTrue();
+            } finally {
+                faultRule.disable();
+            }
+        } finally {
+            safeClose(clientWithNonCanonicalRegions);
+        }
+    }
+
     @AfterClass(groups = { "fi-multi-master", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
@@ -432,7 +555,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // threshold.
             new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred_EagerAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -446,7 +569,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // is even happening
             new Object[] {
                 "404-1002_AllExceptFirstRegion_RemotePreferred",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -464,7 +587,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "404-1002_AllRegions_LocalPreferred",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -481,7 +604,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // threshold.
             new Object[] {
                 "404-1002_OnlyFirstRegion_LocalPreferred",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -495,7 +618,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // is even happening
             new Object[] {
                 "404-1002_AllExceptFirstRegion_LocalPreferred",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -530,7 +653,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // is triggered yet.
             new Object[] {
                 "404-1002_OnlyFirstRegion_LocalPreferred_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 null,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -549,7 +672,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // against the local region is still ongoing).
             new Object[] {
                 "Legit404_404-1002_OnlyFirstRegion_LocalPreferred",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -601,7 +724,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // against all regions
             new Object[] {
                 "408_AllRegions",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -616,7 +739,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // against the secondary region.
             new Object[] {
                 "408_FirstRegionOnly",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -631,7 +754,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // the local region
             new Object[] {
                 "408_AllRegions_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -665,7 +788,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // a timeout is expected with diagnostics only for the local region
             new Object[] {
                 "408_FirstRegionOnly_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -696,7 +819,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // whatever happens first
             new Object[] {
                 "503_FirstRegionOnly",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -711,7 +834,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // availability strategy. Diagnostics should contain two operations.
             new Object[] {
                 "503_AllRegions",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -745,7 +868,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // be diagnostics for the first region
             new Object[] {
                 "500_FirstRegionOnly_DefaultAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -762,7 +885,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // be diagnostics for the first region
             new Object[] {
                 "500_AllRegions_DefaultAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -790,7 +913,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // expected outcome is request will succeed by the hedging request triggered by availability strategy
             new Object[] {
                 "429_FirstRegionOnly_EagerThresholdAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -805,7 +928,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // availability strategy. Diagnostics should contain two operations.
             new Object[] {
                 "429_AllRegions_EagerThresholdAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -822,7 +945,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // Expected outcome is a successful retry by the availability strategy
             new Object[] {
                 "GW_408_FirstRegionOnly",
-                ONE_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.GATEWAY,
@@ -1198,7 +1321,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             },
             new Object[] {
                 "Create_500_FirstRegionOnly_NoAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1216,7 +1339,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No hedging, no cross regional retry in client retry policy --> 500 thrown
             new Object[] {
                 "Create_500_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1236,7 +1359,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // threshold is reached
             new Object[] {
                 "Delete_500_FirstRegionOnly_ReluctantAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1254,7 +1377,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // (write retries disabled), no cross regional retry in client retry policy for 500 --> 500 thrown
             new Object[] {
                 "Delete_500_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1272,7 +1395,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // but the 500 from the initial operation execution is thrown before threshold is reached
             new Object[] {
                 "Patch_500_AllRegions_DefaultAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1290,7 +1413,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // regional retries in client retry policy --> 500 thrown
             new Object[] {
                 "Patch_500_AllRegions_DefaultAvailabilityStrategy_NoRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1310,7 +1433,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // data for initial region
             new Object[] {
                 "Replace_408_AllRegions_DefaultAvailabilityStrategy_NoRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 defaultAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -1653,7 +1776,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // cross regional retry to finish within e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferred_NoAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1777,11 +1900,11 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // Expected to get 408 because min. in-region wait time is larger than e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferredWithTooHighInRegionRetryTime_NoAvailabilityStrategy_408",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
-                Duration.ofMillis(1100),
+                Duration.ofMillis(1600),
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
@@ -2293,7 +2416,11 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         final int TWO_REGIONS = 2;
 
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoFirstRegionOnlyForSinglePartition =
-            (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType, c.getFeedRanges().block().get(0));
+            (c, operationType) -> injectReadSessionNotAvailableError(
+                c,
+                this.getFirstRegion(),
+                operationType,
+                getFeedRangesWithRetry(c, "get feed ranges for availability strategy fault injection setup").get(0));
 
         BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsTotalRecordCountWithDefaultPageSize = (query, params) ->
             queryReturnsTotalRecordCountCore(query, params, 100);
@@ -2493,7 +2620,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // Plain vanilla single partition query. No failure injection and all records will fit into a single page
             new Object[] {
                 "DefaultPageSize_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2517,7 +2644,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // into a single page. But there will be one page per partition
             new Object[] {
                 "DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2545,7 +2672,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // will be as many CosmosDiagnosticsContext instances as pages.
             new Object[] {
                 "PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2573,7 +2700,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // expectation is that there will be as many CosmosDiagnosticsContext instances as pages.
             new Object[] {
                 "PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2600,7 +2727,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // one empty page expected - with exactly one CosmosDiagnostics instance
             new Object[] {
                 "EmptyResults_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2625,7 +2752,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // partitions
             new Object[] {
                 "EmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2658,7 +2785,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // with exactly one CosmosDiagnostics instance (plus query plan on very first one)
             new Object[] {
                 "EmptyResults_EnableEmptyPageRetrieval_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2701,7 +2828,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // query metrics and client side request statistics are captured in the merged diagnostics.
             new Object[] {
                 "AllButOnePartitionEmptyResults_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2732,7 +2859,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // Expect to get as many pages and diagnostics contexts as there are documents for this PK-value
             new Object[] {
                 "AggregatesAndOrderBy_PageSizeOne_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2762,7 +2889,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // is returned - but with query metrics and client request statistics for all partitions
             new Object[] {
                 "AggregatesAndOrderBy_PageSizeOne_CrossPartitionSingleRecord_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2795,7 +2922,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // as there are documents with the same id-value.
             new Object[] {
                 "AggregatesAndOrderBy_PageSizeOne_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2824,7 +2951,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // as there are documents with the same id-value.
             new Object[] {
                 "AggregatesAndOrderBy_DefaultPageSize_CrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2866,7 +2993,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // page and CosmosDiagnosticsContext - but including three request statistics and query metrics.
             new Object[] {
                 "AggregatesAndOrderBy_DefaultPageSize_SingleRecordCrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -2991,12 +3118,11 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // retry on the first region will provide a successful response for the one partition and no hedging is
             // happening. There should be one CosmosDiagnosticsContext (and page) per partition - each should only have
             // a single CosmosDiagnostics instance contacting both regions.
-            // In PR - https://github.com/Azure/azure-sdk-for-java/pull/41653 e2e timeout was increased from 1s to 1.1s to allow
-            // tests which use closer region as fault injected / outage region to get a success from a further away region
-            // with a cross-region retry
+            // E2E timeout allows tests which use closer region as fault injected / outage region to get a success
+            // from a further away region with a cross-region retry.
             new Object[] {
                 "DefaultPageSize_CrossPartition_404-1002_OnlyFirstRegion_SinglePartition_RemotePreferred_ReluctantAvailabilityStrategy",
-                Duration.ofMillis(1100),
+                Duration.ofSeconds(3),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -3573,7 +3699,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "SingleTuple_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTupleForSingleDocument,
@@ -3599,7 +3725,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "ManyTuplesSinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTuplesForSinglePartition,
@@ -3626,7 +3752,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "ManyTuplesCrossPartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTuplesForSameIdAcrossMultiplePartitions,
@@ -3652,7 +3778,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // empty FeedResponse). No failure injection and all records will fit into a single page
             new Object[] {
                 "SingleTuple_EmptyResult_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTupleForSingleDocumentEmptyResult,
@@ -3678,7 +3804,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "ManyTuplesSinglePartition_EmptyResult_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTuplesForSinglePartitionEmptyResult,
@@ -3887,6 +4013,315 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         return addBooleanFlagsToAllTestConfigs(testConfigs_readManyAfterCreation);
     }
 
+    private CosmosResponseWrapper readManyByPartitionKeysCore(
+        ItemOperationInvocationParameters params,
+        int numberOfOtherDocumentsWithSamePk
+    ) {
+
+        List<PartitionKey> pkValues = new ArrayList<>();
+        pkValues.add(new PartitionKey(params.idAndPkValuePair.getRight()));
+
+        CosmosReadManyByPartitionKeysRequestOptions options = new CosmosReadManyByPartitionKeysRequestOptions();
+
+        CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
+            .CosmosItemRequestOptionsHelper
+            .getCosmosItemRequestOptionsAccessor()
+            .getEndToEndOperationLatencyPolicyConfig(params.options);
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+        List<FeedResponse<ObjectNode>> returnedPages;
+        // Let CosmosException propagate to execute()'s catch block — it handles
+        // status code + sub-status code validation and diagnostics context extraction
+        // correctly for error cases (the response-level validation path passes null
+        // for sub-status which breaks validators like validateStatusCodeIsServiceUnavailable).
+        returnedPages = params.container
+            .readManyByPartitionKeys(pkValues, options, ObjectNode.class)
+            .byPage()
+            .collectList()
+            .block();
+
+        ArrayList<CosmosDiagnosticsContext> foundCtxs = new ArrayList<>();
+
+        if (returnedPages == null || returnedPages.isEmpty()) {
+            return new CosmosResponseWrapper(
+                null,
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                0L);
+        }
+
+        long totalRecordCount = 0L;
+        for (FeedResponse<ObjectNode> page : returnedPages) {
+            if (page.getCosmosDiagnostics() != null) {
+                foundCtxs.add(page.getCosmosDiagnostics().getDiagnosticsContext());
+            } else {
+                foundCtxs.add(null);
+            }
+
+            if (page.getResults() != null && page.getResults().size() > 0) {
+                totalRecordCount += page.getResults().size();
+            }
+        }
+
+        return new CosmosResponseWrapper(
+            foundCtxs.toArray(new CosmosDiagnosticsContext[0]),
+            HttpConstants.StatusCodes.OK,
+            HttpConstants.SubStatusCodes.UNKNOWN,
+            totalRecordCount);
+    }
+
+    @DataProvider(name = "testConfigs_readManyByPartitionKeysAfterCreation")
+    public Object[][] testConfigs_readManyByPartitionKeysAfterCreation() {
+
+        final int ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE = 10;
+        final int NO_OTHER_DOCS_WITH_SAME_PK = 0;
+        final int NO_OTHER_DOCS_WITH_SAME_ID = 0;
+        final int ENOUGH_DOCS_OTHER_PK_TO_HIT_EVERY_PARTITION = PHYSICAL_PARTITION_COUNT * 10;
+        final int SINGLE_REGION = 1;
+        final int TWO_REGIONS = 2;
+
+        BiConsumer<CosmosResponseWrapper, Long> validateExpectedRecordCount = (response, expectedRecordCount) -> {
+            if (expectedRecordCount != null) {
+                assertThat(response).isNotNull();
+                assertThat(response.getTotalRecordCount()).isNotNull();
+                assertThat(response.getTotalRecordCount()).isEqualTo(expectedRecordCount);
+            }
+        };
+
+        Consumer<CosmosResponseWrapper> validateExactlyOneRecordReturned =
+            (response) -> validateExpectedRecordCount.accept(response, 1L);
+
+        Consumer<CosmosResponseWrapper> validateAllRecordsSamePartitionReturned =
+            (response) -> validateExpectedRecordCount.accept(
+                response,
+                1L + ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        BiConsumer<CosmosDiagnosticsContext, Integer> validateCtxRegions =
+            (ctx, expectedNumberOfRegionsContacted) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getContactedRegionNames().size()).isEqualTo(expectedNumberOfRegionsContacted);
+                }
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateCtxSingleRegion =
+            (ctx) -> validateCtxRegions.accept(ctx, SINGLE_REGION);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxTwoRegions =
+            (ctx) -> validateCtxRegions.accept(ctx, TWO_REGIONS);
+
+        Consumer<CosmosDiagnosticsContext> validateCtxOnlyFeedResponses =
+            (ctx) -> {
+                assertThat(ctx).isNotNull();
+                if (ctx != null) {
+                    assertThat(ctx.getDiagnostics()).isNotNull();
+                    assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                }
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper>
+            readManyByPkSinglePartition = (inputParams) ->
+                readManyByPartitionKeysCore(inputParams, ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE);
+
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper>
+            readManyByPkSingleDoc = (inputParams) ->
+                readManyByPartitionKeysCore(inputParams, NO_OTHER_DOCS_WITH_SAME_PK);
+
+        Object[][] testConfigs = new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint
+            //    ConnectionMode
+            //    readManyByPartitionKeys operation callback
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Expected number of DiagnosticsContext instances
+            //    Diagnostics context validation callback applied to the first DiagnosticsContext
+            //    Diagnostics context validation callback applied to all other DiagnosticsContext
+            //    Consumer<CosmosResponseWrapper> - callback to validate the response
+            //    numberOfOtherDocumentsWithSameId
+            //    numberOfOtherDocumentsWithSamePk
+            // },
+
+            // readManyByPartitionKeys - single partition, no failures, no availability strategy
+            new Object[] {
+                "ReadManyByPk_SinglePartition_AllGood_NoAvailabilityStrategy",
+                ONE_AND_HALF_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - single doc, no failures, no availability strategy
+            new Object[] {
+                "ReadManyByPk_SingleDoc_AllGood_NoAvailabilityStrategy",
+                ONE_AND_HALF_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSingleDoc,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateExactlyOneRecordReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                NO_OTHER_DOCS_WITH_SAME_PK
+            },
+
+            // readManyByPartitionKeys - 408 timeout in first region, eager availability strategy
+            // Should succeed via hedging to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_408_FirstRegionOnly_EagerAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 404/1002 in first region, remote preferred, reluctant strategy
+            // Client retry policy should failover to second region before hedging kicks in
+            new Object[] {
+                "ReadManyByPk_SinglePartition_404-1002_RemotePreferred_FirstRegionOnly_ReluctantAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                reluctantThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 429/3200 in first region, default availability strategy
+            // Should succeed via hedging to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_429-3200_FirstRegionOnly_DefaultAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectRequestRateTooLargeIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 429/3200 in first region, no availability strategy
+            // Should time out since no hedging and 429 retries locally until timeout
+            new Object[] {
+                "ReadManyByPk_SinglePartition_429-3200_FirstRegionOnly_NoAvailabilityStrategy",
+                THREE_SECOND_DURATION,
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectRequestRateTooLargeIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxSingleRegion,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                null,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 503 in first region, no availability strategy
+            // ClientRetryPolicy will failover to second region
+            new Object[] {
+                "ReadManyByPk_SinglePartition_503_FirstRegionOnly_NoAvailabilityStrategy",
+                Duration.ofSeconds(90),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions,
+                    validateCtxOnlyFeedResponses
+                ),
+                null,
+                validateAllRecordsSamePartitionReturned,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+
+            // readManyByPartitionKeys - 503 in all regions, eager availability strategy
+            // Both regions fail - should get 503
+            new Object[] {
+                "ReadManyByPk_SinglePartition_503_AllRegions_EagerAvailabilityStrategy",
+                Duration.ofSeconds(10),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                ConnectionMode.DIRECT,
+                readManyByPkSinglePartition,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                1,
+                ArrayUtils.toArray(
+                    validateCtxTwoRegions
+                ),
+                null,
+                null,
+                NO_OTHER_DOCS_WITH_SAME_ID,
+                ENOUGH_DOCS_SAME_PK_TO_EXCEED_PAGE_SIZE
+            },
+        };
+
+        return addBooleanFlagsToAllTestConfigs(testConfigs);
+    }
 
 
     private CosmosResponseWrapper readAllReturnsTotalRecordCountCore(
@@ -4172,7 +4607,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_SingleDocument_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4199,7 +4634,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4227,7 +4662,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_SingleDocumentWithEmptyPages_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4261,7 +4696,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // multiple pages returned. No failure injection and all records will fit into a single page
             new Object[] {
                 "PageSizeOne_Container_SinglePartition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4296,7 +4731,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // ReadAll with PartitionKey never will retrieve a query plan
             new Object[] {
                 "DefaultPageSize_Partition_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4322,7 +4757,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // No failure injection and all records will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_AllGood_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4356,7 +4791,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // All records per partition will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_408_OnlyFirstRegion_EagerAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4440,7 +4875,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // All records per partition will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_410-1002_Local_OnlyFirstRegion_EagerAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4515,7 +4950,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // ReadAll (entire container) with multiple docs for single partition. Injected 429-3200 on first region only.
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_429-3200_Local_OnlyFirstRegion_noAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                ONE_AND_HALF_SECOND_DURATION,
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
@@ -4640,29 +5075,28 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
-        String dbId = UUID.randomUUID().toString();
+        String dbId = CosmosDatabaseForTest.generateId("availabilityStrategy");
         return createTestContainer(clientWithPreferredRegions, dbId);
     }
 
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions, String dbId) {
         String containerId = UUID.randomUUID().toString();
 
-        clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block();
+        executeControlPlaneWithRetry(
+            () -> clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block());
         CosmosAsyncDatabase databaseWithSeveralWriteableRegions = clientWithPreferredRegions.getDatabase(dbId);
 
         // setup db and container and pass their ids accordingly
         // ensure the container has a partition key definition of /mypk
 
-        databaseWithSeveralWriteableRegions
-            .createContainerIfNotExists(
-                new CosmosContainerProperties(
-                    containerId,
-                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
-                // for PHYSICAL_PARTITION_COUNT partitions
-                ThroughputProperties.createManualThroughput(6_000 * PHYSICAL_PARTITION_COUNT))
-            .block();
-
-        return databaseWithSeveralWriteableRegions.getContainer(containerId);
+        return createCollection(
+            databaseWithSeveralWriteableRegions,
+            new CosmosContainerProperties(
+                containerId,
+                new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))),
+            new CosmosContainerRequestOptions(),
+            // for PHYSICAL_PARTITION_COUNT partitions
+            6_000 * PHYSICAL_PARTITION_COUNT);
     }
 
     private static void inject(
@@ -4885,7 +5319,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
         // When thin client + HTTP/2 are enabled, all requests route through the thin client
         // gateway proxy — DIRECT mode is not exercised. Skip DIRECT mode tests.
-        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException(
                 "Skipping DIRECT mode test '" + testCaseId + "' — thin client forces GATEWAY mode");
         }
@@ -4900,7 +5334,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // through the RNTBD-encoded thin client proxy path. Increase e2e timeout to avoid
             // spurious 408 (OperationCancelled) failures with tight timeouts.
             Duration effectiveEndToEndTimeout = endToEndTimeout;
-            if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && endToEndTimeout != null) {
+            if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && endToEndTimeout != null) {
                 effectiveEndToEndTimeout = endToEndTimeout.plusMillis(500);
             }
 
@@ -4955,20 +5389,26 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                 CosmosAsyncContainer testContainer = clientWithPreferredRegions
                     .getDatabase(this.testDatabaseId)
                     .getContainer(this.testContainerId);
+                CosmosItemRequestOptions setupItemRequestOptions = new CosmosItemRequestOptions()
+                    .setCosmosEndToEndOperationLatencyPolicyConfig(disabledEndToEndTimeoutPolicy);
 
-                testContainer.createItem(createdItem).block();
+                testContainer.createItem(createdItem, setupItemRequestOptions).block();
 
                 List<Pair<String, String>> otherIdAndPkValues = new ArrayList<>();
                 for (int i = 0; i < numberOfOtherDocumentsWithSameId; i++) {
                     String additionalPK = UUID.randomUUID().toString();
-                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(documentId, additionalPK)).block();
+                    testContainer.createItem(
+                        new CosmosDiagnosticsTest.TestItem(documentId, additionalPK),
+                        setupItemRequestOptions).block();
                     otherIdAndPkValues.add(Pair.of(documentId, additionalPK));
                 }
 
                 for (int i = 0; i < numberOfOtherDocumentsWithSamePk; i++) {
                     String sharedPK = documentId;
                     String additionalDocumentId = UUID.randomUUID().toString();
-                    testContainer.createItem(new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK)).block();
+                    testContainer.createItem(
+                        new CosmosDiagnosticsTest.TestItem(additionalDocumentId, sharedPK),
+                        setupItemRequestOptions).block();
                     otherIdAndPkValues.add(Pair.of(additionalDocumentId, sharedPK));
                 }
 
@@ -5034,16 +5474,21 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
                         }
                     }
 
-                    // When thin client + HTTP/2 are enabled (fi-thinclient-multi-master / fi-thinclient-multi-region)
-                    // and connection mode is GATEWAY, validate that requests targeted the thin client proxy endpoint
-                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.GATEWAY) {
+                    // When thin client + HTTP/2 are EXPLICITLY opted in (COSMOS.THINCLIENT_ENABLED=true,
+                    // e.g. fi-thinclient-multi-master / fi-thinclient-multi-region) and connection mode is
+                    // GATEWAY, validate that requests targeted the thin client proxy endpoint. Only assert on
+                    // explicit opt-in -- the sole config where routing is deterministic because the endpoint
+                    // probe is bypassed. On the implicit/unset path routing is gated on the probe verdict,
+                    // which under fault injection may legitimately fall back to Gateway V1 (:443).
+                    if (Boolean.TRUE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.GATEWAY) {
                         for (CosmosDiagnosticsContext diagnosticsContext : diagnosticsContexts) {
                             assertThinClientEndpointUsed(diagnosticsContext);
                         }
                     }
                 } catch (Exception e) {
-                    if (e instanceof CosmosException) {
-                        CosmosException cosmosException = Utils.as(e, CosmosException.class);
+                    Throwable unwrappedException = Exceptions.unwrap(e);
+                    if (unwrappedException instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
                         CosmosDiagnosticsContext diagnosticsContext = null;
                         if (cosmosException.getDiagnostics() != null) {
                             diagnosticsContext = cosmosException.getDiagnostics().getDiagnosticsContext();

@@ -131,7 +131,6 @@ public class SemanticSearchExample {
         AtomicInteger count = new AtomicInteger();
         searchClient.search(searchOptions).streamByPage().forEach(page -> {
             System.out.println("Semantic Hybrid Search Results:");
-            System.out.println("Semantic Query Rewrites Result Type: " + page.getSemanticQueryRewritesResultType());
             System.out.println("Semantic Results Type: " + page.getSemanticPartialResponseType());
 
             if (page.getSemanticPartialResponseReason() != null) {

@@ -13,11 +13,11 @@ public final class SecuritySettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySettingInner model = BinaryData.fromString(
-            "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"wdacComplianceAssignment\":\"ApplyAndAutoCorrect\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"Audit\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"Pending\",\"wdacCompliance\":\"Pending\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"NonCompliant\",\"lastUpdated\":\"2021-08-18T22:01:18Z\"},\"provisioningState\":\"Succeeded\"},\"id\":\"pkzfbojxj\",\"name\":\"cs\",\"type\":\"yqwixvcpwnkwywzw\"}")
+            "{\"properties\":{\"securedCoreComplianceAssignment\":\"Audit\",\"wdacComplianceAssignment\":\"ApplyAndAutoCorrect\",\"smbEncryptionForIntraClusterTrafficComplianceAssignment\":\"ApplyAndAutoCorrect\",\"securityComplianceStatus\":{\"securedCoreCompliance\":\"NonCompliant\",\"wdacCompliance\":\"NonCompliant\",\"dataAtRestEncrypted\":\"Compliant\",\"dataInTransitProtected\":\"Pending\",\"lastUpdated\":\"2021-10-25T06:29:25Z\"},\"provisioningState\":\"Disconnected\"},\"id\":\"acfrgna\",\"name\":\"bab\",\"type\":\"fbktyjmfczlf\"}")
             .toObject(SecuritySettingInner.class);
         Assertions.assertEquals(ComplianceAssignmentType.AUDIT, model.securedCoreComplianceAssignment());
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT, model.wdacComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
+        Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             model.smbEncryptionForIntraClusterTrafficComplianceAssignment());
     }
 
@@ -26,11 +26,12 @@ public final class SecuritySettingInnerTests {
         SecuritySettingInner model
             = new SecuritySettingInner().withSecuredCoreComplianceAssignment(ComplianceAssignmentType.AUDIT)
                 .withWdacComplianceAssignment(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT)
-                .withSmbEncryptionForIntraClusterTrafficComplianceAssignment(ComplianceAssignmentType.AUDIT);
+                .withSmbEncryptionForIntraClusterTrafficComplianceAssignment(
+                    ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT);
         model = BinaryData.fromObject(model).toObject(SecuritySettingInner.class);
         Assertions.assertEquals(ComplianceAssignmentType.AUDIT, model.securedCoreComplianceAssignment());
         Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT, model.wdacComplianceAssignment());
-        Assertions.assertEquals(ComplianceAssignmentType.AUDIT,
+        Assertions.assertEquals(ComplianceAssignmentType.APPLY_AND_AUTO_CORRECT,
             model.smbEncryptionForIntraClusterTrafficComplianceAssignment());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class BackupsAutomaticAndOnDemandDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/BackupsAutomaticAndOnDemandDelete.json
+     * x-ms-original-file: 2026-04-01-preview/BackupsAutomaticAndOnDemandDelete.json
      */
     /**
      * Sample code: Delete an on demand backup, given its name.

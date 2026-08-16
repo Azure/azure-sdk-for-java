@@ -5,11 +5,12 @@
 package com.azure.analytics.planetarycomputer.implementation.models;
 
 import com.azure.analytics.planetarycomputer.models.FilterLanguage;
-import com.azure.analytics.planetarycomputer.models.Geometry;
+import com.azure.analytics.planetarycomputer.models.GeoJsonGeometry;
 import com.azure.analytics.planetarycomputer.models.MosaicMetadata;
 import com.azure.analytics.planetarycomputer.models.StacSortExtension;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -45,22 +46,36 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * GeoJSON geometry to spatially filter items by intersection
      */
     @Generated
-    private Geometry intersects;
+    private GeoJsonGeometry intersects;
 
     /*
      * Query
      */
     @Generated
-    private Map<String, Object> query;
+    private Map<String, BinaryData> query;
 
     /*
      * Filter
      */
     @Generated
-    private Map<String, Object> filter;
+    private Map<String, BinaryData> filter;
 
     /*
-     * Temporal filter in RFC 3339 format or interval
+     * Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      */
     @Generated
     private String datetime;
@@ -162,7 +177,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the intersects value.
      */
     @Generated
-    public Geometry getIntersects() {
+    public GeoJsonGeometry getIntersects() {
         return this.intersects;
     }
 
@@ -173,7 +188,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setIntersects(Geometry intersects) {
+    public RegisterMosaicsSearchRequest setIntersects(GeoJsonGeometry intersects) {
         this.intersects = intersects;
         return this;
     }
@@ -184,7 +199,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the query value.
      */
     @Generated
-    public Map<String, Object> getQuery() {
+    public Map<String, BinaryData> getQuery() {
         return this.query;
     }
 
@@ -195,7 +210,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setQuery(Map<String, Object> query) {
+    public RegisterMosaicsSearchRequest setQuery(Map<String, BinaryData> query) {
         this.query = query;
         return this;
     }
@@ -206,7 +221,7 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the filter value.
      */
     @Generated
-    public Map<String, Object> getFilter() {
+    public Map<String, BinaryData> getFilter() {
         return this.filter;
     }
 
@@ -217,13 +232,27 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
      * @return the RegisterMosaicsSearchRequest object itself.
      */
     @Generated
-    public RegisterMosaicsSearchRequest setFilter(Map<String, Object> filter) {
+    public RegisterMosaicsSearchRequest setFilter(Map<String, BinaryData> filter) {
         this.filter = filter;
         return this;
     }
 
     /**
-     * Get the datetime property: Temporal filter in RFC 3339 format or interval.
+     * Get the datetime property: Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      * 
      * @return the datetime value.
      */
@@ -233,7 +262,21 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
     }
 
     /**
-     * Set the datetime property: Temporal filter in RFC 3339 format or interval.
+     * Set the datetime property: Either a date-time or an interval, open or closed. Date and time expressions
+     * adhere to RFC 3339. Open intervals are expressed using double-dots.
+     * 
+     * Examples:
+     * 
+     * - A date-time: "2018-02-12T23:20:50Z"
+     * - A closed interval: "2018-02-12T00:00:00Z/2018-03-18T12:31:12Z"
+     * - Open intervals: "2018-02-12T00:00:00Z/.." or "../2018-03-18T12:31:12Z"
+     * 
+     * Only features that have a temporal property that intersects the value of
+     * `datetime` are selected.
+     * 
+     * If a feature has multiple temporal properties, it is the decision of the
+     * server whether only a single temporal property is used to determine
+     * the extent or all relevant temporal properties.
      * 
      * @param datetime the datetime value to set.
      * @return the RegisterMosaicsSearchRequest object itself.
@@ -321,8 +364,20 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
         jsonWriter.writeArrayField("ids", this.ids, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("bbox", this.boundingBox, (writer, element) -> writer.writeDouble(element));
         jsonWriter.writeJsonField("intersects", this.intersects);
-        jsonWriter.writeMapField("query", this.query, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("query", this.query, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("filter", this.filter, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("datetime", this.datetime);
         jsonWriter.writeArrayField("sortby", this.sortBy, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("filter-lang", this.filterLanguage == null ? null : this.filterLanguage.toString());
@@ -356,12 +411,14 @@ public final class RegisterMosaicsSearchRequest implements JsonSerializable<Regi
                     List<Double> boundingBox = reader.readArray(reader1 -> reader1.getDouble());
                     deserializedRegisterMosaicsSearchRequest.boundingBox = boundingBox;
                 } else if ("intersects".equals(fieldName)) {
-                    deserializedRegisterMosaicsSearchRequest.intersects = Geometry.fromJson(reader);
+                    deserializedRegisterMosaicsSearchRequest.intersects = GeoJsonGeometry.fromJson(reader);
                 } else if ("query".equals(fieldName)) {
-                    Map<String, Object> query = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> query = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRegisterMosaicsSearchRequest.query = query;
                 } else if ("filter".equals(fieldName)) {
-                    Map<String, Object> filter = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> filter = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedRegisterMosaicsSearchRequest.filter = filter;
                 } else if ("datetime".equals(fieldName)) {
                     deserializedRegisterMosaicsSearchRequest.datetime = reader.getString();

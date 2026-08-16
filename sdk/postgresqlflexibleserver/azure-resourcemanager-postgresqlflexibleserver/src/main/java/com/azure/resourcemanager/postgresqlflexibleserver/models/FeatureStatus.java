@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class FeatureStatus extends ExpandableStringEnum<FeatureStatus> {
     /**
-     * Static value Enabled for FeatureStatus.
+     * Feature is enabled.
      */
     public static final FeatureStatus ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for FeatureStatus.
+     * Feature is disabled.
      */
     public static final FeatureStatus DISABLED = fromString("Disabled");
 

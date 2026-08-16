@@ -13,21 +13,21 @@ public final class AzureBackupRehydrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRehydrationRequest model = BinaryData.fromString(
-            "{\"recoveryPointId\":\"jj\",\"rehydrationPriority\":\"Standard\",\"rehydrationRetentionDuration\":\"dudgwdslfhot\"}")
+            "{\"recoveryPointId\":\"ngj\",\"rehydrationPriority\":\"Invalid\",\"rehydrationRetentionDuration\":\"czsqpjhvm\"}")
             .toObject(AzureBackupRehydrationRequest.class);
-        Assertions.assertEquals("jj", model.recoveryPointId());
-        Assertions.assertEquals(RehydrationPriority.STANDARD, model.rehydrationPriority());
-        Assertions.assertEquals("dudgwdslfhot", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("ngj", model.recoveryPointId());
+        Assertions.assertEquals(RehydrationPriority.INVALID, model.rehydrationPriority());
+        Assertions.assertEquals("czsqpjhvm", model.rehydrationRetentionDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupRehydrationRequest model = new AzureBackupRehydrationRequest().withRecoveryPointId("jj")
-            .withRehydrationPriority(RehydrationPriority.STANDARD)
-            .withRehydrationRetentionDuration("dudgwdslfhot");
+        AzureBackupRehydrationRequest model = new AzureBackupRehydrationRequest().withRecoveryPointId("ngj")
+            .withRehydrationPriority(RehydrationPriority.INVALID)
+            .withRehydrationRetentionDuration("czsqpjhvm");
         model = BinaryData.fromObject(model).toObject(AzureBackupRehydrationRequest.class);
-        Assertions.assertEquals("jj", model.recoveryPointId());
-        Assertions.assertEquals(RehydrationPriority.STANDARD, model.rehydrationPriority());
-        Assertions.assertEquals("dudgwdslfhot", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("ngj", model.recoveryPointId());
+        Assertions.assertEquals(RehydrationPriority.INVALID, model.rehydrationPriority());
+        Assertions.assertEquals("czsqpjhvm", model.rehydrationRetentionDuration());
     }
 }

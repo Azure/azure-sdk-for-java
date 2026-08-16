@@ -62,18 +62,14 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     public DiscoveryRule create() {
         this.innerObject = serviceManager.serviceClient()
             .getDiscoveryRules()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DiscoveryRule create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getDiscoveryRules()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), context);
         return this;
     }
 
@@ -90,18 +86,14 @@ public final class DiscoveryRuleImpl implements DiscoveryRule, DiscoveryRule.Def
     public DiscoveryRule apply() {
         this.innerObject = serviceManager.serviceClient()
             .getDiscoveryRules()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DiscoveryRule apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getDiscoveryRules()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, discoveryRuleName, this.innerModel(), context);
         return this;
     }
 

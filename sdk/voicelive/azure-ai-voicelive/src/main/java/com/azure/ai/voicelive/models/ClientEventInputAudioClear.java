@@ -14,7 +14,7 @@ import java.io.IOException;
  * Clears all input audio currently being streamed.
  */
 @Fluent
-public final class ClientEventInputAudioClear extends ClientEvent {
+public final class ClientEventInputAudioClear extends SessionClientEvent {
 
     /*
      * The type of event.

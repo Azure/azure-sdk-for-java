@@ -21,7 +21,7 @@ public class RawExceptionThrowCheck extends AbstractCheck {
     static final String ERROR_MESSAGE = "Directly throwing a new exception is disallowed. Use the "
         + "\"io.clientcore.core.instrumentation.logging.ClientLogger\" API instead, such as "
         + "\"logger.throwableAtError()\" or \"logger.throwableAtWarning()\". See "
-        + "https://github.com/Azure/azure-sdk-for-java/wiki/Client-core:-logging-exceptions-best-practices for more details.";
+        + "https://github.com/Azure/azure-sdk-for-java/blob/main/docs/azure-v2.md#logging-best-practices for more details.";
 
     private static final String[] IGNORED_EXCEPTIONS = new String[] {
         "NullPointerException",

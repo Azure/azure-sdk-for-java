@@ -12,7 +12,7 @@ import com.azure.resourcemanager.dataprotection.models.RehydrationPriority;
  */
 public final class BackupInstancesTriggerRehydrateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/TriggerRehydrate.json
+     * x-ms-original-file: 2026-03-01/BackupInstanceOperations/TriggerRehydrate.json
      */
     /**
      * Sample code: Trigger Rehydrate.

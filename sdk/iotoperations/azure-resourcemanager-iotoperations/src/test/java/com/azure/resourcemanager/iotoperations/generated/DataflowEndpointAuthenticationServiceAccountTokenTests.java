@@ -12,16 +12,16 @@ public final class DataflowEndpointAuthenticationServiceAccountTokenTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointAuthenticationServiceAccountToken model
-            = BinaryData.fromString("{\"audience\":\"nzgmwznmabik\"}")
+            = BinaryData.fromString("{\"audience\":\"udxepxgyqagv\"}")
                 .toObject(DataflowEndpointAuthenticationServiceAccountToken.class);
-        Assertions.assertEquals("nzgmwznmabik", model.audience());
+        Assertions.assertEquals("udxepxgyqagv", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointAuthenticationServiceAccountToken model
-            = new DataflowEndpointAuthenticationServiceAccountToken().withAudience("nzgmwznmabik");
+            = new DataflowEndpointAuthenticationServiceAccountToken().withAudience("udxepxgyqagv");
         model = BinaryData.fromObject(model).toObject(DataflowEndpointAuthenticationServiceAccountToken.class);
-        Assertions.assertEquals("nzgmwznmabik", model.audience());
+        Assertions.assertEquals("udxepxgyqagv", model.audience());
     }
 }

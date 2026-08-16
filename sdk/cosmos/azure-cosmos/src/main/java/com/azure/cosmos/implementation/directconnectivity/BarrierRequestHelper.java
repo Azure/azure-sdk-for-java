@@ -81,6 +81,9 @@ public class BarrierRequestHelper {
         }
 
         barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+        barrierLsnRequest.getHeaders().put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         if (targetLsn != null && targetLsn > 0) {
             barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.TARGET_LSN, targetLsn.toString());

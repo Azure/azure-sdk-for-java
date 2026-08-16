@@ -27,11 +27,6 @@ public final class HealthModelUpdate implements JsonSerializable<HealthModelUpda
      */
     private Map<String, String> tags;
 
-    /*
-     * The resource-specific properties for this resource.
-     */
-    private HealthModelUpdateProperties properties;
-
     /**
      * Creates an instance of HealthModelUpdate class.
      */
@@ -79,26 +74,6 @@ public final class HealthModelUpdate implements JsonSerializable<HealthModelUpda
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    public HealthModelUpdateProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the HealthModelUpdate object itself.
-     */
-    public HealthModelUpdate withProperties(HealthModelUpdateProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -106,7 +81,6 @@ public final class HealthModelUpdate implements JsonSerializable<HealthModelUpda
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,8 +104,6 @@ public final class HealthModelUpdate implements JsonSerializable<HealthModelUpda
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedHealthModelUpdate.tags = tags;
-                } else if ("properties".equals(fieldName)) {
-                    deserializedHealthModelUpdate.properties = HealthModelUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

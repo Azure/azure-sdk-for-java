@@ -15,7 +15,7 @@ import java.util.List;
  * Returned when the text value of an input audio transcription content part is updated.
  */
 @Immutable
-public final class SessionUpdateConversationItemInputAudioTranscriptionDelta extends SessionUpdate {
+public final class SessionUpdateConversationItemInputAudioTranscriptionDelta extends SessionServerEvent {
 
     /*
      * The type of event.
@@ -40,12 +40,6 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
      */
     @Generated
     private String delta;
-
-    /*
-     * The log probabilities of the transcription.
-     */
-    @Generated
-    private List<LogProbProperties> logprobs;
 
     /**
      * Creates an instance of SessionUpdateConversationItemInputAudioTranscriptionDelta class.
@@ -99,16 +93,6 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
     }
 
     /**
-     * Get the logprobs property: The log probabilities of the transcription.
-     *
-     * @return the logprobs value.
-     */
-    @Generated
-    public List<LogProbProperties> getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -120,7 +104,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("content_index", this.contentIndex);
         jsonWriter.writeStringField("delta", this.delta);
-        jsonWriter.writeArrayField("logprobs", this.logprobs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logprobs", this.logProbs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -143,7 +127,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
             ServerEventType type = ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_DELTA;
             Integer contentIndex = null;
             String delta = null;
-            List<LogProbProperties> logprobs = null;
+            List<LogProbProperties> logProbs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -158,7 +142,7 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
                 } else if ("delta".equals(fieldName)) {
                     delta = reader.getString();
                 } else if ("logprobs".equals(fieldName)) {
-                    logprobs = reader.readArray(reader1 -> LogProbProperties.fromJson(reader1));
+                    logProbs = reader.readArray(reader1 -> LogProbProperties.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -169,8 +153,24 @@ public final class SessionUpdateConversationItemInputAudioTranscriptionDelta ext
             deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta.type = type;
             deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta.contentIndex = contentIndex;
             deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta.delta = delta;
-            deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta.logprobs = logprobs;
+            deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta.logProbs = logProbs;
             return deserializedSessionUpdateConversationItemInputAudioTranscriptionDelta;
         });
+    }
+
+    /*
+     * The log probabilities of the transcription.
+     */
+    @Generated
+    private List<LogProbProperties> logProbs;
+
+    /**
+     * Get the logProbs property: The log probabilities of the transcription.
+     *
+     * @return the logProbs value.
+     */
+    @Generated
+    public List<LogProbProperties> getLogProbs() {
+        return this.logProbs;
     }
 }

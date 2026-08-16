@@ -41,7 +41,7 @@ public class MemorySearchAgent {
                 .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
+        BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
         ConversationService conversationService = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
@@ -114,7 +114,7 @@ public class MemorySearchAgent {
         }
     }
 
-    private static void cleanupMemoryStore(MemoryStoresClient memoryStoresClient, String memoryStoreName) {
+    private static void cleanupMemoryStore(BetaMemoryStoresClient memoryStoresClient, String memoryStoreName) {
         if (memoryStoreName == null) {
             return;
         }

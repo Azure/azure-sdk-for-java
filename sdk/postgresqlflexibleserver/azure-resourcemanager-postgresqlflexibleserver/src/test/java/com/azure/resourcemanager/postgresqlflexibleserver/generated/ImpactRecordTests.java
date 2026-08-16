@@ -12,11 +12,11 @@ public final class ImpactRecordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpactRecord model = BinaryData.fromString(
-            "{\"dimensionName\":\"ngiflrzpasccbi\",\"unit\":\"mzdlyjdfqwmkyo\",\"queryId\":6880229731652721243,\"absoluteValue\":48.7261444236292}")
+            "{\"dimensionName\":\"tad\",\"unit\":\"aeukm\",\"queryId\":1547853283947812576,\"absoluteValue\":15.086751899433892}")
             .toObject(ImpactRecord.class);
-        Assertions.assertEquals("ngiflrzpasccbi", model.dimensionName());
-        Assertions.assertEquals("mzdlyjdfqwmkyo", model.unit());
-        Assertions.assertEquals(6880229731652721243L, model.queryId());
-        Assertions.assertEquals(48.7261444236292D, model.absoluteValue());
+        Assertions.assertEquals("tad", model.dimensionName());
+        Assertions.assertEquals("aeukm", model.unit());
+        Assertions.assertEquals(1547853283947812576L, model.queryId());
+        Assertions.assertEquals(15.086751899433892D, model.absoluteValue());
     }
 }

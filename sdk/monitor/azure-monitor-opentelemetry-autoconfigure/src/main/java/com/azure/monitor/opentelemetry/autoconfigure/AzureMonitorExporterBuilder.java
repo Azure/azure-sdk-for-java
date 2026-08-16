@@ -68,8 +68,9 @@ class AzureMonitorExporterBuilder {
     private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
         = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
 
-    private static final String SDKSTATS_DISABLED_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_DISABLED";
-    private static final String SDKSTATS_EXPORT_INTERVAL_ENV_VAR = "APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL";
+    private static final String SDKSTATS_DISABLED_PROPERTY_NAME = "applicationinsights.sdkstats.disabled";
+    private static final String SDKSTATS_DISABLED_ALL_ENV_VAR = "APPLICATIONINSIGHTS_SDKStats_DISABLED_ALL";
+    private static final String SDKSTATS_EXPORT_INTERVAL_PROPERTY_NAME = "applicationinsights.sdkstats.export.interval";
     private static final long SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS = 900; // 15 minutes
 
     private static final Map<String, String> PROPERTIES
@@ -260,15 +261,26 @@ class AzureMonitorExporterBuilder {
     }
 
     private CustomerSdkStats createCustomerSdkStats() {
-        // Use the raw library version number (e.g. "3.6.0") for the customer-facing stats dimension
-        String version = PropertyHelper.getSdkVersionNumber();
+        // Use the raw distro version number (e.g. "1.6.0-beta.1") for the customer-facing stats dimension.
+        String version = VersionGenerator.getSdkVersionNumber();
         return CustomerSdkStats.create(version);
     }
 
     private boolean isCustomerSdkStatsEnabled() {
-        String disabledValue = configProperties.getString(SDKSTATS_DISABLED_ENV_VAR);
-        if ("true".equalsIgnoreCase(disabledValue)) {
-            LOGGER.verbose("Customer SDKStats is disabled via configuration property {}.", SDKSTATS_DISABLED_ENV_VAR);
+        return isCustomerSdkStatsEnabled(configProperties);
+    }
+
+    static boolean isCustomerSdkStatsEnabled(ConfigProperties configProperties) {
+        String disabledAll = configProperties.getString(SDKSTATS_DISABLED_ALL_ENV_VAR);
+        if (disabledAll == null) {
+            disabledAll = Configuration.getGlobalConfiguration().get(SDKSTATS_DISABLED_ALL_ENV_VAR);
+        }
+        if ("true".equalsIgnoreCase(disabledAll)) {
+            return false;
+        }
+        if ("true".equalsIgnoreCase(configProperties.getString(SDKSTATS_DISABLED_PROPERTY_NAME))) {
+            LOGGER.verbose("Customer SDKStats is disabled via configuration property {}.",
+                SDKSTATS_DISABLED_PROPERTY_NAME);
             return false;
         }
         return true;
@@ -277,11 +289,12 @@ class AzureMonitorExporterBuilder {
     private void startCustomerSdkStats(CustomerSdkStats customerSdkStats,
         CustomerSdkStatsTelemetryPipelineListener customerSdkStatsListener, Resource resource) {
         // Get export interval from configuration or use default
-        long exportIntervalSeconds
-            = configProperties.getLong(SDKSTATS_EXPORT_INTERVAL_ENV_VAR, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
+        long exportIntervalSeconds = configProperties.getLong(SDKSTATS_EXPORT_INTERVAL_PROPERTY_NAME,
+            SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
         if (exportIntervalSeconds <= 0) {
             LOGGER.warning("Value for {} must be positive: {}. Using default {} seconds.",
-                SDKSTATS_EXPORT_INTERVAL_ENV_VAR, exportIntervalSeconds, SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
+                SDKSTATS_EXPORT_INTERVAL_PROPERTY_NAME, exportIntervalSeconds,
+                SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS);
             exportIntervalSeconds = SDKSTATS_DEFAULT_EXPORT_INTERVAL_SECONDS;
         }
 

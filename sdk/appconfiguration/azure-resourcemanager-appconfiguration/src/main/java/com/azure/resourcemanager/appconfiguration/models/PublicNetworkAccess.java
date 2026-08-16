@@ -8,18 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
+ * Control permission for data plane traffic coming from public networks.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /**
-     * Static value Enabled for PublicNetworkAccess.
+     * Allow public network access to the data plane.
      */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
     /**
-     * Static value Disabled for PublicNetworkAccess.
+     * Disallow public network access to the data plane.
      */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
+
+    /**
+     * Let network security perimeter configuration control public network access to the data plane.
+     */
+    public static final PublicNetworkAccess SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
 
     /**
      * Creates a new instance of PublicNetworkAccess value.

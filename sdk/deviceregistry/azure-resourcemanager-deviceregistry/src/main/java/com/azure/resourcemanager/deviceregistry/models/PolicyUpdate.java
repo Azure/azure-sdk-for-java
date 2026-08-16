@@ -10,18 +10,12 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * The type used for update operations of the Policy.
  */
 @Fluent
 public final class PolicyUpdate implements JsonSerializable<PolicyUpdate> {
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
     /*
      * The resource-specific properties for this resource.
      */
@@ -31,26 +25,6 @@ public final class PolicyUpdate implements JsonSerializable<PolicyUpdate> {
      * Creates an instance of PolicyUpdate class.
      */
     public PolicyUpdate() {
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the PolicyUpdate object itself.
-     */
-    public PolicyUpdate withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -79,7 +53,6 @@ public final class PolicyUpdate implements JsonSerializable<PolicyUpdate> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -99,10 +72,7 @@ public final class PolicyUpdate implements JsonSerializable<PolicyUpdate> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPolicyUpdate.tags = tags;
-                } else if ("properties".equals(fieldName)) {
+                if ("properties".equals(fieldName)) {
                     deserializedPolicyUpdate.properties = PolicyUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();

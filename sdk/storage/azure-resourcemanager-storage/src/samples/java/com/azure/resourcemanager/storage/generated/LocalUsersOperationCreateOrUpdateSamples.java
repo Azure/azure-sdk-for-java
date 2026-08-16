@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LocalUsersOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01/LocalUserCreate.json
+     * x-ms-original-file: 2026-04-01/LocalUserCreate.json
      */
     /**
      * Sample code: CreateLocalUser.
@@ -39,7 +39,7 @@ public final class LocalUsersOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/LocalUserCreateNFSv3Enabled.json
+     * x-ms-original-file: 2026-04-01/LocalUserCreateNFSv3Enabled.json
      */
     /**
      * Sample code: CreateNFSv3EnabledLocalUser.
@@ -55,7 +55,7 @@ public final class LocalUsersOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-08-01/LocalUserUpdate.json
+     * x-ms-original-file: 2026-04-01/LocalUserUpdate.json
      */
     /**
      * Sample code: UpdateLocalUser.

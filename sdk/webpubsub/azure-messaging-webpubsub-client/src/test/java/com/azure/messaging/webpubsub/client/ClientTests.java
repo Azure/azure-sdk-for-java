@@ -93,9 +93,10 @@ public class ClientTests extends TestBase {
 
     @Test
     @LiveOnly
-    public void testClientCloseable() {
+    public void testClientCloseable() throws InterruptedException {
         CountDownLatch connectedLatch = new CountDownLatch(1);
         CountDownLatch stoppedLatch = new CountDownLatch(1);
+        CountDownLatch disconnectedLatch = new CountDownLatch(1);
         AtomicBoolean stoppedEventReceived = new AtomicBoolean(false);
         AtomicBoolean disconnectedEventReceived = new AtomicBoolean(false);
 
@@ -105,16 +106,20 @@ public class ClientTests extends TestBase {
                 stoppedLatch.countDown();
             });
             client.addOnConnectedEventHandler(connectedEvent -> connectedLatch.countDown());
-            client.addOnDisconnectedEventHandler(disconnectedEvent -> disconnectedEventReceived.set(true));
+            client.addOnDisconnectedEventHandler(disconnectedEvent -> {
+                disconnectedEventReceived.set(true);
+                disconnectedLatch.countDown();
+            });
 
             client.start();
 
-            connectedLatch.countDown();
+            Assertions.assertTrue(connectedLatch.await(10, TimeUnit.SECONDS));
 
             // stop not called explicitly
         }
 
-        stoppedLatch.countDown();
+        Assertions.assertTrue(stoppedLatch.await(10, TimeUnit.SECONDS));
+        Assertions.assertTrue(disconnectedLatch.await(10, TimeUnit.SECONDS));
 
         // verify client stopped via Closeable
         Assertions.assertTrue(stoppedEventReceived.get());

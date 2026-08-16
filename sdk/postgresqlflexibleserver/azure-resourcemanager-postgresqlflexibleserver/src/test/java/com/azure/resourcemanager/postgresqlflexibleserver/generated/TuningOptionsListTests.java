@@ -12,8 +12,8 @@ public final class TuningOptionsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TuningOptionsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"state\":\"jyihsasbhudypo\"},\"id\":\"uemsly\",\"name\":\"sqy\",\"type\":\"pfoobr\"},{\"properties\":{\"state\":\"y\"},\"id\":\"jnygq\",\"name\":\"nfwqzdzgtilaxhn\",\"type\":\"hqlyvijo\"}],\"nextLink\":\"iv\"}")
+            "{\"value\":[{\"properties\":{\"state\":\"swpchwahfbousn\"},\"id\":\"pgfewetwlyx\",\"name\":\"ncxykxhdjhlimm\",\"type\":\"cxfhbcporxv\"}],\"nextLink\":\"jzh\"}")
             .toObject(TuningOptionsList.class);
-        Assertions.assertEquals("iv", model.nextLink());
+        Assertions.assertEquals("jzh", model.nextLink());
     }
 }

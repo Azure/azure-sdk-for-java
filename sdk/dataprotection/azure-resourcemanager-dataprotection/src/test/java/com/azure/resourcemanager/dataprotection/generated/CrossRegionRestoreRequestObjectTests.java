@@ -19,20 +19,20 @@ public final class CrossRegionRestoreRequestObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CrossRegionRestoreRequestObject model = BinaryData.fromString(
-            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"kfrlhrxsbky\"},\"sourceDataStoreType\":\"OperationalStore\",\"sourceResourceId\":\"ca\",\"resourceGuardOperationRequests\":[\"bpzkafkuwbc\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"ehhseyvjusrts\"}},\"crossRegionRestoreDetails\":{\"sourceRegion\":\"hspkdeemao\",\"sourceBackupInstanceId\":\"mx\"}}")
+            "{\"restoreRequestObject\":{\"objectType\":\"AzureBackupRestoreRequest\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"ofmxagkvtmelmqkr\"},\"sourceDataStoreType\":\"OperationalStore\",\"sourceResourceId\":\"vljua\",\"resourceGuardOperationRequests\":[\"uhcdhm\",\"ualaexqpvfadmw\",\"rcrgvx\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"zlfmisgwbnbbeld\"}},\"crossRegionRestoreDetails\":{\"sourceRegion\":\"wkz\",\"sourceBackupInstanceId\":\"ali\"}}")
             .toObject(CrossRegionRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("kfrlhrxsbky", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals("ofmxagkvtmelmqkr", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
         Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE,
             model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("ca", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("bpzkafkuwbc", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("vljua", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("uhcdhm", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("ehhseyvjusrts",
+        Assertions.assertEquals("zlfmisgwbnbbeld",
             model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("hspkdeemao", model.crossRegionRestoreDetails().sourceRegion());
-        Assertions.assertEquals("mx", model.crossRegionRestoreDetails().sourceBackupInstanceId());
+        Assertions.assertEquals("wkz", model.crossRegionRestoreDetails().sourceRegion());
+        Assertions.assertEquals("ali", model.crossRegionRestoreDetails().sourceBackupInstanceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,26 +40,26 @@ public final class CrossRegionRestoreRequestObjectTests {
         CrossRegionRestoreRequestObject model = new CrossRegionRestoreRequestObject()
             .withRestoreRequestObject(new AzureBackupRestoreRequest()
                 .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                    .withRestoreLocation("kfrlhrxsbky"))
+                    .withRestoreLocation("ofmxagkvtmelmqkr"))
                 .withSourceDataStoreType(SourceDataStoreType.OPERATIONAL_STORE)
-                .withSourceResourceId("ca")
-                .withResourceGuardOperationRequests(Arrays.asList("bpzkafkuwbc"))
+                .withSourceResourceId("vljua")
+                .withResourceGuardOperationRequests(Arrays.asList("uhcdhm", "ualaexqpvfadmw", "rcrgvx"))
                 .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
-                    .withUserAssignedIdentityArmUrl("ehhseyvjusrts")))
+                    .withUserAssignedIdentityArmUrl("zlfmisgwbnbbeld")))
             .withCrossRegionRestoreDetails(
-                new CrossRegionRestoreDetails().withSourceRegion("hspkdeemao").withSourceBackupInstanceId("mx"));
+                new CrossRegionRestoreDetails().withSourceRegion("wkz").withSourceBackupInstanceId("ali"));
         model = BinaryData.fromObject(model).toObject(CrossRegionRestoreRequestObject.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS,
             model.restoreRequestObject().restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("kfrlhrxsbky", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals("ofmxagkvtmelmqkr", model.restoreRequestObject().restoreTargetInfo().restoreLocation());
         Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE,
             model.restoreRequestObject().sourceDataStoreType());
-        Assertions.assertEquals("ca", model.restoreRequestObject().sourceResourceId());
-        Assertions.assertEquals("bpzkafkuwbc", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("vljua", model.restoreRequestObject().sourceResourceId());
+        Assertions.assertEquals("uhcdhm", model.restoreRequestObject().resourceGuardOperationRequests().get(0));
         Assertions.assertFalse(model.restoreRequestObject().identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("ehhseyvjusrts",
+        Assertions.assertEquals("zlfmisgwbnbbeld",
             model.restoreRequestObject().identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("hspkdeemao", model.crossRegionRestoreDetails().sourceRegion());
-        Assertions.assertEquals("mx", model.crossRegionRestoreDetails().sourceBackupInstanceId());
+        Assertions.assertEquals("wkz", model.crossRegionRestoreDetails().sourceRegion());
+        Assertions.assertEquals("ali", model.crossRegionRestoreDetails().sourceBackupInstanceId());
     }
 }

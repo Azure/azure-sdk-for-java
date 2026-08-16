@@ -32,19 +32,21 @@ private[cosmos] object CosmosConstants {
   object MetricNames {
     val BytesWritten = "bytesWritten"
     val RecordsWritten = "recordsWritten"
+    val RecordsSkipped = "cosmos.recordsSkipped"
     val TotalRequestCharge = "cosmos.totalRequestCharge"
 
     val ChangeFeedLsnRange = "cosmos.changeFeed.partition.lsnRange"
     val ChangeFeedItemsCnt = "cosmos.changeFeed.partition.itemsCnt"
     val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
 
-    val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
+    val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge, RecordsSkipped)
   }
 
   object Properties {
     val Id = "id"
     val ETag = "_etag"
     val ItemIdentity = "_itemIdentity"
+    val PartitionKeyIdentity = "_partitionKeyIdentity"
   }
 
   object StatusCodes {

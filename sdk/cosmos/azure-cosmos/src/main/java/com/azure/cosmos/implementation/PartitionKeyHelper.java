@@ -16,6 +16,10 @@ import java.util.List;
  * Utility class for partition key extraction
  */
 public class PartitionKeyHelper {
+    private static ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor partitionKeyAccessor() {
+        return ImplementationBridgeHelpers.PartitionKeyHelper.getPartitionKeyAccessor();
+    }
+
     public static PartitionKeyInternal extractPartitionKeyValueFromDocument(
         JsonSerializable document,
         PartitionKeyDefinition partitionKeyDefinition) {
@@ -39,14 +43,10 @@ public class PartitionKeyHelper {
                         }
 
                         if (value instanceof PartitionKeyInternal) {
-                            return ImplementationBridgeHelpers
-                                .PartitionKeyHelper
-                                .getPartitionKeyAccessor()
+                            return partitionKeyAccessor()
                                 .toPartitionKey((PartitionKeyInternal) value);
                         } else {
-                            return ImplementationBridgeHelpers
-                                .PartitionKeyHelper
-                                .getPartitionKeyAccessor()
+                            return partitionKeyAccessor()
                                 .toPartitionKey(PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false));
                         }
                     }
@@ -59,9 +59,7 @@ public class PartitionKeyHelper {
                         partitionKeyValues[pathIter] = document.getObjectByPath(partitionPathParts);
                     }
 
-                    return ImplementationBridgeHelpers
-                        .PartitionKeyHelper
-                        .getPartitionKeyAccessor()
+                    return partitionKeyAccessor()
                         .toPartitionKey(PartitionKeyInternal.fromObjectArray(partitionKeyValues, false));
 
                 default:

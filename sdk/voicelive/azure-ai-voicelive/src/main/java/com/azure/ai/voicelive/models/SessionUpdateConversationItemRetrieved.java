@@ -14,7 +14,7 @@ import java.io.IOException;
  * Returned when a conversation item is retrieved with `conversation.item.retrieve`.
  */
 @Immutable
-public final class SessionUpdateConversationItemRetrieved extends SessionUpdate {
+public final class SessionUpdateConversationItemRetrieved extends SessionServerEvent {
 
     /*
      * The type of event.

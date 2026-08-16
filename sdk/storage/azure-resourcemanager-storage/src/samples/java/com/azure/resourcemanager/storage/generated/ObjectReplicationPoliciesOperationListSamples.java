@@ -9,7 +9,7 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class ObjectReplicationPoliciesOperationListSamples {
     /*
-     * x-ms-original-file: 2025-08-01/StorageAccountListObjectReplicationPolicies.json
+     * x-ms-original-file: 2026-04-01/StorageAccountListObjectReplicationPolicies.json
      */
     /**
      * Sample code: StorageAccountListObjectReplicationPolicies.

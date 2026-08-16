@@ -11,7 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.TuningOptionPar
  */
 public final class TuningOptionsOperationGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/TuningOptionsGet.json
+     * x-ms-original-file: 2026-04-01-preview/TuningOptionsGet.json
      */
     /**
      * Sample code: Get the tuning options of a server.

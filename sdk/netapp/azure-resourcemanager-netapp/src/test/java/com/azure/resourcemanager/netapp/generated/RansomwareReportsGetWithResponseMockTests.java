@@ -20,7 +20,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"eventTime\":\"2021-07-22T22:20:06Z\",\"state\":\"Resolved\",\"severity\":\"None\",\"clearedCount\":1650672637,\"reportedCount\":1355711907,\"suspects\":[{\"extension\":\"sbrcary\",\"resolution\":\"FalsePositive\",\"fileCount\":1833029555,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"aqaj\",\"resolution\":\"PotentialThreat\",\"fileCount\":359395235,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"mk\",\"resolution\":\"FalsePositive\",\"fileCount\":1031224807,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"lubefgybpmfbfu\"},\"id\":\"nmpzk\",\"name\":\"vfy\",\"type\":\"fkd\"}";
+            = "{\"properties\":{\"eventTime\":\"2021-09-06T02:38:41Z\",\"state\":\"Resolved\",\"severity\":\"Low\",\"clearedCount\":468777733,\"reportedCount\":1623615828,\"suspects\":[{\"extension\":\"jxeiy\",\"resolution\":\"PotentialThreat\",\"fileCount\":216127976,\"suspectFiles\":[{},{}]},{\"extension\":\"exh\",\"resolution\":\"FalsePositive\",\"fileCount\":1400683190,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"kbrup\",\"resolution\":\"FalsePositive\",\"fileCount\":1391296754,\"suspectFiles\":[{}]}],\"provisioningState\":\"zacvu\"},\"id\":\"pjpbibnzpp\",\"name\":\"epifexleqirccjc\",\"type\":\"ykcgxvrpjlvcz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class RansomwareReportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RansomwareReport response = manager.ransomwareReports()
-            .getWithResponse("xvztpbnfnqtxj", "omals", "bnfddep", "dwq", "ns", com.azure.core.util.Context.NONE)
+            .getWithResponse("slojfkqidnqt", "qxjhqxcsqhtkbtnq", "rngl", "mbiipsnawwlqk", "nxhhl",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

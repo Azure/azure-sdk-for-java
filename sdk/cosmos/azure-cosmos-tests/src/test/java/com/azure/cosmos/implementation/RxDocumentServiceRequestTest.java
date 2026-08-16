@@ -418,6 +418,30 @@ public class RxDocumentServiceRequestTest {
     }
 
     @Test(groups = { "unit" })
+    public void cloneProducesIndependentHeaderMap() {
+        RxDocumentServiceRequest original = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            "/dbs/db/colls/coll/docs/doc",
+            ResourceType.Document);
+        original.getHeaders().put("x-test-header", "original-value");
+
+        RxDocumentServiceRequest cloned = original.clone();
+
+        // Mutating the cloned request's headers must not affect the original — guards against
+        // the HashMap-corruption race fixed in clone() where hedged availability-strategy
+        // clones previously shared the parent's header map and concurrent mutations during
+        // resolveEffectiveConsistencyHeaders could trigger a resize and lose entries.
+        cloned.getHeaders().put("x-test-header", "cloned-value");
+        cloned.getHeaders().put("x-new-header", "new-value");
+
+        assertThat(original.getHeaders().get("x-test-header")).isEqualTo("original-value");
+        assertThat(original.getHeaders().containsKey("x-new-header")).isFalse();
+        assertThat(cloned.getHeaders().get("x-test-header")).isEqualTo("cloned-value");
+        assertThat(cloned.getHeaders().get("x-new-header")).isEqualTo("new-value");
+    }
+
+    @Test(groups = { "unit" })
     public void createWithInvalidPath() {
         try {
             RxDocumentServiceRequest.create(null, OperationType.Read, ResourceType.Document, "/someInvalidPath", (Map<String, String>)null, null, (ByteBuffer)null);

@@ -21,7 +21,7 @@ public final class DppResourceGuardProxiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"afcba\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"pofoi\",\"defaultResourceRequest\":\"w\"},{\"vaultCriticalOperation\":\"ilkmk\",\"defaultResourceRequest\":\"olvdnd\"},{\"vaultCriticalOperation\":\"auo\",\"defaultResourceRequest\":\"huartv\"}],\"lastUpdatedTime\":\"ukyefchnmnahmnxh\",\"description\":\"jqirwrw\"},\"id\":\"oxffif\",\"name\":\"xwrsnew\",\"type\":\"ozqvbubqmam\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"cgbjbgdlfgt\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"aquflqbctqha\",\"defaultResourceRequest\":\"jrwdkqz\"},{\"vaultCriticalOperation\":\"yjleziunjx\",\"defaultResourceRequest\":\"zantkwceg\"}],\"lastUpdatedTime\":\"mlbnseq\",\"description\":\"jjvpilguooqja\"},\"id\":\"d\",\"name\":\"tg\",\"type\":\"eiookjbsah\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class DppResourceGuardProxiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies()
-            .getWithResponse("qylkmqpzoyhlf", "cgwgcloxoebqinji", "nwjfu", com.azure.core.util.Context.NONE)
+            .getWithResponse("jqatucoigebxn", "nwfepbnwg", "m", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("afcba", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("pofoi",
+        Assertions.assertEquals("cgbjbgdlfgt", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("aquflqbctqha",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("w",
+        Assertions.assertEquals("jrwdkqz",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("ukyefchnmnahmnxh", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("jqirwrw", response.properties().description());
+        Assertions.assertEquals("mlbnseq", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("jjvpilguooqja", response.properties().description());
     }
 }

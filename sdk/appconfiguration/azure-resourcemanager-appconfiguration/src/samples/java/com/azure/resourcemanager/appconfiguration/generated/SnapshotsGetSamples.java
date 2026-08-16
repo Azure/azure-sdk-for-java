@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appconfiguration.generated;
  */
 public final class SnapshotsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/ConfigurationStoresGetSnapshot.json
+     * x-ms-original-file: 2025-08-01-preview/ConfigurationStoresGetSnapshot.json
      */
     /**
      * Sample code: Snapshots_Get.

@@ -13,6 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.databricks.models.ComputeMode;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.Workspace;
@@ -71,17 +72,13 @@ public class DatabricksTests extends TestProxyTestBase {
         Workspace workspace = null;
         try {
             String workspaceName = "workspace" + randomPadding();
-            String managedResourceGroupId = resourceManager.resourceGroups()
-                .getByName(resourceGroupName)
-                .id()
-                .replace(resourceGroupName, "databricks-" + resourceGroupName);
             // @embedmeStart
             workspace = databricksManager.workspaces()
                 .define(workspaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withManagedResourceGroupId(managedResourceGroupId)
-                .withSku(new Sku().withName("standard"))
+                .withComputeMode(ComputeMode.SERVERLESS)
+                .withSku(new Sku().withName("premium"))
                 .create();
             // @embedmeEnd
 
