@@ -43,6 +43,7 @@ class AzureKeyVaultSslBundleRegistrarTests {
     @AfterEach
     void cleanupProvider() {
         Security.removeProvider(KeyVaultJcaProvider.PROVIDER_NAME);
+        System.clearProperty("azure.keyvault.jca.disable-aia-download");
     }
 
     @Test
