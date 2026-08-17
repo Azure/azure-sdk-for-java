@@ -1,0 +1,10 @@
+diff --git a/sdk/contosocompute/azure-resourcemanager-contosocompute/src/main/java/com/azure/resourcemanager/contosocompute/Placements.java b/sdk/contosocompute/azure-resourcemanager-contosocompute/src/main/java/com/azure/resourcemanager/contosocompute/Placements.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contosocompute/azure-resourcemanager-contosocompute/src/main/java/com/azure/resourcemanager/contosocompute/Placements.java
+@@ -0,0 +1,5 @@
++package com.azure.resourcemanager.contosocompute;
++
++public interface Placements {
++    Placement get(String resourceGroupName, String placementName);
++}

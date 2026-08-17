@@ -12,9 +12,9 @@ public final class TieringCostRehydrationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TieringCostRehydrationInfo model = BinaryData.fromString(
-            "{\"objectType\":\"TieringCostRehydrationInfo\",\"rehydrationSizeInBytes\":6838146046681775912,\"retailRehydrationCostPerGBPerMonth\":71.71010555949356}")
+            "{\"objectType\":\"TieringCostRehydrationInfo\",\"rehydrationSizeInBytes\":4872797977024854526,\"retailRehydrationCostPerGBPerMonth\":35.383243709548005}")
             .toObject(TieringCostRehydrationInfo.class);
-        Assertions.assertEquals(6838146046681775912L, model.rehydrationSizeInBytes());
-        Assertions.assertEquals(71.71010555949356, model.retailRehydrationCostPerGBPerMonth());
+        Assertions.assertEquals(4872797977024854526L, model.rehydrationSizeInBytes());
+        Assertions.assertEquals(35.383243709548005, model.retailRehydrationCostPerGBPerMonth());
     }
 }
