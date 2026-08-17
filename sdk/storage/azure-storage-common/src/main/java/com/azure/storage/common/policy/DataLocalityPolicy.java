@@ -35,7 +35,7 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
      * When present and set to a non-null, non-empty absolute endpoint URL string, this policy rewrites the
      * outgoing request's host/port to that endpoint.
      */
-    public static final String LAYOUT_ENDPOINT_KEY = "Azure-Storage-LayoutEndpoint";
+    public static final String LAYOUT_ENDPOINT_KEY = "Azure.Storage.LayoutEndpoint";
 
     /**
      * Creates a new instance of {@link DataLocalityPolicy}.
@@ -57,6 +57,8 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
 
     private static void applyLayoutEndpoint(HttpPipelineCallContext context) {
         Optional<Object> endpointData = context.getData(LAYOUT_ENDPOINT_KEY);
+        HttpRequest request = context.getHttpRequest();
+
         if (!endpointData.isPresent() || !(endpointData.get() instanceof String)) {
             return;
         }
@@ -66,30 +68,19 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
             return;
         }
 
-        HttpRequest request = context.getHttpRequest();
         try {
             UrlBuilder requestUrlBuilder = UrlBuilder.parse(request.getUrl().toString());
             UrlBuilder endpointUrlBuilder = UrlBuilder.parse(endpoint);
 
-            String originalAuthority = getAuthority(requestUrlBuilder);
+            String originalAuthority = request.getUrl().getAuthority();
             requestUrlBuilder.setHost(endpointUrlBuilder.getHost());
-            Integer endpointPort = endpointUrlBuilder.getPort();
-            if (endpointPort == null) {
-                requestUrlBuilder.setPort((String) null);
-            } else {
-                requestUrlBuilder.setPort(endpointPort);
-            }
+            requestUrlBuilder.setPort(endpointUrlBuilder.getPort());
 
             request.setUrl(requestUrlBuilder.toString());
             request.setHeader(HttpHeaderName.HOST, originalAuthority);
         } catch (RuntimeException ex) {
             LOGGER.warning("Invalid data locality endpoint. Skipping request URL rewrite.", ex);
         }
-    }
-
-    private static String getAuthority(UrlBuilder urlBuilder) {
-        Integer port = urlBuilder.getPort();
-        return port == null ? urlBuilder.getHost() : urlBuilder.getHost() + ":" + port;
     }
 
     /**
