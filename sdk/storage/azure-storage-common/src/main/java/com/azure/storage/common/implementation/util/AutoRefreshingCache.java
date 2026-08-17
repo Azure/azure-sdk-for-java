@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache.ExpiringValue;
 
 /**
- * Cache for container-scoped storage session credentials.
+ * Cache for expiring storage values.
  */
 public final class AutoRefreshingCache<T extends ExpiringValue> {
     public interface ValueProvider<T extends ExpiringValue> {
@@ -58,7 +58,7 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
             return Mono.just(current);
         }
 
-        return startSessionCreationAsync();
+        return startValueCreationAsync();
     }
 
     public T getValidValueSync() {
@@ -116,8 +116,8 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
             refreshing = true;
         }
 
-        startSessionCreationAsync().subscribe(ignored -> {
-        }, error -> LOGGER.warning("Background session refresh failed.", error));
+        startValueCreationAsync().subscribe(ignored -> {
+        }, error -> LOGGER.warning("Background value refresh failed.", error));
     }
 
     public void forceRefreshValueInBackground() {
@@ -130,7 +130,7 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
         refreshValueInBackground();
     }
 
-    private Mono<T> startSessionCreationAsync() {
+    private Mono<T> startValueCreationAsync() {
         synchronized (creationLock) {
             OffsetDateTime now = OffsetDateTime.now(clock);
             T current = value;
