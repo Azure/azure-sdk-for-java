@@ -6,7 +6,7 @@
 #### Features Added
 
 - Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
-- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#47977](https://github.com/Azure/azure-sdk-for-java/pull/47977))
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 
 #### Bugs Fixed
 

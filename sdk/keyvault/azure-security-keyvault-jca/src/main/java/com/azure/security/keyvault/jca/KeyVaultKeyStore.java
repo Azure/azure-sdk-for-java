@@ -122,9 +122,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * <code>azure.keyvault.uri</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> and
-    * <code>azure.keyvault.managedIdentity</code>, and
-    * <code>azure.keyvault.jca.disable-aia-download</code> to initialize the
+     * <code>azure.keyvault.clientSecret</code>,
+     * <code>azure.keyvault.managedIdentity</code>, and
+     * <code>azure.keyvault.jca.disable-aia-download</code> to initialize the
      * Key Vault client.
      * </p>
      */
