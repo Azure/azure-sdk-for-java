@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.53.11 (2026-08-10)
+
+### Bugs Fixed
+
+- Fixed certificate credential serialization to use standard Base64 encoding required by Microsoft Graph.
+
 ## 2.53.10 (2026-07-01)
 
 ### Other Changes

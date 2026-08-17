@@ -41,7 +41,7 @@ public interface SolutionVersion {
     SolutionVersionProperties properties();
 
     /**
-     * Gets the extendedLocation property: The extendedLocation property.
+     * Gets the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */
@@ -149,9 +149,9 @@ public interface SolutionVersion {
          */
         interface WithExtendedLocation {
             /**
-             * Specifies the extendedLocation property: The extendedLocation property..
+             * Specifies the extendedLocation property: The extended location of the resource..
              * 
-             * @param extendedLocation The extendedLocation property.
+             * @param extendedLocation The extended location of the resource.
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);

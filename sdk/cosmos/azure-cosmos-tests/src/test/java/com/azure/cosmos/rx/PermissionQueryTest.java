@@ -3,11 +3,11 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PermissionQueryTest extends TestSuiteBase {
 
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncUser createdUser;

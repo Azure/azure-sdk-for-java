@@ -124,8 +124,8 @@ public final class AccessTokenUtil {
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
         String clientId, String clientSecret) {
-        LOGGER.entering("AccessTokenUtil", "getAccessToken",
-            new Object[] { resource, tenantId, clientId, clientSecret });
+        // The client secret is deliberately left out: entering() renders every parameter in clear text.
+        LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[] { resource, tenantId, clientId });
         LOGGER.info("Getting access token using client ID / client secret");
 
         AccessToken result = null;

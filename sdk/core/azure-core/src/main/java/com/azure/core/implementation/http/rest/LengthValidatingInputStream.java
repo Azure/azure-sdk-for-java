@@ -80,8 +80,9 @@ final class LengthValidatingInputStream extends InputStream {
     }
 
     @Override
-    public void close() throws IOException {
-        inner.close();
+    public void close() {
+        // No-op. RestProxy length validation can wrap caller-owned InputStreamContent. Closing this wrapper must not
+        // close the underlying stream, including between retry attempts where the caller-owned stream needs to be reset.
     }
 
     @Override

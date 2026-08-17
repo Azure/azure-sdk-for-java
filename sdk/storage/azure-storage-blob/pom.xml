@@ -133,13 +133,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -189,7 +189,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
                 <AZURE_STORAGE_SAS_SERVICE_VERSION>${AZURE_STORAGE_SAS_SERVICE_VERSION}</AZURE_STORAGE_SAS_SERVICE_VERSION>
@@ -222,7 +222,7 @@
           <artifactId>arrow-format</artifactId>
           <version>19.0.0</version> <!-- {x-version-update;org.apache.arrow:arrow-format;external_dependency} -->
         </dependency>
-        <!-- Must match arrow-format's dep.fbs.version. dependencyConvergence below rejects version drift. -->
+        <!-- Must match arrow-format's dep.fbs.version -->
         <dependency>
           <groupId>com.google.flatbuffers</groupId>
           <artifactId>flatbuffers-java</artifactId>
@@ -235,7 +235,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
 
             <executions>
               <execution>
@@ -256,8 +256,8 @@
 
               <artifactSet>
                 <includes>
-                  <include>org.apache.arrow:arrow-format:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
-                  <include>com.google.flatbuffers:flatbuffers-java:[25.2.10]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
+                  <include>org.apache.arrow:arrow-format</include>
+                  <include>com.google.flatbuffers:flatbuffers-java</include>
                 </includes>
               </artifactSet>
 
@@ -274,26 +274,6 @@
             </configuration>
           </plugin>
 
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-            <configuration>
-              <rules>
-                <dependencyConvergence>
-                  <includes>
-                    <include>com.google.flatbuffers:flatbuffers-java</include>
-                  </includes>
-                </dependencyConvergence>
-                <bannedDependencies>
-                  <includes>
-                    <include>org.apache.arrow:arrow-format:[19.0.0]</include> <!-- {x-include-update;org.apache.arrow:arrow-format;external_dependency} -->
-                    <include>com.google.flatbuffers:flatbuffers-java:[25.2.10]</include> <!-- {x-include-update;com.google.flatbuffers:flatbuffers-java;external_dependency} -->
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>

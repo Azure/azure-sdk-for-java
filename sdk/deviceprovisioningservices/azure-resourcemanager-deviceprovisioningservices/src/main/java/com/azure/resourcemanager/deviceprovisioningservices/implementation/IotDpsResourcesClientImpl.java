@@ -579,8 +579,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -589,7 +589,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProvisioningServiceDescriptionInner>>
-        getByResourceGroupWithResponseAsync(String provisioningServiceName, String resourceGroupName) {
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String provisioningServiceName) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -600,25 +600,25 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata of the provisioning service without SAS keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProvisioningServiceDescriptionInner> getByResourceGroupAsync(String provisioningServiceName,
-        String resourceGroupName) {
-        return getByResourceGroupWithResponseAsync(provisioningServiceName, resourceGroupName)
+    private Mono<ProvisioningServiceDescriptionInner> getByResourceGroupAsync(String resourceGroupName,
+        String provisioningServiceName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, provisioningServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -626,8 +626,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the metadata of the provisioning service without SAS keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProvisioningServiceDescriptionInner> getByResourceGroupWithResponse(String provisioningServiceName,
-        String resourceGroupName, Context context) {
+    public Response<ProvisioningServiceDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String provisioningServiceName, Context context) {
         final String accept = "application/json";
         return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, provisioningServiceName, accept, context);
@@ -636,17 +636,17 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Get the metadata of the provisioning service without SAS keys.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata of the provisioning service without SAS keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProvisioningServiceDescriptionInner getByResourceGroup(String provisioningServiceName,
-        String resourceGroupName) {
-        return getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, Context.NONE).getValue();
+    public ProvisioningServiceDescriptionInner getByResourceGroup(String resourceGroupName,
+        String provisioningServiceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -1043,16 +1043,16 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String provisioningServiceName,
-        String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String provisioningServiceName) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, provisioningServiceName, context))
@@ -1062,15 +1062,15 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String provisioningServiceName, String resourceGroupName) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String provisioningServiceName) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, provisioningServiceName, Context.NONE);
     }
@@ -1078,8 +1078,8 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1087,7 +1087,7 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> deleteWithResponse(String provisioningServiceName, String resourceGroupName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String provisioningServiceName,
         Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, provisioningServiceName, context);
@@ -1096,17 +1096,17 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String provisioningServiceName,
-        String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(provisioningServiceName, resourceGroupName);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String provisioningServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, provisioningServiceName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -1114,24 +1114,24 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String provisioningServiceName, String resourceGroupName) {
-        Response<BinaryData> response = deleteWithResponse(provisioningServiceName, resourceGroupName);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String provisioningServiceName) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, provisioningServiceName);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1139,55 +1139,55 @@ public final class IotDpsResourcesClientImpl implements IotDpsResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String provisioningServiceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String provisioningServiceName,
         Context context) {
-        Response<BinaryData> response = deleteWithResponse(provisioningServiceName, resourceGroupName, context);
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, provisioningServiceName, context);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String provisioningServiceName, String resourceGroupName) {
-        return beginDeleteAsync(provisioningServiceName, resourceGroupName).last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String provisioningServiceName) {
+        return beginDeleteAsync(resourceGroupName, provisioningServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String provisioningServiceName, String resourceGroupName) {
-        beginDelete(provisioningServiceName, resourceGroupName).getFinalResult();
+    public void delete(String resourceGroupName, String provisioningServiceName) {
+        beginDelete(resourceGroupName, provisioningServiceName).getFinalResult();
     }
 
     /**
      * Deletes the Provisioning Service.
      * 
-     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param provisioningServiceName Name of the provisioning service to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String provisioningServiceName, String resourceGroupName, Context context) {
-        beginDelete(provisioningServiceName, resourceGroupName, context).getFinalResult();
+    public void delete(String resourceGroupName, String provisioningServiceName, Context context) {
+        beginDelete(resourceGroupName, provisioningServiceName, context).getFinalResult();
     }
 
     /**
