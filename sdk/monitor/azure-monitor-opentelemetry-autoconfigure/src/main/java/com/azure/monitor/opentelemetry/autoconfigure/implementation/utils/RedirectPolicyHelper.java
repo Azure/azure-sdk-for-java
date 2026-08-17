@@ -17,18 +17,21 @@ public final class RedirectPolicyHelper {
 
     private static final String HTTPS = "https";
 
+    // Grouped by cloud, and within each group telemetry ingestion first then live metrics, following
+    // https://learn.microsoft.com/azure/azure-monitor/fundamentals/azure-monitor-network-access#application-insights-ingestion
     // @formatter:off
     private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES = Collections.unmodifiableList(Arrays.asList(
-        // public cloud
+        // global, shared by every cloud
         ".services.visualstudio.com",
         ".applicationinsights.microsoft.com",
+        // public
         ".applicationinsights.azure.com",
         ".monitor.azure.com",
-        // azure government
+        // government
         ".applicationinsights.us",
         ".applicationinsights.azure.us",
         ".monitor.azure.us",
-        // azure china
+        // china
         ".applicationinsights.azure.cn",
         ".monitor.azure.cn"));
     // @formatter:on
