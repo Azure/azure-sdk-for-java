@@ -27,12 +27,6 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     private final String name;
 
     /*
-     * Whether the Account should be an administrator on the Compute Node. The default value is false.
-     */
-    @Generated
-    private Boolean isAdmin;
-
-    /*
      * The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux
      * Compute Nodes, the expiryTime has a precision up to a day.
      */
@@ -76,14 +70,14 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     }
 
     /**
-     * Get the isAdmin property: Whether the Account should be an administrator on the Compute Node. The default value
-     * is false.
+     * Get the admin property: Whether the Account should be an administrator on the Compute Node. The default value is
+     * false.
      *
-     * @return the isAdmin value.
+     * @return the admin value.
      */
     @Generated
     public Boolean isAdmin() {
-        return this.isAdmin;
+        return this.admin;
     }
 
     /**
@@ -182,7 +176,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeBooleanField("isAdmin", this.isAdmin);
+        jsonWriter.writeBooleanField("isAdmin", this.admin);
         jsonWriter.writeStringField("expiryTime",
             this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
         jsonWriter.writeStringField("password", this.password);
@@ -203,7 +197,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     public static BatchNodeUserCreateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            Boolean isAdmin = null;
+            Boolean admin = null;
             OffsetDateTime expiryTime = null;
             String password = null;
             String sshPublicKey = null;
@@ -213,7 +207,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("isAdmin".equals(fieldName)) {
-                    isAdmin = reader.getNullable(JsonReader::getBoolean);
+                    admin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("expiryTime".equals(fieldName)) {
                     expiryTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -227,7 +221,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
             }
             BatchNodeUserCreateParameters deserializedBatchNodeUserCreateParameters
                 = new BatchNodeUserCreateParameters(name);
-            deserializedBatchNodeUserCreateParameters.isAdmin = isAdmin;
+            deserializedBatchNodeUserCreateParameters.admin = admin;
             deserializedBatchNodeUserCreateParameters.expiryTime = expiryTime;
             deserializedBatchNodeUserCreateParameters.password = password;
             deserializedBatchNodeUserCreateParameters.sshPublicKey = sshPublicKey;
@@ -235,16 +229,9 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
         });
     }
 
-    /**
-     * Set the isAdmin property: Whether the Account should be an administrator on the Compute Node. The default value
-     * is false.
-     *
-     * @param isAdmin the isAdmin value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
+    /*
+     * Whether the Account should be an administrator on the Compute Node. The default value is false.
      */
     @Generated
-    public BatchNodeUserCreateParameters setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-        return this;
-    }
+    private Boolean admin;
 }
