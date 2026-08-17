@@ -23,6 +23,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,6 +51,46 @@ public class ServerSentEventStreamTests {
             assertEquals("comment", event.getComment());
             assertEquals(Duration.ofSeconds(2), event.getRetryAfter());
         }).verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxDeserializesMultipleBufferedEventsOnDemand() {
+        TestResponse response = response(200, BinaryData.fromString("data: one\n\ndata: two\n\ndata: three\n\n"));
+        AtomicInteger conversionCount = new AtomicInteger();
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> {
+            conversionCount.incrementAndGet();
+            return data;
+        }), 0)
+            .thenRequest(1)
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .then(() -> assertEquals(1, conversionCount.get()))
+            .thenRequest(1)
+            .assertNext(event -> assertEquals("two", event.getData()))
+            .then(() -> assertEquals(2, conversionCount.get()))
+            .thenRequest(1)
+            .assertNext(event -> assertEquals("three", event.getData()))
+            .then(() -> assertEquals(3, conversionCount.get()))
+            .verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxNullConversionDoesNotConsumeDemand() {
+        TestResponse response = response(200, BinaryData.fromString("data: skip\n\ndata: deliver\n\n"));
+        AtomicInteger conversionCount = new AtomicInteger();
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> {
+            conversionCount.incrementAndGet();
+            return "skip".equals(data) ? null : data;
+        }), 0)
+            .thenRequest(1)
+            .assertNext(event -> assertEquals("deliver", event.getData()))
+            .then(() -> assertEquals(2, conversionCount.get()))
+            .verifyComplete();
 
         assertTrue(response.closed.get());
     }

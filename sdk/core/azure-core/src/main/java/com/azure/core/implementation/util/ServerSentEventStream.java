@@ -8,8 +8,12 @@ import com.azure.core.http.ServerSentEventListener;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.util.BinaryData;
+import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -54,7 +62,7 @@ public final class ServerSentEventStream {
     public static <T> Flux<ServerSentEvent<T>> decode(BinaryData body, BiFunction<String, String, T> deserializer) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
-        return Flux.defer(() -> decodeBody(body, new StreamState(), deserializer));
+        return new ServerSentEventFlux<>(body.toFluxByteBuffer(), StandardCharsets.UTF_8, deserializer);
     }
 
     /**
@@ -125,7 +133,8 @@ public final class ServerSentEventStream {
             AtomicBoolean terminalObserved = new AtomicBoolean();
             Flux<ServerSentEvent<T>> events = streamResponse.getStatusCode() == 204
                 ? Flux.empty()
-                : decodeBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer);
+                : new ServerSentEventFlux<>(streamResponse.getBody().toFluxByteBuffer(), streamResponse.getCharset(),
+                    deserializer);
             if (terminalPolicy.hasTerminalPredicate()) {
                 events = events.takeUntil(event -> {
                     boolean terminal = terminalPolicy.isTerminal(event);
@@ -200,26 +209,6 @@ public final class ServerSentEventStream {
         }
     }
 
-    private static <T> Flux<ServerSentEvent<T>> decodeBody(BinaryData body, StreamState state,
-        BiFunction<String, String, T> deserializer) {
-        return decodeBody(body, state, StandardCharsets.UTF_8, deserializer);
-    }
-
-    private static <T> Flux<ServerSentEvent<T>> decodeBody(BinaryData body, StreamState state, Charset charset,
-        BiFunction<String, String, T> deserializer) {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state, charset);
-        Flux<ServerSentEventFrame> frames = body.toFluxByteBuffer()
-            .concatMap(buffer -> Flux.fromIterable(decoder.feed(buffer)), 1)
-            .concatWith(Flux.defer(() -> Flux.fromIterable(decoder.finish())));
-        return frames.concatMap(frame -> deserializeFrame(frame, deserializer), 1);
-    }
-
-    private static <T> Flux<ServerSentEvent<T>> deserializeFrame(ServerSentEventFrame frame,
-        BiFunction<String, String, T> deserializer) {
-        T data = deserializer.apply(frame.event, frame.data);
-        return data == null ? Flux.empty() : Flux.just(frame.toEvent(data));
-    }
-
     private static <T> boolean processBody(BinaryData body, StreamState state, Charset charset,
         BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy,
         ServerSentEventListener<T> listener) throws IOException {
@@ -258,6 +247,244 @@ public final class ServerSentEventStream {
             }
         }
         return false;
+    }
+
+    private static final class ServerSentEventFlux<T> extends Flux<ServerSentEvent<T>> {
+        private final Flux<ByteBuffer> source;
+        private final Charset charset;
+        private final BiFunction<String, String, T> deserializer;
+
+        private ServerSentEventFlux(Flux<ByteBuffer> source, Charset charset,
+            BiFunction<String, String, T> deserializer) {
+            this.source = source;
+            this.charset = charset;
+            this.deserializer = deserializer;
+        }
+
+        @Override
+        public void subscribe(CoreSubscriber<? super ServerSentEvent<T>> actual) {
+            source.subscribe(new ServerSentEventSubscriber<>(actual, charset, deserializer));
+        }
+    }
+
+    private static final class ServerSentEventSubscriber<T> implements CoreSubscriber<ByteBuffer>, Subscription {
+        private final CoreSubscriber<? super ServerSentEvent<T>> downstream;
+        private final ServerSentEventDecoder decoder;
+        private final BiFunction<String, String, T> deserializer;
+        private final Queue<ServerSentEventFrame> frames = new ConcurrentLinkedQueue<>();
+
+        private Subscription upstream;
+        private volatile boolean sourceRequested;
+        private volatile boolean done;
+        private volatile boolean cancelled;
+        private Throwable error;
+
+        private final AtomicInteger wip = new AtomicInteger();
+        private final AtomicLong requested = new AtomicLong();
+
+        private ServerSentEventSubscriber(CoreSubscriber<? super ServerSentEvent<T>> downstream, Charset charset,
+            BiFunction<String, String, T> deserializer) {
+            this.downstream = downstream;
+            this.decoder = new ServerSentEventDecoder(new StreamState(), charset);
+            this.deserializer = deserializer;
+        }
+
+        @Override
+        public void onSubscribe(Subscription subscription) {
+            if (Operators.validate(upstream, subscription)) {
+                upstream = subscription;
+                downstream.onSubscribe(this);
+            }
+        }
+
+        @Override
+        public void onNext(ByteBuffer buffer) {
+            if (done || cancelled) {
+                Operators.onNextDropped(buffer, currentContext());
+                return;
+            }
+
+            try {
+                frames.addAll(decoder.feed(buffer));
+            } catch (Throwable throwable) {
+                Exceptions.throwIfFatal(throwable);
+                upstream.cancel();
+                onError(throwable);
+                return;
+            }
+            sourceRequested = false;
+            drain();
+        }
+
+        @Override
+        public void onError(Throwable throwable) {
+            if (done || cancelled) {
+                Operators.onErrorDropped(throwable, currentContext());
+                return;
+            }
+
+            error = throwable;
+            done = true;
+            sourceRequested = false;
+            drain();
+        }
+
+        @Override
+        public void onComplete() {
+            if (done || cancelled) {
+                return;
+            }
+
+            try {
+                frames.addAll(decoder.finish());
+            } catch (Throwable throwable) {
+                Exceptions.throwIfFatal(throwable);
+                onError(throwable);
+                return;
+            }
+            done = true;
+            sourceRequested = false;
+            drain();
+        }
+
+        @Override
+        public void request(long count) {
+            if (Operators.validate(count)) {
+                addDemand(count);
+                drain();
+            }
+        }
+
+        @Override
+        public void cancel() {
+            if (cancelled) {
+                return;
+            }
+
+            cancelled = true;
+            upstream.cancel();
+            if (wip.getAndIncrement() == 0) {
+                frames.clear();
+            }
+        }
+
+        @Override
+        public reactor.util.context.Context currentContext() {
+            return downstream.currentContext();
+        }
+
+        private void drain() {
+            if (wip.getAndIncrement() != 0) {
+                return;
+            }
+
+            int missed = 1;
+            while (true) {
+                if (cancelled) {
+                    frames.clear();
+                    return;
+                }
+
+                Throwable failure = error;
+                if (done && failure != null) {
+                    frames.clear();
+                    downstream.onError(failure);
+                    return;
+                }
+
+                long demand = requested.get();
+                long emitted = 0;
+                while (emitted != demand) {
+                    if (cancelled) {
+                        frames.clear();
+                        return;
+                    }
+
+                    boolean sourceDone = done;
+                    ServerSentEventFrame frame = frames.poll();
+                    boolean empty = frame == null;
+                    if (sourceDone && empty) {
+                        downstream.onComplete();
+                        return;
+                    }
+                    if (empty) {
+                        break;
+                    }
+
+                    T data;
+                    try {
+                        data = deserializer.apply(frame.event, frame.data);
+                    } catch (Throwable throwable) {
+                        Exceptions.throwIfFatal(throwable);
+                        cancelled = true;
+                        upstream.cancel();
+                        frames.clear();
+                        downstream.onError(Operators.onOperatorError(upstream, throwable, frame, currentContext()));
+                        return;
+                    }
+                    if (data == null) {
+                        continue;
+                    }
+
+                    ServerSentEvent<T> event = frame.toEvent(data);
+                    try {
+                        downstream.onNext(event);
+                    } catch (Throwable throwable) {
+                        Exceptions.throwIfFatal(throwable);
+                        cancelled = true;
+                        upstream.cancel();
+                        frames.clear();
+                        downstream.onError(Operators.onOperatorError(upstream, throwable, event, currentContext()));
+                        return;
+                    }
+                    emitted++;
+                }
+
+                if (emitted != 0) {
+                    produced(emitted);
+                }
+
+                if (done && frames.isEmpty()) {
+                    downstream.onComplete();
+                    return;
+                }
+
+                if (requested.get() > 0 && frames.isEmpty() && !sourceRequested) {
+                    sourceRequested = true;
+                    upstream.request(1);
+                }
+
+                missed = wip.addAndGet(-missed);
+                if (missed == 0) {
+                    return;
+                }
+            }
+        }
+
+        private void addDemand(long count) {
+            long current;
+            long updated;
+            do {
+                current = requested.get();
+                updated = Operators.addCap(current, count);
+            } while (!requested.compareAndSet(current, updated));
+        }
+
+        private void produced(long count) {
+            long current;
+            long updated;
+            do {
+                current = requested.get();
+                if (current == Long.MAX_VALUE) {
+                    return;
+                }
+                updated = current - count;
+                if (updated < 0) {
+                    Operators.reportMoreProduced();
+                    updated = 0;
+                }
+            } while (!requested.compareAndSet(current, updated));
+        }
     }
 
     private static final class TerminalEventPolicy<T> {
