@@ -51,4 +51,18 @@ final class ConnectionCacheWrapper {
     boolean isChannelClosed() {
         return isV2 ? cache.isCurrentConnectionClosed() : processor.isChannelClosed();
     }
+
+    /**
+     * Invalidates the current cached connection for connection-level recovery when the
+     * connection is stale but the cache has not detected it via endpoint state signals.
+     * On v2, marks the connection for invalidation so the next get() closes it and creates
+     * a fresh one. On v1, force-closes the current channel immediately.
+     */
+    void invalidateConnection() {
+        if (isV2) {
+            cache.invalidateConnection();
+        } else {
+            processor.forceCloseChannel();
+        }
+    }
 }
