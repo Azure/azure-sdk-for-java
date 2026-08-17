@@ -176,22 +176,6 @@ public abstract class RestProxyBase {
      * @param response the decoded response
      * @param entityType the type of the response entity
      * @param bodyAsObject the response body as an object
-     * @return the {@link Response}
-     * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
-     * Page.
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-        Object bodyAsObject) {
-        return createResponse(response, entityType, bodyAsObject, false);
-    }
-
-    /**
-     * Creates a {@link Response} from the provided decoded response.
-     *
-     * @param response the decoded response
-     * @param entityType the type of the response entity
-     * @param bodyAsObject the response body as an object
      * @param responseBodyStreaming whether the response owns an unconsumed streaming body
      * @return the {@link Response}
      * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
