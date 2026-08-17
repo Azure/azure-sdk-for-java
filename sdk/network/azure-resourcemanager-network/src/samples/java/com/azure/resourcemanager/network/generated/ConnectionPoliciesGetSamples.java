@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/ConnectionPolicyGet.json
+     * x-ms-original-file: 2025-09-01/ConnectionPolicyGet.json
      */
     /**
      * Sample code: ConnectionPolicyGet.

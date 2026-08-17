@@ -13,6 +13,7 @@
   <suppress files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.ClasspathCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.AiaCertificateChainUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
@@ -21,6 +22,7 @@
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
   <suppress files="com.azure.security.keyvault.jca.KeyVaultTrustManager.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.KeyVaultClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSsaPssSignature.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.security.keyvault.jca.implementation.utils.HttpUtil.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
