@@ -1629,7 +1629,7 @@ public class BlobAsyncClientBase {
                             public BlobLayoutCacheValue createSync() {
                                 return fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext).block();
                             }
-                        });
+                        }, BlobLayoutCacheValue::getExpiration);
                     chunkDownloadFunc = (range, conditions) -> layoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());

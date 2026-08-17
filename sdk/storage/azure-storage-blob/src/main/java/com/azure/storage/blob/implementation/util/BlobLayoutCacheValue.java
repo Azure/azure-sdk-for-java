@@ -26,7 +26,7 @@ import java.util.List;
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
-public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringValue {
+public final class BlobLayoutCacheValue {
     private final List<BlobLayoutRange> ranges;
     private final OffsetDateTime expiresOn;
 
@@ -62,9 +62,10 @@ public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringV
     }
 
     /**
-     * {@inheritDoc}
+     * Gets the expiration time used by the layout cache.
+     *
+     * @return The expiration time.
      */
-    @Override
     public OffsetDateTime getExpiration() {
         return expiresOn;
     }

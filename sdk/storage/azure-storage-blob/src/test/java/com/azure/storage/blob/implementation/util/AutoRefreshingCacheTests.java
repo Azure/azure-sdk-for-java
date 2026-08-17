@@ -34,7 +34,8 @@ public class AutoRefreshingCacheTests {
     public void expiredByTimeOnSecondRequestCreatesNewValue() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
 
         OffsetDateTime expiration = now(clock).plus(VALUE_LIFETIME);
         when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration))
@@ -55,7 +56,8 @@ public class AutoRefreshingCacheTests {
     public void automaticBackgroundRefreshFiresWithoutHint() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
 
         when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
         when(provider.createAsync())
@@ -78,7 +80,8 @@ public class AutoRefreshingCacheTests {
     public void noRefreshBeforeJitterWindowWithoutHint() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
 
         when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
 
@@ -93,6 +96,41 @@ public class AutoRefreshingCacheTests {
         verify(provider, never()).createAsync();
     }
 
+    @Test
+    public void forceRefreshStartsBackgroundCreation() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
+        when(provider.createAsync())
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)))));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        cache.forceRefreshValueInBackground();
+
+        verify(provider, times(1)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+    }
+
+    @Test
+    public void invalidateValueCausesSynchronousRecreation() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        when(provider.createSync()).thenReturn(first).thenReturn(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME)));
+
+        assertEquals(first, cache.getValidValueSync());
+        cache.invalidateValue(first);
+
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createSync();
+    }
+
     private static OffsetDateTime now(Clock clock) {
         return OffsetDateTime.now(clock);
     }
@@ -101,7 +139,7 @@ public class AutoRefreshingCacheTests {
         return new TestExpiringValue(value, expiration);
     }
 
-    private static final class TestExpiringValue implements AutoRefreshingCache.ExpiringValue {
+    private static final class TestExpiringValue {
         private final String value;
         private final OffsetDateTime expiration;
 
@@ -110,7 +148,6 @@ public class AutoRefreshingCacheTests {
             this.expiration = expiration;
         }
 
-        @Override
         public OffsetDateTime getExpiration() {
             return expiration;
         }
