@@ -12,10 +12,10 @@ public final class ClientDiscoveryForLogSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryForLogSpecification model
-            = BinaryData.fromString("{\"name\":\"y\",\"displayName\":\"kbfkg\",\"blobDuration\":\"dkexxppofm\"}")
+            = BinaryData.fromString("{\"name\":\"mexgstxgcp\",\"displayName\":\"gmaajrm\",\"blobDuration\":\"jwzrl\"}")
                 .toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("y", model.name());
-        Assertions.assertEquals("kbfkg", model.displayName());
-        Assertions.assertEquals("dkexxppofm", model.blobDuration());
+        Assertions.assertEquals("mexgstxgcp", model.name());
+        Assertions.assertEquals("gmaajrm", model.displayName());
+        Assertions.assertEquals("jwzrl", model.blobDuration());
     }
 }

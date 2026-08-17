@@ -3,12 +3,17 @@
 ## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added lazy loading for Key Vault certificate details in the JCA keystore. Certificate details are now loaded by alias when requested, avoiding unnecessary reads for unconfigured certificates. ([#49774](https://github.com/Azure/azure-sdk-for-java/pull/49774))
+- Added support for `azure.keyvault.jca.certificate-alias-filter-pattern` to filter Key Vault certificate aliases with inclusion/exclusion regex patterns. Inclusion patterns are configured directly and exclusion patterns are prefixed with `!`. Configure more than one filter by appending a suffix to the property name, such as `azure.keyvault.jca.certificate-alias-filter-pattern.1`. A pattern can contain any character as long as the regex is correct. If no filter property is configured, alias filtering is disabled and all discovered Key Vault aliases remain eligible for lazy loading. ([#39487](https://github.com/Azure/azure-sdk-for-java/issues/39487))
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Stopped recording sensitive data in `FINER` level logs. Review any logs captured at the `FINER` level or lower in previous library versions and rotate any sensitive data contained there.
+- Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault does not end in a self-signed root, the missing issuer certificates are now resolved at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Responses are cached by URL so subsequent loads can reuse them without another network request. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
 
 ### Other Changes
+- Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. Set to `true` to disable (defaults to `false` for backward compatibility).
 
 ## 2.12.0 (2026-07-24)
 

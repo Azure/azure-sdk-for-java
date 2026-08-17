@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,30 @@
 
 ### Other Changes
 
+## 2.3.0 (2026-08-06)
+
+### Features Added
+
+- Added `AzureUserSecurityContext` and `AzureCreateResponseOptions.setUserSecurityContext(...)` for supplying application and end-user context to Microsoft Defender for Cloud when creating an Azure response. See [Protecting AI applications](https://aka.ms/TP4AI/Documentation/EndUserContext) for details.
+- Added `AgentIdentityStatus` (values `ACTIVE` and `DISABLED`) and `AgentIdentity.getStatus()` to expose the status of an agent's instance identity or blueprint identity.
+- Added an `allowedCallers` property to many tool models, backed by the new `CallableToolAllowedCaller` enum (`DIRECT`, `PROGRAMMATIC`), so callers can restrict how a tool may be invoked. Supported types include `ApplyPatchToolParameter`, `CodeInterpreterTool`, `CodeInterpreterToolboxTool`, `CustomToolParameter`, `FunctionShellToolParameter`, `FunctionTool`, `McpTool`, and `McpToolboxTool`.
+- Added programmatic tool calling support: new `ProgrammaticToolCallingParameter` tool and `ToolType.PROGRAMMATIC_TOOL_CALLING` value.
+- Toolbox Search graduated to general availability. Added `ToolSearchToolboxTool` and `ToolboxToolType.TOOLBOX_SEARCH` for the GA tool; the preview `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is retained alongside for backward compatibility.
+- Added `McpTool.setTunnelId(...)` / `getTunnelId()` and the same on `McpToolboxTool` to route MCP calls through a Secure MCP Tunnel as an alternative to `serverUrl` or `connectorId`.
+- Added `FunctionTool.setOutputSchema(...)` / `getOutputSchema()` for declaring the JSON schema of a function tool's return payload.
+- Added `OptimizationOptions.setMaxStalls(...)` / `getMaxStalls()` for configuring early-stop behavior of preview agent-optimization jobs.
+- Added `ResponseUsageInputTokensDetails.getCacheWriteTokens()` to expose the number of tokens written to the prompt cache in a response.
+
+### Breaking Changes
+
+- `BetaAgentsClient.createOptimizationJob(OptimizationJob)` and `createOptimizationJob(OptimizationJob, String)` were replaced by long-running operations `beginCreateOptimizationJob(OptimizationJob)` and `beginCreateOptimizationJob(OptimizationJob, String)`, which return `SyncPoller<OptimizationJob, OptimizationJobResult>` instead of `OptimizationJob`. The corresponding `BetaAgentsAsyncClient` methods now return `PollerFlux<OptimizationJob, OptimizationJobResult>`. The protocol method was likewise replaced by `beginCreateOptimizationJob(BinaryData, RequestOptions)` returning `SyncPoller<BinaryData, BinaryData>` / `PollerFlux<BinaryData, BinaryData>`.
+- `ResponseUsageInputTokensDetails` now also carries a `cacheWriteTokens` field. Deserialized instances continue to work, but any code depending on the previous single-field structure should be updated to read the new value.
+
+### Other Changes
+
+- Refined preview annotations. `AgentDefinition` and `CreateAgentVersionInput` are no longer marked `@Beta` at the class level; instead the preview-only fields (for example, `CreateAgentVersionInput.getDefinition()` and `CreateAgentVersionInput.isDraft()`) are individually annotated. Additional preview tool classes such as `A2APreviewTool`, `BingCustomSearchPreviewTool`, `BrowserAutomationPreviewTool`, `FabricIqPreviewTool`, `MemorySearchPreviewTool`, `MicrosoftFabricPreviewTool`, `SharepointPreviewTool`, `WorkIqPreviewTool`, and their toolbox counterparts are now marked `@Beta` so preview surface area is explicit in generated API docs.
+- Reworked internal LRO polling-strategy customizations so that both `BetaMemoryStoresClient` and `BetaAgentsClient` long-running operations inherit the per-client `Foundry-Features` value from the builder pipeline instead of a hardcoded polling-only header. This lets each Beta sub-client's poll GETs carry the same preview opt-ins as its initial request.
+- Regenerated client from the updated TypeSpec specification.
 - Updated version of `openai` client library to `4.45.0`.
 
 ## 2.2.0 (2026-07-01)

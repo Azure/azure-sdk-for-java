@@ -5,10 +5,15 @@ package com.azure.security.keyvault.jca.implementation;
 
 import com.azure.security.keyvault.jca.PropertyConvertorUtils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
+import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItemAttributes;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
+import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
+import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
+import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
+import com.azure.security.keyvault.jca.implementation.utils.CertificateUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
 import org.junit.jupiter.api.Test;
@@ -16,13 +21,29 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.Key;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,6 +53,16 @@ import static org.mockito.Mockito.times;
 
 public class KeyVaultClientTest {
     private static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
+
+    private static final String CERTIFICATE_ALIAS = "client-cert";
+
+    private static final String CERTIFICATE_URI
+        = KEY_VAULT_TEST_URI_GLOBAL + "certificates/" + CERTIFICATE_ALIAS + API_VERSION_POSTFIX;
+
+    private static final String VERSIONED_KEY_ID = KEY_VAULT_TEST_URI_GLOBAL + "keys/" + CERTIFICATE_ALIAS + "/v1";
+
+    private static final String VERSIONED_SECRET_ID
+        = KEY_VAULT_TEST_URI_GLOBAL + "secrets/" + CERTIFICATE_ALIAS + "/v1";
 
     @Test
     public void testGetAliasWithCertificateInfoWith0Page() {
@@ -330,6 +361,418 @@ public class KeyVaultClientTest {
             assertEquals(1, result.size());
             assertTrue(result.contains("fakeCertificateItem"));
         }
+    }
+
+    @Test
+    public void testCertificateChainUsesVersionedSecretId() throws Exception {
+        CertificateBundle certificateBundle = createCertificateBundle(false);
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue(new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
+            StandardCharsets.UTF_8));
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(CERTIFICATE_URI), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(certificateBundle));
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            CertificateVersion certificateVersion = keyVaultClient.resolveCertificateVersion(CERTIFICATE_ALIAS);
+            Certificate[] chain = keyVaultClient.getCertificateChainForVersion(certificateVersion);
+
+            assertEquals(3, chain.length);
+            utilities.verify(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()), times(1));
+        }
+    }
+
+    @Test
+    public void testCertificateChainJsonParsingFailureIsPropagated() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn("{invalid-json");
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to parse certificate chain response for alias: " + CERTIFICATE_ALIAS,
+                exception.getMessage());
+            assertTrue(exception.getCause() instanceof IOException);
+        }
+    }
+
+    @Test
+    public void testCertificateChainMissingHttpResponseIsPropagated() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(null);
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to load certificate chain response for alias: " + CERTIFICATE_ALIAS,
+                exception.getMessage());
+        }
+    }
+
+    @Test
+    public void testCertificateChainHttpFailureIsPropagatedWithoutWrapping() {
+        RuntimeException httpFailure = new RuntimeException("Key Vault returned HTTP 429");
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenThrow(httpFailure);
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            RuntimeException exception = assertThrows(RuntimeException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertSame(httpFailure, exception);
+        }
+    }
+
+    @Test
+    public void testCertificateChainMissingSecretValueIsPropagated() {
+        SecretBundle secretBundle = new SecretBundle();
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Certificate chain response has no secret value for alias: " + CERTIFICATE_ALIAS,
+                exception.getMessage());
+        }
+    }
+
+    @Test
+    public void testCertificateChainMissingSecretBundleIsPropagated() {
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn("null");
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Certificate chain response has no secret value for alias: " + CERTIFICATE_ALIAS,
+                exception.getMessage());
+        }
+    }
+
+    @Test
+    public void testCertificateChainPemDecodingFailureIsPropagated() {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue("-----BEGIN CERTIFICATE-----\ninvalid\n-----END CERTIFICATE-----");
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to decode certificate chain for alias: " + CERTIFICATE_ALIAS, exception.getMessage());
+            assertTrue(exception.getCause() instanceof CertificateException);
+        }
+    }
+
+    @Test
+    public void testCertificateChainUnterminatedPemFailureIsPropagated() throws Exception {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue(readUnterminatedCertificatePem());
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to decode certificate chain for alias: " + CERTIFICATE_ALIAS, exception.getMessage());
+            assertTrue(exception.getCause() instanceof CertificateException);
+            assertEquals("Certificate PEM block is not terminated.", exception.getCause().getMessage());
+        }
+    }
+
+    @Test
+    public void testCertificateChainPkcs12DecodingFailureIsPropagated() {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue(Base64.getEncoder().encodeToString(new byte[] { 1, 2, 3 }));
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to decode certificate chain for alias: " + CERTIFICATE_ALIAS, exception.getMessage());
+            assertNotNull(exception.getCause());
+        }
+    }
+
+    @Test
+    public void testCertificateChainInvalidBase64IsPropagated() {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue("not-valid-base64!");
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            IllegalStateException exception = assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID)));
+
+            assertEquals("Failed to decode certificate chain for alias: " + CERTIFICATE_ALIAS, exception.getMessage());
+            assertTrue(exception.getCause() instanceof IllegalArgumentException);
+        }
+    }
+
+    @Test
+    public void testCertificateChainDecodingFailureIsRetried() throws Exception {
+        SecretBundle invalidBundle = new SecretBundle();
+        invalidBundle.setValue(readUnterminatedCertificatePem());
+        SecretBundle validBundle = new SecretBundle();
+        validBundle.setValue(new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
+            StandardCharsets.UTF_8));
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(invalidBundle), JsonConverterUtil.toJson(validBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            CertificateVersion certificateVersion = createCertificateVersion(VERSIONED_SECRET_ID);
+            assertThrows(IllegalStateException.class,
+                () -> keyVaultClient.getCertificateChainForVersion(certificateVersion));
+            Certificate[] chain = keyVaultClient.getCertificateChainForVersion(certificateVersion);
+
+            assertEquals(3, chain.length);
+            utilities.verify(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()), times(2));
+        }
+    }
+
+    private static String readUnterminatedCertificatePem() throws IOException {
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem")),
+            StandardCharsets.UTF_8);
+        return pemString.substring(0, pemString.indexOf("-----END CERTIFICATE-----"));
+    }
+
+    @Test
+    public void testCertificateChainWithoutSecretIdReturnsEmpty() {
+        KeyVaultClient keyVaultClient = createClientWithAccessToken();
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            Certificate[] chain = keyVaultClient.getCertificateChainForVersion(createCertificateVersion(null));
+
+            assertEquals(0, chain.length);
+            utilities.verifyNoInteractions();
+        }
+    }
+
+    @Test
+    public void testCertificateChainWithoutResolvedVersionReturnsEmpty() {
+        KeyVaultClient keyVaultClient = createClientWithAccessToken();
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            Certificate[] chain = keyVaultClient.getCertificateChainForVersion(null);
+
+            assertEquals(0, chain.length);
+            utilities.verifyNoInteractions();
+        }
+    }
+
+    @Test
+    public void testCertificateChainDecodedWithoutCertificatesReturnsEmpty() throws Exception {
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setValue("valid-empty-chain");
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class);
+            MockedStatic<CertificateUtil> certificateUtilities = Mockito.mockStatic(CertificateUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+            certificateUtilities.when(() -> CertificateUtil.loadCertificatesFromSecretBundleValue("valid-empty-chain"))
+                .thenReturn(new Certificate[0]);
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            Certificate[] chain
+                = keyVaultClient.getCertificateChainForVersion(createCertificateVersion(VERSIONED_SECRET_ID));
+
+            assertEquals(0, chain.length);
+        }
+    }
+
+    @Test
+    public void testExportableKeyUsesVersionedSecretId() throws Exception {
+        CertificateBundle certificateBundle = createCertificateBundle(true);
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setContentType("application/x-pkcs12");
+        secretBundle.setValue(new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx")),
+            StandardCharsets.UTF_8));
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(CERTIFICATE_URI), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(certificateBundle));
+            utilities.when(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            CertificateVersion certificateVersion = keyVaultClient.resolveCertificateVersion(CERTIFICATE_ALIAS);
+            Key key = keyVaultClient.getKeyForVersion(certificateVersion, null);
+
+            assertNotNull(key);
+            utilities.verify(() -> HttpUtil.get(eq(VERSIONED_SECRET_ID + API_VERSION_POSTFIX), anyMap()), times(1));
+        }
+    }
+
+    @Test
+    public void testKeylessKeyUsesVersionedKeyId() {
+        CertificateBundle certificateBundle = createCertificateBundle(false);
+
+        try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
+            configureHttpUtilityMethods(utilities);
+            utilities.when(() -> HttpUtil.get(eq(CERTIFICATE_URI), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(certificateBundle));
+
+            KeyVaultClient keyVaultClient = createClientWithAccessToken();
+            CertificateVersion certificateVersion = keyVaultClient.resolveCertificateVersion(CERTIFICATE_ALIAS);
+            Key key = keyVaultClient.getKeyForVersion(certificateVersion, null);
+
+            assertTrue(key instanceof KeyVaultPrivateKey);
+            assertEquals(VERSIONED_KEY_ID, ((KeyVaultPrivateKey) key).getKid());
+        }
+    }
+
+    @Test
+    void getKeyDoesNotLogPrivateKeyPem() throws Exception {
+        String alias = "pem-certificate";
+        String certificateSecretUri = KEY_VAULT_TEST_URI_GLOBAL + "secrets/" + alias;
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/downloaded-from-portal/pem-exportable-key.pem")),
+            StandardCharsets.UTF_8);
+
+        KeyProperties keyProperties = new KeyProperties();
+        keyProperties.setExportable(true);
+        keyProperties.setKty("RSA");
+        CertificatePolicy certificatePolicy = new CertificatePolicy();
+        certificatePolicy.setKeyProperties(keyProperties);
+        CertificateBundle certificateBundle = new CertificateBundle();
+        certificateBundle.setPolicy(certificatePolicy);
+        certificateBundle.setSid(certificateSecretUri);
+
+        SecretBundle secretBundle = new SecretBundle();
+        secretBundle.setContentType("application/x-pem-file");
+        secretBundle.setValue(pemString);
+
+        List<String> loggedValues = new ArrayList<>();
+        Handler collector = new Handler() {
+            @Override
+            public void publish(LogRecord logRecord) {
+                loggedValues.add(logRecord.getMessage());
+                if (logRecord.getParameters() != null) {
+                    for (Object parameter : logRecord.getParameters()) {
+                        loggedValues.add(String.valueOf(parameter));
+                    }
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
+
+        Logger logger = Logger.getLogger(KeyVaultClient.class.getName());
+        Level originalLevel = logger.getLevel();
+        boolean originalUseParentHandlers = logger.getUseParentHandlers();
+        logger.addHandler(collector);
+        logger.setLevel(Level.ALL);
+        logger.setUseParentHandlers(false);
+
+        try (MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class)) {
+            httpUtilMockedStatic.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+            httpUtilMockedStatic.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
+            httpUtilMockedStatic
+                .when(() -> HttpUtil.get(
+                    eq(KEY_VAULT_TEST_URI_GLOBAL + "certificates/" + alias + HttpUtil.API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(certificateBundle));
+            httpUtilMockedStatic
+                .when(() -> HttpUtil.get(eq(certificateSecretUri + HttpUtil.API_VERSION_POSTFIX), anyMap()))
+                .thenReturn(JsonConverterUtil.toJson(secretBundle));
+
+            KeyVaultClient keyVaultClient
+                = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, "bearer-token", false);
+            Key key = keyVaultClient.getKey(alias, null);
+
+            assertNotNull(key);
+            assertEquals("RSA", key.getAlgorithm());
+        } finally {
+            logger.removeHandler(collector);
+            logger.setLevel(originalLevel);
+            logger.setUseParentHandlers(originalUseParentHandlers);
+        }
+
+        assertFalse(loggedValues.contains(pemString), "The private-key PEM must never be logged");
+        assertTrue(loggedValues.stream().noneMatch(value -> value.contains("BEGIN PRIVATE KEY")),
+            "No fragment of the private-key PEM may be logged");
+        assertTrue(loggedValues.contains("RSA"), "The non-secret key type stays available for diagnostics");
+    }
+
+    private static CertificateBundle createCertificateBundle(boolean exportable) {
+        KeyProperties keyProperties = new KeyProperties();
+        keyProperties.setExportable(exportable);
+        keyProperties.setKty("RSA");
+        CertificatePolicy certificatePolicy = new CertificatePolicy();
+        certificatePolicy.setKeyProperties(keyProperties);
+        CertificateBundle certificateBundle = new CertificateBundle();
+        certificateBundle.setKid(VERSIONED_KEY_ID);
+        certificateBundle.setSid(VERSIONED_SECRET_ID);
+        certificateBundle.setPolicy(certificatePolicy);
+        return certificateBundle;
+    }
+
+    private static CertificateVersion createCertificateVersion(String secretId) {
+        return new CertificateVersion(CERTIFICATE_ALIAS, null, VERSIONED_KEY_ID, secretId, true, "RSA");
+    }
+
+    private static KeyVaultClient createClientWithAccessToken() {
+        return new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null, null, null, null, "test-token", false);
+    }
+
+    private static void configureHttpUtilityMethods(MockedStatic<HttpUtil> utilities) {
+        utilities.when(() -> HttpUtil.validateUri(anyString(), anyString())).thenCallRealMethod();
+        utilities.when(() -> HttpUtil.addTrailingSlashIfRequired(anyString())).thenCallRealMethod();
     }
 
     @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")

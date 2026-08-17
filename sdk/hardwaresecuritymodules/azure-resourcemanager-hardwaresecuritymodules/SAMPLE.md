@@ -46,6 +46,26 @@
 
 - [List](#operations_list)
 
+## PaymentHsmClusterPrivateEndpointConnections
+
+- [Create](#paymenthsmclusterprivateendpointconnections_create)
+- [Delete](#paymenthsmclusterprivateendpointconnections_delete)
+- [Get](#paymenthsmclusterprivateendpointconnections_get)
+- [ListByPaymentHsmCluster](#paymenthsmclusterprivateendpointconnections_listbypaymenthsmcluster)
+
+## PaymentHsmClusterPrivateLinkResources
+
+- [ListByPaymentHsmCluster](#paymenthsmclusterprivatelinkresources_listbypaymenthsmcluster)
+
+## PaymentHsmClusters
+
+- [CreateOrUpdate](#paymenthsmclusters_createorupdate)
+- [Delete](#paymenthsmclusters_delete)
+- [GetByResourceGroup](#paymenthsmclusters_getbyresourcegroup)
+- [List](#paymenthsmclusters_list)
+- [ListByResourceGroup](#paymenthsmclusters_listbyresourcegroup)
+- [Update](#paymenthsmclusters_update)
+
 ## PrivateEndpointConnections
 
 - [ListByCloudHsmCluster](#privateendpointconnections_listbycloudhsmcluster)
@@ -57,7 +77,7 @@
  */
 public final class CloudHsmClusterBackupStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Backup_Pending_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Backup_Pending_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Get_Backup_Status_MaximumSet_Gen.
@@ -85,7 +105,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateLinkServi
  */
 public final class CloudHsmClusterPrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.
@@ -113,7 +133,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsCreateSamples {
  */
 public final class CloudHsmClusterPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.
@@ -136,7 +156,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsDeleteSamples {
  */
 public final class CloudHsmClusterPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.
@@ -159,7 +179,8 @@ public final class CloudHsmClusterPrivateEndpointConnectionsGetSamples {
  */
 public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * 2025-12-01-preview/CloudHsmClusterPrivateLinkResource_ListByCloudHsmCluster_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateLinkResources_ListByResource_MaximumSet_Gen.
@@ -182,7 +203,7 @@ public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterSampl
  */
 public final class CloudHsmClusterRestoreStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Get_Restore_Status_MaximumSet_Gen.
@@ -208,7 +229,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupRequestPro
  */
 public final class CloudHsmClustersBackupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Create_Backup_MaximumSet_Gen.
@@ -247,7 +268,7 @@ import java.util.Map;
  */
 public final class CloudHsmClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.
@@ -293,7 +314,7 @@ public final class CloudHsmClustersCreateOrUpdateSamples {
  */
 public final class CloudHsmClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Delete_MaximumSet_Gen.
@@ -315,7 +336,7 @@ public final class CloudHsmClustersDeleteSamples {
  */
 public final class CloudHsmClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Get_MaximumSet_Gen.
@@ -338,7 +359,7 @@ public final class CloudHsmClustersGetByResourceGroupSamples {
  */
 public final class CloudHsmClustersListSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_ListBySubscription_MaximumSet_Gen.
@@ -360,7 +381,7 @@ public final class CloudHsmClustersListSamples {
  */
 public final class CloudHsmClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.
@@ -384,7 +405,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.RestoreRequestPr
  */
 public final class CloudHsmClustersRestoreSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Restore_MaximumSet_Gen.
@@ -419,7 +440,7 @@ import java.util.Map;
  */
 public final class CloudHsmClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_Update_MaximumSet_Gen.
@@ -464,7 +485,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupRequestPro
  */
 public final class CloudHsmClustersValidateBackupPropertiesSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
      */
     /**
      * Sample code: CloudHsmCluster_ValidateBackup_Validation_MaximumSet_Gen.
@@ -495,7 +516,7 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.RestoreRequestPr
 public final class CloudHsmClustersValidateRestorePropertiesSamples {
     /*
      * x-ms-original-file:
-     * 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
+     * 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
      */
     /**
      * Sample code: CloudHsmCluster_ValidateRestore_MaximumSet_Gen.
@@ -533,7 +554,7 @@ import java.util.Map;
  */
 public final class DedicatedHsmCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM with management profile.
@@ -560,7 +581,7 @@ public final class DedicatedHsmCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing dedicated HSM.
@@ -584,7 +605,7 @@ public final class DedicatedHsmCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM.
@@ -629,7 +650,7 @@ public final class DedicatedHsmCreateOrUpdateSamples {
  */
 public final class DedicatedHsmDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_Delete.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_Delete.json
      */
     /**
      * Sample code: Delete a dedicated HSM.
@@ -651,7 +672,7 @@ public final class DedicatedHsmDeleteSamples {
  */
 public final class DedicatedHsmGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_Get.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_Get.json
      */
     /**
      * Sample code: Get a payment HSM.
@@ -664,7 +685,7 @@ public final class DedicatedHsmGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_Get_With_2018-10-31Preview_Version.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_Get_With_2018-10-31Preview_Version.json
      */
     /**
      * Sample code: Get a payment HSM with 2018-10-31Preview api version.
@@ -677,7 +698,7 @@ public final class DedicatedHsmGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_Get.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_Get.json
      */
     /**
      * Sample code: Get a dedicated HSM.
@@ -699,7 +720,7 @@ public final class DedicatedHsmGetByResourceGroupSamples {
  */
 public final class DedicatedHsmListSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_ListBySubscription.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription including payment HSM.
@@ -712,7 +733,7 @@ public final class DedicatedHsmListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_ListBySubscription.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_ListBySubscription.json
      */
     /**
      * Sample code: List dedicated HSM devices in a subscription.
@@ -734,7 +755,7 @@ public final class DedicatedHsmListSamples {
  */
 public final class DedicatedHsmListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_ListByResourceGroup.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_ListByResourceGroup.json
      */
     /**
      * Sample code: List dedicated HSM devices in a resource group.
@@ -747,7 +768,7 @@ public final class DedicatedHsmListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_ListByResourceGroup.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_ListByResourceGroup.json
      */
     /**
      * Sample code: List dedicated HSM devices in a resource group including payment HSM.
@@ -769,7 +790,7 @@ public final class DedicatedHsmListByResourceGroupSamples {
  */
 public final class DedicatedHsmListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: 2025-03-31/GetOutboundNetworkDependenciesEndpointsList.json
+     * x-ms-original-file: 2025-12-01-preview/GetOutboundNetworkDependenciesEndpointsList.json
      */
     /**
      * Sample code: List OutboundNetworkDependenciesEndpoints by Managed Cluster.
@@ -796,7 +817,7 @@ import java.util.Map;
  */
 public final class DedicatedHsmUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_Update.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_Update.json
      */
     /**
      * Sample code: Update an existing dedicated HSM.
@@ -812,7 +833,7 @@ public final class DedicatedHsmUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_Update.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_Update.json
      */
     /**
      * Sample code: Update an existing payment HSM.
@@ -849,7 +870,7 @@ public final class DedicatedHsmUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-31/OperationsList.json
+     * x-ms-original-file: 2025-12-01-preview/OperationsList.json
      */
     /**
      * Sample code: Get a list of Payment HSM operations.
@@ -863,6 +884,317 @@ public final class OperationsListSamples {
 }
 ```
 
+### PaymentHsmClusterPrivateEndpointConnections_Create
+
+```java
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateEndpointConnectionProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateLinkServiceConnectionState;
+
+/**
+ * Samples for PaymentHsmClusterPrivateEndpointConnections Create.
+ */
+public final class PaymentHsmClusterPrivateEndpointConnectionsCreateSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterPrivateEndpointConnectionCreateMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusterPrivateEndpointConnections()
+            .define("sample-pec")
+            .withExistingPaymentHsmCluster("rgpaymenthsm", "phsm1")
+            .withProperties(new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("My name is Joe and I am approving this.")))
+            .create();
+    }
+}
+```
+
+### PaymentHsmClusterPrivateEndpointConnections_Delete
+
+```java
+/**
+ * Samples for PaymentHsmClusterPrivateEndpointConnections Delete.
+ */
+public final class PaymentHsmClusterPrivateEndpointConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterPrivateEndpointConnectionDeleteMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusterPrivateEndpointConnections()
+            .delete("rgpaymenthsm", "phsm1", "sample-pec", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusterPrivateEndpointConnections_Get
+
+```java
+/**
+ * Samples for PaymentHsmClusterPrivateEndpointConnections Get.
+ */
+public final class PaymentHsmClusterPrivateEndpointConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterPrivateEndpointConnectionGetMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusterPrivateEndpointConnections()
+            .getWithResponse("rgpaymenthsm", "phsm1", "sample-pec", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusterPrivateEndpointConnections_ListByPaymentHsmCluster
+
+```java
+/**
+ * Samples for PaymentHsmClusterPrivateEndpointConnections ListByPaymentHsmCluster.
+ */
+public final class PaymentHsmClusterPrivateEndpointConnectionsListByPaymentHsmSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-12-01-preview/PaymentHsmClusterPrivateEndpointConnection_ListByPaymentHsmCluster_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmClusterPrivateEndpointConnection_ListByPaymentHsmCluster_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterPrivateEndpointConnectionListByPaymentHsmClusterMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusterPrivateEndpointConnections()
+            .listByPaymentHsmCluster("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusterPrivateLinkResources_ListByPaymentHsmCluster
+
+```java
+/**
+ * Samples for PaymentHsmClusterPrivateLinkResources ListByPaymentHsmCluster.
+ */
+public final class PaymentHsmClusterPrivateLinkResourcesListByPaymentHsmClusteSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-12-01-preview/PaymentHsmClusterPrivateLinkResource_ListByPaymentHsmCluster_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmClusterPrivateLinkResource_ListByPaymentHsmCluster_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterPrivateLinkResourceListByPaymentHsmClusterMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusterPrivateLinkResources()
+            .listByPaymentHsmCluster("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusters_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.hardwaresecuritymodules.models.AutoGeneratedDomainNameLabelScope;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterProperties;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterSku;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterSkuFamily;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmClusterSkuName;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PublicNetworkAccess;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for PaymentHsmClusters CreateOrUpdate.
+ */
+public final class PaymentHsmClustersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_CreateOrUpdate_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterCreateOrUpdateMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusters()
+            .define("phsm1")
+            .withRegion("eastus2")
+            .withExistingResourceGroup("rgpaymenthsm")
+            .withTags(mapOf("Dept", "paymenthsm", "Environment", "dogfood"))
+            .withProperties(new PaymentHsmClusterProperties()
+                .withAutoGeneratedDomainNameLabelScope(AutoGeneratedDomainNameLabelScope.TENANT_REUSE)
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withApplicationTrustedIssuer("ApplicationBase64DerIssuerCertificate")
+                .withManagementTrustedIssuer("ManagementBase64DerIssuerCertificate"))
+            .withSku(new PaymentHsmClusterSku().withFamily(PaymentHsmClusterSkuFamily.B)
+                .withName(PaymentHsmClusterSkuName.PAYMENTS_V2))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### PaymentHsmClusters_Delete
+
+```java
+/**
+ * Samples for PaymentHsmClusters Delete.
+ */
+public final class PaymentHsmClustersDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_Delete_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterDeleteMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusters().delete("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusters_GetByResourceGroup
+
+```java
+/**
+ * Samples for PaymentHsmClusters GetByResourceGroup.
+ */
+public final class PaymentHsmClustersGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_Get_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterGetMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusters()
+            .getByResourceGroupWithResponse("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusters_List
+
+```java
+/**
+ * Samples for PaymentHsmClusters List.
+ */
+public final class PaymentHsmClustersListSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_ListBySubscription_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterListBySubscriptionMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusters().list(null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusters_ListByResourceGroup
+
+```java
+/**
+ * Samples for PaymentHsmClusters ListByResourceGroup.
+ */
+public final class PaymentHsmClustersListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_ListByResourceGroup_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterListByResourceGroupMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        manager.paymentHsmClusters().listByResourceGroup("rgpaymenthsm", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PaymentHsmClusters_Update
+
+```java
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PaymentHsmCluster;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for PaymentHsmClusters Update.
+ */
+public final class PaymentHsmClustersUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsmCluster_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: PaymentHsmCluster_Update_MaximumSet_Gen.
+     * 
+     * @param manager Entry point to HardwareSecurityModulesManager.
+     */
+    public static void paymentHsmClusterUpdateMaximumSetGen(
+        com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
+        PaymentHsmCluster resource = manager.paymentHsmClusters()
+            .getByResourceGroupWithResponse("rgpaymenthsm", "phsm1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### PrivateEndpointConnections_ListByCloudHsmCluster
 
 ```java
@@ -871,7 +1203,8 @@ public final class OperationsListSamples {
  */
 public final class PrivateEndpointConnectionsListByCloudHsmClusterSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_ListByCloudHsmCluster_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_ListByCloudHsmCluster_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmClusterPrivateEndpointConnection_ListByResource_MaximumSet_Gen.

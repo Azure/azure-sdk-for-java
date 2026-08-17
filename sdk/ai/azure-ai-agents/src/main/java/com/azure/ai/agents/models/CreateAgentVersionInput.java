@@ -17,7 +17,6 @@ import java.util.Map;
  * The CreateAgentVersionInput model.
  */
 @Fluent
-@Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
 public final class CreateAgentVersionInput implements JsonSerializable<CreateAgentVersionInput> {
 
     /*
@@ -41,6 +40,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
      */
     @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
     private final AgentDefinition definition;
 
     /*
@@ -120,6 +120,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      * @return the definition value.
      */
     @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview, ExternalAgents=V1Preview, WorkflowAgents=V1Preview")
     public AgentDefinition getDefinition() {
         return this.definition;
     }
@@ -210,6 +211,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      * resolution and are not auto-promoted.
      */
     @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview")
     private Boolean draft;
 
     /**
@@ -220,6 +222,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      * @return the draft value.
      */
     @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview")
     public Boolean isDraft() {
         return this.draft;
     }
@@ -233,6 +236,7 @@ public final class CreateAgentVersionInput implements JsonSerializable<CreateAge
      * @return the CreateAgentVersionInput object itself.
      */
     @Generated
+    @Beta(warningText = "Preview API. DraftAgents=V1Preview")
     public CreateAgentVersionInput setDraft(Boolean draft) {
         this.draft = draft;
         return this;

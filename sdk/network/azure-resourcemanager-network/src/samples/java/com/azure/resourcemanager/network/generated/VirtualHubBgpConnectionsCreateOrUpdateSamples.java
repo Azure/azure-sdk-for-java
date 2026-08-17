@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.RoutingConfiguration;
  */
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/VirtualHubBgpConnectionPut.json
+     * x-ms-original-file: 2025-09-01/VirtualHubBgpConnectionPut.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
