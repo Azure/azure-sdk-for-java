@@ -107,7 +107,7 @@ public class KeyVaultClient {
     private final boolean disableChallengeResourceVerification;
 
     /**
-     * Stores a flag indicating whether AIA certificate downloads are disabled.
+     * Stores a flag indicating whether Authority Information Access (AIA) certificate downloads are disabled.
      */
     private final boolean disableAiaDownload;
 

@@ -83,7 +83,16 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Completes an incomplete certificate chain when AIA downloads are allowed for the owning Key Vault client.
+     * Completes an incomplete certificate chain when Authority Information Access (AIA) downloads are allowed for the owning Key Vault client.
+     *
+     * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
+     * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
+     *
+     * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
+     * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted
+     * immediately after the current end of the valid chain (before any unplaced/extra certificates).
+     * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
+     * the safety download limit is reached.
      *
      * @param orderedCertificates Certificate array with a contiguous issuer path and any unplaced certificates.
      * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
