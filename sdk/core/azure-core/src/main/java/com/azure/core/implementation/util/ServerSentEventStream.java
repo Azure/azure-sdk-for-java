@@ -268,19 +268,22 @@ public final class ServerSentEventStream {
     }
 
     private static final class ServerSentEventSubscriber<T> implements CoreSubscriber<ByteBuffer>, Subscription {
+        private static final int ACTIVE = 0;
+        private static final int CANCELLED = 1;
+        private static final int TERMINATED = 2;
+
         private final CoreSubscriber<? super ServerSentEvent<T>> downstream;
         private final ServerSentEventDecoder decoder;
         private final BiFunction<String, String, T> deserializer;
         private final Queue<ServerSentEventFrame> frames = new ConcurrentLinkedQueue<>();
+        private final AtomicInteger lifecycle = new AtomicInteger(ACTIVE);
+        private final AtomicInteger wip = new AtomicInteger();
+        private final AtomicLong requested = new AtomicLong();
 
         private Subscription upstream;
         private volatile boolean sourceRequested;
         private volatile boolean done;
-        private volatile boolean cancelled;
         private Throwable error;
-
-        private final AtomicInteger wip = new AtomicInteger();
-        private final AtomicLong requested = new AtomicLong();
 
         private ServerSentEventSubscriber(CoreSubscriber<? super ServerSentEvent<T>> downstream, Charset charset,
             BiFunction<String, String, T> deserializer) {
@@ -299,7 +302,7 @@ public final class ServerSentEventStream {
 
         @Override
         public void onNext(ByteBuffer buffer) {
-            if (done || cancelled) {
+            if (done || !isActive()) {
                 Operators.onNextDropped(buffer, currentContext());
                 return;
             }
@@ -318,7 +321,7 @@ public final class ServerSentEventStream {
 
         @Override
         public void onError(Throwable throwable) {
-            if (done || cancelled) {
+            if (done || !isActive()) {
                 Operators.onErrorDropped(throwable, currentContext());
                 return;
             }
@@ -331,7 +334,7 @@ public final class ServerSentEventStream {
 
         @Override
         public void onComplete() {
-            if (done || cancelled) {
+            if (done || !isActive()) {
                 return;
             }
 
@@ -357,11 +360,10 @@ public final class ServerSentEventStream {
 
         @Override
         public void cancel() {
-            if (cancelled) {
+            if (!lifecycle.compareAndSet(ACTIVE, CANCELLED)) {
                 return;
             }
 
-            cancelled = true;
             upstream.cancel();
             if (wip.getAndIncrement() == 0) {
                 frames.clear();
@@ -380,34 +382,21 @@ public final class ServerSentEventStream {
 
             int missed = 1;
             while (true) {
-                if (cancelled) {
+                if (!isActive()) {
                     frames.clear();
-                    return;
-                }
-
-                Throwable failure = error;
-                if (done && failure != null) {
-                    frames.clear();
-                    downstream.onError(failure);
                     return;
                 }
 
                 long demand = requested.get();
                 long emitted = 0;
                 while (emitted != demand) {
-                    if (cancelled) {
+                    if (!isActive()) {
                         frames.clear();
                         return;
                     }
 
-                    boolean sourceDone = done;
                     ServerSentEventFrame frame = frames.poll();
-                    boolean empty = frame == null;
-                    if (sourceDone && empty) {
-                        downstream.onComplete();
-                        return;
-                    }
-                    if (empty) {
+                    if (frame == null) {
                         break;
                     }
 
@@ -416,10 +405,8 @@ public final class ServerSentEventStream {
                         data = deserializer.apply(frame.event, frame.data);
                     } catch (Throwable throwable) {
                         Exceptions.throwIfFatal(throwable);
-                        cancelled = true;
                         upstream.cancel();
-                        frames.clear();
-                        downstream.onError(Operators.onOperatorError(upstream, throwable, frame, currentContext()));
+                        signalError(Operators.onOperatorError(upstream, throwable, frame, currentContext()));
                         return;
                     }
                     if (data == null) {
@@ -431,10 +418,12 @@ public final class ServerSentEventStream {
                         downstream.onNext(event);
                     } catch (Throwable throwable) {
                         Exceptions.throwIfFatal(throwable);
-                        cancelled = true;
                         upstream.cancel();
+                        signalError(Operators.onOperatorError(upstream, throwable, event, currentContext()));
+                        return;
+                    }
+                    if (!isActive()) {
                         frames.clear();
-                        downstream.onError(Operators.onOperatorError(upstream, throwable, event, currentContext()));
                         return;
                     }
                     emitted++;
@@ -444,9 +433,22 @@ public final class ServerSentEventStream {
                     produced(emitted);
                 }
 
-                if (done && frames.isEmpty()) {
-                    downstream.onComplete();
+                if (!isActive()) {
+                    frames.clear();
                     return;
+                }
+
+                boolean sourceDone = done;
+                if (sourceDone) {
+                    Throwable failure = error;
+                    if (failure != null) {
+                        signalError(failure);
+                        return;
+                    }
+                    if (frames.isEmpty()) {
+                        signalComplete();
+                        return;
+                    }
                 }
 
                 if (requested.get() > 0 && frames.isEmpty() && !sourceRequested) {
@@ -458,6 +460,25 @@ public final class ServerSentEventStream {
                 if (missed == 0) {
                     return;
                 }
+            }
+        }
+
+        private boolean isActive() {
+            return lifecycle.get() == ACTIVE;
+        }
+
+        private void signalError(Throwable throwable) {
+            frames.clear();
+            if (lifecycle.compareAndSet(ACTIVE, TERMINATED)) {
+                downstream.onError(throwable);
+            } else {
+                Operators.onErrorDropped(throwable, currentContext());
+            }
+        }
+
+        private void signalComplete() {
+            if (lifecycle.compareAndSet(ACTIVE, TERMINATED)) {
+                downstream.onComplete();
             }
         }
 

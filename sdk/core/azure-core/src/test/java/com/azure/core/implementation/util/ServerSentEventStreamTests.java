@@ -10,9 +10,12 @@ import com.azure.core.http.ServerSentEventListener;
 import com.azure.core.http.ServerSentEventStreams;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
+import org.reactivestreams.Subscription;
 import org.junit.jupiter.api.Test;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import reactor.util.context.Context;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,9 +28,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -317,6 +323,49 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
+    public void decodeDoesNotCompleteAfterCancellationFromOnNext() {
+        AtomicBoolean completed = new AtomicBoolean();
+        AtomicReference<Throwable> error = new AtomicReference<>();
+        List<String> events = new ArrayList<>();
+
+        ServerSentEventStream.decode(BinaryData.fromString("data: one\n\n"), (event, data) -> data)
+            .subscribe(new CoreSubscriber<ServerSentEvent<String>>() {
+                private Subscription subscription;
+
+                @Override
+                public void onSubscribe(Subscription subscription) {
+                    this.subscription = subscription;
+                    subscription.request(1);
+                }
+
+                @Override
+                public void onNext(ServerSentEvent<String> event) {
+                    events.add(event.getData());
+                    subscription.cancel();
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    error.set(throwable);
+                }
+
+                @Override
+                public void onComplete() {
+                    completed.set(true);
+                }
+
+                @Override
+                public Context currentContext() {
+                    return Context.empty();
+                }
+            });
+
+        assertEquals(1, events.size());
+        assertFalse(completed.get());
+        assertNull(error.get());
+    }
+
+    @Test
     public void listenCompletesOnEofAndNotifiesLifecycleOnce() {
         TestResponse response = response(200, BinaryData.fromString("data: one\n\ndata: two\n\n"));
         List<String> events = new ArrayList<>();
@@ -456,6 +505,68 @@ public class ServerSentEventStreamTests {
             .verify();
 
         assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxEmitsRequestedEventBeforeSynchronousBodyFailure() {
+        IOException failure = new IOException("connection closed");
+        Flux<ByteBuffer> source = Flux.from(subscriber -> subscriber.onSubscribe(new Subscription() {
+            private boolean signalled;
+
+            @Override
+            public void request(long count) {
+                if (!signalled) {
+                    signalled = true;
+                    subscriber.onNext(ByteBuffer.wrap("data: one\n\n".getBytes(StandardCharsets.UTF_8)));
+                    subscriber.onError(failure);
+                }
+            }
+
+            @Override
+            public void cancel() {
+            }
+        }));
+        TestResponse response = response(200, BinaryData.fromFlux(source, null, false).block());
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .expectErrorMatches(error -> error == failure)
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxPropagatesBodyFailurePublishedFromAnotherThread() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            for (int i = 0; i < 100; i++) {
+                IOException failure = new IOException("connection closed " + i);
+                Flux<ByteBuffer> source = Flux.from(subscriber -> subscriber.onSubscribe(new Subscription() {
+                    private final AtomicBoolean signalled = new AtomicBoolean();
+
+                    @Override
+                    public void request(long count) {
+                        if (signalled.compareAndSet(false, true)) {
+                            executor.execute(() -> subscriber.onError(failure));
+                        }
+                    }
+
+                    @Override
+                    public void cancel() {
+                    }
+                }));
+                TestResponse response = response(200, BinaryData.fromFlux(source, null, false).block());
+
+                StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+                    .expectErrorMatches(error -> error == failure)
+                    .verify();
+
+                assertTrue(response.closed.get());
+            }
+        } finally {
+            executor.shutdownNow();
+        }
     }
 
     @Test
