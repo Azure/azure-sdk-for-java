@@ -18,18 +18,10 @@ public final class RedirectPolicyHelper {
     private static final String HTTPS = "https";
 
     private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES
-        = Collections.unmodifiableList(Arrays.asList(
-            ".applicationinsights.azure.com",
-            ".applicationinsights.azure.cn",
-            ".applicationinsights.microsoft.com",
-            ".services.visualstudio.com",
-            ".livediagnostics.monitor.azure.com",
-            ".livediagnostics.monitor.azure.cn",
-            ".monitor.azure.com",
-            ".monitor.azure.us",
-            ".monitor.azure.cn",
-            ".applicationinsights.azure.us",
-            ".applicationinsights.azure.cn"));
+        = Collections.unmodifiableList(Arrays.asList(".applicationinsights.azure.com", ".applicationinsights.azure.us",
+            ".applicationinsights.azure.cn", ".applicationinsights.microsoft.com", ".services.visualstudio.com",
+            ".livediagnostics.monitor.azure.com", ".livediagnostics.monitor.azure.cn", ".monitor.azure.com",
+            ".monitor.azure.us", ".monitor.azure.cn", ".applicationinsights.us"));
 
     /**
      * Returns whether a redirect target is safe to follow.
