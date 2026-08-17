@@ -113,12 +113,26 @@ public final class KeyVaultCertificates implements AzureCertificates {
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
         this(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification, Collections.emptySet());
+            disableChallengeResourceVerification, false, Collections.emptySet());
     }
 
+    /**
+     * Creates a filtered Key Vault certificate cache with an explicit AIA download setting.
+     *
+     * @param refreshInterval Certificate refresh interval in milliseconds.
+     * @param keyVaultUri Key Vault URI.
+     * @param tenantId Tenant ID.
+     * @param clientId Client ID.
+     * @param clientSecret Client secret.
+     * @param managedIdentity Managed identity.
+     * @param accessToken Access token.
+     * @param disableChallengeResourceVerification Indicates if challenge resource verification should be disabled.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @param certificateFilterPatterns Certificate alias filter patterns.
+     */
     public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
         String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
-        Set<String> certificateFilterPatterns) {
+        boolean disableAiaDownload, Set<String> certificateFilterPatterns) {
 
         this.refreshInterval = refreshInterval;
         Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
@@ -126,7 +140,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
 
         updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification);
+            disableChallengeResourceVerification, disableAiaDownload);
     }
 
     public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
@@ -213,13 +227,15 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param managedIdentity Managed identity.
      * @param accessToken Access token.
      * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
      */
     public synchronized void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
+        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
+        boolean disableAiaDownload) {
 
         if (keyVaultUri != null) {
             setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification));
+                accessToken, disableChallengeResourceVerification, disableAiaDownload));
         } else {
             setKeyVaultClient(null);
         }

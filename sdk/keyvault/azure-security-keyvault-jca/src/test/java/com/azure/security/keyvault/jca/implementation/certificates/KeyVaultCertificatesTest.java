@@ -535,7 +535,7 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
 
-        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false);
+        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false, false);
 
         Assertions.assertTrue(keyVaultCertificates.getAliases().isEmpty());
         Assertions.assertTrue(keyVaultCertificates.getCertificates().isEmpty());
@@ -640,7 +640,7 @@ public class KeyVaultCertificatesTest {
         reader.start();
 
         staleAnswer.awaitStarted();
-        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false);
+        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false, false);
         staleAnswer.release();
         joinThreads(Collections.singletonList(reader));
 

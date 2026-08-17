@@ -83,30 +83,19 @@ final class AiaCertificateChainUtil {
     }
 
     /**
-     * Completes an incomplete certificate chain by downloading missing intermediate CA certificates
-     * using the AIA (Authority Information Access) extension embedded in each certificate.
+     * Completes an incomplete certificate chain when AIA downloads are allowed for the owning Key Vault client.
      *
-     * <p>Because completion may issue outbound HTTP requests on a cache miss, callers must restrict it to chains
-     * whose valid path does not end in a self-signed root (see {@link #shouldCompleteChainViaAia(Certificate[])}).
-     *
-     * <p>The method walks up the contiguous issuer path (leaf → intermediate → root) starting from
-     * the first certificate, downloading missing intermediates via AIA. Downloaded issuers are inserted
-     * immediately after the current end of the valid chain (before any unplaced/extra certificates).
-     * This process repeats until the chain reaches a self-signed root CA, no more AIA URLs are found, or
-     * the safety download limit is reached.
-     *
-     * @param orderedCertificates certificate array with contiguous issuer path + any unplaced certs appended
-     * @return the (potentially extended) certificate array with missing intermediates inserted in the valid chain
+     * @param orderedCertificates Certificate array with a contiguous issuer path and any unplaced certificates.
+     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @return The original or completed certificate chain.
      */
-    static Certificate[] completeChainViaAia(Certificate[] orderedCertificates) {
+    static Certificate[] completeChainViaAia(Certificate[] orderedCertificates, boolean disableAiaDownload) {
         if (orderedCertificates == null || orderedCertificates.length == 0) {
             return orderedCertificates;
         }
 
-        // Check if AIA downloading is disabled by system property
-        String disableAiaDownload = System.getProperty(DISABLE_AIA_DOWNLOAD_PROPERTY);
-        if ("true".equalsIgnoreCase(disableAiaDownload)) {
-            LOGGER.log(FINE, "AIA chain completion is disabled by system property [{0}]",
+        if (disableAiaDownload) {
+            LOGGER.log(FINE, "AIA chain completion is disabled for this Key Vault client by configuration [{0}]",
                 DISABLE_AIA_DOWNLOAD_PROPERTY);
             return orderedCertificates;
         }

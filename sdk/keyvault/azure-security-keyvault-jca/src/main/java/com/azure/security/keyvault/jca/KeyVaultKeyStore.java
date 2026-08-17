@@ -61,6 +61,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
         = "azure.keyvault.jca.certificate-alias-filter-pattern";
+    static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
 
     /**
      * Stores the Jre key store certificates.
@@ -99,6 +100,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
+    private final boolean disableAiaDownload;
+
     /**
      * Store the path where the well-known certificate is placed
      */
@@ -120,7 +123,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
-     * <code>azure.keyvault.managedIdentity</code> to initialize the
+    * <code>azure.keyvault.managedIdentity</code>, and
+    * <code>azure.keyvault.jca.disable-aia-download</code> to initialize the
      * Key Vault client.
      * </p>
      */
@@ -136,6 +140,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String accessToken = System.getProperty("azure.keyvault.access-token");
         boolean disableChallengeResourceVerification
             = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        disableAiaDownload = Boolean.parseBoolean(System.getProperty(DISABLE_AIA_DOWNLOAD_PROPERTY));
         long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate
             = Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
@@ -152,9 +157,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
-        keyVaultCertificates
-            = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification, getKeyVaultCertificateAliasFilterPatterns());
+        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
+            managedIdentity, accessToken, disableChallengeResourceVerification, disableAiaDownload,
+            getKeyVaultCertificateAliasFilterPatterns());
         LOGGER.log(FINE, () -> String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
@@ -446,7 +451,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
             keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
                 parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
-                parameter.getAccessToken(), parameter.isChallengeResourceVerificationDisabled());
+                parameter.getAccessToken(), parameter.isChallengeResourceVerificationDisabled(), disableAiaDownload);
         }
 
         classpathCertificates.loadCertificatesFromClasspath();
