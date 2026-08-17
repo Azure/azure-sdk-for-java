@@ -12,8 +12,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -26,7 +24,6 @@ import org.slf4j.Logger;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
@@ -34,9 +31,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -55,9 +50,6 @@ public class PpcbFailbackLoggingTest {
 
     private static final PartitionKeyRangeWrapper PARTITION = new PartitionKeyRangeWrapper(
         new PartitionKeyRange("0", "AA", "BB"),
-        "collectionRid");
-    private static final PartitionKeyRangeWrapper SECOND_PARTITION = new PartitionKeyRangeWrapper(
-        new PartitionKeyRange("1", "BB", "CC"),
         "collectionRid");
     private static final RegionalRoutingContext REGION = new RegionalRoutingContext(
         URI.create("https://contoso-east-us.documents.azure.com"));
@@ -179,50 +171,6 @@ public class PpcbFailbackLoggingTest {
 
         verify(this.logger, times(11)).warn(contains("reason: RuntimeException"), same(failure));
         verify(this.logger, times(89)).debug(contains("reason: RuntimeException"), same(failure));
-    }
-
-    @Test(groups = {"unit"})
-    public void unexpectedStreamFailureIsLoggedAndRetried() {
-        RuntimeException failure = new RuntimeException("failure");
-        AtomicInteger subscriptions = new AtomicInteger();
-        Flux<String> recoveryWork = Flux.defer(() -> subscriptions.incrementAndGet() == 1
-            ? Flux.error(failure)
-            : Flux.just("recovered"));
-
-        Object result = this.manager.keepFailbackRecoveryAlive(recoveryWork)
-            .blockFirst(Duration.ofSeconds(1));
-
-        assertThat(result).isEqualTo("recovered");
-        assertThat(subscriptions.get()).isEqualTo(2);
-        verify(this.logger).warn(contains("stage: RECOVERY_STREAM"), same(failure));
-    }
-
-    @Test(groups = {"unit"})
-    public void recoverySurvivesRepeatedFailuresOnOneThreadScheduler() {
-        Scheduler scheduler = Schedulers.newBoundedElastic(1, 1, "ppcb-resilience-test");
-        AtomicInteger subscriptions = new AtomicInteger();
-        Set<String> threadNames = new HashSet<>();
-
-        try {
-            Flux<String> recoveryWork = Flux.defer(() -> {
-                threadNames.add(Thread.currentThread().getName());
-                return subscriptions.incrementAndGet() <= 3
-                    ? Flux.error(new RuntimeException("failure"))
-                    : Flux.just("recovered");
-            }).subscribeOn(scheduler);
-
-            Object result = this.manager.keepFailbackRecoveryAlive(recoveryWork)
-                .blockFirst(Duration.ofSeconds(5));
-
-            assertThat(result).isEqualTo("recovered");
-            assertThat(subscriptions.get()).isEqualTo(4);
-            assertThat(threadNames).hasSize(1);
-            assertThat(threadNames.iterator().next()).startsWith("ppcb-resilience-test");
-            verify(this.logger, times(1)).warn(contains("stage: RECOVERY_STREAM"), Mockito.any(RuntimeException.class));
-            verify(this.logger, times(2)).debug(contains("stage: RECOVERY_STREAM"), Mockito.any(RuntimeException.class));
-        } finally {
-            scheduler.dispose();
-        }
     }
 
     @Test(groups = {"unit"})
@@ -368,150 +316,6 @@ public class PpcbFailbackLoggingTest {
     }
 
     @Test(groups = {"unit"})
-    public void successfulFailbackTransitionsUnavailableRegionAndRefreshesGaugeOnNextScan() {
-        RxDocumentServiceRequest request = createReadRequest();
-        SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
-        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
-
-        try {
-            markRegionUnavailable(request);
-            doReturn(gatewayAddressCache).when(globalAddressResolver)
-                .getGatewayAddressCache(REGION.getGatewayRegionalEndpoint());
-            doReturn(Flux.empty()).when(gatewayAddressCache)
-                .submitOpenConnectionTasks(PARTITION.getPartitionKeyRange(), PARTITION.getCollectionResourceId());
-            this.manager.setGlobalAddressResolver(globalAddressResolver);
-            this.manager.registerFailbackPendingRecoveryMeter(
-                registry,
-                Tag.of("ClientCorrelationId", "client1"));
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getUnavailableRegions(request)).isEmpty();
-            assertThat(getRegionHealthStatus(request)).isEqualTo(LocationHealthStatus.HealthyTentative);
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isEqualTo(1);
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isZero();
-            verify(gatewayAddressCache).submitOpenConnectionTasks(
-                PARTITION.getPartitionKeyRange(),
-                PARTITION.getCollectionResourceId());
-        } finally {
-            this.manager.close();
-            registry.close();
-        }
-    }
-
-    @Test(groups = {"unit"})
-    public void failedFailbackProbeKeepsRegionUnavailableAndNextCycleCanRecover() {
-        RuntimeException failure = new RuntimeException("probe failed");
-        RxDocumentServiceRequest request = createReadRequest();
-        SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
-        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
-
-        try {
-            markRegionUnavailable(request);
-            doReturn(gatewayAddressCache).when(globalAddressResolver)
-                .getGatewayAddressCache(REGION.getGatewayRegionalEndpoint());
-            Mockito.when(gatewayAddressCache.submitOpenConnectionTasks(
-                    PARTITION.getPartitionKeyRange(),
-                    PARTITION.getCollectionResourceId()))
-                .thenReturn(Flux.error(failure), Flux.empty());
-            this.manager.setGlobalAddressResolver(globalAddressResolver);
-            this.manager.registerFailbackPendingRecoveryMeter(
-                registry,
-                Tag.of("ClientCorrelationId", "client1"));
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getUnavailableRegions(request)).containsExactly("eastus");
-            assertThat(getRegionHealthStatus(request)).isEqualTo(LocationHealthStatus.Unavailable);
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isEqualTo(1);
-            verify(this.logger).warn(contains("stage: OPEN_CONNECTION_TASK"), same(failure));
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getUnavailableRegions(request)).isEmpty();
-            assertThat(getRegionHealthStatus(request)).isEqualTo(LocationHealthStatus.HealthyTentative);
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isEqualTo(1);
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isZero();
-            verify(gatewayAddressCache, times(2)).submitOpenConnectionTasks(
-                PARTITION.getPartitionKeyRange(),
-                PARTITION.getCollectionResourceId());
-        } finally {
-            this.manager.close();
-            registry.close();
-        }
-    }
-
-    @Test(groups = {"unit"})
-    public void missingGatewayAddressCacheKeepsRegionUnavailable() {
-        RxDocumentServiceRequest request = createReadRequest(PARTITION);
-        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
-
-        markRegionUnavailable(request, PARTITION);
-        this.manager.setGlobalAddressResolver(globalAddressResolver);
-
-        this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-        assertThat(getUnavailableRegions(request, PARTITION)).containsExactly("eastus");
-        assertThat(getRegionHealthStatus(request)).isEqualTo(LocationHealthStatus.Unavailable);
-        verify(this.logger).warn(
-            contains("stage: RESOLVE_GATEWAY_ADDRESS_CACHE, reason: IllegalStateException"),
-            Mockito.any(IllegalStateException.class));
-    }
-
-    @Test(groups = {"unit"})
-    public void failedCandidateDoesNotBlockAnotherCandidateRecovery() {
-        RuntimeException failure = new RuntimeException("probe failed");
-        RxDocumentServiceRequest failedRequest = createReadRequest(PARTITION);
-        RxDocumentServiceRequest recoveredRequest = createReadRequest(SECOND_PARTITION);
-        SimpleMeterRegistry registry = new SimpleMeterRegistry();
-        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
-        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
-
-        try {
-            markRegionUnavailable(failedRequest, PARTITION);
-            markRegionUnavailable(recoveredRequest, SECOND_PARTITION);
-            doReturn(gatewayAddressCache).when(globalAddressResolver)
-                .getGatewayAddressCache(REGION.getGatewayRegionalEndpoint());
-            Mockito.when(gatewayAddressCache.submitOpenConnectionTasks(
-                    Mockito.any(PartitionKeyRange.class),
-                    Mockito.eq(PARTITION.getCollectionResourceId())))
-                .thenAnswer(invocation -> {
-                    PartitionKeyRange partitionKeyRange = invocation.getArgument(0);
-                    return partitionKeyRange.getId().equals(PARTITION.getPartitionKeyRange().getId())
-                        ? Flux.error(failure)
-                        : Flux.empty();
-                });
-            this.manager.setGlobalAddressResolver(globalAddressResolver);
-            this.manager.registerFailbackPendingRecoveryMeter(
-                registry,
-                Tag.of("ClientCorrelationId", "client1"));
-
-            this.manager.runFailbackRecoveryCycle().blockLast(Duration.ofSeconds(1));
-
-            assertThat(getUnavailableRegions(failedRequest, PARTITION)).containsExactly("eastus");
-            assertThat(getRegionHealthStatus(failedRequest)).isEqualTo(LocationHealthStatus.Unavailable);
-            assertThat(getUnavailableRegions(recoveredRequest, SECOND_PARTITION)).isEmpty();
-            assertThat(getRegionHealthStatus(recoveredRequest)).isEqualTo(LocationHealthStatus.HealthyTentative);
-            assertThat(getPendingRecoveryGauge(registry, "collectionRid").value()).isEqualTo(2);
-            verify(this.logger).warn(contains("stage: OPEN_CONNECTION_TASK"), same(failure));
-            verify(gatewayAddressCache, times(2)).submitOpenConnectionTasks(
-                Mockito.any(PartitionKeyRange.class),
-                Mockito.eq(PARTITION.getCollectionResourceId()));
-        } finally {
-            this.manager.close();
-            registry.close();
-        }
-    }
-
-    @Test(groups = {"unit"})
     public void allRegionsUnavailableClearsExclusionsAndPublishesEmptyState() {
         RxDocumentServiceRequest request = createReadRequest(PARTITION);
         int failureCount = this.manager.getConsecutiveExceptionBasedCircuitBreaker()
@@ -530,28 +334,6 @@ public class PpcbFailbackLoggingTest {
             .getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
     }
 
-    private void markRegionUnavailable(RxDocumentServiceRequest request) {
-        this.markRegionUnavailable(request, PARTITION);
-    }
-
-    private void markRegionUnavailable(
-        RxDocumentServiceRequest request,
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
-
-        int failureCount = this.manager.getConsecutiveExceptionBasedCircuitBreaker()
-            .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
-
-        for (int failure = 0; failure < failureCount; failure++) {
-            this.manager.handleLocationExceptionForPartitionKeyRange(request, REGION, false);
-        }
-
-        assertThat(getUnavailableRegions(request, partitionKeyRangeWrapper)).containsExactly("eastus");
-    }
-
-    private java.util.List<String> getUnavailableRegions(RxDocumentServiceRequest request) {
-        return this.getUnavailableRegions(request, PARTITION);
-    }
-
     private java.util.List<String> getUnavailableRegions(
         RxDocumentServiceRequest request,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
@@ -560,18 +342,6 @@ public class PpcbFailbackLoggingTest {
             request,
             partitionKeyRangeWrapper.getCollectionResourceId(),
             partitionKeyRangeWrapper.getPartitionKeyRange());
-    }
-
-    private static LocationHealthStatus getRegionHealthStatus(RxDocumentServiceRequest request) {
-        return request.requestContext
-            .getPerPartitionCircuitBreakerInfoHolder()
-            .getPerPartitionCircuitBreakerInfoHolder()
-            .get("eastus")
-            .getLocationHealthStatus();
-    }
-
-    private static RxDocumentServiceRequest createReadRequest() {
-        return createReadRequest(PARTITION);
     }
 
     private static RxDocumentServiceRequest createReadRequest(
