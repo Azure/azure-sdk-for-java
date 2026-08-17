@@ -116,7 +116,7 @@ public class Tool implements JsonSerializable<Tool> {
                 } else if ("computer_use_preview".equals(discriminatorValue)) {
                     return ComputerUsePreviewTool.fromJson(readerToUse.reset());
                 } else if ("programmatic_tool_calling".equals(discriminatorValue)) {
-                    return ProgrammaticToolCallingParameter.fromJson(readerToUse.reset());
+                    return ProgrammaticToolCallingParam.fromJson(readerToUse.reset());
                 } else if ("image_generation".equals(discriminatorValue)) {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {

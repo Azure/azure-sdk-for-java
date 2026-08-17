@@ -758,6 +758,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -874,6 +875,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1061,6 +1063,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1249,6 +1252,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1368,6 +1372,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1493,6 +1498,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1635,6 +1641,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1775,6 +1782,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1896,6 +1904,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2022,6 +2031,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2161,6 +2171,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2295,6 +2306,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2429,6 +2441,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2564,6 +2577,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2788,6 +2802,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2926,6 +2941,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3058,6 +3074,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3194,6 +3211,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4212,6 +4230,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4387,6 +4406,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
