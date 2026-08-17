@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainerGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsListByResourceGroup.json
      */
     /**
      * Sample code: ContainerGroupsListByResourceGroup.

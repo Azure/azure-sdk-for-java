@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainerGroupsRestartSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerGroupsRestart.json
+     * x-ms-original-file: 2026-07-01/ContainerGroupsRestart.json
      */
     /**
      * Sample code: ContainerRestart.

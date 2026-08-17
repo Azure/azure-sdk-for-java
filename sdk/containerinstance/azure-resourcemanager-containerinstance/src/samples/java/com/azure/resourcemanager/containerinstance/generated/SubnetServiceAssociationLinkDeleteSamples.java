@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class SubnetServiceAssociationLinkDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SubnetServiceAssociationLinkDelete.json
+     * x-ms-original-file: 2026-07-01/SubnetServiceAssociationLinkDelete.json
      */
     /**
      * Sample code: SubnetServiceAssociationLinkDelete.

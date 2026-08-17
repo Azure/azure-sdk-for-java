@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
 import com.azure.resourcemanager.containerinstance.fluent.LocationsClient;
 import com.azure.resourcemanager.containerinstance.fluent.NGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.OperationsClient;
+import com.azure.resourcemanager.containerinstance.fluent.SandboxGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.SubnetServiceAssociationLinksClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -167,6 +168,20 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
     }
 
     /**
+     * The SandboxGroupsClient object to access its operations.
+     */
+    private final SandboxGroupsClient sandboxGroups;
+
+    /**
+     * Gets the SandboxGroupsClient object to access its operations.
+     * 
+     * @return the SandboxGroupsClient object.
+     */
+    public SandboxGroupsClient getSandboxGroups() {
+        return this.sandboxGroups;
+    }
+
+    /**
      * The ContainersClient object to access its operations.
      */
     private final ContainersClient containers;
@@ -240,11 +255,12 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-07-01";
         this.operations = new OperationsClientImpl(this);
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.nGroups = new NGroupsClientImpl(this);
         this.cGProfiles = new CGProfilesClientImpl(this);
+        this.sandboxGroups = new SandboxGroupsClientImpl(this);
         this.containers = new ContainersClientImpl(this);
         this.cGProfilesOperations = new CGProfilesOperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);

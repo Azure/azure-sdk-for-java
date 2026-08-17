@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerinstance.generated;
  */
 public final class ContainersListLogsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ContainerListLogs.json
+     * x-ms-original-file: 2026-07-01/ContainerListLogs.json
      */
     /**
      * Sample code: ContainerListLogs.
