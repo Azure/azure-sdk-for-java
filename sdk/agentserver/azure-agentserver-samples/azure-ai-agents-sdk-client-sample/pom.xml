@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.microsoft.agentserver</groupId>
+    <artifactId>azure-agentserver-samples</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>azure-ai-agents-sdk-client-sample</artifactId>
+  <name>azure-ai-agents-sdk-client-sample</name>
+  <description>Deploys the financial-jersey Agent Server sample as a hosted agent to Azure AI Foundry and invokes it using the com.azure:azure-ai-agents Java SDK.</description>
+
+  <properties>
+    <!--
+      azure-ai-agents 2.2.0 is compiled against openai-java 4.14.0. The agentserver parent
+      manages openai-java to a newer version, so pin the matching version here (a direct
+      dependency with an explicit version overrides the parent dependencyManagement) to avoid
+      binary incompatibilities when the SDK builds the agent-scoped OpenAI client.
+    -->
+    <azure-ai-agents.version>2.2.0</azure-ai-agents.version>
+    <sample-openai.version>4.14.0</sample-openai.version>
+    <azure-core-http-okhttp.version>1.13.5</azure-core-http-okhttp.version>
+  </properties>
+
+  <dependencies>
+    <!-- Azure AI Agents SDK: deploy hosted agent, configure endpoint, build agent-scoped OpenAI client -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-ai-agents</artifactId>
+      <version>${azure-ai-agents.version}</version>
+      <exclusions>
+        <!-- Use the OkHttp-based Azure HTTP client instead of Netty (see azure-core-http-okhttp below) -->
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- OkHttp implementation of the Azure core HTTP client -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>${azure-core-http-okhttp.version}</version>
+    </dependency>
+
+    <!-- Credential used to authenticate to the Foundry project -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+    </dependency>
+
+    <!-- Pin the OpenAI Java SDK version that azure-ai-agents 2.2.0 was built against -->
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java</artifactId>
+      <version>${sample-openai.version}</version>
+    </dependency>
+
+    <!-- Jackson datatype modules required by the OpenAI Java SDK's object mapper -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jdk8</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
+
+    <!-- SLF4J runtime binding so SDK logs are visible -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven-assembly-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.microsoft.agentserver.sample.financial.sdkclient.Main</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

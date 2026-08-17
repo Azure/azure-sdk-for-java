@@ -1,0 +1,39 @@
+# Example configuration for the hosted-agent CLI.
+#
+# Run with (the command is always given on the command line):
+#   ./hosted-agent-cli.sh deploy --config config.example.yaml
+#
+# Keys mirror the command-line options (without the leading "--"). Any option
+# passed on the command line overrides the value here, e.g.:
+#   ./hosted-agent-cli.sh deploy --config config.example.yaml --size large
+
+# Common
+endpoint: https://<account>.services.ai.azure.com/api/projects/<project>
+name: my-agent
+
+# deploy-specific
+image: yourregistry.azurecr.io/my-agent:latest
+# Sandbox size: small (0.5 vCPU/1Gi), medium (1 vCPU/2Gi) or large (2 vCPU/4Gi)
+size: medium
+model: gpt-5.4
+# Subscription id of the AI Services account; enables the post-deploy Azure OpenAI permission check.
+subscription: 00000000-0000-0000-0000-000000000000
+# When true, deploy attempts to grant the agent identity the Azure OpenAI role if it is missing
+# (requires 'subscription'); if the grant fails it prints the manual fix.
+grant-openai-access: false
+description: Hosted agent deployed from a YAML config.
+
+# Container environment variables (a map, or a list of KEY=VALUE strings)
+env:
+  LOG_LEVEL: debug
+
+# logs-specific (use with: ./hosted-agent-cli.sh logs --config config.example.yaml)
+# Live stream (default source):
+# version: 3
+# session: sess-abc-123
+# Application Insights history dump (source: insights):
+# source: insights
+# app-insights: /subscriptions/<sub>/resourceGroups/<rg>/providers/microsoft.insights/components/<name>
+# log-type: traces        # traces | exceptions | requests | dependencies | all
+# since: 1h               # 30m, 1h, 2d ...
+# limit: 20
