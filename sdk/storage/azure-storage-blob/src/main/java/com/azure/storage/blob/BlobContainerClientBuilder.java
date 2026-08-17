@@ -165,6 +165,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
                 new IllegalArgumentException("Customer provided key and encryption " + "scope cannot both be set"));
         }
 
+
         /*
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
