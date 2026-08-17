@@ -33,8 +33,9 @@ public class HttpUtilsTests {
     public void textEventStreamContentTypeRequiresSingleMediaType() {
         assertTrue(HttpUtils.isTextEventStreamContentType("Text/Event-Stream; charset=utf-8"));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=\"UTF-8\""));
-        assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=iso-8859-1"));
-        assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=utf-16"));
+        assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=iso-8859-1"));
+        assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=utf-16"));
+        assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=not-a-charset"));
         assertFalse(HttpUtils.isTextEventStreamContentType("application/json, text/event-stream"));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"x,y;z\""));
         assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"unterminated"));

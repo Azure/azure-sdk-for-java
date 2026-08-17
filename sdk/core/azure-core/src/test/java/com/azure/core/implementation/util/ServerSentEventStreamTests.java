@@ -17,6 +17,7 @@ import reactor.test.StepVerifier;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -84,9 +85,109 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void toFluxRejectsIncompatibleCharsetAndClosesResponse() {
+    public void toFluxDecodesFragmentedUtf16Event() {
+        byte[] bytes = "data: caf\u00e9\n\n".getBytes(StandardCharsets.UTF_16BE);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        for (byte value : bytes) {
+            buffers.add(ByteBuffer.wrap(new byte[] { value }));
+        }
+        TestResponse response = response(200, BinaryData.fromFlux(Flux.fromIterable(buffers), null, false).block(),
+            "text/event-stream; charset=UTF-16BE");
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .assertNext(event -> assertEquals("caf\u00e9", event.getData()))
+            .verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxUsesBomBeforeDeclaredCharset() {
+        byte[] event = "data: caf\u00e9\n\n".getBytes(StandardCharsets.UTF_16BE);
+        byte[] bytes = new byte[event.length + 2];
+        bytes[0] = (byte) 0xFE;
+        bytes[1] = (byte) 0xFF;
+        System.arraycopy(event, 0, bytes, 2, event.length);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        for (byte value : bytes) {
+            buffers.add(ByteBuffer.wrap(new byte[] { value }));
+        }
+        TestResponse response = response(200, BinaryData.fromFlux(Flux.fromIterable(buffers), null, false).block(),
+            "text/event-stream; charset=UTF-8");
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data))
+            .assertNext(eventResult -> assertEquals("caf\u00e9", eventResult.getData()))
+            .verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxWaitsForFragmentedUtf32LeBomAfterEmptyBuffer() {
+        byte[] event = "data: caf\u00e9\n\n".getBytes(Charset.forName("UTF-32LE"));
+        byte[] bytes = new byte[event.length + 4];
+        bytes[0] = (byte) 0xFF;
+        bytes[1] = (byte) 0xFE;
+        System.arraycopy(event, 0, bytes, 4, event.length);
+        List<ByteBuffer> buffers = new ArrayList<>();
+        buffers.add(ByteBuffer.allocate(0));
+        for (byte value : bytes) {
+            buffers.add(ByteBuffer.wrap(new byte[] { value }));
+        }
+        TestResponse response = response(200, BinaryData.fromFlux(Flux.fromIterable(buffers), null, false).block(),
+            "text/event-stream; charset=UTF-8");
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data))
+            .assertNext(eventResult -> assertEquals("caf\u00e9", eventResult.getData()))
+            .verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxCompletesForEmptyBody() {
+        TestResponse response = response(200, BinaryData.fromBytes(new byte[0]));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data)).verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxCompletesForBomOnlyBody() {
         TestResponse response
-            = response(200, BinaryData.fromString("data: one\n\n"), "text/event-stream; charset=utf-16");
+            = response(200, BinaryData.fromBytes(new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF }));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data)).verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxCompletesForUtf16LeBomOnlyBody() {
+        TestResponse response = response(200, BinaryData.fromBytes(new byte[] { (byte) 0xFF, (byte) 0xFE }));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data)).verifyComplete();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxFailsForTruncatedBomPrefixWithoutNullPointerException() {
+        TestResponse response = response(200, BinaryData.fromBytes(new byte[] { (byte) 0xEF }));
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (eventName, data) -> data))
+            .expectErrorMatches(
+                error -> error instanceof IllegalStateException && !(error instanceof NullPointerException))
+            .verify();
+
+        assertTrue(response.closed.get());
+    }
+
+    @Test
+    public void toFluxRejectsUnsupportedCharsetAndClosesResponse() {
+        TestResponse response
+            = response(200, BinaryData.fromString("data: one\n\n"), "text/event-stream; charset=not-a-charset");
 
         assertThrows(IllegalStateException.class,
             () -> ServerSentEventStreams.toFlux(response, (event, data) -> data).blockLast());

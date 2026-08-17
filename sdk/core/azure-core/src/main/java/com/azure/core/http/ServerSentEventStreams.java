@@ -23,6 +23,9 @@ import java.util.function.Predicate;
  *
  * <p>If both stream processing and eager response cleanup fail, the cleanup failure is emitted and the processing
  * failure is suppressed.</p>
+ *
+ * <p>The stream incrementally decodes a supported {@code charset} declared by its {@code Content-Type}; UTF-8 is
+ * used when no charset is declared, and an initial byte-order mark takes precedence over the declaration.</p>
  */
 public final class ServerSentEventStreams {
     private ServerSentEventStreams() {

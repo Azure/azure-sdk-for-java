@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,12 +26,14 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
 
     private final int statusCode;
     private final BinaryData body;
+    private final Charset charset;
     private final Closeable response;
     private final AtomicBoolean closed = new AtomicBoolean();
 
-    ServerSentEventStreamResponse(int statusCode, BinaryData body, Closeable response) {
+    ServerSentEventStreamResponse(int statusCode, BinaryData body, Charset charset, Closeable response) {
         this.statusCode = statusCode;
         this.body = body;
+        this.charset = charset;
         this.response = response;
     }
 
@@ -51,8 +54,10 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Expected a server-sent event response to have status code 200 or 204."));
         }
+        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        Charset charset = response.getStatusCode() == 200 ? HttpUtils.getTextEventStreamCharset(contentType) : null;
         if (response.getStatusCode() == 200
-            && !HttpUtils.isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+            && (!HttpUtils.isTextEventStreamContentType(contentType) || charset == null)) {
             closeResponse(response);
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Expected a successful server-sent event response to have Content-Type 'text/event-stream'."));
@@ -65,7 +70,7 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
                 throw new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
             }
         }
-        return new ServerSentEventStreamResponse(response.getStatusCode(), body, (Closeable) response);
+        return new ServerSentEventStreamResponse(response.getStatusCode(), body, charset, (Closeable) response);
     }
 
     private static void closeResponse(Response<BinaryData> response) {
@@ -86,6 +91,10 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
 
     BinaryData getBody() {
         return body;
+    }
+
+    Charset getCharset() {
+        return charset;
     }
 
     @Override

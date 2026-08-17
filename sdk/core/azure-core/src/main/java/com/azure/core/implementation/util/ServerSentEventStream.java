@@ -15,10 +15,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +72,8 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
         try {
-            processBody(body, new StreamState(), deserializer, TerminalEventPolicy.endOnResponseCompletion(), listener);
+            processBody(body, new StreamState(), StandardCharsets.UTF_8, deserializer,
+                TerminalEventPolicy.endOnResponseCompletion(), listener);
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -119,7 +125,7 @@ public final class ServerSentEventStream {
             AtomicBoolean terminalObserved = new AtomicBoolean();
             Flux<ServerSentEvent<T>> events = streamResponse.getStatusCode() == 204
                 ? Flux.empty()
-                : decodeBody(streamResponse.getBody(), new StreamState(), deserializer);
+                : decodeBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer);
             if (terminalPolicy.hasTerminalPredicate()) {
                 events = events.takeUntil(event -> {
                     boolean terminal = terminalPolicy.isTerminal(event);
@@ -151,7 +157,7 @@ public final class ServerSentEventStream {
 
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
             boolean terminalObserved = streamResponse.getStatusCode() != 204
-                && processBody(streamResponse.getBody(), new StreamState(), deserializer,
+                && processBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer,
                     TerminalEventPolicy.endOnResponseCompletion(), listener);
             TerminalEventPolicy.<T>endOnResponseCompletion().validateCompletion(terminalObserved);
         } catch (IOException exception) {
@@ -180,7 +186,8 @@ public final class ServerSentEventStream {
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
             TerminalEventPolicy<T> terminalPolicy = TerminalEventPolicy.requireTerminal(terminalEvent);
             boolean terminalObserved = streamResponse.getStatusCode() != 204
-                && processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalPolicy, listener);
+                && processBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer,
+                    terminalPolicy, listener);
             terminalPolicy.validateCompletion(terminalObserved);
         } catch (IOException exception) {
             listener.onError(exception);
@@ -195,7 +202,12 @@ public final class ServerSentEventStream {
 
     private static <T> Flux<ServerSentEvent<T>> decodeBody(BinaryData body, StreamState state,
         BiFunction<String, String, T> deserializer) {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
+        return decodeBody(body, state, StandardCharsets.UTF_8, deserializer);
+    }
+
+    private static <T> Flux<ServerSentEvent<T>> decodeBody(BinaryData body, StreamState state, Charset charset,
+        BiFunction<String, String, T> deserializer) {
+        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state, charset);
         Flux<ServerSentEventFrame> frames = body.toFluxByteBuffer()
             .concatMap(buffer -> Flux.fromIterable(decoder.feed(buffer)), 1)
             .concatWith(Flux.defer(() -> Flux.fromIterable(decoder.finish())));
@@ -208,10 +220,10 @@ public final class ServerSentEventStream {
         return data == null ? Flux.empty() : Flux.just(frame.toEvent(data));
     }
 
-    private static <T> boolean processBody(BinaryData body, StreamState state,
+    private static <T> boolean processBody(BinaryData body, StreamState state, Charset charset,
         BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy,
         ServerSentEventListener<T> listener) throws IOException {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
+        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state, charset);
         byte[] readBuffer = new byte[8192];
 
         try (InputStream stream = new FluxInputStream(body.toFluxByteBuffer())) {
@@ -325,24 +337,30 @@ public final class ServerSentEventStream {
 
     private static final class ServerSentEventDecoder {
         private final StreamState state;
-        private byte[] lineBytes = new byte[256];
-        private int lineLength;
+        private final Charset declaredCharset;
+        private CharsetDecoder charsetDecoder;
+        private ByteBuffer remainingBytes = ByteBuffer.allocate(0);
+        private final StringBuilder line = new StringBuilder();
         private boolean pendingCarriageReturn;
         private boolean firstLine = true;
         private String event;
         private List<String> data;
         private String comment;
 
-        private ServerSentEventDecoder(StreamState state) {
+        private ServerSentEventDecoder(StreamState state, Charset charset) {
             this.state = state;
+            this.declaredCharset = charset;
         }
 
         private List<ServerSentEventFrame> feed(ByteBuffer source) {
-            ByteBuffer buffer = source.duplicate();
+            return feedCharacters(decode(source.duplicate(), false));
+        }
+
+        private List<ServerSentEventFrame> feedCharacters(CharBuffer buffer) {
             List<ServerSentEventFrame> events = new ArrayList<>();
 
             while (buffer.hasRemaining()) {
-                byte value = buffer.get();
+                char value = buffer.get();
 
                 if (pendingCarriageReturn) {
                     pendingCarriageReturn = false;
@@ -352,12 +370,12 @@ public final class ServerSentEventStream {
                 }
 
                 if (value == '\n') {
-                    processLine(decodeLine(), events);
+                    processLine(consumeLine(), events);
                 } else if (value == '\r') {
-                    processLine(decodeLine(), events);
+                    processLine(consumeLine(), events);
                     pendingCarriageReturn = true;
                 } else {
-                    appendByte(value);
+                    line.append(value);
                 }
             }
 
@@ -366,28 +384,120 @@ public final class ServerSentEventStream {
 
         private List<ServerSentEventFrame> finish() {
             // The SSE parsing algorithm discards an event that wasn't terminated by a blank line.
+            decode(ByteBuffer.allocate(0), true);
             return Collections.emptyList();
         }
 
-        private void appendByte(byte value) {
-            if (lineLength == lineBytes.length) {
-                lineBytes = Arrays.copyOf(lineBytes, lineBytes.length * 2);
+        private CharBuffer decode(ByteBuffer source, boolean endOfInput) {
+            ByteBuffer input = ByteBuffer.allocate(remainingBytes.remaining() + source.remaining());
+            input.put(remainingBytes.duplicate());
+            input.put(source);
+            input.flip();
+            if (charsetDecoder == null && !initializeDecoder(input, endOfInput)) {
+                remainingBytes = ByteBuffer.allocate(input.remaining());
+                remainingBytes.put(input).flip();
+                return CharBuffer.allocate(0);
             }
-            lineBytes[lineLength++] = value;
+            CharBuffer output = CharBuffer.allocate((int) (input.remaining() * charsetDecoder.maxCharsPerByte()) + 1);
+            try {
+                CoderResult result = charsetDecoder.decode(input, output, endOfInput);
+                if (result.isError()) {
+                    result.throwException();
+                }
+                if (endOfInput) {
+                    result = charsetDecoder.flush(output);
+                    if (result.isError()) {
+                        result.throwException();
+                    }
+                }
+            } catch (CharacterCodingException exception) {
+                throw new IllegalStateException("Failed to decode the server-sent event stream.", exception);
+            }
+            remainingBytes = ByteBuffer.allocate(input.remaining());
+            remainingBytes.put(input).flip();
+            output.flip();
+            return output;
         }
 
-        private String decodeLine() {
-            String line = new String(lineBytes, 0, lineLength, StandardCharsets.UTF_8);
-            lineLength = 0;
+        private boolean initializeDecoder(ByteBuffer input, boolean endOfInput) {
+            Charset charset = declaredCharset;
+            if (!input.hasRemaining()) {
+                if (!endOfInput) {
+                    return false;
+                }
+            } else {
+                int offset = input.position();
+                int remaining = input.remaining();
+                int first = input.get(offset) & 0xFF;
+                if (first == 0xEF) {
+                    if (remaining < 3) {
+                        if (!endOfInput) {
+                            return false;
+                        }
+                    } else if ((input.get(offset + 1) & 0xFF) == 0xBB && (input.get(offset + 2) & 0xFF) == 0xBF) {
+                        charset = StandardCharsets.UTF_8;
+                    }
+                } else if (first == 0xFE) {
+                    if (remaining < 2) {
+                        if (!endOfInput) {
+                            return false;
+                        }
+                    } else if ((input.get(offset + 1) & 0xFF) == 0xFF) {
+                        charset = StandardCharsets.UTF_16BE;
+                    }
+                } else if (first == 0xFF) {
+                    if (remaining < 2) {
+                        if (!endOfInput) {
+                            return false;
+                        }
+                    } else if ((input.get(offset + 1) & 0xFF) == 0xFE) {
+                        if (remaining < 4) {
+                            if (!endOfInput) {
+                                return false;
+                            }
+                            if (remaining == 2) {
+                                charset = StandardCharsets.UTF_16LE;
+                            }
+                        } else {
+                            charset = input.get(offset + 2) == 0 && input.get(offset + 3) == 0
+                                ? Charset.forName("UTF-32LE")
+                                : StandardCharsets.UTF_16LE;
+                        }
+                    }
+                } else if (first == 0) {
+                    if (remaining < 2) {
+                        if (!endOfInput) {
+                            return false;
+                        }
+                    } else if (input.get(offset + 1) == 0) {
+                        if (remaining < 4) {
+                            if (!endOfInput) {
+                                return false;
+                            }
+                        } else if ((input.get(offset + 2) & 0xFF) == 0xFE && (input.get(offset + 3) & 0xFF) == 0xFF) {
+                            charset = Charset.forName("UTF-32BE");
+                        }
+                    }
+                }
+            }
+            charsetDecoder = charset.newDecoder()
+                .onMalformedInput(CodingErrorAction.REPORT)
+                .onUnmappableCharacter(CodingErrorAction.REPORT);
+            return true;
+        }
+
+        private String consumeLine() {
+            String decodedLine = line.toString();
+            line.setLength(0);
 
             if (firstLine) {
                 firstLine = false;
-                if (!line.isEmpty() && line.charAt(0) == '\uFEFF') {
-                    return line.substring(1);
+                if (!decodedLine.isEmpty() && decodedLine.charAt(0) == '\uFEFF') {
+                    return decodedLine.substring(1);
                 }
             }
 
-            return line;
+            return decodedLine;
         }
 
         private void processLine(String line, List<ServerSentEventFrame> events) {
