@@ -595,7 +595,7 @@ public class BlobClientBase {
                                     .fetchLayoutCacheValueAsync(layoutRange, requestConditions, contextFinal)
                                     .block();
                             }
-                        }, BlobLayoutCacheValue::getExpiration);
+                        });
                 }
 
                 return Mono.just(new BlobInputStream(finalClient, range.getOffset(), range.getCount(), chunkSize,
