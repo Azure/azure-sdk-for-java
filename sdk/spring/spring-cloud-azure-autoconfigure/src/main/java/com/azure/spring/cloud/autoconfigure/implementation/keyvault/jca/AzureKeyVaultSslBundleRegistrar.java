@@ -44,6 +44,8 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
     private ResourceLoader resourceLoader;
     private final Map<String, AzureKeyVaultJcaProperties.JcaVaultProperties> jcaVaults;
     private final Map<String, AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties> sslBundles;
+    private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-pattern";
     private static final String[] JCA_SYSTEM_PROPERTY_KEYS = new String[]{
         "azure.keyvault.uri",
         "azure.keyvault.tenant-id",
@@ -51,6 +53,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         "azure.keyvault.client-secret",
         "azure.keyvault.managed-identity",
         "azure.keyvault.jca.certificates-refresh-interval",
+        CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY,
         "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate",
         "azure.cert-path.well-known",
         "azure.cert-path.custom"
@@ -209,6 +212,13 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         pm.from(keyStoreProperties.getCertificatesRefreshInterval())
             .when(Objects::nonNull)
             .to(v -> System.setProperty("azure.keyvault.jca.certificates-refresh-interval", String.valueOf(v.toMillis())));
+        pm.from(keyStoreProperties.getCertificateAliasFilterPatterns())
+            .when(patterns -> !patterns.isEmpty())
+            .to(patterns -> {
+                for (int i = 0; i < patterns.size(); i++) {
+                    System.setProperty(CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + "." + i, patterns.get(i));
+                }
+            });
         pm.from(keyStoreProperties.isRefreshCertificatesWhenHaveUntrustedCertificate())
             .to(v -> System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", Boolean.toString(v)));
 
@@ -220,6 +230,11 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
 
     private static void clearJcaSystemProperties() {
         Arrays.stream(JCA_SYSTEM_PROPERTY_KEYS).forEach(System::clearProperty);
+        System.getProperties()
+            .stringPropertyNames()
+            .stream()
+            .filter(name -> name.startsWith(CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + "."))
+            .forEach(System::clearProperty);
     }
 
     private static Optional<String> resolvePath(ResourceLoader resourceLoader, String path) {
