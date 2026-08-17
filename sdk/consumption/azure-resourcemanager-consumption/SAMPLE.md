@@ -1119,7 +1119,7 @@ public final class ReservationRecommendationDetailsGetSamples {
         manager.reservationRecommendationDetails()
             .getWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-00000000:00000000-0000-0000-0000-00000000/billingProfiles/00000000-0000-0000-0000-00000000",
-                Scope.SHARED, "australiaeast", Term.P1Y, LookBackPeriod.LAST07DAYS, "Standard_B2s",
+                Scope.SHARED, "australiaeast", Term.P1Y, LookBackPeriod.LAST7DAYS, "Standard_B2s",
                 "properties/subscriptionId eq 00000000-0000-0000-0000-00000000", null,
                 com.azure.core.util.Context.NONE);
     }
@@ -1483,7 +1483,7 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesDailyWithBillingAccountId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.DAILY_GRAIN, null, null,
+            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.DAILY, null, null,
                 "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20", null, null,
                 com.azure.core.util.Context.NONE);
     }
@@ -1499,7 +1499,7 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesDailyWithBillingProfileId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.DAILY_GRAIN,
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.DAILY,
                 "2017-10-01", "2017-11-20", null, null, null, com.azure.core.util.Context.NONE);
     }
 
@@ -1514,8 +1514,8 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingAccountId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.MONTHLY_GRAIN, null, null, null, null,
-                null, com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.MONTHLY, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1529,8 +1529,8 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingProfileId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579",
-                Datagrain.MONTHLY_GRAIN, null, null, null, null, null, com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.MONTHLY,
+                null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1544,9 +1544,9 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingProfileIdReservationId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579",
-                Datagrain.MONTHLY_GRAIN, null, null, null, "1c6b6358-709f-484c-85f1-72e862a0cf3b",
-                "9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc", com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.MONTHLY,
+                null, null, null, "1c6b6358-709f-484c-85f1-72e862a0cf3b", "9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1570,7 +1570,7 @@ public final class ReservationsSummariesListByReservationOrderSamples {
      */
     public static void reservationSummariesMonthly(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .listByReservationOrder("00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY_GRAIN, null,
+            .listByReservationOrder("00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY, null,
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1584,7 +1584,7 @@ public final class ReservationsSummariesListByReservationOrderSamples {
      */
     public static void reservationSummariesDaily(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .listByReservationOrder("00000000-0000-0000-0000-000000000000", Datagrain.DAILY_GRAIN,
+            .listByReservationOrder("00000000-0000-0000-0000-000000000000", Datagrain.DAILY,
                 "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20",
                 com.azure.core.util.Context.NONE);
     }
@@ -1612,7 +1612,7 @@ public final class ReservationsSummariesListByReservationOrderAndReservationSamp
         reservationSummariesDailyWithReservationId(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
             .listByReservationOrderAndReservation("00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000", Datagrain.DAILY_GRAIN,
+                "00000000-0000-0000-0000-000000000000", Datagrain.DAILY,
                 "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20",
                 com.azure.core.util.Context.NONE);
     }
@@ -1629,8 +1629,7 @@ public final class ReservationsSummariesListByReservationOrderAndReservationSamp
         reservationSummariesMonthlyWithReservationId(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
             .listByReservationOrderAndReservation("00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY_GRAIN, null,
-                com.azure.core.util.Context.NONE);
+                "00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1798,7 +1797,7 @@ public final class UsageDetailsListSamples {
         usageDetailsListByMetricAmortizedCostLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
             .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.AMORTIZED_COST_METRIC_TYPE, com.azure.core.util.Context.NONE);
+                Metrictype.AMORTIZEDCOST, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1812,8 +1811,8 @@ public final class UsageDetailsListSamples {
     public static void
         usageDetailsListByMetricUsageLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.USAGE_METRIC_TYPE, com.azure.core.util.Context.NONE);
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null, Metrictype.USAGE,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1857,8 +1856,8 @@ public final class UsageDetailsListSamples {
     public static void
         usageDetailsListByMetricActualCostLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.ACTUAL_COST_METRIC_TYPE, com.azure.core.util.Context.NONE);
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null, Metrictype.ACTUALCOST,
+                com.azure.core.util.Context.NONE);
     }
 
     /*

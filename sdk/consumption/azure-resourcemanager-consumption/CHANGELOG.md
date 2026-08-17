@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-08-14)
+## 1.1.0 (2026-08-17)
 
 - Azure Resource Manager Consumption client library for Java. This package contains Microsoft Azure SDK for Consumption Management SDK. Consumption management client provides access to consumption resources for Azure Enterprise Subscriptions. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -72,9 +72,9 @@
 #### `models.ReservationRecommendationDetailsSavingsProperties` was modified
 
 * `ReservationRecommendationDetailsSavingsProperties()` was changed to private access
-* `java.lang.Float recommendedQuantity()` -> `java.lang.Double recommendedQuantity()`
 * `withCalculatedSavings(java.util.List)` was removed
 * `validate()` was removed
+* `java.lang.Float recommendedQuantity()` -> `java.lang.Double recommendedQuantity()`
 
 #### `models.BudgetFilter` was modified
 
@@ -105,10 +105,6 @@
 * `java.util.UUID meterId()` -> `java.lang.String meterId()`
 * `validate()` was removed
 
-#### `models.LookBackPeriod` was modified
-
-* `LAST7DAYS` was removed
-
 #### `models.PriceSheetProperties` was modified
 
 * `PriceSheetProperties()` was changed to private access
@@ -138,9 +134,9 @@
 #### `models.ReservationRecommendationDetailsResourceProperties` was modified
 
 * `ReservationRecommendationDetailsResourceProperties()` was changed to private access
+* `validate()` was removed
 * `java.lang.Float onDemandRate()` -> `java.lang.Double onDemandRate()`
 * `java.lang.Float reservationRate()` -> `java.lang.Double reservationRate()`
-* `validate()` was removed
 
 #### `models.AmountWithExchangeRate` was modified
 
@@ -184,26 +180,26 @@
 #### `models.ReservationRecommendationDetailsCalculatedSavingsProperties` was modified
 
 * `ReservationRecommendationDetailsCalculatedSavingsProperties()` was changed to private access
+* `java.lang.Float quantity()` -> `java.lang.Double quantity()`
+* `java.lang.Float totalReservationCost()` -> `java.lang.Double totalReservationCost()`
 * `java.lang.Float reservationCost()` -> `java.lang.Double reservationCost()`
+* `java.lang.Float onDemandCost()` -> `java.lang.Double onDemandCost()`
+* `java.lang.Float savings()` -> `java.lang.Double savings()`
+* `withReservedUnitCount(java.lang.Float)` was removed
+* `validate()` was removed
 * `java.lang.Float reservedUnitCount()` -> `java.lang.Double reservedUnitCount()`
 * `java.lang.Float overageCost()` -> `java.lang.Double overageCost()`
-* `withReservedUnitCount(java.lang.Float)` was removed
-* `java.lang.Float quantity()` -> `java.lang.Double quantity()`
-* `java.lang.Float onDemandCost()` -> `java.lang.Double onDemandCost()`
-* `java.lang.Float totalReservationCost()` -> `java.lang.Double totalReservationCost()`
-* `validate()` was removed
-* `java.lang.Float savings()` -> `java.lang.Double savings()`
 
 #### `models.Marketplace` was modified
 
-* `java.util.UUID meterId()` -> `java.lang.String meterId()`
 * `java.util.UUID subscriptionGuid()` -> `java.lang.String subscriptionGuid()`
+* `java.util.UUID meterId()` -> `java.lang.String meterId()`
 
 #### `models.LegacyReservationRecommendation` was modified
 
 * `LegacyReservationRecommendation()` was changed to private access
-* `validate()` was removed
 * `withProperties(models.LegacyReservationRecommendationProperties)` was removed
+* `validate()` was removed
 
 #### `models.Reseller` was modified
 
@@ -222,16 +218,11 @@
 
 * `java.util.UUID purchasingSubscriptionGuid()` -> `java.lang.String purchasingSubscriptionGuid()`
 
-#### `models.Datagrain` was modified
-
-* `DAILY` was removed
-* `MONTHLY` was removed
-
 #### `models.ModernReservationRecommendationProperties` was modified
 
+* `validate()` was removed
 * `java.util.UUID meterId()` -> `java.lang.String meterId()`
 * `java.lang.Float instanceFlexibilityRatio()` -> `java.lang.Double instanceFlexibilityRatio()`
-* `validate()` was removed
 * `java.lang.Float recommendedQuantityNormalized()` -> `java.lang.Double recommendedQuantityNormalized()`
 
 #### `models.ModernReservationRecommendation` was modified
@@ -243,21 +234,15 @@
 #### `models.LegacySingleScopeReservationRecommendationProperties` was modified
 
 * `LegacySingleScopeReservationRecommendationProperties()` was changed to private access
-* `validate()` was removed
 * `java.util.UUID subscriptionId()` -> `java.lang.String subscriptionId()`
+* `validate()` was removed
 
 #### `models.Tag` was modified
 
 * `Tag()` was changed to private access
+* `withKey(java.lang.String)` was removed
 * `validate()` was removed
 * `withValue(java.util.List)` was removed
-* `withKey(java.lang.String)` was removed
-
-#### `models.Metrictype` was modified
-
-* `USAGE` was removed
-* `AMORTIZEDCOST` was removed
-* `ACTUALCOST` was removed
 
 #### `models.OperationDisplay` was modified
 
@@ -267,8 +252,8 @@
 #### `models.LegacyReservationRecommendationProperties` was modified
 
 * `validate()` was removed
-* `java.lang.Float instanceFlexibilityRatio()` -> `java.lang.Double instanceFlexibilityRatio()`
 * `java.util.UUID meterId()` -> `java.lang.String meterId()`
+* `java.lang.Float instanceFlexibilityRatio()` -> `java.lang.Double instanceFlexibilityRatio()`
 * `java.lang.Float recommendedQuantityNormalized()` -> `java.lang.Double recommendedQuantityNormalized()`
 
 ### Features Added
@@ -289,8 +274,8 @@
 
 #### `models.ModernChargeSummary` was modified
 
-* `systemData()` was added
 * `etag()` was added
+* `systemData()` was added
 
 #### `models.ReservationSummary` was modified
 
@@ -298,10 +283,10 @@
 
 #### `models.LotSummary` was modified
 
-* `systemData()` was added
-* `organizationType()` was added
-* `isEstimatedBalance()` was added
 * `usedAmount()` was added
+* `isEstimatedBalance()` was added
+* `organizationType()` was added
+* `systemData()` was added
 
 #### `models.ModernReservationTransaction` was modified
 
@@ -318,10 +303,6 @@
 #### `models.LegacyUsageDetail` was modified
 
 * `systemData()` was added
-
-#### `models.LookBackPeriod` was modified
-
-* `LAST07DAYS` was added
 
 #### `models.PriceSheetProperties` was modified
 
@@ -347,8 +328,8 @@
 
 #### `models.EventSummary` was modified
 
-* `systemData()` was added
 * `billingAccountId()` was added
+* `systemData()` was added
 * `billingAccountDisplayName()` was added
 * `isEstimatedBalance()` was added
 
@@ -388,15 +369,10 @@
 
 * `systemData()` was added
 
-#### `models.Datagrain` was modified
-
-* `DAILY_GRAIN` was added
-* `MONTHLY_GRAIN` was added
-
 #### `models.ModernReservationRecommendationProperties` was modified
 
-* `lastUsageDate()` was added
 * `totalHours()` was added
+* `lastUsageDate()` was added
 
 #### `models.TagsResult` was modified
 
@@ -416,32 +392,26 @@
 
 #### `models.ReservationRecommendationDetailsModel` was modified
 
-* `projectedUsage()` was added
 * `managementGroupId()` was added
+* `projectedUsage()` was added
 * `tenantId()` was added
 * `systemData()` was added
 
 #### `models.PriceSheets` was modified
 
-* `downloadByBillingAccountPeriod(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `downloadByBillingAccountPeriod(java.lang.String,java.lang.String)` was added
+* `downloadByBillingAccountPeriod(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.CreditSummary` was modified
 
 * `tags()` was added
-* `isEstimatedBalance()` was added
 * `systemData()` was added
-
-#### `models.Metrictype` was modified
-
-* `USAGE_METRIC_TYPE` was added
-* `ACTUAL_COST_METRIC_TYPE` was added
-* `AMORTIZED_COST_METRIC_TYPE` was added
+* `isEstimatedBalance()` was added
 
 #### `models.LegacyReservationRecommendationProperties` was modified
 
-* `totalHours()` was added
 * `lastUsageDate()` was added
+* `totalHours()` was added
 
 ## 1.0.0 (2024-12-24)
 

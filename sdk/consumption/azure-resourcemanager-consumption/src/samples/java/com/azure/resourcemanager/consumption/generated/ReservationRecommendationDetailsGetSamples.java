@@ -40,7 +40,7 @@ public final class ReservationRecommendationDetailsGetSamples {
         manager.reservationRecommendationDetails()
             .getWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-00000000:00000000-0000-0000-0000-00000000/billingProfiles/00000000-0000-0000-0000-00000000",
-                Scope.SHARED, "australiaeast", Term.P1Y, LookBackPeriod.LAST07DAYS, "Standard_B2s",
+                Scope.SHARED, "australiaeast", Term.P1Y, LookBackPeriod.LAST7DAYS, "Standard_B2s",
                 "properties/subscriptionId eq 00000000-0000-0000-0000-00000000", null,
                 com.azure.core.util.Context.NONE);
     }

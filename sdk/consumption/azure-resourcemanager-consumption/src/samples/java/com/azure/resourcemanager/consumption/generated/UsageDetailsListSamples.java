@@ -141,7 +141,7 @@ public final class UsageDetailsListSamples {
         usageDetailsListByMetricAmortizedCostLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
             .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.AMORTIZED_COST_METRIC_TYPE, com.azure.core.util.Context.NONE);
+                Metrictype.AMORTIZEDCOST, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -155,8 +155,8 @@ public final class UsageDetailsListSamples {
     public static void
         usageDetailsListByMetricUsageLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.USAGE_METRIC_TYPE, com.azure.core.util.Context.NONE);
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null, Metrictype.USAGE,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -200,8 +200,8 @@ public final class UsageDetailsListSamples {
     public static void
         usageDetailsListByMetricActualCostLegacy(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.usageDetails()
-            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null,
-                Metrictype.ACTUAL_COST_METRIC_TYPE, com.azure.core.util.Context.NONE);
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, null, null, null, Metrictype.ACTUALCOST,
+                com.azure.core.util.Context.NONE);
     }
 
     /*

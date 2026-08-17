@@ -32,7 +32,7 @@ public final class ReservationsSummariesListByReservationOrderAndReservationMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ReservationSummary> response = manager.reservationsSummaries()
-            .listByReservationOrderAndReservation("jrmkuhmaxljalf", "hcjmo", Datagrain.DAILY_GRAIN, "anc",
+            .listByReservationOrderAndReservation("jrmkuhmaxljalf", "hcjmo", Datagrain.DAILY, "anc",
                 com.azure.core.util.Context.NONE);
 
     }

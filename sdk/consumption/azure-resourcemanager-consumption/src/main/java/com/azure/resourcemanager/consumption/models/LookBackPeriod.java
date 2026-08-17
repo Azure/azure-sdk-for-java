@@ -14,7 +14,7 @@ public final class LookBackPeriod extends ExpandableStringEnum<LookBackPeriod> {
     /**
      * Use 7 days of data for recommendations.
      */
-    public static final LookBackPeriod LAST07DAYS = fromString("Last7Days");
+    public static final LookBackPeriod LAST7DAYS = fromString("Last7Days");
 
     /**
      * Use 30 days of data for recommendations.

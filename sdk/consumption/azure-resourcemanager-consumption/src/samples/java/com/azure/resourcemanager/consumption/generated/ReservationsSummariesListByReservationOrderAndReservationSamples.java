@@ -22,7 +22,7 @@ public final class ReservationsSummariesListByReservationOrderAndReservationSamp
         reservationSummariesDailyWithReservationId(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
             .listByReservationOrderAndReservation("00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000", Datagrain.DAILY_GRAIN,
+                "00000000-0000-0000-0000-000000000000", Datagrain.DAILY,
                 "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20",
                 com.azure.core.util.Context.NONE);
     }
@@ -39,7 +39,6 @@ public final class ReservationsSummariesListByReservationOrderAndReservationSamp
         reservationSummariesMonthlyWithReservationId(com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
             .listByReservationOrderAndReservation("00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY_GRAIN, null,
-                com.azure.core.util.Context.NONE);
+                "00000000-0000-0000-0000-000000000000", Datagrain.MONTHLY, null, com.azure.core.util.Context.NONE);
     }
 }

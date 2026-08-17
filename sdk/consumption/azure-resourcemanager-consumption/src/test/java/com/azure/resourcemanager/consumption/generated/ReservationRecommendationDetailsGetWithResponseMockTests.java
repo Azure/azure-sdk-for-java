@@ -34,7 +34,7 @@ public final class ReservationRecommendationDetailsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReservationRecommendationDetailsModel response = manager.reservationRecommendationDetails()
-            .getWithResponse("qba", Scope.SHARED, "icqchygtv", Term.P3Y, LookBackPeriod.LAST07DAYS, "janepubdpkx",
+            .getWithResponse("qba", Scope.SHARED, "icqchygtv", Term.P3Y, LookBackPeriod.LAST7DAYS, "janepubdpkx",
                 "qvgx", "aodetv", com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -14,12 +14,12 @@ public final class Datagrain extends ExpandableStringEnum<Datagrain> {
     /**
      * Daily grain of data.
      */
-    public static final Datagrain DAILY_GRAIN = fromString("daily");
+    public static final Datagrain DAILY = fromString("daily");
 
     /**
      * Monthly grain of data.
      */
-    public static final Datagrain MONTHLY_GRAIN = fromString("monthly");
+    public static final Datagrain MONTHLY = fromString("monthly");
 
     /**
      * Creates a new instance of Datagrain value.

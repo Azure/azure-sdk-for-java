@@ -14,17 +14,17 @@ public final class Metrictype extends ExpandableStringEnum<Metrictype> {
     /**
      * Actual cost data.
      */
-    public static final Metrictype ACTUAL_COST_METRIC_TYPE = fromString("actualcost");
+    public static final Metrictype ACTUALCOST = fromString("actualcost");
 
     /**
      * Amortized cost data.
      */
-    public static final Metrictype AMORTIZED_COST_METRIC_TYPE = fromString("amortizedcost");
+    public static final Metrictype AMORTIZEDCOST = fromString("amortizedcost");
 
     /**
      * Usage data.
      */
-    public static final Metrictype USAGE_METRIC_TYPE = fromString("usage");
+    public static final Metrictype USAGE = fromString("usage");
 
     /**
      * Creates a new instance of Metrictype value.

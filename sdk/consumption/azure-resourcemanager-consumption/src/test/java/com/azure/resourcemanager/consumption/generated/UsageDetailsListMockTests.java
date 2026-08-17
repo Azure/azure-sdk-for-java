@@ -32,7 +32,7 @@ public final class UsageDetailsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UsageDetail> response = manager.usageDetails()
-            .list("az", "umtggmuwdchozfn", "fexl", "xn", 790791149, Metrictype.AMORTIZED_COST_METRIC_TYPE,
+            .list("az", "umtggmuwdchozfn", "fexl", "xn", 790791149, Metrictype.AMORTIZEDCOST,
                 com.azure.core.util.Context.NONE);
 
     }

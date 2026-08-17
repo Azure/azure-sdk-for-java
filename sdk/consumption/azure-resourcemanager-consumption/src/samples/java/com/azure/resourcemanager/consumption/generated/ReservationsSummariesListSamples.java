@@ -21,7 +21,7 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesDailyWithBillingAccountId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.DAILY_GRAIN, null, null,
+            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.DAILY, null, null,
                 "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20", null, null,
                 com.azure.core.util.Context.NONE);
     }
@@ -37,7 +37,7 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesDailyWithBillingProfileId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.DAILY_GRAIN,
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.DAILY,
                 "2017-10-01", "2017-11-20", null, null, null, com.azure.core.util.Context.NONE);
     }
 
@@ -52,8 +52,8 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingAccountId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.MONTHLY_GRAIN, null, null, null, null,
-                null, com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345", Datagrain.MONTHLY, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -67,8 +67,8 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingProfileId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579",
-                Datagrain.MONTHLY_GRAIN, null, null, null, null, null, com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.MONTHLY,
+                null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -82,8 +82,8 @@ public final class ReservationsSummariesListSamples {
     public static void reservationSummariesMonthlyWithBillingProfileIdReservationId(
         com.azure.resourcemanager.consumption.ConsumptionManager manager) {
         manager.reservationsSummaries()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579",
-                Datagrain.MONTHLY_GRAIN, null, null, null, "1c6b6358-709f-484c-85f1-72e862a0cf3b",
-                "9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc", com.azure.core.util.Context.NONE);
+            .list("providers/Microsoft.Billing/billingAccounts/12345:2468/billingProfiles/13579", Datagrain.MONTHLY,
+                null, null, null, "1c6b6358-709f-484c-85f1-72e862a0cf3b", "9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc",
+                com.azure.core.util.Context.NONE);
     }
 }
