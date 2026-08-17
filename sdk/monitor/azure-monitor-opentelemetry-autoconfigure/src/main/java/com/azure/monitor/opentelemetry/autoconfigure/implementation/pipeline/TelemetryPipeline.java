@@ -113,11 +113,14 @@ public class TelemetryPipeline {
                 locationUrl = new URI(location).toURL();
             } catch (MalformedURLException | URISyntaxException e) {
                 listener.onException(request, "Invalid redirect: " + location, e);
+                result.fail();
                 return;
             }
             if (!RedirectPolicyHelper.isTrustedRedirect(request.getUrl(), locationUrl)) {
-                String errorMessage = "Refused cross-origin redirect: " + location;
-                listener.onException(request, errorMessage, new MalformedURLException(errorMessage));
+                // Reported as a non-retryable response so the payload isn't persisted and replayed against the same
+                // redirect for the next 48 hours.
+                LOGGER.warning("Refused untrusted redirect to {}", location);
+                listener.onResponse(request, new TelemetryPipelineResponse(responseCode, responseBody));
                 result.fail();
                 return;
             }

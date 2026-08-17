@@ -40,15 +40,21 @@ public class RedirectPolicyHelperTest {
     public void allowsSovereignCloudHosts() throws MalformedURLException {
         assertThat(isTrustedRedirect("https://dc.applicationinsights.azure.us/v2.1/track",
             "https://usgovvirginia.livediagnostics.monitor.azure.us/QuickPulseService.svc/")).isTrue();
+        assertThat(isTrustedRedirect("https://dc.applicationinsights.us/v2.1/track",
+            "https://usgovvirginia-0.in.applicationinsights.us/v2.1/track")).isTrue();
         assertThat(isTrustedRedirect("https://dc.applicationinsights.azure.cn/v2.1/track",
             "https://chinanorth2.in.applicationinsights.azure.cn/v2.1/track")).isTrue();
     }
 
     @Test
-    public void allowsCurrentHost() throws MalformedURLException {
+    public void allowsSameOrigin() throws MalformedURLException {
         assertThat(
             isTrustedRedirect("https://ingestion.example.com/v2.1/track", "https://ingestion.example.com/v2/track"))
                 .isTrue();
+        assertThat(
+            isTrustedRedirect("https://collector.internal:8443/v2.1/track", "https://collector.internal:8443/v2/track"))
+                .isTrue();
+        assertThat(isTrustedRedirect("http://localhost:4318/v2.1/track", "http://localhost:4318/v2/track")).isTrue();
     }
 
     @Test
@@ -77,6 +83,9 @@ public class RedirectPolicyHelperTest {
             "https://westus-0.in.applicationinsights.azure.com:444/v2.1/track")).isFalse();
         assertThat(
             isTrustedRedirect("https://ingestion.example.com/v2.1/track", "https://ingestion.example.com:444/v2/track"))
+                .isFalse();
+        assertThat(
+            isTrustedRedirect("https://collector.internal:8443/v2.1/track", "http://collector.internal:8443/v2/track"))
                 .isFalse();
     }
 

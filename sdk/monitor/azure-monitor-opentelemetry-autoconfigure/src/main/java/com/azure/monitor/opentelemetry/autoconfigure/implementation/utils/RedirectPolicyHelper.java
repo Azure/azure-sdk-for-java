@@ -17,10 +17,19 @@ public final class RedirectPolicyHelper {
 
     private static final String HTTPS = "https";
 
-    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES = Collections.unmodifiableList(
-        Arrays.asList(".livediagnostics.monitor.azure.com", ".monitor.azure.com", ".services.visualstudio.com",
-            ".applicationinsights.azure.com", ".applicationinsights.microsoft.com", ".monitor.azure.us",
-            ".applicationinsights.azure.us", ".monitor.azure.cn", ".applicationinsights.azure.cn"));
+    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES
+        = Collections.unmodifiableList(Arrays.asList(
+            ".applicationinsights.azure.com",
+            ".applicationinsights.azure.cn",
+            ".applicationinsights.microsoft.com",
+            ".services.visualstudio.com",
+            ".livediagnostics.monitor.azure.com",
+            ".livediagnostics.monitor.azure.cn",
+            ".monitor.azure.com",
+            ".monitor.azure.us",
+            ".monitor.azure.cn",
+            ".applicationinsights.azure.us",
+            ".applicationinsights.azure.cn"));
 
     /**
      * Returns whether a redirect target is safe to follow.
@@ -34,9 +43,7 @@ public final class RedirectPolicyHelper {
      * @return true if the redirect target is trusted
      */
     public static boolean isTrustedRedirect(URL currentUrl, URL redirectUrl) {
-        if (!HTTPS.equalsIgnoreCase(redirectUrl.getProtocol())
-            || redirectUrl.getUserInfo() != null
-            || !isDefaultPort(redirectUrl)) {
+        if (redirectUrl.getUserInfo() != null) {
             return false;
         }
 
@@ -45,9 +52,16 @@ public final class RedirectPolicyHelper {
             return false;
         }
 
-        // A redirect back to the current host stays inside the boundary the customer already chose, which keeps
-        // custom endpoints and reverse proxies working.
-        return redirectHost.equals(canonicalHost(currentUrl)) || hasAllowedSuffix(redirectHost);
+        // A same-origin redirect crosses no trust boundary, which keeps custom endpoints and reverse proxies working.
+        if (redirectHost.equals(canonicalHost(currentUrl))
+            && redirectUrl.getProtocol().equalsIgnoreCase(currentUrl.getProtocol())
+            && effectivePort(redirectUrl) == effectivePort(currentUrl)) {
+            return true;
+        }
+
+        return HTTPS.equalsIgnoreCase(redirectUrl.getProtocol())
+            && isDefaultPort(redirectUrl)
+            && hasAllowedSuffix(redirectHost);
     }
 
     private static boolean hasAllowedSuffix(String host) {
@@ -61,6 +75,10 @@ public final class RedirectPolicyHelper {
 
     private static boolean isDefaultPort(URL url) {
         return url.getPort() == -1 || url.getPort() == url.getDefaultPort();
+    }
+
+    private static int effectivePort(URL url) {
+        return url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
     }
 
     private static String canonicalHost(URL url) {
