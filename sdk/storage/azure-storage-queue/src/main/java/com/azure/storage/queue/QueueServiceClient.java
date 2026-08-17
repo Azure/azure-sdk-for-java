@@ -21,6 +21,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
@@ -140,7 +141,7 @@ public final class QueueServiceClient {
      */
     public QueueClient getQueueClient(String queueName) {
         AzureQueueStorageImpl queueStorage = new AzureQueueStorageImpl(this.azureQueueStorage.getHttpPipeline(),
-            this.azureQueueStorage.getSerializerAdapter(), this.azureQueueStorage.getUrl() + "/" + queueName,
+            this.azureQueueStorage.getSerializerAdapter(), this.azureQueueStorage.getUrl(),
             this.azureQueueStorage.getServiceVersion());
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion,
             messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
@@ -337,7 +338,7 @@ public final class QueueServiceClient {
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
             Supplier<PagedResponse<QueueItem>> operation
                 = () -> ModelHelper.toQueueItemPage(this.azureQueueStorage.getServices()
-                    .getQueuesWithResponse(ModelHelper.listQueuesRequestOptions(finalContext, prefix, nextMarker,
+                    .getQueuesWithResponse(RequestOptionsHelper.listQueuesRequestOptions(finalContext, prefix, nextMarker,
                         pageSize == null ? maxResultsPerPage : pageSize, include)));
 
             return submitThreadPool(operation, LOGGER, timeout);
@@ -406,7 +407,7 @@ public final class QueueServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<QueueServiceProperties>> operation = () -> {
             Response<BinaryData> response = this.azureQueueStorage.getServices()
-                .getPropertiesWithResponse(ModelHelper.requestOptions(finalContext));
+                .getPropertiesWithResponse(RequestOptionsHelper.requestOptions(finalContext));
             return new SimpleResponse<>(response,
                 ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceProperties::fromXml));
         };
@@ -544,7 +545,7 @@ public final class QueueServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getServices()
             .setPropertiesWithResponse(ModelHelper.serializeXmlBody(properties),
-                ModelHelper.requestOptions(finalContext));
+                RequestOptionsHelper.requestOptions(finalContext));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -604,7 +605,7 @@ public final class QueueServiceClient {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<QueueServiceStatistics>> operation = () -> {
             Response<BinaryData> response = this.azureQueueStorage.getServices()
-                .getStatisticsWithResponse(ModelHelper.requestOptions(finalContext));
+                .getStatisticsWithResponse(RequestOptionsHelper.requestOptions(finalContext));
             return new SimpleResponse<>(response,
                 ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceStatistics::fromXml));
         };
@@ -769,7 +770,7 @@ public final class QueueServiceClient {
         Callable<Response<UserDelegationKey>> operation = () -> {
             Response<BinaryData> rb = this.azureQueueStorage.getServices()
                 .getUserDelegationKeyWithResponse(ModelHelper.serializeXmlBody(keyInfo),
-                    ModelHelper.requestOptions(finalContext));
+                    RequestOptionsHelper.requestOptions(finalContext));
             return new SimpleResponse<>(rb, ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml));
         };
 

@@ -28,6 +28,7 @@ import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWra
 import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -130,7 +131,7 @@ public final class QueueAsyncClient {
      * @return the URL of the storage queue
      */
     public String getQueueUrl() {
-        return client.getUrl();
+        return client.getUrl() + "/" + queueName;
     }
 
     /**
@@ -224,7 +225,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
-        RequestOptions requestOptions = ModelHelper.requestOptions(context);
+        RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
         ModelHelper.addMetadataHeaders(requestOptions, metadata);
         return client.getQueues().createWithResponseAsync(requestOptions);
     }
@@ -361,7 +362,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return client.getQueues().deleteWithResponseAsync(ModelHelper.requestOptions(context));
+        return client.getQueues().deleteWithResponseAsync(RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName));
     }
 
     /**
@@ -494,7 +495,7 @@ public final class QueueAsyncClient {
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
         try {
             return withContext(context -> client.getQueues()
-                .getPropertiesWithResponseAsync(ModelHelper.requestOptions(context))
+                .getPropertiesWithResponseAsync(RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName))
                 .map(response -> new SimpleResponse<>(response,
                     ModelHelper.transformQueueProperties(response.getHeaders()))));
         } catch (RuntimeException ex) {
@@ -577,7 +578,7 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(context);
+                RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
                 ModelHelper.addMetadataHeaders(requestOptions, metadata);
                 return client.getQueues().setMetadataWithResponseAsync(requestOptions);
             });
@@ -611,7 +612,7 @@ public final class QueueAsyncClient {
     public PagedFlux<QueueSignedIdentifier> getAccessPolicy() {
         try {
             Function<String, Mono<PagedResponse<QueueSignedIdentifier>>> retriever = marker -> this.client.getQueues()
-                .getAccessPolicyWithResponseAsync(ModelHelper.requestOptions(Context.NONE))
+                .getAccessPolicyWithResponseAsync(RequestOptionsHelper.queueRequestOptions(Context.NONE, client.getUrl(), queueName))
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(),
                     ModelHelper.deserializeXmlBody(response.getValue(), QueueSignedIdentifierWrapper::fromXml).items(),
@@ -715,7 +716,7 @@ public final class QueueAsyncClient {
             .stream(permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
-        RequestOptions requestOptions = ModelHelper.requestOptions(context);
+        RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
         requestOptions.setBody(ModelHelper.serializeXmlBody(new QueueSignedIdentifierWrapper(permissionsList)));
         return client.getQueues().setAccessPolicyWithResponseAsync(requestOptions);
     }
@@ -770,7 +771,7 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
             return withContext(
-                context -> client.getMessages().clearWithResponseAsync(ModelHelper.requestOptions(context)));
+                context -> client.getMessages().clearWithResponseAsync(RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName)));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -953,9 +954,9 @@ public final class QueueAsyncClient {
             return withContext(context -> Mono.fromCallable(() -> ModelHelper.encodeMessage(message, messageEncoding))
                 .flatMap(messageText -> {
                     QueueMessage queueMessage = new QueueMessage(messageText);
-                    RequestOptions requestOptions = ModelHelper.requestOptions(context);
-                    ModelHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
-                    ModelHelper.addOptionalQueryParam(requestOptions, "messagettl", timeToLiveInSeconds);
+                    RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName);
+                    RequestOptionsHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
+                    RequestOptionsHelper.addOptionalQueryParam(requestOptions, "messagettl", timeToLiveInSeconds);
                     return client.getMessages()
                         .enqueueWithResponseAsync(ModelHelper.serializeXmlBody(queueMessage), requestOptions)
                         .map(response -> new SimpleResponse<>(response,
@@ -1075,9 +1076,9 @@ public final class QueueAsyncClient {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         try {
             Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever = marker -> withContext(context -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(context);
-                ModelHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
-                ModelHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
+                RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName);
+                RequestOptionsHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
+                RequestOptionsHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
                 return this.client.getMessages().dequeueWithResponseAsync(requestOptions);
             }).flatMap(this::transformMessagesDequeueResponse);
 
@@ -1191,8 +1192,8 @@ public final class QueueAsyncClient {
     public PagedFlux<PeekedMessageItem> peekMessages(Integer maxMessages) {
         try {
             Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever = marker -> withContext(context -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(context);
-                ModelHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
+                RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(context, client.getUrl(), queueName);
+                RequestOptionsHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
                 return this.client.getMessages()
                     .peekWithResponseAsync(requestOptions)
                     .flatMap(this::transformMessagesPeekResponse);
@@ -1341,7 +1342,7 @@ public final class QueueAsyncClient {
         Duration visTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         try {
             return withContext(context -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(context);
+                RequestOptions requestOptions = RequestOptionsHelper.messageIdRequestOptions(context, client.getUrl(), queueName, messageId);
                 if (message != null) {
                     requestOptions.setBody(ModelHelper.serializeXmlBody(message));
                 }
@@ -1433,7 +1434,7 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
             return withContext(context -> client.getMessageIds()
-                .deleteWithResponseAsync(messageId, popReceipt, ModelHelper.requestOptions(context)));
+                .deleteWithResponseAsync(messageId, popReceipt, RequestOptionsHelper.messageIdRequestOptions(context, client.getUrl(), queueName, messageId)));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

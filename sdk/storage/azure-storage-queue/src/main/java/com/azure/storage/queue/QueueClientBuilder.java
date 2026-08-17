@@ -721,7 +721,7 @@ public final class QueueClientBuilder
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
                 perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureQueueStorageImpl(pipeline, endpoint + "/" + queueName, version);
+        return new AzureQueueStorageImpl(pipeline, endpoint, version);
     }
 
     /**
