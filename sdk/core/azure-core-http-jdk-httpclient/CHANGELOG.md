@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Added GraalVM native-image metadata (`reflect-config.json`, `native-image.properties`) so `JdkHttpClientProvider` is discoverable via `ServiceLoader` and its `GlobalJdkAsyncHttpClient` holder initializes at run time under a native image, mirroring the existing support in `azure-core-http-netty`. Previously, an application built with this module as its `HttpClientProvider` under GraalVM native-image would fail at run time with `IllegalStateException: no default HttpClient provider ... found`.
+
 ### Other Changes
 
 ## 1.1.6 (2026-08-12)
