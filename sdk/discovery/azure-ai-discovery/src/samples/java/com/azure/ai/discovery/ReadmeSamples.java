@@ -5,6 +5,7 @@
 package com.azure.ai.discovery;
 
 import com.azure.ai.discovery.models.Conversation;
+import com.azure.ai.discovery.models.KnowledgeBase;
 import com.azure.ai.discovery.models.PagedConversation;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -21,5 +22,18 @@ public final class ReadmeSamples {
             System.out.println(conversation.getName());
         }
         // END: com.azure.ai.discovery.readme
+    }
+
+    public void bookshelfSample() {
+        // BEGIN: com.azure.ai.discovery.readme.bookshelf
+        BookshelfClient bookshelfClient = new BookshelfClientBuilder()
+            .endpoint("https://<bookshelf-name>.discovery.azure.com")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        for (KnowledgeBase knowledgeBase : bookshelfClient.list()) {
+            System.out.println(knowledgeBase.getName());
+        }
+        // END: com.azure.ai.discovery.readme.bookshelf
     }
 }

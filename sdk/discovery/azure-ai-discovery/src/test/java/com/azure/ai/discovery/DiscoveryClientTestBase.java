@@ -86,18 +86,17 @@ class DiscoveryClientTestBase extends TestProxyTestBase {
     }
 
     /**
-     * Registers a relaxed playback request matcher. It ignores request bodies and volatile headers so that recordings
-     * match regardless of per-request values (auth tokens, dates, correlation ids) that differ between the recorded
-     * and replayed requests. Playback entries are still matched by method, URL, and order.
+     * Registers a playback request matcher that compares method, URL (including the {@code api-version} query
+     * parameter), and request body, excluding only volatile headers (auth tokens, dates, correlation ids) that
+     * legitimately differ between the recorded and replayed requests.
      */
     private void registerMatchers() {
         if (getTestMode() != TestMode.PLAYBACK) {
             return;
         }
-        interceptorManager.addMatchers(new CustomMatcher().setComparingBodies(false)
-            .setExcludedHeaders(Arrays.asList("Authorization", "Connection", "Content-Length", "Content-Type", "Date",
-                "User-Agent", "traceparent", "x-ms-client-request-id", "x-ms-date", "Accept"))
-            .setIgnoredQueryParameters(Arrays.asList("api-version")));
+        interceptorManager.addMatchers(
+            new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization", "Connection", "Content-Length",
+                "Content-Type", "Date", "User-Agent", "traceparent", "x-ms-client-request-id", "x-ms-date", "Accept")));
     }
 
     /**
@@ -141,7 +140,7 @@ class DiscoveryClientTestBase extends TestProxyTestBase {
         interceptorManager.removeSanitizers("AZSDK2030");
         // Remove the default "$..id" body-key sanitizer (AZSDK3430); it replaces operation "id" fields with
         // "Sanitized", which prevents getRunStatus/getOperationStatus from resolving the real operation id during
-        // playback. Operation ids are not sensitive, and request bodies are not compared by the matcher below.
+        // playback. Operation ids are not sensitive.
         interceptorManager.removeSanitizers("AZSDK3430");
     }
 

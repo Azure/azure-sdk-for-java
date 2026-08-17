@@ -58,6 +58,13 @@
         "description": "Name of a pre-provisioned investigation used by Workspace tests."
       }
     },
+    "agentName": {
+      "type": "string",
+      "defaultValue": "test-agent",
+      "metadata": {
+        "description": "Name of a pre-provisioned agent used by Workspace tests."
+      }
+    },
     "knowledgeBaseName": {
       "type": "string",
       "defaultValue": "test-kb",
@@ -111,6 +118,10 @@
     "AZURE_DISCOVERY_INVESTIGATION_NAME": {
       "type": "string",
       "value": "[parameters('investigationName')]"
+    },
+    "AGENT_NAME": {
+      "type": "string",
+      "value": "[parameters('agentName')]"
     },
     "KNOWLEDGE_BASE_NAME": {
       "type": "string",
