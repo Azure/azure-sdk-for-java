@@ -22,6 +22,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -213,7 +214,7 @@ public abstract class RestProxyBase {
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
             if (responseBodyStreaming) {
-                return cls.cast(new CloseableResponse<>(httpResponse, bodyAsObject, decodedHeaders));
+                return cls.cast(new CloseableResponse<>(httpResponse, bodyAsObject));
             }
 
             // For Response return a new instance of ResponseBase cast to the class.
@@ -244,12 +245,12 @@ public abstract class RestProxyBase {
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
-    private static final class CloseableResponse<T> extends ResponseBase<Object, T> implements Closeable {
+    private static final class CloseableResponse<T> extends SimpleResponse<T> implements Closeable {
         private final AtomicBoolean closed = new AtomicBoolean();
         private final HttpResponse response;
 
-        private CloseableResponse(HttpResponse response, T value, Object decodedHeaders) {
-            super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value, decodedHeaders);
+        private CloseableResponse(HttpResponse response, T value) {
+            super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value);
             this.response = response;
         }
 
