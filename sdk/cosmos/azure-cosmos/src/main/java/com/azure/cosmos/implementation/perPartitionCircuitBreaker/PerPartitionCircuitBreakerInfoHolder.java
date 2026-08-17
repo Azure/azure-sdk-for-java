@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
-import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,37 +12,40 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
 public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
     public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder();
 
-    private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> perPartitionCircuitBreakerInfoHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
-    private boolean initialized;
+    private volatile Map<String, LocationSpecificHealthContext> state;
 
-    public synchronized void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
-        this.initialized = true;
-        this.perPartitionCircuitBreakerInfoHolder.v = locationSpecificHealthContext == null
+    public void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
+        Map<String, LocationSpecificHealthContext> immutableSnapshot = locationSpecificHealthContext == null
             ? Collections.emptyMap()
             : Collections.unmodifiableMap(new LinkedHashMap<>(locationSpecificHealthContext));
+        this.state = immutableSnapshot;
     }
 
-    public synchronized Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
-        return perPartitionCircuitBreakerInfoHolder.v;
+    public Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
+        return this.state;
     }
 
-    public synchronized PerPartitionCircuitBreakerInfoHolder snapshot() {
+    public void setPerPartitionCircuitBreakerInfoHolderSnapshot(
+        final Map<String, LocationSpecificHealthContext> snapshot) {
+
+        this.state = Objects.requireNonNull(snapshot, "snapshot cannot be null");
+    }
+
+    public PerPartitionCircuitBreakerInfoHolder snapshot() {
         PerPartitionCircuitBreakerInfoHolder snapshot = new PerPartitionCircuitBreakerInfoHolder();
-        if (this.initialized) {
-            snapshot.initialized = true;
-            snapshot.perPartitionCircuitBreakerInfoHolder.v = this.perPartitionCircuitBreakerInfoHolder.v;
-        }
+        snapshot.state = this.state;
         return snapshot;
     }
 
-    synchronized boolean isInitialized() {
-        return this.initialized;
+    boolean isInitialized() {
+        return this.state != null;
     }
 
     public static class PerPartitionCircuitBreakerInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionCircuitBreakerInfoHolder> {
@@ -51,12 +53,12 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
         @Override
         public void serialize(PerPartitionCircuitBreakerInfoHolder value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 
-            Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getPerPartitionCircuitBreakerInfoHolder();
+            Map<String, LocationSpecificHealthContext> state = value.state;
 
-            if (value.isInitialized()) {
+            if (state != null) {
                 gen.writeStartObject();
 
-                gen.writePOJOField("stateByRegion", locationToLocationSpecificHealthContext);
+                gen.writePOJOField("stateByRegion", state);
 
                 gen.writeEndObject();
             } else {

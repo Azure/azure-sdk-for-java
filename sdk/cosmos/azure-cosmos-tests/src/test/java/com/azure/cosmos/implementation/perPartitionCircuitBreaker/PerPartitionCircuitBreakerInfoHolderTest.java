@@ -59,16 +59,22 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
             createHealthContext(LocationHealthStatus.Unavailable)));
 
         PerPartitionCircuitBreakerInfoHolder snapshot = holder.snapshot();
+        PerPartitionCircuitBreakerInfoHolder destination = new PerPartitionCircuitBreakerInfoHolder();
+        destination.setPerPartitionCircuitBreakerInfoHolderSnapshot(
+            holder.getPerPartitionCircuitBreakerInfoHolder());
 
         assertThat(snapshot).isNotSameAs(holder);
         assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder())
             .isSameAs(holder.getPerPartitionCircuitBreakerInfoHolder());
+        assertThat(destination.getPerPartitionCircuitBreakerInfoHolder())
+            .isSameAs(snapshot.getPerPartitionCircuitBreakerInfoHolder());
 
         holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
             "westus",
             createHealthContext(LocationHealthStatus.Healthy)));
 
         assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder()).containsOnlyKeys("eastus");
+        assertThat(destination.getPerPartitionCircuitBreakerInfoHolder()).containsOnlyKeys("eastus");
         assertThatThrownBy(() -> snapshot.getPerPartitionCircuitBreakerInfoHolder().clear())
             .isInstanceOf(UnsupportedOperationException.class);
     }

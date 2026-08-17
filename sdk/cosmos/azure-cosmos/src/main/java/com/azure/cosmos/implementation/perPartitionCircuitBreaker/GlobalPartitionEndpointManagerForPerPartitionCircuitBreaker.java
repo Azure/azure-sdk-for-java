@@ -38,6 +38,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -310,8 +311,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         RxDocumentServiceRequest request,
         PartitionLevelLocationUnavailabilityInfo info) {
 
-        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(
-            info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext);
+        request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+            .setPerPartitionCircuitBreakerInfoHolderSnapshot(
+                info == null ? Collections.emptyMap() : info.diagnosticsSnapshot);
     }
 
     private Flux<?> updateStaleLocationInfo() {
@@ -645,11 +647,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         private final ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
         private final ConcurrentHashMap<String, LocationSpecificHealthContext> regionToLocationSpecificHealthContext;
         private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
+        private volatile Map<String, LocationSpecificHealthContext> diagnosticsSnapshot;
 
         private PartitionLevelLocationUnavailabilityInfo() {
             this.locationEndpointToLocationSpecificContextForPartition = new ConcurrentHashMap<>();
             this.regionToLocationSpecificHealthContext = new ConcurrentHashMap<>();
             this.locationSpecificHealthContextTransitionHandler = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.locationSpecificHealthContextTransitionHandler;
+            this.diagnosticsSnapshot = Collections.emptyMap();
         }
 
         private boolean handleException(
@@ -674,6 +678,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         .build();
                 }
 
+                LocationSpecificHealthContext locationSpecificHealthContextBeforeTransition = locationSpecificContextAsVal;
                 LocationSpecificHealthContext locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleException(
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
@@ -691,7 +696,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 }
 
                 String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(regionalRoutingContextAsKey);
-                this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+                if (locationSpecificHealthContextAfterTransition != locationSpecificHealthContextBeforeTransition
+                    || !this.regionToLocationSpecificHealthContext.containsKey(region)) {
+                    this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+                    this.refreshDiagnosticsSnapshot();
+                }
 
                 isExceptionThresholdBreached.set(locationSpecificHealthContextAfterTransition.isExceptionThresholdBreached());
                 return locationSpecificHealthContextAfterTransition;
@@ -723,6 +732,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         .build();
                 }
 
+                LocationSpecificHealthContext locationSpecificHealthContextBeforeTransition = locationSpecificContextAsVal;
                 locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
@@ -741,10 +751,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 }
 
                 String region = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this.regionalRoutingContextToRegion.get(locationAsKey);
-                this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+                if (locationSpecificHealthContextAfterTransition != locationSpecificHealthContextBeforeTransition
+                    || !this.regionToLocationSpecificHealthContext.containsKey(region)) {
+                    this.regionToLocationSpecificHealthContext.put(region, locationSpecificHealthContextAfterTransition);
+                    this.refreshDiagnosticsSnapshot();
+                }
 
                 return locationSpecificHealthContextAfterTransition;
             });
+        }
+
+        private void refreshDiagnosticsSnapshot() {
+            this.diagnosticsSnapshot = Collections.unmodifiableMap(
+                new LinkedHashMap<>(this.regionToLocationSpecificHealthContext));
         }
 
         public boolean areLocationsAvailableForPartitionKeyRange(List<RegionalRoutingContext> availableLocationsAtAccountLevel) {
