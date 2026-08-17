@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.KeyInfo;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueItem;
@@ -133,7 +134,7 @@ public final class QueueServiceAsyncClient {
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
         AzureQueueStorageImpl queueStorage = new AzureQueueStorageImpl(client.getHttpPipeline(),
-            client.getSerializerAdapter(), client.getUrl() + "/" + queueName, client.getServiceVersion());
+            client.getSerializerAdapter(), client.getUrl(), client.getServiceVersion());
         QueueClient queueClient = new QueueClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
         return new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
@@ -351,7 +352,7 @@ public final class QueueServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever = (nextMarker,
             pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .getQueuesWithResponseAsync(ModelHelper.listQueuesRequestOptions(context, prefix, nextMarker,
+                .getQueuesWithResponseAsync(RequestOptionsHelper.listQueuesRequestOptions(context, prefix, nextMarker,
                     pageSize == null ? maxResultsPerPage : pageSize, include))
                 .map(ModelHelper::toQueueItemPage), timeout);
 
@@ -423,7 +424,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
         return client.getServices()
-            .getPropertiesWithResponseAsync(ModelHelper.requestOptions(context))
+            .getPropertiesWithResponseAsync(RequestOptionsHelper.requestOptions(context))
             .map(response -> new SimpleResponse<>(response,
                 ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceProperties::fromXml)));
     }
@@ -549,7 +550,7 @@ public final class QueueServiceAsyncClient {
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         return client.getServices()
             .setPropertiesWithResponseAsync(ModelHelper.serializeXmlBody(properties),
-                ModelHelper.requestOptions(context));
+                RequestOptionsHelper.requestOptions(context));
     }
 
     /**
@@ -613,7 +614,7 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
         return client.getServices()
-            .getStatisticsWithResponseAsync(ModelHelper.requestOptions(context))
+            .getStatisticsWithResponseAsync(RequestOptionsHelper.requestOptions(context))
             .map(response -> new SimpleResponse<>(response,
                 ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceStatistics::fromXml)));
     }
@@ -794,7 +795,7 @@ public final class QueueServiceAsyncClient {
         KeyInfo keyInfo = new KeyInfo(expiry).setStart(start).setDelegatedUserTenantId(delegatedUserTenantId);
         return client.getServices()
             .getUserDelegationKeyWithResponseAsync(ModelHelper.serializeXmlBody(keyInfo),
-                ModelHelper.requestOptions(context))
+                RequestOptionsHelper.requestOptions(context))
             .map(rb -> new SimpleResponse<>(rb,
                 ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));
     }

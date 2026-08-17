@@ -28,6 +28,7 @@ import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrappe
 import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -122,7 +123,7 @@ public final class QueueClient {
      * @return the URL of the storage queue.
      */
     public String getQueueUrl() {
-        return azureQueueStorage.getUrl();
+        return azureQueueStorage.getUrl() + "/" + queueName;
     }
 
     /**
@@ -209,7 +210,7 @@ public final class QueueClient {
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Supplier<Response<Void>> operation = () -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
+                RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
                 ModelHelper.addMetadataHeaders(requestOptions, metadata);
                 return this.azureQueueStorage.getQueues().createWithResponse(requestOptions);
             };
@@ -280,7 +281,7 @@ public final class QueueClient {
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Supplier<Response<Void>> operation = () -> {
-                RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
+                RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
                 ModelHelper.addMetadataHeaders(requestOptions, metadata);
                 return this.azureQueueStorage.getQueues().createWithResponse(requestOptions);
             };
@@ -348,7 +349,7 @@ public final class QueueClient {
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation
-            = () -> this.azureQueueStorage.getQueues().deleteWithResponse(ModelHelper.requestOptions(finalContext));
+            = () -> this.azureQueueStorage.getQueues().deleteWithResponse(RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
         return submitThreadPool(operation, LOGGER, timeout);
     }
 
@@ -408,7 +409,7 @@ public final class QueueClient {
         Context finalContext = context == null ? Context.NONE : context;
         try {
             Supplier<Response<Void>> operation
-                = () -> this.azureQueueStorage.getQueues().deleteWithResponse(ModelHelper.requestOptions(finalContext));
+                = () -> this.azureQueueStorage.getQueues().deleteWithResponse(RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
@@ -480,7 +481,7 @@ public final class QueueClient {
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .getPropertiesWithResponse(ModelHelper.requestOptions(finalContext));
+            .getPropertiesWithResponse(RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
         Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
         return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getHeaders()));
@@ -564,7 +565,7 @@ public final class QueueClient {
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
+            RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
             ModelHelper.addMetadataHeaders(requestOptions, metadata);
             return this.azureQueueStorage.getQueues().setMetadataWithResponse(requestOptions);
         };
@@ -597,7 +598,7 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
         Response<BinaryData> responseBase
-            = azureQueueStorage.getQueues().getAccessPolicyWithResponse(ModelHelper.requestOptions(Context.NONE));
+            = azureQueueStorage.getQueues().getAccessPolicyWithResponse(RequestOptionsHelper.queueRequestOptions(Context.NONE, azureQueueStorage.getUrl(), queueName));
 
         Supplier<PagedResponse<QueueSignedIdentifier>> response
             = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
@@ -674,7 +675,7 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
+            RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
             requestOptions.setBody(ModelHelper.serializeXmlBody(new QueueSignedIdentifierWrapper(permissions)));
             return this.azureQueueStorage.getQueues().setAccessPolicyWithResponse(requestOptions);
         };
@@ -734,7 +735,7 @@ public final class QueueClient {
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation
-            = () -> this.azureQueueStorage.getMessages().clearWithResponse(ModelHelper.requestOptions(finalContext));
+            = () -> this.azureQueueStorage.getMessages().clearWithResponse(RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -908,9 +909,9 @@ public final class QueueClient {
         QueueMessage queueMessage = new QueueMessage(finalMessage);
 
         Supplier<Response<BinaryData>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
-            ModelHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
-            ModelHelper.addOptionalQueryParam(requestOptions, "messagettl", timeToLiveInSeconds);
+            RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+            RequestOptionsHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
+            RequestOptionsHelper.addOptionalQueryParam(requestOptions, "messagettl", timeToLiveInSeconds);
             return this.azureQueueStorage.getMessages()
                 .enqueueWithResponse(ModelHelper.serializeXmlBody(queueMessage), requestOptions);
         };
@@ -1033,9 +1034,9 @@ public final class QueueClient {
         Context finalContext = context == null ? Context.NONE : context;
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Supplier<Response<BinaryData>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
-            ModelHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
-            ModelHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
+            RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+            RequestOptionsHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
+            RequestOptionsHelper.addOptionalQueryParam(requestOptions, "visibilitytimeout", visibilityTimeoutInSeconds);
             return this.azureQueueStorage.getMessages().dequeueWithResponse(requestOptions);
         };
 
@@ -1157,8 +1158,8 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<BinaryData>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
-            ModelHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
+            RequestOptions requestOptions = RequestOptionsHelper.messagesRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
+            RequestOptionsHelper.addOptionalQueryParam(requestOptions, "numofmessages", maxMessages);
             return this.azureQueueStorage.getMessages().peekWithResponse(requestOptions);
         };
 
@@ -1292,7 +1293,7 @@ public final class QueueClient {
         Context finalContext = context == null ? Context.NONE : context;
         Duration finalVisibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         Supplier<Response<Void>> operation = () -> {
-            RequestOptions requestOptions = ModelHelper.requestOptions(finalContext);
+            RequestOptions requestOptions = RequestOptionsHelper.messageIdRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName, messageId);
             if (message != null) {
                 requestOptions.setBody(ModelHelper.serializeXmlBody(message));
             }
@@ -1368,7 +1369,7 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessageIds()
-            .deleteWithResponse(messageId, popReceipt, ModelHelper.requestOptions(finalContext));
+            .deleteWithResponse(messageId, popReceipt, RequestOptionsHelper.messageIdRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName, messageId));
 
         return submitThreadPool(operation, LOGGER, timeout);
     }

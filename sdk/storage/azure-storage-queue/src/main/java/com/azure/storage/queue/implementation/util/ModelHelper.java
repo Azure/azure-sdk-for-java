@@ -146,39 +146,6 @@ public class ModelHelper {
     }
 
     /**
-     * Creates a {@link RequestOptions} for a protocol call, threading the supplied {@link Context}.
-     * <p>
-     * The generated implementation layer exposes protocol methods that accept a {@link RequestOptions}. The
-     * hand-written clients translate their typed parameters into query parameters, headers and a request body on the
-     * returned instance. Callers add operation-specific query parameters via
-     * {@link #addOptionalQueryParam(RequestOptions, String, Object)}.
-     *
-     * @param context The context to thread onto the request, may be {@code null}.
-     * @return A new {@link RequestOptions} carrying the context.
-     */
-    public static RequestOptions requestOptions(Context context) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (context != null) {
-            requestOptions.setContext(context);
-        }
-        return requestOptions;
-    }
-
-    /**
-     * Adds a query parameter to the {@link RequestOptions} only when {@code value} is non-null, mirroring the optional
-     * parameter semantics of the previous typed implementation methods.
-     *
-     * @param requestOptions The request options to mutate.
-     * @param name The wire query parameter name (as documented on the generated protocol method).
-     * @param value The value, or {@code null} to omit the parameter.
-     */
-    public static void addOptionalQueryParam(RequestOptions requestOptions, String name, Object value) {
-        if (value != null) {
-            requestOptions.addQueryParam(name, String.valueOf(value));
-        }
-    }
-
-    /**
      * Wire prefix for user-defined queue metadata headers. The generated protocol methods document a single
      * {@code x-ms-meta} header collection; on the wire each entry is emitted as {@code x-ms-meta-<key>}.
      */
@@ -239,33 +206,6 @@ public class ModelHelper {
         } catch (XMLStreamException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-    }
-
-    /**
-     * Builds the {@link RequestOptions} for a {@code List Queues} protocol call, translating the typed listing
-     * parameters into the wire query parameters documented on the generated {@code getQueuesWithResponse} accessor
-     * ({@code prefix}, {@code marker}, {@code maxresults}, {@code include}). The {@code include} values are sent as a
-     * single comma-separated query parameter, matching the previous typed implementation method.
-     *
-     * @param context The context to thread onto the request, may be {@code null}.
-     * @param prefix The queue name prefix filter, may be {@code null}.
-     * @param marker The continuation marker for the page to fetch, may be {@code null}.
-     * @param maxResults The maximum number of queues per page, may be {@code null}.
-     * @param include The optional listing details (e.g. {@code metadata}), may be {@code null} or empty.
-     * @return The configured {@link RequestOptions}.
-     */
-    public static RequestOptions listQueuesRequestOptions(Context context, String prefix, String marker,
-        Integer maxResults, List<String> include) {
-        RequestOptions requestOptions = requestOptions(context);
-        addOptionalQueryParam(requestOptions, "prefix", prefix);
-        addOptionalQueryParam(requestOptions, "marker", marker);
-        addOptionalQueryParam(requestOptions, "maxresults", maxResults);
-        // Match the AutoRest wire behavior: emit "include=" whenever the list is non-null (an empty list produces an
-        // empty value), rather than omitting it. Keeps the request URL identical to the pre-migration implementation.
-        if (include != null) {
-            requestOptions.addQueryParam("include", String.join(",", include));
-        }
-        return requestOptions;
     }
 
     /**
