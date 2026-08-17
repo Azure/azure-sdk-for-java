@@ -17,11 +17,21 @@ public final class RedirectPolicyHelper {
 
     private static final String HTTPS = "https";
 
-    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES
-        = Collections.unmodifiableList(Arrays.asList(".applicationinsights.azure.com", ".applicationinsights.azure.us",
-            ".applicationinsights.azure.cn", ".applicationinsights.microsoft.com", ".services.visualstudio.com",
-            ".livediagnostics.monitor.azure.com", ".livediagnostics.monitor.azure.cn", ".monitor.azure.com",
-            ".monitor.azure.us", ".monitor.azure.cn", ".applicationinsights.us"));
+    // @formatter:off
+    private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES = Collections.unmodifiableList(Arrays.asList(
+        // public cloud
+        ".services.visualstudio.com",
+        ".applicationinsights.microsoft.com",
+        ".applicationinsights.azure.com",
+        ".monitor.azure.com",
+        // azure government
+        ".applicationinsights.us",
+        ".applicationinsights.azure.us",
+        ".monitor.azure.us",
+        // azure china
+        ".applicationinsights.azure.cn",
+        ".monitor.azure.cn"));
+    // @formatter:on
 
     /**
      * Returns whether a redirect target is safe to follow.
