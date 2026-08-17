@@ -14,17 +14,15 @@ public final class ExpansionJobUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExpansionJobUpdate model
-            = BinaryData.fromString("{\"tags\":{\"kgymareqnajxqug\":\"hyxxrwlycoduhpk\",\"ubeddg\":\"hky\"}}")
-                .toObject(ExpansionJobUpdate.class);
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.tags().get("kgymareqnajxqug"));
+            = BinaryData.fromString("{\"tags\":{\"vwitqscyw\":\"hka\"}}").toObject(ExpansionJobUpdate.class);
+        Assertions.assertEquals("hka", model.tags().get("vwitqscyw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpansionJobUpdate model
-            = new ExpansionJobUpdate().withTags(mapOf("kgymareqnajxqug", "hyxxrwlycoduhpk", "ubeddg", "hky"));
+        ExpansionJobUpdate model = new ExpansionJobUpdate().withTags(mapOf("vwitqscyw", "hka"));
         model = BinaryData.fromObject(model).toObject(ExpansionJobUpdate.class);
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.tags().get("kgymareqnajxqug"));
+        Assertions.assertEquals("hka", model.tags().get("vwitqscyw"));
     }
 
     // Use "Map.of" if available

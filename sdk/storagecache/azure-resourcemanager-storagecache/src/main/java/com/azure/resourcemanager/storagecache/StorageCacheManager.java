@@ -34,6 +34,7 @@ import com.azure.resourcemanager.storagecache.implementation.CachesImpl;
 import com.azure.resourcemanager.storagecache.implementation.ExpansionJobsImpl;
 import com.azure.resourcemanager.storagecache.implementation.ImportJobsImpl;
 import com.azure.resourcemanager.storagecache.implementation.OperationsImpl;
+import com.azure.resourcemanager.storagecache.implementation.RebalanceJobsImpl;
 import com.azure.resourcemanager.storagecache.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.storagecache.implementation.SkusImpl;
 import com.azure.resourcemanager.storagecache.implementation.StorageCacheManagementClientBuilder;
@@ -49,6 +50,7 @@ import com.azure.resourcemanager.storagecache.models.Caches;
 import com.azure.resourcemanager.storagecache.models.ExpansionJobs;
 import com.azure.resourcemanager.storagecache.models.ImportJobs;
 import com.azure.resourcemanager.storagecache.models.Operations;
+import com.azure.resourcemanager.storagecache.models.RebalanceJobs;
 import com.azure.resourcemanager.storagecache.models.ResourceProviders;
 import com.azure.resourcemanager.storagecache.models.Skus;
 import com.azure.resourcemanager.storagecache.models.StorageTargetOperations;
@@ -71,6 +73,8 @@ public final class StorageCacheManager {
     private ResourceProviders resourceProviders;
 
     private Operations operations;
+
+    private RebalanceJobs rebalanceJobs;
 
     private Caches caches;
 
@@ -333,6 +337,18 @@ public final class StorageCacheManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of RebalanceJobs.
+     * 
+     * @return Resource collection API of RebalanceJobs.
+     */
+    public RebalanceJobs rebalanceJobs() {
+        if (this.rebalanceJobs == null) {
+            this.rebalanceJobs = new RebalanceJobsImpl(clientObject.getRebalanceJobs(), this);
+        }
+        return rebalanceJobs;
     }
 
     /**

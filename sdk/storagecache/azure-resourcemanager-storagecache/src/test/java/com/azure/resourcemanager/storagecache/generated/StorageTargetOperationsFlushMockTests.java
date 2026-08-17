@@ -27,7 +27,7 @@ public final class StorageTargetOperationsFlushMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.storageTargetOperations().flush("wpijrajci", "m", "ghfcfiwrxgkneuvy", com.azure.core.util.Context.NONE);
+        manager.storageTargetOperations().flush("izetpw", "ralllibphb", "zmizakakan", com.azure.core.util.Context.NONE);
 
     }
 }

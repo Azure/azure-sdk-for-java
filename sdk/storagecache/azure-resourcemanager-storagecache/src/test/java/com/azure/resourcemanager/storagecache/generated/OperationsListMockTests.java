@@ -23,7 +23,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"display\":{\"operation\":\"nmdyodnwzxl\",\"provider\":\"cvnhltiugc\",\"resource\":\"avvwxqi\",\"description\":\"qunyowxwlmdjr\"},\"origin\":\"fgbvfvpdbo\",\"isDataAction\":true,\"name\":\"zsjqlh\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"eibq\",\"displayName\":\"qkgh\",\"displayDescription\":\"ndzwmkrefa\",\"unit\":\"jorwkqnyhgbij\",\"aggregationType\":\"ivfxzsjabibsyst\",\"supportedAggregationTypes\":[\"Minimum\",\"Average\",\"Maximum\"],\"metricClass\":\"vkvp\",\"dimensions\":[{},{},{}]},{\"name\":\"kzbzkdvncjabudu\",\"displayName\":\"kakmokzh\",\"displayDescription\":\"klff\",\"unit\":\"ouw\",\"aggregationType\":\"gzrf\",\"supportedAggregationTypes\":[\"Count\",\"NotSpecified\",\"Total\",\"Average\"],\"metricClass\":\"ikayuhqlbjbsybb\",\"dimensions\":[{}]},{\"name\":\"t\",\"displayName\":\"gmfpgvmp\",\"displayDescription\":\"as\",\"unit\":\"haq\",\"aggregationType\":\"ss\",\"supportedAggregationTypes\":[\"Count\"],\"metricClass\":\"bdsrez\",\"dimensions\":[{},{},{}]}],\"logSpecifications\":[{\"name\":\"uyowqkdwy\",\"displayName\":\"sibircgpi\"},{\"name\":\"zimejzanlfzx\",\"displayName\":\"vrmbzono\"}]}}}]}";
+            = "{\"value\":[{\"display\":{\"operation\":\"gfhsxttaugzxn\",\"provider\":\"azpxdtnkdmkqjjl\",\"resource\":\"envrkpyouaibrebq\",\"description\":\"ysjkixqtnqttez\"},\"origin\":\"fffiak\",\"isDataAction\":false,\"name\":\"qmt\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"jihy\",\"displayName\":\"zphv\",\"displayDescription\":\"uyqncygupkvipmd\",\"unit\":\"wx\",\"aggregationType\":\"pevzhfst\",\"supportedAggregationTypes\":[\"Minimum\",\"Count\"],\"metricClass\":\"ujbypelmcuvhixb\",\"dimensions\":[{},{}]}],\"logSpecifications\":[{\"name\":\"yl\",\"displayName\":\"ool\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,22 @@ public final class OperationsListMockTests {
 
         PagedIterable<ApiOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nmdyodnwzxl", response.iterator().next().display().operation());
-        Assertions.assertEquals("cvnhltiugc", response.iterator().next().display().provider());
-        Assertions.assertEquals("avvwxqi", response.iterator().next().display().resource());
-        Assertions.assertEquals("qunyowxwlmdjr", response.iterator().next().display().description());
-        Assertions.assertEquals("fgbvfvpdbo", response.iterator().next().origin());
-        Assertions.assertTrue(response.iterator().next().isDataAction());
-        Assertions.assertEquals("zsjqlh", response.iterator().next().name());
-        Assertions.assertEquals("eibq",
+        Assertions.assertEquals("gfhsxttaugzxn", response.iterator().next().display().operation());
+        Assertions.assertEquals("azpxdtnkdmkqjjl", response.iterator().next().display().provider());
+        Assertions.assertEquals("envrkpyouaibrebq", response.iterator().next().display().resource());
+        Assertions.assertEquals("ysjkixqtnqttez", response.iterator().next().display().description());
+        Assertions.assertEquals("fffiak", response.iterator().next().origin());
+        Assertions.assertFalse(response.iterator().next().isDataAction());
+        Assertions.assertEquals("qmt", response.iterator().next().name());
+        Assertions.assertEquals("jihy",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("qkgh",
+        Assertions.assertEquals("zphv",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("ndzwmkrefa",
+        Assertions.assertEquals("uyqncygupkvipmd",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("jorwkqnyhgbij",
+        Assertions.assertEquals("wx",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions.assertEquals("ivfxzsjabibsyst",
+        Assertions.assertEquals("pevzhfst",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
         Assertions.assertEquals(MetricAggregationType.MINIMUM,
             response.iterator()
@@ -59,11 +59,11 @@ public final class OperationsListMockTests {
                 .get(0)
                 .supportedAggregationTypes()
                 .get(0));
-        Assertions.assertEquals("vkvp",
+        Assertions.assertEquals("ujbypelmcuvhixb",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).metricClass());
-        Assertions.assertEquals("uyowqkdwy",
+        Assertions.assertEquals("yl",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("sibircgpi",
+        Assertions.assertEquals("ool",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

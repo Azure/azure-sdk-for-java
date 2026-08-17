@@ -14,24 +14,24 @@ public final class StorageTargetsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTargetsResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"dnhjdauwhvylw\",\"targetPath\":\"tdhxujznbmpowuwp\",\"nfsExport\":\"qlveualupjmkh\",\"nfsAccessPolicy\":\"obbc\"},{\"namespacePath\":\"s\",\"targetPath\":\"jriplrbpbewtghf\",\"nfsExport\":\"lcgwxzvlvqh\",\"nfsAccessPolicy\":\"begibtnmxiebwwa\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"rtzju\",\"usageModel\":\"wyzmhtxon\",\"verificationTimer\":351214213,\"writeBackTimer\":2051758056},\"clfs\":{\"target\":\"cbpwxqpsrknft\"},\"unknown\":{\"attributes\":{\"riwwroy\":\"iuhprwmdyvxqta\",\"bycnojvkn\":\"bexrmcq\"}},\"blobNfs\":{\"target\":\"qsgzvahapj\",\"usageModel\":\"hpvgqz\",\"verificationTimer\":256612038,\"writeBackTimer\":391970506},\"allocationPercentage\":1243580735},\"location\":\"lmwlxkvugfhzo\",\"id\":\"wjvzunluthnn\",\"name\":\"rnxipei\",\"type\":\"pjzu\"},{\"properties\":{\"junctions\":[{\"namespacePath\":\"ultskzbbtdz\",\"targetPath\":\"veekgpwozuhkfp\",\"nfsExport\":\"jyofdxluusdtto\",\"nfsAccessPolicy\":\"aboekqv\"},{\"namespacePath\":\"lns\",\"targetPath\":\"bxwyjsflhhcaa\",\"nfsExport\":\"jixisxyawjoyaqcs\",\"nfsAccessPolicy\":\"jpkiidzyexznelix\"}],\"targetType\":\"nfs3\",\"provisioningState\":\"Failed\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"hb\",\"usageModel\":\"knalaulppg\",\"verificationTimer\":1987785731,\"writeBackTimer\":1767174247},\"clfs\":{\"target\":\"nyiropuhpi\"},\"unknown\":{\"attributes\":{\"n\":\"ylgqgitxmedjvcsl\",\"rmgucnap\":\"wwncwzzhxgk\",\"oellwp\":\"t\",\"qrhhu\":\"fdygpfqbuaceopz\"}},\"blobNfs\":{\"target\":\"ppcqeqxolz\",\"usageModel\":\"hzxct\",\"verificationTimer\":731571651,\"writeBackTimer\":1114721091},\"allocationPercentage\":1823034726},\"location\":\"izpost\",\"id\":\"rcfbunrm\",\"name\":\"qjhhkxbpv\",\"type\":\"ymjhxxjyngudivkr\"}],\"nextLink\":\"wbxqzvszjfau\"}")
+            "{\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"j\",\"targetPath\":\"wpucwwfvovbv\",\"nfsExport\":\"uecivyhz\",\"nfsAccessPolicy\":\"uojgj\"}],\"targetType\":\"nfs3\",\"provisioningState\":\"Creating\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"wmcdytdxwi\",\"usageModel\":\"nrjawgqwg\",\"verificationTimer\":369820426,\"writeBackTimer\":1353933533},\"clfs\":{\"target\":\"fbkp\"},\"unknown\":{\"attributes\":{\"nhjdauw\":\"lwn\",\"nbmpowuwprzq\":\"vylwzbtdhxuj\",\"pjmkhfxobbc\":\"veual\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\"}},\"blobNfs\":{\"target\":\"jkbegibtnmxiebww\",\"usageModel\":\"oayqc\",\"verificationTimer\":1214313613,\"writeBackTimer\":1999029226},\"allocationPercentage\":350152394},\"location\":\"gwyzm\",\"id\":\"xongmtsavjcbpwxq\",\"name\":\"srknftguv\",\"type\":\"iuhprwmdyvxqta\"},{\"properties\":{\"junctions\":[{\"namespacePath\":\"ro\",\"targetPath\":\"bexrmcq\",\"nfsExport\":\"ycnojvknmefqsg\",\"nfsAccessPolicy\":\"ah\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Creating\",\"state\":\"Busy\",\"nfs3\":{\"target\":\"gqzcjr\",\"usageModel\":\"djzlmwlx\",\"verificationTimer\":413444138,\"writeBackTimer\":2069794521},\"clfs\":{\"target\":\"ovawjvzunlu\"},\"unknown\":{\"attributes\":{\"jzuaejxdultskzbb\":\"prnxipeil\"}},\"blobNfs\":{\"target\":\"umveekgpwozuhkf\",\"usageModel\":\"sjyofdx\",\"verificationTimer\":301470768,\"writeBackTimer\":2103564853},\"allocationPercentage\":578093218},\"location\":\"uwaboekqvke\",\"id\":\"smv\",\"name\":\"xwyjsflhhc\",\"type\":\"aln\"},{\"properties\":{\"junctions\":[{\"namespacePath\":\"xyawj\",\"targetPath\":\"aq\",\"nfsExport\":\"lyjpk\",\"nfsAccessPolicy\":\"dzyexznelixh\"},{\"namespacePath\":\"ztfolhbnxk\",\"targetPath\":\"laulppg\",\"nfsExport\":\"tpnapnyiropuhpig\",\"nfsAccessPolicy\":\"gylgqgitxmedjvcs\"},{\"namespacePath\":\"n\",\"targetPath\":\"wncwzzhxgktrmg\",\"nfsExport\":\"napkteoellw\",\"nfsAccessPolicy\":\"fdygpfqbuaceopz\"},{\"namespacePath\":\"rhhuaopppcqeqx\",\"targetPath\":\"z\",\"nfsExport\":\"hzxct\",\"nfsAccessPolicy\":\"gbkdmoizpos\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"nrmfqjhhk\",\"usageModel\":\"pvjymjhxxjyng\",\"verificationTimer\":1804869047,\"writeBackTimer\":216222103},\"clfs\":{\"target\":\"swbxqz\"},\"unknown\":{\"attributes\":{\"vetvt\":\"fauvjfdxx\",\"lqbhsf\":\"qaqtdoqmcbxvwvxy\",\"tkblmpewww\":\"obl\"}},\"blobNfs\":{\"target\":\"rvrnsvshqjohxc\",\"usageModel\":\"bfovasrruvwbhsq\",\"verificationTimer\":309117028,\"writeBackTimer\":213257698},\"allocationPercentage\":540005244},\"location\":\"irx\",\"id\":\"ybsrfbjfdtwss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"}],\"nextLink\":\"wpmqt\"}")
             .toObject(StorageTargetsResult.class);
-        Assertions.assertEquals("dnhjdauwhvylw", model.value().get(0).junctions().get(0).namespacePath());
-        Assertions.assertEquals("tdhxujznbmpowuwp", model.value().get(0).junctions().get(0).targetPath());
-        Assertions.assertEquals("qlveualupjmkh", model.value().get(0).junctions().get(0).nfsExport());
-        Assertions.assertEquals("obbc", model.value().get(0).junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.CLFS, model.value().get(0).targetType());
-        Assertions.assertEquals(OperationalStateType.SUSPENDED, model.value().get(0).state());
-        Assertions.assertEquals("rtzju", model.value().get(0).nfs3().target());
-        Assertions.assertEquals("wyzmhtxon", model.value().get(0).nfs3().usageModel());
-        Assertions.assertEquals(351214213, model.value().get(0).nfs3().verificationTimer());
-        Assertions.assertEquals(2051758056, model.value().get(0).nfs3().writeBackTimer());
-        Assertions.assertEquals("cbpwxqpsrknft", model.value().get(0).clfs().target());
-        Assertions.assertEquals("iuhprwmdyvxqta", model.value().get(0).unknown().attributes().get("riwwroy"));
-        Assertions.assertEquals("qsgzvahapj", model.value().get(0).blobNfs().target());
-        Assertions.assertEquals("hpvgqz", model.value().get(0).blobNfs().usageModel());
-        Assertions.assertEquals(256612038, model.value().get(0).blobNfs().verificationTimer());
-        Assertions.assertEquals(391970506, model.value().get(0).blobNfs().writeBackTimer());
-        Assertions.assertEquals("wbxqzvszjfau", model.nextLink());
+        Assertions.assertEquals("j", model.value().get(0).junctions().get(0).namespacePath());
+        Assertions.assertEquals("wpucwwfvovbv", model.value().get(0).junctions().get(0).targetPath());
+        Assertions.assertEquals("uecivyhz", model.value().get(0).junctions().get(0).nfsExport());
+        Assertions.assertEquals("uojgj", model.value().get(0).junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.NFS3, model.value().get(0).targetType());
+        Assertions.assertEquals(OperationalStateType.FLUSHING, model.value().get(0).state());
+        Assertions.assertEquals("wmcdytdxwi", model.value().get(0).nfs3().target());
+        Assertions.assertEquals("nrjawgqwg", model.value().get(0).nfs3().usageModel());
+        Assertions.assertEquals(369820426, model.value().get(0).nfs3().verificationTimer());
+        Assertions.assertEquals(1353933533, model.value().get(0).nfs3().writeBackTimer());
+        Assertions.assertEquals("fbkp", model.value().get(0).clfs().target());
+        Assertions.assertEquals("lwn", model.value().get(0).unknown().attributes().get("nhjdauw"));
+        Assertions.assertEquals("jkbegibtnmxiebww", model.value().get(0).blobNfs().target());
+        Assertions.assertEquals("oayqc", model.value().get(0).blobNfs().usageModel());
+        Assertions.assertEquals(1214313613, model.value().get(0).blobNfs().verificationTimer());
+        Assertions.assertEquals(1999029226, model.value().get(0).blobNfs().writeBackTimer());
+        Assertions.assertEquals("wpmqt", model.nextLink());
     }
 }

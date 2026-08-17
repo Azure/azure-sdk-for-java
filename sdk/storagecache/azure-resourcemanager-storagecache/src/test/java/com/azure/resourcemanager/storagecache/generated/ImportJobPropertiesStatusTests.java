@@ -11,7 +11,7 @@ public final class ImportJobPropertiesStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobPropertiesStatus model = BinaryData.fromString(
-            "{\"state\":\"CompletedPartial\",\"statusMessage\":\"wiipfpub\",\"totalBlobsWalked\":6511360515148103622,\"blobsWalkedPerSecond\":1488473246565139265,\"totalBlobsImported\":6753222489346190909,\"importedFiles\":9125422272496243205,\"importedDirectories\":9141549963095066004,\"importedSymlinks\":9121743488248477749,\"preexistingFiles\":3052478790878417795,\"preexistingDirectories\":1945409254044399021,\"preexistingSymlinks\":146947872271189543,\"blobsImportedPerSecond\":2813063288078611784,\"lastCompletionTime\":\"2021-07-07T13:24:13Z\",\"lastStartedTime\":\"2021-02-28T17:47:31Z\",\"totalErrors\":328697449,\"totalConflicts\":1607427594}")
+            "{\"state\":\"Canceled\",\"statusMessage\":\"gxk\",\"totalBlobsWalked\":1698714775004667667,\"blobsWalkedPerSecond\":3546472897541130769,\"totalBlobsImported\":5796358058175213416,\"importedFiles\":3900047479392463058,\"importedDirectories\":4740858947759401461,\"importedSymlinks\":4934709645591830433,\"preexistingFiles\":662578251116723063,\"preexistingDirectories\":1816332624383197418,\"preexistingSymlinks\":8713915720909474504,\"blobsImportedPerSecond\":8913535749004515550,\"lastCompletionTime\":\"2021-11-02T04:27:35Z\",\"lastStartedTime\":\"2021-08-20T13:14:33Z\",\"totalErrors\":385897981,\"totalConflicts\":1130828460}")
             .toObject(ImportJobPropertiesStatus.class);
     }
 }
