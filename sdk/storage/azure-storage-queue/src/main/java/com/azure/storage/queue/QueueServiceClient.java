@@ -338,8 +338,8 @@ public final class QueueServiceClient {
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
             Supplier<PagedResponse<QueueItem>> operation
                 = () -> ModelHelper.toQueueItemPage(this.azureQueueStorage.getServices()
-                    .getQueuesWithResponse(RequestOptionsHelper.listQueuesRequestOptions(finalContext, prefix, nextMarker,
-                        pageSize == null ? maxResultsPerPage : pageSize, include)));
+                    .getQueuesWithResponse(RequestOptionsHelper.listQueuesRequestOptions(finalContext, prefix,
+                        nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include)));
 
             return submitThreadPool(operation, LOGGER, timeout);
 
