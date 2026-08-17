@@ -658,6 +658,13 @@ public final class ContentUnderstandingClient {
 
     /**
      * Delete analyzer.
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -796,6 +803,14 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1068,6 +1083,13 @@ public final class ContentUnderstandingClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>content-type</td><td>String</td><td>Response content type.</td></tr>
+     * </table>
      *
      * @param operationId Operation identifier.
      * @param path File path.
@@ -1109,6 +1131,14 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param grantCopyAuthorizationRequest The grantCopyAuthorizationRequest parameter.
@@ -1458,6 +1488,14 @@ public final class ContentUnderstandingClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param analyzerId The unique identifier of the analyzer.
      * @param resource The resource instance.

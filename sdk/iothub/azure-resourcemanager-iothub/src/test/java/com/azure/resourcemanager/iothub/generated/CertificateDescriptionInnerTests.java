@@ -13,22 +13,20 @@ public final class CertificateDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateDescriptionInner model = BinaryData.fromString(
-            "{\"properties\":{\"subject\":\"wo\",\"expiry\":\"Sun, 28 Feb 2021 13:28:15 GMT\",\"thumbprint\":\"shrtdtkcnqxwb\",\"isVerified\":true,\"created\":\"Wed, 01 Sep 2021 09:08:06 GMT\",\"updated\":\"Wed, 21 Jul 2021 21:11:01 GMT\",\"certificate\":\"jwaa\",\"policyResourceId\":\"pqiiobyuqe\"},\"etag\":\"qlpqwcciuq\",\"id\":\"dbutauvfbtkuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"}")
+            "{\"properties\":{\"subject\":\"wqapnedgfbcvk\",\"expiry\":\"Mon, 31 May 2021 02:02:01 GMT\",\"thumbprint\":\"pkeqdcvdrhvoo\",\"isVerified\":true,\"created\":\"Tue, 02 Nov 2021 01:53:07 GMT\",\"updated\":\"Mon, 29 Mar 2021 00:37:52 GMT\",\"certificate\":\"dopcjwvnh\",\"policyResourceId\":\"d\"},\"etag\":\"gx\",\"id\":\"rslpmutwuoeg\",\"name\":\"pkhjwni\",\"type\":\"qsluicp\"}")
             .toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("jwaa", model.properties().certificate());
-        Assertions.assertEquals("pqiiobyuqe", model.properties().policyResourceId());
+        Assertions.assertEquals("dopcjwvnh", model.properties().certificate());
+        Assertions.assertEquals("d", model.properties().policyResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateDescriptionInner model
-            = new CertificateDescriptionInner().withProperties(new CertificateProperties().withIsVerified(true)
-                .withCertificate("jwaa")
-                .withPolicyResourceId("pqiiobyuqe"));
+        CertificateDescriptionInner model = new CertificateDescriptionInner().withProperties(
+            new CertificateProperties().withIsVerified(true).withCertificate("dopcjwvnh").withPolicyResourceId("d"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
         Assertions.assertTrue(model.properties().isVerified());
-        Assertions.assertEquals("jwaa", model.properties().certificate());
-        Assertions.assertEquals("pqiiobyuqe", model.properties().policyResourceId());
+        Assertions.assertEquals("dopcjwvnh", model.properties().certificate());
+        Assertions.assertEquals("d", model.properties().policyResourceId());
     }
 }

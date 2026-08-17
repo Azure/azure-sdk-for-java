@@ -348,6 +348,8 @@ public final class AzureStorageContainer extends ProtectionContainer {
                     deserializedAzureStorageContainer.withHealthStatus(reader.getString());
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureStorageContainer.withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureStorageContainer.withSourceLocation(reader.getString());
                 } else if ("containerType".equals(fieldName)) {
                     deserializedAzureStorageContainer.containerType
                         = ProtectableContainerType.fromString(reader.getString());

@@ -52,8 +52,12 @@ class AzureKeyVaultJcaAutoConfigurationTests {
                 "spring.cloud.azure.keyvault.jca.vaults.kv2.endpoint=" + String.format(ENDPOINT, "test2"),
                 "spring.ssl.bundle.keyvault.testBundle1.truststore.certificate-paths.custom=classpath:keyvault/certificate-paths/custom",
                 "spring.ssl.bundle.keyvault.testBundle2.truststore.keyvault-ref=kv2",
+                "spring.ssl.bundle.keyvault.testBundle2.truststore.certificate-alias-filter-patterns[0]=^prod-.*",
+                "spring.ssl.bundle.keyvault.testBundle2.truststore.certificate-alias-filter-patterns[1]=!^prod-deprecated$",
                 "spring.ssl.bundle.keyvault.testBundle3.truststore.keyvault-ref=kv1",
-                "spring.ssl.bundle.keyvault.testBundle3.keystore.keyvault-ref=kv2"
+                "spring.ssl.bundle.keyvault.testBundle3.keystore.keyvault-ref=kv2",
+                "spring.ssl.bundle.keyvault.testBundle3.keystore.certificate-alias-filter-patterns[0]=client-cert",
+                "spring.ssl.bundle.keyvault.testBundle3.keystore.certificate-alias-filter-patterns[1]=!old-client-cert"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultJcaAutoConfiguration.class);
@@ -71,8 +75,12 @@ class AzureKeyVaultJcaAutoConfigurationTests {
                 assertThat(sslBundlesProperties.getKeyvault()).hasSize(3);
                 assertThat(sslBundlesProperties.getKeyvault().get("testBundle1").getTruststore().getCertificatePaths().getCustom()).isEqualTo("classpath:keyvault/certificate-paths/custom");
                 assertThat(sslBundlesProperties.getKeyvault().get("testBundle2").getTruststore().getKeyvaultRef()).isEqualTo("kv2");
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle2").getTruststore()
+                    .getCertificateAliasFilterPatterns()).containsExactly("^prod-.*", "!^prod-deprecated$");
                 assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getTruststore().getKeyvaultRef()).isEqualTo("kv1");
                 assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getKeystore().getKeyvaultRef()).isEqualTo("kv2");
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getKeystore()
+                    .getCertificateAliasFilterPatterns()).containsExactly("client-cert", "!old-client-cert");
             });
     }
 
