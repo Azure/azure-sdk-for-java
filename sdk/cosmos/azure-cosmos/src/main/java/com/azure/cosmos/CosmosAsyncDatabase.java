@@ -229,7 +229,7 @@ public class CosmosAsyncDatabase {
      * @param throughputProperties the throughput properties for the container.
      * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
-     * @throws IllegalArgumentException thown if containerProerties are null.
+     * @throws IllegalArgumentException thrown if containerProperties are null.
      */
     public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
