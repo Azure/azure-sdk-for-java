@@ -39,7 +39,7 @@ public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringVal
     private static final Duration SAFETY_BUFFER = Duration.ofSeconds(5);
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
-    private ValueProvider<T> valueProvider;
+    private final ValueProvider<T> valueProvider;
     private final Clock clock;
     private final Object creationLock = new Object();
     private volatile T value;
