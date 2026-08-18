@@ -5,8 +5,6 @@
 package com.azure.communication.identity.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,19 +21,16 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
     /*
      * The access token issued for the identity.
      */
-    @Generated
     private String token;
 
     /*
      * The expiry time of the token.
      */
-    @Generated
     private OffsetDateTime expiresOn;
 
     /**
      * Creates an instance of CommunicationIdentityAccessToken class.
      */
-    @Generated
     public CommunicationIdentityAccessToken() {
     }
 
@@ -44,7 +39,6 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
      * 
      * @return the token value.
      */
-    @Generated
     public String getToken() {
         return this.token;
     }
@@ -55,7 +49,6 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
      * @param token the token value to set.
      * @return the CommunicationIdentityAccessToken object itself.
      */
-    @Generated
     public CommunicationIdentityAccessToken setToken(String token) {
         this.token = token;
         return this;
@@ -66,7 +59,6 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
      * 
      * @return the expiresOn value.
      */
-    @Generated
     public OffsetDateTime getExpiresOn() {
         return this.expiresOn;
     }
@@ -77,16 +69,11 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
      * @param expiresOn the expiresOn value to set.
      * @return the CommunicationIdentityAccessToken object itself.
      */
-    @Generated
     public CommunicationIdentityAccessToken setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -105,7 +92,6 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommunicationIdentityAccessToken.
      */
-    @Generated
     public static CommunicationIdentityAccessToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommunicationIdentityAccessToken deserializedCommunicationIdentityAccessToken
@@ -117,8 +103,8 @@ public final class CommunicationIdentityAccessToken implements JsonSerializable<
                 if ("token".equals(fieldName)) {
                     deserializedCommunicationIdentityAccessToken.token = reader.getString();
                 } else if ("expiresOn".equals(fieldName)) {
-                    deserializedCommunicationIdentityAccessToken.expiresOn = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedCommunicationIdentityAccessToken.expiresOn
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
