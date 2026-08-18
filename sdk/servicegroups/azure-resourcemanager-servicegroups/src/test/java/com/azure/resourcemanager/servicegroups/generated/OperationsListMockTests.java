@@ -6,22 +6,22 @@ package com.azure.resourcemanager.servicegroups.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicegroups.ServiceGroupsManager;
-import com.azure.resourcemanager.servicegroups.models.ServiceGroup;
+import com.azure.resourcemanager.servicegroups.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class ServiceGroupsGetWithResponseMockTests {
+public final class OperationsListMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testList() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"cbacphejkotynqg\",\"attributes\":{\"criticality\":2032457047},\"parent\":{\"resourceId\":\"likwyqkgfgib\"}},\"kind\":\"dgak\",\"tags\":{\"qedqytbciqfoufl\":\"rxybz\"},\"id\":\"nkzsmodmglou\",\"name\":\"pbkwtmu\",\"type\":\"duqkt\"}";
+            = "{\"value\":[{\"name\":\"spwgcuertumkdosv\",\"isDataAction\":true,\"display\":{\"provider\":\"dgbb\",\"resource\":\"ddgmb\",\"operation\":\"ex\",\"description\":\"bhtqqrolfpfpsa\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,7 @@ public final class ServiceGroupsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ServiceGroup response
-            = manager.serviceGroups().getWithResponse("ryplwckbasyypn", com.azure.core.util.Context.NONE).getValue();
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cbacphejkotynqg", response.properties().displayName());
-        Assertions.assertEquals(2032457047, response.properties().attributes().criticality());
-        Assertions.assertEquals("likwyqkgfgib", response.properties().parent().resourceId());
-        Assertions.assertEquals("dgak", response.kind());
-        Assertions.assertEquals("rxybz", response.tags().get("qedqytbciqfoufl"));
     }
 }
