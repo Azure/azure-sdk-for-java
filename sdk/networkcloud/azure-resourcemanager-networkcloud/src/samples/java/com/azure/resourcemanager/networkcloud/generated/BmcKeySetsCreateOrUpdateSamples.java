@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class BmcKeySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Create.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Create.json
      */
     /**
      * Sample code: Create or update baseboard management controller key set of cluster.

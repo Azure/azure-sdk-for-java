@@ -26,7 +26,7 @@ public final class L2NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"qjros\",\"l2IsolationDomainId\":\"vrjeqmtzzbeqrztr\",\"associatedResourceIds\":[\"xrd\",\"absr\",\"rsnrhp\",\"a\"],\"clusterId\":\"wk\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"nxkvvcsemsv\",\"hybridAksClustersAssociatedIds\":[\"jkqxetqmmli\",\"rj\",\"xnwxdch\"],\"virtualMachinesAssociatedIds\":[\"xlehzlxpgfquwzp\",\"iibelwcerw\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"jxljtxbusq\",\"extendedLocation\":{\"name\":\"bxxn\",\"type\":\"CustomLocation\"},\"location\":\"sdzhgbdgzpagsec\",\"tags\":{\"gxfllmqiynezoel\":\"buwq\"},\"id\":\"nkkiiwvmtumxpy\",\"name\":\"djf\",\"type\":\"axroqvqpilrgunc\"}";
+            = "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"awnrrnquoxsotir\",\"l2IsolationDomainId\":\"imseobf\",\"associatedResourceIds\":[\"tcyilbvz\",\"mxcjzlquzexokjx\",\"bjvbzinzab\",\"mvoglj\"],\"clusterId\":\"lpgidn\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"aqidoyzltgiomqo\",\"hybridAksClustersAssociatedIds\":[\"pia\",\"apfsergdtpeqna\",\"yheqwb\",\"qq\"],\"virtualMachinesAssociatedIds\":[\"u\",\"khjoz\",\"ymc\",\"m\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"vqyvl\",\"extendedLocation\":{\"name\":\"qiipsejb\",\"type\":\"EdgeZone\"},\"location\":\"iaieswhddzydi\",\"tags\":{\"i\":\"epywyjlnldpxottd\"},\"id\":\"ocqibz\",\"name\":\"ihweeb\",\"type\":\"ph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,27 +36,25 @@ public final class L2NetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L2Network response = manager.l2Networks()
-            .define("qhnmhk")
-            .withRegion("rllccnaovjowazhp")
-            .withExistingResourceGroup("djpxpqht")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("mkkhtgfredml").withType(ExtendedLocationType.EDGE_ZONE))
-            .withL2IsolationDomainId("pinymmqgwokmikp")
-            .withTags(
-                mapOf("srqorcgenmvceb", "comlyotgkwsx", "dcqjkedwqurc", "eetqujxcxxq", "qqrsil", "ojmrvvxwjongzse"))
+            .define("xb")
+            .withRegion("cdgzseznux")
+            .withExistingResourceGroup("yxhighc")
+            .withExtendedLocation(new ExtendedLocation().withName("zamicb").withType(ExtendedLocationType.EDGE_ZONE))
+            .withL2IsolationDomainId("cz")
+            .withTags(mapOf("aabmdlqjb", "ai", "ixlhupm", "dp", "cdpreyxelyicg", "mihzbdnpxp", "fss", "flr"))
             .withHybridAksPluginType(HybridAksPluginType.SRIOV)
-            .withInterfaceName("dsuxheqdgcrux")
-            .withIfMatch("rulfuct")
-            .withIfNoneMatch("jrthcfjzhx")
+            .withInterfaceName("pcqydeykvsk")
+            .withIfMatch("gquxweysland")
+            .withIfNoneMatch("dcdjhunh")
             .create();
 
-        Assertions.assertEquals("sdzhgbdgzpagsec", response.location());
-        Assertions.assertEquals("buwq", response.tags().get("gxfllmqiynezoel"));
-        Assertions.assertEquals("bxxn", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals("iaieswhddzydi", response.location());
+        Assertions.assertEquals("epywyjlnldpxottd", response.tags().get("i"));
+        Assertions.assertEquals("qiipsejb", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
-        Assertions.assertEquals("qjros", response.interfaceName());
-        Assertions.assertEquals("vrjeqmtzzbeqrztr", response.l2IsolationDomainId());
+        Assertions.assertEquals("awnrrnquoxsotir", response.interfaceName());
+        Assertions.assertEquals("imseobf", response.l2IsolationDomainId());
     }
 
     // Use "Map.of" if available

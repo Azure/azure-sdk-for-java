@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentialsPatch;
 import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
@@ -481,13 +482,8 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public VirtualMachineImpl
         withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
-        if (isInCreateMode()) {
-            this.innerModel().withVmImageRepositoryCredentials(vmImageRepositoryCredentials);
-            return this;
-        } else {
-            this.updateVirtualMachineUpdateParameters.withVmImageRepositoryCredentials(vmImageRepositoryCredentials);
-            return this;
-        }
+        this.innerModel().withVmImageRepositoryCredentials(vmImageRepositoryCredentials);
+        return this;
     }
 
     public VirtualMachineImpl withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
@@ -513,6 +509,12 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
             this.updateIfNoneMatch = ifNoneMatch;
             return this;
         }
+    }
+
+    public VirtualMachineImpl
+        withVmImageRepositoryCredentials(ImageRepositoryCredentialsPatch vmImageRepositoryCredentials) {
+        this.updateVirtualMachineUpdateParameters.withVmImageRepositoryCredentials(vmImageRepositoryCredentials);
+        return this;
     }
 
     private boolean isInCreateMode() {

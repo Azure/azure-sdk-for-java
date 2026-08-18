@@ -95,7 +95,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the aggregatorOrSingleRackDefinition value.
      */
-    public RackDefinition aggregatorOrSingleRackDefinition() {
+    public RackDefinitionPatch aggregatorOrSingleRackDefinition() {
         return this.innerProperties() == null ? null : this.innerProperties().aggregatorOrSingleRackDefinition();
     }
 
@@ -107,7 +107,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @return the ClusterPatchParameters object itself.
      */
     public ClusterPatchParameters
-        withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition) {
+        withAggregatorOrSingleRackDefinition(RackDefinitionPatch aggregatorOrSingleRackDefinition) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -171,7 +171,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the clusterServicePrincipal value.
      */
-    public ServicePrincipalInformation clusterServicePrincipal() {
+    public ServicePrincipalInformationPatch clusterServicePrincipal() {
         return this.innerProperties() == null ? null : this.innerProperties().clusterServicePrincipal();
     }
 
@@ -182,7 +182,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withClusterServicePrincipal(ServicePrincipalInformation clusterServicePrincipal) {
+    public ClusterPatchParameters
+        withClusterServicePrincipal(ServicePrincipalInformationPatch clusterServicePrincipal) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -221,7 +222,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the computeDeploymentThreshold value.
      */
-    public ValidationThreshold computeDeploymentThreshold() {
+    public ValidationThresholdPatch computeDeploymentThreshold() {
         return this.innerProperties() == null ? null : this.innerProperties().computeDeploymentThreshold();
     }
 
@@ -232,7 +233,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @param computeDeploymentThreshold the computeDeploymentThreshold value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withComputeDeploymentThreshold(ValidationThreshold computeDeploymentThreshold) {
+    public ClusterPatchParameters withComputeDeploymentThreshold(ValidationThresholdPatch computeDeploymentThreshold) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -246,7 +247,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the computeRackDefinitions value.
      */
-    public List<RackDefinition> computeRackDefinitions() {
+    public List<RackDefinitionPatch> computeRackDefinitions() {
         return this.innerProperties() == null ? null : this.innerProperties().computeRackDefinitions();
     }
 
@@ -257,7 +258,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @param computeRackDefinitions the computeRackDefinitions value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withComputeRackDefinitions(List<RackDefinition> computeRackDefinitions) {
+    public ClusterPatchParameters withComputeRackDefinitions(List<RackDefinitionPatch> computeRackDefinitions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -270,7 +271,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the runtimeProtectionConfiguration value.
      */
-    public RuntimeProtectionConfiguration runtimeProtectionConfiguration() {
+    public RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().runtimeProtectionConfiguration();
     }
 
@@ -281,7 +282,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @return the ClusterPatchParameters object itself.
      */
     public ClusterPatchParameters
-        withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration) {
+        withRuntimeProtectionConfiguration(RuntimeProtectionConfigurationPatch runtimeProtectionConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -295,7 +296,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the secretArchive value.
      */
-    public ClusterSecretArchive secretArchive() {
+    public ClusterSecretArchivePatch secretArchive() {
         return this.innerProperties() == null ? null : this.innerProperties().secretArchive();
     }
 
@@ -306,7 +307,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @param secretArchive the secretArchive value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withSecretArchive(ClusterSecretArchive secretArchive) {
+    public ClusterPatchParameters withSecretArchive(ClusterSecretArchivePatch secretArchive) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }
@@ -344,7 +345,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * 
      * @return the updateStrategy value.
      */
-    public ClusterUpdateStrategy updateStrategy() {
+    public ClusterUpdateStrategyPatch updateStrategy() {
         return this.innerProperties() == null ? null : this.innerProperties().updateStrategy();
     }
 
@@ -354,7 +355,7 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
      * @param updateStrategy the updateStrategy value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
+    public ClusterPatchParameters withUpdateStrategy(ClusterUpdateStrategyPatch updateStrategy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }

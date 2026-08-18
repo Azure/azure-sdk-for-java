@@ -23,7 +23,7 @@ public final class RacksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"availabilityZone\":\"qis\",\"rackLocation\":\"rpilgftrqrejdaah\",\"rackSerialNumber\":\"qimlda\",\"rackSkuId\":\"lfxlmuifmuadj\",\"clusterId\":\"snc\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"oshjgcze\",\"provisioningState\":\"Succeeded\"},\"etag\":\"xgztlcgctjch\",\"extendedLocation\":{\"name\":\"j\",\"type\":\"EdgeZone\"},\"location\":\"wjzebecuvlb\",\"tags\":{\"jkxpylrwoxzgwpsy\":\"wc\",\"erdkdkgawqwjxild\":\"jijeypdvrb\"},\"id\":\"kc\",\"name\":\"feygzqp\",\"type\":\"oisfmnaybdjn\"}]}";
+            = "{\"value\":[{\"properties\":{\"availabilityZone\":\"tv\",\"rackLocation\":\"j\",\"rackSerialNumber\":\"xvgjbfi\",\"rackSkuId\":\"bpnjodf\",\"clusterId\":\"jqqwmtqsmoxsazu\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"wecy\",\"provisioningState\":\"Accepted\"},\"etag\":\"szzacz\",\"extendedLocation\":{\"name\":\"inqbdnddbbozs\",\"type\":\"CustomLocation\"},\"location\":\"mkjmyitrchwudlxe\",\"tags\":{\"hqlfmsib\":\"tpmnoe\",\"dpmypgfqvmtywh\":\"oyrfgxk\",\"xpejpewpy\":\"a\"},\"id\":\"lfxampqc\",\"name\":\"zgeuqxbpiat\",\"type\":\"faujegqdtad\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,17 @@ public final class RacksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Rack> response = manager.racks().list(556714103, "p", com.azure.core.util.Context.NONE);
+        PagedIterable<Rack> response
+            = manager.racks().list(76340315, "sfzjuegrhrhtsle", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wjzebecuvlb", response.iterator().next().location());
-        Assertions.assertEquals("wc", response.iterator().next().tags().get("jkxpylrwoxzgwpsy"));
-        Assertions.assertEquals("j", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("qis", response.iterator().next().availabilityZone());
-        Assertions.assertEquals("rpilgftrqrejdaah", response.iterator().next().rackLocation());
-        Assertions.assertEquals("qimlda", response.iterator().next().rackSerialNumber());
-        Assertions.assertEquals("lfxlmuifmuadj", response.iterator().next().rackSkuId());
+        Assertions.assertEquals("mkjmyitrchwudlxe", response.iterator().next().location());
+        Assertions.assertEquals("tpmnoe", response.iterator().next().tags().get("hqlfmsib"));
+        Assertions.assertEquals("inqbdnddbbozs", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
+            response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("tv", response.iterator().next().availabilityZone());
+        Assertions.assertEquals("j", response.iterator().next().rackLocation());
+        Assertions.assertEquals("xvgjbfi", response.iterator().next().rackSerialNumber());
+        Assertions.assertEquals("bpnjodf", response.iterator().next().rackSkuId());
     }
 }

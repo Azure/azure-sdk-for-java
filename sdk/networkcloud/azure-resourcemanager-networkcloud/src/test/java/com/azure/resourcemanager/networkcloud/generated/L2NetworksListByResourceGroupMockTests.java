@@ -24,7 +24,7 @@ public final class L2NetworksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"qseuzuukykcyqhy\",\"l2IsolationDomainId\":\"qzzdcykeyste\",\"associatedResourceIds\":[\"pazdazgbsqgp\",\"wqcfutmdpvozg\",\"qjbknl\"],\"clusterId\":\"lctzeyowmndcovd\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"uxza\",\"hybridAksClustersAssociatedIds\":[\"kvfruwkudr\"],\"virtualMachinesAssociatedIds\":[\"ftxudqy\",\"mebunaucmc\",\"rtneemmja\"],\"provisioningState\":\"Provisioning\"},\"etag\":\"xefnohaitrani\",\"extendedLocation\":{\"name\":\"erwguda\",\"type\":\"CustomLocation\"},\"location\":\"ubvf\",\"tags\":{\"y\":\"fcocefhpr\",\"cdculr\":\"fmpztraudsvh\"},\"id\":\"gpqtmo\",\"name\":\"hvrztnvg\",\"type\":\"shqrdgrt\"}]}";
+            = "{\"value\":[{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"yoi\",\"l2IsolationDomainId\":\"l\",\"associatedResourceIds\":[\"q\",\"nnraclibbfqpspkl\",\"dydgnhautwukex\",\"gpmnmabe\"],\"clusterId\":\"qilwgdfpfqfpcvs\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"qrvwerfwxbsm\",\"hybridAksClustersAssociatedIds\":[\"jj\",\"h\",\"ci\",\"kwdvbtb\"],\"virtualMachinesAssociatedIds\":[\"qhs\"],\"provisioningState\":\"Canceled\"},\"etag\":\"pwpq\",\"extendedLocation\":{\"name\":\"yejuwyqwdqigmghg\",\"type\":\"CustomLocation\"},\"location\":\"txlujkhnjcmr\",\"tags\":{\"qtwmlmhjnqtqeahj\":\"mkh\",\"vgua\":\"dvragpokddxejhh\",\"k\":\"tpt\",\"gbvoffbkk\":\"wkqyns\"},\"id\":\"vdxaexqokmyrljia\",\"name\":\"zbnobr\",\"type\":\"lpbcjtrpz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class L2NetworksListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<L2Network> response = manager.l2Networks()
-            .listByResourceGroup("wntfmtbgwjdxwna", 976200811, "urrdreyzjwhsetww", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("tdavuqmcbymsfobj", 1423173306, "uvjezcjumvps", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ubvf", response.iterator().next().location());
-        Assertions.assertEquals("fcocefhpr", response.iterator().next().tags().get("y"));
-        Assertions.assertEquals("erwguda", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("txlujkhnjcmr", response.iterator().next().location());
+        Assertions.assertEquals("mkh", response.iterator().next().tags().get("qtwmlmhjnqtqeahj"));
+        Assertions.assertEquals("yejuwyqwdqigmghg", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("qseuzuukykcyqhy", response.iterator().next().interfaceName());
-        Assertions.assertEquals("qzzdcykeyste", response.iterator().next().l2IsolationDomainId());
+        Assertions.assertEquals("yoi", response.iterator().next().interfaceName());
+        Assertions.assertEquals("l", response.iterator().next().l2IsolationDomainId());
     }
 }

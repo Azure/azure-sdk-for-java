@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class StorageAppliancesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Patch.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Patch.json
      */
     /**
      * Sample code: Patch storage appliance.

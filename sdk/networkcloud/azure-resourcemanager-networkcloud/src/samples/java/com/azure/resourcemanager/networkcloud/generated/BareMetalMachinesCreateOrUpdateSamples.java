@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class BareMetalMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_Create.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_Create.json
      */
     /**
      * Sample code: Create or update bare metal machine.

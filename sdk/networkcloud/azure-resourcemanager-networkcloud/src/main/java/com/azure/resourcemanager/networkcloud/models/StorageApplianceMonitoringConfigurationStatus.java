@@ -20,12 +20,12 @@ public final class StorageApplianceMonitoringConfigurationStatus
     /*
      * The log level for the monitoring configuration status of the storage appliance.
      */
-    private StorageApplianceMetricsConfigurationStatusLogLevel logLevel;
+    private StorageApplianceMonitoringConfigurationStatusLogLevel logLevel;
 
     /*
      * The metrics level for the monitoring configuration status of the storage appliance.
      */
-    private StorageApplianceMetricsConfigurationStatusMetricsLevel metricsLevel;
+    private StorageApplianceMonitoringConfigurationStatusMetricsLevel metricsLevel;
 
     /**
      * Creates an instance of StorageApplianceMonitoringConfigurationStatus class.
@@ -38,7 +38,7 @@ public final class StorageApplianceMonitoringConfigurationStatus
      * 
      * @return the logLevel value.
      */
-    public StorageApplianceMetricsConfigurationStatusLogLevel logLevel() {
+    public StorageApplianceMonitoringConfigurationStatusLogLevel logLevel() {
         return this.logLevel;
     }
 
@@ -48,7 +48,7 @@ public final class StorageApplianceMonitoringConfigurationStatus
      * 
      * @return the metricsLevel value.
      */
-    public StorageApplianceMetricsConfigurationStatusMetricsLevel metricsLevel() {
+    public StorageApplianceMonitoringConfigurationStatusMetricsLevel metricsLevel() {
         return this.metricsLevel;
     }
 
@@ -81,10 +81,10 @@ public final class StorageApplianceMonitoringConfigurationStatus
 
                 if ("logLevel".equals(fieldName)) {
                     deserializedStorageApplianceMonitoringConfigurationStatus.logLevel
-                        = StorageApplianceMetricsConfigurationStatusLogLevel.fromString(reader.getString());
+                        = StorageApplianceMonitoringConfigurationStatusLogLevel.fromString(reader.getString());
                 } else if ("metricsLevel".equals(fieldName)) {
                     deserializedStorageApplianceMonitoringConfigurationStatus.metricsLevel
-                        = StorageApplianceMetricsConfigurationStatusMetricsLevel.fromString(reader.getString());
+                        = StorageApplianceMonitoringConfigurationStatusMetricsLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
