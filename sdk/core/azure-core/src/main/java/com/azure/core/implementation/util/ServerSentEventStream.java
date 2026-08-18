@@ -442,6 +442,9 @@ public final class ServerSentEventStream {
                 if (sourceDone) {
                     Throwable failure = error;
                     if (failure != null) {
+                        if (!frames.isEmpty() && requested.get() > 0) {
+                            continue;
+                        }
                         signalError(failure);
                         return;
                     }

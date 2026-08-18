@@ -537,6 +537,67 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
+    public void decodeHonorsReentrantDemandBeforeSynchronousBodyFailure() {
+        IOException failure = new IOException("connection closed");
+        Flux<ByteBuffer> source = Flux.from(subscriber -> subscriber.onSubscribe(new Subscription() {
+            private boolean signalled;
+
+            @Override
+            public void request(long count) {
+                if (!signalled) {
+                    signalled = true;
+                    subscriber.onNext(ByteBuffer.wrap("data: one\n\ndata: two\n\n".getBytes(StandardCharsets.UTF_8)));
+                    subscriber.onError(failure);
+                }
+            }
+
+            @Override
+            public void cancel() {
+            }
+        }));
+        List<String> events = new ArrayList<>();
+        AtomicReference<Throwable> error = new AtomicReference<>();
+
+        ServerSentEventStream.decode(BinaryData.fromFlux(source, null, false).block(), (event, data) -> data)
+            .subscribe(new CoreSubscriber<ServerSentEvent<String>>() {
+                private Subscription subscription;
+
+                @Override
+                public void onSubscribe(Subscription subscription) {
+                    this.subscription = subscription;
+                    subscription.request(1);
+                }
+
+                @Override
+                public void onNext(ServerSentEvent<String> event) {
+                    events.add(event.getData());
+                    if (events.size() == 1) {
+                        subscription.request(1);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    error.set(throwable);
+                }
+
+                @Override
+                public void onComplete() {
+                }
+
+                @Override
+                public Context currentContext() {
+                    return Context.empty();
+                }
+            });
+
+        assertEquals(2, events.size());
+        assertEquals("one", events.get(0));
+        assertEquals("two", events.get(1));
+        assertSame(failure, error.get());
+    }
+
+    @Test
     public void toFluxPropagatesBodyFailurePublishedFromAnotherThread() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
