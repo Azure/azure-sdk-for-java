@@ -187,22 +187,6 @@ public final class BuilderHelper {
             .build();
     }
 
-    /**
-     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This pipeline contains
-     * all pre-auth policies plus the bearer token policy, but no session policy.
-     */
-    private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient,
-        ClientOptions clientOptions) {
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
-        bearerPolicies.add(bearerPolicy);
-        return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(clientOptions)
-            .tracer(createTracer(clientOptions))
-            .build();
-    }
-
     private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
         StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient, ClientOptions clientOptions,
         String endpoint, BlobServiceVersion serviceVersion, String accountName) {
@@ -252,8 +236,8 @@ public final class BuilderHelper {
      * Validates that the client is properly configured to use https.
      *
      * @param objectToCheck The object to check for.
-     * @param objectName    The name of the object.
-     * @param endpoint      The endpoint for the client.
+     * @param objectName The name of the object.
+     * @param endpoint The endpoint for the client.
      */
     public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
         if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
@@ -304,4 +288,21 @@ public final class BuilderHelper {
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
+
+    /**
+     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This pipeline contains
+     * all pre-auth policies plus the bearer token policy, but no session policy.
+     */
+    private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient,
+        ClientOptions clientOptions) {
+        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
+        bearerPolicies.add(bearerPolicy);
+        return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
+            .build();
+    }
+
 }
