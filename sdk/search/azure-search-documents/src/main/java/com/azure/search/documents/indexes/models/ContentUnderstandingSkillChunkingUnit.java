@@ -49,10 +49,4 @@ public final class ContentUnderstandingSkillChunkingUnit
     public static Collection<ContentUnderstandingSkillChunkingUnit> values() {
         return values(ContentUnderstandingSkillChunkingUnit.class);
     }
-
-    /**
-     * Specifies chunk by tokens.
-     */
-    @Generated
-    public static final ContentUnderstandingSkillChunkingUnit TOKENS = fromString("tokens");
 }
