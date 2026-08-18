@@ -82,10 +82,10 @@ public final class HttpUtils {
     }
 
     /**
-     * Determines whether an Accept header contains an enabled {@code text/event-stream} media range.
+     * Determines whether an Accept header contains a {@code text/event-stream} media range.
      *
      * @param headerValue The header value.
-     * @return Whether the header contains an enabled {@code text/event-stream} media range.
+     * @return Whether the header contains a {@code text/event-stream} media range.
      */
     public static boolean acceptsTextEventStream(String headerValue) {
         if (headerValue == null) {
@@ -94,9 +94,7 @@ public final class HttpUtils {
 
         for (String value : splitHeaderValue(headerValue, ',')) {
             List<String> mediaRange = splitHeaderValue(value, ';');
-            if (!mediaRange.isEmpty()
-                && TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange.get(0).trim())
-                && hasPositiveQuality(mediaRange)) {
+            if (!mediaRange.isEmpty() && TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange.get(0).trim())) {
                 return true;
             }
         }
@@ -126,34 +124,6 @@ public final class HttpUtils {
         return true;
     }
 
-    private static boolean hasPositiveQuality(List<String> mediaRange) {
-        boolean qualityFound = false;
-        for (int i = 1; i < mediaRange.size(); i++) {
-            String parameter = mediaRange.get(i).trim();
-            int equalsIndex = parameter.indexOf('=');
-            if (equalsIndex > 0 && "q".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())) {
-                if (qualityFound
-                    || !parameter.regionMatches(true, 0, "q=", 0, 2)
-                    || !isValidPositiveQuality(parameter.substring(2))) {
-                    return false;
-                }
-                qualityFound = true;
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean isValidPositiveQuality(String quality) {
-        return quality.matches("0(?:\\.[0-9]{0,3})?|1(?:\\.0{0,3})?") && !quality.matches("0(?:\\.0{0,3})?");
-    }
-
-    private static String unquote(String value) {
-        return value.length() > 1 && value.charAt(0) == '"' && value.charAt(value.length() - 1) == '"'
-            ? value.substring(1, value.length() - 1)
-            : value;
-    }
-
     private static List<String> splitHeaderValue(String value, char delimiter) {
         List<String> segments = new ArrayList<>();
         int start = 0;
@@ -174,7 +144,7 @@ public final class HttpUtils {
             }
         }
 
-        if (quoted || escaped) {
+        if (quoted) {
             return Collections.emptyList();
         }
 

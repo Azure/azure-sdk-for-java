@@ -10,23 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HttpUtilsTests {
     @Test
-    public void acceptsTextEventStreamIgnoresDisabledMediaRange() {
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=0"));
-        assertTrue(HttpUtils.acceptsTextEventStream("application/json, text/event-stream;q=0.5"));
-    }
-
-    @Test
-    public void acceptsTextEventStreamRequiresValidPositiveQuality() {
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream;q=0.001"));
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream;q=1.000"));
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream;q=1."));
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=0.000"));
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=1.001"));
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=0.0000"));
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q=invalid"));
-        assertFalse(HttpUtils.acceptsTextEventStream("text/event-stream;q = 0.5"));
+    public void acceptsTextEventStreamIgnoresParameters() {
+        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream;q=0"));
+        assertTrue(HttpUtils.acceptsTextEventStream("application/json, text/event-stream;q=invalid"));
         assertFalse(HttpUtils.acceptsTextEventStream("application/json; note=\"text/event-stream, q=1\""));
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream; note=\"x,y;q=0.5\"; q=0.5"));
+        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream; note=\"x,y;q=0.5\""));
     }
 
     @Test
