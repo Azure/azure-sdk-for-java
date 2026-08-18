@@ -14,8 +14,6 @@ public class JsonMergePatchHelper {
 
     public interface TextBlocklistAccessor {
         TextBlocklist prepareModelForJsonMergePatch(TextBlocklist textBlocklist, boolean jsonMergePatchEnabled);
-
-        boolean isJsonMergePatch(TextBlocklist textBlocklist);
     }
 
     public static void setTextBlocklistAccessor(TextBlocklistAccessor accessor) {
