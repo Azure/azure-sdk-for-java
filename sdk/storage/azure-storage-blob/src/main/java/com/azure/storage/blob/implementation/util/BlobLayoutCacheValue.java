@@ -4,8 +4,10 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.models.BlobLayoutRange;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +29,21 @@ import java.util.List;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringValue {
+    private static final Duration REFRESH_BUFFER = Duration.ofSeconds(30);
+
     private final List<BlobLayoutRange> ranges;
     private final OffsetDateTime expiresOn;
+    private final OffsetDateTime refreshOn;
+
+    /**
+     * Creates a new {@link BlobLayoutCacheValue} with the service layout lifetime.
+     *
+     * @param ranges The layout ranges, or an empty list if the service returned no layout, or {@code null} if
+     * {@code getLayout} failed.
+     */
+    public BlobLayoutCacheValue(List<BlobLayoutRange> ranges) {
+        this(ranges, OffsetDateTime.now().plus(Constants.DEFAULT_CACHE_LIFETIME));
+    }
 
     /**
      * Creates a new {@link BlobLayoutCacheValue}.
@@ -40,6 +55,7 @@ public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringV
     public BlobLayoutCacheValue(List<BlobLayoutRange> ranges, OffsetDateTime expiresOn) {
         this.ranges = ranges == null ? null : Collections.unmodifiableList(ranges);
         this.expiresOn = expiresOn;
+        this.refreshOn = expiresOn.minus(REFRESH_BUFFER);
     }
 
     /**
@@ -67,5 +83,13 @@ public final class BlobLayoutCacheValue implements AutoRefreshingCache.ExpiringV
     @Override
     public OffsetDateTime getExpiration() {
         return expiresOn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public OffsetDateTime getRefreshOn() {
+        return refreshOn;
     }
 }

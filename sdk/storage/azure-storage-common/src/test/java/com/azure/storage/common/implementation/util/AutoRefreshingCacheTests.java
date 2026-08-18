@@ -92,26 +92,60 @@ public class AutoRefreshingCacheTests {
         verify(provider, never()).createAsync();
     }
 
+    @Test
+    public void refreshesAtValueSpecifiedRefreshTime() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+
+        OffsetDateTime expiration = now(clock).plus(VALUE_LIFETIME);
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration, expiration.minusSeconds(30)));
+        when(provider.createAsync())
+            .thenReturn(Mono.just(value(SECOND_VALUE, expiration.plus(VALUE_LIFETIME), expiration)));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        clock.advance(VALUE_LIFETIME.minusSeconds(31));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, never()).createAsync();
+
+        clock.advance(Duration.ofSeconds(1));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+    }
+
     private static OffsetDateTime now(Clock clock) {
         return OffsetDateTime.now(clock);
     }
 
     private static TestExpiringValue value(String value, OffsetDateTime expiration) {
-        return new TestExpiringValue(value, expiration);
+        return new TestExpiringValue(value, expiration, null);
+    }
+
+    private static TestExpiringValue value(String value, OffsetDateTime expiration, OffsetDateTime refreshOn) {
+        return new TestExpiringValue(value, expiration, refreshOn);
     }
 
     private static final class TestExpiringValue implements AutoRefreshingCache.ExpiringValue {
         private final String value;
         private final OffsetDateTime expiration;
+        private final OffsetDateTime refreshOn;
 
-        private TestExpiringValue(String value, OffsetDateTime expiration) {
+        private TestExpiringValue(String value, OffsetDateTime expiration, OffsetDateTime refreshOn) {
             this.value = value;
             this.expiration = expiration;
+            this.refreshOn = refreshOn;
         }
 
         @Override
         public OffsetDateTime getExpiration() {
             return expiration;
+        }
+
+        @Override
+        public OffsetDateTime getRefreshOn() {
+            return refreshOn;
         }
 
         private String getValue() {

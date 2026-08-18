@@ -11,12 +11,11 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache.ExpiringValue;
 
 /**
  * Cache for expiring storage values.
  */
-public final class AutoRefreshingCache<T extends ExpiringValue> {
+public final class AutoRefreshingCache<T extends AutoRefreshingCache.ExpiringValue> {
     public interface ValueProvider<T extends ExpiringValue> {
         Mono<T> createAsync();
 
@@ -25,6 +24,15 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
 
     public interface ExpiringValue {
         OffsetDateTime getExpiration();
+
+        /**
+         * Gets the time at which the value should be refreshed.
+         *
+         * @return The refresh time, or {@code null} to use the cache's default jittered refresh time.
+         */
+        default OffsetDateTime getRefreshOn() {
+            return null;
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
@@ -161,7 +169,9 @@ public final class AutoRefreshingCache<T extends ExpiringValue> {
 
     private void setActiveValue(T newValue) {
         value = newValue;
-        nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), newValue.getExpiration());
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        OffsetDateTime refreshOn = newValue.getRefreshOn();
+        nextRefreshTime = refreshOn == null ? computeRefreshTime(now, newValue.getExpiration()) : refreshOn;
         refreshing = false;
     }
 

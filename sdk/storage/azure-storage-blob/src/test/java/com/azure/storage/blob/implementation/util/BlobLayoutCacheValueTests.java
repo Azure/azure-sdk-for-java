@@ -7,6 +7,7 @@ import com.azure.core.http.HttpRange;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -53,5 +54,14 @@ public class BlobLayoutCacheValueTests {
 
         assertThrows(UnsupportedOperationException.class,
             () -> value.getRanges().add(new BlobLayoutRange(new HttpRange(1000, 999L), "https://host-b:443")));
+    }
+
+    @Test
+    public void refreshesThirtySecondsBeforeExpiration() {
+        OffsetDateTime expiresOn = OffsetDateTime.now().plusMinutes(5);
+
+        BlobLayoutCacheValue value = new BlobLayoutCacheValue(Collections.emptyList(), expiresOn);
+
+        assertEquals(expiresOn.minus(Duration.ofSeconds(30)), value.getRefreshOn());
     }
 }

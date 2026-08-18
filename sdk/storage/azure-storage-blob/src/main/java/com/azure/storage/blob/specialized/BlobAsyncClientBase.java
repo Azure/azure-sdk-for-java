@@ -1926,10 +1926,10 @@ public class BlobAsyncClientBase {
                     ? Collections.<BlobLayoutRange>emptyList()
                     : layoutInfo.getRanges())
                 .collectList()
-                .map(ranges -> new BlobLayoutCacheValue(ranges, OffsetDateTime.now().plusMinutes(5)))
+                .map(BlobLayoutCacheValue::new)
                 .onErrorResume(BlobStorageException.class, exception -> {
                     LOGGER.verbose("Failed to retrieve blob layout for data locality.", exception);
-                    return Mono.just(new BlobLayoutCacheValue(null, OffsetDateTime.now().plusMinutes(5)));
+                    return Mono.just(new BlobLayoutCacheValue(null));
                 });
     }
 
