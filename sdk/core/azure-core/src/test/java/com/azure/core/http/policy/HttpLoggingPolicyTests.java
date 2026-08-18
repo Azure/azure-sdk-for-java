@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -59,6 +60,7 @@ import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.createUrl;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -191,6 +193,32 @@ public class HttpLoggingPolicyTests {
 
         HttpLogMessage expectedRequest = HttpLogMessage.request(HttpMethod.POST, url, data);
         expectedRequest.assertEqual(messages.get(0), logOptions, LogLevel.INFORMATIONAL);
+    }
+
+    @Test
+    public void textEventStreamRequestBodiesAreNotLogged() {
+        byte[] data = "request event data".getBytes(StandardCharsets.UTF_8);
+        AtomicInteger requestCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(request -> FluxUtil.collectBytesInByteBufferStream(request.getBody()).doOnSuccess(bytes -> {
+                assertArraysEqual(data, bytes);
+                requestCount.incrementAndGet();
+            }).then(Mono.empty()))
+            .build();
+
+        HttpRequest asyncRequest = new HttpRequest(HttpMethod.POST, "https://test.com/async")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "Text/Event-Stream; charset=utf-8")
+            .setBody(BinaryData.fromBytes(data));
+        StepVerifier.create(pipeline.send(asyncRequest)).verifyComplete();
+
+        HttpRequest syncRequest = new HttpRequest(HttpMethod.POST, "https://test.com/sync")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "Text/Event-Stream; charset=utf-8")
+            .setBody(BinaryData.fromBytes(data));
+        pipeline.sendSync(syncRequest, Context.NONE);
+
+        assertEquals(2, requestCount.get());
+        assertFalse(convertOutputStreamToString(logCaptureStream).contains(new String(data, StandardCharsets.UTF_8)));
     }
 
     /**
