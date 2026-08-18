@@ -39,6 +39,11 @@ public enum ToolboxToolType {
     OPENAPI("openapi"),
 
     /**
+     * Enum value a2a.
+     */
+    A2A("a2a"),
+
+    /**
      * Enum value a2a_preview.
      */
     A2A_PREVIEW("a2a_preview"),
