@@ -33,12 +33,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
      */
     private VMDiskSecurityProfile securityProfile;
 
-    /*
-     * Specifies additional properties for the managed disk that can be set at the time of implicit creation of the
-     * disk. This property is not captured for Restore Points.
-     */
-    private AdditionalDiskProperties additionalDiskProperties;
-
     /**
      * Creates an instance of VirtualMachineScaleSetManagedDiskParameters class.
      */
@@ -111,29 +105,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
     }
 
     /**
-     * Get the additionalDiskProperties property: Specifies additional properties for the managed disk that can be set
-     * at the time of implicit creation of the disk. This property is not captured for Restore Points.
-     * 
-     * @return the additionalDiskProperties value.
-     */
-    public AdditionalDiskProperties additionalDiskProperties() {
-        return this.additionalDiskProperties;
-    }
-
-    /**
-     * Set the additionalDiskProperties property: Specifies additional properties for the managed disk that can be set
-     * at the time of implicit creation of the disk. This property is not captured for Restore Points.
-     * 
-     * @param additionalDiskProperties the additionalDiskProperties value to set.
-     * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
-     */
-    public VirtualMachineScaleSetManagedDiskParameters
-        withAdditionalDiskProperties(AdditionalDiskProperties additionalDiskProperties) {
-        this.additionalDiskProperties = additionalDiskProperties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,9 +115,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
         }
         if (securityProfile() != null) {
             securityProfile().validate();
-        }
-        if (additionalDiskProperties() != null) {
-            additionalDiskProperties().validate();
         }
     }
 
@@ -160,7 +128,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
             this.storageAccountType == null ? null : this.storageAccountType.toString());
         jsonWriter.writeJsonField("diskEncryptionSet", this.diskEncryptionSet);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
-        jsonWriter.writeJsonField("additionalDiskProperties", this.additionalDiskProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,9 +156,6 @@ public final class VirtualMachineScaleSetManagedDiskParameters
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetManagedDiskParameters.securityProfile
                         = VMDiskSecurityProfile.fromJson(reader);
-                } else if ("additionalDiskProperties".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetManagedDiskParameters.additionalDiskProperties
-                        = AdditionalDiskProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

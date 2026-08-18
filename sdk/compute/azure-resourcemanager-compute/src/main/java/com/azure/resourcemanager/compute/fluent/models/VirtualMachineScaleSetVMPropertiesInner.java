@@ -12,7 +12,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
-import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.InterconnectBlockProfile;
@@ -154,13 +153,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner
      * Specifies the Interconnect Block related details of a Scale Set VM instance. Minimum api-version: 2026-03-01.
      */
     private InterconnectBlockProfile interconnectBlockProfile;
-
-    /*
-     * Specifies information about the capacity reservation that is used to allocate the virtual machine scale set VM
-     * instance. The capacity reservation group is inherited from the parent virtual machine scale set and cannot be
-     * changed on the individual scale set VM instance. Minimum api-version: 2026-04-01.
-     */
-    private CapacityReservationProfile capacityReservation;
 
     /**
      * Creates an instance of VirtualMachineScaleSetVMPropertiesInner class.
@@ -559,33 +551,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner
     }
 
     /**
-     * Get the capacityReservation property: Specifies information about the capacity reservation that is used to
-     * allocate the virtual machine scale set VM instance. The capacity reservation group is inherited from the parent
-     * virtual machine scale set and cannot be changed on the individual scale set VM instance. Minimum api-version:
-     * 2026-04-01.
-     * 
-     * @return the capacityReservation value.
-     */
-    public CapacityReservationProfile capacityReservation() {
-        return this.capacityReservation;
-    }
-
-    /**
-     * Set the capacityReservation property: Specifies information about the capacity reservation that is used to
-     * allocate the virtual machine scale set VM instance. The capacity reservation group is inherited from the parent
-     * virtual machine scale set and cannot be changed on the individual scale set VM instance. Minimum api-version:
-     * 2026-04-01.
-     * 
-     * @param capacityReservation the capacityReservation value to set.
-     * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
-     */
-    public VirtualMachineScaleSetVMPropertiesInner
-        withCapacityReservation(CapacityReservationProfile capacityReservation) {
-        this.capacityReservation = capacityReservation;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -624,9 +589,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner
         if (interconnectBlockProfile() != null) {
             interconnectBlockProfile().validate();
         }
-        if (capacityReservation() != null) {
-            capacityReservation().validate();
-        }
     }
 
     /**
@@ -650,7 +612,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner
         jsonWriter.writeJsonField("protectionPolicy", this.protectionPolicy);
         jsonWriter.writeStringField("userData", this.userData);
         jsonWriter.writeJsonField("interconnectBlockProfile", this.interconnectBlockProfile);
-        jsonWriter.writeJsonField("capacityReservation", this.capacityReservation);
         return jsonWriter.writeEndObject();
     }
 
@@ -725,9 +686,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner
                 } else if ("interconnectBlockProfile".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMPropertiesInner.interconnectBlockProfile
                         = InterconnectBlockProfile.fromJson(reader);
-                } else if ("capacityReservation".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetVMPropertiesInner.capacityReservation
-                        = CapacityReservationProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

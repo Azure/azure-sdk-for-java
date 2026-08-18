@@ -23,7 +23,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
-import com.azure.resourcemanager.compute.models.ListVersionsExpandOptions;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -86,8 +85,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("publisherName") String publisherName,
             @PathParam("type") String type, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby, @QueryParam("$expand") ListVersionsExpandOptions expand,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$orderby") String orderby, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -125,7 +123,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (version == null) {
             return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -169,7 +167,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (version == null) {
             return Mono.error(new IllegalArgumentException("Parameter version is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -259,7 +257,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listTypes(this.client.getEndpoint(), apiVersion,
@@ -296,7 +294,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (publisherName == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listTypes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
@@ -359,8 +357,6 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @param filter The filter to apply on the operation.
      * @param top The top parameter.
      * @param orderby The orderby parameter.
-     * @param expand Expand the response to include additional read-only metadata. Allowed values: `properties` —
-     * returns extended metadata (`releaseCategory`, `urgencyLevel`, `runProfile`).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,8 +365,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(String location,
-        String publisherName, String type, String filter, Integer top, String orderby,
-        ListVersionsExpandOptions expand) {
+        String publisherName, String type, String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -388,59 +383,12 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (type == null) {
             return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    location, publisherName, type, filter, top, orderby, expand, accept, context))
+            .withContext(context -> service.listVersions(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), location, publisherName, type, filter, top, orderby, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a list of virtual machine extension image versions.
-     * 
-     * @param location The name of the Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param filter The filter to apply on the operation.
-     * @param top The top parameter.
-     * @param orderby The orderby parameter.
-     * @param expand Expand the response to include additional read-only metadata. Allowed values: `properties` —
-     * returns extended metadata (`releaseCategory`, `urgencyLevel`, `runProfile`).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(String location,
-        String publisherName, String type, String filter, Integer top, String orderby, ListVersionsExpandOptions expand,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
-        }
-        final String apiVersion = "2026-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
-            publisherName, type, filter, top, orderby, expand, accept, context);
     }
 
     /**
@@ -479,57 +427,11 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         if (type == null) {
             return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
-        final ListVersionsExpandOptions expand = null;
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location,
-            publisherName, type, filter, top, orderby, expand, accept, context);
-    }
-
-    /**
-     * Gets a list of virtual machine extension image versions.
-     * 
-     * @param location The name of the Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param filter The filter to apply on the operation.
-     * @param top The top parameter.
-     * @param orderby The orderby parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(String location,
-        String publisherName, String type, String filter, Integer top, String orderby) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (publisherName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter publisherName is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
-        }
-        final String apiVersion = "2026-04-01";
-        final ListVersionsExpandOptions expand = null;
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    location, publisherName, type, filter, top, orderby, expand, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+            publisherName, type, filter, top, orderby, accept, context);
     }
 
     /**
@@ -549,34 +451,8 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        final ListVersionsExpandOptions expand = null;
-        return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby, expand)
+        return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a list of virtual machine extension image versions.
-     * 
-     * @param location The name of the Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param filter The filter to apply on the operation.
-     * @param top The top parameter.
-     * @param orderby The orderby parameter.
-     * @param expand Expand the response to include additional read-only metadata. Allowed values: `properties` —
-     * returns extended metadata (`releaseCategory`, `urgencyLevel`, `runProfile`).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(String location,
-        String publisherName, String type, String filter, Integer top, String orderby, ListVersionsExpandOptions expand,
-        Context context) {
-        return listVersionsWithResponseAsync(location, publisherName, type, filter, top, orderby, expand, context)
-            .block();
     }
 
     /**
@@ -616,8 +492,6 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        final ListVersionsExpandOptions expand = null;
-        return listVersionsWithResponse(location, publisherName, type, filter, top, orderby, expand, Context.NONE)
-            .getValue();
+        return listVersionsWithResponse(location, publisherName, type, filter, top, orderby, Context.NONE).getValue();
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class InterconnectBlocksListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/interconnectBlockExamples/InterconnectBlocks_ListBySubscription.json
+     * x-ms-original-file: 2026-03-01/interconnectBlockExamples/InterconnectBlocks_ListBySubscription.json
      */
     /**
      * Sample code: List Interconnect Blocks in a subscription.

@@ -40,12 +40,6 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
      */
     private DiskControllerTypes diskControllerType;
 
-    /*
-     * Specifies the Disk API version used when applying additionalDiskProperties to managed disks. The value must be in
-     * the format YYYY-MM-DD (e.g., "2026-03-02").
-     */
-    private DiskApiVersion diskApiVersion;
-
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateStorageProfile class.
      */
@@ -137,28 +131,6 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
     }
 
     /**
-     * Get the diskApiVersion property: Specifies the Disk API version used when applying additionalDiskProperties to
-     * managed disks. The value must be in the format YYYY-MM-DD (e.g., "2026-03-02").
-     * 
-     * @return the diskApiVersion value.
-     */
-    public DiskApiVersion diskApiVersion() {
-        return this.diskApiVersion;
-    }
-
-    /**
-     * Set the diskApiVersion property: Specifies the Disk API version used when applying additionalDiskProperties to
-     * managed disks. The value must be in the format YYYY-MM-DD (e.g., "2026-03-02").
-     * 
-     * @param diskApiVersion the diskApiVersion value to set.
-     * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
-     */
-    public VirtualMachineScaleSetUpdateStorageProfile withDiskApiVersion(DiskApiVersion diskApiVersion) {
-        this.diskApiVersion = diskApiVersion;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -186,8 +158,6 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
         jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("diskControllerType",
             this.diskControllerType == null ? null : this.diskControllerType.toString());
-        jsonWriter.writeStringField("diskApiVersion",
-            this.diskApiVersion == null ? null : this.diskApiVersion.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -220,9 +190,6 @@ public final class VirtualMachineScaleSetUpdateStorageProfile
                 } else if ("diskControllerType".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetUpdateStorageProfile.diskControllerType
                         = DiskControllerTypes.fromString(reader.getString());
-                } else if ("diskApiVersion".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetUpdateStorageProfile.diskApiVersion
-                        = DiskApiVersion.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

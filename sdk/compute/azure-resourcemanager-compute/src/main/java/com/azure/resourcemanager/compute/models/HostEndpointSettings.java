@@ -31,12 +31,6 @@ public final class HostEndpointSettings implements JsonSerializable<HostEndpoint
      */
     private String inVMAccessControlProfileReferenceId;
 
-    /*
-     * When set to true, instructs the GuestProxyAgent inside the VM to load additional access control rules defined in
-     * a local file on the VM.
-     */
-    private Boolean useLocalFileRules;
-
     /**
      * Creates an instance of HostEndpointSettings class.
      */
@@ -94,28 +88,6 @@ public final class HostEndpointSettings implements JsonSerializable<HostEndpoint
     }
 
     /**
-     * Get the useLocalFileRules property: When set to true, instructs the GuestProxyAgent inside the VM to load
-     * additional access control rules defined in a local file on the VM.
-     * 
-     * @return the useLocalFileRules value.
-     */
-    public Boolean useLocalFileRules() {
-        return this.useLocalFileRules;
-    }
-
-    /**
-     * Set the useLocalFileRules property: When set to true, instructs the GuestProxyAgent inside the VM to load
-     * additional access control rules defined in a local file on the VM.
-     * 
-     * @param useLocalFileRules the useLocalFileRules value to set.
-     * @return the HostEndpointSettings object itself.
-     */
-    public HostEndpointSettings withUseLocalFileRules(Boolean useLocalFileRules) {
-        this.useLocalFileRules = useLocalFileRules;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -131,7 +103,6 @@ public final class HostEndpointSettings implements JsonSerializable<HostEndpoint
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
         jsonWriter.writeStringField("inVMAccessControlProfileReferenceId", this.inVMAccessControlProfileReferenceId);
-        jsonWriter.writeBooleanField("useLocalFileRules", this.useLocalFileRules);
         return jsonWriter.writeEndObject();
     }
 
@@ -154,8 +125,6 @@ public final class HostEndpointSettings implements JsonSerializable<HostEndpoint
                     deserializedHostEndpointSettings.mode = Modes.fromString(reader.getString());
                 } else if ("inVMAccessControlProfileReferenceId".equals(fieldName)) {
                     deserializedHostEndpointSettings.inVMAccessControlProfileReferenceId = reader.getString();
-                } else if ("useLocalFileRules".equals(fieldName)) {
-                    deserializedHostEndpointSettings.useLocalFileRules = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

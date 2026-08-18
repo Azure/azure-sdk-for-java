@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewTypes;
  */
 public final class VirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
      */
     /**
      * Sample code: Get a virtual machine with VM Size Properties.
@@ -26,37 +26,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithDeterministicProcessorMode.json
-     */
-    /**
-     * Sample code: Get a virtual machine with Deterministic Processor Mode.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        getAVirtualMachineWithDeterministicProcessorMode(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getVirtualMachines()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithOpportunisticProcessorMode.json
-     */
-    /**
-     * Sample code: Get a virtual machine with Opportunistic Processor Mode.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        getAVirtualMachineWithOpportunisticProcessorMode(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getVirtualMachines()
-            .getByResourceGroupWithResponse("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
      */
     /**
      * Sample code: Get a virtual machine placed on a dedicated host group through automatic placement.
@@ -71,7 +41,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
      */
     /**
      * Sample code: Get a virtual machine with Disk Controller Type Properties.
@@ -87,7 +57,7 @@ public final class VirtualMachinesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/virtualMachineExamples/VirtualMachine_Get.json
+     * x-ms-original-file: 2026-03-01/virtualMachineExamples/VirtualMachine_Get.json
      */
     /**
      * Sample code: Get a Virtual Machine.

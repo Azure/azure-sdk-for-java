@@ -24,14 +24,6 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
      */
     private SubResource capacityReservationGroup;
 
-    /*
-     * Specifies whether the virtual machine is explicitly opted out from being associated with any capacity
-     * reservation. When set to true, the virtual machine will not be allowed to implicitly or explicitly associate with
-     * any type of capacity reservation and will consume capacity from the publicly available capacity. Minimum
-     * api-version: 2026-04-01.
-     */
-    private Boolean disableCapacityReservationAssignment;
-
     /**
      * Creates an instance of CapacityReservationProfile class.
      */
@@ -63,33 +55,6 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
     }
 
     /**
-     * Get the disableCapacityReservationAssignment property: Specifies whether the virtual machine is explicitly opted
-     * out from being associated with any capacity reservation. When set to true, the virtual machine will not be
-     * allowed to implicitly or explicitly associate with any type of capacity reservation and will consume capacity
-     * from the publicly available capacity. Minimum api-version: 2026-04-01.
-     * 
-     * @return the disableCapacityReservationAssignment value.
-     */
-    public Boolean disableCapacityReservationAssignment() {
-        return this.disableCapacityReservationAssignment;
-    }
-
-    /**
-     * Set the disableCapacityReservationAssignment property: Specifies whether the virtual machine is explicitly opted
-     * out from being associated with any capacity reservation. When set to true, the virtual machine will not be
-     * allowed to implicitly or explicitly associate with any type of capacity reservation and will consume capacity
-     * from the publicly available capacity. Minimum api-version: 2026-04-01.
-     * 
-     * @param disableCapacityReservationAssignment the disableCapacityReservationAssignment value to set.
-     * @return the CapacityReservationProfile object itself.
-     */
-    public CapacityReservationProfile
-        withDisableCapacityReservationAssignment(Boolean disableCapacityReservationAssignment) {
-        this.disableCapacityReservationAssignment = disableCapacityReservationAssignment;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -104,7 +69,6 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("capacityReservationGroup", this.capacityReservationGroup);
-        jsonWriter.writeBooleanField("disableCapacityReservationAssignment", this.disableCapacityReservationAssignment);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,9 +89,6 @@ public final class CapacityReservationProfile implements JsonSerializable<Capaci
 
                 if ("capacityReservationGroup".equals(fieldName)) {
                     deserializedCapacityReservationProfile.capacityReservationGroup = SubResource.fromJson(reader);
-                } else if ("disableCapacityReservationAssignment".equals(fieldName)) {
-                    deserializedCapacityReservationProfile.disableCapacityReservationAssignment
-                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

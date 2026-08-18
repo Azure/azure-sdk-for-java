@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class CapacityReservationGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation group.
@@ -39,7 +39,7 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a targeted capacity reservation group.
@@ -62,7 +62,7 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a block capacity reservation group.
@@ -78,29 +78,6 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
                     .withTags(mapOf("department", "finance"))
                     .withZones(Arrays.asList("1", "2"))
                     .withReservationType(ReservationType.BLOCK),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/OpenCapacityReservationGroup_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Create or update an open capacity reservation group.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        createOrUpdateAnOpenCapacityReservationGroup(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getCapacityReservationGroups()
-            .createOrUpdateWithResponse("myResourceGroup", "openCapacityReservationGroup",
-                new CapacityReservationGroupInner().withLocation("westus")
-                    .withTags(mapOf("department", "finance"))
-                    .withZones(Arrays.asList("1", "2"))
-                    .withSharingProfile(new ResourceSharingProfile().withSubscriptionIds(
-                        Arrays.asList(new SubResource().withId("/subscriptions/{subscription-id1}"),
-                            new SubResource().withId("/subscriptions/{subscription-id2}"))))
-                    .withReservationType(ReservationType.OPEN),
                 com.azure.core.util.Context.NONE);
     }
 

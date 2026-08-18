@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.MigrateToVirtualMachineScaleSetI
 public final class AvailabilitySetsStartMigrationToVirtualMachineScaleSetSamples {
     /*
      * x-ms-original-file:
-     * 2026-04-01/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
+     * 2026-03-01/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
      */
     /**
      * Sample code: AvailabilitySet_StartMigrationToVirtualMachineScaleSet_Gen.
