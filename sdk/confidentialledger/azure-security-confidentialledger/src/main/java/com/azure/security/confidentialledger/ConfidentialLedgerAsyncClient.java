@@ -343,6 +343,14 @@ public final class ConfidentialLedgerAsyncClient {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-ccf-transaction-id</td><td>String</td><td>The transaction id at which this write will become
+     * durable.</td></tr>
+     * </table>
+     * 
      * @param entry Ledger entry.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1165,6 +1173,14 @@ public final class ConfidentialLedgerAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-ccf-transaction-id</td><td>String</td><td>The transaction id at which this write will become
+     * durable.</td></tr>
+     * </table>
      * 
      * @param functionId Identifies a user defined function.
      * @param userDefinedFunction Specify a user defined function of a Confidential Ledger.
