@@ -37,8 +37,7 @@ class DecryptorV2 extends Decryptor {
 
     /*
      * Shared across every chunk of a single download operation so that the CSEv2 nonce scheme is enforced consistently
-     * across the whole download (see CseV2NonceOrderValidator). Never null; callers that do not supply a shared
-     * validator get a fresh per-instance one.
+     * across the whole download (see CseV2NonceOrderValidator).
      */
     private final CseV2NonceOrderValidator nonceValidator;
 
@@ -58,8 +57,8 @@ class DecryptorV2 extends Decryptor {
             authenticatedRegionDataLength + TAG_LENGTH + nonceLength);
 
         /*
-         * Each CSEv2 region is encrypted under a unique, sequential nonce derived from the region's index (see
-         * EncryptorV2). Because the nonce is stored alongside the ciphertext, individual regions of otherwise
+         * Each CSEv2 region is encrypted under a unique, sequential nonce derived from the region's index.
+         * Because the nonce is stored alongside the ciphertext, individual regions of otherwise
          * untampered ciphertext can be rearranged without invalidating any single region's authentication tag,
          * silently corrupting the decrypted plaintext. The shared nonceValidator asserts that each region's nonce
          * matches the value expected for its sequential position, under a single cross-SDK nonce scheme enforced across
