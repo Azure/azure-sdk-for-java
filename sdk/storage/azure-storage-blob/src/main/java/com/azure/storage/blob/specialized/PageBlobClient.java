@@ -53,9 +53,7 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
-import com.azure.storage.blob.options.PageBlobOutputStreamOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
-import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -207,21 +205,6 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions) {
         return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, pageRange, requestConditions);
-    }
-
-    /**
-     * Creates and opens an output stream to write data to the page blob.
-     *
-     * @param options {@link PageBlobOutputStreamOptions}
-     * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @throws BlobStorageException If a storage service error occurred.
-     */
-    public BlobOutputStream getBlobOutputStream(PageBlobOutputStreamOptions options) {
-        if (options == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'options' cannot be null."));
-        }
-        return BlobOutputStream.pageBlobOutputStream(pageBlobAsyncClient, options.getPageRange(),
-            options.getRequestConditions(), options.getContentValidationAlgorithm());
     }
 
     /**
@@ -502,7 +485,7 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem uploadPages(PageRange pageRange, InputStream body) {
-        return uploadPagesWithResponse(pageRange, body, null, null, Context.NONE).getValue();
+        return uploadPagesWithResponse(pageRange, body, null, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -548,45 +531,16 @@ public final class PageBlobClient extends BlobClientBase {
      * @return The information of the uploaded pages.
      * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
-     * @deprecated Use {@link #uploadPagesWithResponse(PageRange, InputStream, PageBlobUploadPagesOptions, Duration,
-     * Context)}. The optional parameters are now carried by {@link PageBlobUploadPagesOptions}, which is also
-     * forward-compatible with future optional settings.
      */
-    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
-        return uploadPagesWithResponse(pageRange, body,
-            new PageBlobUploadPagesOptions().setContentMd5(contentMd5).setRequestConditions(pageBlobRequestConditions),
-            timeout, context);
-    }
-
-    /**
-     * Writes one or more pages to the page blob with options.
-     *
-     * @param pageRange A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start
-     * offset must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
-     * are 0-511, 512-1023, etc.
-     * @param body The data to upload. The data must be markable. This is in order to support retries. If the data is
-     * not markable, consider using {@link #getBlobOutputStream(PageRange)} and writing to the returned OutputStream.
-     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
-     * @param options {@link PageBlobUploadPagesOptions}
-     * @param timeout An optional timeout value.
-     * @param context Additional context.
-     * @return The information of the uploaded pages.
-     * @throws UnexpectedLengthException If the length of the data read from the provided stream does not match the
-     * expected length based on the specified page range.
-     * @throws NullPointerException if {@code pageRange} or {@code body} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body,
-        PageBlobUploadPagesOptions options, Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("pageRange", pageRange);
-        StorageImplUtils.assertNotNull("body", body);
+        Objects.requireNonNull(body, "'body' cannot be null.");
         final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(body, length, PAGE_BYTES, true);
-        Mono<Response<PageBlobItem>> response
-            = pageBlobAsyncClient.uploadPagesWithResponseInternal(pageRange, fbb, options, context);
+
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, fbb, contentMd5,
+            pageBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

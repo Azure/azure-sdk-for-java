@@ -171,23 +171,15 @@ public class LargeBlobTests extends BlobTestBase {
     public void uploadLargeFile() throws IOException {
         long tailSize = Constants.MB;
         File file = getRandomLargeFile(LARGE_BLOCK_SIZE + tailSize);
-        try {
-            ParallelTransferOptions parallelTransferOptions
-                = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
+        ParallelTransferOptions parallelTransferOptions
+            = new ParallelTransferOptions().setBlockSizeLong(LARGE_BLOCK_SIZE);
 
-            blobClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions, null, null, null, null, null);
-            BlockList blockList = blobClient.getBlockBlobClient().listBlocks(BlockListType.COMMITTED);
+        blobClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions, null, null, null, null, null);
+        BlockList blockList = blobClient.getBlockBlobClient().listBlocks(BlockListType.COMMITTED);
 
-            assertEquals(2, blockList.getCommittedBlocks().size());
-            assertEquals(LARGE_BLOCK_SIZE, blockList.getCommittedBlocks().get(0).getSizeLong());
-            assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
-        } finally {
-            // Delete the ~2.5 GiB source eagerly instead of waiting for deleteOnExit() so it doesn't occupy agent
-            // disk for the remainder of the module's test JVM.
-            if (!file.delete()) {
-                file.deleteOnExit();
-            }
-        }
+        assertEquals(2, blockList.getCommittedBlocks().size());
+        assertEquals(LARGE_BLOCK_SIZE, blockList.getCommittedBlocks().get(0).getSizeLong());
+        assertEquals(tailSize, blockList.getCommittedBlocks().get(1).getSizeLong());
     }
 
     private InputStream createLargeInputStream(long size) {

@@ -6,7 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.common.ContentValidationAlgorithm;
 
 import java.nio.channels.SeekableByteChannel;
 
@@ -19,7 +18,6 @@ public final class BlobSeekableByteChannelReadOptions {
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
-    private ContentValidationAlgorithm contentValidationAlgorithm;
 
     /**
      * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
@@ -108,29 +106,6 @@ public final class BlobSeekableByteChannelReadOptions {
      */
     public BlobSeekableByteChannelReadOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
-        return this;
-    }
-
-    /**
-     * Gets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @return The transfer validation checksum algorithm.
-     */
-    public ContentValidationAlgorithm getContentValidationAlgorithm() {
-        return contentValidationAlgorithm;
-    }
-
-    /**
-     * Sets the algorithm to use for transfer content validation on the response. See {@link ContentValidationAlgorithm}
-     * for more details.
-     *
-     * @param contentValidationAlgorithm The transfer validation checksum algorithm.
-     * @return The updated options.
-     */
-    public BlobSeekableByteChannelReadOptions
-        setContentValidationAlgorithm(ContentValidationAlgorithm contentValidationAlgorithm) {
-        this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
 }
