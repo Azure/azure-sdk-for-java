@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class MaintenanceConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+     * x-ms-original-file: 2026-05-01/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
      */
     /**
      * Sample code: Create/Update Maintenance Configuration with Maintenance Window.
@@ -43,24 +43,6 @@ public final class MaintenanceConfigurationsCreateOrUpdateSamples {
                         new DateSpan().withStart(LocalDate.parse("2023-02-18")).withEnd(LocalDate.parse("2023-02-25")),
                         new DateSpan().withStart(LocalDate.parse("2023-12-23"))
                             .withEnd(LocalDate.parse("2024-01-05"))))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsCreate_LinkedMaintenanceWindow.json
-     */
-    /**
-     * Sample code: Create a Linked Maintenance Configuration.
-     * 
-     * @param manager Entry point to ContainerServiceManager.
-     */
-    public static void createALinkedMaintenanceConfiguration(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
-        manager.serviceClient()
-            .getMaintenanceConfigurations()
-            .createOrUpdateWithResponse("rg1", "clustername1", "aksManagedAutoUpgradeSchedule",
-                new MaintenanceConfigurationInner().withMaintenanceWindowId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/maintenanceWindows/myMaintenanceWindow"),
                 com.azure.core.util.Context.NONE);
     }
 }
