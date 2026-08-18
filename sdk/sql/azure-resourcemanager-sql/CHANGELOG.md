@@ -1,23 +1,5 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-- Deprecated the handwritten SQL Data Sync convenience APIs because SQL Data Sync is scheduled for retirement, requires
-  SQL authentication, and doesn't support Microsoft Entra ID or managed identities. For distributed applications, use
-  `SqlDatabase.DefinitionStages.WithSourceDatabaseId.withSourceDatabase` to create a database copy. For globally
-  distributed applications, additionally use
-  `SqlDatabase.DefinitionStages.WithCreateMode.withMode(CreateMode.ONLINE_SECONDARY)` for active geo-replication. Refer
-  to the [official retirement migration guidance](https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration)
-  for more alternatives.
-
 ## 2.54.0 (2026-07-16)
 
 ### Features Added
