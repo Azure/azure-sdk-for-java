@@ -4,54 +4,31 @@
 
 package com.azure.communication.sms.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The result of a repeatable request with one of the case-insensitive values accepted or rejected.
- */
+/** Defines values for SmsSendResponseItemRepeatabilityResult. */
 public final class SmsSendResponseItemRepeatabilityResult
     extends ExpandableStringEnum<SmsSendResponseItemRepeatabilityResult> {
-    /**
-     * Static value accepted for SmsSendResponseItemRepeatabilityResult.
-     */
-    @Generated
+    /** Static value accepted for SmsSendResponseItemRepeatabilityResult. */
     public static final SmsSendResponseItemRepeatabilityResult ACCEPTED = fromString("accepted");
 
-    /**
-     * Static value rejected for SmsSendResponseItemRepeatabilityResult.
-     */
-    @Generated
+    /** Static value rejected for SmsSendResponseItemRepeatabilityResult. */
     public static final SmsSendResponseItemRepeatabilityResult REJECTED = fromString("rejected");
 
     /**
-     * Creates a new instance of SmsSendResponseItemRepeatabilityResult value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public SmsSendResponseItemRepeatabilityResult() {
-    }
-
-    /**
      * Creates or finds a SmsSendResponseItemRepeatabilityResult from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SmsSendResponseItemRepeatabilityResult.
      */
-    @Generated
+    @JsonCreator
     public static SmsSendResponseItemRepeatabilityResult fromString(String name) {
         return fromString(name, SmsSendResponseItemRepeatabilityResult.class);
     }
 
-    /**
-     * Gets known SmsSendResponseItemRepeatabilityResult values.
-     * 
-     * @return known SmsSendResponseItemRepeatabilityResult values.
-     */
-    @Generated
+    /** @return known SmsSendResponseItemRepeatabilityResult values. */
     public static Collection<SmsSendResponseItemRepeatabilityResult> values() {
         return values(SmsSendResponseItemRepeatabilityResult.class);
     }
