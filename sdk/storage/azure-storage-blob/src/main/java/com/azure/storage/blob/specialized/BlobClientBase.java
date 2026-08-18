@@ -105,6 +105,7 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 
 import reactor.core.publisher.Mono;
 
@@ -1319,6 +1320,7 @@ public class BlobClientBase {
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         options = options == null ? new BlobDownloadStreamOptions() : options;
+        context = addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1424,6 +1426,7 @@ public class BlobClientBase {
     public BlobDownloadContentResponse downloadContentWithResponse(BlobDownloadContentOptions options, Duration timeout,
         Context context) {
         options = options == null ? new BlobDownloadContentOptions() : options;
+        context = addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponseInternal(options.getRange(), options.getDownloadRetryOptions(),
                 options.getRequestConditions(), options.isRetrieveContentRangeMd5(),
@@ -1434,6 +1437,15 @@ public class BlobClientBase {
             .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
+    }
+
+    private static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
+        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+            return context;
+        }
+
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
     }
 
     /**

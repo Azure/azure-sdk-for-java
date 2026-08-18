@@ -1202,7 +1202,8 @@ public class BlobAsyncClientBase {
             BlobDownloadStreamOptions finalOptions = options == null ? new BlobDownloadStreamOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context));
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
+                addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1255,7 +1256,8 @@ public class BlobAsyncClientBase {
             BlobDownloadContentOptions finalOptions = options == null ? new BlobDownloadContentOptions() : options;
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
-                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(), context)
+                finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
+                addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1268,6 +1270,15 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         // Prevents revapi visibility increased error
         return downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context);
+    }
+
+    private static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
+        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+            return context;
+        }
+
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
