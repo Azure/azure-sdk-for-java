@@ -181,15 +181,6 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
      * Fluent interfaces to provision a RedisCache
      **************************************************************/
 
-    /**
-     * Whether authentication to Redis through access keys is enabled.
-     *
-     * @return whether authentication to Redis through access keys is enabled
-     */
-    default boolean isAccessKeyAuthenticationEnabled() {
-        throw new UnsupportedOperationException("[isAccessKeyAuthenticationEnabled] is not supported in " + getClass());
-    }
-
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
         DefinitionStages.WithCreate, DefinitionStages.WithPremiumSkuCreate {
@@ -203,21 +194,6 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
         /** A Redis Cache definition allowing resource group to be set. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
-        }
-
-        /**
-         * The stage of Redis cache definition allowing to toggle authentication through access keys.
-         */
-        interface WithAccessKeyAuthentication {
-            /**
-             * Specifies that authentication to Redis through access keys is disabled.
-             *
-             * @return next stage of the Redis cache definition
-             */
-            default WithCreate disableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException(
-                    "[disableAccessKeyAuthentication] is not supported in " + getClass());
-            }
         }
 
         /** A Redis Cache definition allowing the sku to be set. */
@@ -274,8 +250,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
          * A Redis Cache definition with sufficient inputs to create a new Redis Cache in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate>,
-            DefinitionStages.WithAccessKeyAuthentication {
+        interface WithCreate extends Creatable<RedisCache>, DefinitionWithTags<WithCreate> {
             /**
              * Enables non-ssl Redis server port (6379).
              *
@@ -433,32 +408,6 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
     /** Grouping of all the Redis Cache update stages. */
     interface UpdateStages {
-
-        /**
-         * The stage of Redis cache update allowing to toggle authentication through access keys.
-         */
-        interface WithAccessKeyAuthentication {
-            /**
-             * Specifies that authentication to Redis through access keys is disabled.
-             *
-             * @return next stage of the Redis cache update
-             */
-            default Update disableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException(
-                    "[disableAccessKeyAuthentication] is not supported in " + getClass());
-            }
-
-            /**
-             * Specifies that authentication to Redis through access keys is enabled.
-             *
-             * @return next stage of the Redis cache update
-             */
-            default Update enableAccessKeyAuthentication() {
-                throw new UnsupportedOperationException(
-                    "[enableAccessKeyAuthentication] is not supported in " + getClass());
-            }
-        }
-
         /** A Redis Cache update stage allowing to change the parameters. */
         interface WithSku {
 
@@ -591,8 +540,7 @@ public interface RedisCache extends GroupableResource<RedisManager, RedisResourc
 
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<RedisCache>, Resource.UpdateWithTags<Update>, UpdateStages.WithSku,
-        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess,
-        UpdateStages.WithAccessKeyAuthentication {
+        UpdateStages.WithNonSslPort, UpdateStages.WithRedisConfiguration, UpdateStages.WithPublicNetworkAccess {
         /**
          * The number of shards to be created on a Premium Cluster Cache.
          *
