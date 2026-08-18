@@ -6,9 +6,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.UnsupportedCharsetException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,6 +106,7 @@ public final class HttpUtils {
 
     /**
      * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.
+     * Charset parameters don't affect this determination as event streams are always decoded as UTF-8.
      *
      * @param headerValue The Content-Type header value.
      * @return Whether the header identifies a {@code text/event-stream} representation.
@@ -125,38 +123,7 @@ public final class HttpUtils {
             return false;
         }
 
-        return getTextEventStreamCharset(headerValue) != null;
-    }
-
-    /**
-     * Gets the charset declared by a {@code text/event-stream} Content-Type.
-     *
-     * @param headerValue The Content-Type header value.
-     * @return The declared charset, UTF-8 when none is declared, or null when the charset is invalid or unsupported.
-     */
-    public static Charset getTextEventStreamCharset(String headerValue) {
-        if (headerValue == null) {
-            return null;
-        }
-        List<String> mediaTypeAndParameters = splitHeaderValue(headerValue, ';');
-        Charset charset = Charset.forName("UTF-8");
-        boolean charsetFound = false;
-        for (int i = 1; i < mediaTypeAndParameters.size(); i++) {
-            String parameter = mediaTypeAndParameters.get(i).trim();
-            int equalsIndex = parameter.indexOf('=');
-            if (equalsIndex > 0 && "charset".equalsIgnoreCase(parameter.substring(0, equalsIndex).trim())) {
-                if (charsetFound) {
-                    return null;
-                }
-                try {
-                    charset = Charset.forName(unquote(parameter.substring(equalsIndex + 1).trim()));
-                    charsetFound = true;
-                } catch (IllegalCharsetNameException | UnsupportedCharsetException ignored) {
-                    return null;
-                }
-            }
-        }
-        return charset;
+        return true;
     }
 
     private static boolean hasPositiveQuality(List<String> mediaRange) {

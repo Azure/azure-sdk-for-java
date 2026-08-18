@@ -35,7 +35,7 @@ public class HttpUtilsTests {
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=\"UTF-8\""));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=iso-8859-1"));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=utf-16"));
-        assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=not-a-charset"));
+        assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=not-a-charset; charset=utf-16"));
         assertFalse(HttpUtils.isTextEventStreamContentType("application/json, text/event-stream"));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"x,y;z\""));
         assertFalse(HttpUtils.isTextEventStreamContentType("text/event-stream; note=\"unterminated"));

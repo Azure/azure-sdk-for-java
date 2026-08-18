@@ -21,7 +21,6 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
@@ -41,6 +40,9 @@ import java.util.function.Predicate;
 
 /**
  * Implementation support for parsing one server-sent event response.
+ *
+ * <p>Event streams are always decoded as UTF-8. A {@code charset} parameter in the response Content-Type doesn't
+ * select another encoding.</p>
  *
  * <p>Response-based methods require a {@link Response} that implements {@link java.io.Closeable}. They reject
  * non-closeable responses with {@link IllegalArgumentException}, as stream cleanup cannot otherwise be guaranteed.</p>
@@ -62,7 +64,7 @@ public final class ServerSentEventStream {
     public static <T> Flux<ServerSentEvent<T>> decode(BinaryData body, BiFunction<String, String, T> deserializer) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
-        return new ServerSentEventFlux<>(body.toFluxByteBuffer(), StandardCharsets.UTF_8, deserializer);
+        return new ServerSentEventFlux<>(body.toFluxByteBuffer(), deserializer);
     }
 
     /**
@@ -80,8 +82,7 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
         try {
-            processBody(body, new StreamState(), StandardCharsets.UTF_8, deserializer,
-                TerminalEventPolicy.endOnResponseCompletion(), listener);
+            processBody(body, new StreamState(), deserializer, TerminalEventPolicy.endOnResponseCompletion(), listener);
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -133,8 +134,7 @@ public final class ServerSentEventStream {
             AtomicBoolean terminalObserved = new AtomicBoolean();
             Flux<ServerSentEvent<T>> events = streamResponse.getStatusCode() == 204
                 ? Flux.empty()
-                : new ServerSentEventFlux<>(streamResponse.getBody().toFluxByteBuffer(), streamResponse.getCharset(),
-                    deserializer);
+                : new ServerSentEventFlux<>(streamResponse.getBody().toFluxByteBuffer(), deserializer);
             if (terminalPolicy.hasTerminalPredicate()) {
                 events = events.takeUntil(event -> {
                     boolean terminal = terminalPolicy.isTerminal(event);
@@ -166,7 +166,7 @@ public final class ServerSentEventStream {
 
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
             boolean terminalObserved = streamResponse.getStatusCode() != 204
-                && processBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer,
+                && processBody(streamResponse.getBody(), new StreamState(), deserializer,
                     TerminalEventPolicy.endOnResponseCompletion(), listener);
             TerminalEventPolicy.<T>endOnResponseCompletion().validateCompletion(terminalObserved);
         } catch (IOException exception) {
@@ -195,8 +195,7 @@ public final class ServerSentEventStream {
         try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
             TerminalEventPolicy<T> terminalPolicy = TerminalEventPolicy.requireTerminal(terminalEvent);
             boolean terminalObserved = streamResponse.getStatusCode() != 204
-                && processBody(streamResponse.getBody(), new StreamState(), streamResponse.getCharset(), deserializer,
-                    terminalPolicy, listener);
+                && processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalPolicy, listener);
             terminalPolicy.validateCompletion(terminalObserved);
         } catch (IOException exception) {
             listener.onError(exception);
@@ -209,10 +208,10 @@ public final class ServerSentEventStream {
         }
     }
 
-    private static <T> boolean processBody(BinaryData body, StreamState state, Charset charset,
+    private static <T> boolean processBody(BinaryData body, StreamState state,
         BiFunction<String, String, T> deserializer, TerminalEventPolicy<T> terminalPolicy,
         ServerSentEventListener<T> listener) throws IOException {
-        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state, charset);
+        ServerSentEventDecoder decoder = new ServerSentEventDecoder(state);
         byte[] readBuffer = new byte[8192];
 
         try (InputStream stream = new FluxInputStream(body.toFluxByteBuffer())) {
@@ -251,19 +250,16 @@ public final class ServerSentEventStream {
 
     private static final class ServerSentEventFlux<T> extends Flux<ServerSentEvent<T>> {
         private final Flux<ByteBuffer> source;
-        private final Charset charset;
         private final BiFunction<String, String, T> deserializer;
 
-        private ServerSentEventFlux(Flux<ByteBuffer> source, Charset charset,
-            BiFunction<String, String, T> deserializer) {
+        private ServerSentEventFlux(Flux<ByteBuffer> source, BiFunction<String, String, T> deserializer) {
             this.source = source;
-            this.charset = charset;
             this.deserializer = deserializer;
         }
 
         @Override
         public void subscribe(CoreSubscriber<? super ServerSentEvent<T>> actual) {
-            source.subscribe(new ServerSentEventSubscriber<>(actual, charset, deserializer));
+            source.subscribe(new ServerSentEventSubscriber<>(actual, deserializer));
         }
     }
 
@@ -285,10 +281,10 @@ public final class ServerSentEventStream {
         private volatile boolean done;
         private Throwable error;
 
-        private ServerSentEventSubscriber(CoreSubscriber<? super ServerSentEvent<T>> downstream, Charset charset,
+        private ServerSentEventSubscriber(CoreSubscriber<? super ServerSentEvent<T>> downstream,
             BiFunction<String, String, T> deserializer) {
             this.downstream = downstream;
-            this.decoder = new ServerSentEventDecoder(new StreamState(), charset);
+            this.decoder = new ServerSentEventDecoder(new StreamState());
             this.deserializer = deserializer;
         }
 
@@ -588,8 +584,9 @@ public final class ServerSentEventStream {
 
     private static final class ServerSentEventDecoder {
         private final StreamState state;
-        private final Charset declaredCharset;
-        private CharsetDecoder charsetDecoder;
+        private final CharsetDecoder charsetDecoder = StandardCharsets.UTF_8.newDecoder()
+            .onMalformedInput(CodingErrorAction.REPORT)
+            .onUnmappableCharacter(CodingErrorAction.REPORT);
         private ByteBuffer remainingBytes = ByteBuffer.allocate(0);
         private final StringBuilder line = new StringBuilder();
         private boolean pendingCarriageReturn;
@@ -598,9 +595,8 @@ public final class ServerSentEventStream {
         private List<String> data;
         private String comment;
 
-        private ServerSentEventDecoder(StreamState state, Charset charset) {
+        private ServerSentEventDecoder(StreamState state) {
             this.state = state;
-            this.declaredCharset = charset;
         }
 
         private List<ServerSentEventFrame> feed(ByteBuffer source) {
@@ -644,11 +640,6 @@ public final class ServerSentEventStream {
             input.put(remainingBytes.duplicate());
             input.put(source);
             input.flip();
-            if (charsetDecoder == null && !initializeDecoder(input, endOfInput)) {
-                remainingBytes = ByteBuffer.allocate(input.remaining());
-                remainingBytes.put(input).flip();
-                return CharBuffer.allocate(0);
-            }
             CharBuffer output = CharBuffer.allocate((int) (input.remaining() * charsetDecoder.maxCharsPerByte()) + 1);
             try {
                 CoderResult result = charsetDecoder.decode(input, output, endOfInput);
@@ -668,73 +659,6 @@ public final class ServerSentEventStream {
             remainingBytes.put(input).flip();
             output.flip();
             return output;
-        }
-
-        private boolean initializeDecoder(ByteBuffer input, boolean endOfInput) {
-            Charset charset = declaredCharset;
-            if (!input.hasRemaining()) {
-                if (!endOfInput) {
-                    return false;
-                }
-            } else {
-                int offset = input.position();
-                int remaining = input.remaining();
-                int first = input.get(offset) & 0xFF;
-                if (first == 0xEF) {
-                    if (remaining < 3) {
-                        if (!endOfInput) {
-                            return false;
-                        }
-                    } else if ((input.get(offset + 1) & 0xFF) == 0xBB && (input.get(offset + 2) & 0xFF) == 0xBF) {
-                        charset = StandardCharsets.UTF_8;
-                    }
-                } else if (first == 0xFE) {
-                    if (remaining < 2) {
-                        if (!endOfInput) {
-                            return false;
-                        }
-                    } else if ((input.get(offset + 1) & 0xFF) == 0xFF) {
-                        charset = StandardCharsets.UTF_16BE;
-                    }
-                } else if (first == 0xFF) {
-                    if (remaining < 2) {
-                        if (!endOfInput) {
-                            return false;
-                        }
-                    } else if ((input.get(offset + 1) & 0xFF) == 0xFE) {
-                        if (remaining < 4) {
-                            if (!endOfInput) {
-                                return false;
-                            }
-                            if (remaining == 2) {
-                                charset = StandardCharsets.UTF_16LE;
-                            }
-                        } else {
-                            charset = input.get(offset + 2) == 0 && input.get(offset + 3) == 0
-                                ? Charset.forName("UTF-32LE")
-                                : StandardCharsets.UTF_16LE;
-                        }
-                    }
-                } else if (first == 0) {
-                    if (remaining < 2) {
-                        if (!endOfInput) {
-                            return false;
-                        }
-                    } else if (input.get(offset + 1) == 0) {
-                        if (remaining < 4) {
-                            if (!endOfInput) {
-                                return false;
-                            }
-                        } else if ((input.get(offset + 2) & 0xFF) == 0xFE && (input.get(offset + 3) & 0xFF) == 0xFF) {
-                            charset = Charset.forName("UTF-32BE");
-                        }
-                    }
-                }
-            }
-            charsetDecoder = charset.newDecoder()
-                .onMalformedInput(CodingErrorAction.REPORT)
-                .onUnmappableCharacter(CodingErrorAction.REPORT);
-            return true;
         }
 
         private String consumeLine() {
