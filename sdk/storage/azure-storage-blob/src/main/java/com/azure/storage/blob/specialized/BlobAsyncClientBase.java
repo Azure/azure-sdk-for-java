@@ -33,6 +33,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutAccessor;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobLayout;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
@@ -184,6 +185,10 @@ public class BlobAsyncClientBase {
      * Storage REST API version used in requests to the Storage service.
      */
     protected final BlobServiceVersion serviceVersion;
+
+    static {
+        BlobLayoutAccessor.setAccessor(BlobAsyncClientBase::getLayoutWithResponse);
+    }
 
     /**
      * Protected constructor for use by {@link SpecializedBlobClientBuilder}.

@@ -24,6 +24,7 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutAccessor;
 import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -123,7 +124,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param accountName The storage account name.
      * @param fileSystemName The file system name.
      * @param fileName The file name.
-     * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
+     * @param blockBlobAsyncClient The underlying {@link BlockBlobAsyncClient}
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
@@ -180,7 +181,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
         PagedFlux<BlobLayoutInfo> inputPagedFlux
-            = blockBlobAsyncClient.getLayoutWithResponse(Transforms.toBlobGetLayoutOptions(options));
+            = BlobLayoutAccessor.getLayout(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
 
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BlobLayoutInfo>> flux;
