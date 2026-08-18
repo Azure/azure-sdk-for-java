@@ -1665,8 +1665,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
                 .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
                 .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                .setOpenOptions(options.getOpenOptions())
-                .setEnableDataLocality(options.isEnableDataLocality()))
+                .setOpenOptions(options.getOpenOptions()))
             .contextWrite(FluxUtil.toReactorContext(context))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(

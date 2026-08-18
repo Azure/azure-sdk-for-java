@@ -1563,7 +1563,7 @@ public class BlobAsyncClientBase {
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
-                options.getContentValidationAlgorithm(), options.isEnableDataLocality(), context))
+                options.getContentValidationAlgorithm(), context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, options.getFilePath(), signalType));
     }
 
@@ -1578,7 +1578,7 @@ public class BlobAsyncClientBase {
     private Mono<Response<BlobProperties>> downloadToFileImpl(AsynchronousFileChannel file, BlobRange finalRange,
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
-        ContentValidationAlgorithm contentValidationAlgorithm, boolean enableDataLocality, Context context) {
+        ContentValidationAlgorithm contentValidationAlgorithm, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
@@ -1613,8 +1613,7 @@ public class BlobAsyncClientBase {
                 }
                 long remainingOffset = finalRange.getOffset() + initialChunkSize;
                 long remainingCount = newCount - initialChunkSize;
-                if (enableDataLocality
-                    && DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
+                if (DownloadHint.LAYOUT.equals(initialResponse.getDeserializedHeaders().getDownloadHint())
                     && remainingCount > 0) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);

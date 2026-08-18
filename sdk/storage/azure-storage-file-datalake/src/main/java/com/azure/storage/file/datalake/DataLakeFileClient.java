@@ -1415,8 +1415,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
                     .setRequestConditions(Transforms.toBlobRequestConditions(options.getDataLakeRequestConditions()))
                     .setRetrieveContentRangeMd5(options.isRangeGetContentMd5())
-                    .setOpenOptions(options.getOpenOptions())
-                    .setEnableDataLocality(options.isEnableDataLocality()), timeout, finalContext);
+                    .setOpenOptions(options.getOpenOptions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

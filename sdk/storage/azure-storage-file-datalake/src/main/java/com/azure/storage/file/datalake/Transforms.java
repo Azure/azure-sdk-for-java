@@ -293,8 +293,7 @@ class Transforms {
         return new BlobInputStreamOptions().setBlockSize(options.getBlockSize())
             .setRange(toBlobRange(options.getRange()))
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
-            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()))
-            .setEnableDataLocality(options.isEnableDataLocality());
+            .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
     }
 
     static BlobGetLayoutOptions toBlobGetLayoutOptions(DataLakeFileGetLayoutOptions options) {

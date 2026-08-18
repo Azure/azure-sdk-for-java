@@ -25,7 +25,6 @@ public class ReadToFileOptions {
     private DataLakeRequestConditions dataLakeRequestConditions;
     private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
-    private boolean enableDataLocality;
     private Boolean userPrincipalName;
 
     /**
@@ -170,34 +169,6 @@ public class ReadToFileOptions {
      */
     public ReadToFileOptions setOpenOptions(Set<OpenOption> openOptions) {
         this.openOptions = openOptions;
-        return this;
-    }
-
-    /**
-     * Gets whether locality-aware routing is enabled for this download.
-     * <p>
-     * When enabled, the file's layout is fetched (see {@code getLayout}) and cached, and each range download is
-     * routed to the optimal endpoint for the chunk being read. This is a performance optimization only &mdash; the
-     * bytes returned are identical to a non-locality-aware download. Default is {@code false}.
-     *
-     * @return Whether locality-aware routing is enabled for this download.
-     */
-    public boolean isEnableDataLocality() {
-        return enableDataLocality;
-    }
-
-    /**
-     * Sets whether locality-aware routing is enabled for this download.
-     * <p>
-     * When enabled, the file's layout is fetched (see {@code getLayout}) and cached, and each range download is
-     * routed to the optimal endpoint for the chunk being read. This is a performance optimization only &mdash; the
-     * bytes returned are identical to a non-locality-aware download. Default is {@code false}.
-     *
-     * @param enableDataLocality Whether locality-aware routing is enabled for this download.
-     * @return The updated options.
-     */
-    public ReadToFileOptions setEnableDataLocality(boolean enableDataLocality) {
-        this.enableDataLocality = enableDataLocality;
         return this;
     }
 

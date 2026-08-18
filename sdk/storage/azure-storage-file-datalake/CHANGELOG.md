@@ -3,13 +3,6 @@
 ## 12.29.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for service version 2027-03-07.
-- Added `DataLakeFileClient`/`DataLakeFileAsyncClient.getLayout`, returning a file's layout (byte-range to endpoint
-  mapping), by proxying the underlying `BlockBlobClient`/`BlockBlobAsyncClient.getLayout` API (Data Lake does not yet
-  have its own generated layout REST operation). Added a new `enableDataLocality` option on
-  `ReadToFileOptions`/`DataLakeFileInputStreamOptions` that opts `readToFileWithResponse`/`openInputStream` into
-  locality-aware range-download routing, forwarded to the wrapped `BlockBlobClient`'s existing implementation. This
-  is a performance optimization only; the bytes returned are identical whether or not it is enabled.
 
 ### Breaking Changes
 

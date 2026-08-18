@@ -523,7 +523,6 @@ public class BlobClientBase {
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
-        boolean enableDataLocality = options.isEnableDataLocality();
 
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions
             = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
@@ -578,8 +577,7 @@ public class BlobClientBase {
 
                 BlobClientBase finalClient = client;
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
-                if (enableDataLocality
-                    && DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
+                if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
                     BlobRange layoutRange = new BlobRange(range.getOffset(), range.getCount());
                     layoutCache
                         = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {

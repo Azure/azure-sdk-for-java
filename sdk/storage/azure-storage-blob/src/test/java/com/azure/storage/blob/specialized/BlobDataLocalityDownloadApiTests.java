@@ -27,13 +27,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests that {@code enableDataLocality} on {@link BlobDownloadToFileOptions} and {@link BlobInputStreamOptions}
- * exercises the locality-aware chunk-download wiring end-to-end (layout cache construction, per-chunk endpoint
- * resolution, and {@code Context} propagation to {@code DataLocalityPolicy}) without altering the bytes returned.
+ * Tests that the default locality-aware chunk-download wiring works end-to-end (layout cache construction,
+ * per-chunk endpoint resolution, and {@code Context} propagation to {@code DataLocalityPolicy}) without altering the
+ * bytes returned.
  * <p>
  * Most test accounts will not return an {@code x-ms-download-hint: Layout} header, in which case the wiring is a
- * documented no-op &mdash; these tests therefore primarily assert data integrity (the opt-in flag must never change
- * downloaded content), while still exercising the new code paths for real, including across multiple chunks.
+ * documented no-op &mdash; these tests therefore primarily assert data integrity while still exercising the new code
+ * paths for real, including across multiple chunks.
  */
 public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
     private BlobClient bc;
@@ -60,40 +60,10 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
-    public void downloadToFileWithDataLocalityEnabledSingleChunk() throws IOException {
+    public void downloadToFileWithDefaultDataLocalitySingleChunk() throws IOException {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
 
-        assertDoesNotThrow(() -> bc.downloadToFileWithResponse(
-            new BlobDownloadToFileOptions(testFile.toString()).setEnableDataLocality(true), null, null));
-
-        assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
-    @Test
-    public void downloadToFileWithDataLocalityEnabledMultipleChunks() throws IOException {
-        testFile = Files.createTempFile(generateBlobName(), ".dat");
-        Files.deleteIfExists(testFile);
-
-        // Force a small block size so the download spans several chunks, exercising the per-chunk
-        // layout-cache-resolution wrapper (chunk 0 is a no-op passthrough; chunks 1+ go through the
-        // locality-aware download function).
-        assertDoesNotThrow(() -> bc.downloadToFileWithResponse(
-            new BlobDownloadToFileOptions(testFile.toString()).setEnableDataLocality(true)
-                .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong((long) (2 * Constants.KB))),
-            null, null));
-
-        assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
-    @Test
-    public void downloadToFileWithDataLocalityDisabledIsUnaffected() throws IOException {
-        testFile = Files.createTempFile(generateBlobName(), ".dat");
-        Files.deleteIfExists(testFile);
-
-        // Default (enableDataLocality unset / false) behavior must be identical to before this feature existed.
         assertDoesNotThrow(
             () -> bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()), null, null));
 
@@ -102,9 +72,24 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
-    public void openInputStreamWithDataLocalityEnabled() throws IOException {
-        BlobInputStreamOptions options = new BlobInputStreamOptions().setEnableDataLocality(true)
-            .setBlockSize(2 * Constants.KB)
+    public void downloadToFileWithDefaultDataLocalityMultipleChunks() throws IOException {
+        testFile = Files.createTempFile(generateBlobName(), ".dat");
+        Files.deleteIfExists(testFile);
+
+        // Force a small block size so the download spans several chunks, exercising the per-chunk
+        // layout-cache-resolution wrapper (chunk 0 is a no-op passthrough; chunks 1+ go through the
+        // locality-aware download function).
+        assertDoesNotThrow(() -> bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString())
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong((long) (2 * Constants.KB))),
+            null, null));
+
+        assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void openInputStreamWithDefaultDataLocality() throws IOException {
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(2 * Constants.KB)
             .setRange(new BlobRange(0, (long) contentBytes.length));
 
         byte[] readBytes;
@@ -117,9 +102,8 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
-    public void openInputStreamWithDataLocalityEnabledPartialRange() throws IOException {
-        BlobInputStreamOptions options = new BlobInputStreamOptions().setEnableDataLocality(true)
-            .setBlockSize(2 * Constants.KB)
+    public void openInputStreamWithDefaultDataLocalityPartialRange() throws IOException {
+        BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(2 * Constants.KB)
             .setRange(new BlobRange(Constants.KB, (long) (4 * Constants.KB)));
 
         byte[] readBytes;
@@ -134,14 +118,12 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
-    public void downloadToFileWithDataLocalityEnabledReturnsProperties() throws IOException {
+    public void downloadToFileWithDefaultDataLocalityReturnsProperties() throws IOException {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
         Files.deleteIfExists(testFile);
 
-        BlobProperties properties = bc
-            .downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()).setEnableDataLocality(true),
-                null, null)
-            .getValue();
+        BlobProperties properties
+            = bc.downloadToFileWithResponse(new BlobDownloadToFileOptions(testFile.toString()), null, null).getValue();
 
         assertEquals(contentBytes.length, properties.getBlobSize());
     }

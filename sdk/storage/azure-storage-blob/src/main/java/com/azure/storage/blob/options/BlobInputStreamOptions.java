@@ -19,7 +19,6 @@ public class BlobInputStreamOptions {
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
     private ContentValidationAlgorithm contentValidationAlgorithm;
-    private boolean enableDataLocality;
 
     /**
      * Creates a new instance of {@link BlobInputStreamOptions}.
@@ -137,31 +136,4 @@ public class BlobInputStreamOptions {
         return this;
     }
 
-    /**
-     * Gets whether locality-aware routing is enabled for this input stream.
-     * <p>
-     * When enabled, a layout cache is built upfront so that every buffer fill, starting with the first chunk
-     * download, is routed to the optimal endpoint for the chunk being read. This is a performance optimization
-     * only &mdash; the bytes returned are identical to a non-locality-aware read. Default is {@code false}.
-     *
-     * @return Whether locality-aware routing is enabled for this input stream.
-     */
-    public boolean isEnableDataLocality() {
-        return enableDataLocality;
-    }
-
-    /**
-     * Sets whether locality-aware routing is enabled for this input stream.
-     * <p>
-     * When enabled, a layout cache is built upfront so that every buffer fill, starting with the first chunk
-     * download, is routed to the optimal endpoint for the chunk being read. This is a performance optimization
-     * only &mdash; the bytes returned are identical to a non-locality-aware read. Default is {@code false}.
-     *
-     * @param enableDataLocality Whether locality-aware routing is enabled for this input stream.
-     * @return The updated options.
-     */
-    public BlobInputStreamOptions setEnableDataLocality(boolean enableDataLocality) {
-        this.enableDataLocality = enableDataLocality;
-        return this;
-    }
 }
