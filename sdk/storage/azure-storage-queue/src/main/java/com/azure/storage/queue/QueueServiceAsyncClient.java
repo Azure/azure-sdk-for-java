@@ -16,12 +16,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.KeyInfo;
+import com.azure.storage.queue.implementation.util.ModelHelper;
+import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueGetUserDelegationKeyOptions;
 import com.azure.storage.queue.models.QueueItem;
@@ -132,9 +133,11 @@ public final class QueueServiceAsyncClient {
      * @return QueueAsyncClient that interacts with the specified queue
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
-        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
+        AzureQueueStorageImpl queueStorage = new AzureQueueStorageImpl(client.getHttpPipeline(),
+            client.getSerializerAdapter(), client.getUrl(), client.getServiceVersion());
+        QueueClient queueClient = new QueueClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
-        return new QueueAsyncClient(client, queueName, accountName, serviceVersion, messageEncoding,
+        return new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
     }
 
@@ -349,9 +352,9 @@ public final class QueueServiceAsyncClient {
 
         BiFunction<String, Integer, Mono<PagedResponse<QueueItem>>> retriever = (nextMarker,
             pageSize) -> StorageImplUtils.applyOptionalTimeout(this.client.getServices()
-                .listQueuesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
-                    include, null, null, context),
-                timeout);
+                .getQueuesWithResponseAsync(RequestOptionsHelper.listQueuesRequestOptions(context, prefix, nextMarker,
+                    pageSize == null ? maxResultsPerPage : pageSize, include))
+                .map(ModelHelper::toQueueItemPage), timeout);
 
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
@@ -420,10 +423,10 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
         return client.getServices()
-            .getPropertiesWithResponseAsync(null, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .getPropertiesWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+            .map(response -> new SimpleResponse<>(response,
+                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceProperties::fromXml)));
     }
 
     /**
@@ -545,8 +548,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
-        context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context);
+        return client.getServices()
+            .setPropertiesWithResponseAsync(ModelHelper.serializeXmlBody(properties),
+                RequestOptionsHelper.requestOptions(context));
     }
 
     /**
@@ -609,10 +613,10 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
         return client.getServices()
-            .getStatisticsWithResponseAsync(null, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
+            .getStatisticsWithResponseAsync(RequestOptionsHelper.requestOptions(context))
+            .map(response -> new SimpleResponse<>(response,
+                ModelHelper.deserializeXmlBody(response.getValue(), QueueServiceStatistics::fromXml)));
     }
 
     /**
@@ -788,12 +792,11 @@ public final class QueueServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
 
+        KeyInfo keyInfo = new KeyInfo(expiry).setStart(start).setDelegatedUserTenantId(delegatedUserTenantId);
         return client.getServices()
-            .getUserDelegationKeyWithResponseAsync(
-                new KeyInfo().setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
-                    .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry))
-                    .setDelegatedUserTenantId(delegatedUserTenantId),
-                null, null, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+            .getUserDelegationKeyWithResponseAsync(ModelHelper.serializeXmlBody(keyInfo),
+                RequestOptionsHelper.requestOptions(context))
+            .map(rb -> new SimpleResponse<>(rb,
+                ModelHelper.deserializeXmlBody(rb.getValue(), UserDelegationKey::fromXml)));
     }
 }
