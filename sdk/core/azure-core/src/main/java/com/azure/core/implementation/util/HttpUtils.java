@@ -52,8 +52,8 @@ public final class HttpUtils {
     public static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
 
     /**
-     * Context key that instructs REST proxy response ownership and HTTP response logging to preserve the response body
-     * as a live stream. HTTP client implementations do not consume this key.
+     * Context key that instructs REST proxy response ownership and decoding to preserve the response body as a live
+     * stream. HTTP client implementations do not consume this key.
      */
     public static final String AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM = "azure-preserve-response-body-as-stream";
 

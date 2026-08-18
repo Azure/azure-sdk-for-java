@@ -59,7 +59,6 @@ import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.createUrl;
 import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -247,11 +246,12 @@ public class HttpLoggingPolicyTests {
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
-    @MethodSource("streamingResponseSupplier")
-    public void streamingResponsesAreNotBuffered(String contentType, boolean useStreamingContext) {
+    @MethodSource("responseLoggingSupplier")
+    public void responseLoggingUsesActualContentType(String contentType, boolean useStreamingContext,
+        int expectedBufferCount, boolean expectBodyLogged) {
         byte[] data = "streaming response".getBytes(StandardCharsets.UTF_8);
         AtomicInteger bufferCount = new AtomicInteger();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com/streamingResponsesAreNotBuffered");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com/responseLoggingUsesActualContentType");
         HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType)
             .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(data.length));
 
@@ -275,13 +275,14 @@ public class HttpLoggingPolicyTests {
             assertArraysEqual(data, response.getBodyAsBinaryData().toBytes());
         }
 
-        assertEquals(0, bufferCount.get());
-        assertFalse(convertOutputStreamToString(logCaptureStream).contains(new String(data, StandardCharsets.UTF_8)));
+        assertEquals(expectedBufferCount, bufferCount.get());
+        assertEquals(expectBodyLogged,
+            convertOutputStreamToString(logCaptureStream).contains(new String(data, StandardCharsets.UTF_8)));
     }
 
-    private static Stream<Arguments> streamingResponseSupplier() {
-        return Stream.of(Arguments.of("Text/Event-Stream; charset=utf-8", false),
-            Arguments.of(ContentType.APPLICATION_JSON, true));
+    private static Stream<Arguments> responseLoggingSupplier() {
+        return Stream.of(Arguments.of("Text/Event-Stream; charset=utf-8", false, 0, false),
+            Arguments.of(ContentType.APPLICATION_JSON, true, 2, true));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplierSync() {

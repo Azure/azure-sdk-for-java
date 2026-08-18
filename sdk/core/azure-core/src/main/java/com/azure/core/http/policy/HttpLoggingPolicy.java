@@ -339,7 +339,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
-                if (shouldResponseBodyBeLogged(loggingOptions, contentTypeHeader, contentLength)) {
+                if (shouldResponseBodyBeLogged(contentTypeHeader, contentLength)) {
                     // Make sure we buffer the response body to avoid keeping the connection open.
                     final HttpResponse bufferedResponse = response.buffer();
 
@@ -390,7 +390,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             if (httpLogDetailLevel.shouldLogBody()) {
                 String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
-                if (shouldResponseBodyBeLogged(loggingOptions, contentTypeHeader, contentLength)) {
+                if (shouldResponseBodyBeLogged(contentTypeHeader, contentLength)) {
                     // Make sure we buffer the response body to avoid keeping the connection open.
                     response = response.buffer();
 
@@ -505,16 +505,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     /*
-     * Determines if the request or response body should be logged.
+     * Determines whether a body satisfies the common eligibility requirements for logging.
      *
-     * <p>The request or response body is logged if the Content-Type is not "application/octet-stream" and the body
-     * isn't empty and is less than 16KB in size.</p>
+     * <p>A body is eligible when its Content-Length is known, non-zero, and less than the maximum body log size, and
+     * its Content-Type is not "application/octet-stream". Response bodies require additional streaming checks in
+     * {@link #shouldResponseBodyBeLogged(String, Long)}.</p>
      *
      * @param contentTypeHeader Content-Type header value.
      *
      * @param contentLength Content-Length header represented as a numeric.
      *
-     * @return A flag indicating if the request or response body should be logged.
+     * @return Whether the body satisfies the common logging requirements.
      */
     private static boolean shouldBodyBeLogged(String contentTypeHeader, Long contentLength) {
         return contentLength != null
@@ -523,10 +524,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             && contentLength < MAX_BODY_LOG_SIZE;
     }
 
-    private static boolean shouldResponseBodyBeLogged(HttpResponseLoggingContext loggingOptions,
-        String contentTypeHeader, Long contentLength) {
-        return !HttpUtils.shouldPreserveResponseBodyAsStream(loggingOptions.getContext())
-            && !HttpUtils.isTextEventStreamContentType(contentTypeHeader)
+    private static boolean shouldResponseBodyBeLogged(String contentTypeHeader, Long contentLength) {
+        return !HttpUtils.isTextEventStreamContentType(contentTypeHeader)
             && shouldBodyBeLogged(contentTypeHeader, contentLength);
     }
 
