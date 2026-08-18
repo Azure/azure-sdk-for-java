@@ -59,10 +59,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
 
-    static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
-        = "azure.keyvault.jca.certificate-alias-filter-pattern";
-    static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
-
     /**
      * Stores the Jre key store certificates.
      */
@@ -105,26 +101,26 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Store the path where the well-known certificate is placed
      */
-    final String wellKnowPath
-        = Optional.ofNullable(System.getProperty("azure.cert-path.well-known")).orElse("/etc/certs/well-known/");
+    final String wellKnowPath = Optional.ofNullable(System.getProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN))
+        .orElse("/etc/certs/well-known/");
 
     /**
      * Store the path where the custom certificate is placed
      */
-    final String customPath
-        = Optional.ofNullable(System.getProperty("azure.cert-path.custom")).orElse("/etc/certs/custom/");
+    final String customPath = Optional.ofNullable(System.getProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM))
+        .orElse("/etc/certs/custom/");
 
     /**
      * Constructor.
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>,
-     * <code>azure.keyvault.tenant-id</code>,
-     * <code>azure.keyvault.client-id</code>,
-     * <code>azure.keyvault.client-secret</code>,
-     * <code>azure.keyvault.managed-identity</code>, and
-     * <code>azure.keyvault.jca.disable-aia-download</code> to initialize the
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_URI},
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_TENANT_ID},
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_CLIENT_ID},
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_CLIENT_SECRET},
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_MANAGED_IDENTITY}, and
+    * {@value KeyVaultJcaPropertyNames#KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD} to initialize the
      * Key Vault client.
      * </p>
      */
@@ -132,18 +128,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
 
         creationDate = new Date();
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenant-id");
-        String clientId = System.getProperty("azure.keyvault.client-id");
-        String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        String accessToken = System.getProperty("azure.keyvault.access-token");
-        boolean disableChallengeResourceVerification
-            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
-        disableAiaDownload = Boolean.parseBoolean(System.getProperty(DISABLE_AIA_DOWNLOAD_PROPERTY));
+        String keyVaultUri = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
+        String tenantId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_TENANT_ID);
+        String clientId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_ID);
+        String clientSecret = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_SECRET);
+        String managedIdentity = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_MANAGED_IDENTITY);
+        String accessToken = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_ACCESS_TOKEN);
+        boolean disableChallengeResourceVerification = Boolean.parseBoolean(
+            System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION));
+        disableAiaDownload
+            = Boolean.parseBoolean(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD));
         long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate
-            = Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
+            = Optional.of(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE)
                 .map(System::getProperty)
                 .map(Boolean::parseBoolean)
                 .orElse(false);
@@ -171,8 +168,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     Long getRefreshInterval() {
         return Stream
-            .of("azure.keyvault.jca.certificates-refresh-interval-in-ms",
-                "azure.keyvault.jca.certificates-refresh-interval")
+            .of(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS,
+                KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL)
             .map(System::getProperty)
             .filter(Objects::nonNull)
             .map(Long::valueOf)
@@ -183,11 +180,11 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     Set<String> getKeyVaultCertificateAliasFilterPatterns() {
         // Each pattern gets its own property because any delimiter character can be part of a regex.
         Properties properties = System.getProperties();
-        String suffixedPropertyPrefix = CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".";
+        String suffixedPropertyPrefix = KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + ".";
 
         return properties.stringPropertyNames()
             .stream()
-            .filter(name -> name.equals(CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY)
+            .filter(name -> name.equals(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN)
                 || name.startsWith(suffixedPropertyPrefix))
             .map(properties::getProperty)
             .filter(Objects::nonNull)
@@ -211,13 +208,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
         KeyVaultLoadStoreParameter keyVaultLoadStoreParameter
-            = new KeyVaultLoadStoreParameter(System.getProperty("azure.keyvault.uri"),
-                System.getProperty("azure.keyvault.tenant-id"), System.getProperty("azure.keyvault.client-id"),
-                System.getProperty("azure.keyvault.client-secret"),
-                System.getProperty("azure.keyvault.managed-identity"))
-                    .setAccessToken(System.getProperty("azure.keyvault.access-token"));
+            = new KeyVaultLoadStoreParameter(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI),
+                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_TENANT_ID),
+                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_ID),
+                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_SECRET),
+                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_MANAGED_IDENTITY))
+                    .setAccessToken(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_ACCESS_TOKEN));
 
-        if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
+        if (Boolean.parseBoolean(
+            System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION))) {
             keyVaultLoadStoreParameter.disableChallengeResourceVerification();
         }
 

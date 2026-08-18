@@ -145,9 +145,9 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 * `azure.keyvault.jca.disable-aia-download`: Set to `true` to disable automatic AIA (Authority Information Access) certificate chain completion. Chain completion is only attempted when the chain returned by Azure Key Vault is incomplete, meaning it holds a single certificate or is missing an intermediate CA. When disabled, the provider will return certificate chains as provided by Azure Key Vault without downloading missing intermediate CA certificates. Use this in locked-down environments or when processing untrusted certificates to prevent outbound HTTP(S) requests to URLs embedded in certificate extensions. Defaults to `false` for backward compatibility. The value is captured when a Key Vault keystore and its client are initialized.
 
-You can configure these properties using:
+The supported system property names are available from `KeyVaultJcaPropertyNames`. You can configure them using:
 ```java
-System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "<your-azure-key-vault-uri>");
 ```
 or as a JVM argument:
 ```shell

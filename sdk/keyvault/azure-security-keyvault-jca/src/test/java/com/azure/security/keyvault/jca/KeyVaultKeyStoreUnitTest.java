@@ -58,14 +58,14 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetRefreshInterval() {
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval");
-        System.clearProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms");
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS);
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         assertEquals(keystore.getRefreshInterval(), 0);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "2000");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL, "2000");
         keystore = new KeyVaultKeyStore();
         assertEquals(keystore.getRefreshInterval(), 2000);
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS, "1000");
         assertEquals(keystore.getRefreshInterval(), 1000);
     }
 
@@ -108,7 +108,7 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetKeyVaultCertificateAliasFilterPatternsFromBaseProperty() {
-        System.setProperty(KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY, " ^prod-.* ");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN, " ^prod-.* ");
 
         assertEquals(Collections.singleton("^prod-.*"),
             new KeyVaultKeyStore().getKeyVaultCertificateAliasFilterPatterns());
@@ -116,7 +116,7 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetKeyVaultCertificateAliasFilterPatternsFromSuffixedProperties() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        String base = KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN;
         System.setProperty(base, "myalias");
         System.setProperty(base + ".1", "^prod-.*");
         System.setProperty(base + ".prod", "^prod-a.*");
@@ -132,7 +132,7 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetKeyVaultCertificateAliasFilterPatternsKeepsCommas() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        String base = KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN;
         System.setProperty(base + ".1", "^cert-\\d{1,5}$");
         System.setProperty(base + ".2", "![a-z]{2,}");
 
@@ -144,7 +144,7 @@ public class KeyVaultKeyStoreUnitTest {
     @BeforeEach
     @AfterEach
     public void clearCertificateAliasFilterPatternProperties() {
-        String base = KeyVaultKeyStore.CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY;
+        String base = KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN;
         System.clearProperty(base);
         System.getProperties()
             .stringPropertyNames()

@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
@@ -117,14 +118,14 @@ public class AiaCertificateChainTest {
     @BeforeEach
     void setupClean() {
         // Ensure each test starts with a clean state - clear the disable property
-        System.clearProperty(AiaCertificateChainUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD);
         AiaCertificateChainUtil.clearAiaCache();
     }
 
     @AfterEach
     void cleanup() {
         // Clear the property after each test to prevent interference with subsequent tests
-        System.clearProperty(AiaCertificateChainUtil.DISABLE_AIA_DOWNLOAD_PROPERTY);
+        System.clearProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD);
         AiaCertificateChainUtil.clearAiaCache();
     }
 
@@ -441,7 +442,7 @@ public class AiaCertificateChainTest {
             = new KeyVaultClient("https://fake.vault.azure.net/", null, null, null, null, "test-token", false, true);
 
         // Simulate another SSL bundle replacing the JVM-global value before this client lazily loads its chain.
-        System.setProperty(AiaCertificateChainUtil.DISABLE_AIA_DOWNLOAD_PROPERTY, "false");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD, "false");
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
             httpMock
@@ -473,7 +474,7 @@ public class AiaCertificateChainTest {
             = new KeyVaultClient("https://fake.vault.azure.net/", null, null, null, null, "test-token", false, false);
 
         // Simulate another SSL bundle replacing the JVM-global value before this client lazily loads its chain.
-        System.setProperty(AiaCertificateChainUtil.DISABLE_AIA_DOWNLOAD_PROPERTY, "true");
+        System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD, "true");
 
         try (MockedStatic<HttpUtil> httpMock = Mockito.mockStatic(HttpUtil.class)) {
             httpMock

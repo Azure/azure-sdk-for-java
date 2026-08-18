@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
@@ -29,9 +30,6 @@ import java.util.regex.PatternSyntaxException;
  * Caches certificate material loaded from Azure Key Vault.
  */
 public final class KeyVaultCertificates implements AzureCertificates {
-    private static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
-        = "azure.keyvault.jca.certificate-alias-filter-pattern";
-
     /**
      * Stores the list of aliases.
      */
@@ -189,9 +187,12 @@ public final class KeyVaultCertificates implements AzureCertificates {
         try {
             return Pattern.compile(regexPattern);
         } catch (PatternSyntaxException exception) {
-            throw new IllegalArgumentException("Invalid certificate alias filter regex pattern: " + regexPattern
-                + ". If configured via system property, check '" + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + "' and '"
-                + CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".<suffix>'.", exception);
+            throw new IllegalArgumentException(
+                "Invalid certificate alias filter regex pattern: " + regexPattern
+                    + ". If configured via system property, check '"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + "' and '"
+                    + KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + ".<suffix>'.",
+                exception);
         }
     }
 

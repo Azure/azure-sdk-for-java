@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
 import org.bouncycastle.asn1.ASN1OctetString;
 import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.AuthorityInformationAccess;
@@ -45,12 +46,12 @@ import static java.util.logging.Level.WARNING;
  * a valid PKIX path to a trusted root CA and reports "PKIX path building failed" on verify.
  *
  * <p><strong>Security note:</strong> completion issues outbound HTTP(S) requests to URLs embedded in certificates.
- * Set the system property {@code azure.keyvault.jca.disable-aia-download=true} to disable it in locked-down
+ * Set the system property {@value KeyVaultJcaPropertyNames#KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD} to {@code true} to
+ * disable it in locked-down
  * environments or when loading untrusted certificates.
  */
 final class AiaCertificateChainUtil {
     private static final Logger LOGGER = Logger.getLogger(AiaCertificateChainUtil.class.getName());
-    static final String DISABLE_AIA_DOWNLOAD_PROPERTY = "azure.keyvault.jca.disable-aia-download";
     private static final int AIA_CACHE_MAX_SIZE = 128;
     private static final long MAX_SUCCESS_TTL_IN_MILLIS = TimeUnit.HOURS.toMillis(24);
     private static final long NEGATIVE_TTL_IN_MILLIS = TimeUnit.MINUTES.toMillis(1);
@@ -105,7 +106,7 @@ final class AiaCertificateChainUtil {
 
         if (disableAiaDownload) {
             LOGGER.log(FINE, "AIA chain completion is disabled for this Key Vault client by configuration [{0}]",
-                DISABLE_AIA_DOWNLOAD_PROPERTY);
+                KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD);
             return orderedCertificates;
         }
 
