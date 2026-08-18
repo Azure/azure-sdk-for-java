@@ -46,6 +46,7 @@ import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
+import com.azure.storage.blob.implementation.util.BlobLayoutCacheFactory;
 import com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
@@ -1617,18 +1618,8 @@ public class BlobAsyncClientBase {
                     && remainingCount > 0) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
-                    AutoRefreshingCache<BlobLayoutCacheValue> layoutCache
-                        = new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
-                            @Override
-                            public Mono<BlobLayoutCacheValue> createAsync() {
-                                return fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext);
-                            }
-
-                            @Override
-                            public BlobLayoutCacheValue createSync() {
-                                return fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext).block();
-                            }
-                        });
+                    AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = BlobLayoutCacheFactory
+                        .create(() -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext));
                     chunkDownloadFunc = (range, conditions) -> layoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
