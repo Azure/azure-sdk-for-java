@@ -24,6 +24,7 @@ com.fasterxml.jackson.module:jackson-module-scala_2.13;2.18.9
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
+com.github.tomakehurst:wiremock-jre8-standalone;2.35.2
 com.google.code.gson:gson;2.14.0
 com.google.flatbuffers:flatbuffers-java;25.2.10
 com.google.guava:guava;33.6.0-jre
