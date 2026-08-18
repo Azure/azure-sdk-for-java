@@ -4,7 +4,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,31 +23,26 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
     /*
      * Azure Analytics Logging settings.
      */
-    @Generated
     private TableServiceLogging logging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for tables.
      */
-    @Generated
     private TableServiceMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for tables.
      */
-    @Generated
     private TableServiceMetrics minuteMetrics;
 
     /*
      * The set of CORS rules.
      */
-    @Generated
     private List<TableServiceCorsRule> cors;
 
     /**
      * Creates an instance of TableServiceProperties class.
      */
-    @Generated
     public TableServiceProperties() {
     }
 
@@ -56,7 +51,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      *
      * @return the logging value.
      */
-    @Generated
     public TableServiceLogging getLogging() {
         return this.logging;
     }
@@ -67,7 +61,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * @param logging the logging value to set.
      * @return the TableServiceProperties object itself.
      */
-    @Generated
     public TableServiceProperties setLogging(TableServiceLogging logging) {
         this.logging = logging;
         return this;
@@ -78,7 +71,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      *
      * @return the hourMetrics value.
      */
-    @Generated
     public TableServiceMetrics getHourMetrics() {
         return this.hourMetrics;
     }
@@ -89,7 +81,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * @param hourMetrics the hourMetrics value to set.
      * @return the TableServiceProperties object itself.
      */
-    @Generated
     public TableServiceProperties setHourMetrics(TableServiceMetrics hourMetrics) {
         this.hourMetrics = hourMetrics;
         return this;
@@ -100,7 +91,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      *
      * @return the minuteMetrics value.
      */
-    @Generated
     public TableServiceMetrics getMinuteMetrics() {
         return this.minuteMetrics;
     }
@@ -111,7 +101,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the TableServiceProperties object itself.
      */
-    @Generated
     public TableServiceProperties setMinuteMetrics(TableServiceMetrics minuteMetrics) {
         this.minuteMetrics = minuteMetrics;
         return this;
@@ -122,7 +111,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      *
      * @return the cors value.
      */
-    @Generated
     public List<TableServiceCorsRule> getCorsRules() {
         return this.cors;
     }
@@ -133,23 +121,19 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * @param cors the cors value to set.
      * @return the TableServiceProperties object itself.
      */
-    @Generated
     public TableServiceProperties setCorsRules(List<TableServiceCorsRule> cors) {
         this.cors = cors;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.logging, "Logging");
         xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
@@ -172,7 +156,6 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceProperties.
      */
-    @Generated
     public static TableServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -187,11 +170,10 @@ public final class TableServiceProperties implements XmlSerializable<TableServic
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableServiceProperties.
      */
-    @Generated
     public static TableServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
         String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "StorageServiceProperties" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableServiceProperties deserializedTableServiceProperties = new TableServiceProperties();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -71,7 +71,7 @@ public final class TablesConstants {
     /**
      * Scope for Cosmos endpoints.
      */
-    public static final String DEFAULT_SCOPE = "/.default";
+    public static final String COSMOS_SCOPE = "https://cosmos.azure.com/.default";
 
     /**
      * Private constructor so this class cannot be instantiated.
