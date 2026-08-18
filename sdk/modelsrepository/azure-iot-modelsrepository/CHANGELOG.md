@@ -7,6 +7,12 @@
 - Added interfaces from `com.azure.core.client.traits` to `ModelsRepositoryClientBuilder`
 - Added `retryOptions` to `ModelsRepositoryClientBuilder`.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.18.7` to `2.18.9`.
+
 ## 1.0.0-beta.1 (2021-03-30)
 
 ### New features

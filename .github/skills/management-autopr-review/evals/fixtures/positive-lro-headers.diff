@@ -1,0 +1,19 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateHeaders.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateHeaders.java
+new file mode 100644
+--- /dev/null
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/models/WidgetCreateHeaders.java
+@@ -0,0 +1,14 @@
++package com.azure.resourcemanager.contosowidgets.models;
++
++public final class WidgetCreateHeaders {
++    private String location;
++    private Integer retryAfter;
++
++    public String getLocation() {
++        return location;
++    }
++
++    public Integer getRetryAfter() {
++        return retryAfter;
++    }
++}

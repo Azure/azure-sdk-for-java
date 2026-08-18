@@ -7,6 +7,8 @@ package com.azure.resourcemanager.fabric.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fabric.fluent.models.FabricCapacityInner;
 import com.azure.resourcemanager.fabric.models.CapacityAdministration;
+import com.azure.resourcemanager.fabric.models.CapacityOverageProperties;
+import com.azure.resourcemanager.fabric.models.CapacityOverageState;
 import com.azure.resourcemanager.fabric.models.FabricCapacityProperties;
 import com.azure.resourcemanager.fabric.models.RpSku;
 import com.azure.resourcemanager.fabric.models.RpSkuTier;
@@ -19,27 +21,34 @@ public final class FabricCapacityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FabricCapacityInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"state\":\"Provisioning\",\"administration\":{\"members\":[\"vgjxpybczm\"]}},\"sku\":{\"name\":\"hmtzopbsphrup\",\"tier\":\"Fabric\"},\"location\":\"sybbejhph\",\"tags\":{\"bmtqioq\":\"msxaobhd\",\"p\":\"zehtbmu\",\"hwlrx\":\"wnoi\"},\"id\":\"bqsoqijg\",\"name\":\"dmbpazlobcufpdz\",\"type\":\"rbt\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"state\":\"Provisioning\",\"overage\":{\"state\":\"Enabled\",\"thresholdCapacityUnitHours\":976394918},\"administration\":{\"members\":[\"ybczmehmtzo\",\"bsphrupidgsybbe\",\"hphoycm\",\"xaobhdxbmtqioqjz\"]}},\"sku\":{\"name\":\"htbmuf\",\"tier\":\"Fabric\"},\"location\":\"noi\",\"tags\":{\"jgkdmbpazlobcu\":\"lrxybqsoq\",\"qgn\":\"pdznrbtcqqjnqgl\"},\"id\":\"foooj\",\"name\":\"wifsq\",\"type\":\"saagdf\"}")
             .toObject(FabricCapacityInner.class);
-        Assertions.assertEquals("sybbejhph", model.location());
-        Assertions.assertEquals("msxaobhd", model.tags().get("bmtqioq"));
-        Assertions.assertEquals("vgjxpybczm", model.properties().administration().members().get(0));
-        Assertions.assertEquals("hmtzopbsphrup", model.sku().name());
+        Assertions.assertEquals("noi", model.location());
+        Assertions.assertEquals("lrxybqsoq", model.tags().get("jgkdmbpazlobcu"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(976394918, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("ybczmehmtzo", model.properties().administration().members().get(0));
+        Assertions.assertEquals("htbmuf", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricCapacityInner model = new FabricCapacityInner().withLocation("sybbejhph")
-            .withTags(mapOf("bmtqioq", "msxaobhd", "p", "zehtbmu", "hwlrx", "wnoi"))
+        FabricCapacityInner model = new FabricCapacityInner().withLocation("noi")
+            .withTags(mapOf("jgkdmbpazlobcu", "lrxybqsoq", "qgn", "pdznrbtcqqjnqgl"))
             .withProperties(new FabricCapacityProperties()
-                .withAdministration(new CapacityAdministration().withMembers(Arrays.asList("vgjxpybczm"))))
-            .withSku(new RpSku().withName("hmtzopbsphrup").withTier(RpSkuTier.FABRIC));
+                .withOverage(new CapacityOverageProperties().withState(CapacityOverageState.ENABLED)
+                    .withThresholdCapacityUnitHours(976394918))
+                .withAdministration(new CapacityAdministration()
+                    .withMembers(Arrays.asList("ybczmehmtzo", "bsphrupidgsybbe", "hphoycm", "xaobhdxbmtqioqjz"))))
+            .withSku(new RpSku().withName("htbmuf").withTier(RpSkuTier.FABRIC));
         model = BinaryData.fromObject(model).toObject(FabricCapacityInner.class);
-        Assertions.assertEquals("sybbejhph", model.location());
-        Assertions.assertEquals("msxaobhd", model.tags().get("bmtqioq"));
-        Assertions.assertEquals("vgjxpybczm", model.properties().administration().members().get(0));
-        Assertions.assertEquals("hmtzopbsphrup", model.sku().name());
+        Assertions.assertEquals("noi", model.location());
+        Assertions.assertEquals("lrxybqsoq", model.tags().get("jgkdmbpazlobcu"));
+        Assertions.assertEquals(CapacityOverageState.ENABLED, model.properties().overage().state());
+        Assertions.assertEquals(976394918, model.properties().overage().thresholdCapacityUnitHours());
+        Assertions.assertEquals("ybczmehmtzo", model.properties().administration().members().get(0));
+        Assertions.assertEquals("htbmuf", model.sku().name());
         Assertions.assertEquals(RpSkuTier.FABRIC, model.sku().tier());
     }
 

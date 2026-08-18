@@ -35,7 +35,7 @@ import java.util.Map;
  */
 public final class FirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/FirewallPolicyPut.json
+     * x-ms-original-file: 2025-09-01/FirewallPolicyPut.json
      */
     /**
      * Sample code: Create FirewallPolicy.
@@ -91,7 +91,7 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                 .withTransportSecurity(new FirewallPolicyTransportSecurity().withCertificateAuthority(
                     new FirewallPolicyCertificateAuthority().withKeyVaultSecretId("fakeTokenPlaceholder")
                         .withName("clientcert")))
-                .withSku(new FirewallPolicySku().withTier(FirewallPolicySkuTier.PREMIUM)),
+                .withSku(new FirewallPolicySku().withTier(FirewallPolicySkuTier.PREMIUM)), true,
                 com.azure.core.util.Context.NONE);
     }
 

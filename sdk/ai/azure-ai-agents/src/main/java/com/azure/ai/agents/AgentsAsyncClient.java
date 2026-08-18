@@ -102,6 +102,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -233,6 +234,7 @@ public final class AgentsAsyncClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -364,6 +366,7 @@ public final class AgentsAsyncClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -617,6 +620,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -751,6 +755,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -919,6 +924,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1050,6 +1056,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1175,6 +1182,7 @@ public final class AgentsAsyncClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -1413,6 +1421,7 @@ public final class AgentsAsyncClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -1586,6 +1595,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2239,6 +2249,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2305,7 +2316,7 @@ public final class AgentsAsyncClient {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2362,6 +2373,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2430,7 +2442,7 @@ public final class AgentsAsyncClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2539,6 +2551,7 @@ public final class AgentsAsyncClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2654,6 +2667,7 @@ public final class AgentsAsyncClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -2670,7 +2684,7 @@ public final class AgentsAsyncClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2802,7 +2816,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3341,7 +3355,7 @@ public final class AgentsAsyncClient {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3380,7 +3394,7 @@ public final class AgentsAsyncClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3455,7 +3469,7 @@ public final class AgentsAsyncClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3642,7 +3656,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.
@@ -4018,7 +4032,7 @@ public final class AgentsAsyncClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.

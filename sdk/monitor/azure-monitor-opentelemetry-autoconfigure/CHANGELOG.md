@@ -1,14 +1,14 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.0 (2026-08-17)
 
 ### Bugs Fixed
 
+- Validate ingestion and Live Metrics redirect targets before following them ([#50117](https://github.com/Azure/azure-sdk-for-java/pull/50117))
+
 ### Other Changes
+
+- Align customer-facing SDKStats configuration and custom dimension names with the stable specification. ([#50056](https://github.com/Azure/azure-sdk-for-java/pull/50056))
 
 ## 1.5.0 (2026-06-11)
 
