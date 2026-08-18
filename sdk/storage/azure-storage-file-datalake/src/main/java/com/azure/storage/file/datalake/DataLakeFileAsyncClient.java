@@ -1657,7 +1657,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> readToFileWithResponse(ReadToFileOptions options) {
         Context context
             = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
+        context
+            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
 
+        assert options != null;
         return blockBlobAsyncClient
             .downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
                 .setRange(Transforms.toBlobRange(options.getRange()))

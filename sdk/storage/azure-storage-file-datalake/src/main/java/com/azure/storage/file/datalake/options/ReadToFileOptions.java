@@ -26,6 +26,7 @@ public class ReadToFileOptions {
     private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
+    private String dataLocalityEndpoint;
 
     /**
      * Constructs a {@link ReadToFileOptions}.
@@ -189,6 +190,26 @@ public class ReadToFileOptions {
      */
     public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * Gets the endpoint to use for this download, when selected from file layout information.
+     *
+     * @return The data locality endpoint, or {@code null} if the client's configured endpoint should be used.
+     */
+    public String getDataLocalityEndpoint() {
+        return dataLocalityEndpoint;
+    }
+
+    /**
+     * Sets the endpoint to use for this download.
+     *
+     * @param dataLocalityEndpoint The absolute endpoint selected from file layout information.
+     * @return The updated options.
+     */
+    public ReadToFileOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
+        this.dataLocalityEndpoint = dataLocalityEndpoint;
         return this;
     }
 }
