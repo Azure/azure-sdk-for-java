@@ -3,7 +3,66 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.ai.documentintelligence.models.AnalyzeBatchResult" />
+      <Class name="com.azure.ai.documentintelligence.models.AnalyzeResult" />
+      <Class name="com.azure.ai.documentintelligence.models.BoundingRegion" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentBarcode" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentCaption" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentClassifierDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentField" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentFieldSchema" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentFigure" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentFootnote" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentFormula" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentKeyValueElement" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentLanguage" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentLine" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentList" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentListItem" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentModelDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentPage" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentParagraph" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentSection" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentSelectionMark" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentStyle" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentTable" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentTableCell" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentTypeDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentWord" />
+      <Class name="com.azure.ai.documentintelligence.models.AnalyzedDocument" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder" />
+      <Class name="com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentFieldSchema" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentTypeDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
+    </Or>
+  </Match>
+  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
-    <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationDetailsHelper" />
+    <Or>
+      <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationDetailsHelper" />
+    </Or>
   </Match>
 </FindBugsFilter>
