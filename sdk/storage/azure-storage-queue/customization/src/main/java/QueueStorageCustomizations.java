@@ -82,9 +82,54 @@ public class QueueStorageCustomizations extends Customization {
         fixXmlSerializerRedundantCast(editor, logger);
         retargetServiceVersionReferences(editor, logger);
         restoreFluentModels(customization, logger);
+        restoreMetadataHeaderCollection(customization.getPackage(IMPL_PACKAGE + ".models"), logger);
         exposeRawListQueuesResponse(customization.getPackage(IMPL_PACKAGE), logger);
         removeUnusedXmlNextLinkHelpers(customization.getPackage(IMPL_PACKAGE), logger);
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE), logger);
+    }
+
+    // typespec-java's response header model reads the metadata header as a single x-ms-meta value; on the wire queue
+    // metadata is a dynamic x-ms-meta-<key> collection, so responseHeadersAsModel cannot represent it. Reshape
+    // QueuesGetPropertiesHeaders so getMetadata() returns the assembled Map<String, String> (the shape the shipped
+    // public API and the hand-written ModelHelper consume), matching what AutoRest generated.
+    private static void restoreMetadataHeaderCollection(PackageCustomization implModelsPackage, Logger logger) {
+        if (implModelsPackage.getClass("QueuesGetPropertiesHeaders") == null) {
+            logger.info("QueuesGetPropertiesHeaders not present; skipping metadata header-collection restore.");
+            return;
+        }
+        implModelsPackage.getClass("QueuesGetPropertiesHeaders").customizeAst(ast -> {
+            ast.addImport("com.azure.core.http.HttpHeader");
+            ast.addImport("java.util.LinkedHashMap");
+            ast.addImport("java.util.Map");
+            ast.getClassByName("QueuesGetPropertiesHeaders").ifPresent(clazz -> {
+                clazz.getFieldByName("metadata")
+                    .ifPresent(field -> field.getVariable(0).setType("Map<String, String>"));
+                clazz.getMethodsByName("getMetadata").forEach(method -> method.setType("Map<String, String>"));
+                clazz.getFieldByName("X_MS_META").ifPresent(FieldDeclaration::remove);
+                if (!clazz.getFieldByName("X_MS_META_PREFIX").isPresent()) {
+                    clazz.getMembers().add(0,
+                        StaticJavaParser.parseBodyDeclaration("private static final String X_MS_META_PREFIX = \"x-ms-meta-\";"));
+                }
+                clazz.getConstructors().forEach(ctor -> {
+                    NodeList<Statement> statements = ctor.getBody().getStatements();
+                    for (int i = 0; i < statements.size(); i++) {
+                        if (statements.get(i).toString().contains("this.metadata = ")) {
+                            statements.remove(i);
+                            statements.add(i, StaticJavaParser.parseStatement("this.metadata = metadataHeaderCollection;"));
+                            statements.add(i, StaticJavaParser.parseStatement("for (HttpHeader header : rawHeaders) {"
+                                + " String headerName = header.getName();"
+                                + " if (headerName.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {"
+                                + " metadataHeaderCollection.put(headerName.substring(X_MS_META_PREFIX.length()),"
+                                + " header.getValue()); } }"));
+                            statements.add(i,
+                                StaticJavaParser.parseStatement("Map<String, String> metadataHeaderCollection = new LinkedHashMap<>();"));
+                            break;
+                        }
+                    }
+                });
+            });
+        });
+        logger.info("Restored x-ms-meta-* header-collection Map on QueuesGetPropertiesHeaders.");
     }
 
     private static void restoreFluentModels(LibraryCustomization customization, Logger logger) {

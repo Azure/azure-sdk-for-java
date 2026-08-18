@@ -3,7 +3,6 @@
 
 package com.azure.storage.queue.implementation.util;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -33,15 +32,11 @@ import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
-
-    private static final String X_MS_META_PREFIX = "x-ms-meta-";
 
     private static BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
@@ -108,17 +103,9 @@ public class ModelHelper {
     }
 
     public static QueueProperties transformQueueProperties(HttpHeaders headers) {
-        Map<String, String> metadata = new LinkedHashMap<>();
-        for (HttpHeader header : headers) {
-            String name = header.getName();
-            if (name.regionMatches(true, 0, X_MS_META_PREFIX, 0, X_MS_META_PREFIX.length())) {
-                metadata.put(name.substring(X_MS_META_PREFIX.length()), header.getValue());
-            }
-        }
-        // The generated header model provides the typed approximate-messages-count; the metadata map is a dynamic
-        // x-ms-meta-* collection the single-valued header model cannot represent, so it is still read manually.
-        Long count = new QueuesGetPropertiesHeaders(headers).getApproximateMessagesCount();
-        return new QueueProperties(metadata, count == null ? 0L : count);
+        QueuesGetPropertiesHeaders propertiesHeaders = new QueuesGetPropertiesHeaders(headers);
+        Long count = propertiesHeaders.getApproximateMessagesCount();
+        return new QueueProperties(propertiesHeaders.getMetadata(), count == null ? 0L : count);
     }
 
     public static UpdateMessageResult transformUpdateMessageResult(HttpHeaders headers) {
