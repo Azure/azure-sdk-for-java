@@ -143,7 +143,7 @@ Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`
 | `BetaInsightsClient` | `Insights=V1Preview` |
 | `BetaModelsClient` | `Models=V1Preview` |
 | `BetaRedTeamsClient` | `RedTeams=V1Preview` |
-| `BetaRoutinesClient` | `Routines=V1Preview` |
+| `BetaRoutinesClient` | `Routines=V2Preview` |
 | `BetaSchedulesClient` | `Schedules=V1Preview` |
 | `BetaSkillsClient` | `Skills=V1Preview` |
 

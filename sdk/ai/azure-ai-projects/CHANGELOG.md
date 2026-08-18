@@ -4,11 +4,17 @@
 
 ### Features Added
 
+- Added `TracesDataGenerationJobOptions.setRedactPrivateContent(...)` / `isRedactPrivateContent()` to control whether private content in traces is redacted (default is to redact; set `false` to opt out).
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Routines preview was rolled to V2. `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW` was renamed to `ROUTINES_V2_PREVIEW` (`Routines=V2Preview`); `BetaRoutinesClient` / `BetaRoutinesAsyncClient` now emit `Foundry-Features: Routines=V2Preview` on every request, and the `@Beta` markers on routine models (`Routine`, `RoutineAction`, `RoutineActionType`, `RoutineTrigger`, `RoutineTriggerType`, `RoutineRun`, `RoutineRunPhase`, `RoutineAttemptSource`, `RoutineDispatchPayload`, `RoutineDispatchPayloadType`, `DispatchRoutineResult`, `ScheduleRoutineTrigger`, `TimerRoutineTrigger`, `CustomRoutineTrigger`, `GitHubIssueEvent`, `GitHubIssueRoutineTrigger`, `InvokeAgentInvocationsApiRoutineAction` / `InvokeAgentInvocationsApiDispatchPayload`, `InvokeAgentResponsesApiRoutineAction` / `InvokeAgentResponsesApiDispatchPayload`) were updated to reference `Routines=V2Preview`.
+- The `task_generation` data generation scenario was renamed to `simulation_seed`. `TaskGenerationDataGenerationJobOptions` was renamed to `SimulationSeedDataGenerationJobOptions`, and `DataGenerationJobType.TASK_GENERATION` was replaced by `DataGenerationJobType.SIMULATION_SEED`. The discriminator value on `DataGenerationJobOptions` changed from `task_generation` to `simulation_seed`.
+- Routine listing convenience methods on `BetaRoutinesClient` / `BetaRoutinesAsyncClient` dropped the `before` parameter and now take `com.azure.ai.agents.models.PageOrder` instead of `String` for the `order` argument. `listRoutines(Integer, String, String, String)` was replaced by `listRoutines(Integer, String, PageOrder)`, and `listRoutineRuns(String, String, Integer, String, String, String)` was replaced by `listRoutineRuns(String, String, Integer, String, PageOrder)`.
 
 ### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.3.0 (2026-08-06)
 
