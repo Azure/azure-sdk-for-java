@@ -27,13 +27,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -67,12 +61,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Store well Know certificates loaded from specific path.
      */
-    private final SpecificPathCertificates wellKnowCertificates;
+    private SpecificPathCertificates wellKnowCertificates;
 
     /**
      * Store custom certificates loaded from specific path.
      */
-    private final SpecificPathCertificates customCertificates;
+    private SpecificPathCertificates customCertificates;
 
     /**
      * Store certificates loaded from KeyVault.
@@ -87,116 +81,67 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores all the certificates.
      */
-    private final List<AzureCertificates> allCertificates;
+    private List<AzureCertificates> allCertificates;
 
     /**
      * Stores the creation date.
      */
     private final Date creationDate;
 
-    private final boolean refreshCertificatesWhenHaveUnTrustCertificate;
-
-    private final boolean disableAiaDownload;
+    boolean refreshCertificatesWhenHaveUnTrustCertificate;
 
     /**
      * Store the path where the well-known certificate is placed
      */
-    final String wellKnowPath = Optional.ofNullable(System.getProperty(KeyVaultJcaPropertyNames.CERT_PATH_WELL_KNOWN))
-        .orElse("/etc/certs/well-known/");
+    String certPathWellKnown;
 
     /**
      * Store the path where the custom certificate is placed
      */
-    final String customPath = Optional.ofNullable(System.getProperty(KeyVaultJcaPropertyNames.CERT_PATH_CUSTOM))
-        .orElse("/etc/certs/custom/");
+    String certPathCustom;
 
     /**
      * Constructor.
      *
-     * <p>
-     * The constructor uses System.getProperty for
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_URI},
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_TENANT_ID},
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_CLIENT_ID},
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_CLIENT_SECRET},
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_MANAGED_IDENTITY}, and
-    * {@value KeyVaultJcaPropertyNames#KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD} to initialize the
-     * Key Vault client.
-     * </p>
+        * <p>The constructor uses {@link KeyVaultLoadStoreParameter#fromSystemProperties()} to capture the supported
+        * system properties and initialize all certificate sources from one configuration snapshot.</p>
      */
     public KeyVaultKeyStore() {
         LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
 
         creationDate = new Date();
-        String keyVaultUri = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
-        String tenantId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_TENANT_ID);
-        String clientId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_ID);
-        String clientSecret = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_SECRET);
-        String managedIdentity = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_MANAGED_IDENTITY);
-        String accessToken = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_ACCESS_TOKEN);
-        boolean disableChallengeResourceVerification = Boolean.parseBoolean(
-            System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION));
-        disableAiaDownload
-            = Boolean.parseBoolean(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD));
-        long refreshInterval = getRefreshInterval();
-        refreshCertificatesWhenHaveUnTrustCertificate
-            = Optional.of(KeyVaultJcaPropertyNames.KEYVAULT_JCA_REFRESH_CERTIFICATES_WHEN_HAVE_UNTRUST_CERTIFICATE)
-                .map(System::getProperty)
-                .map(Boolean::parseBoolean)
-                .orElse(false);
-
+        KeyVaultLoadStoreParameter parameter = KeyVaultLoadStoreParameter.fromSystemProperties();
         jreCertificates = JreCertificates.getInstance();
         LOGGER.log(FINE, String.format("Loaded jre certificates: %s.", jreCertificates.getAliases()));
 
-        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
-        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
-
-        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
-        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
-
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
-            managedIdentity, accessToken, disableChallengeResourceVerification, disableAiaDownload,
-            getKeyVaultCertificateAliasFilterPatterns());
-        LOGGER.log(FINE, () -> String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
+        keyVaultCertificates = new KeyVaultCertificates(parameter);
+        LOGGER.log(FINE, "Configured Key Vault certificate source.");
 
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
+
+        updateKeyStoreConfiguration(parameter);
+    }
+
+    private void updateKeyStoreConfiguration(KeyVaultLoadStoreParameter parameter) {
+        refreshCertificatesWhenHaveUnTrustCertificate = parameter.isRefreshCertificatesWhenHaveUnTrustCertificate();
+        certPathWellKnown = parameter.getCertPathWellKnown();
+        certPathCustom = parameter.getCertPathCustom();
+
+        wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathWellKnown);
+        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
+
+        customCertificates = SpecificPathCertificates.getSpecificPathCertificates(certPathCustom);
+        LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
         allCertificates = Arrays.asList(jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates,
             classpathCertificates);
     }
 
-    Long getRefreshInterval() {
-        return Stream
-            .of(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL_IN_MS,
-                KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATES_REFRESH_INTERVAL)
-            .map(System::getProperty)
-            .filter(Objects::nonNull)
-            .map(Long::valueOf)
-            .findFirst()
-            .orElse(0L);
-    }
-
-    Set<String> getKeyVaultCertificateAliasFilterPatterns() {
-        // Each pattern gets its own property because any delimiter character can be part of a regex.
-        Properties properties = System.getProperties();
-        String suffixedPropertyPrefix = KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN + ".";
-
-        return properties.stringPropertyNames()
-            .stream()
-            .filter(name -> name.equals(KeyVaultJcaPropertyNames.KEYVAULT_JCA_CERTIFICATE_ALIAS_FILTER_PATTERN)
-                || name.startsWith(suffixedPropertyPrefix))
-            .map(properties::getProperty)
-            .filter(Objects::nonNull)
-            .map(String::trim)
-            .filter(pattern -> !pattern.isEmpty())
-            .collect(Collectors.toSet());
-    }
-
     /**
-     * get key vault key store by system property
+     * Gets a Key Vault key store configured from a snapshot of the supported system properties.
      *
-     * @return KeyVault key store
+     * @return The Key Vault key store.
      * @throws CertificateException if any of the certificates in the
      *          keystore could not be loaded
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
@@ -206,19 +151,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public static KeyStore getKeyVaultKeyStoreBySystemProperty()
         throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
+        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = KeyVaultLoadStoreParameter.fromSystemProperties();
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
-        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter
-            = new KeyVaultLoadStoreParameter(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI),
-                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_TENANT_ID),
-                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_ID),
-                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_SECRET),
-                System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_MANAGED_IDENTITY))
-                    .setAccessToken(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_ACCESS_TOKEN));
-
-        if (Boolean.parseBoolean(
-            System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION))) {
-            keyVaultLoadStoreParameter.disableChallengeResourceVerification();
-        }
 
         keyStore.load(keyVaultLoadStoreParameter);
 
@@ -438,6 +372,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
+        * A {@link KeyVaultLoadStoreParameter} replaces the complete configuration captured by the constructor.
      *
      * @param param the {@code KeyStore.LoadStoreParameter}
      *          that specifies how to load the keystore,
@@ -448,9 +383,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
 
-            keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
-                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
-                parameter.getAccessToken(), parameter.isChallengeResourceVerificationDisabled(), disableAiaDownload);
+            keyVaultCertificates.updateKeyVaultClient(parameter);
+            updateKeyStoreConfiguration(parameter);
         }
 
         classpathCertificates.loadCertificatesFromClasspath();

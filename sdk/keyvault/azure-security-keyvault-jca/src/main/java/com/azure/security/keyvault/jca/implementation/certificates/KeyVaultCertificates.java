@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
@@ -102,56 +103,30 @@ public final class KeyVaultCertificates implements AzureCertificates {
 
     private KeyVaultClient keyVaultClient;
 
-    private final long refreshInterval;
+    private long certificatesRefreshIntervalInMs;
 
-    private final List<Pattern> includeAliasPatterns;
+    private List<Pattern> includeAliasPatterns;
 
-    private final List<Pattern> excludeAliasPatterns;
-
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification) {
-        this(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification, false, Collections.emptySet());
-    }
+    private List<Pattern> excludeAliasPatterns;
 
     /**
-     * Creates a filtered Key Vault certificate cache with an explicit AIA download setting.
+     * Creates a Key Vault certificate cache using the specified configuration.
      *
-     * @param refreshInterval Certificate refresh interval in milliseconds.
-     * @param keyVaultUri Key Vault URI.
-     * @param tenantId Tenant ID.
-     * @param clientId Client ID.
-     * @param clientSecret Client secret.
-     * @param managedIdentity Managed identity.
-     * @param accessToken Access token.
-     * @param disableChallengeResourceVerification Indicates if challenge resource verification should be disabled.
-     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
-     * @param certificateFilterPatterns Certificate alias filter patterns.
+     * @param parameter The Key Vault load-store configuration.
      */
-    public KeyVaultCertificates(long refreshInterval, String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
-        boolean disableAiaDownload, Set<String> certificateFilterPatterns) {
-
-        this.refreshInterval = refreshInterval;
-        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
-
-        updateKeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification, disableAiaDownload);
+    public KeyVaultCertificates(KeyVaultLoadStoreParameter parameter) {
+        updateKeyVaultClient(parameter);
     }
 
-    public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient) {
-        this(refreshInterval, keyVaultClient, Collections.emptySet());
-    }
+    private void updateCertificateConfiguration(KeyVaultLoadStoreParameter parameter) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(parameter.getCertificateAliasFilterPatterns());
+        List<Pattern> updatedIncludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
+        List<Pattern> updatedExcludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
 
-    public KeyVaultCertificates(long refreshInterval, KeyVaultClient keyVaultClient,
-        Set<String> certificateFilterPatterns) {
-        this.refreshInterval = refreshInterval;
-        setKeyVaultClient(keyVaultClient);
-        Set<String> normalizedFilterPatterns = normalizeFilterPatterns(certificateFilterPatterns);
-        this.includeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
-        this.excludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
+        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshIntervalInMs();
+        includeAliasPatterns = updatedIncludeAliasPatterns;
+        excludeAliasPatterns = updatedExcludeAliasPatterns;
     }
 
     private Set<String> normalizeFilterPatterns(Set<String> filterPatterns) {
@@ -219,28 +194,16 @@ public final class KeyVaultCertificates implements AzureCertificates {
     }
 
     /**
-     * Update KeyVaultClient.
+     * Updates the Key Vault client and its certificate cache configuration.
      *
-     * @param keyVaultUri Key Vault URI.
-     * @param tenantId Tenant ID.
-     * @param clientId Client ID.
-     * @param clientSecret Client secret.
-     * @param managedIdentity Managed identity.
-     * @param accessToken Access token.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
-     * @param disableAiaDownload Indicates if AIA certificate downloads should be disabled.
+     * @param parameter The Key Vault load-store configuration.
      */
-    public synchronized void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId,
-        String clientSecret, String managedIdentity, String accessToken, boolean disableChallengeResourceVerification,
-        boolean disableAiaDownload) {
+    public synchronized void updateKeyVaultClient(KeyVaultLoadStoreParameter parameter) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        KeyVaultClient updatedKeyVaultClient = parameter.getUri() == null ? null : new KeyVaultClient(parameter);
 
-        if (keyVaultUri != null) {
-            setKeyVaultClient(new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
-                accessToken, disableChallengeResourceVerification, disableAiaDownload));
-        } else {
-            setKeyVaultClient(null);
-        }
-
+        updateCertificateConfiguration(parameter);
+        setKeyVaultClient(updatedKeyVaultClient);
         clearCachedState();
     }
 
@@ -278,7 +241,8 @@ public final class KeyVaultCertificates implements AzureCertificates {
             return true;
         }
 
-        return refreshInterval > 0 && lastRefreshTime.getTime() + refreshInterval < new Date().getTime();
+        return certificatesRefreshIntervalInMs > 0
+            && lastRefreshTime.getTime() + certificatesRefreshIntervalInMs < new Date().getTime();
     }
 
     /**

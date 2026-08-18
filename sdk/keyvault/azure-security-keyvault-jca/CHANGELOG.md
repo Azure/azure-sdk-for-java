@@ -11,10 +11,11 @@
 ### Bugs Fixed
 - Stopped recording sensitive data in `FINER` level logs. Review any logs captured at the `FINER` level or lower in previous library versions and rotate any sensitive data contained there.
 - Fixed bug: `jarsigner` reports invalid certificate chain (`PKIX path building failed: unable to find valid certification path to requested target`) when using a non-exportable Azure Key Vault certificate. When the certificate chain returned by Azure Key Vault does not end in a self-signed root, the missing issuer certificates are now resolved at runtime using the CA Issuers URL in the AIA (Authority Information Access) extension of each certificate. Responses are cached by URL so subsequent loads can reuse them without another network request. ([#44267](https://github.com/Azure/azure-sdk-for-java/issues/44267))
+- Fixed an issue where `KeyStore.load(KeyVaultLoadStoreParameter)` could combine explicit client settings with certificate cache and path settings captured earlier from system properties. The parameter now carries the complete key store configuration. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 
 ### Other Changes
-- Added `KeyVaultJcaPropertyNames` as the central source for the system property names supported by the Azure Key Vault JCA provider.
 - Added system property `azure.keyvault.jca.disable-aia-download` to disable automatic AIA chain completion. AIA chain completion downloads certificates from URLs embedded in certificate extensions, so this allows locked-down environments to prevent those outbound HTTP(S) requests, mitigating potential SSRF-like attack vectors when loading untrusted certificates. The value is captured when each Key Vault client is initialized and retained for lazy certificate-chain loading, so multiple keystores can use different settings without overwriting one another. Set to `true` to disable (defaults to `false`).
+- Added `KeyVaultJcaPropertyNames` as the central source for the system property names supported by the Azure Key Vault JCA provider. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
 
 ## 2.12.0 (2026-07-24)
 

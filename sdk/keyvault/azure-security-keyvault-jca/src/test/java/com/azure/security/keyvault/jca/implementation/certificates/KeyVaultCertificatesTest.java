@@ -9,8 +9,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.CertificateVersion;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import java.lang.reflect.Field;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -49,6 +51,29 @@ public class KeyVaultCertificatesTest {
 
     private KeyVaultCertificates keyVaultCertificates;
 
+    private KeyVaultCertificates createKeyVaultCertificates(KeyVaultClient client) {
+        return createKeyVaultCertificates(client, Collections.emptySet());
+    }
+
+    private KeyVaultCertificates createKeyVaultCertificates(KeyVaultClient client, Set<String> filterPatterns) {
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertificatesRefreshIntervalInMs(60_000)
+                .setCertificateAliasFilterPatterns(filterPatterns);
+        KeyVaultCertificates certificates = new KeyVaultCertificates(parameter);
+        setKeyVaultClient(certificates, client);
+        return certificates;
+    }
+
+    private void setKeyVaultClient(KeyVaultCertificates certificates, KeyVaultClient client) {
+        try {
+            Field keyVaultClientField = KeyVaultCertificates.class.getDeclaredField("keyVaultClient");
+            keyVaultClientField.setAccessible(true);
+            keyVaultClientField.set(certificates, client);
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException("Failed to inject the test KeyVaultClient.", exception);
+        }
+    }
+
     @BeforeEach
     public void beforeEach() {
         List<String> aliases = new ArrayList<>();
@@ -58,7 +83,7 @@ public class KeyVaultCertificatesTest {
         when(keyVaultClient.getKeyForVersion(certificateVersion, null)).thenReturn(key);
         when(keyVaultClient.getCertificateForVersion(certificateVersion)).thenReturn(certificate);
         when(keyVaultClient.getCertificateChainForVersion(certificateVersion)).thenReturn(certificateChain);
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient);
     }
 
     @Test
@@ -271,7 +296,7 @@ public class KeyVaultCertificatesTest {
         aliases.add("otheralias");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
 
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("myalias"));
 
         List<String> result = keyVaultCertificates.getAliases();
         Assertions.assertEquals(1, result.size());
@@ -286,7 +311,7 @@ public class KeyVaultCertificatesTest {
         aliases.add("dev-cert");
         when(keyVaultClient.getAliases()).thenReturn(aliases);
 
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("^prod-.*"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("^prod-.*"));
 
         Assertions.assertEquals(Collections.singletonList("prod-cert"), keyVaultCertificates.getAliases());
         verify(keyVaultClient, times(1)).getAliases();
@@ -300,7 +325,7 @@ public class KeyVaultCertificatesTest {
         when(keyVaultClient.getAliases()).thenReturn(aliases);
 
         Set<String> filterPatterns = new HashSet<>(Arrays.asList("^prod-.*", "!^prod-deprecated$"));
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, filterPatterns);
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, filterPatterns);
 
         Assertions.assertEquals(Collections.singletonList("prod-active"), keyVaultCertificates.getAliases());
         verify(keyVaultClient, times(1)).getAliases();
@@ -308,7 +333,7 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testConfiguredAliasesFilterAfterRefresh() {
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("myalias"));
 
         Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
 
@@ -326,8 +351,7 @@ public class KeyVaultCertificatesTest {
     public void testConfiguredAliasesFilterUsesListApi() {
         when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("configured-alias", "other-alias"));
 
-        keyVaultCertificates
-            = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("configured-alias"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("configured-alias"));
 
         Assertions.assertEquals(Collections.singletonList("configured-alias"), keyVaultCertificates.getAliases());
         verify(keyVaultClient, times(1)).getAliases();
@@ -336,7 +360,7 @@ public class KeyVaultCertificatesTest {
     @Test
     public void testConfiguredAliasesIgnoreNullEntries() {
         Set<String> configuredAliases = new HashSet<>(Arrays.asList("myalias", null));
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, configuredAliases);
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, configuredAliases);
 
         Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
         verify(keyVaultClient, times(1)).getAliases();
@@ -347,22 +371,21 @@ public class KeyVaultCertificatesTest {
         Set<String> filterPatterns = new HashSet<>(Collections.singletonList("[invalid"));
 
         Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new KeyVaultCertificates(60_000, keyVaultClient, filterPatterns));
+            () -> createKeyVaultCertificates(keyVaultClient, filterPatterns));
     }
 
     @Test
     public void testFilterPatternWithBoundedQuantifier() {
         when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("cert-42", "cert-1234567", "cert-abc"));
 
-        keyVaultCertificates
-            = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("^cert-\\d{1,5}$"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("^cert-\\d{1,5}$"));
 
         Assertions.assertEquals(Collections.singletonList("cert-42"), keyVaultCertificates.getAliases());
     }
 
     @Test
     public void testGetCertificateWithUnconfiguredAliasDoesNotFetchDetails() {
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient, Collections.singleton("myalias"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("myalias"));
 
         Assertions.assertNull(keyVaultCertificates.getCertificate("otheralias"));
 
@@ -535,13 +558,42 @@ public class KeyVaultCertificatesTest {
         Assertions.assertTrue(keyVaultCertificates.getAliases().contains("myalias"));
         Assertions.assertEquals(certificate, keyVaultCertificates.getCertificate("myalias"));
 
-        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false, false);
+        keyVaultCertificates.updateKeyVaultClient(new KeyVaultLoadStoreParameter(null));
 
         Assertions.assertTrue(keyVaultCertificates.getAliases().isEmpty());
         Assertions.assertTrue(keyVaultCertificates.getCertificates().isEmpty());
         Assertions.assertTrue(keyVaultCertificates.getCertificateChains().isEmpty());
         Assertions.assertTrue(keyVaultCertificates.getCertificateKeys().isEmpty());
         Assertions.assertNull(keyVaultCertificates.getCertificate("myalias"));
+    }
+
+    @Test
+    public void testUpdateKeyVaultClientAppliesAliasFilterPatterns() {
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("prod-cert", "dev-cert"));
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertificateAliasFilterPatterns(Collections.singleton("^prod-.*"));
+
+        keyVaultCertificates.updateKeyVaultClient(parameter);
+        setKeyVaultClient(keyVaultCertificates, keyVaultClient);
+
+        Assertions.assertEquals(Collections.singletonList("prod-cert"), keyVaultCertificates.getAliases());
+    }
+
+    @Test
+    public void testInvalidClientUpdatePreservesExistingAliasFilters() {
+        when(keyVaultClient.getAliases()).thenReturn(Arrays.asList("myalias", "otheralias"));
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient, Collections.singleton("myalias"));
+        Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
+
+        Set<String> invalidFilterPatterns = new HashSet<>(Arrays.asList("otheralias", "![invalid"));
+        KeyVaultLoadStoreParameter parameter
+            = new KeyVaultLoadStoreParameter(null).setCertificateAliasFilterPatterns(invalidFilterPatterns);
+
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> keyVaultCertificates.updateKeyVaultClient(parameter));
+        keyVaultCertificates.refreshCertificates();
+
+        Assertions.assertEquals(Collections.singletonList("myalias"), keyVaultCertificates.getAliases());
     }
 
     @Test
@@ -640,7 +692,7 @@ public class KeyVaultCertificatesTest {
         reader.start();
 
         staleAnswer.awaitStarted();
-        keyVaultCertificates.updateKeyVaultClient(null, null, null, null, null, null, false, false);
+        keyVaultCertificates.updateKeyVaultClient(new KeyVaultLoadStoreParameter(null));
         staleAnswer.release();
         joinThreads(Collections.singletonList(reader));
 
@@ -665,7 +717,7 @@ public class KeyVaultCertificatesTest {
             return Collections.singletonList("fresh-alias");
         });
 
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient);
 
         Thread slowRefresh = new Thread(keyVaultCertificates::refreshCertificates);
         slowRefresh.start();
@@ -693,7 +745,7 @@ public class KeyVaultCertificatesTest {
             return Collections.singletonList("myalias");
         });
 
-        keyVaultCertificates = new KeyVaultCertificates(60_000, keyVaultClient);
+        keyVaultCertificates = createKeyVaultCertificates(keyVaultClient);
 
         List<Thread> readers = new ArrayList<>();
         for (int i = 0; i < 4; i++) {

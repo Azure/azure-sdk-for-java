@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation;
 
-import com.azure.security.keyvault.jca.KeyVaultJcaPropertyNames;
+import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
@@ -112,6 +112,17 @@ public class KeyVaultClient {
     private final boolean disableAiaDownload;
 
     /**
+     * Creates a client using the specified Key Vault load-store configuration.
+     *
+     * @param parameter The Key Vault load-store configuration.
+     */
+    public KeyVaultClient(KeyVaultLoadStoreParameter parameter) {
+        this(parameter.getUri(), parameter.getTenantId(), parameter.getClientId(), parameter.getClientSecret(),
+            parameter.getManagedIdentity(), parameter.getAccessToken(),
+            parameter.isDisableChallengeResourceVerification(), parameter.isAiaDownloadDisabled());
+    }
+
+    /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri The Azure Key Vault URI.
@@ -201,19 +212,7 @@ public class KeyVaultClient {
     }
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
-        String keyVaultUri = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI);
-        String tenantId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_TENANT_ID);
-        String clientId = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_ID);
-        String clientSecret = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_CLIENT_SECRET);
-        String managedIdentity = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_MANAGED_IDENTITY);
-        String accessToken = System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_ACCESS_TOKEN);
-        boolean disableChallengeResourceVerification = Boolean.parseBoolean(
-            System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_DISABLE_CHALLENGE_RESOURCE_VERIFICATION));
-        boolean disableAiaDownload
-            = Boolean.parseBoolean(System.getProperty(KeyVaultJcaPropertyNames.KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD));
-
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
-            disableChallengeResourceVerification, disableAiaDownload);
+        return new KeyVaultClient(KeyVaultLoadStoreParameter.fromSystemProperties());
     }
 
     /**

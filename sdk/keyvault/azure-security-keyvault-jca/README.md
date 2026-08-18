@@ -154,6 +154,33 @@ or as a JVM argument:
 -Dazure.keyvault.uri=<your-azure-keyvault-uri>
 ```
 
+#### Programmatic configuration
+
+Use `KeyVaultLoadStoreParameter` when each key store needs an explicit configuration instead of global system
+properties:
+
+```java
+KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+    "<your-azure-keyvault-uri>",
+    "<your-tenant-id>",
+    "<your-client-id>",
+    "<your-client-secret>")
+    .setCertificatesRefreshIntervalInMs(60_000)
+    .setCertificateAliasFilterPatterns(Collections.singleton("^prod-.*"));
+parameter.disableAiaDownload();
+
+Security.addProvider(new KeyVaultJcaProvider());
+KeyStore keyStore = KeyStore.getInstance(
+    KeyVaultKeyStore.KEY_STORE_TYPE,
+    KeyVaultJcaProvider.PROVIDER_NAME);
+keyStore.load(parameter);
+```
+
+When `load(parameter)` is used, the values and defaults in that parameter replace the complete configuration captured
+from system properties. This prevents separate key stores from overwriting one another's configuration. Use
+`KeyVaultLoadStoreParameter.fromSystemProperties()` when a programmatic caller needs the same system-property
+snapshot used by the default key store initialization.
+
 #### Filtering Key Vault certificate aliases
 
 Each filter is configured as its own property, so no delimiter is required and a pattern may contain any character. Filters use Java-based regex:
