@@ -33,6 +33,12 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
+    /**
+     * Context key under which a per-download-operation {@link CseV2NonceOrderValidator} is shared, so that the CSEv2
+     * nonce scheme is enforced consistently across every (possibly concurrent) chunk of a single download.
+     */
+    static final String GCM_NONCE_VALIDATOR_KEY = "gcmNonceValidator";
+
     static final HttpHeaderName ENCRYPTION_METADATA_HEADER
         = HttpHeaderName.fromString(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY);
 

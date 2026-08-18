@@ -295,6 +295,30 @@ public class DecryptorV2ReorderTests {
         assertArrayEquals(region1Plaintext, recovered);
     }
 
+    @Test
+    public void sharedValidatorEnforcesSchemeAcrossChunks() {
+        // A download operation may span multiple decrypt() calls (parallel downloadToFile / chunked openInputStream).
+        // A shared validator must intersect the candidate encodings across chunks; otherwise the encoding could change
+        // at a chunk boundary and, at an encoding collision, let a relocated region pass. Mirrors the Python SDK's
+        // test_nonce_validator_enforces_single_encoding_across_chunks.
+        assertArrayEquals(javaNonce(1), dotnetNonce(16_777_215));
+
+        byte[] cek = randomBytes(32);
+        CseV2NonceOrderValidator shared = new CseV2NonceOrderValidator();
+
+        // First chunk: two Java-encoded regions resolve the shared encoding to Java.
+        byte[] chunk1 = concat(encryptRegionWithNonce(cek, javaNonce(0), randomBytes(REGION_DATA_LENGTH)),
+            encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH)));
+        decrypt(cek, chunk1, 0, shared);
+
+        // Later chunk: a region relocated to the colliding .NET index carries Java's region-1 nonce. On a fresh
+        // per-chunk validator its only consistent encoding is .NET and it would pass; the shared validator (already
+        // resolved to Java) rejects it.
+        byte[] relocated = encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH));
+        long collidingOffset = 16_777_215L * REGION_DATA_LENGTH;
+        assertThrows(IllegalStateException.class, () -> decrypt(cek, relocated, collidingOffset, shared));
+    }
+
     private static byte[] encrypt(byte[] cek, byte[] plaintext) {
         SecretKey key = new SecretKeySpec(cek, AES);
         EncryptorV2 encryptor = new EncryptorV2(key,
@@ -367,10 +391,14 @@ public class DecryptorV2ReorderTests {
     }
 
     private static byte[] decrypt(byte[] cek, byte[] ciphertext, long offset) {
+        return decrypt(cek, ciphertext, offset, new CseV2NonceOrderValidator());
+    }
+
+    private static byte[] decrypt(byte[] cek, byte[] ciphertext, long offset, CseV2NonceOrderValidator validator) {
         EncryptionData encryptionData = new EncryptionData()
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
             .setEncryptedRegionInfo(new EncryptedRegionInfo(REGION_DATA_LENGTH, NONCE_LENGTH));
-        DecryptorV2 decryptor = new DecryptorV2(null, null, encryptionData);
+        DecryptorV2 decryptor = new DecryptorV2(null, null, encryptionData, validator);
         EncryptedBlobRange range = new EncryptedBlobRange(new BlobRange(offset), encryptionData);
 
         List<ByteBuffer> out
