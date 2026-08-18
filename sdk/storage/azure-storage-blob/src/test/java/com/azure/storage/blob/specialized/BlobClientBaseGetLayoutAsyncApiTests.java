@@ -79,7 +79,8 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     public void getLayoutRange() {
         StepVerifier.create(bc.getBlockBlobAsyncClient()
             .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .thenMany(bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
+            .thenMany(
+                bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
             .then()).verifyComplete();
     }
 
@@ -95,8 +96,10 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutContinuationToken() {
-        Flux<PagedResponse<BlobLayoutInfo>> response
-            = bc.getLayoutWithResponse(null).byPage(1).next().flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
+        Flux<PagedResponse<BlobLayoutInfo>> response = bc.getLayoutWithResponse(null)
+            .byPage(1)
+            .next()
+            .flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
 
         StepVerifier.create(response.then()).verifyComplete();
     }

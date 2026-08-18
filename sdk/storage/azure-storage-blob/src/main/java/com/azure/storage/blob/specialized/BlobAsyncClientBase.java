@@ -1910,13 +1910,20 @@ public class BlobAsyncClientBase {
      * @return A reactive response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options) {
+    protected PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options) {
         return new PagedFlux<>(pageSize -> withContext(context -> getLayoutPage(null, options, pageSize, context)),
             (continuationToken,
                 pageSize) -> withContext(context -> getLayoutPage(continuationToken, options, pageSize, context)));
     }
 
-    PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
+    /**
+     * Returns the blob's layout.
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @param context {@link Context}
+     * @return A reactive response emitting all blob layout information.
+     */
+    protected PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         return new PagedFlux<>(pageSize -> getLayoutPage(null, options, pageSize, finalContext),
             (continuationToken, pageSize) -> getLayoutPage(continuationToken, options, pageSize, finalContext));
@@ -1937,9 +1944,8 @@ public class BlobAsyncClientBase {
     private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>>
         getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
         return getLayoutPageWithHeaders(null, layoutOptions, null, context)
-            .flatMapMany(initialResponse ->
-                expandLayoutPages(initialResponse, layoutOptions.getRange(), requestConditions, context)
-            );
+            .flatMapMany(initialResponse -> expandLayoutPages(initialResponse, layoutOptions.getRange(),
+                requestConditions, context));
     }
 
     private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> expandLayoutPages(
