@@ -48,8 +48,6 @@ public final class TopicProperties {
     private boolean requiresDuplicateDetection;
     private final long sizeInBytes;
     private final int subscriptionCount;
-    private final int sqlFilterCount;
-    private final int correlationFilterCount;
     private boolean supportOrdering;
     private final boolean enablePartitioning;
     private String userMetadata;
@@ -137,8 +135,6 @@ public final class TopicProperties {
         this.sizeInBytes = toPrimitive(topic.getSizeInBytes());
         this.status = topic.getStatus();
         this.subscriptionCount = toPrimitive(topic.getSubscriptionCount());
-        this.sqlFilterCount = toPrimitive(topic.getSqlFilterCount());
-        this.correlationFilterCount = toPrimitive(topic.getCorrelationFilterCount());
         this.supportOrdering = toPrimitive(topic.isSupportOrdering());
         this.updatedAt = topic.getUpdatedAt();
         this.userMetadata = topic.getUserMetadata();
@@ -456,25 +452,6 @@ public final class TopicProperties {
      */
     int getSubscriptionCount() {
         return this.subscriptionCount;
-    }
-
-    /**
-     * Get the sqlFilterCount property: The total number of SQL filters across all subscriptions of the topic.
-     *
-     * @return the sqlFilterCount value.
-     */
-    int getSqlFilterCount() {
-        return this.sqlFilterCount;
-    }
-
-    /**
-     * Get the correlationFilterCount property: The total number of correlation filters across all subscriptions of the
-     * topic.
-     *
-     * @return the correlationFilterCount value.
-     */
-    int getCorrelationFilterCount() {
-        return this.correlationFilterCount;
     }
 
     /**

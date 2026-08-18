@@ -254,6 +254,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
  *     .processMessage&#40;processMessage&#41;
  *     .processError&#40;processError&#41;
+ *     .disableAutoComplete&#40;&#41;
  *     .buildProcessorClient&#40;&#41;;
  *
  * &#47;&#47; Starts the processor in the background. Control returns immediately.
@@ -1820,25 +1821,6 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
-         * When {@link ServiceBusProcessorClient#close()} is called, the processor will wait up to this duration
-         * for handlers that are currently processing messages to finish before shutting down. This ensures
-         * that messages being processed can complete settlement (complete, abandon, etc.) without encountering
-         * a disposed receiver.
-         *
-         * <p>If not specified, defaults to 30 seconds.</p>
-         *
-         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
-         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
-         * @throws NullPointerException if {@code drainTimeout} is null.
-         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
-         */
-        public ServiceBusSessionProcessorClientBuilder drainTimeout(Duration drainTimeout) {
-            processorClientOptions.setDrainTimeout(drainTimeout);
-            return this;
-        }
-
-        /**
          * Disables auto-complete and auto-abandon of received messages. By default, a successfully processed message is
          * {@link ServiceBusReceivedMessageContext#complete() completed}. If an error happens when
          * the message is processed, it is {@link ServiceBusReceivedMessageContext#abandon()
@@ -2140,7 +2122,7 @@ public final class ServiceBusClientBuilder
 
         SessionsMessagePump buildPumpForProcessor(ClientLogger logger,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            int concurrencyPerSession, Duration drainTimeout) {
+            int concurrencyPerSession) {
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 LOGGER.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
@@ -2184,7 +2166,7 @@ public final class ServiceBusClientBuilder
             return new SessionsMessagePump(clientIdentifier, connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout,
                 maxConcurrentSessions, concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
-                retryPolicy, processMessage, processError, onTerminate, drainTimeout);
+                retryPolicy, processMessage, processError, onTerminate);
         }
 
         /**
@@ -2351,6 +2333,7 @@ public final class ServiceBusClientBuilder
      *     .disableAutoComplete&#40;&#41;  &#47;&#47; Make sure to explicitly opt in to manual settlement &#40;e.g. complete, abandon&#41;.
      *     .processMessage&#40;processMessage&#41;
      *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
      * &#47;&#47; Starts the processor in the background. Control returns immediately.
@@ -2387,6 +2370,7 @@ public final class ServiceBusClientBuilder
      *
      * &#47;&#47; Create the processor client via the builder and its sub-builder
      * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; 'disableAutoComplete&#40;&#41;' will opt in to manual settlement &#40;e.g. complete, abandon&#41;.
      * ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder&#40;&#41;
      *     .credential&#40;fullyQualifiedNamespace, tokenCredential&#41;
      *     .processor&#40;&#41;
@@ -2394,6 +2378,7 @@ public final class ServiceBusClientBuilder
      *     .receiveMode&#40;ServiceBusReceiveMode.RECEIVE_AND_DELETE&#41;
      *     .processMessage&#40;processMessage&#41;
      *     .processError&#40;processError&#41;
+     *     .disableAutoComplete&#40;&#41;
      *     .buildProcessorClient&#40;&#41;;
      *
      * &#47;&#47; Starts the processor in the background. Control returns immediately.
@@ -2571,25 +2556,6 @@ public final class ServiceBusClientBuilder
                     .logExceptionAsError(new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
-            return this;
-        }
-
-        /**
-         * Sets the maximum time to wait for in-flight message handlers to complete when the processor is closed.
-         * When {@link ServiceBusProcessorClient#close()} is called, the processor will wait up to this duration
-         * for handlers that are currently processing messages to finish before shutting down. This ensures
-         * that messages being processed can complete settlement (complete, abandon, etc.) without encountering
-         * a disposed receiver.
-         *
-         * <p>If not specified, defaults to 30 seconds.</p>
-         *
-         * @param drainTimeout The maximum time to wait for in-flight handlers. Must be positive.
-         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
-         * @throws NullPointerException if {@code drainTimeout} is null.
-         * @throws IllegalArgumentException if {@code drainTimeout} is zero or negative.
-         */
-        public ServiceBusProcessorClientBuilder drainTimeout(Duration drainTimeout) {
-            processorClientOptions.setDrainTimeout(drainTimeout);
             return this;
         }
 
