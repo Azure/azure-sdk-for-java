@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +23,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * should be specified when direction is Both or Down
      */
-    @Generated
     private Double lower;
 
     /*
@@ -32,25 +30,21 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * should be specified when direction is Both or Up
      */
-    @Generated
     private Double upper;
 
     /*
      * value filter direction
      */
-    @Generated
     private Direction direction;
 
     /*
      * data used to implement value filter
      */
-    @Generated
     private ValueType type;
 
     /*
      * the other metric unique id used for value filter
      */
-    @Generated
     private UUID metricId;
 
     /*
@@ -58,13 +52,11 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * should be specified only when using other metric to filter
      */
-    @Generated
     private Boolean triggerForMissing;
 
     /**
      * Creates an instance of ValueCondition class.
      */
-    @Generated
     public ValueCondition() {
     }
 
@@ -75,7 +67,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the lower value.
      */
-    @Generated
     public Double getLower() {
         return this.lower;
     }
@@ -88,7 +79,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param lower the lower value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setLower(Double lower) {
         this.lower = lower;
         return this;
@@ -101,7 +91,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the upper value.
      */
-    @Generated
     public Double getUpper() {
         return this.upper;
     }
@@ -114,7 +103,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param upper the upper value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setUpper(Double upper) {
         this.upper = upper;
         return this;
@@ -125,7 +113,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the direction value.
      */
-    @Generated
     public Direction getDirection() {
         return this.direction;
     }
@@ -136,7 +123,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param direction the direction value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setDirection(Direction direction) {
         this.direction = direction;
         return this;
@@ -147,7 +133,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the type value.
      */
-    @Generated
     public ValueType getType() {
         return this.type;
     }
@@ -158,7 +143,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param type the type value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setType(ValueType type) {
         this.type = type;
         return this;
@@ -169,7 +153,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the metricId value.
      */
-    @Generated
     public UUID getMetricId() {
         return this.metricId;
     }
@@ -180,7 +163,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param metricId the metricId value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setMetricId(UUID metricId) {
         this.metricId = metricId;
         return this;
@@ -193,7 +175,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * 
      * @return the triggerForMissing value.
      */
-    @Generated
     public Boolean isTriggerForMissing() {
         return this.triggerForMissing;
     }
@@ -206,16 +187,11 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @param triggerForMissing the triggerForMissing value to set.
      * @return the ValueCondition object itself.
      */
-    @Generated
     public ValueCondition setTriggerForMissing(Boolean triggerForMissing) {
         this.triggerForMissing = triggerForMissing;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -237,7 +213,6 @@ public final class ValueCondition implements JsonSerializable<ValueCondition> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ValueCondition.
      */
-    @Generated
     public static ValueCondition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ValueCondition deserializedValueCondition = new ValueCondition();

@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class FeedbackDimensionFilter implements JsonSerializable<FeedbackD
     /*
      * metric dimension filter
      */
-    @Generated
     private Map<String, String> dimension;
 
     /**
      * Creates an instance of FeedbackDimensionFilter class.
      */
-    @Generated
     public FeedbackDimensionFilter() {
     }
 
@@ -36,7 +33,6 @@ public final class FeedbackDimensionFilter implements JsonSerializable<FeedbackD
      * 
      * @return the dimension value.
      */
-    @Generated
     public Map<String, String> getDimension() {
         return this.dimension;
     }
@@ -47,16 +43,11 @@ public final class FeedbackDimensionFilter implements JsonSerializable<FeedbackD
      * @param dimension the dimension value to set.
      * @return the FeedbackDimensionFilter object itself.
      */
-    @Generated
     public FeedbackDimensionFilter setDimension(Map<String, String> dimension) {
         this.dimension = dimension;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +64,6 @@ public final class FeedbackDimensionFilter implements JsonSerializable<FeedbackD
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FeedbackDimensionFilter.
      */
-    @Generated
     public static FeedbackDimensionFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FeedbackDimensionFilter deserializedFeedbackDimensionFilter = new FeedbackDimensionFilter();

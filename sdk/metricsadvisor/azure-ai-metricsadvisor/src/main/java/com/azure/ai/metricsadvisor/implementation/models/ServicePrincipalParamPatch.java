@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +19,21 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
     /*
      * The client id of the service principal.
      */
-    @Generated
     private String clientId;
 
     /*
      * The client secret of the service principal.
      */
-    @Generated
     private String clientSecret;
 
     /*
      * The tenant id of the service principal.
      */
-    @Generated
     private String tenantId;
 
     /**
      * Creates an instance of ServicePrincipalParamPatch class.
      */
-    @Generated
     public ServicePrincipalParamPatch() {
     }
 
@@ -47,7 +42,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * 
      * @return the clientId value.
      */
-    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -58,7 +52,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * @param clientId the clientId value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
-    @Generated
     public ServicePrincipalParamPatch setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -69,7 +62,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * 
      * @return the clientSecret value.
      */
-    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -80,7 +72,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * @param clientSecret the clientSecret value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
-    @Generated
     public ServicePrincipalParamPatch setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -91,7 +82,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * 
      * @return the tenantId value.
      */
-    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -102,16 +92,11 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * @param tenantId the tenantId value to set.
      * @return the ServicePrincipalParamPatch object itself.
      */
-    @Generated
     public ServicePrincipalParamPatch setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -129,7 +114,6 @@ public final class ServicePrincipalParamPatch implements JsonSerializable<Servic
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ServicePrincipalParamPatch.
      */
-    @Generated
     public static ServicePrincipalParamPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalParamPatch deserializedServicePrincipalParamPatch = new ServicePrincipalParamPatch();
