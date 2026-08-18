@@ -65,9 +65,9 @@ public class QueueStorageCustomizations extends Customization {
         "AzureQueueStorageBuilder",
         "QueuesServiceVersion");
 
-    // Generated XML wrapper models unused by the hand-written clients (they use the hand-authored *Wrapper types).
-    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList(
-        "ReceivedMessages", "PeekedMessages", "ListOfSentMessage", "SignedIdentifiers");
+    // The hand-written clients consume the generated XML list-wrapper models (SignedIdentifiers, ReceivedMessages,
+    // PeekedMessages, ListOfSentMessage) directly, so none are removed.
+    private static final List<String> GENERATED_MODELS_TO_REMOVE = Arrays.asList();
 
     // module-info.java is hand-authored: the module descriptor carries the full requires/exports/opens (incl. the
     // transitive com.azure.storage.common visibility). typespec-java regenerates a minimal version that overwrites
