@@ -12,11 +12,11 @@ public final class ClientDiscoveryDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientDiscoveryDisplay model = BinaryData.fromString(
-            "{\"provider\":\"jxsqwpgrjbz\",\"resource\":\"rcjxvsnbyxqabn\",\"operation\":\"cpc\",\"description\":\"hurzafblj\"}")
+            "{\"provider\":\"mijcmmxdcufufs\",\"resource\":\"ymzidn\",\"operation\":\"zcxtbzsgfyccsn\",\"description\":\"mdwzjeiachboo\"}")
             .toObject(ClientDiscoveryDisplay.class);
-        Assertions.assertEquals("jxsqwpgrjbz", model.provider());
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.resource());
-        Assertions.assertEquals("cpc", model.operation());
-        Assertions.assertEquals("hurzafblj", model.description());
+        Assertions.assertEquals("mijcmmxdcufufs", model.provider());
+        Assertions.assertEquals("ymzidn", model.resource());
+        Assertions.assertEquals("zcxtbzsgfyccsn", model.operation());
+        Assertions.assertEquals("mdwzjeiachboo", model.description());
     }
 }
