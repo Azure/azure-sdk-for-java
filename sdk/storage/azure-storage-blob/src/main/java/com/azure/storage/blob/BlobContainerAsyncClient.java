@@ -1846,4 +1846,11 @@ public final class BlobContainerAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
+    //    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
+    //        if (modifiedRequestConditions == null) {
+    //            return true;
+    //        }
+    //        return modifiedRequestConditions.getIfModifiedSince() == null
+    //            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
+    //    }
 }

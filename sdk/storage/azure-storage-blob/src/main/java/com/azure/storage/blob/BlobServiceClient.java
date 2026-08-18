@@ -147,7 +147,6 @@ public final class BlobServiceClient {
         if (CoreUtils.isNullOrEmpty(containerName)) {
             containerName = BlobContainerClient.ROOT_CONTAINER_NAME;
         }
-
         return new BlobContainerClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
@@ -438,6 +437,7 @@ public final class BlobServiceClient {
                 timeout);
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
+
     }
 
     private PagedResponse<BlobContainerItem> listBlobContainersSegment(String marker, BlobContainerListDetails details,

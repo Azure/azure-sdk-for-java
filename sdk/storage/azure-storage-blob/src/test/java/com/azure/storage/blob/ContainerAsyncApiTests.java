@@ -4,14 +4,11 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -34,8 +31,6 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -44,7 +39,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,11 +48,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.io.ByteArrayInputStream;
-import java.nio.file.Files;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -2515,5 +2506,4 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertEquals("tagvalue", item.getTags().get("tagkey"));
         }).verifyComplete();
     }
-
 }

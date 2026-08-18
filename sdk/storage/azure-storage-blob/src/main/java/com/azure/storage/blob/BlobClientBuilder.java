@@ -189,13 +189,13 @@ public final class BlobClientBuilder
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
+        HttpPipeline pipeline = constructPipeline();
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
             snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
-    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+    private HttpPipeline constructPipeline() {
         return (httpPipeline != null)
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,

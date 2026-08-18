@@ -133,7 +133,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
+        HttpPipeline pipeline = constructPipeline();
 
         return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -174,13 +174,13 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
+        HttpPipeline pipeline = constructPipeline();
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
-    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+    private HttpPipeline constructPipeline() {
         return (httpPipeline != null)
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,

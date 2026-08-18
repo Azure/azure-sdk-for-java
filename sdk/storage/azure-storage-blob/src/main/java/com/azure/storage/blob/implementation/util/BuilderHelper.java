@@ -24,12 +24,10 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -133,10 +131,7 @@ public final class BuilderHelper {
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy
-                = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
-
-            policies.add(bearerPolicy);
+            policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
         }
 
         if (azureSasCredential != null) {
