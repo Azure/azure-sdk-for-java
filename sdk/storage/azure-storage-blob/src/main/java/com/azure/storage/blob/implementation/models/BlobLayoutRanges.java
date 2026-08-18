@@ -35,7 +35,7 @@ public final class BlobLayoutRanges implements XmlSerializable<BlobLayoutRanges>
 
     /**
      * Get the range property: The Range property.
-     * 
+     *
      * @return the range value.
      */
     @Generated
@@ -45,7 +45,7 @@ public final class BlobLayoutRanges implements XmlSerializable<BlobLayoutRanges>
 
     /**
      * Set the range property: The Range property.
-     * 
+     *
      * @param range the range value to set.
      * @return the BlobLayoutRanges object itself.
      */
@@ -76,7 +76,7 @@ public final class BlobLayoutRanges implements XmlSerializable<BlobLayoutRanges>
 
     /**
      * Reads an instance of BlobLayoutRanges from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobLayoutRanges if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -89,7 +89,7 @@ public final class BlobLayoutRanges implements XmlSerializable<BlobLayoutRanges>
 
     /**
      * Reads an instance of BlobLayoutRanges from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

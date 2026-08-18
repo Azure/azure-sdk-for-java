@@ -44,7 +44,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Get the start property: The start byte offset of the range.
-     * 
+     *
      * @return the start value.
      */
     @Generated
@@ -54,7 +54,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Set the start property: The start byte offset of the range.
-     * 
+     *
      * @param start the start value to set.
      * @return the BlobLayoutRangesRangeItem object itself.
      */
@@ -66,7 +66,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Get the end property: The end byte offset of the range.
-     * 
+     *
      * @return the end value.
      */
     @Generated
@@ -76,7 +76,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Set the end property: The end byte offset of the range.
-     * 
+     *
      * @param end the end value to set.
      * @return the BlobLayoutRangesRangeItem object itself.
      */
@@ -88,7 +88,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Get the endpointIndex property: Index into the Endpoints array indicating which endpoint serves this range.
-     * 
+     *
      * @return the endpointIndex value.
      */
     @Generated
@@ -98,7 +98,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Set the endpointIndex property: Index into the Endpoints array indicating which endpoint serves this range.
-     * 
+     *
      * @param endpointIndex the endpointIndex value to set.
      * @return the BlobLayoutRangesRangeItem object itself.
      */
@@ -127,7 +127,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Reads an instance of BlobLayoutRangesRangeItem from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobLayoutRangesRangeItem if the XmlReader was pointing to an instance of it, or null if
      * it was pointing to XML null.
@@ -140,7 +140,7 @@ public final class BlobLayoutRangesRangeItem implements XmlSerializable<BlobLayo
 
     /**
      * Reads an instance of BlobLayoutRangesRangeItem from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

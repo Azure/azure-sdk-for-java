@@ -438,7 +438,6 @@ public final class BlobServiceClient {
                 timeout);
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
-
     }
 
     private PagedResponse<BlobContainerItem> listBlobContainersSegment(String marker, BlobContainerListDetails details,

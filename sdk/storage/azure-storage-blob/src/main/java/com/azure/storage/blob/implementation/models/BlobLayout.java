@@ -58,7 +58,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Get the ranges property: The Ranges property.
-     * 
+     *
      * @return the ranges value.
      */
     @Generated
@@ -68,7 +68,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the ranges property: The Ranges property.
-     * 
+     *
      * @param ranges the ranges value to set.
      * @return the BlobLayout object itself.
      */
@@ -80,7 +80,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Get the endpoints property: The Endpoints property.
-     * 
+     *
      * @return the endpoints value.
      */
     @Generated
@@ -90,7 +90,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the endpoints property: The Endpoints property.
-     * 
+     *
      * @param endpoints the endpoints value to set.
      * @return the BlobLayout object itself.
      */
@@ -102,7 +102,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Get the marker property: The continuation marker used for this request.
-     * 
+     *
      * @return the marker value.
      */
     @Generated
@@ -112,7 +112,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the marker property: The continuation marker used for this request.
-     * 
+     *
      * @param marker the marker value to set.
      * @return the BlobLayout object itself.
      */
@@ -125,7 +125,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     /**
      * Get the nextMarker property: If the number of ranges exceeds MaxResults, a NextMarker is returned for use in
      * subsequent requests to continue listing.
-     * 
+     *
      * @return the nextMarker value.
      */
     @Generated
@@ -136,7 +136,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     /**
      * Set the nextMarker property: If the number of ranges exceeds MaxResults, a NextMarker is returned for use in
      * subsequent requests to continue listing.
-     * 
+     *
      * @param nextMarker the nextMarker value to set.
      * @return the BlobLayout object itself.
      */
@@ -148,7 +148,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Get the maxResults property: The maximum number of ranges to return per request.
-     * 
+     *
      * @return the maxResults value.
      */
     @Generated
@@ -158,7 +158,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the maxResults property: The maximum number of ranges to return per request.
-     * 
+     *
      * @param maxResults the maxResults value to set.
      * @return the BlobLayout object itself.
      */
@@ -189,7 +189,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Reads an instance of BlobLayout from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobLayout if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
@@ -202,7 +202,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Reads an instance of BlobLayout from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

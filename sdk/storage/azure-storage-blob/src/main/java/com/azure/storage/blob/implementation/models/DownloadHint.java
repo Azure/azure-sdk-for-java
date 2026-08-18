@@ -20,7 +20,7 @@ public final class DownloadHint extends ExpandableStringEnum<DownloadHint> {
 
     /**
      * Creates a new instance of DownloadHint value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -30,7 +30,7 @@ public final class DownloadHint extends ExpandableStringEnum<DownloadHint> {
 
     /**
      * Creates or finds a DownloadHint from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DownloadHint.
      */
@@ -41,7 +41,7 @@ public final class DownloadHint extends ExpandableStringEnum<DownloadHint> {
 
     /**
      * Gets known DownloadHint values.
-     * 
+     *
      * @return known DownloadHint values.
      */
     @Generated

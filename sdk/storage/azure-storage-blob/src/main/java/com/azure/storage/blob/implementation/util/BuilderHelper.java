@@ -72,20 +72,20 @@ public final class BuilderHelper {
      * Constructs a {@link HttpPipeline} from values passed from a builder.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
-     * @param tokenCredential            {@link TokenCredential} if present.
-     * @param azureSasCredential         {@link AzureSasCredential} if present.
-     * @param sasToken                   SAS token if present.
-     * @param endpoint                   The endpoint for the client.
-     * @param retryOptions               Storage's retry options to set in the retry policy.
-     * @param coreRetryOptions           Core's retry options to set in the retry policy.
-     * @param logOptions                 Logging options to set in the logging policy.
-     * @param clientOptions              Client options.
-     * @param httpClient                 HttpClient to use in the builder.
-     * @param perCallPolicies            Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
-     * @param perRetryPolicies           Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
-     * @param configuration              Configuration store contain environment settings.
-     * @param logger                     {@link ClientLogger} used to log any exception.
-     * @param audience                   {@link BlobAudience} used to determine the audience of the blob.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param azureSasCredential {@link AzureSasCredential} if present.
+     * @param sasToken SAS token if present.
+     * @param endpoint The endpoint for the client.
+     * @param retryOptions Storage's retry options to set in the retry policy.
+     * @param coreRetryOptions Core's retry options to set in the retry policy.
+     * @param logOptions Logging options to set in the logging policy.
+     * @param clientOptions Client options.
+     * @param httpClient HttpClient to use in the builder.
+     * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
+     * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
+     * @param configuration Configuration store contain environment settings.
+     * @param logger {@link ClientLogger} used to log any exception.
+     * @param audience {@link BlobAudience} used to determine the audience of the blob.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -192,8 +192,8 @@ public final class BuilderHelper {
      * Validates that the client is properly configured to use https.
      *
      * @param objectToCheck The object to check for.
-     * @param objectName    The name of the object.
-     * @param endpoint      The endpoint for the client.
+     * @param objectName The name of the object.
+     * @param endpoint The endpoint for the client.
      */
     public static void httpsValidation(Object objectToCheck, String objectName, String endpoint, ClientLogger logger) {
         if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
@@ -238,11 +238,10 @@ public final class BuilderHelper {
     /**
      * Logs information about credential changes in builders.
      *
-     * @param logger            The logger to use.
+     * @param logger The logger to use.
      * @param newCredentialType The credential type being set.
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
-
 }

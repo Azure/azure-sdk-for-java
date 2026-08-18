@@ -38,7 +38,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Get the index property: The index of the endpoint, referenced by Range elements.
-     * 
+     *
      * @return the index value.
      */
     @Generated
@@ -48,7 +48,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Set the index property: The index of the endpoint, referenced by Range elements.
-     * 
+     *
      * @param index the index value to set.
      * @return the BlobLayoutEndpointsEndpointItem object itself.
      */
@@ -60,7 +60,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Get the value property: The host:port of the endpoint.
-     * 
+     *
      * @return the value value.
      */
     @Generated
@@ -70,7 +70,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Set the value property: The host:port of the endpoint.
-     * 
+     *
      * @param value the value value to set.
      * @return the BlobLayoutEndpointsEndpointItem object itself.
      */
@@ -98,7 +98,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Reads an instance of BlobLayoutEndpointsEndpointItem from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobLayoutEndpointsEndpointItem if the XmlReader was pointing to an instance of it, or
      * null if it was pointing to XML null.
@@ -111,7 +111,7 @@ public final class BlobLayoutEndpointsEndpointItem implements XmlSerializable<Bl
 
     /**
      * Reads an instance of BlobLayoutEndpointsEndpointItem from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

@@ -451,7 +451,7 @@ public final class BlobsGetLayoutHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsGetLayoutHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsGetLayoutHeaders(HttpHeaders rawHeaders) {
@@ -667,7 +667,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     @Generated
@@ -680,7 +680,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -696,7 +696,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobContentLength property: The x-ms-blob-content-length property.
-     * 
+     *
      * @return the xMsBlobContentLength value.
      */
     @Generated
@@ -706,7 +706,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobContentLength property: The x-ms-blob-content-length property.
-     * 
+     *
      * @param xMsBlobContentLength the xMsBlobContentLength value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -718,7 +718,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobContentType property: The x-ms-blob-content-type property.
-     * 
+     *
      * @return the xMsBlobContentType value.
      */
     @Generated
@@ -728,7 +728,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobContentType property: The x-ms-blob-content-type property.
-     * 
+     *
      * @param xMsBlobContentType the xMsBlobContentType value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -740,7 +740,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobContentEncoding property: The x-ms-blob-content-encoding property.
-     * 
+     *
      * @return the xMsBlobContentEncoding value.
      */
     @Generated
@@ -750,7 +750,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobContentEncoding property: The x-ms-blob-content-encoding property.
-     * 
+     *
      * @param xMsBlobContentEncoding the xMsBlobContentEncoding value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -762,7 +762,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobContentMd5 property: The x-ms-blob-content-md5 property.
-     * 
+     *
      * @return the xMsBlobContentMd5 value.
      */
     @Generated
@@ -772,7 +772,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobContentMd5 property: The x-ms-blob-content-md5 property.
-     * 
+     *
      * @param xMsBlobContentMd5 the xMsBlobContentMd5 value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -784,7 +784,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobCreationTime property: The x-ms-blob-creation-time property.
-     * 
+     *
      * @return the xMsBlobCreationTime value.
      */
     @Generated
@@ -797,7 +797,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobCreationTime property: The x-ms-blob-creation-time property.
-     * 
+     *
      * @param xMsBlobCreationTime the xMsBlobCreationTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -813,7 +813,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCreationTime property: The x-ms-creation-time property.
-     * 
+     *
      * @return the xMsCreationTime value.
      */
     @Generated
@@ -826,7 +826,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCreationTime property: The x-ms-creation-time property.
-     * 
+     *
      * @param xMsCreationTime the xMsCreationTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -842,7 +842,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @return the xMsMeta value.
      */
     @Generated
@@ -852,7 +852,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsMeta property: The x-ms-meta- property.
-     * 
+     *
      * @param xMsMeta the xMsMeta value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -864,7 +864,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsOrPolicyId property: The x-ms-or-policy-id property.
-     * 
+     *
      * @return the xMsOrPolicyId value.
      */
     @Generated
@@ -874,7 +874,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsOrPolicyId property: The x-ms-or-policy-id property.
-     * 
+     *
      * @param xMsOrPolicyId the xMsOrPolicyId value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -886,7 +886,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsOr property: The x-ms-or- property.
-     * 
+     *
      * @return the xMsOr value.
      */
     @Generated
@@ -896,7 +896,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsOr property: The x-ms-or- property.
-     * 
+     *
      * @param xMsOr the xMsOr value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -908,7 +908,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobType property: The x-ms-blob-type property.
-     * 
+     *
      * @return the xMsBlobType value.
      */
     @Generated
@@ -918,7 +918,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobType property: The x-ms-blob-type property.
-     * 
+     *
      * @param xMsBlobType the xMsBlobType value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -930,7 +930,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyCompletionTime property: The x-ms-copy-completion-time property.
-     * 
+     *
      * @return the xMsCopyCompletionTime value.
      */
     @Generated
@@ -943,7 +943,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyCompletionTime property: The x-ms-copy-completion-time property.
-     * 
+     *
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -959,7 +959,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyStatusDescription property: The x-ms-copy-status-description property.
-     * 
+     *
      * @return the xMsCopyStatusDescription value.
      */
     @Generated
@@ -969,7 +969,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyStatusDescription property: The x-ms-copy-status-description property.
-     * 
+     *
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -981,7 +981,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyId property: The x-ms-copy-id property.
-     * 
+     *
      * @return the xMsCopyId value.
      */
     @Generated
@@ -991,7 +991,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyId property: The x-ms-copy-id property.
-     * 
+     *
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1003,7 +1003,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyProgress property: The x-ms-copy-progress property.
-     * 
+     *
      * @return the xMsCopyProgress value.
      */
     @Generated
@@ -1013,7 +1013,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyProgress property: The x-ms-copy-progress property.
-     * 
+     *
      * @param xMsCopyProgress the xMsCopyProgress value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1025,7 +1025,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopySource property: The x-ms-copy-source property.
-     * 
+     *
      * @return the xMsCopySource value.
      */
     @Generated
@@ -1035,7 +1035,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopySource property: The x-ms-copy-source property.
-     * 
+     *
      * @param xMsCopySource the xMsCopySource value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1047,7 +1047,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
+     *
      * @return the xMsCopyStatus value.
      */
     @Generated
@@ -1057,7 +1057,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyStatus property: The x-ms-copy-status property.
-     * 
+     *
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1069,7 +1069,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsIncrementalCopy property: The x-ms-incremental-copy property.
-     * 
+     *
      * @return the xMsIncrementalCopy value.
      */
     @Generated
@@ -1079,7 +1079,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsIncrementalCopy property: The x-ms-incremental-copy property.
-     * 
+     *
      * @param xMsIncrementalCopy the xMsIncrementalCopy value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1091,7 +1091,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsCopyDestinationSnapshot property: The x-ms-copy-destination-snapshot property.
-     * 
+     *
      * @return the xMsCopyDestinationSnapshot value.
      */
     @Generated
@@ -1101,7 +1101,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsCopyDestinationSnapshot property: The x-ms-copy-destination-snapshot property.
-     * 
+     *
      * @param xMsCopyDestinationSnapshot the xMsCopyDestinationSnapshot value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1113,7 +1113,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @return the xMsLeaseDuration value.
      */
     @Generated
@@ -1123,7 +1123,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
-     * 
+     *
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1135,7 +1135,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @return the xMsLeaseState value.
      */
     @Generated
@@ -1145,7 +1145,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
+     *
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1157,7 +1157,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @return the xMsLeaseStatus value.
      */
     @Generated
@@ -1167,7 +1167,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
+     *
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1179,7 +1179,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     * 
+     *
      * @return the contentLength value.
      */
     @Generated
@@ -1189,7 +1189,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     * 
+     *
      * @param contentLength the contentLength value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1201,7 +1201,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     * 
+     *
      * @return the contentType value.
      */
     @Generated
@@ -1211,7 +1211,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     * 
+     *
      * @param contentType the contentType value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1223,7 +1223,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     @Generated
@@ -1233,7 +1233,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1245,7 +1245,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @return the contentMD5 value.
      */
     @Generated
@@ -1255,7 +1255,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     * 
+     *
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1267,7 +1267,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @return the contentEncoding value.
      */
     @Generated
@@ -1277,7 +1277,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentEncoding property: The Content-Encoding property.
-     * 
+     *
      * @param contentEncoding the contentEncoding value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1289,7 +1289,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @return the contentDisposition value.
      */
     @Generated
@@ -1299,7 +1299,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentDisposition property: The Content-Disposition property.
-     * 
+     *
      * @param contentDisposition the contentDisposition value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1311,7 +1311,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @return the contentLanguage value.
      */
     @Generated
@@ -1321,7 +1321,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the contentLanguage property: The Content-Language property.
-     * 
+     *
      * @param contentLanguage the contentLanguage value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1333,7 +1333,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @return the cacheControl value.
      */
     @Generated
@@ -1343,7 +1343,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the cacheControl property: The Cache-Control property.
-     * 
+     *
      * @param cacheControl the cacheControl value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1355,7 +1355,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
+     *
      * @return the xMsBlobSequenceNumber value.
      */
     @Generated
@@ -1365,7 +1365,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobSequenceNumber property: The x-ms-blob-sequence-number property.
-     * 
+     *
      * @param xMsBlobSequenceNumber the xMsBlobSequenceNumber value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1377,7 +1377,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     @Generated
@@ -1387,7 +1387,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1399,7 +1399,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     @Generated
@@ -1409,7 +1409,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1421,7 +1421,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     @Generated
@@ -1431,7 +1431,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1443,7 +1443,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     @Generated
@@ -1456,7 +1456,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1472,7 +1472,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @return the acceptRanges value.
      */
     @Generated
@@ -1482,7 +1482,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the acceptRanges property: The Accept-Ranges property.
-     * 
+     *
      * @param acceptRanges the acceptRanges value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1494,7 +1494,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobCommittedBlockCount property: The x-ms-blob-committed-block-count property.
-     * 
+     *
      * @return the xMsBlobCommittedBlockCount value.
      */
     @Generated
@@ -1504,7 +1504,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobCommittedBlockCount property: The x-ms-blob-committed-block-count property.
-     * 
+     *
      * @param xMsBlobCommittedBlockCount the xMsBlobCommittedBlockCount value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1516,7 +1516,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     * 
+     *
      * @return the xMsServerEncrypted value.
      */
     @Generated
@@ -1526,7 +1526,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsServerEncrypted property: The x-ms-server-encrypted property.
-     * 
+     *
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1538,7 +1538,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
+     *
      * @return the xMsEncryptionKeySha256 value.
      */
     @Generated
@@ -1548,7 +1548,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
+     *
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1560,7 +1560,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     * 
+     *
      * @return the xMsEncryptionScope value.
      */
     @Generated
@@ -1570,7 +1570,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsEncryptionScope property: The x-ms-encryption-scope property.
-     * 
+     *
      * @param xMsEncryptionScope the xMsEncryptionScope value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1582,7 +1582,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @return the xMsAccessTier value.
      */
     @Generated
@@ -1592,7 +1592,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsAccessTier property: The x-ms-access-tier property.
-     * 
+     *
      * @param xMsAccessTier the xMsAccessTier value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1604,7 +1604,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
-     * 
+     *
      * @return the xMsAccessTierInferred value.
      */
     @Generated
@@ -1614,7 +1614,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsAccessTierInferred property: The x-ms-access-tier-inferred property.
-     * 
+     *
      * @param xMsAccessTierInferred the xMsAccessTierInferred value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1626,7 +1626,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
-     * 
+     *
      * @return the xMsSmartAccessTier value.
      */
     @Generated
@@ -1636,7 +1636,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
-     * 
+     *
      * @param xMsSmartAccessTier the xMsSmartAccessTier value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1648,7 +1648,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsArchiveStatus property: The x-ms-archive-status property.
-     * 
+     *
      * @return the xMsArchiveStatus value.
      */
     @Generated
@@ -1658,7 +1658,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsArchiveStatus property: The x-ms-archive-status property.
-     * 
+     *
      * @param xMsArchiveStatus the xMsArchiveStatus value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1670,7 +1670,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @return the xMsAccessTierChangeTime value.
      */
     @Generated
@@ -1683,7 +1683,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
-     * 
+     *
      * @param xMsAccessTierChangeTime the xMsAccessTierChangeTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1699,7 +1699,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @return the xMsVersionId value.
      */
     @Generated
@@ -1709,7 +1709,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsVersionId property: The x-ms-version-id property.
-     * 
+     *
      * @param xMsVersionId the xMsVersionId value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1721,7 +1721,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsIsCurrentVersion property: The x-ms-is-current-version property.
-     * 
+     *
      * @return the xMsIsCurrentVersion value.
      */
     @Generated
@@ -1731,7 +1731,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsIsCurrentVersion property: The x-ms-is-current-version property.
-     * 
+     *
      * @param xMsIsCurrentVersion the xMsIsCurrentVersion value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1743,7 +1743,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsTagCount property: The x-ms-tag-count property.
-     * 
+     *
      * @return the xMsTagCount value.
      */
     @Generated
@@ -1753,7 +1753,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsTagCount property: The x-ms-tag-count property.
-     * 
+     *
      * @param xMsTagCount the xMsTagCount value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1765,7 +1765,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsExpiryTime property: The x-ms-expiry-time property.
-     * 
+     *
      * @return the xMsExpiryTime value.
      */
     @Generated
@@ -1778,7 +1778,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsExpiryTime property: The x-ms-expiry-time property.
-     * 
+     *
      * @param xMsExpiryTime the xMsExpiryTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1794,7 +1794,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsBlobSealed property: The x-ms-blob-sealed property.
-     * 
+     *
      * @return the xMsBlobSealed value.
      */
     @Generated
@@ -1804,7 +1804,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsBlobSealed property: The x-ms-blob-sealed property.
-     * 
+     *
      * @param xMsBlobSealed the xMsBlobSealed value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1816,7 +1816,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsRehydratePriority property: The x-ms-rehydrate-priority property.
-     * 
+     *
      * @return the xMsRehydratePriority value.
      */
     @Generated
@@ -1826,7 +1826,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsRehydratePriority property: The x-ms-rehydrate-priority property.
-     * 
+     *
      * @param xMsRehydratePriority the xMsRehydratePriority value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1838,7 +1838,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsLastAccessTime property: The x-ms-last-access-time property.
-     * 
+     *
      * @return the xMsLastAccessTime value.
      */
     @Generated
@@ -1851,7 +1851,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsLastAccessTime property: The x-ms-last-access-time property.
-     * 
+     *
      * @param xMsLastAccessTime the xMsLastAccessTime value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1867,7 +1867,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
-     * 
+     *
      * @return the xMsImmutabilityPolicyUntilDate value.
      */
     @Generated
@@ -1880,7 +1880,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsImmutabilityPolicyUntilDate property: The x-ms-immutability-policy-until-date property.
-     * 
+     *
      * @param xMsImmutabilityPolicyUntilDate the xMsImmutabilityPolicyUntilDate value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1896,7 +1896,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
-     * 
+     *
      * @return the xMsImmutabilityPolicyMode value.
      */
     @Generated
@@ -1906,7 +1906,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsImmutabilityPolicyMode property: The x-ms-immutability-policy-mode property.
-     * 
+     *
      * @param xMsImmutabilityPolicyMode the xMsImmutabilityPolicyMode value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */
@@ -1918,7 +1918,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Get the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
+     *
      * @return the xMsLegalHold value.
      */
     @Generated
@@ -1928,7 +1928,7 @@ public final class BlobsGetLayoutHeaders {
 
     /**
      * Set the xMsLegalHold property: The x-ms-legal-hold property.
-     * 
+     *
      * @param xMsLegalHold the xMsLegalHold value to set.
      * @return the BlobsGetLayoutHeaders object itself.
      */

@@ -147,12 +147,11 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
     }
 
     private HttpPipeline constructPipeline() {
-        if (httpPipeline != null) {
-            return httpPipeline;
-        }
-        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER);
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -588,5 +587,4 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         this.audience = audience;
         return this;
     }
-
 }

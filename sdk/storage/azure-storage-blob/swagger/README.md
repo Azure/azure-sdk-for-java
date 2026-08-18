@@ -45,7 +45,6 @@ directive:
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
 
-
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
 directive:
@@ -707,5 +706,4 @@ directive:
         }
       ];
 ```
-
 

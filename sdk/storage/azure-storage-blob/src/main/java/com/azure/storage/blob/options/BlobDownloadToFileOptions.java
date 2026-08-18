@@ -190,5 +190,4 @@ public class BlobDownloadToFileOptions {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
-
 }

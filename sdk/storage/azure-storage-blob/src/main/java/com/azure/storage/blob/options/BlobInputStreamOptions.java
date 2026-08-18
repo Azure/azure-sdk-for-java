@@ -135,5 +135,4 @@ public class BlobInputStreamOptions {
         this.contentValidationAlgorithm = contentValidationAlgorithm;
         return this;
     }
-
 }
