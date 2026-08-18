@@ -19,6 +19,8 @@ public final class RedirectPolicyHelper {
 
     // Grouped by cloud, and within each group telemetry ingestion first then live metrics, following
     // https://learn.microsoft.com/azure/azure-monitor/fundamentals/azure-monitor-network-access#application-insights-ingestion
+    // Government endpoints are documented separately, in
+    // https://learn.microsoft.com/azure/azure-government/compare-azure-government-global-azure#guidance-for-developers
     // @formatter:off
     private static final List<String> ALLOWED_REDIRECT_DOMAIN_SUFFIXES = Collections.unmodifiableList(Arrays.asList(
         // global, shared by every cloud

@@ -42,6 +42,8 @@ public class RedirectPolicyHelperTest {
             "https://usgovvirginia.livediagnostics.monitor.azure.us/QuickPulseService.svc/")).isTrue();
         assertThat(isTrustedRedirect("https://dc.applicationinsights.us/v2.1/track",
             "https://usgovvirginia-0.in.applicationinsights.us/v2.1/track")).isTrue();
+        assertThat(isTrustedRedirect("https://dc.applicationinsights.us/v2.1/track",
+            "https://usgovvirginia.in.applicationinsights.azure.us/v2.1/track")).isTrue();
         assertThat(isTrustedRedirect("https://dc.applicationinsights.azure.cn/v2.1/track",
             "https://chinanorth2.in.applicationinsights.azure.cn/v2.1/track")).isTrue();
     }
