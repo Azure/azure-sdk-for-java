@@ -69,6 +69,19 @@ public class DurationCustomizationTest {
     }
 
     @Test
+    public void audioVisualContentKeyFrameTimesAcceptCapitalKFromService() {
+        String json = "{\"startTimeMs\": 0, \"endTimeMs\": 10000," + "\"KeyFrameTimesMs\": [1000, 2000, 3000]}";
+        AudioVisualContent content = BinaryData.fromString(json).toObject(AudioVisualContent.class);
+
+        List<Duration> keyFrameTimes = content.getKeyFrameTimes();
+        assertNotNull(keyFrameTimes);
+        assertEquals(3, keyFrameTimes.size());
+        assertEquals(Duration.ofSeconds(1), keyFrameTimes.get(0));
+        assertEquals(Duration.ofSeconds(2), keyFrameTimes.get(1));
+        assertEquals(Duration.ofSeconds(3), keyFrameTimes.get(2));
+    }
+
+    @Test
     public void audioVisualContentNullLists() {
         String json = "{\"startTimeMs\": 0, \"endTimeMs\": 0}";
         AudioVisualContent content = BinaryData.fromString(json).toObject(AudioVisualContent.class);
@@ -84,6 +97,17 @@ public class DurationCustomizationTest {
         AudioVisualContent content = BinaryData.fromString(json).toObject(AudioVisualContent.class);
 
         assertEquals(Duration.ofHours(24), content.getEndTime());
+    }
+
+    @Test
+    public void audioVisualContentDeserializesMetadata() {
+        String json = "{\"startTimeMs\":0,\"endTimeMs\":1000," + "\"metadata\":{\"title\":\"demo\",\"language\":null}}";
+        AudioVisualContent content = BinaryData.fromString(json).toObject(AudioVisualContent.class);
+
+        assertNotNull(content.getMetadata());
+        assertEquals(2, content.getMetadata().size());
+        assertEquals("demo", content.getMetadata().get("title"));
+        assertNull(content.getMetadata().get("language"));
     }
 
     // =================== AudioVisualContentSegment ===================
@@ -104,6 +128,15 @@ public class DurationCustomizationTest {
 
         assertEquals(Duration.ZERO, segment.getStartTime());
         assertEquals(Duration.ZERO, segment.getEndTime());
+    }
+
+    @Test
+    public void audioVisualContentSegmentPreservesSubSecondPrecision() {
+        String json = "{\"startTimeMs\": 1500, \"endTimeMs\": 2750}";
+        AudioVisualContentSegment segment = BinaryData.fromString(json).toObject(AudioVisualContentSegment.class);
+
+        assertEquals(Duration.ofMillis(1500), segment.getStartTime());
+        assertEquals(Duration.ofMillis(2750), segment.getEndTime());
     }
 
     // =================== TranscriptPhrase ===================
