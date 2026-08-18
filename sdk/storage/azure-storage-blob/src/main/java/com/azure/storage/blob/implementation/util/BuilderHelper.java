@@ -75,22 +75,22 @@ public final class BuilderHelper {
      * authentication support.
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
-     * @param tokenCredential            {@link TokenCredential} if present.
-     * @param azureSasCredential         {@link AzureSasCredential} if present.
-     * @param sasToken                   SAS token if present.
-     * @param endpoint                   The endpoint for the client.
-     * @param retryOptions               Storage's retry options to set in the retry policy.
-     * @param coreRetryOptions           Core's retry options to set in the retry policy.
-     * @param logOptions                 Logging options to set in the logging policy.
-     * @param clientOptions              Client options.
-     * @param httpClient                 HttpClient to use in the builder.
-     * @param perCallPolicies            Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
-     * @param perRetryPolicies           Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
-     * @param configuration              Configuration store contain environment settings.
-     * @param logger                     {@link ClientLogger} used to log any exception.
-     * @param audience                   {@link BlobAudience} used to determine the audience of the blob.
-     * @param sessionOptions             {@link SessionOptions} containing the session mode, container name, and account name for session-based authentication.
-     * @param serviceVersion             The service version for session creation. Required when session is active.
+     * @param tokenCredential {@link TokenCredential} if present.
+     * @param azureSasCredential {@link AzureSasCredential} if present.
+     * @param sasToken SAS token if present.
+     * @param endpoint The endpoint for the client.
+     * @param retryOptions Storage's retry options to set in the retry policy.
+     * @param coreRetryOptions Core's retry options to set in the retry policy.
+     * @param logOptions Logging options to set in the logging policy.
+     * @param clientOptions Client options.
+     * @param httpClient HttpClient to use in the builder.
+     * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
+     * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
+     * @param configuration Configuration store contain environment settings.
+     * @param logger {@link ClientLogger} used to log any exception.
+     * @param audience {@link BlobAudience} used to determine the audience of the blob.
+     * @param sessionOptions {@link SessionOptions} containing the session mode, container name, and account name for session-based authentication.
+     * @param serviceVersion The service version for session creation. Required when session is active.
      * @return A new {@link HttpPipeline} from the passed values.
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
@@ -298,11 +298,10 @@ public final class BuilderHelper {
     /**
      * Logs information about credential changes in builders.
      *
-     * @param logger            The logger to use.
+     * @param logger The logger to use.
      * @param newCredentialType The credential type being set.
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
-
 }
