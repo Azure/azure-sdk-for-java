@@ -136,6 +136,23 @@ public class BenchmarkConfig {
             throw new IllegalArgumentException(
                 "Tenant '" + tenant.getId() + "' is missing required configuration: " + missing);
         }
+
+        FaultInjectionConfig faultInjectionConfig = tenant.getFaultInjectionConfig();
+        if (faultInjectionConfig != null) {
+            faultInjectionConfig.validate();
+            if (tenant.isSync()) {
+                throw new IllegalArgumentException(
+                    "Tenant '" + tenant.getId() + "' configures faultInjection, which is not supported for sync workloads");
+            }
+            if (tenant.isEncryptionEnabled()) {
+                throw new IllegalArgumentException(
+                    "Tenant '" + tenant.getId() + "' configures faultInjection, which is not supported for encryption workloads");
+            }
+            if (tenant.getOperationType() == Operation.CtlWorkload) {
+                throw new IllegalArgumentException(
+                    "Tenant '" + tenant.getId() + "' configures faultInjection, which is not supported for CtlWorkload");
+            }
+        }
     }
 
     // ======== Convenience getters (delegate to nested configs) ========

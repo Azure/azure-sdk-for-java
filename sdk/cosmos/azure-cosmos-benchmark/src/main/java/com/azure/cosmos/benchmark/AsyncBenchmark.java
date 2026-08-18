@@ -26,6 +26,8 @@ import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -49,6 +51,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
     private boolean databaseCreated;
     private boolean collectionCreated;
+    private FaultInjectionRule faultInjectionRule;
 
     static final Logger logger = LoggerFactory.getLogger(AsyncBenchmark.class);
     final CosmosAsyncClient benchmarkWorkloadClient;
@@ -310,7 +313,46 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     protected void init() {
     }
 
+    @Override
+    public Mono<Void> armFaultInjection() {
+        FaultInjectionConfig config = this.workloadConfig.getFaultInjectionConfig();
+        if (config == null) {
+            return Mono.empty();
+        }
+
+        String ruleId = String.format(
+            "benchmark-%s-%s",
+            this.workloadConfig.getDatabaseId(),
+            this.workloadConfig.getContainerId());
+        this.faultInjectionRule = FaultInjectionRuleFactory.create(
+            ruleId,
+            this.workloadConfig.getConnectionMode(),
+            config);
+
+        return CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                this.cosmosAsyncContainer,
+                Collections.singletonList(this.faultInjectionRule))
+            .doOnSuccess(ignored -> logger.info(
+                "Armed fault injection rule {} for {}/{}: type={}, region={}, startDelay={}, duration={}, injectionRate={}",
+                this.faultInjectionRule.getId(),
+                this.workloadConfig.getDatabaseId(),
+                this.workloadConfig.getContainerId(),
+                config.getServerErrorType(),
+                config.getRegion(),
+                config.getStartDelay(),
+                config.getDuration(),
+                config.getInjectionRate()));
+    }
+
     public void shutdown() {
+        if (this.faultInjectionRule != null) {
+            logger.info(
+                "Fault injection rule {} completed with hitCount={} and hitCountDetails={}",
+                this.faultInjectionRule.getId(),
+                this.faultInjectionRule.getHitCount(),
+                this.faultInjectionRule.getHitCountDetails());
+        }
+
         if (workloadConfig.isSuppressCleanup()) {
             logger.info("Skipping cleanup of database/container (suppressCleanup=true)");
         } else if (this.databaseCreated) {

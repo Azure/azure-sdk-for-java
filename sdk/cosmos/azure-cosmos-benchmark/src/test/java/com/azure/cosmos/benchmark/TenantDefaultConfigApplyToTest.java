@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +38,12 @@ public class TenantDefaultConfigApplyToTest {
                 field.set(defaults, 42);
             } else if (type == Boolean.class) {
                 field.set(defaults, true);
+            } else if (type == FaultInjectionConfig.class) {
+                field.set(defaults, new FaultInjectionConfig(
+                    FaultInjectionServerErrorType.SERVICE_UNAVAILABLE,
+                    Duration.ZERO,
+                    Duration.ofSeconds(1),
+                    1.0));
             }
         }
 

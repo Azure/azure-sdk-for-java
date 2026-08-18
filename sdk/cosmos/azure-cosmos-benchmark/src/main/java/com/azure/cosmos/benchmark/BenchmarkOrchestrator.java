@@ -196,11 +196,14 @@ public class BenchmarkOrchestrator {
                     // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
                     CpuMonitor.awaitCoolDown(baselineCpu);
 
-                    // 4. Run workload — orchestrator dispatches operations across tenants
+                    // 4. Arm workload-scoped fault injection immediately before dispatch
+                    armFaultInjection(benchmarks);
+
+                    // 5. Run workload — orchestrator dispatches operations across tenants
                     runWorkload(benchmarks, cycle, config, benchmarkScheduler);
                     logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
-                    // 5. Flush reporters before shutdown destroys the registry
+                    // 6. Flush reporters before shutdown destroys the registry
                     if (csvReporter != null) {
                         csvReporter.stop();
                     }
@@ -208,14 +211,14 @@ public class BenchmarkOrchestrator {
                         cosmosReporter.stop();
                     }
 
-                    // 6. Disconnect loggingRegistry before SDK clears the cycle registry
+                    // 7. Disconnect loggingRegistry before SDK clears the cycle registry
                     cycleRegistry.remove(loggingRegistry);
                     if (addedToGlobal) {
                         Metrics.removeRegistry(cycleRegistry);
                         addedToGlobal = false;
                     }
 
-                    // 7. Close all clients (SDK will clear+close cycleRegistry — safe now)
+                    // 8. Close all clients (SDK will clear+close cycleRegistry — safe now)
                     shutdownBenchmarks(benchmarks, cycle);
                     logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
 
@@ -239,7 +242,7 @@ public class BenchmarkOrchestrator {
                     }
                 }
 
-                // 8. Settle
+                // 9. Settle
                 if (config.getSettleTimeMs() > 0) {
                     logger.info(" Settling for {}ms...", config.getSettleTimeMs());
                     long halfSettle = config.getSettleTimeMs() / 2;
@@ -261,6 +264,13 @@ public class BenchmarkOrchestrator {
         long durationSec = (System.currentTimeMillis() - startTime) / 1000;
         logger.info("[LIFECYCLE] COMPLETE cycles={} duration={}s timestamp={}",
             totalCycles, durationSec, Instant.now());
+    }
+
+    static void armFaultInjection(List<Benchmark> benchmarks) {
+        Flux.fromIterable(benchmarks)
+            .flatMap(Benchmark::armFaultInjection)
+            .then()
+            .block();
     }
 
     private List<Benchmark> createBenchmarks(BenchmarkConfig config) throws Exception {
