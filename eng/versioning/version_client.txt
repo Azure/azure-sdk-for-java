@@ -132,7 +132,7 @@ com.azure:azure-data-tables;12.5.11;12.5.12
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.16;1.0.17
 com.azure:azure-developer-loadtesting;1.0.30;1.0.31
-com.azure:azure-digitaltwins-core;1.5.7;1.6.0-beta.1
+com.azure:azure-digitaltwins-core;1.5.7;1.5.8
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
