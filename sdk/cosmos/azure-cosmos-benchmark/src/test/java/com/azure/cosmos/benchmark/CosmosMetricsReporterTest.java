@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CosmosMetricsReporterTest {
 
     private static final String PPCB_FAILBACK_METRIC =
-        CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString();
+        CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString();
 
     @Test(groups = {"unit"})
     public void reportsZeroForPpcbFailbackGauge() {

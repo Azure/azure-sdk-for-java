@@ -220,7 +220,7 @@ public class CosmosMetricsReporter {
     static boolean shouldReportGauge(String metricName, double value) {
         return !Double.isNaN(value)
             && (value != 0
-                || CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString().equals(metricName));
+                || CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString().equals(metricName));
     }
 
     private void reportDistributionSummary(String timestamp, DistributionSummary summary, double cpuPercent) {

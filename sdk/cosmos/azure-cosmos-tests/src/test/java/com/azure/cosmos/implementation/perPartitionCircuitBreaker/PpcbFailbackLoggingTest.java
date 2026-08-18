@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.ToDoubleFunction;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doReturn;
@@ -197,8 +198,8 @@ public class PpcbFailbackLoggingTest {
         pendingRecoveryByCollection.put("collectionB", new AtomicInteger(2));
 
         try {
-            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pendingRecoveryCount"))
-                .isSameAs(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT);
+            assertThat(CosmosMetricName.fromString("cosmos.client.ppcb.failback.pending.count"))
+                .isSameAs(CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT);
             this.manager.registerFailbackPendingRecoveryMeter(
                 registry,
                 Tag.of("ClientCorrelationId", "client1"));
@@ -216,12 +217,61 @@ public class PpcbFailbackLoggingTest {
             assertThat(getPendingRecoveryGauge(registry, "collectionB").value()).isEqualTo(1);
 
             this.manager.close();
-            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
+            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString())
                 .gauges()).isEmpty();
         } finally {
             this.manager.close();
             registry.close();
         }
+    }
+
+    @Test(groups = {"unit"})
+    public void backlogSnapshotMeterFailureDoesNotEscape() {
+        RxDocumentServiceRequest request = createReadRequest(PARTITION);
+        int failureCount = this.manager.getConsecutiveExceptionBasedCircuitBreaker()
+            .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
+        for (int failure = 0; failure < failureCount; failure++) {
+            this.manager.handleLocationExceptionForPartitionKeyRange(request, REGION, false);
+        }
+
+        RuntimeException meterFailure = new RuntimeException("meter failure");
+        SimpleMeterRegistry registry = new SimpleMeterRegistry() {
+            @Override
+            protected <T> Gauge newGauge(Meter.Id id, T object, ToDoubleFunction<T> valueFunction) {
+                throw meterFailure;
+            }
+        };
+
+        try {
+            this.manager.registerFailbackPendingRecoveryMeter(
+                registry,
+                Tag.of("ClientCorrelationId", "client1"));
+
+            assertThatCode(this.manager::recordFailbackBacklogSnapshot).doesNotThrowAnyException();
+            verify(this.logger).warn(contains("stage: RECORD_BACKLOG_SNAPSHOT"), same(meterFailure));
+        } finally {
+            this.manager.close();
+            registry.close();
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void backlogSnapshotLoggingFailureDoesNotEscape() {
+        RxDocumentServiceRequest request = createReadRequest(PARTITION);
+        int failureCount = this.manager.getConsecutiveExceptionBasedCircuitBreaker()
+            .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
+        for (int failure = 0; failure < failureCount; failure++) {
+            this.manager.handleLocationExceptionForPartitionKeyRange(request, REGION, false);
+        }
+
+        doThrow(new RuntimeException("backlog logging failure"))
+            .when(this.logger)
+            .info(contains("PPCB failback backlog"));
+        doThrow(new RuntimeException("failure logging failure"))
+            .when(this.logger)
+            .warn(Mockito.anyString(), Mockito.any(Throwable.class));
+
+        assertThatCode(this.manager::recordFailbackBacklogSnapshot).doesNotThrowAnyException();
     }
 
     @Test(groups = {"unit"})
@@ -294,7 +344,7 @@ public class PpcbFailbackLoggingTest {
             assertThat(cleanup.isAlive()).isFalse();
             assertThat(publisherFailure.get()).isNull();
             assertThat(cleanupFailure.get()).isNull();
-            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
+            assertThat(registry.find(CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString())
                 .gauges()).isEmpty();
         } finally {
             allowSecondGaugeRegistration.countDown();
@@ -369,7 +419,7 @@ public class PpcbFailbackLoggingTest {
 
     private static Gauge getPendingRecoveryGauge(SimpleMeterRegistry registry, String collectionRid) {
         return registry
-            .get(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
+            .get(CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString())
             .tag("ClientCorrelationId", "client1")
             .tag("CollectionRid", collectionRid)
             .gauge();

@@ -51,11 +51,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker implements AutoCloseable {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
     private static final String COLLECTION_RID_TAG_NAME = "CollectionRid";
     private static final Map<String, String> EMPTY_MAP = new HashMap<>();
     private static final String BASE_EXCEPTION_MESSAGE = "FAILED IN Per-Partition Circuit Breaker: ";
 
+    private final Logger logger;
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
     private LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
@@ -65,23 +65,24 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
     private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
     private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
-    private final Logger failbackLogger;
     private final AtomicInteger failbackFailureLogCount;
     private final AtomicInteger failbackBacklogScanCount;
     private final AtomicReference<MultiGauge> failbackPendingRecoveryGauge;
     private final AtomicReference<String> clientCorrelationId;
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
-        this(globalEndpointManager, logger);
+        this(
+            globalEndpointManager,
+            LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class));
     }
 
     GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(
         GlobalEndpointManager globalEndpointManager,
-        Logger failbackLogger) {
+        Logger logger) {
 
         this.partitionKeyRangeToLocationSpecificUnavailabilityInfo = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
-        this.failbackLogger = checkNotNull(failbackLogger, "Argument 'failbackLogger' cannot be null!");
+        this.logger = checkNotNull(logger, "Argument 'logger' cannot be null!");
         this.failbackFailureLogCount = new AtomicInteger();
         this.failbackBacklogScanCount = new AtomicInteger();
         this.failbackPendingRecoveryGauge = new AtomicReference<>();
@@ -134,8 +135,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             // so we skip circuit breaking in this case if cancellation kick in ungracefully (e.g. user cancelled the request, or end-to-end timeout on the operation before routing decision is made)
             // if the exception is not due to a cancellation, then we should have enough information to decide if we should circuit break or not
             // so we proceed with circuit breaking in this case
-            if (resolvedPartitionKeyRangeForCircuitBreaker == null
-                && isCancellationException) {
+            if (resolvedPartitionKeyRangeForCircuitBreaker == null && isCancellationException) {
                 logger.warn("Skipping circuit breaking for operation as partitionKeyRange information isn't available for an e2e timeout cancelled request with operationType: " +
                     request.getOperationType() +
                     " and collectionResourceId: " +
@@ -172,7 +172,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                     isFailoverPossible.set(
                         partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableRegionalRoutingContexts));
-
                 }
 
                 this.publishSnapshot(request, partitionLevelLocationUnavailabilityInfoAsVal);
@@ -375,15 +374,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
                         if (globalAddressResolver != null) {
 
-                            GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(
-                                locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
+                            GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(locationWithStaleUnavailabilityInfo.getGatewayRegionalEndpoint());
 
                             if (gatewayAddressCache != null) {
 
                                 return gatewayAddressCache
-                                    .submitOpenConnectionTasks(
-                                        partitionKeyRangeWrapper.getPartitionKeyRange(),
-                                        partitionKeyRangeWrapper.getCollectionResourceId())
+                                    .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
                                     .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
                                     .doOnComplete(() -> {
 
@@ -399,7 +395,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                             true);
                                     })
                                     .onErrorResume(throwable -> {
-                                        logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", throwable);
+                                        logger.warn("An exception was thrown trying to recover an Unavailable partition key range!", throwable);
                                         return Mono.empty();
                                     });
                             }
@@ -411,7 +407,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                         }
                     }
                 } catch (Exception e) {
-                    logger.debug("An exception was thrown trying to recover an Unavailable partition key range!", e);
+                    logger.warn("An exception was thrown trying to recover an Unavailable partition key range!", e);
                     return Flux.empty();
                 }
 
@@ -423,48 +419,58 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             });
     }
 
-    private void recordFailbackBacklogSnapshot() {
-        int failbackBacklogSize = 0;
-        Map<String, AtomicInteger> pendingRecoveryCountByCollection = new HashMap<>();
+    void recordFailbackBacklogSnapshot() {
+        try {
+            int failbackBacklogSize = 0;
+            Map<String, AtomicInteger> pendingRecoveryCountByCollection = new HashMap<>();
 
-        for (Map.Entry<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> entry
-            : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()) {
+            for (Map.Entry<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> entry
+                : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()) {
 
-            PartitionKeyRangeWrapper partitionKeyRangeWrapper = entry.getKey();
-            AtomicInteger pendingRecoveryCount = pendingRecoveryCountByCollection
-                .computeIfAbsent(
-                    partitionKeyRangeWrapper.getCollectionResourceId(),
-                    ignored -> new AtomicInteger());
+                PartitionKeyRangeWrapper partitionKeyRangeWrapper = entry.getKey();
+                AtomicInteger pendingRecoveryCount = pendingRecoveryCountByCollection
+                    .computeIfAbsent(
+                        partitionKeyRangeWrapper.getCollectionResourceId(),
+                        ignored -> new AtomicInteger());
 
-            try {
-                PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = entry.getValue();
+                try {
+                    PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = entry.getValue();
 
-                if (partitionLevelLocationUnavailabilityInfo != null) {
+                    if (partitionLevelLocationUnavailabilityInfo != null) {
 
-                    for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics
-                        : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+                        for (Map.Entry<RegionalRoutingContext, LocationSpecificHealthContext> locationToLocationLevelMetrics
+                            : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
 
-                        RegionalRoutingContext locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
-                        LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
+                            LocationSpecificHealthContext locationSpecificHealthContext = locationToLocationLevelMetrics.getValue();
 
-                        if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
-                            pendingRecoveryCount.incrementAndGet();
-                            failbackBacklogSize++;
+                            if (!locationSpecificHealthContext.isRegionAvailableToProcessRequests()) {
+                                pendingRecoveryCount.incrementAndGet();
+                                failbackBacklogSize++;
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    this.logFailbackFailure(
+                        partitionKeyRangeWrapper,
+                        null,
+                        "SCAN_UNAVAILABLE_PARTITIONS",
+                        e);
                 }
-            } catch (Exception e) {
-                this.logFailbackFailure(
-                    partitionKeyRangeWrapper,
-                    null,
-                    "SCAN_UNAVAILABLE_PARTITIONS",
-                    e);
             }
 
+            this.logFailbackBacklog(failbackBacklogSize);
+            this.recordFailbackPendingRecoveryByCollection(pendingRecoveryCountByCollection);
+        } catch (Exception e) {
+            try {
+                this.logFailbackFailure(
+                    null,
+                    null,
+                    "RECORD_BACKLOG_SNAPSHOT",
+                    e);
+            } catch (Exception ignored) {
+                // Failback telemetry must never terminate the recovery flow.
+            }
         }
-
-        this.logFailbackBacklog(failbackBacklogSize);
-        this.recordFailbackPendingRecoveryByCollection(pendingRecoveryCountByCollection);
     }
 
     public synchronized void registerFailbackPendingRecoveryMeter(MeterRegistry meterRegistry, Tag clientCorrelationTag) {
@@ -477,7 +483,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         }
 
         this.failbackPendingRecoveryGauge.set(
-            MultiGauge.builder(CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT.toString())
+            MultiGauge.builder(CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString())
                 .description("Number of PPCB partition range-region recovery actions pending failback")
                 .baseUnit("recoveries")
                 .tags(Collections.singletonList(clientCorrelationTag))
@@ -529,9 +535,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             + this.clientCorrelationId.get();
 
         if (unavailablePartitionRegionCount == 0 || previousScanCount == 1 || previousScanCount % 10 == 0) {
-            this.failbackLogger.info(message);
+            this.logger.info(message);
         } else {
-            this.failbackLogger.debug(message);
+            this.logger.debug(message);
         }
     }
 
@@ -564,9 +570,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             + this.clientCorrelationId.get();
 
         if (this.shouldLogFailbackFailureAtWarn()) {
-            this.failbackLogger.warn(message, throwable);
+            this.logger.warn(message, throwable);
         } else {
-            this.failbackLogger.debug(message, throwable);
+            this.logger.debug(message, throwable);
         }
 
     }

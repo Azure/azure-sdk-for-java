@@ -224,7 +224,7 @@ public final class CosmosAsyncClient implements Closeable {
         CosmosMeterOptions memoryMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
         CosmosMeterOptions failbackPendingRecoveryMeterOptions = clientTelemetryConfigAccessor()
-            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_PENDING_RECOVERY_COUNT);
+            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT);
 
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);

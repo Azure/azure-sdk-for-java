@@ -52,7 +52,7 @@ To capture PPCB failback progress in Cosmos DB, configure a dedicated metrics de
 `gatewayv2-scale-test` database `benchmarkdb` and container `cosmosbenchmarkmetricsfeed`. The metrics
 container must already exist with partition key `/partition_key`; do not reuse a container with a
 different partition-key path. Supply credentials at runtime; do not commit account keys. The reporter preserves zero values only for
-`cosmos.client.ppcb.failback.pendingRecoveryCount`, allowing a positive value followed by zero to
+`cosmos.client.ppcb.failback.pending.count`, allowing a positive value followed by zero to
 show completed failback.
 
 Keep the workload running beyond `startDelay + duration` long enough for a PPCB recovery scan and at
