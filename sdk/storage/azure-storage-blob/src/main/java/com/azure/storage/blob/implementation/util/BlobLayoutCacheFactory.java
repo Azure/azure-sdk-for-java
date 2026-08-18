@@ -24,8 +24,7 @@ public final class BlobLayoutCacheFactory {
      * @param valueSupplier The provider used to create layout values.
      * @return A layout cache.
      */
-    public static AutoRefreshingCache<BlobLayoutCacheValue> create(
-        Supplier<Mono<BlobLayoutCacheValue>> valueSupplier) {
+    public static AutoRefreshingCache<BlobLayoutCacheValue> create(Supplier<Mono<BlobLayoutCacheValue>> valueSupplier) {
         return new AutoRefreshingCache<>(new AutoRefreshingCache.ValueProvider<BlobLayoutCacheValue>() {
             @Override
             public Mono<BlobLayoutCacheValue> createAsync() {

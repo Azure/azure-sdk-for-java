@@ -576,6 +576,7 @@ public class BlobClientBase {
                             new IllegalArgumentException("Concurrency control type not " + "supported."));
                 }
 
+                // client needs to be final for the lambda below, so we create a new variable to hold the value of client.
                 BlobClientBase finalClient = client;
                 AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
                 if (DownloadHint.LAYOUT.equals(downloadResponse.getDeserializedHeaders().getDownloadHint())) {
@@ -1831,6 +1832,17 @@ public class BlobClientBase {
             = sendRequest(operation, timeout, BlobStorageException.class);
         return new SimpleResponse<>(response, BlobPropertiesConstructorProxy
             .create(new BlobPropertiesInternalGetProperties(response.getDeserializedHeaders())));
+    }
+
+    /**
+     * Returns the blob's layout.
+     *
+     * @param options {@link BlobGetLayoutOptions}
+     * @return A response emitting all blob layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BlobLayoutInfo> getLayout(BlobGetLayoutOptions options) {
+        return getLayout(options, Context.NONE);
     }
 
     /**
