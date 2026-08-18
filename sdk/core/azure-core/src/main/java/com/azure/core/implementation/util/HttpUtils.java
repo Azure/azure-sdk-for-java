@@ -3,9 +3,13 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -17,6 +21,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * Utilities shared with HttpClient implementations.
  */
 public final class HttpUtils {
+    private static final String TEXT_EVENT_STREAM = "text/event-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpUtils.class);
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
@@ -44,6 +49,12 @@ public final class HttpUtils {
     public static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
 
     /**
+     * Context key that instructs REST proxy response ownership and decoding to preserve the response body as a live
+     * stream. HTTP client implementations do not consume this key.
+     */
+    public static final String AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM = "azure-preserve-response-body-as-stream";
+
+    /**
      * Context key used to indicate to an HttpClient implementation if the response body should be ignored and eagerly
      * drained from the network.
      */
@@ -59,6 +70,86 @@ public final class HttpUtils {
      * Azure Core HttpHeaders.
      */
     public static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
+
+    /**
+     * Determines whether the response body must be preserved as a live stream.
+     *
+     * @param context Contextual information about the request.
+     * @return Whether the response body must be preserved as a live stream.
+     */
+    public static boolean shouldPreserveResponseBodyAsStream(Context context) {
+        return Boolean.TRUE.equals(context.getData(AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM).orElse(false));
+    }
+
+    /**
+     * Determines whether an Accept header contains a {@code text/event-stream} media range.
+     *
+     * @param headerValue The header value.
+     * @return Whether the header contains a {@code text/event-stream} media range.
+     */
+    public static boolean acceptsTextEventStream(String headerValue) {
+        if (headerValue == null) {
+            return false;
+        }
+
+        for (String value : splitHeaderValue(headerValue, ',')) {
+            if (isTextEventStreamContentType(value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.
+     * Charset parameters don't affect this determination as event streams are always decoded as UTF-8.
+     *
+     * @param headerValue The Content-Type header value.
+     * @return Whether the header identifies a {@code text/event-stream} representation.
+     */
+    public static boolean isTextEventStreamContentType(String headerValue) {
+        if (headerValue == null) {
+            return false;
+        }
+
+        List<String> mediaTypeAndParameters = splitHeaderValue(headerValue, ';');
+        if (mediaTypeAndParameters.size() == 0
+            || !TEXT_EVENT_STREAM.equalsIgnoreCase(mediaTypeAndParameters.get(0).trim())
+            || splitHeaderValue(headerValue, ',').size() != 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static List<String> splitHeaderValue(String value, char delimiter) {
+        List<String> segments = new ArrayList<>();
+        int start = 0;
+        boolean quoted = false;
+        boolean escaped = false;
+
+        for (int i = 0; i < value.length(); i++) {
+            char character = value.charAt(i);
+            if (escaped) {
+                escaped = false;
+            } else if (quoted && character == '\\') {
+                escaped = true;
+            } else if (character == '"') {
+                quoted = !quoted;
+            } else if (!quoted && character == delimiter) {
+                segments.add(value.substring(start, i));
+                start = i + 1;
+            }
+        }
+
+        if (quoted) {
+            return Collections.emptyList();
+        }
+
+        segments.add(value.substring(start));
+        return segments;
+    }
 
     /**
      * Gets the default connect timeout.

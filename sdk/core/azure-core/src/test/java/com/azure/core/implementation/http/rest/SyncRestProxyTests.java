@@ -13,6 +13,7 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -32,6 +33,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -67,6 +69,10 @@ public class SyncRestProxyTests {
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
         Response<InputStream> testInputStreamResponse(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<BinaryData> getStreamingResponse(RequestOptions options, Context context);
     }
 
     @Test
@@ -191,6 +197,48 @@ public class SyncRestProxyTests {
         InputStream stream = inputStreamResponse.getValue();
         byte[] bytes = MockHttpResponse.readAllBytes(stream);
         assertEquals("hello", new String(bytes));
+    }
+
+    @ParameterizedTest
+    @MethodSource("streamingResponseOwnershipSupplier")
+    public void streamingResponseIsCloseable(String accept, String contentType) throws IOException {
+        AtomicBoolean responseClosed = new AtomicBoolean();
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.error(new IllegalStateException("Async Send API was Invoked."));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return new MockHttpResponse(request, 200,
+                    new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), "hello".getBytes()) {
+                    @Override
+                    public void close() {
+                        responseClosed.set(true);
+                        super.close();
+                    }
+                };
+            }
+        };
+        TestInterface service
+            = RestProxy.create(TestInterface.class, new HttpPipelineBuilder().httpClient(client).build());
+        RequestOptions options = new RequestOptions();
+        if (accept != null) {
+            options.setHeader(HttpHeaderName.ACCEPT, accept);
+        }
+
+        Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE);
+
+        assertTrue(response instanceof Closeable);
+        assertEquals("hello", response.getValue().toString());
+        ((Closeable) response).close();
+        assertTrue(responseClosed.get());
+    }
+
+    private static Stream<Arguments> streamingResponseOwnershipSupplier() {
+        return Stream.of(Arguments.of("text/event-stream", "application/json"),
+            Arguments.of(null, "text/event-stream; charset=utf-8"));
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {

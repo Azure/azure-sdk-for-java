@@ -3,33 +3,44 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -54,6 +65,10 @@ public class AsyncRestProxyTests {
 
         @Get("getStreamResponse")
         Flux<ByteBuffer> getStreamResponse();
+
+        @Get("getStreamingResponse")
+        @ExpectedResponses({ 200 })
+        Mono<Response<BinaryData>> getStreamingResponse(RequestOptions options, Context context);
     }
 
     @BeforeEach
@@ -192,5 +207,38 @@ public class AsyncRestProxyTests {
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream; charset=utf-8"), false),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON), true),
             Arguments.of(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"), true));
+    }
+
+    @ParameterizedTest
+    @MethodSource("streamingResponseOwnershipSupplier")
+    public void streamingResponseIsUnbufferedAndCloseable(String accept, String contentType) throws IOException {
+        byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicBoolean responseClosed = new AtomicBoolean();
+        HttpClient client = request -> Mono.just(new MockHttpResponse(request, 200,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), expectedBytes) {
+            @Override
+            public void close() {
+                responseClosed.set(true);
+                super.close();
+            }
+        });
+        MockService service = RestProxy.create(MockService.class, new HttpPipelineBuilder().httpClient(client).build());
+        RequestOptions options = new RequestOptions();
+        if (accept != null) {
+            options.setHeader(HttpHeaderName.ACCEPT, accept);
+        }
+
+        Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE).block();
+
+        assertTrue(response instanceof Closeable);
+        assertFalse(response.getValue().isReplayable());
+        assertArraysEqual(expectedBytes, response.getValue().toBytes());
+        ((Closeable) response).close();
+        assertTrue(responseClosed.get());
+    }
+
+    private static Stream<Arguments> streamingResponseOwnershipSupplier() {
+        return Stream.of(Arguments.of("text/event-stream", ContentType.APPLICATION_JSON),
+            Arguments.of(null, "text/event-stream; charset=utf-8"));
     }
 }
