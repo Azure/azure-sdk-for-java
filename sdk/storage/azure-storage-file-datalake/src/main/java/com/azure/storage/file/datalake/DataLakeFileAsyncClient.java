@@ -180,7 +180,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
         PagedFlux<BlobLayoutInfo> inputPagedFlux
-            = blockBlobAsyncClient.getLayout(Transforms.toBlobGetLayoutOptions(options));
+            = blockBlobAsyncClient.getLayoutWithResponse(Transforms.toBlobGetLayoutOptions(options));
 
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BlobLayoutInfo>> flux;

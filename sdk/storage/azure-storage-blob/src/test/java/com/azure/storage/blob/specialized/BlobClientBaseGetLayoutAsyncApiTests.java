@@ -48,7 +48,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayout() {
-        StepVerifier.create(bc.getLayout(null).collectList()).assertNext(r -> {
+        StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             BlobLayoutInfo info = r.get(0);
             assertNotNull(info.getETag());
@@ -70,7 +70,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(emptyBlob.getBlockBlobAsyncClient()
             .commitBlockList(new ArrayList<>())
-            .thenMany(emptyBlob.getLayout(null))
+            .thenMany(emptyBlob.getLayoutWithResponse(null))
             .then()).verifyComplete();
     }
 
@@ -79,14 +79,14 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     public void getLayoutRange() {
         StepVerifier.create(bc.getBlockBlobAsyncClient()
             .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
-            .thenMany(bc.getLayout(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
+            .thenMany(bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRange(new BlobRange(0, (long) Constants.KB))))
             .then()).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutPageSize() {
-        StepVerifier.create(bc.getLayout(null).byPage(1).collectList()).assertNext(r -> {
+        StepVerifier.create(bc.getLayoutWithResponse(null).byPage(1).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
             r.forEach(page -> assertTrue(page.getValue().size() <= 1));
         }).verifyComplete();
@@ -96,7 +96,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     @Test
     public void getLayoutContinuationToken() {
         Flux<PagedResponse<BlobLayoutInfo>> response
-            = bc.getLayout(null).byPage(1).next().flatMapMany(r -> bc.getLayout(null).byPage(r.getContinuationToken()));
+            = bc.getLayoutWithResponse(null).byPage(1).next().flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
 
         StepVerifier.create(response.then()).verifyComplete();
     }
@@ -120,7 +120,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
                     .setIfUnmodifiedSince(unmodified)
                     .setTagsConditions(tags);
 
-                return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac));
+                return bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRequestConditions(bac));
             });
 
         StepVerifier.create(response.then()).verifyComplete();
@@ -143,7 +143,7 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
                         .setIfUnmodifiedSince(unmodified)
                         .setTagsConditions(tags);
 
-                    return bc.getLayout(new BlobGetLayoutOptions().setRequestConditions(bac)).count();
+                    return bc.getLayoutWithResponse(new BlobGetLayoutOptions().setRequestConditions(bac)).count();
                 });
 
         StepVerifier.create(response).verifyError(BlobStorageException.class);
@@ -154,6 +154,6 @@ public class BlobClientBaseGetLayoutAsyncApiTests extends BlobTestBase {
     public void getLayoutError() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());
 
-        StepVerifier.create(blobClient.getLayout(null)).verifyError(BlobStorageException.class);
+        StepVerifier.create(blobClient.getLayoutWithResponse(null)).verifyError(BlobStorageException.class);
     }
 }

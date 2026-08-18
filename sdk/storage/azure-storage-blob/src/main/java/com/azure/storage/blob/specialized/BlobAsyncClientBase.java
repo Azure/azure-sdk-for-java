@@ -12,6 +12,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
@@ -39,6 +40,7 @@ import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -1908,35 +1910,74 @@ public class BlobAsyncClientBase {
      * @return A reactive response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BlobLayoutInfo> getLayout(BlobGetLayoutOptions options) {
-        return new PagedFlux<>(pageSize -> withContext(context -> getLayoutSegment(null, options, pageSize, context)),
+    public PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options) {
+        return new PagedFlux<>(pageSize -> withContext(context -> getLayoutPage(null, options, pageSize, context)),
             (continuationToken,
-                pageSize) -> withContext(context -> getLayoutSegment(continuationToken, options, pageSize, context)));
+                pageSize) -> withContext(context -> getLayoutPage(continuationToken, options, pageSize, context)));
     }
 
-    PagedFlux<BlobLayoutInfo> getLayout(BlobGetLayoutOptions options, Context context) {
+    PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        return new PagedFlux<>(pageSize -> getLayoutSegment(null, options, pageSize, finalContext),
-            (continuationToken, pageSize) -> getLayoutSegment(continuationToken, options, pageSize, finalContext));
+        return new PagedFlux<>(pageSize -> getLayoutPage(null, options, pageSize, finalContext),
+            (continuationToken, pageSize) -> getLayoutPage(continuationToken, options, pageSize, finalContext));
     }
 
     Mono<BlobLayoutCacheValue> fetchLayoutCacheValueAsync(BlobRange layoutRange,
         BlobRequestConditions requestConditions, Context context) {
-        return getLayout(new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions),
-            context)
-                .flatMapIterable(layoutInfo -> layoutInfo.getRanges() == null
-                    ? Collections.<BlobLayoutRange>emptyList()
-                    : layoutInfo.getRanges())
-                .collectList()
-                .map(BlobLayoutCacheValue::new)
-                .onErrorResume(BlobStorageException.class, exception -> {
-                    LOGGER.verbose("Failed to retrieve blob layout for data locality.", exception);
-                    return Mono.just(new BlobLayoutCacheValue(null));
-                });
+        BlobGetLayoutOptions layoutOptions
+            = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
+
+        return getLayoutPages(layoutOptions, requestConditions, context).flatMapIterable(PagedResponse::getValue)
+            .flatMap(BlobAsyncClientBase::getLayoutRanges)
+            .collectList()
+            .map(BlobLayoutCacheValue::new)
+            .onErrorResume(BlobStorageException.class, BlobAsyncClientBase::handleLayoutFetchError);
     }
 
-    private Mono<PagedResponse<BlobLayoutInfo>> getLayoutSegment(String marker, BlobGetLayoutOptions options,
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>>
+        getLayoutPages(BlobGetLayoutOptions layoutOptions, BlobRequestConditions requestConditions, Context context) {
+        return getLayoutPageWithHeaders(null, layoutOptions, null, context)
+            .flatMapMany(initialResponse ->
+                expandLayoutPages(initialResponse, layoutOptions.getRange(), requestConditions, context)
+            );
+    }
+
+    private Flux<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> expandLayoutPages(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo> initialResponse, BlobRange layoutRange,
+        BlobRequestConditions requestConditions, Context context) {
+        String layoutETag = initialResponse.getDeserializedHeaders().getETag();
+        BlobGetLayoutOptions optionsWithConditions = new BlobGetLayoutOptions().setRange(layoutRange)
+            .setRequestConditions(copyRequestConditionsWithIfMatch(requestConditions, layoutETag));
+
+        return Flux.just(initialResponse)
+            .expand(response -> getNextLayoutPage(response, optionsWithConditions, context));
+    }
+
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getNextLayoutPage(
+        PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo> response, BlobGetLayoutOptions options,
+        Context context) {
+        String continuationToken = response.getContinuationToken();
+        return continuationToken == null
+            ? Mono.empty()
+            : getLayoutPageWithHeaders(continuationToken, options, null, context);
+    }
+
+    private static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
+        if (isLayoutFailureFatal(exception)) {
+            return Mono.error(exception);
+        }
+
+        LOGGER.verbose("Failed to retrieve blob layout for data locality.", exception);
+        return Mono.just(new BlobLayoutCacheValue(null));
+    }
+
+    private Mono<PagedResponse<BlobLayoutInfo>> getLayoutPage(String marker, BlobGetLayoutOptions options,
         Integer pageSize, Context context) {
+        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
+    }
+
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getLayoutPageWithHeaders(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
         BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
         BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
@@ -1950,13 +1991,39 @@ public class BlobAsyncClientBase {
                 range.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getTagsConditions(),
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
-            .map(response -> {
-                BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-                BlobLayout layout = response.getValue();
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    value == null ? Collections.emptyList() : Collections.singletonList(value),
-                    layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-            });
+            .map(BlobAsyncClientBase::toLayoutPagedResponse);
+    }
+
+    private static Flux<BlobLayoutRange> getLayoutRanges(BlobLayoutInfo layoutInfo) {
+        return layoutInfo.getRanges() == null ? Flux.empty() : Flux.fromIterable(layoutInfo.getRanges());
+    }
+
+    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayout> response) {
+        BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
+        BlobLayout layout = response.getValue();
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            value == null ? Collections.emptyList() : Collections.singletonList(value),
+            layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+    }
+
+    private static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source,
+        String layoutETag) {
+        if (source == null) {
+            return new BlobRequestConditions().setIfMatch(layoutETag);
+        }
+
+        return new BlobRequestConditions().setLeaseId(source.getLeaseId())
+            .setTagsConditions(source.getTagsConditions())
+            .setIfModifiedSince(source.getIfModifiedSince())
+            .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
+            .setIfMatch(layoutETag == null ? source.getIfMatch() : layoutETag)
+            .setIfNoneMatch(source.getIfNoneMatch());
+    }
+
+    private static boolean isLayoutFailureFatal(BlobStorageException exception) {
+        int statusCode = exception.getStatusCode();
+        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
     }
 
     /**
