@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.implementation.util;
+package com.azure.storage.common.implementation.util;
 
-import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
