@@ -8,7 +8,7 @@
 
 ### Other Changes
 
-- Align customer-facing SDKStats configuration and custom dimension names with the stable specification.
+- Align customer-facing SDKStats configuration and custom dimension names with the stable specification. ([#50056](https://github.com/Azure/azure-sdk-for-java/pull/50056))
 
 ## 1.5.0 (2026-06-11)
 
