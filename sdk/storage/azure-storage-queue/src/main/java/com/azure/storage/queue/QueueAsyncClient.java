@@ -21,12 +21,12 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
-import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.PeekedMessages;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
-import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
-import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
+import com.azure.storage.queue.implementation.models.ReceivedMessages;
+import com.azure.storage.queue.implementation.models.SignedIdentifiers;
+import com.azure.storage.queue.implementation.models.ListOfSentMessage;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
@@ -619,8 +619,8 @@ public final class QueueAsyncClient {
                     RequestOptionsHelper.queueRequestOptions(Context.NONE, client.getUrl(), queueName))
                 .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(),
-                    ModelHelper.deserializeXmlBody(response.getValue(), QueueSignedIdentifierWrapper::fromXml).items(),
-                    null, null));
+                    ModelHelper.deserializeXmlBody(response.getValue(), SignedIdentifiers::fromXml).getItems(), null,
+                    null));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -721,7 +721,7 @@ public final class QueueAsyncClient {
             .collect(Collectors.toList());
 
         RequestOptions requestOptions = RequestOptionsHelper.queueRequestOptions(context, client.getUrl(), queueName);
-        requestOptions.setBody(ModelHelper.serializeXmlBody(new QueueSignedIdentifierWrapper(permissionsList)));
+        requestOptions.setBody(ModelHelper.serializeXmlBody(new SignedIdentifiers(permissionsList)));
         return client.getQueues().setAccessPolicyWithResponseAsync(requestOptions);
     }
 
@@ -967,8 +967,8 @@ public final class QueueAsyncClient {
                     return client.getMessages()
                         .enqueueWithResponseAsync(ModelHelper.serializeXmlBody(queueMessage), requestOptions)
                         .map(response -> new SimpleResponse<>(response,
-                            ModelHelper.deserializeXmlBody(response.getValue(), SendMessageResultWrapper::fromXml)
-                                .items()
+                            ModelHelper.deserializeXmlBody(response.getValue(), ListOfSentMessage::fromXml)
+                                .getItems()
                                 .get(0)));
                 }));
         } catch (RuntimeException ex) {
@@ -1099,10 +1099,9 @@ public final class QueueAsyncClient {
 
     private Mono<PagedResponseBase<Void, QueueMessageItem>>
         transformMessagesDequeueResponse(Response<BinaryData> response) {
-        QueueMessageItemInternalWrapper wrapper
-            = ModelHelper.deserializeXmlBody(response.getValue(), QueueMessageItemInternalWrapper::fromXml);
+        ReceivedMessages wrapper = ModelHelper.deserializeXmlBody(response.getValue(), ReceivedMessages::fromXml);
         List<QueueMessageItemInternal> queueMessageInternalItems
-            = (wrapper == null || wrapper.items() == null) ? Collections.emptyList() : wrapper.items();
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
 
         return Flux.fromIterable(queueMessageInternalItems)
             .flatMapSequential(queueMessageItemInternal -> Mono
@@ -1217,10 +1216,9 @@ public final class QueueAsyncClient {
 
     private Mono<PagedResponseBase<Void, PeekedMessageItem>>
         transformMessagesPeekResponse(Response<BinaryData> response) {
-        PeekedMessageItemInternalWrapper wrapper
-            = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessageItemInternalWrapper::fromXml);
+        PeekedMessages wrapper = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessages::fromXml);
         List<PeekedMessageItemInternal> peekedMessageInternalItems
-            = (wrapper == null || wrapper.items() == null) ? Collections.emptyList() : wrapper.items();
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
 
         return Flux.fromIterable(peekedMessageInternalItems)
             .flatMapSequential(peekedMessageItemInternal -> Mono

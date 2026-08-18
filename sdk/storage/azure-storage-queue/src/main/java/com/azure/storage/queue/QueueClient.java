@@ -20,12 +20,12 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
-import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.PeekedMessages;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
-import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
-import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
+import com.azure.storage.queue.implementation.models.ReceivedMessages;
+import com.azure.storage.queue.implementation.models.SignedIdentifiers;
+import com.azure.storage.queue.implementation.models.ListOfSentMessage;
 import com.azure.storage.queue.models.UserDelegationKey;
 import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.RequestOptionsHelper;
@@ -607,11 +607,9 @@ public final class QueueClient {
             .getAccessPolicyWithResponse(
                 RequestOptionsHelper.queueRequestOptions(Context.NONE, azureQueueStorage.getUrl(), queueName));
 
-        Supplier<PagedResponse<QueueSignedIdentifier>> response
-            = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
-                responseBase.getHeaders(),
-                ModelHelper.deserializeXmlBody(responseBase.getValue(), QueueSignedIdentifierWrapper::fromXml).items(),
-                null, null);
+        Supplier<PagedResponse<QueueSignedIdentifier>> response = () -> new PagedResponseBase<>(
+            responseBase.getRequest(), responseBase.getStatusCode(), responseBase.getHeaders(),
+            ModelHelper.deserializeXmlBody(responseBase.getValue(), SignedIdentifiers::fromXml).getItems(), null, null);
 
         return new PagedIterable<>(response);
     }
@@ -684,7 +682,7 @@ public final class QueueClient {
         Supplier<Response<Void>> operation = () -> {
             RequestOptions requestOptions
                 = RequestOptionsHelper.queueRequestOptions(finalContext, azureQueueStorage.getUrl(), queueName);
-            requestOptions.setBody(ModelHelper.serializeXmlBody(new QueueSignedIdentifierWrapper(permissions)));
+            requestOptions.setBody(ModelHelper.serializeXmlBody(new SignedIdentifiers(permissions)));
             return this.azureQueueStorage.getQueues().setAccessPolicyWithResponse(requestOptions);
         };
 
@@ -929,7 +927,7 @@ public final class QueueClient {
         Response<BinaryData> response = submitThreadPool(operation, LOGGER, timeout);
 
         return new SimpleResponse<>(response,
-            ModelHelper.deserializeXmlBody(response.getValue(), SendMessageResultWrapper::fromXml).items().get(0));
+            ModelHelper.deserializeXmlBody(response.getValue(), ListOfSentMessage::fromXml).getItems().get(0));
     }
 
     /**
@@ -1062,10 +1060,9 @@ public final class QueueClient {
     }
 
     private PagedResponseBase<Void, QueueMessageItem> transformMessagesDequeueResponse(Response<BinaryData> response) {
-        QueueMessageItemInternalWrapper wrapper
-            = ModelHelper.deserializeXmlBody(response.getValue(), QueueMessageItemInternalWrapper::fromXml);
+        ReceivedMessages wrapper = ModelHelper.deserializeXmlBody(response.getValue(), ReceivedMessages::fromXml);
         List<QueueMessageItemInternal> queueMessageInternalItems
-            = (wrapper == null || wrapper.items() == null) ? Collections.emptyList() : wrapper.items();
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
         List<QueueMessageItem> messageItems = new ArrayList<>();
 
         for (QueueMessageItemInternal queueMessageInternalItem : queueMessageInternalItems) {
@@ -1184,10 +1181,9 @@ public final class QueueClient {
     }
 
     private PagedResponseBase<Void, PeekedMessageItem> transformMessagesPeekResponse(Response<BinaryData> response) {
-        PeekedMessageItemInternalWrapper wrapper
-            = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessageItemInternalWrapper::fromXml);
+        PeekedMessages wrapper = ModelHelper.deserializeXmlBody(response.getValue(), PeekedMessages::fromXml);
         List<PeekedMessageItemInternal> peekedMessageInternalItems
-            = (wrapper == null || wrapper.items() == null) ? Collections.emptyList() : wrapper.items();
+            = (wrapper == null || wrapper.getItems() == null) ? Collections.emptyList() : wrapper.getItems();
         List<PeekedMessageItem> messageItems = new ArrayList<>();
 
         for (PeekedMessageItemInternal peekedMessageInternalItem : peekedMessageInternalItems) {
