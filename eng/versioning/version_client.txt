@@ -127,7 +127,7 @@ com.azure.cosmos.kafka:azure-cosmos-kafka-connect;2.11.0;2.12.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.5.12;1.5.13
 com.azure:azure-data-schemaregistry-apacheavro;1.1.33;1.1.34
-com.azure:azure-data-schemaregistry-jsonschema;1.0.9;1.1.0-beta.1
+com.azure:azure-data-schemaregistry-jsonschema;1.0.9;1.0.10
 com.azure:azure-data-tables;12.5.11;12.6.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.16;1.1.0-beta.1
