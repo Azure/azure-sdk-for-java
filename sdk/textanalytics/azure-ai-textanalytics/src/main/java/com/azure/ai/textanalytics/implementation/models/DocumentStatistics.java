@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
     /*
      * Number of text elements recognized in the document.
      */
-    @Generated
     private int charactersCount;
 
     /*
      * Number of transactions for the document.
      */
-    @Generated
     private int transactionsCount;
 
     /**
      * Creates an instance of DocumentStatistics class.
      */
-    @Generated
     public DocumentStatistics() {
     }
 
@@ -41,7 +37,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
      * 
      * @return the charactersCount value.
      */
-    @Generated
     public int getCharactersCount() {
         return this.charactersCount;
     }
@@ -52,7 +47,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
      * @param charactersCount the charactersCount value to set.
      * @return the DocumentStatistics object itself.
      */
-    @Generated
     public DocumentStatistics setCharactersCount(int charactersCount) {
         this.charactersCount = charactersCount;
         return this;
@@ -63,7 +57,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
      * 
      * @return the transactionsCount value.
      */
-    @Generated
     public int getTransactionsCount() {
         return this.transactionsCount;
     }
@@ -74,7 +67,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
      * @param transactionsCount the transactionsCount value to set.
      * @return the DocumentStatistics object itself.
      */
-    @Generated
     public DocumentStatistics setTransactionsCount(int transactionsCount) {
         this.transactionsCount = transactionsCount;
         return this;
@@ -83,7 +75,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class DocumentStatistics implements JsonSerializable<DocumentStatis
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentStatistics.
      */
-    @Generated
     public static DocumentStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentStatistics deserializedDocumentStatistics = new DocumentStatistics();

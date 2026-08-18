@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,19 +18,16 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /*
      * Enumeration of supported long-running Text Analysis tasks.
      */
-    @Generated
     private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.EXTRACTIVE_SUMMARIZATION;
 
     /*
      * Supported parameters for an Extractive Summarization task.
      */
-    @Generated
     private ExtractiveSummarizationTaskParameters parameters;
 
     /**
      * Creates an instance of ExtractiveSummarizationLROTask class.
      */
-    @Generated
     public ExtractiveSummarizationLROTask() {
     }
 
@@ -40,7 +36,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * 
      * @return the kind value.
      */
-    @Generated
     @Override
     public AnalyzeTextLROTaskKind getKind() {
         return this.kind;
@@ -51,7 +46,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * 
      * @return the parameters value.
      */
-    @Generated
     public ExtractiveSummarizationTaskParameters getParameters() {
         return this.parameters;
     }
@@ -62,7 +56,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * @param parameters the parameters value to set.
      * @return the ExtractiveSummarizationLROTask object itself.
      */
-    @Generated
     public ExtractiveSummarizationLROTask setParameters(ExtractiveSummarizationTaskParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -71,7 +64,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ExtractiveSummarizationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
@@ -81,7 +73,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -99,7 +90,6 @@ public final class ExtractiveSummarizationLROTask extends AnalyzeTextLROTask {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExtractiveSummarizationLROTask.
      */
-    @Generated
     public static ExtractiveSummarizationLROTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExtractiveSummarizationLROTask deserializedExtractiveSummarizationLROTask

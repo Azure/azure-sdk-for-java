@@ -4,7 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,39 +14,33 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
     /**
      * Static value SentimentAnalysisResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind SENTIMENT_ANALYSIS_RESULTS = fromString("SentimentAnalysisResults");
 
     /**
      * Static value EntityRecognitionResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind ENTITY_RECOGNITION_RESULTS = fromString("EntityRecognitionResults");
 
     /**
      * Static value PiiEntityRecognitionResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind PII_ENTITY_RECOGNITION_RESULTS
         = fromString("PiiEntityRecognitionResults");
 
     /**
      * Static value KeyPhraseExtractionResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind KEY_PHRASE_EXTRACTION_RESULTS
         = fromString("KeyPhraseExtractionResults");
 
     /**
      * Static value LanguageDetectionResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind LANGUAGE_DETECTION_RESULTS = fromString("LanguageDetectionResults");
 
     /**
      * Static value EntityLinkingResults for AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static final AnalyzeTextTaskResultsKind ENTITY_LINKING_RESULTS = fromString("EntityLinkingResults");
 
     /**
@@ -55,7 +48,6 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    @Generated
     @Deprecated
     public AnalyzeTextTaskResultsKind() {
     }
@@ -66,7 +58,6 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
      * @param name a name to look for.
      * @return the corresponding AnalyzeTextTaskResultsKind.
      */
-    @Generated
     public static AnalyzeTextTaskResultsKind fromString(String name) {
         return fromString(name, AnalyzeTextTaskResultsKind.class);
     }
@@ -76,7 +67,6 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
      * 
      * @return known AnalyzeTextTaskResultsKind values.
      */
-    @Generated
     public static Collection<AnalyzeTextTaskResultsKind> values() {
         return values(AnalyzeTextTaskResultsKind.class);
     }
