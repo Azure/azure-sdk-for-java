@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstance
  */
 public final class CapacityReservationGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Get.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Get.json
      */
     /**
      * Sample code: Get a capacity reservation Group.
@@ -26,7 +26,7 @@ public final class CapacityReservationGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
      */
     /**
      * Sample code: Get a targeted capacity reservation group.
@@ -41,7 +41,7 @@ public final class CapacityReservationGroupsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
      */
     /**
      * Sample code: Get a block capacity reservation Group.
@@ -52,22 +52,6 @@ public final class CapacityReservationGroupsGetByResourceGroupSamples {
         manager.serviceClient()
             .getCapacityReservationGroups()
             .getByResourceGroupWithResponse("myResourceGroup", "blockCapacityReservationGroup",
-                CapacityReservationGroupInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/OpenCapacityReservationGroup_Get.json
-     */
-    /**
-     * Sample code: Get an open capacity reservation group with instance view.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        getAnOpenCapacityReservationGroupWithInstanceView(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getCapacityReservationGroups()
-            .getByResourceGroupWithResponse("myResourceGroup", "openCapacityReservationGroup",
                 CapacityReservationGroupInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
     }
 }

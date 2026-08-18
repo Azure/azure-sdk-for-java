@@ -28,12 +28,6 @@ public class CapacityReservationInstanceView implements JsonSerializable<Capacit
      */
     private List<InstanceViewStatus> statuses;
 
-    /*
-     * The reservation state information for a capacity reservation, this detail is primarily provided for Future
-     * capacity reservations. Minimum API version: 2026-04-01.
-     */
-    private CapacityReservationStateInfo reservationStateInfo;
-
     /**
      * Creates an instance of CapacityReservationInstanceView class.
      */
@@ -81,28 +75,6 @@ public class CapacityReservationInstanceView implements JsonSerializable<Capacit
     }
 
     /**
-     * Get the reservationStateInfo property: The reservation state information for a capacity reservation, this detail
-     * is primarily provided for Future capacity reservations. Minimum API version: 2026-04-01.
-     * 
-     * @return the reservationStateInfo value.
-     */
-    public CapacityReservationStateInfo reservationStateInfo() {
-        return this.reservationStateInfo;
-    }
-
-    /**
-     * Set the reservationStateInfo property: The reservation state information for a capacity reservation, this detail
-     * is primarily provided for Future capacity reservations. Minimum API version: 2026-04-01.
-     * 
-     * @param reservationStateInfo the reservationStateInfo value to set.
-     * @return the CapacityReservationInstanceView object itself.
-     */
-    CapacityReservationInstanceView withReservationStateInfo(CapacityReservationStateInfo reservationStateInfo) {
-        this.reservationStateInfo = reservationStateInfo;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,9 +86,6 @@ public class CapacityReservationInstanceView implements JsonSerializable<Capacit
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
-        if (reservationStateInfo() != null) {
-            reservationStateInfo().validate();
-        }
     }
 
     /**
@@ -127,7 +96,6 @@ public class CapacityReservationInstanceView implements JsonSerializable<Capacit
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("utilizationInfo", this.utilizationInfo);
         jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("reservationStateInfo", this.reservationStateInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -154,9 +122,6 @@ public class CapacityReservationInstanceView implements JsonSerializable<Capacit
                     List<InstanceViewStatus> statuses
                         = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
                     deserializedCapacityReservationInstanceView.statuses = statuses;
-                } else if ("reservationStateInfo".equals(fieldName)) {
-                    deserializedCapacityReservationInstanceView.reservationStateInfo
-                        = CapacityReservationStateInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

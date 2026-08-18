@@ -32,7 +32,7 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
 
     /**
      * Creates a new instance of NfsFileType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -42,7 +42,7 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
 
     /**
      * Creates or finds a NfsFileType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NfsFileType.
      */
@@ -53,7 +53,7 @@ public final class NfsFileType extends ExpandableStringEnum<NfsFileType> {
 
     /**
      * Gets known NfsFileType values.
-     *
+     * 
      * @return known NfsFileType values.
      */
     @Generated

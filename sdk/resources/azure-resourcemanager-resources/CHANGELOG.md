@@ -1,20 +1,14 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-- Package api-version 2026-07-01.
-
-### Features Added
-
-### Breaking Changes
-
-- Removed properties `ancestors`, `complianceReasonCode`, `policyAssignmentDisplayName`, `policyDefinitionDisplayName`,
-  `policyDefinitionGroupNames`, `policyExemptionIds`, `policySetDefinitionCategory`, `policySetDefinitionDisplayName`, and
-  `resourceLocation` from `PolicyLogInfo`, as they are not supported by the Policy service.
-
-### Bugs Fixed
+## 2.54.3 (2026-08-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-management` from `1.19.5` to version `1.19.6`.
+
 
 ## 2.54.2 (2026-07-01)
 
@@ -34,6 +28,7 @@
 
 - Upgraded `azure-core-management` from `1.19.3` to version `1.19.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
 
 ## 2.54.0 (2026-03-19)
 

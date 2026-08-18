@@ -158,7 +158,7 @@ public final class RadiologyInsightsClientImpl {
      * REST calls.
      */
     @Host("{endpoint}/health-insights")
-    @ServiceInterface(name = "RadiologyInsightsClient")
+    @ServiceInterface(name = "RadiologyInsightsCli")
     public interface RadiologyInsightsClientService {
         @Put("/radiology-insights/jobs/{id}")
         @ExpectedResponses({ 200, 201 })

@@ -266,13 +266,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        // The recorded sessions were captured at api-version 2021-05; pin the recorded
-        // (playback/record) modes to it so requests match, while live keeps the latest default.
-        final ServiceBusServiceVersion serviceVersion = interceptorManager.isLiveMode()
-            ? ServiceBusServiceVersion.getLatest()
-            : ServiceBusServiceVersion.V2021_05;
         return new ServiceBusManagementClientImpl(pipeline, SERIALIZER, fullyQualifiedNamespace,
-            serviceVersion.getVersion());
+            ServiceBusServiceVersion.getLatest().getVersion());
     }
 
     private <T> T deserialize(Response<Object> response, Class<T> clazz) {

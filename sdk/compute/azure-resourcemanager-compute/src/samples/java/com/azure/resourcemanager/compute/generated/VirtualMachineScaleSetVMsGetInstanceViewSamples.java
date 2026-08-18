@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class VirtualMachineScaleSetVMsGetInstanceViewSamples {
     /*
      * x-ms-original-file:
-     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewAutoPlacedOnDedicatedHostGroup
+     * 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewAutoPlacedOnDedicatedHostGroup
      * .json
      */
     /**
@@ -21,26 +21,6 @@ public final class VirtualMachineScaleSetVMsGetInstanceViewSamples {
      */
     public static void
         getInstanceViewOfAVirtualMachineFromAVMScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement(
-            com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getVirtualMachineScaleSetVMs()
-            .getInstanceViewWithResponse("myResourceGroup", "myVirtualMachineScaleSet", "0",
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewWithCapacityReservationType.
-     * json
-     */
-    /**
-     * Sample code: Get instance view of a virtual machine from a VM scale set that is eligible for and consuming an
-     * open capacity reservation.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        getInstanceViewOfAVirtualMachineFromAVMScaleSetThatIsEligibleForAndConsumingAnOpenCapacityReservation(
             com.azure.resourcemanager.compute.ComputeManager manager) {
         manager.serviceClient()
             .getVirtualMachineScaleSetVMs()

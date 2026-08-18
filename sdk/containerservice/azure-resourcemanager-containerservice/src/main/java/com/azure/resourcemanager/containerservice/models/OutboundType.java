@@ -32,11 +32,6 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
     public static final OutboundType MANAGED_NATGATEWAY = fromString("managedNATGateway");
 
     /**
-     * The AKS-managed NAT gateway V2 is used for egress.
-     */
-    public static final OutboundType MANAGED_NATGATEWAY_V2 = fromString("managedNATGatewayV2");
-
-    /**
      * The user-assigned NAT gateway associated to the cluster subnet is used for egress. This is an advanced scenario
      * and requires proper network configuration.
      */

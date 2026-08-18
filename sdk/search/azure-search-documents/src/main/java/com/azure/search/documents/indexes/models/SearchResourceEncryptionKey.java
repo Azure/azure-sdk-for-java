@@ -22,7 +22,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * The name of your Azure Key Vault key to be used to encrypt your data at rest.
      */
     @Generated
-    private String keyName;
+    private final String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data at rest.
@@ -154,7 +154,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
         jsonWriter.writeStringField("keyVaultKeyVersion", this.keyVersion);
         jsonWriter.writeJsonField("accessCredentials", this.accessCredentials);
         jsonWriter.writeJsonField("identity", this.identity);
-        jsonWriter.writeBooleanField("isServiceLevelKey", this.isServiceLevelKey);
         return jsonWriter.writeEndObject();
     }
 
@@ -175,7 +174,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
             String keyVersion = null;
             AzureActiveDirectoryApplicationCredentials accessCredentials = null;
             SearchIndexerDataIdentity identity = null;
-            Boolean isServiceLevelKey = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -189,8 +187,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                     accessCredentials = AzureActiveDirectoryApplicationCredentials.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     identity = SearchIndexerDataIdentity.fromJson(reader);
-                } else if ("isServiceLevelKey".equals(fieldName)) {
-                    isServiceLevelKey = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -200,7 +196,6 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
             deserializedSearchResourceEncryptionKey.keyVersion = keyVersion;
             deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
             deserializedSearchResourceEncryptionKey.identity = identity;
-            deserializedSearchResourceEncryptionKey.isServiceLevelKey = isServiceLevelKey;
             return deserializedSearchResourceEncryptionKey;
         });
     }
@@ -210,7 +205,7 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
      * data at rest. An example URI might be `https://my-keyvault-name.vault.azure.net`.
      */
     @Generated
-    private String vaultUrl;
+    private final String vaultUrl;
 
     /**
      * Get the vaultUrl property: The URI of your Azure Key Vault, also referred to as DNS name, that contains the key
@@ -221,44 +216,5 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
     @Generated
     public String getVaultUrl() {
         return this.vaultUrl;
-    }
-
-    /*
-     * An optional value indicating whether this key is a service-level key. Default is false.
-     */
-    @Generated
-    private Boolean isServiceLevelKey;
-
-    /**
-     * Get the isServiceLevelKey property: An optional value indicating whether this key is a service-level key. Default
-     * is false.
-     *
-     * @return the isServiceLevelKey value.
-     */
-    @Generated
-    public Boolean isServiceLevelKey() {
-        return this.isServiceLevelKey;
-    }
-
-    /**
-     * Set the isServiceLevelKey property: An optional value indicating whether this key is a service-level key. Default
-     * is false.
-     *
-     * @param isServiceLevelKey the isServiceLevelKey value to set.
-     * @return the SearchResourceEncryptionKey object itself.
-     */
-    @Generated
-    public SearchResourceEncryptionKey setIsServiceLevelKey(Boolean isServiceLevelKey) {
-        this.isServiceLevelKey = isServiceLevelKey;
-        return this;
-    }
-
-    /**
-     * Creates an instance of SearchResourceEncryptionKey class. Used when isServiceLevelKey is
-     * set to true, in which case keyName and vaultUrl are not required.
-     */
-    public SearchResourceEncryptionKey() {
-        this.keyName = null;
-        this.vaultUrl = null;
     }
 }

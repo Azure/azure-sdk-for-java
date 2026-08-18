@@ -44,7 +44,6 @@ import com.azure.resourcemanager.compute.implementation.models.VirtualMachineSca
 import com.azure.resourcemanager.compute.implementation.models.VirtualMachineScaleSetListWithLinkResult;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
-import com.azure.resourcemanager.compute.models.MigrateVMAvailabilityZoneInput;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.compute.models.VMScaleSetScaleOutInput;
@@ -344,16 +343,6 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             @PathParam("vmScaleSetName") String vmScaleSetName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") VMScaleSetScaleOutInput parameters, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/migrateVMAvailabilityZone")
-        @ExpectedResponses({ 202, 204 })
-        @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateVMAvailabilityZone(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") MigrateVMAvailabilityZoneInput body, Context context);
-
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/virtualMachineScaleSets")
         @ExpectedResponses({ 200 })
@@ -434,7 +423,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -474,7 +463,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -572,7 +561,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -623,7 +612,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -900,7 +889,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -950,7 +939,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -1214,7 +1203,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, forceDeletion, context))
@@ -1251,7 +1240,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vmScaleSetName, forceDeletion, context);
@@ -1461,7 +1450,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1497,7 +1486,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1587,7 +1576,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1619,7 +1608,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1724,7 +1713,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.approveRollingUpgrade(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -1764,7 +1753,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.approveRollingUpgrade(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmInstanceIDs, context);
@@ -1988,7 +1977,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.convertToSinglePlacementGroup(this.client.getEndpoint(), apiVersion,
@@ -2031,7 +2020,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.convertToSinglePlacementGroup(this.client.getEndpoint(), apiVersion,
@@ -2126,7 +2115,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.deallocate(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, hibernate, vmInstanceIDs, context))
@@ -2169,7 +2158,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.deallocate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, hibernate, vmInstanceIDs, context);
@@ -2419,7 +2408,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteInstances(this.client.getEndpoint(), apiVersion,
@@ -2466,7 +2455,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteInstances(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2711,7 +2700,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(
@@ -2754,7 +2743,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.forceRecoveryServiceFabricPlatformUpdateDomainWalk(this.client.getEndpoint(), apiVersion,
@@ -2853,7 +2842,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getInstanceView(this.client.getEndpoint(), apiVersion,
@@ -2891,7 +2880,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getInstanceView(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2981,7 +2970,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.updateInstances(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, contentType, vmInstanceIDs, context))
@@ -3023,7 +3012,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.updateInstances(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3207,7 +3196,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getOSUpgradeHistory(this.client.getEndpoint(), apiVersion,
@@ -3248,7 +3237,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3360,7 +3349,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.performMaintenance(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -3402,7 +3391,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.performMaintenance(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmInstanceIDs, context);
@@ -3646,7 +3635,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(
                 context -> service.powerOff(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3690,7 +3679,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.powerOff(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, skipShutdown, vmInstanceIDs, context);
@@ -3931,7 +3920,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.reapply(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, context))
@@ -3967,7 +3956,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.reapply(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, context);
@@ -4137,7 +4126,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.redeploy(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -4178,7 +4167,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.redeploy(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmInstanceIDs, context);
@@ -4409,7 +4398,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmScaleSetReimageInput, context))
@@ -4451,7 +4440,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmScaleSetReimageInput, context);
@@ -4692,7 +4681,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.reimageAll(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -4733,7 +4722,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.reimageAll(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmInstanceIDs, context);
@@ -4962,7 +4951,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -5002,7 +4991,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
             resourceGroupName, vmScaleSetName, vmInstanceIDs, context);
@@ -5223,7 +5212,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.setOrchestrationServiceState(this.client.getEndpoint(), apiVersion,
@@ -5266,7 +5255,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.setOrchestrationServiceState(this.client.getEndpoint(), apiVersion,
@@ -5452,7 +5441,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), apiVersion,
@@ -5493,7 +5482,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5609,7 +5598,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, vmInstanceIDs, context))
@@ -5649,7 +5638,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             vmScaleSetName, vmInstanceIDs, context);
@@ -5870,7 +5859,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.scaleOut(this.client.getEndpoint(), apiVersion,
@@ -5913,7 +5902,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String contentType = "application/json";
         context = this.client.mergeContext(context);
         return service.scaleOut(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -6067,238 +6056,6 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     }
 
     /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateVMAvailabilityZoneWithResponseAsync(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String apiVersion = "2026-04-01";
-        final String contentType = "application/json";
-        return FluxUtil
-            .withContext(context -> service.migrateVMAvailabilityZone(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, vmScaleSetName, contentType, body, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateVMAvailabilityZoneWithResponseAsync(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (vmScaleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String apiVersion = "2026-04-01";
-        final String contentType = "application/json";
-        context = this.client.mergeContext(context);
-        return service.migrateVMAvailabilityZone(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, vmScaleSetName, contentType, body, context);
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginMigrateVMAvailabilityZoneAsync(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = migrateVMAvailabilityZoneWithResponseAsync(resourceGroupName, vmScaleSetName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateVMAvailabilityZoneAsync(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = migrateVMAvailabilityZoneWithResponseAsync(resourceGroupName, vmScaleSetName, body, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateVMAvailabilityZone(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body) {
-        return this.beginMigrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body).getSyncPoller();
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateVMAvailabilityZone(String resourceGroupName,
-        String vmScaleSetName, MigrateVMAvailabilityZoneInput body, Context context) {
-        return this.beginMigrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> migrateVMAvailabilityZoneAsync(String resourceGroupName, String vmScaleSetName,
-        MigrateVMAvailabilityZoneInput body) {
-        return beginMigrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateVMAvailabilityZoneAsync(String resourceGroupName, String vmScaleSetName,
-        MigrateVMAvailabilityZoneInput body, Context context) {
-        return beginMigrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void migrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName,
-        MigrateVMAvailabilityZoneInput body) {
-        migrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body).block();
-    }
-
-    /**
-     * Migrates one or more virtual machines in a VM scale set to an availability zone.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param body The input object for the MigrateVMAvailabilityZone API.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void migrateVMAvailabilityZone(String resourceGroupName, String vmScaleSetName,
-        MigrateVMAvailabilityZoneInput body, Context context) {
-        migrateVMAvailabilityZoneAsync(resourceGroupName, vmScaleSetName, body, context).block();
-    }
-
-    /**
      * Gets all the VM scale sets under the specified subscription for the specified location.
      * 
      * @param location The name of the Azure region.
@@ -6321,7 +6078,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByLocation(this.client.getEndpoint(), apiVersion,
@@ -6356,7 +6113,7 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2026-04-01";
+        final String apiVersion = "2026-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

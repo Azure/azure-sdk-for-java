@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +19,21 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /*
      * Long name of a detected language (e.g. English, French).
      */
-    @Generated
     private String name;
 
     /*
      * A two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
      */
-    @Generated
     private String iso6391Name;
 
     /*
-     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is
-     * true.
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
      */
-    @Generated
     private double confidenceScore;
 
     /**
      * Creates an instance of DetectedLanguage class.
      */
-    @Generated
     public DetectedLanguage() {
     }
 
@@ -48,7 +42,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -59,7 +52,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * @param name the name value to set.
      * @return the DetectedLanguage object itself.
      */
-    @Generated
     public DetectedLanguage setName(String name) {
         this.name = name;
         return this;
@@ -71,7 +63,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * 
      * @return the iso6391Name value.
      */
-    @Generated
     public String getIso6391Name() {
         return this.iso6391Name;
     }
@@ -83,7 +74,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * @param iso6391Name the iso6391Name value to set.
      * @return the DetectedLanguage object itself.
      */
-    @Generated
     public DetectedLanguage setIso6391Name(String iso6391Name) {
         this.iso6391Name = iso6391Name;
         return this;
@@ -95,7 +85,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * 
      * @return the confidenceScore value.
      */
-    @Generated
     public double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -107,7 +96,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * @param confidenceScore the confidenceScore value to set.
      * @return the DetectedLanguage object itself.
      */
-    @Generated
     public DetectedLanguage setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -116,7 +104,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,7 +122,6 @@ public final class DetectedLanguage implements JsonSerializable<DetectedLanguage
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DetectedLanguage.
      */
-    @Generated
     public static DetectedLanguage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DetectedLanguage deserializedDetectedLanguage = new DetectedLanguage();

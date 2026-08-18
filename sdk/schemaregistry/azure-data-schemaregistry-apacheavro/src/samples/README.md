@@ -45,4 +45,4 @@ This project welcomes contributions and suggestions. See [Contributing][sdk_read
 [sample_avro_deserialization]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro/SchemaRegistryApacheAvroDeserializationSample.java
 [sample_event_hubs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro/SchemaRegistryWithEventHubs.java
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%schemaregistry%2Fazure-data-schemaregistry-apacheavro%2Fsrc%2Fsamples%2README.png)

@@ -16,12 +16,7 @@ public enum ServiceBusServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2021-05}.
      */
-    V2021_05("2021-05"),
-
-    /**
-     * Service version {@code 2024-05}.
-     */
-    V2024_05("2024-05");
+    V2021_05("2021-05");
 
     private final String version;
 
@@ -47,6 +42,6 @@ public enum ServiceBusServiceVersion implements ServiceVersion {
      * @return the latest {@link ServiceBusServiceVersion}.
      */
     public static ServiceBusServiceVersion getLatest() {
-        return V2024_05;
+        return V2021_05;
     }
 }

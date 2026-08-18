@@ -26,15 +26,16 @@ ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbu
     .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpClient(HttpClient.createDefault());
-
+        
 ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient = confidentialLedgerCertificateClientbuilder.buildClient();
 
 String ledgerId = "java-tests";
 Response<BinaryData> ledgerCertificateWithResponse = confidentialLedgerCertificateClient
     .getLedgerIdentityWithResponse(ledgerId, null);
 BinaryData certificateResponse = ledgerCertificateWithResponse.getValue();
-JsonObject jsonObject = certificateResponse.toObject(JsonObject.class);
-String ledgerTlsCertificate = ((JsonString) jsonObject.getProperty("ledgerTlsCertificate")).getValue();
+ObjectMapper mapper = new ObjectMapper();
+JsonNode jsonNode = mapper.readTree(certificateResponse.toBytes());
+String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
 
 
 SslContext sslContext = SslContextBuilder.forClient()
@@ -65,21 +66,13 @@ All of these samples need the endpoint to your Confidential Ledger resource, and
 [GetConstitutionSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetConstitutionSample.java)|Get the constitution for a ledger|
 [GetCurrentLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetCurrentLedgerEntrySample.java)|Get the most recent ledger entry|
 [GetEnclaveQuotesSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetEnclaveQuotesSample.java)|Get the enclave quotes for a ledger|
-[GetLedgerEntriesSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetLedgerEntriesSample.java)|List ledger entries in the confidential ledger|
-[ListLedgerEntriesSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/ListLedgerEntriesSample.java)|List all ledger entries in the confidential ledger|
-[ListLedgerEntriesWithCollectionIdSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/ListLedgerEntriesWithCollectionIdSample.java)|List ledger entries for a specific collection ID|
-[ListLedgerEntriesWithCollectionIdAndTagSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/ListLedgerEntriesWithCollectionIdAndTagSample.java)|List ledger entries for a specific collection ID and tag|
+|[GetLedgerEntriesSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetLedgerEntriesSample.java)|List ledger entries in the confidential ledger|
 [GetLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetLedgerEntrySample.java)|Get a specific ledger entry|
 [GetLedgerIdentitySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetLedgerIdentitySample.java)|Get the identity of a ledger|
 [GetReceiptSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetReceiptSample.java)|Get a receipt from a transaction|
 [GetTransactionStatusSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetTransactionStatusSample.java)|Get the status of a ledger entry|
 [GetUserSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/GetUserSample.java)|Get specific user data from a ledger|
 [PostLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/PostLedgerEntrySample.java)|Add a ledger entry. This also contains a more robust example of response handling.|
-[PostLedgerEntryWithCollectionIdAndTagsSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/PostLedgerEntryWithCollectionIdAndTagsSample.java)|Add a ledger entry with a specific collection ID and tags.|
-[PostLedgerEntryWithCollectionIdSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/PostLedgerEntryWithCollectionIdSample.java)|Add a ledger entry with a specific collection ID.|
-[CreateLedgerEntrySample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/CreateLedgerEntrySample.java)|Create a ledger entry.|
-[CreateLedgerEntryWithCollectionIdAndTagsSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/CreateLedgerEntryWithCollectionIdAndTagsSample.java)|Create a ledger entry with a specific collection ID and tags.|
-[CreateLedgerEntryWithCollectionIdSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java/com/azure/security/confidentialledger/CreateLedgerEntryWithCollectionIdSample.java)|Create a ledger entry with a specific collection ID.|
 
 ## Troubleshooting
 

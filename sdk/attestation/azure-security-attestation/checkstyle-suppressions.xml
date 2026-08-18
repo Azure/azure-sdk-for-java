@@ -5,9 +5,23 @@
 <suppressions>
   <suppress files="com.azure.security.attestation.AttestationClientTestBase.java" checks="IllegalImportCheck" />
   <suppress files="com.azure.security.attestation.AttestationTest.java" checks="IllegalImportCheck" />
-  <suppress files="com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.security.attestation.AttestationAdministrationAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.security.attestation.AttestationAdministrationClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.security.attestation.AttestationAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.security.attestation.AttestationClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.security.attestation.implementation.AttestationsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.MetadataConfigurationsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.PoliciesImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.PolicyCertificatesImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.SigningCertificatesImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationOpenIdMetadataImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationOptionsImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationSignerImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResultImpl.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationOpenIdMetadataImpl.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationOpenIdMetadataImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.security.attestation.implementation.models.AttestationSignerImpl.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
+  <suppress files="com.azure.security.attestation.AttestationAdministrationAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.security.attestation.AttestationAdministrationClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.security.attestation.AttestationAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.security.attestation.AttestationClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.security.attestation.implementation.models.JsonWebKey.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

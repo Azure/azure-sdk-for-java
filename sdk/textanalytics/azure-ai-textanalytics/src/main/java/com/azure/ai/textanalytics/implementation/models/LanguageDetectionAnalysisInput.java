@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +20,11 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
     /*
      * The documents property.
      */
-    @Generated
     private List<LanguageInput> documents;
 
     /**
      * Creates an instance of LanguageDetectionAnalysisInput class.
      */
-    @Generated
     public LanguageDetectionAnalysisInput() {
     }
 
@@ -36,7 +33,6 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
      * 
      * @return the documents value.
      */
-    @Generated
     public List<LanguageInput> getDocuments() {
         return this.documents;
     }
@@ -47,7 +43,6 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
      * @param documents the documents value to set.
      * @return the LanguageDetectionAnalysisInput object itself.
      */
-    @Generated
     public LanguageDetectionAnalysisInput setDocuments(List<LanguageInput> documents) {
         this.documents = documents;
         return this;
@@ -56,7 +51,6 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,7 +66,6 @@ public final class LanguageDetectionAnalysisInput implements JsonSerializable<La
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the LanguageDetectionAnalysisInput.
      */
-    @Generated
     public static LanguageDetectionAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LanguageDetectionAnalysisInput deserializedLanguageDetectionAnalysisInput

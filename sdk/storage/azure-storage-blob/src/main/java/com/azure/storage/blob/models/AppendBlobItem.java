@@ -5,7 +5,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.implementation.accesshelpers.AppendBlobItemConstructorProxy;
 
 import java.time.OffsetDateTime;
 
@@ -23,11 +22,6 @@ public class AppendBlobItem {
     private final String blobAppendOffset;
     private final Integer blobCommittedBlockCount;
     private final String versionId;
-    private final byte[] contentCrc64;
-
-    static {
-        AppendBlobItemConstructorProxy.setAccessor(AppendBlobItem::new);
-    }
 
     /**
      * Constructs an {@link AppendBlobItem}.
@@ -82,14 +76,6 @@ public class AppendBlobItem {
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
         final String blobAppendOffset, final Integer blobCommittedBlockCount, final String versionId) {
-        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope, blobAppendOffset,
-            blobCommittedBlockCount, versionId, null);
-    }
-
-    private AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-        final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
-        final String blobAppendOffset, final Integer blobCommittedBlockCount, final String versionId,
-        final byte[] contentCrc64) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -99,7 +85,6 @@ public class AppendBlobItem {
         this.blobAppendOffset = blobAppendOffset;
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         this.versionId = versionId;
-        this.contentCrc64 = CoreUtils.clone(contentCrc64);
     }
 
     /**
@@ -154,15 +139,6 @@ public class AppendBlobItem {
      */
     public byte[] getContentMd5() {
         return CoreUtils.clone(contentMd5);
-    }
-
-    /**
-     * Gets the calculated CRC64 of the append blob.
-     *
-     * @return the calculated CRC64 of the append blob
-     */
-    public byte[] getContentCrc64() {
-        return CoreUtils.clone(contentCrc64);
     }
 
     /**

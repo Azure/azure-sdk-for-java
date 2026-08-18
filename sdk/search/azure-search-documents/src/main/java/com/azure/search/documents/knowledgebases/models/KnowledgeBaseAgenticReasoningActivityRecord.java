@@ -85,7 +85,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
         jsonWriter.writeIntField("id", getId());
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
-        jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("reasoningTokens", this.reasoningTokens);
         jsonWriter.writeJsonField("retrievalReasoningEffort", this.retrievalReasoningEffort);
@@ -107,7 +106,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
             int id = 0;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
-            String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.AGENTIC_REASONING;
             Integer reasoningTokens = null;
             KnowledgeRetrievalReasoningEffort retrievalReasoningEffort = null;
@@ -120,8 +118,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
                     error = KnowledgeBaseErrorDetail.fromJson(reader);
-                } else if ("warning".equals(fieldName)) {
-                    warning = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = KnowledgeBaseActivityRecordType.fromString(reader.getString());
                 } else if ("reasoningTokens".equals(fieldName)) {
@@ -136,7 +132,6 @@ public final class KnowledgeBaseAgenticReasoningActivityRecord extends Knowledge
                 = new KnowledgeBaseAgenticReasoningActivityRecord(id);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.setError(error);
-            deserializedKnowledgeBaseAgenticReasoningActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.type = type;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.reasoningTokens = reasoningTokens;
             deserializedKnowledgeBaseAgenticReasoningActivityRecord.retrievalReasoningEffort = retrievalReasoningEffort;

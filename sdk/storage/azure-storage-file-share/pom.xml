@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.32.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+  <version>12.31.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
 
   <name>Microsoft Azure client library for File Share Storage</name>
   <description>This module contains client library for Microsoft Azure File Share Storage.</description>
@@ -37,7 +37,6 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.storage.common/com.azure.storage.common.implementation.contentvalidation=ALL-UNNAMED
       --add-exports com.azure.storage.common/com.azure.storage.common.implementation.credentials=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.file.share/com.azure.storage.file.share=ALL-UNNAMED
@@ -79,13 +78,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.35.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.34.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.35.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.34.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -116,7 +115,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.36.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.35.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>

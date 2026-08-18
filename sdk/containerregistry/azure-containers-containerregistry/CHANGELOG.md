@@ -1,16 +1,14 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed `ContainerRegistryClient`'s handling of paging for `listRepositoryNames`. ([#47700](https://github.com/Azure/azure-sdk-for-java/pull/47700))
+## 1.2.25 (2026-08-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+
 
 ## 1.2.24 (2026-07-01)
 
@@ -31,6 +29,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
 - Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
 
+
 ## 1.2.22 (2026-01-29)
 
 ### Other Changes
@@ -41,6 +40,7 @@
 - Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
+
 ## 1.2.21 (2025-10-27)
 
 ### Other Changes
@@ -49,6 +49,7 @@
 
 - Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
 - Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 
 ## 1.2.20 (2025-09-25)
 
@@ -59,6 +60,7 @@
 - Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
 - Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
 
+
 ## 1.2.19 (2025-08-21)
 
 ### Other Changes
@@ -67,6 +69,7 @@
 
 - Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
 - Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 
 ## 1.2.18 (2025-07-29)
 
@@ -77,6 +80,7 @@
 - Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
 
+
 ## 1.2.17 (2025-06-19)
 
 ### Other Changes
@@ -85,6 +89,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
 - Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+
 
 ## 1.2.16 (2025-03-24)
 
@@ -96,6 +101,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 
+
 ## 1.2.15 (2025-02-25)
 
 ### Other Changes
@@ -106,6 +112,7 @@
 - Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
 - Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
+
 ## 1.2.14 (2024-12-04)
 
 ### Other Changes
@@ -115,6 +122,7 @@
 - Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 
+
 ## 1.2.13 (2024-10-27)
 
 ### Other Changes
@@ -123,6 +131,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
 - Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
 
 ## 1.2.12 (2024-09-27)
 
@@ -134,6 +143,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
 - Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 
+
 ## 1.2.11 (2024-08-24)
 
 ### Other Changes
@@ -144,6 +154,7 @@
 - Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 
+
 ## 1.2.10 (2024-07-26)
 
 ### Other Changes
@@ -152,6 +163,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+
 
 ## 1.2.9 (2024-06-27)
 
@@ -162,6 +174,7 @@
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 
+
 ## 1.2.8 (2024-05-28)
 
 ### Other Changes
@@ -170,6 +183,7 @@
 
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
 
 ## 1.2.7 (2024-04-23)
 
@@ -180,6 +194,7 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
+
 ## 1.2.6 (2024-03-20)
 
 ### Other Changes
@@ -188,6 +203,7 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
 
 ## 1.2.5 (2024-02-22)
 
@@ -198,6 +214,7 @@
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 
+
 ## 1.2.4 (2023-12-04)
 
 ### Other Changes
@@ -206,6 +223,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.2.3 (2023-11-20)
 
@@ -216,6 +234,7 @@
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
+
 ## 1.2.2 (2023-10-20)
 
 ### Other Changes
@@ -224,6 +243,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
 
 ## 1.2.1 (2023-09-22)
 
@@ -234,6 +254,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 
+
 ## 1.2.0 (2023-08-18)
 
 ### Other Changes
@@ -243,6 +264,7 @@
 - Upgraded `azure-json` from `1.0.1` to version `1.1.0`.
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
 
 ## 1.1.2 (2023-07-25)
 
@@ -261,6 +283,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+
 
 ## 1.1.0 (2023-05-11)
 
@@ -520,6 +543,7 @@
 - Enabled support for non-public clouds.
 - Added expiration time for the jwt tokens.
 - Added more samples and documentation.
+
 
 ## 1.0.0-beta.2 (2021-05-11)
 ### New Features

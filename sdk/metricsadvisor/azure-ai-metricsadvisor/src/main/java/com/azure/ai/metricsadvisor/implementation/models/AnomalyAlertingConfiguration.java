@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,19 +22,16 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
     /*
      * anomaly alerting configuration unique id
      */
-    @Generated
     private UUID anomalyAlertingConfigurationId;
 
     /*
      * anomaly alerting configuration name
      */
-    @Generated
     private String name;
 
     /*
      * anomaly alerting configuration description
      */
-    @Generated
     private String description;
 
     /*
@@ -43,31 +39,26 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * should be specified when setting up multiple metric alerting configurations
      */
-    @Generated
     private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
 
     /*
      * dimensions used to split alert
      */
-    @Generated
     private List<String> splitAlertByDimensions;
 
     /*
      * hook unique ids
      */
-    @Generated
     private List<UUID> hookIds;
 
     /*
      * Anomaly alerting configurations
      */
-    @Generated
     private List<MetricAlertingConfiguration> metricAlertingConfigurations;
 
     /**
      * Creates an instance of AnomalyAlertingConfiguration class.
      */
-    @Generated
     public AnomalyAlertingConfiguration() {
     }
 
@@ -76,7 +67,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the anomalyAlertingConfigurationId value.
      */
-    @Generated
     public UUID getAnomalyAlertingConfigurationId() {
         return this.anomalyAlertingConfigurationId;
     }
@@ -86,7 +76,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the name value.
      */
-    @Generated
     public String getName() {
         return this.name;
     }
@@ -97,7 +86,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param name the name value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration setName(String name) {
         this.name = name;
         return this;
@@ -108,7 +96,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the description value.
      */
-    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -119,7 +106,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param description the description value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration setDescription(String description) {
         this.description = description;
         return this;
@@ -132,7 +118,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the crossMetricsOperator value.
      */
-    @Generated
     public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
         return this.crossMetricsOperator;
     }
@@ -145,7 +130,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param crossMetricsOperator the crossMetricsOperator value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration
         setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
@@ -157,7 +141,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the splitAlertByDimensions value.
      */
-    @Generated
     public List<String> getSplitAlertByDimensions() {
         return this.splitAlertByDimensions;
     }
@@ -168,7 +151,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param splitAlertByDimensions the splitAlertByDimensions value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration setSplitAlertByDimensions(List<String> splitAlertByDimensions) {
         this.splitAlertByDimensions = splitAlertByDimensions;
         return this;
@@ -179,7 +161,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the hookIds value.
      */
-    @Generated
     public List<UUID> getHookIds() {
         return this.hookIds;
     }
@@ -190,7 +171,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param hookIds the hookIds value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration setHookIds(List<UUID> hookIds) {
         this.hookIds = hookIds;
         return this;
@@ -201,7 +181,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * 
      * @return the metricAlertingConfigurations value.
      */
-    @Generated
     public List<MetricAlertingConfiguration> getMetricAlertingConfigurations() {
         return this.metricAlertingConfigurations;
     }
@@ -212,17 +191,12 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @param metricAlertingConfigurations the metricAlertingConfigurations value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    @Generated
     public AnomalyAlertingConfiguration
         setMetricAlertingConfigurations(List<MetricAlertingConfiguration> metricAlertingConfigurations) {
         this.metricAlertingConfigurations = metricAlertingConfigurations;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -248,7 +222,6 @@ public final class AnomalyAlertingConfiguration implements JsonSerializable<Anom
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyAlertingConfiguration.
      */
-    @Generated
     public static AnomalyAlertingConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyAlertingConfiguration deserializedAnomalyAlertingConfiguration = new AnomalyAlertingConfiguration();

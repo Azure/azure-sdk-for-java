@@ -4,7 +4,7 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -22,13 +22,11 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
     /*
      * A unique id.
      */
-    @Generated
     private String id;
 
     /*
      * The access policy.
      */
-    @Generated
     private TableAccessPolicy accessPolicy;
 
     /**
@@ -37,7 +35,6 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      * @param id A unique id for this {@link TableSignedIdentifier}.
      * @throws NullPointerException If {@code id} is null.
      */
-    @Generated
     public TableSignedIdentifier(String id) {
         this.id = Objects.requireNonNull(id, "'id' cannot be null");
     }
@@ -47,7 +44,6 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      *
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -57,7 +53,6 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      *
      * @return the accessPolicy value.
      */
-    @Generated
     public TableAccessPolicy getAccessPolicy() {
         return this.accessPolicy;
     }
@@ -68,22 +63,19 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      * @param accessPolicy the accessPolicy value to set.
      * @return the TableSignedIdentifier object itself.
      */
-    @Generated
     public TableSignedIdentifier setAccessPolicy(TableAccessPolicy accessPolicy) {
         this.accessPolicy = accessPolicy;
         return this;
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
-    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Id", this.id);
         xmlWriter.writeXml(this.accessPolicy, "AccessPolicy");
@@ -98,7 +90,6 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableSignedIdentifier.
      */
-    @Generated
     public static TableSignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -113,10 +104,8 @@ public final class TableSignedIdentifier implements XmlSerializable<TableSignedI
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the TableSignedIdentifier.
      */
-    @Generated
     public static TableSignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName
-            = rootElementName == null || rootElementName.isEmpty() ? "SignedIdentifier" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifier" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             TableSignedIdentifier deserializedTableSignedIdentifier = new TableSignedIdentifier();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

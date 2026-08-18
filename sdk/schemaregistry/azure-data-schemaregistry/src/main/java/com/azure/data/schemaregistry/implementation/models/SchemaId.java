@@ -5,7 +5,6 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public final class SchemaId implements JsonSerializable<SchemaId> {
     /*
      * Schema ID that uniquely identifies a schema in the registry namespace.
      */
-    @Generated
     private String id;
 
     /**
      * Creates an instance of SchemaId class.
      */
-    @Generated
     public SchemaId() {
     }
 
@@ -35,7 +32,6 @@ public final class SchemaId implements JsonSerializable<SchemaId> {
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -46,16 +42,11 @@ public final class SchemaId implements JsonSerializable<SchemaId> {
      * @param id the id value to set.
      * @return the SchemaId object itself.
      */
-    @Generated
     public SchemaId setId(String id) {
         this.id = id;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -71,7 +62,6 @@ public final class SchemaId implements JsonSerializable<SchemaId> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the SchemaId.
      */
-    @Generated
     public static SchemaId fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SchemaId deserializedSchemaId = new SchemaId();

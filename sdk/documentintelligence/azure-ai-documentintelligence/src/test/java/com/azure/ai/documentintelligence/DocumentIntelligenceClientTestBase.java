@@ -13,7 +13,11 @@ import com.azure.ai.documentintelligence.models.LengthUnit;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
@@ -21,6 +25,8 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.documentintelligence.TestUtils.EXPECTED_MERCHANT_NAME;
@@ -31,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelligenceTestBase {
+public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
     Duration durationTestMode;
     private boolean sanitizersRemoved = false;
 
@@ -50,13 +56,16 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         DocumentIntelligenceClientBuilder builder = new DocumentIntelligenceClientBuilder().endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .credential(TestUtils.getTestTokenCredential(testContextManager.getTestMode()));
+            .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
             setMatchers();
         } else if (interceptorManager.isRecordMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.addSanitizers(getTestProxySanitizers());
@@ -78,13 +87,16 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
             = new DocumentIntelligenceAdministrationClientBuilder().endpoint(endpoint)
                 .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .serviceVersion(serviceVersion)
-                .credential(TestUtils.getTestTokenCredential(testContextManager.getTestMode()));
+                .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
             setMatchers();
         } else if (interceptorManager.isRecordMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new AzurePowerShellCredentialBuilder().build());
         }
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.addSanitizers(getTestProxySanitizers());
@@ -94,7 +106,23 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         return builder;
     }
 
-    static void validateJpegReceiptData(AnalyzeResult actualAnalyzeResult) {
+    void dataRunner(BiConsumer<byte[], Long> testRunner, String fileName) {
+        TestUtils.getDataRunnerHelper(testRunner, fileName);
+    }
+
+    void buildModelRunner(Consumer<String> testRunner) {
+        TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void buildBatchModelRunner(BiConsumer<String, String> testRunner) {
+        TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void beginClassifierRunner(Consumer<String> testRunner) {
+        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void validateJpegReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 
         // pages
@@ -116,7 +144,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
 
     }
 
-    static void validateInvoiceData(AnalyzeResult analyzeResult) {
+    void validateInvoiceData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-invoice", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -174,7 +202,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         Assertions.assertNotNull(analyzeResult.getPages());
     }
 
-    static void validateIdentityData(AnalyzeResult analyzeResult) {
+    void validateIdentityData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-idDocument", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -221,7 +249,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         assertNotNull(licensePageFields.get("Restrictions").getConfidence());
     }
 
-    static void validateGermanContentData(AnalyzeResult analyzeResult) {
+    void validateGermanContentData(AnalyzeResult analyzeResult) {
         assertNotNull(analyzeResult.getPages());
         assertEquals(1, analyzeResult.getPages().size());
         analyzeResult.getPages().forEach(documentPage -> {
@@ -246,7 +274,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         }
     }
 
-    static void validateContentData(AnalyzeResult analyzeResult) {
+    void validateContentData(AnalyzeResult analyzeResult) {
         assertNotNull(analyzeResult.getPages());
         analyzeResult.getPages().forEach(documentPage -> {
             Assertions.assertTrue(documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
@@ -275,7 +303,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         assertNull(analyzeResult.getDocuments());
     }
 
-    static void validateDocumentPage(DocumentPage documentPage) {
+    void validateDocumentPage(DocumentPage documentPage) {
         assertNotNull(documentPage.getLines());
         documentPage.getLines().forEach(documentLine -> {
             validateBoundingBoxData(documentLine.getPolygon());
@@ -289,10 +317,10 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         });
     }
 
-    static void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
+    void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
         List<DocumentPage> documentPages = actualAnalyzeResult.getPages();
         Assertions.assertEquals(1, documentPages.size());
-        documentPages.forEach(DocumentIntelligenceClientTestBase::validateDocumentPage);
+        documentPages.forEach(this::validateDocumentPage);
         int[][] table = new int[][] { { 5, 4, 20 }, { 3, 2, 6 } };
         Assertions.assertEquals(2, actualAnalyzeResult.getTables().size());
         for (int i = 0; i < actualAnalyzeResult.getTables().size(); i++) {
@@ -346,7 +374,7 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         });
     }
 
-    static void validateW2Data(AnalyzeResult analyzeResult) {
+    void validateW2Data(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-tax.us.w2", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
             assertNotNull(documentPage.getLines());
@@ -437,17 +465,17 @@ public abstract class DocumentIntelligenceClientTestBase extends DocumentIntelli
         assertEquals(37160.56f, w2Fields.get("WagesTipsAndOtherCompensation").getValueNumber(), 0.01);
     }
 
-    private static void validateBoundingBoxData(List<Double> points) {
+    private void validateBoundingBoxData(List<Double> points) {
         assertNotNull(points);
         assertEquals(8, points.size());
     }
 
-    private static void validateReceipt(AnalyzeResult actualAnalyzeResult) {
+    private void validateReceipt(AnalyzeResult actualAnalyzeResult) {
         Assertions.assertEquals("prebuilt-receipt", actualAnalyzeResult.getModelId());
         assertNotNull(actualAnalyzeResult.getPages());
     }
 
-    private static void validateJpegReceiptFields(Map<String, DocumentField> actualFields) {
+    private void validateJpegReceiptFields(Map<String, DocumentField> actualFields) {
         actualFields.forEach((key, documentField) -> {
             if (documentField.getBoundingRegions() != null) {
                 Assertions.assertEquals(1, documentField.getBoundingRegions().get(0).getPageNumber());

@@ -18,7 +18,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -935,11 +934,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .connectionString(connectionStringUpdated);
 
-        // Recorded at api-version 2021-05; pin the recorded modes so requests match the recordings.
-        if (!interceptorManager.isLiveMode()) {
-            builder.serviceVersion(ServiceBusServiceVersion.V2021_05);
-        }
-
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
@@ -1135,13 +1129,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
     static void configure(ServiceBusAdministrationClientBuilder builder, HttpClient httpClient,
         InterceptorManager interceptorManager, AtomicReference<TokenCredential> credentialCached) {
-        // The recorded sessions were captured at api-version 2021-05, but the default admin
-        // api-version is now 2024-05 (getLatest()). Pin the recorded (playback/record) modes to
-        // 2021-05 so requests match the recordings; live mode keeps the latest default.
-        if (!interceptorManager.isLiveMode()) {
-            builder.serviceVersion(ServiceBusServiceVersion.V2021_05);
-        }
-
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(TestUtils.getFullyQualifiedDomainName(true), new MockTokenCredential());
             builder.httpClient(interceptorManager.getPlaybackClient());

@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,13 +19,11 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
-    @Generated
     private RequestStatistics statistics;
 
     /**
      * Creates an instance of AnalyzeTextJobStatistics class.
      */
-    @Generated
     public AnalyzeTextJobStatistics() {
     }
 
@@ -36,7 +33,6 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
      * 
      * @return the statistics value.
      */
-    @Generated
     public RequestStatistics getStatistics() {
         return this.statistics;
     }
@@ -48,7 +44,6 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
      * @param statistics the statistics value to set.
      * @return the AnalyzeTextJobStatistics object itself.
      */
-    @Generated
     public AnalyzeTextJobStatistics setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
@@ -57,7 +52,6 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,7 +67,6 @@ public class AnalyzeTextJobStatistics implements JsonSerializable<AnalyzeTextJob
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AnalyzeTextJobStatistics.
      */
-    @Generated
     public static AnalyzeTextJobStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnalyzeTextJobStatistics deserializedAnalyzeTextJobStatistics = new AnalyzeTextJobStatistics();

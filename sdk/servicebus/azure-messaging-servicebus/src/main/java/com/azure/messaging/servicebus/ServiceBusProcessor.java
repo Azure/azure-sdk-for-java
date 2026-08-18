@@ -12,7 +12,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -32,7 +31,6 @@ final class ServiceBusProcessor {
     private final Consumer<ServiceBusErrorContext> processError;
     private final int concurrency;
     private final Boolean enableAutoDisposition;
-    private final Duration drainTimeout;
     private boolean isRunning;
     private RollingMessagePump rollingMessagePump;
 
@@ -44,11 +42,10 @@ final class ServiceBusProcessor {
      * @param processError The consumer to report the errors.
      * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
      * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
-     * @param drainTimeout The maximum time to wait for in-flight message handlers to complete during shutdown.
      */
     ServiceBusProcessor(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        int concurrency, boolean enableAutoDisposition, Duration drainTimeout) {
+        int concurrency, boolean enableAutoDisposition) {
         this.kind = Kind.NON_SESSION;
         this.nonSessionBuilder = builder;
         this.sessionBuilder = null;
@@ -56,9 +53,6 @@ final class ServiceBusProcessor {
         this.processMessage = processMessage;
         this.concurrency = concurrency;
         this.enableAutoDisposition = enableAutoDisposition;
-        // Fail fast at construction time so a null timeout cannot surface as an NPE later in
-        // RollingMessagePump.dispose() / MessagePump.drainHandlers(...) during shutdown.
-        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
 
         synchronized (lock) {
             this.isRunning = false;
@@ -72,11 +66,10 @@ final class ServiceBusProcessor {
      * @param processMessage The consumer to invoke for each message.
      * @param processError The consumer to report the errors.
      * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel per session.
-     * @param drainTimeout The maximum time to wait for in-flight message handlers to complete during shutdown.
      */
     ServiceBusProcessor(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        int concurrency, Duration drainTimeout) {
+        int concurrency) {
         this.kind = Kind.SESSION;
         this.sessionBuilder = builder;
         this.nonSessionBuilder = null;
@@ -84,9 +77,6 @@ final class ServiceBusProcessor {
         this.processMessage = processMessage;
         this.concurrency = concurrency;
         this.enableAutoDisposition = null;
-        // Fail fast at construction time so a null timeout cannot surface as an NPE later in
-        // RollingMessagePump.dispose() / SessionsMessagePump.drainHandlers(...) during shutdown.
-        this.drainTimeout = Objects.requireNonNull(drainTimeout, "'drainTimeout' cannot be null.");
 
         synchronized (lock) {
             this.isRunning = false;
@@ -102,10 +92,9 @@ final class ServiceBusProcessor {
             isRunning = true;
             if (kind == Kind.NON_SESSION) {
                 rollingMessagePump = new RollingMessagePump(nonSessionBuilder, processMessage, processError,
-                    concurrency, enableAutoDisposition, drainTimeout);
+                    concurrency, enableAutoDisposition);
             } else {
-                rollingMessagePump
-                    = new RollingMessagePump(sessionBuilder, processMessage, processError, concurrency, drainTimeout);
+                rollingMessagePump = new RollingMessagePump(sessionBuilder, processMessage, processError, concurrency);
             }
             p = rollingMessagePump;
         }
@@ -160,10 +149,8 @@ final class ServiceBusProcessor {
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final Boolean enableAutoDisposition;
-        private final Duration drainTimeout;
         private final Disposable.Composite disposable = Disposables.composite();
         private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
-        private volatile MessagePump currentPump;
 
         /**
          * Instantiate {@link RollingMessagePump} that stream messages using {@link MessagePump}.
@@ -175,11 +162,10 @@ final class ServiceBusProcessor {
          * @param processError The consumer to report the errors.
          * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
          * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
-         * @param drainTimeout The maximum time to wait for in-flight handlers during shutdown.
          */
         RollingMessagePump(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            int concurrency, boolean enableAutoDisposition, Duration drainTimeout) {
+            int concurrency, boolean enableAutoDisposition) {
             this.logger = new ClientLogger(RollingMessagePump.class);
             this.kind = Kind.NON_SESSION;
             this.nonSessionBuilder = builder;
@@ -188,7 +174,6 @@ final class ServiceBusProcessor {
             this.processError = processError;
             this.processMessage = processMessage;
             this.enableAutoDisposition = enableAutoDisposition;
-            this.drainTimeout = drainTimeout;
         }
 
         /**
@@ -201,11 +186,11 @@ final class ServiceBusProcessor {
          *      in parallel for each session.
          * @param processMessage The consumer to invoke for each message.
          * @param processError The consumer to report the errors.
-         * @param drainTimeout The maximum time to wait for in-flight handlers during shutdown.
+        
          */
         RollingMessagePump(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            int concurrencyPerSession, Duration drainTimeout) {
+            int concurrencyPerSession) {
             this.logger = new ClientLogger(RollingMessagePump.class);
             this.kind = Kind.SESSION;
             this.sessionBuilder = builder;
@@ -214,7 +199,6 @@ final class ServiceBusProcessor {
             this.processMessage = processMessage;
             this.concurrency = concurrencyPerSession;
             this.enableAutoDisposition = null;
-            this.drainTimeout = drainTimeout;
         }
 
         /**
@@ -244,15 +228,14 @@ final class ServiceBusProcessor {
                     clientIdentifier.set(client.getIdentifier());
                     final MessagePump pump
                         = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
-                    currentPump = pump;
                     return pump.begin();
                 }, client -> {
                     client.close();
                 }, true);
             } else {
                 pumping = Mono.using(() -> {
-                    final SessionsMessagePump pump = sessionBuilder.buildPumpForProcessor(logger, processMessage,
-                        processError, concurrency, drainTimeout);
+                    final SessionsMessagePump pump
+                        = sessionBuilder.buildPumpForProcessor(logger, processMessage, processError, concurrency);
                     return pump;
                 }, pump -> {
                     clientIdentifier.set(pump.getIdentifier());
@@ -273,21 +256,7 @@ final class ServiceBusProcessor {
         }
 
         void dispose() {
-            // Drain in-flight message handlers BEFORE disposing the subscription.
-            // Disposing cancels the reactive chain, which interrupts handler threads (via Reactor's
-            // publishOn worker disposal). Draining first ensures handlers can complete message
-            // settlement before the client is closed.
-            // See https://github.com/Azure/azure-sdk-for-java/issues/45716
-            final MessagePump pump = currentPump;
-            if (pump != null) {
-                pump.drainHandlers(drainTimeout);
-            }
             disposable.dispose();
-            // Clear the reference now that the pump's underlying client and subscription are gone
-            // so we don't retain it past its useful lifetime. A subsequent start() cycle will
-            // assign a fresh pump in beginIntern() before any drain on this RollingMessagePump
-            // can run again.
-            currentPump = null;
         }
 
         /**

@@ -5,50 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 
 /**
- * Defines the schedule for Block and Future capacity reservations. Specifies the schedule during which capacity
- * reservation is active and VM or VMSS resource can be allocated using reservation. For Block capacity reservations,
- * the scheduleProfile, start, and end fields are immutable after creation. Please refer to
- * https://aka.ms/blockcapacityreservation for more details. Minimum API version for Block capacity reservations:
- * 2025-04-01. Future capacity reservations must use this property with only a start time, which can be changed until
- * the ‘modifiableUntil’ time. Please refer to https://aka.ms/futurecapacityreservation for more details. Minimum API
- * version for Future capacity reservations: 2026-04-01.
+ * Defines the schedule for Block-type capacity reservations. Specifies the schedule during which capacity reservation
+ * is active and VM or VMSS resource can be allocated using reservation. This property is required and only supported
+ * when the capacity reservation group type is 'Block'. The scheduleProfile, start, and end fields are immutable after
+ * creation. Minimum API version: 2025-04-01. Please refer to https://aka.ms/blockcapacityreservation for more details.
  */
 @Fluent
 public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> {
     /*
-     * The required start date for Block or Future capacity reservations. Block capacity reservations: Must be today or
-     * within 56 days in the future. For same-day scheduling, requests must be submitted before 11:30 AM UTC. Future
-     * capacity reservations: Must be at least 7 days in the future, and maximum 6 months in the future. Minimum API
-     * version for Future capacity reservations: 2026-04-01. Example: 2025-06-27, applicable for both Block and Future
-     * capacity reservations.
+     * The required start date for block capacity reservations. Must be today or within 56 days in the future. For
+     * same-day scheduling, requests must be submitted before 11:30 AM UTC. Example: 2025-06-27.
      */
     private String start;
 
     /*
-     * The required end date for Block capacity reservations. Must be after the start date, with a duration of either
+     * The required end date for block capacity reservations. Must be after the start date, with a duration of either
      * 1–14 whole days or 3–26 whole weeks. Example: 2025-06-28.
      */
     private String end;
-
-    /*
-     * The minimum number of days that must pass after the start date before a Future capacity reservation can be
-     * updated or deleted once it has been committed. Will be populated with a default value if not provided.
-     */
-    private Integer minimumCommitmentDays;
-
-    /*
-     * The date/time until which a Future capacity reservation can be updated or deleted. Read-only.
-     */
-    private OffsetDateTime modifiableUntil;
 
     /**
      * Creates an instance of ScheduleProfile class.
@@ -57,11 +38,8 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
     }
 
     /**
-     * Get the start property: The required start date for Block or Future capacity reservations. Block capacity
-     * reservations: Must be today or within 56 days in the future. For same-day scheduling, requests must be submitted
-     * before 11:30 AM UTC. Future capacity reservations: Must be at least 7 days in the future, and maximum 6 months in
-     * the future. Minimum API version for Future capacity reservations: 2026-04-01. Example: 2025-06-27, applicable for
-     * both Block and Future capacity reservations.
+     * Get the start property: The required start date for block capacity reservations. Must be today or within 56 days
+     * in the future. For same-day scheduling, requests must be submitted before 11:30 AM UTC. Example: 2025-06-27.
      * 
      * @return the start value.
      */
@@ -70,11 +48,8 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
     }
 
     /**
-     * Set the start property: The required start date for Block or Future capacity reservations. Block capacity
-     * reservations: Must be today or within 56 days in the future. For same-day scheduling, requests must be submitted
-     * before 11:30 AM UTC. Future capacity reservations: Must be at least 7 days in the future, and maximum 6 months in
-     * the future. Minimum API version for Future capacity reservations: 2026-04-01. Example: 2025-06-27, applicable for
-     * both Block and Future capacity reservations.
+     * Set the start property: The required start date for block capacity reservations. Must be today or within 56 days
+     * in the future. For same-day scheduling, requests must be submitted before 11:30 AM UTC. Example: 2025-06-27.
      * 
      * @param start the start value to set.
      * @return the ScheduleProfile object itself.
@@ -85,7 +60,7 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
     }
 
     /**
-     * Get the end property: The required end date for Block capacity reservations. Must be after the start date, with a
+     * Get the end property: The required end date for block capacity reservations. Must be after the start date, with a
      * duration of either 1–14 whole days or 3–26 whole weeks. Example: 2025-06-28.
      * 
      * @return the end value.
@@ -95,7 +70,7 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
     }
 
     /**
-     * Set the end property: The required end date for Block capacity reservations. Must be after the start date, with a
+     * Set the end property: The required end date for block capacity reservations. Must be after the start date, with a
      * duration of either 1–14 whole days or 3–26 whole weeks. Example: 2025-06-28.
      * 
      * @param end the end value to set.
@@ -104,40 +79,6 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
     public ScheduleProfile withEnd(String end) {
         this.end = end;
         return this;
-    }
-
-    /**
-     * Get the minimumCommitmentDays property: The minimum number of days that must pass after the start date before a
-     * Future capacity reservation can be updated or deleted once it has been committed. Will be populated with a
-     * default value if not provided.
-     * 
-     * @return the minimumCommitmentDays value.
-     */
-    public Integer minimumCommitmentDays() {
-        return this.minimumCommitmentDays;
-    }
-
-    /**
-     * Set the minimumCommitmentDays property: The minimum number of days that must pass after the start date before a
-     * Future capacity reservation can be updated or deleted once it has been committed. Will be populated with a
-     * default value if not provided.
-     * 
-     * @param minimumCommitmentDays the minimumCommitmentDays value to set.
-     * @return the ScheduleProfile object itself.
-     */
-    public ScheduleProfile withMinimumCommitmentDays(Integer minimumCommitmentDays) {
-        this.minimumCommitmentDays = minimumCommitmentDays;
-        return this;
-    }
-
-    /**
-     * Get the modifiableUntil property: The date/time until which a Future capacity reservation can be updated or
-     * deleted. Read-only.
-     * 
-     * @return the modifiableUntil value.
-     */
-    public OffsetDateTime modifiableUntil() {
-        return this.modifiableUntil;
     }
 
     /**
@@ -156,7 +97,6 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("start", this.start);
         jsonWriter.writeStringField("end", this.end);
-        jsonWriter.writeNumberField("minimumCommitmentDays", this.minimumCommitmentDays);
         return jsonWriter.writeEndObject();
     }
 
@@ -179,11 +119,6 @@ public final class ScheduleProfile implements JsonSerializable<ScheduleProfile> 
                     deserializedScheduleProfile.start = reader.getString();
                 } else if ("end".equals(fieldName)) {
                     deserializedScheduleProfile.end = reader.getString();
-                } else if ("minimumCommitmentDays".equals(fieldName)) {
-                    deserializedScheduleProfile.minimumCommitmentDays = reader.getNullable(JsonReader::getInt);
-                } else if ("modifiableUntil".equals(fieldName)) {
-                    deserializedScheduleProfile.modifiableUntil = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

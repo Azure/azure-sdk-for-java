@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,33 +17,14 @@ import java.util.UUID;
 @Fluent
 public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /*
-     * Type of data source credential
-     */
-    @Generated
-    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV;
-
-    /*
      * The parameters property.
      */
-    @Generated
     private ServicePrincipalInKVParam parameters;
 
     /**
      * Creates an instance of ServicePrincipalInKVCredential class.
      */
-    @Generated
     public ServicePrincipalInKVCredential() {
-    }
-
-    /**
-     * Get the dataSourceCredentialType property: Type of data source credential.
-     * 
-     * @return the dataSourceCredentialType value.
-     */
-    @Generated
-    @Override
-    public DataSourceCredentialType getDataSourceCredentialType() {
-        return this.dataSourceCredentialType;
     }
 
     /**
@@ -52,7 +32,6 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * 
      * @return the parameters value.
      */
-    @Generated
     public ServicePrincipalInKVParam getParameters() {
         return this.parameters;
     }
@@ -63,7 +42,6 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * @param parameters the parameters value to set.
      * @return the ServicePrincipalInKVCredential object itself.
      */
-    @Generated
     public ServicePrincipalInKVCredential setParameters(ServicePrincipalInKVParam parameters) {
         this.parameters = parameters;
         return this;
@@ -72,7 +50,6 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ServicePrincipalInKVCredential setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -82,25 +59,22 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public ServicePrincipalInKVCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV == null
+                ? null
+                : DataSourceCredentialType.SERVICE_PRINCIPAL_IN_KV.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -110,10 +84,10 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServicePrincipalInKVCredential if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ServicePrincipalInKVCredential.
      */
-    @Generated
     public static ServicePrincipalInKVCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServicePrincipalInKVCredential deserializedServicePrincipalInKVCredential
@@ -122,7 +96,14 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    String dataSourceCredentialType = reader.getString();
+                    if (!"ServicePrincipalInKV".equals(dataSourceCredentialType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceCredentialType' was expected to be non-null and equal to 'ServicePrincipalInKV'. The found 'dataSourceCredentialType' was '"
+                                + dataSourceCredentialType + "'.");
+                    }
+                } else if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredential.setDataSourceCredentialId(
@@ -131,9 +112,6 @@ public final class ServicePrincipalInKVCredential extends DataSourceCredential {
                     deserializedServicePrincipalInKVCredential.setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedServicePrincipalInKVCredential.parameters = ServicePrincipalInKVParam.fromJson(reader);
-                } else if ("dataSourceCredentialType".equals(fieldName)) {
-                    deserializedServicePrincipalInKVCredential.dataSourceCredentialType
-                        = DataSourceCredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

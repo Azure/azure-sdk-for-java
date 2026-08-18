@@ -1,14 +1,13 @@
 # Release History
 
-## 2.55.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.54.9 (2026-08-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.3`.
+
 
 ## 2.54.8 (2026-07-01)
 
@@ -16,7 +15,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.2`.
 
 
 ## 2.54.7 (2026-05-05)
@@ -27,6 +26,7 @@
 
 - Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
 
+
 ## 2.54.6 (2026-03-30)
 
 ### Other Changes
@@ -36,14 +36,6 @@
 - Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
 
 
-## 2.55.0-beta.1 (2026-03-27)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Updated `api-version` to `2026-03-01-preview`
-
 ## 2.54.5 (2026-01-29)
 
 ### Other Changes
@@ -52,13 +44,15 @@
 
 - Upgraded core dependencies.
 
+
 ## 2.54.4 (2025-11-24)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.3` to version `2.53.5`.
+
 
 ## 2.54.3 (2025-10-27)
 
@@ -66,7 +60,8 @@
 
 #### Dependency Updates
 
-- Updated core dependency from resources.
+- Upgraded `azure-resourcemanager-resources` from `2.53.2` to version `2.53.3`.
+
 
 ## 2.54.2 (2025-09-24)
 

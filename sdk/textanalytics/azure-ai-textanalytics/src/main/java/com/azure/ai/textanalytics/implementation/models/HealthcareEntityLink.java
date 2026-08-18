@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,19 +19,16 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
     /*
      * Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      */
-    @Generated
     private String dataSource;
 
     /*
      * Entity id in the given source catalog.
      */
-    @Generated
     private String id;
 
     /**
      * Creates an instance of HealthcareEntityLink class.
      */
-    @Generated
     public HealthcareEntityLink() {
     }
 
@@ -41,7 +37,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      * 
      * @return the dataSource value.
      */
-    @Generated
     public String getDataSource() {
         return this.dataSource;
     }
@@ -52,7 +47,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      * @param dataSource the dataSource value to set.
      * @return the HealthcareEntityLink object itself.
      */
-    @Generated
     public HealthcareEntityLink setDataSource(String dataSource) {
         this.dataSource = dataSource;
         return this;
@@ -63,7 +57,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      * 
      * @return the id value.
      */
-    @Generated
     public String getId() {
         return this.id;
     }
@@ -74,7 +67,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      * @param id the id value to set.
      * @return the HealthcareEntityLink object itself.
      */
-    @Generated
     public HealthcareEntityLink setId(String id) {
         this.id = id;
         return this;
@@ -83,7 +75,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,7 +92,6 @@ public final class HealthcareEntityLink implements JsonSerializable<HealthcareEn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareEntityLink.
      */
-    @Generated
     public static HealthcareEntityLink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareEntityLink deserializedHealthcareEntityLink = new HealthcareEntityLink();

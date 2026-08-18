@@ -16,29 +16,7 @@ import java.util.Map;
  */
 public final class CapacityReservationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/FutureCapacityReservation_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Create or update a Future capacity reservation.
-     * 
-     * @param manager Entry point to ComputeManager.
-     */
-    public static void
-        createOrUpdateAFutureCapacityReservation(com.azure.resourcemanager.compute.ComputeManager manager) {
-        manager.serviceClient()
-            .getCapacityReservations()
-            .createOrUpdate("myResourceGroup", "futureCapacityReservationGroup", "futureCapacityReservation",
-                new CapacityReservationInner().withLocation("westus")
-                    .withTags(mapOf("department", "HR"))
-                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L))
-                    .withZones(Arrays.asList("1"))
-                    .withScheduleProfile(
-                        new ScheduleProfile().withStart("2026-08-01T12:00:00Z").withMinimumCommitmentDays(30)),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a capacity reservation .
@@ -57,7 +35,7 @@ public final class CapacityReservationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a targeted capacity reservation.
@@ -77,7 +55,7 @@ public final class CapacityReservationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-04-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a block capacity reservation.

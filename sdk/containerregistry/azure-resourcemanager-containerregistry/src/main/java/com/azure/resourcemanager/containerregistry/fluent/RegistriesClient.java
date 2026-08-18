@@ -753,8 +753,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> generateCredentialsWithResponseAsync(String resourceGroupName, String registryName,
@@ -769,7 +768,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the response from the GenerateCredentials operation.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner>
@@ -785,7 +784,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from the GenerateCredentials operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner> beginGenerateCredentials(
@@ -801,7 +800,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the response from the GenerateCredentials operation.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GenerateCredentialsResultInner>, GenerateCredentialsResultInner> beginGenerateCredentials(
@@ -817,7 +816,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation on successful completion of {@link Mono}.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GenerateCredentialsResultInner> generateCredentialsAsync(String resourceGroupName, String registryName,
@@ -832,7 +831,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GenerateCredentialsResultInner generateCredentials(String resourceGroupName, String registryName,
@@ -848,7 +847,7 @@ public interface RegistriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the GenerateCredentials operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GenerateCredentialsResultInner generateCredentials(String resourceGroupName, String registryName,

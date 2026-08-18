@@ -26,11 +26,6 @@ public final class VirtualMachineIpTag implements JsonSerializable<VirtualMachin
      */
     private String tag;
 
-    /*
-     * The first party service tag resource identifier associated with the public IP address.
-     */
-    private String firstPartyServiceTagId;
-
     /**
      * Creates an instance of VirtualMachineIpTag class.
      */
@@ -78,28 +73,6 @@ public final class VirtualMachineIpTag implements JsonSerializable<VirtualMachin
     }
 
     /**
-     * Get the firstPartyServiceTagId property: The first party service tag resource identifier associated with the
-     * public IP address.
-     * 
-     * @return the firstPartyServiceTagId value.
-     */
-    public String firstPartyServiceTagId() {
-        return this.firstPartyServiceTagId;
-    }
-
-    /**
-     * Set the firstPartyServiceTagId property: The first party service tag resource identifier associated with the
-     * public IP address.
-     * 
-     * @param firstPartyServiceTagId the firstPartyServiceTagId value to set.
-     * @return the VirtualMachineIpTag object itself.
-     */
-    public VirtualMachineIpTag withFirstPartyServiceTagId(String firstPartyServiceTagId) {
-        this.firstPartyServiceTagId = firstPartyServiceTagId;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -115,7 +88,6 @@ public final class VirtualMachineIpTag implements JsonSerializable<VirtualMachin
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ipTagType", this.ipTagType);
         jsonWriter.writeStringField("tag", this.tag);
-        jsonWriter.writeStringField("firstPartyServiceTagId", this.firstPartyServiceTagId);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,8 +110,6 @@ public final class VirtualMachineIpTag implements JsonSerializable<VirtualMachin
                     deserializedVirtualMachineIpTag.ipTagType = reader.getString();
                 } else if ("tag".equals(fieldName)) {
                     deserializedVirtualMachineIpTag.tag = reader.getString();
-                } else if ("firstPartyServiceTagId".equals(fieldName)) {
-                    deserializedVirtualMachineIpTag.firstPartyServiceTagId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

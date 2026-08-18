@@ -5,8 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,31 +21,26 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
     /*
      * start time
      */
-    @Generated
     private OffsetDateTime startTime;
 
     /*
      * end time
      */
-    @Generated
     private OffsetDateTime endTime;
 
     /*
      * dimension to query
      */
-    @Generated
     private String dimensionName;
 
     /*
      * The dimensionFilter property.
      */
-    @Generated
     private DimensionGroupIdentity dimensionFilter;
 
     /**
      * Creates an instance of AnomalyDimensionQuery class.
      */
-    @Generated
     public AnomalyDimensionQuery() {
     }
 
@@ -56,7 +49,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * 
      * @return the startTime value.
      */
-    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -67,7 +59,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * @param startTime the startTime value to set.
      * @return the AnomalyDimensionQuery object itself.
      */
-    @Generated
     public AnomalyDimensionQuery setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -78,7 +69,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * 
      * @return the endTime value.
      */
-    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -89,7 +79,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * @param endTime the endTime value to set.
      * @return the AnomalyDimensionQuery object itself.
      */
-    @Generated
     public AnomalyDimensionQuery setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -100,7 +89,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * 
      * @return the dimensionName value.
      */
-    @Generated
     public String getDimensionName() {
         return this.dimensionName;
     }
@@ -111,7 +99,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * @param dimensionName the dimensionName value to set.
      * @return the AnomalyDimensionQuery object itself.
      */
-    @Generated
     public AnomalyDimensionQuery setDimensionName(String dimensionName) {
         this.dimensionName = dimensionName;
         return this;
@@ -122,7 +109,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * 
      * @return the dimensionFilter value.
      */
-    @Generated
     public DimensionGroupIdentity getDimensionFilter() {
         return this.dimensionFilter;
     }
@@ -133,16 +119,11 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the AnomalyDimensionQuery object itself.
      */
-    @Generated
     public AnomalyDimensionQuery setDimensionFilter(DimensionGroupIdentity dimensionFilter) {
         this.dimensionFilter = dimensionFilter;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -164,7 +145,6 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyDimensionQuery.
      */
-    @Generated
     public static AnomalyDimensionQuery fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyDimensionQuery deserializedAnomalyDimensionQuery = new AnomalyDimensionQuery();
@@ -173,11 +153,11 @@ public final class AnomalyDimensionQuery implements JsonSerializable<AnomalyDime
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedAnomalyDimensionQuery.startTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyDimensionQuery.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedAnomalyDimensionQuery.endTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyDimensionQuery.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("dimensionName".equals(fieldName)) {
                     deserializedAnomalyDimensionQuery.dimensionName = reader.getString();
                 } else if ("dimensionFilter".equals(fieldName)) {

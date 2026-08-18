@@ -151,9 +151,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the Major.Minor version of the script handler. Customer is able to
-     * specify only the Major.Minor version of an extension, Azure platform will deliver the latest Patch.Hotfix version
-     * in the Major.Minor series.
+     * Get the typeHandlerVersion property: Specifies the version of the script handler.
      * 
      * @return the typeHandlerVersion value.
      */
@@ -162,9 +160,7 @@ public final class VirtualMachineScaleSetVMExtensionUpdate extends SubResourceRe
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the Major.Minor version of the script handler. Customer is able to
-     * specify only the Major.Minor version of an extension, Azure platform will deliver the latest Patch.Hotfix version
-     * in the Major.Minor series.
+     * Set the typeHandlerVersion property: Specifies the version of the script handler.
      * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineScaleSetVMExtensionUpdate object itself.

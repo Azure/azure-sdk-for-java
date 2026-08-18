@@ -94,7 +94,6 @@ public class EventContext {
                 .setConsumerGroup(partitionContext.getConsumerGroup())
                 .setPartitionId(partitionContext.getPartitionId())
                 .setSequenceNumber(eventData.getSequenceNumber())
-                .setOffsetString(eventData.getOffsetString())
                 .setOffset(eventData.getOffset());
         return this.checkpointStore.updateCheckpoint(checkpoint);
     }

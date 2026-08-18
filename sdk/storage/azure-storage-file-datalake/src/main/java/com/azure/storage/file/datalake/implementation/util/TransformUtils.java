@@ -107,9 +107,6 @@ public class TransformUtils {
             case V2026_06_06:
                 return BlobServiceVersion.V2026_06_06;
 
-            case V2026_10_06:
-                return BlobServiceVersion.V2026_10_06;
-
             default:
                 return null;
         }
