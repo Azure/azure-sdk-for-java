@@ -147,7 +147,7 @@ The JCA library supports configuring the following options:
 
 The supported system property names are available from `KeyVaultJcaPropertyNames`. You can configure them using:
 ```java
-System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "<your-azure-key-vault-uri>");
+System.setProperty(KeyVaultJcaPropertyNames.KEYVAULT_URI, "<your-azure-keyvault-uri>");
 ```
 or as a JVM argument:
 ```shell

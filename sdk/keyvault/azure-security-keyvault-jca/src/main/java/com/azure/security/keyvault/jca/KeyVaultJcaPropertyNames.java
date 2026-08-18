@@ -8,6 +8,9 @@ package com.azure.security.keyvault.jca;
  */
 public final class KeyVaultJcaPropertyNames {
 
+    private KeyVaultJcaPropertyNames() {
+    }
+
     /**
      * The Azure Key Vault endpoint property name.
      */
@@ -83,6 +86,4 @@ public final class KeyVaultJcaPropertyNames {
      */
     public static final String KEYVAULT_JCA_DISABLE_AIA_DOWNLOAD = "azure.keyvault.jca.disable-aia-download";
 
-    private KeyVaultJcaPropertyNames() {
-    }
 }
