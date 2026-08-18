@@ -21,7 +21,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -2257,21 +2256,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    @ResourceLock("BlobSessionAuth")
-    public void createSession() {
-        BlobContainerAsyncClient oauthCcAsync
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        StepVerifier.create(oauthCcAsync.createSession()).assertNext(response -> {
-            assertNotNull(response);
-            assertNotNull(response.getId());
-            assertNotNull(response.getExpiration());
-            assertNotNull(response.getCredentials());
-            assertNotNull(response.getCredentials().getSessionToken());
-            assertNotNull(response.getCredentials().getSessionKey());
-        }).verifyComplete();
-    }
-
-    @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
     public void listBlobsArrowNullUseArrowUsesXml() {
         // Default apacheArrowEnabled is null — should use XML path without error
@@ -2528,24 +2512,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             assertEquals(blobName, item.getName());
             assertNotNull(item.getTags());
             assertEquals("tagvalue", item.getTags().get("tagkey"));
-        }).verifyComplete();
-    }
-
-    @Test
-    @ResourceLock("BlobSessionAuth")
-    public void createSessionWithResponse() {
-        BlobContainerAsyncClient oauthCcAsync
-            = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
-        StepVerifier.create(oauthCcAsync.createSessionWithResponse()).assertNext(response -> {
-            assertResponseStatusCode(response, 201);
-            CreateSessionResponse sessionResponse = response.getValue();
-            assertNotNull(sessionResponse);
-            assertNotNull(sessionResponse.getId());
-            assertNotNull(sessionResponse.getExpiration());
-            assertTrue(sessionResponse.getExpiration().isAfter(testResourceNamer.now()));
-            assertNotNull(sessionResponse.getCredentials());
-            assertNotNull(sessionResponse.getCredentials().getSessionToken());
-            assertNotNull(sessionResponse.getCredentials().getSessionKey());
         }).verifyComplete();
     }
 

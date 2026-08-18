@@ -28,9 +28,6 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
-import com.azure.storage.blob.implementation.models.AuthenticationType;
-import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
-import com.azure.storage.blob.implementation.models.CreateSessionResponse;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
 import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer.ArrowListBlobsResult;
 import com.azure.storage.blob.implementation.util.BlobConstants;
@@ -1847,41 +1844,6 @@ public final class BlobContainerAsyncClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
-    }
-
-    /**
-     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
-     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
-     *
-     * @return A {@link Mono} containing the {@link CreateSessionResponse} with session credentials.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateSessionResponse> createSession() {
-        return createSessionWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a session scoped to this container. The session provides temporary credentials (a session token and
-     * session key) that can be used to sign subsequent requests using the Shared Key protocol.
-     *
-     * @return A {@link Mono} containing a {@link Response} with the {@link CreateSessionResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateSessionResponse>> createSessionWithResponse() {
-        try {
-            return withContext(this::createSessionWithResponse);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    Mono<Response<CreateSessionResponse>> createSessionWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
-        CreateSessionConfiguration config
-            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
-        return this.azureBlobStorage.getContainers()
-            .createSessionWithResponseAsync(containerName, config, null, null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
 }
