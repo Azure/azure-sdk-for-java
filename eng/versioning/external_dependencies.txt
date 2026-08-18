@@ -25,7 +25,6 @@ com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
 com.google.code.gson:gson;2.14.0
-com.google.flatbuffers:flatbuffers-java;25.2.10
 com.google.guava:guava;33.6.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
@@ -64,7 +63,6 @@ io.vertx:vertx-codegen;4.5.32
 io.vertx:vertx-core;4.5.32
 javax.websocket:javax.websocket-api;1.1
 org.apache.ant:ant;1.10.15
-org.apache.arrow:arrow-format;19.0.0
 org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
 org.apache.commons:commons-lang3;3.18.0
