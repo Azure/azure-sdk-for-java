@@ -34,6 +34,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
@@ -49,8 +50,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.CoreUtils.getApplicationId;
 
-/**
- * This class provides a fluent builder API to help add in the configuration and instantiation of the
+/** This class provides a fluent builder API to help add in the configuration and instantiation of the
  * administrative APIs implemented by the Attestation Service:
  * {@link com.azure.security.attestation.AttestationAdministrationClient} and
  * {@link com.azure.security.attestation.AttestationAdministrationAsyncClient} classes calling the
@@ -126,7 +126,6 @@ public final class AttestationAdministrationClientBuilder implements
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final String[] dataplaneScope = new String[] { "https://attest.azure.net/.default" };
 
@@ -178,7 +177,6 @@ public final class AttestationAdministrationClientBuilder implements
      *     .buildClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
-     *
      * @return an instance of {@link AttestationClient}.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
@@ -189,7 +187,7 @@ public final class AttestationAdministrationClientBuilder implements
 
     /**
      * Builds an instance of AttestationAsyncClient async client.
-     * <p>
+     *
      * Instantiating a synchronous Attestation client:
      * <br>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
@@ -200,7 +198,6 @@ public final class AttestationAdministrationClientBuilder implements
      *     .buildAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
-     *
      * @return an instance of {@link AttestationClient}.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
@@ -229,7 +226,6 @@ public final class AttestationAdministrationClientBuilder implements
 
     /**
      * Sets the desired API version for this attestation client.
-     *
      * @param serviceVersion Specifies the API version to use in the outgoing API calls.
      * @return the AttestationClientBuilder.
      */
@@ -416,27 +412,26 @@ public final class AttestationAdministrationClientBuilder implements
      * <p>Because attestation service clients need to have the ability to validate that the data returned by the attestation
      * service actually originated from within the service, most Attestation Service APIs embed their response in a
      * <a href=https://datatracker.ietf.org/doc/html/rfc7519>RFC 7519 JSON Web Token</a>.</p>
-     * <p>The {@link AttestationTokenValidationOptions} provides a mechanism for a client to customize the validation
+        * <p>The {@link AttestationTokenValidationOptions} provides a mechanism for a client to customize the validation
      * of responses sent by the attestation service.</p>
-     * <p>The {@code tokenValidationOptions} property sets the default validation options used by the {@link AttestationClient}
+        * <p>The {@code tokenValidationOptions} property sets the default validation options used by the {@link AttestationClient}
      * or {@link AttestationAsyncClient} returned from this builder.</p>
-     * <p>Note: most APIs allow this value to be overridden on a per-api basis if that flexibility is needed.</p>
-     *
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation -->
-     * <pre>
-     * AttestationAdministrationClient validatedClient = new AttestationAdministrationClientBuilder&#40;&#41;
-     *     .endpoint&#40;endpoint&#41;
-     *     .tokenValidationOptions&#40;new AttestationTokenValidationOptions&#40;&#41;
-     *         &#47;&#47; Allow 10 seconds of clock drift between attestation service and client.
-     *         .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;
-     *         .setValidationCallback&#40;&#40;token, signer&#41; -&gt; &#123; &#47;&#47; Perform custom validation steps.
-     *             System.out.printf&#40;&quot;Validate token signed by signer %s&#92;n&quot;,
-     *                 signer.getCertificates&#40;&#41;.get&#40;0&#41;.getSubjectDN&#40;&#41;.toString&#40;&#41;&#41;;
-     *         &#125;&#41;&#41;
-     *     .buildClient&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation -->
-     *
+        * <p>Note: most APIs allow this value to be overridden on a per-api basis if that flexibility is needed.</p>
+        *
+        * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation -->
+        * <pre>
+        * AttestationAdministrationClient validatedClient = new AttestationAdministrationClientBuilder&#40;&#41;
+        *     .endpoint&#40;endpoint&#41;
+        *     .tokenValidationOptions&#40;new AttestationTokenValidationOptions&#40;&#41;
+        *         &#47;&#47; Allow 10 seconds of clock drift between attestation service and client.
+        *         .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;
+        *         .setValidationCallback&#40;&#40;token, signer&#41; -&gt; &#123; &#47;&#47; Perform custom validation steps.
+        *             System.out.printf&#40;&quot;Validate token signed by signer %s&#92;n&quot;,
+        *                 signer.getCertificates&#40;&#41;.get&#40;0&#41;.getSubjectDN&#40;&#41;.toString&#40;&#41;&#41;;
+        *         &#125;&#41;&#41;
+        *     .buildClient&#40;&#41;;
+        * </pre>
+        *     <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClientWithValidation -->
      * @param tokenValidationOptions - Validation options used when validating JSON Web Tokens returned by the attestation service.
      * @return this {@link AttestationAdministrationClientBuilder}
      */
@@ -469,11 +464,9 @@ public final class AttestationAdministrationClientBuilder implements
 
         HttpPipeline pipeline = this.pipeline;
         if (pipeline == null) {
-            ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new UserAgentPolicy(getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            policies.add(new UserAgentPolicy(getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME,
                 CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
@@ -492,10 +485,12 @@ public final class AttestationAdministrationClientBuilder implements
             }
             policies.addAll(perRetryPolicies);
 
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            localClientOptions.getHeaders()
-                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            if (clientOptions != null) {
+                List<HttpHeader> httpHeaderList = new ArrayList<>();
+                clientOptions.getHeaders()
+                    .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            }
 
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -503,10 +498,10 @@ public final class AttestationAdministrationClientBuilder implements
             // Create a new pipeline based on the policies and with the specified HTTP client.
             pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
-                .clientOptions(localClientOptions)
                 .build();
         }
 
-        return new AttestationClientImpl(pipeline, endpoint, version.getVersion());
+        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint,
+            version.getVersion());
     }
 }
