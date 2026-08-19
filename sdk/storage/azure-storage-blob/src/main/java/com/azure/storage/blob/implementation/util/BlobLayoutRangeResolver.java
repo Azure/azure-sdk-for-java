@@ -14,6 +14,8 @@ import java.util.List;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BlobLayoutRangeResolver {
+    private static final int NOT_FOUND = -1;
+
     private BlobLayoutRangeResolver() {
     }
 
@@ -36,25 +38,62 @@ public final class BlobLayoutRangeResolver {
             return null;
         }
 
+        int candidateIndex = findFirstRangeEndingAtOrAfter(layoutRanges, chunkRangeStart);
+
+        // Should theoretically never happen since the layout returned by the service always covers the whole blob.
+        if (candidateIndex == NOT_FOUND) {
+            return null;
+        }
+
+        BlobLayoutRange candidate = layoutRanges.get(candidateIndex);
+        return contains(candidate, chunkRangeStart) ? candidate.getEndpoint() : null;
+    }
+
+    /**
+     * Finds the index of the first range that ends at or after {@code offset}, or {@link #NOT_FOUND} if there is none.
+     */
+    private static int findFirstRangeEndingAtOrAfter(List<BlobLayoutRange> layoutRanges, long offset) {
         int low = 0;
         int high = layoutRanges.size() - 1;
-        int overlapIndex = layoutRanges.size();
+        int firstMatch = NOT_FOUND;
+
         while (low <= high) {
             int mid = low + (high - low) / 2;
-            if (rangeEnd(layoutRanges.get(mid).getRange()) >= chunkRangeStart) {
-                overlapIndex = mid;
+            if (endsAtOrAfter(layoutRanges.get(mid).getRange(), offset)) {
+                // A match, but an earlier range may also end at or after the offset, so keep searching to the left.
+                firstMatch = mid;
                 high = mid - 1;
             } else {
+                // This range ends before the offset, so every range left of it does too. Search to the right.
                 low = mid + 1;
             }
         }
 
-        // Should theoretically never happen since the layout returned by the service always covers the whole blob.
-        return overlapIndex == layoutRanges.size() ? null : layoutRanges.get(overlapIndex).getEndpoint();
+        return firstMatch;
     }
 
-    private static long rangeEnd(HttpRange range) {
+    /**
+     * Determines whether {@code layoutRange} contains {@code offset}.
+     */
+    private static boolean contains(BlobLayoutRange layoutRange, long offset) {
+        HttpRange range = layoutRange.getRange();
+        boolean startsAtOrBefore = range.getOffset() <= offset;
+
+        return startsAtOrBefore && endsAtOrAfter(range, offset);
+    }
+
+    /**
+     * Determines whether {@code range} ends at or after {@code offset}.
+     */
+    private static boolean endsAtOrAfter(HttpRange range, long offset) {
+        // The range begins after the offset, so it necessarily ends after it too.
+        if (range.getOffset() > offset) {
+            return true;
+        }
+
         Long length = range.getLength();
-        return length == null ? Long.MAX_VALUE : range.getOffset() + length - 1;
+        // Equivalent to offset < rangeOffset + length, rearranged so the sum can never overflow for a range near
+        // Long.MAX_VALUE.
+        return length == null || (offset - range.getOffset()) < length;
     }
 }
