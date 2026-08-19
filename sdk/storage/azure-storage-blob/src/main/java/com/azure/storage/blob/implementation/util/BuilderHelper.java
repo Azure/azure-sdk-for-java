@@ -138,8 +138,9 @@ public final class BuilderHelper {
         HttpClient effectiveHttpClient
             = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
 
-        // Policies between the auth policy and the transport. Shared with the session creation pipeline so
-        // CreateSession takes the same network path as the data requests its credential signs.
+        // Tail of every pipeline: the policies between the auth policy and the transport. Also reused by the
+        // session creation pipeline so CreateSession takes the same network path as the data requests its
+        // credential signs.
         List<HttpPipelinePolicy> postAuthenticationPolicies = new ArrayList<>(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(postAuthenticationPolicies);
         postAuthenticationPolicies.add(getResponseValidationPolicy());
@@ -181,22 +182,25 @@ public final class BuilderHelper {
 
         policies.addAll(postAuthenticationPolicies);
 
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(effectiveHttpClient)
-            .clientOptions(clientOptions)
-            .tracer(createTracer(clientOptions))
-            .build();
+        return createPipeline(policies, effectiveHttpClient, clientOptions);
     }
 
+    /**
+     * Creates the default {@link SessionProvider}, backed by a bearer-only {@link HttpPipeline} used for
+     * CreateSession calls. That pipeline mirrors the data pipeline - the same pre-auth policies, bearer token policy,
+     * post-auth policies and transport - but has no session policy, because session credentials are bound to the
+     * network context of the CreateSession call.
+     */
     private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
         StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         List<HttpPipelinePolicy> postAuthenticationPolicies, HttpClient httpClient, ClientOptions clientOptions,
         String endpoint, BlobServiceVersion serviceVersion, String accountName) {
-        HttpPipeline bearerPipeline
-            = buildBearerPipeline(preAuthPolicies, bearerPolicy, postAuthenticationPolicies, httpClient, clientOptions);
-        BlobServiceVersion effectiveServiceVersion
-            = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
-        return new TokenCredentialSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion, accountName);
+        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
+        bearerPolicies.add(bearerPolicy);
+        bearerPolicies.addAll(postAuthenticationPolicies);
+
+        return new TokenCredentialSessionProvider(createPipeline(bearerPolicies, httpClient, clientOptions), endpoint,
+            serviceVersion, accountName);
     }
 
     private static HttpClient getOrCreateHttpClient(HttpClient httpClient, ClientOptions clientOptions) {
@@ -207,6 +211,19 @@ public final class BuilderHelper {
         return clientOptions instanceof HttpClientOptions
             ? HttpClient.createDefault((HttpClientOptions) clientOptions)
             : HttpClient.createDefault();
+    }
+
+    /**
+     * Creates an {@link HttpPipeline} from an ordered policy list, applying the transport, client options and tracer
+     * configuration shared by every pipeline this helper builds.
+     */
+    private static HttpPipeline createPipeline(List<HttpPipelinePolicy> policies, HttpClient httpClient,
+        ClientOptions clientOptions) {
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .tracer(createTracer(clientOptions))
+            .build();
     }
 
     /**
@@ -290,24 +307,6 @@ public final class BuilderHelper {
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
-    }
-
-    /**
-     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This mirrors the data pipeline, containing
-     * the pre-auth policies, the bearer token policy and the post-auth policies, but no session policy. The post-auth
-     * policies are required because session credentials are bound to the network context of the CreateSession call.
-     */
-    private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
-        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpClient httpClient, ClientOptions clientOptions) {
-        List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
-        bearerPolicies.add(bearerPolicy);
-        bearerPolicies.addAll(postAuthenticationPolicies);
-        return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(clientOptions)
-            .tracer(createTracer(clientOptions))
-            .build();
     }
 
 }
