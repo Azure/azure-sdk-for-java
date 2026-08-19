@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This sample demonstrates how to create an agent with the FabricIQ preview tool using async clients.
@@ -50,7 +49,6 @@ public class FabricIQAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
             .setServerLabel("fabriciq-tool")
@@ -60,9 +58,9 @@ public class FabricIQAsync {
             .setInstructions("Use the available Fabric IQ tools to answer questions and perform tasks.")
             .setTools(Collections.singletonList(fabricIqTool));
 
-        Mono<Void> workflow = agentsAsyncClient.createAgentVersion(agentName, agentDefinition)
-            .flatMap(agent -> {
-                agentRef.set(agent);
+        Mono<Void> workflow = Mono.usingWhen(
+            agentsAsyncClient.createAgentVersion(agentName, agentDefinition),
+            agent -> {
                 System.out.printf("Agent created: %s (version %s)%n", agent.getName(), agent.getVersion());
 
                 AgentReference agentReference = new AgentReference(agent.getName())
@@ -71,23 +69,19 @@ public class FabricIQAsync {
                 return responsesAsyncClient.createAzureResponse(
                     new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
-                        .input(userInput));
-            })
-            .doOnNext(FabricIQAsync::printResponse)
-            .then()
-            .timeout(Duration.ofSeconds(300))
-            .onErrorResume(error -> cleanup(agentsAsyncClient, agentRef).then(Mono.<Void>error(error)))
-            .then(Mono.defer(() -> cleanup(agentsAsyncClient, agentRef)));
+                        .input(userInput))
+                    .doOnNext(FabricIQAsync::printResponse)
+                    .then();
+            },
+            agent -> cleanup(agentsAsyncClient, agent),
+            (agent, error) -> cleanup(agentsAsyncClient, agent),
+            agent -> cleanup(agentsAsyncClient, agent))
+            .timeout(Duration.ofSeconds(300));
 
         workflow.block();
     }
 
-    private static Mono<Void> cleanup(AgentsAsyncClient agentsAsyncClient,
-        AtomicReference<AgentVersionDetails> agentRef) {
-        AgentVersionDetails agent = agentRef.get();
-        if (agent == null) {
-            return Mono.empty();
-        }
+    private static Mono<Void> cleanup(AgentsAsyncClient agentsAsyncClient, AgentVersionDetails agent) {
         return agentsAsyncClient.deleteAgentVersion(agent.getName(), agent.getVersion())
             .doOnSuccess(v -> System.out.println("Agent deleted"));
     }

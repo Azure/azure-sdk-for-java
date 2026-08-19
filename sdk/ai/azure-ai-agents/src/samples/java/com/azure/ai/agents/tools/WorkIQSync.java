@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.responses.ToolChoiceOptions;
 
 import java.util.Collections;
@@ -93,8 +94,18 @@ public class WorkIQSync {
             .filter(item -> item.isMessage())
             .map(item -> item.asMessage().content())
             .filter(content -> !content.isEmpty())
-            .map(content -> content.get(content.size() - 1).asOutputText().text())
+            .map(content -> getContentText(content.get(content.size() - 1)))
             .reduce((first, second) -> second)
             .orElse("<no message output>");
+    }
+
+    private static String getContentText(ResponseOutputMessage.Content content) {
+        if (content.outputText().isPresent()) {
+            return content.outputText().get().text();
+        }
+        if (content.refusal().isPresent()) {
+            return "Refusal: " + content.refusal().get().refusal();
+        }
+        return "<unsupported message content>";
     }
 }
