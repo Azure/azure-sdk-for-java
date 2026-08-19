@@ -199,6 +199,8 @@ and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-j
 
 `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
 
+For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See `MemoryStoreAdvancedSample` and `MemoryStoreAdvancedAsyncSample` for complete synchronous and asynchronous examples.
+
 ### Using OpenAI's official library
 
 If you prefer using the [OpenAI official Java client library][openai_java_sdk] instead, you can do so by including that dependency in your project instead and following the instructions in the linked repository. Additionally, you will have to set up your `OpenAIClient` as shown below:
