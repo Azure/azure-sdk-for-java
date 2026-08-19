@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -14,7 +13,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -22,7 +20,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
 import com.azure.xml.XmlSerializable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -31,7 +28,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
@@ -142,24 +138,21 @@ public class SyncRestProxy extends RestProxyBase {
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-        SwaggerMethodParser methodParser, Type entityType, boolean responseBodyStreaming) {
-        responseBodyStreaming = responseBodyStreaming
-            || HttpUtils.isTextEventStreamContentType(
-                response.getSourceResponse().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        SwaggerMethodParser methodParser, Type entityType) {
         if (methodParser.isStreamResponse()) {
             return new StreamResponse(response.getSourceResponse());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
                 response.getSourceResponse().close();
-                return createResponse(response, entityType, null, responseBodyStreaming);
+                return createResponse(response, entityType, null);
             } else {
                 Object bodyAsObject = TypeUtil.isTypeOrSubTypeOf(bodyType, BinaryData.class)
                     ? getOwnedResponseBody(response.getSourceResponse())
                     : handleBodyReturnType(response, methodParser, bodyType);
                 Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
                 if (httpResponse == null) {
-                    return createResponse(response, entityType, null, responseBodyStreaming);
+                    return createResponse(response, entityType, null);
                 }
                 return httpResponse;
             }
@@ -218,25 +211,6 @@ public class SyncRestProxy extends RestProxyBase {
             .block();
     }
 
-    private static final class ResponseBodyOwner {
-        private final AtomicBoolean closed = new AtomicBoolean();
-        private final HttpResponse response;
-
-        private ResponseBodyOwner(HttpResponse response) {
-            this.response = response;
-        }
-
-        private Flux<ByteBuffer> getBody(Flux<ByteBuffer> responseBody) {
-            return Flux.using(() -> this, ignored -> responseBody, ResponseBodyOwner::close);
-        }
-
-        private void close() {
-            if (closed.compareAndSet(false, true)) {
-                response.close();
-            }
-        }
-    }
-
     /**
      * Handle the provided asynchronous HTTP response and return the deserialized value.
      *
@@ -260,8 +234,7 @@ public class SyncRestProxy extends RestProxyBase {
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
             // Block the deserialization until a value T is received
-            result = handleRestResponseReturnType(httpDecodedResponse, methodParser, returnType,
-                HttpUtils.shouldPreserveResponseBodyAsStream(context));
+            result = handleRestResponseReturnType(httpDecodedResponse, methodParser, returnType);
         }
         return result;
     }

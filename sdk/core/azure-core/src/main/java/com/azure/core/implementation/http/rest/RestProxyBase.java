@@ -22,7 +22,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -178,21 +177,13 @@ public abstract class RestProxyBase {
      * @param response the decoded response
      * @param entityType the type of the response entity
      * @param bodyAsObject the response body as an object
-     * @param responseBodyStreaming whether the response owns an unconsumed streaming body
      * @return the {@link Response}
      * @throws RuntimeException If the response type is a PagedResponse and the bodyAsObject is not an instance of
      * Page.
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-        Object bodyAsObject, boolean responseBodyStreaming) {
-        return createResponse(response, entityType, bodyAsObject,
-            responseBodyStreaming ? new ResponseBodyOwner(response.getSourceResponse()) : null);
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    final Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-        Object bodyAsObject, ResponseBodyOwner responseBodyOwner) {
+        Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -206,10 +197,6 @@ public abstract class RestProxyBase {
         // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
-            if (responseBodyOwner != null) {
-                return cls.cast(new CloseableResponse<>(responseBodyOwner, bodyAsObject));
-            }
-
             // For Response return a new instance of ResponseBase cast to the class.
             return cls.cast(new ResponseBase<>(request, statusCode, headers, bodyAsObject, decodedHeaders));
         } else if (cls.equals(PagedResponse.class)) {
@@ -238,21 +225,6 @@ public abstract class RestProxyBase {
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
-    private static final class CloseableResponse<T> extends SimpleResponse<T> implements Closeable {
-        private final ResponseBodyOwner responseBodyOwner;
-
-        private CloseableResponse(ResponseBodyOwner responseBodyOwner, T value) {
-            super(responseBodyOwner.response.getRequest(), responseBodyOwner.response.getStatusCode(),
-                responseBodyOwner.response.getHeaders(), value);
-            this.responseBodyOwner = responseBodyOwner;
-        }
-
-        @Override
-        public void close() {
-            responseBodyOwner.close();
-        }
-    }
-
     static final class ResponseBodyOwner implements Closeable {
         private final AtomicBoolean closed = new AtomicBoolean();
         private final HttpResponse response;
@@ -262,7 +234,11 @@ public abstract class RestProxyBase {
         }
 
         Flux<ByteBuffer> getBody() {
-            return Flux.using(() -> this, ignored -> response.getBody(), ResponseBodyOwner::close);
+            return getBody(response.getBody());
+        }
+
+        Flux<ByteBuffer> getBody(Flux<ByteBuffer> responseBody) {
+            return Flux.using(() -> this, ignored -> responseBody, ResponseBodyOwner::close);
         }
 
         @Override
