@@ -1939,6 +1939,8 @@ public class BlobAsyncClientBase {
         BlobGetLayoutOptions layoutOptions
             = new BlobGetLayoutOptions().setRange(layoutRange).setRequestConditions(requestConditions);
 
+        // A 204 is an expected response that carries no ranges, so it yields an empty layout and the download falls
+        // back to the blob's original endpoint.
         return getLayoutPages(layoutOptions, requestConditions, context).flatMapIterable(PagedResponse::getValue)
             .flatMap(BlobAsyncClientBase::getLayoutRanges)
             .collectList()
@@ -1973,12 +1975,19 @@ public class BlobAsyncClientBase {
             : getLayoutPageWithHeaders(continuationToken, options, null, context);
     }
 
-    private static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
-        if (isLayoutFailureFatal(exception)) {
+    static Mono<BlobLayoutCacheValue> handleLayoutFetchError(BlobStorageException exception) {
+        int statusCode = exception.getStatusCode();
+
+        // Only these statuses fail the download, because the blob itself cannot be read consistently: 403 (forbidden),
+        // 404 (not found), 409 (conflict), and 412 (the blob changed after the download started).
+        if (statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412) {
             return Mono.error(exception);
         }
 
-        LOGGER.verbose("Failed to retrieve blob layout for data locality.", exception);
+        // Every other failure, including 400, 5xx, and unlisted statuses such as 429, falls back to the existing
+        // download behavior. The layout is only a routing optimization, so a failed layout call must not fail an
+        // otherwise valid download; a genuine access failure still surfaces on the range GETs themselves.
+        LOGGER.verbose("Failed to retrieve blob layout for data locality; using the original endpoint.", exception);
         return Mono.just(new BlobLayoutCacheValue(null));
     }
 
@@ -2030,11 +2039,6 @@ public class BlobAsyncClientBase {
             .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
             .setIfMatch(layoutETag == null ? source.getIfMatch() : layoutETag)
             .setIfNoneMatch(source.getIfNoneMatch());
-    }
-
-    private static boolean isLayoutFailureFatal(BlobStorageException exception) {
-        int statusCode = exception.getStatusCode();
-        return statusCode == 403 || statusCode == 404 || statusCode == 409 || statusCode == 412;
     }
 
     /**
