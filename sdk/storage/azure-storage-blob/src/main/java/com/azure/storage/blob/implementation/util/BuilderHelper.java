@@ -138,6 +138,14 @@ public final class BuilderHelper {
         HttpClient effectiveHttpClient
             = tokenCredential == null ? httpClient : getOrCreateHttpClient(httpClient, clientOptions);
 
+        // Policies between the auth policy and the transport. Shared with the session creation pipeline so
+        // CreateSession takes the same network path as the data requests its credential signs.
+        List<HttpPipelinePolicy> postAuthenticationPolicies = new ArrayList<>(perRetryPolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(postAuthenticationPolicies);
+        postAuthenticationPolicies.add(getResponseValidationPolicy());
+        postAuthenticationPolicies.add(new HttpLoggingPolicy(logOptions));
+        postAuthenticationPolicies.add(new ScrubEtagPolicy());
+
         // When the resolved session mode is enabled and a tokenCredential is
         // present, a single SessionTokenCredentialPolicy is added as the auth policy. The session policy wraps the bearer
         // token policy internally and delegates to it for non-session-eligible requests. When sessions are not active,
@@ -157,8 +165,9 @@ public final class BuilderHelper {
                     = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
                 SessionProvider sessionProvider = sessionOptions.getSessionProvider();
                 if (sessionProvider == null) {
-                    sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, effectiveHttpClient,
-                        clientOptions, endpoint, effectiveServiceVersion, sessionOptions.getAccountName());
+                    sessionProvider = createDefaultSessionProvider(policies, bearerPolicy, postAuthenticationPolicies,
+                        effectiveHttpClient, clientOptions, endpoint, effectiveServiceVersion,
+                        sessionOptions.getAccountName());
                 }
                 policies.add(new SessionTokenCredentialPolicy(bearerPolicy, sessionProvider, sessionOptions));
             }
@@ -170,15 +179,7 @@ public final class BuilderHelper {
             policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
-        policies.addAll(perRetryPolicies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-        policies.add(getResponseValidationPolicy());
-
-        policies.add(new HttpLoggingPolicy(logOptions));
-
-        policies.add(new ScrubEtagPolicy());
+        policies.addAll(postAuthenticationPolicies);
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(effectiveHttpClient)
@@ -188,9 +189,11 @@ public final class BuilderHelper {
     }
 
     private static SessionProvider createDefaultSessionProvider(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient, ClientOptions clientOptions,
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpClient httpClient, ClientOptions clientOptions,
         String endpoint, BlobServiceVersion serviceVersion, String accountName) {
-        HttpPipeline bearerPipeline = buildBearerPipeline(preAuthPolicies, bearerPolicy, httpClient, clientOptions);
+        HttpPipeline bearerPipeline
+            = buildBearerPipeline(preAuthPolicies, bearerPolicy, postAuthenticationPolicies, httpClient, clientOptions);
         BlobServiceVersion effectiveServiceVersion
             = serviceVersion != null ? serviceVersion : BlobServiceVersion.getLatest();
         return new TokenCredentialSessionProvider(bearerPipeline, endpoint, effectiveServiceVersion, accountName);
@@ -290,14 +293,16 @@ public final class BuilderHelper {
     }
 
     /**
-     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This pipeline contains
-     * all pre-auth policies plus the bearer token policy, but no session policy.
+     * Builds a bearer-only {@link HttpPipeline} for CreateSession calls. This mirrors the data pipeline, containing
+     * the pre-auth policies, the bearer token policy and the post-auth policies, but no session policy. The post-auth
+     * policies are required because session credentials are bound to the network context of the CreateSession call.
      */
     private static HttpPipeline buildBearerPipeline(List<HttpPipelinePolicy> preAuthPolicies,
-        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy, HttpClient httpClient,
-        ClientOptions clientOptions) {
+        StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
+        List<HttpPipelinePolicy> postAuthenticationPolicies, HttpClient httpClient, ClientOptions clientOptions) {
         List<HttpPipelinePolicy> bearerPolicies = new ArrayList<>(preAuthPolicies);
         bearerPolicies.add(bearerPolicy);
+        bearerPolicies.addAll(postAuthenticationPolicies);
         return new HttpPipelineBuilder().policies(bearerPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)

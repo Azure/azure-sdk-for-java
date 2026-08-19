@@ -6,12 +6,14 @@ package com.azure.storage.blob;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
@@ -45,9 +47,11 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,6 +75,12 @@ public class BuilderHelperTests {
         = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000L, 4000L, null);
     private static final RetryOptions CORE_RETRY_OPTIONS
         = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)));
+    private static final String CREATE_SESSION_RESPONSE_BODY = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        + "<CreateSessionResult><Id>session-id</Id><Expiration>" + OffsetDateTime.now().plusHours(1)
+        + "</Expiration><AuthenticationType>HMAC</AuthenticationType><Credentials>"
+        + "<SessionToken>session-token</SessionToken>"
+        + "<SessionKey>dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==</SessionKey>"
+        + "</Credentials></CreateSessionResult>";
 
     private static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, url).setBody(Flux.empty())
@@ -713,6 +723,43 @@ public class BuilderHelperTests {
             .buildClient();
 
         assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+    }
+
+    /**
+     * Session credentials are bound to the network context of the CreateSession call, so the session creation
+     * pipeline must run the same post-authentication policies as the data pipeline.
+     */
+    @Test
+    public void perRetryPoliciesAreAppliedToCreateSessionRequests() {
+        List<HttpMethod> observedMethods = Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy perRetryPolicy = (context, next) -> {
+            observedMethods.add(context.getHttpRequest().getHttpMethod());
+            return next.process();
+        };
+
+        HttpClient sessionClient = request -> {
+            if (request.getHttpMethod() == HttpMethod.POST) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+                return Mono.just(new MockHttpResponse(request, 201, headers,
+                    CREATE_SESSION_RESPONSE_BODY.getBytes(StandardCharsets.UTF_8)));
+            }
+
+            return Mono.just(new MockHttpResponse(request, 200));
+        };
+
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), sessionClient,
+            new ArrayList<>(), Collections.singletonList(perRetryPolicy), null, null,
+            new ClientLogger(BuilderHelperTests.class), new SessionOptions(), BlobServiceVersion.getLatest());
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, ENDPOINT + "container/blob")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertTrue(observedMethods.contains(HttpMethod.POST),
+            "Per-retry policies must run for CreateSession requests, saw " + observedMethods);
+        assertTrue(observedMethods.contains(HttpMethod.GET),
+            "Per-retry policies must run for data requests, saw " + observedMethods);
     }
 
     @Test
