@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.policy;
+package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
@@ -23,11 +23,6 @@ import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.policy.ExpectContinueMode;
-import com.azure.storage.common.policy.ExpectContinueOptions;
-import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
-import com.azure.storage.common.policy.RetryPolicyType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -60,6 +55,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -82,7 +78,7 @@ public class ExpectContinueTests {
     @ValueSource(booleans = { true, false })
     public void policyAddsHeaderOnContentBody(boolean hasBody) throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.On), client);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), client);
 
         HttpRequest request = hasBody
             ? new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody("foo")
@@ -98,7 +94,7 @@ public class ExpectContinueTests {
         throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(200);
         HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold((long) threshold), client);
+            = pipeline(options(ExpectContinueMode.ON).setContentLengthThreshold((long) threshold), client);
 
         pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
 
@@ -109,7 +105,7 @@ public class ExpectContinueTests {
     @ValueSource(ints = { 429, 500, 503 })
     public void throttlePolicyAddsHeaderOnlyAfterError(int errorStatusCode) throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(202, errorStatusCode, 202);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(0));
@@ -126,8 +122,8 @@ public class ExpectContinueTests {
     public void throttlePolicyRespectsThreshold(int threshold, int bodyLength, boolean expectHeader)
         throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(429, 202);
-        HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setContentLengthThreshold((long) threshold), client);
+        HttpPipeline pipeline = pipeline(
+            options(ExpectContinueMode.APPLY_ON_THROTTLE).setContentLengthThreshold((long) threshold), client);
 
         pipeline.sendSync(requestWithBody(bodyLength), Context.NONE);
         assertNull(client.expectHeaders.get(0));
@@ -141,7 +137,7 @@ public class ExpectContinueTests {
         Duration backoff = Duration.ofMillis(50);
         RecordingHttpClient client = new RecordingHttpClient(429, 202, 202);
         HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.ApplyOnThrottle).setThrottleInterval(backoff), client);
+            = pipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE).setThrottleInterval(backoff), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
         assertNull(client.expectHeaders.get(0));
@@ -158,7 +154,7 @@ public class ExpectContinueTests {
     @SyncAsyncTest
     public void appliesHeaderOnRetryAfterThrottling() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
 
         HttpResponse response = send(pipeline, requestWithBody());
 
@@ -171,7 +167,7 @@ public class ExpectContinueTests {
     @SyncAsyncTest
     public void keepsApplyingHeaderAcrossMultipleRetries() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(503, 503, 429, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
 
         HttpResponse response = send(pipeline, requestWithBody());
 
@@ -186,7 +182,7 @@ public class ExpectContinueTests {
     @SyncAsyncTest
     public void onModeAppliesHeaderOnEveryAttempt() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(503, 200);
-        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.On), client);
+        HttpPipeline pipeline = retryPipeline(options(ExpectContinueMode.ON), client);
 
         send(pipeline, requestWithBody());
 
@@ -198,7 +194,7 @@ public class ExpectContinueTests {
     @SyncAsyncTest
     public void offModeDoesNotApplyHeader() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.Off), client);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.OFF), client);
 
         send(pipeline, requestWithBody());
 
@@ -208,7 +204,7 @@ public class ExpectContinueTests {
     @Test
     public void offModeAddsNoPolicy() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.Off));
+        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.OFF));
 
         assertTrue(policies.isEmpty());
     }
@@ -217,9 +213,34 @@ public class ExpectContinueTests {
     public void defaultOptionsApplyOnThrottle() {
         ExpectContinueOptions options = new ExpectContinueOptions();
 
-        assertEquals(ExpectContinueMode.ApplyOnThrottle, options.getMode());
+        assertEquals(ExpectContinueMode.APPLY_ON_THROTTLE, options.getMode());
         assertEquals(Duration.ofMinutes(1), options.getThrottleInterval());
         assertNull(options.getContentLengthThreshold());
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = { -1, -1024, Long.MIN_VALUE })
+    public void negativeContentLengthThresholdIsRejected(long threshold) {
+        ExpectContinueOptions options = new ExpectContinueOptions();
+        assertThrows(IllegalArgumentException.class, () -> options.setContentLengthThreshold(threshold));
+    }
+
+    @Test
+    public void zeroAndNullContentLengthThresholdAreAccepted() {
+        assertEquals(0L, new ExpectContinueOptions().setContentLengthThreshold(0L).getContentLengthThreshold());
+        assertNull(new ExpectContinueOptions().setContentLengthThreshold(null).getContentLengthThreshold());
+    }
+
+    @Test
+    public void negativeThrottleIntervalIsRejected() {
+        ExpectContinueOptions options = new ExpectContinueOptions();
+        assertThrows(IllegalArgumentException.class, () -> options.setThrottleInterval(Duration.ofSeconds(-1)));
+    }
+
+    @Test
+    public void zeroThrottleIntervalIsAccepted() {
+        assertEquals(Duration.ZERO,
+            new ExpectContinueOptions().setThrottleInterval(Duration.ZERO).getThrottleInterval());
     }
 
     @Test
@@ -235,7 +256,7 @@ public class ExpectContinueTests {
     @ValueSource(ints = { 200, 201, 304, 404, 412, 501 })
     public void applyOnThrottleIgnoresNonThrottlingResponses(int statusCode) throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(statusCode, 200);
-        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ApplyOnThrottle), client);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
 
         pipeline.sendSync(requestWithBody(), Context.NONE);
         pipeline.sendSync(requestWithBody(), Context.NONE);
@@ -248,7 +269,7 @@ public class ExpectContinueTests {
     public void unknownContentLengthIsAlwaysEligible() throws MalformedURLException {
         RecordingHttpClient client = new RecordingHttpClient(200);
         HttpPipeline pipeline
-            = pipeline(options(ExpectContinueMode.On).setContentLengthThreshold(Long.MAX_VALUE), client);
+            = pipeline(options(ExpectContinueMode.ON).setContentLengthThreshold(Long.MAX_VALUE), client);
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT));
         request.setBody(BinaryData.fromStream(new ByteArrayInputStream(BODY)));
@@ -302,7 +323,7 @@ public class ExpectContinueTests {
         try (ExpectContinueServer server = new ExpectContinueServer()) {
             server.start();
 
-            HttpPipeline pipeline = pipeline(options(ExpectContinueMode.On), httpClient);
+            HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), httpClient);
             HttpRequest request = new HttpRequest(HttpMethod.PUT, server.url()).setBody(BODY);
             HttpResponse response = sync ? pipeline.sendSync(request, Context.NONE) : pipeline.send(request).block();
 

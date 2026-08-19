@@ -28,8 +28,8 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.policy.ExpectContinueOnThrottlePolicy;
-import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.ExpectContinueOnThrottlePolicy;
+import com.azure.storage.common.policy.ExpectContinuePolicy;
 import com.azure.storage.common.policy.ExpectContinueMode;
 import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -641,7 +641,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
-            new ExpectContinueOptions().setMode(ExpectContinueMode.Off), new ClientLogger(BuilderHelperTests.class));
+            new ExpectContinueOptions().setMode(ExpectContinueMode.OFF), new ClientLogger(BuilderHelperTests.class));
 
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
         assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
@@ -659,7 +659,7 @@ public class BuilderHelperTests {
                         return new MockHttpResponse(request, 201);
                     }
                 }, new ArrayList<>(), new ArrayList<>(), null, null,
-                new ExpectContinueOptions().setMode(ExpectContinueMode.On), new ClientLogger(BuilderHelperTests.class));
+                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class));
 
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
         pipeline.sendSync(request, Context.NONE);

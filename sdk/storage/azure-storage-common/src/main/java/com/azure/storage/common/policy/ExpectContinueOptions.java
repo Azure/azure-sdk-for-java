@@ -4,6 +4,7 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
@@ -13,9 +14,11 @@ import java.time.Duration;
  */
 @Fluent
 public final class ExpectContinueOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ExpectContinueOptions.class);
+
     private static final Duration DEFAULT_THROTTLE_INTERVAL = Duration.ofMinutes(1);
 
-    private ExpectContinueMode mode = ExpectContinueMode.ApplyOnThrottle;
+    private ExpectContinueMode mode = ExpectContinueMode.APPLY_ON_THROTTLE;
     private Long contentLengthThreshold;
     private Duration throttleInterval = DEFAULT_THROTTLE_INTERVAL;
 
@@ -28,7 +31,7 @@ public final class ExpectContinueOptions {
     /**
      * Gets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @return The mode. Defaults to {@link ExpectContinueMode#ApplyOnThrottle}.
+     * @return The mode. Defaults to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      */
     public ExpectContinueMode getMode() {
         return mode;
@@ -37,11 +40,11 @@ public final class ExpectContinueOptions {
     /**
      * Sets the mode determining when {@code Expect: 100-continue} is applied.
      *
-     * @param mode The mode. A null value resets this to {@link ExpectContinueMode#ApplyOnThrottle}.
+     * @param mode The mode. A null value resets this to {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      * @return The updated options.
      */
     public ExpectContinueOptions setMode(ExpectContinueMode mode) {
-        this.mode = mode == null ? ExpectContinueMode.ApplyOnThrottle : mode;
+        this.mode = mode == null ? ExpectContinueMode.APPLY_ON_THROTTLE : mode;
         return this;
     }
 
@@ -63,15 +66,21 @@ public final class ExpectContinueOptions {
      *
      * @param contentLengthThreshold The threshold in bytes. A null value means every request with a body is eligible.
      * @return The updated options.
+     * @throws IllegalArgumentException If the threshold is negative.
      */
     public ExpectContinueOptions setContentLengthThreshold(Long contentLengthThreshold) {
+        if (contentLengthThreshold != null && contentLengthThreshold < 0) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'contentLengthThreshold' cannot be negative."));
+        }
+
         this.contentLengthThreshold = contentLengthThreshold;
         return this;
     }
 
     /**
      * Gets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link ExpectContinueMode#ApplyOnThrottle}.
+     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      *
      * @return The interval. Defaults to one minute.
      */
@@ -81,12 +90,17 @@ public final class ExpectContinueOptions {
 
     /**
      * Sets the interval for which {@code Expect: 100-continue} is applied after a triggering response is received from
-     * the service. Only used in mode {@link ExpectContinueMode#ApplyOnThrottle}.
+     * the service. Only used in mode {@link ExpectContinueMode#APPLY_ON_THROTTLE}.
      *
      * @param throttleInterval The interval. A null value resets this to the default of one minute.
      * @return The updated options.
+     * @throws IllegalArgumentException If the interval is negative.
      */
     public ExpectContinueOptions setThrottleInterval(Duration throttleInterval) {
+        if (throttleInterval != null && throttleInterval.isNegative()) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'throttleInterval' cannot be negative."));
+        }
+
         this.throttleInterval = throttleInterval == null ? DEFAULT_THROTTLE_INTERVAL : throttleInterval;
         return this;
     }

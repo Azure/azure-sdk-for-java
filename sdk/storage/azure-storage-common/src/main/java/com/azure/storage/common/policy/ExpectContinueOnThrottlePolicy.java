@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.policy;
+package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
@@ -54,7 +54,7 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
         Configuration configuration) {
         this.throttleIntervalNanos = toNanos(throttleInterval);
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
-        this.disabled = ExpectContinueSupport.isDisabled(configuration);
+        this.disabled = ExpectContinuePolicyHelper.isDisabled(configuration);
     }
 
     @Override
@@ -62,8 +62,8 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
         HttpRequest request = context.getHttpRequest();
         if (!disabled
             && isWithinThrottleWindow()
-            && ExpectContinueSupport.isEligible(request, contentLengthThreshold)) {
-            ExpectContinueSupport.applyHeader(request);
+            && ExpectContinuePolicyHelper.isEligible(request, contentLengthThreshold)) {
+            ExpectContinuePolicyHelper.applyHeader(request);
         }
     }
 

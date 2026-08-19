@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.policy;
+package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
@@ -14,10 +14,10 @@ import com.azure.storage.common.implementation.Constants;
  * <p>
  * RESERVED FOR INTERNAL USE.
  */
-final class ExpectContinueSupport {
+final class ExpectContinuePolicyHelper {
     private static final String CONTINUE = "100-continue";
 
-    private ExpectContinueSupport() {
+    private ExpectContinuePolicyHelper() {
     }
 
     /**

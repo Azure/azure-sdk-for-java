@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation.policy;
+package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
@@ -38,14 +38,14 @@ public final class ExpectContinuePolicy extends HttpPipelineSyncPolicy {
      */
     ExpectContinuePolicy(Long contentLengthThreshold, Configuration configuration) {
         this.contentLengthThreshold = contentLengthThreshold == null ? 0 : contentLengthThreshold;
-        this.disabled = ExpectContinueSupport.isDisabled(configuration);
+        this.disabled = ExpectContinuePolicyHelper.isDisabled(configuration);
     }
 
     @Override
     protected void beforeSendingRequest(HttpPipelineCallContext context) {
         HttpRequest request = context.getHttpRequest();
-        if (!disabled && ExpectContinueSupport.isEligible(request, contentLengthThreshold)) {
-            ExpectContinueSupport.applyHeader(request);
+        if (!disabled && ExpectContinuePolicyHelper.isEligible(request, contentLengthThreshold)) {
+            ExpectContinuePolicyHelper.applyHeader(request);
         }
     }
 }

@@ -6,8 +6,8 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.policy.ExpectContinueOnThrottlePolicy;
-import com.azure.storage.common.implementation.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.ExpectContinueOnThrottlePolicy;
+import com.azure.storage.common.policy.ExpectContinuePolicy;
 import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -52,14 +52,14 @@ public final class BuilderUtils {
         Long threshold = options.getContentLengthThreshold();
 
         switch (options.getMode()) {
-            case On:
+            case ON:
                 policies.add(new ExpectContinuePolicy(threshold));
                 break;
 
-            case Off:
+            case OFF:
                 break;
 
-            case ApplyOnThrottle:
+            case APPLY_ON_THROTTLE:
             default:
                 policies.add(new ExpectContinueOnThrottlePolicy(options.getThrottleInterval(), threshold));
                 break;
