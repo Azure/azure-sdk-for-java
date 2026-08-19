@@ -13,7 +13,6 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -30,19 +29,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -72,7 +76,7 @@ public class SyncRestProxyTests {
 
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
-        Response<BinaryData> getStreamingResponse(RequestOptions options, Context context);
+        Response<BinaryData> testBinaryDataResponse(Context context);
     }
 
     @Test
@@ -199,10 +203,49 @@ public class SyncRestProxyTests {
         assertEquals("hello", new String(bytes));
     }
 
-    @ParameterizedTest
-    @MethodSource("streamingResponseOwnershipSupplier")
-    public void streamingResponseIsCloseable(String accept, String contentType) throws IOException {
-        AtomicBoolean responseClosed = new AtomicBoolean();
+    @Test
+    public void binaryDataResponseClosesOnCompletion() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.just(ByteBuffer.wrap("hello".getBytes())), responseCloseCount);
+
+        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+
+        assertFalse(responseBody.isReplayable());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnCancellation() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        Flux<ByteBuffer> responseBody = Flux.concat(Flux.just(ByteBuffer.wrap("hello".getBytes())), Flux.never());
+        TestInterface testInterface = createBinaryDataService(responseBody, responseCloseCount);
+
+        Disposable subscription
+            = testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer().subscribe();
+        subscription.dispose();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnError() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.error(new IllegalStateException("Body read failed.")), responseCloseCount);
+
+        StepVerifier.create(testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer())
+            .expectErrorMessage("Body read failed.")
+            .verify();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    private static TestInterface createBinaryDataService(Flux<ByteBuffer> responseBody,
+        AtomicInteger responseCloseCount) {
         HttpClient client = new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
@@ -211,34 +254,21 @@ public class SyncRestProxyTests {
 
             @Override
             public HttpResponse sendSync(HttpRequest request, Context context) {
-                return new MockHttpResponse(request, 200,
-                    new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), "hello".getBytes()) {
+                return new MockHttpResponse(request, 200) {
+                    @Override
+                    public BinaryData getBodyAsBinaryData() {
+                        return BinaryData.fromFlux(responseBody, null, false).block();
+                    }
+
                     @Override
                     public void close() {
-                        responseClosed.set(true);
+                        responseCloseCount.incrementAndGet();
                         super.close();
                     }
                 };
             }
         };
-        TestInterface service
-            = RestProxy.create(TestInterface.class, new HttpPipelineBuilder().httpClient(client).build());
-        RequestOptions options = new RequestOptions();
-        if (accept != null) {
-            options.setHeader(HttpHeaderName.ACCEPT, accept);
-        }
-
-        Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE);
-
-        assertTrue(response instanceof Closeable);
-        assertEquals("hello", response.getValue().toString());
-        ((Closeable) response).close();
-        assertTrue(responseClosed.get());
-    }
-
-    private static Stream<Arguments> streamingResponseOwnershipSupplier() {
-        return Stream.of(Arguments.of("text/event-stream", "application/json"),
-            Arguments.of(null, "text/event-stream; charset=utf-8"));
+        return RestProxy.create(TestInterface.class, new HttpPipelineBuilder().httpClient(client).build());
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {
