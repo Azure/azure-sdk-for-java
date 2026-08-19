@@ -6,10 +6,10 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.blob.models.SessionRequestContext;
 import com.azure.storage.common.test.shared.http.ScriptedHttpClient;
-import com.azure.storage.common.test.shared.session.SessionTestHelper;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -48,7 +48,7 @@ public class SessionProviderTests {
     private static TokenCredentialSessionProvider createSessionProvider() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new ScriptedHttpClient()).build();
         return new TokenCredentialSessionProvider(pipeline,
-            "https://" + SessionTestHelper.TEST_ACCOUNT_NAME + ".blob.core.windows.net", BlobServiceVersion.getLatest(),
-            SessionTestHelper.TEST_ACCOUNT_NAME);
+            "https://" + BlobTestBase.TEST_SESSION_ACCOUNT_NAME + ".blob.core.windows.net",
+            BlobServiceVersion.getLatest(), BlobTestBase.TEST_SESSION_ACCOUNT_NAME);
     }
 }

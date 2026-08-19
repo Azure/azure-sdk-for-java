@@ -14,13 +14,13 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.test.shared.http.ScriptedHttpClient;
-import com.azure.storage.common.test.shared.session.SessionTestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -491,8 +491,8 @@ public class SessionTokenCredentialPolicyTest {
     }
 
     private static SessionCredential credentialWithToken(OffsetDateTime expiration) {
-        return new SessionCredential(FIRST_TOKEN, SessionTestHelper.TEST_SESSION_KEY, expiration,
-            SessionTestHelper.TEST_ACCOUNT_NAME);
+        return new SessionCredential(FIRST_TOKEN, BlobTestBase.TEST_SESSION_KEY, expiration,
+            BlobTestBase.TEST_SESSION_ACCOUNT_NAME);
     }
 
     private static HttpPipelineCallContext createContext() {

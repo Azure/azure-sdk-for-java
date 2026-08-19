@@ -167,6 +167,15 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
 
+    /*
+    The values below are shared fixtures for session authentication tests. They are never sent to the service.
+     */
+    public static final String TEST_SESSION_KEY = "dGVzdFNlc3Npb25LZXkxMjM0NTY3ODkwMTIzNDU2Nzg5MA==";
+
+    public static final String TEST_SESSION_TOKEN = "test-session-token-abc123";
+
+    public static final String TEST_SESSION_ACCOUNT_NAME = "testaccount";
+
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
@@ -470,6 +479,24 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+    }
+
+    /**
+     * Creates a session expiration time in the future.
+     *
+     * @return A valid session expiration time.
+     */
+    public static OffsetDateTime createValidSessionExpiration() {
+        return OffsetDateTime.now().plusHours(1);
+    }
+
+    /**
+     * Creates a session expiration time in the past.
+     *
+     * @return An expired session expiration time.
+     */
+    public static OffsetDateTime createExpiredSessionExpiration() {
+        return OffsetDateTime.now().minusMinutes(5);
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {
