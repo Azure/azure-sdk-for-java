@@ -21,7 +21,7 @@ public final class ThreatIntelligenceIndicatorMetricsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"twz\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{},{},{}],\"sourceMetrics\":[{},{},{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"npuoaorfpizybpj\",\"threatTypeMetrics\":[{},{},{},{}],\"patternTypeMetrics\":[{},{},{},{}],\"sourceMetrics\":[{},{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"wcywrbmxwlskkffw\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{}],\"sourceMetrics\":[{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"sqyjsw\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{}]}}]}";
+            = "{\"value\":[{\"properties\":{\"lastUpdatedTimeUtc\":\"bntwikmgwxysut\",\"threatTypeMetrics\":[{},{},{},{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"kstrmsbmdgrzke\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{}],\"sourceMetrics\":[{},{}]}},{\"properties\":{\"lastUpdatedTimeUtc\":\"smaa\",\"threatTypeMetrics\":[{},{},{}],\"patternTypeMetrics\":[{},{}],\"sourceMetrics\":[{},{},{},{}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ThreatIntelligenceIndicatorMetricsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ThreatIntelligenceMetricsList response = manager.threatIntelligenceIndicatorMetrics()
-            .listWithResponse("elazvcfhiayro", "xeezlqw", com.azure.core.util.Context.NONE)
+            .listWithResponse("qkdmpf", "crcelsnjftnfdcj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("twz", response.value().get(0).properties().lastUpdatedTimeUtc());
+        Assertions.assertEquals("bntwikmgwxysut", response.value().get(0).properties().lastUpdatedTimeUtc());
     }
 }

@@ -25,7 +25,7 @@ public final class MetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"contentId\":\"gmjjprdpvblon\",\"parentId\":\"h\",\"version\":\"exwjhicuzqa\",\"kind\":\"imxnhyl\",\"source\":{\"kind\":\"Community\",\"name\":\"vl\",\"sourceId\":\"gd\"},\"author\":{\"name\":\"nhdxlfntdc\",\"email\":\"mg\",\"link\":\"zlfyxaiafe\"},\"support\":{\"tier\":\"Microsoft\",\"name\":\"kfvycvhwduoa\",\"email\":\"pzzcxku\",\"link\":\"bahcassqe\"},\"dependencies\":{\"contentId\":\"nzeyakg\",\"kind\":\"Workbook\",\"version\":\"fqmxzkicx\",\"name\":\"mqi\",\"operator\":\"AND\",\"criteria\":[{\"contentId\":\"arboxaluoadmcv\",\"kind\":\"SummaryRule\",\"version\":\"pe\",\"name\":\"wevlohuahl\",\"operator\":\"OR\",\"criteria\":[{}]},{\"contentId\":\"gpmmz\",\"kind\":\"Watchlist\",\"version\":\"llxcmahzylspzc\",\"name\":\"hynlbtriaecvagu\",\"operator\":\"OR\",\"criteria\":[{}]},{\"contentId\":\"yhqrasxeomjq\",\"kind\":\"LogicAppsCustomConnector\",\"version\":\"xiuhi\",\"name\":\"bhzdjvdyrzijggb\",\"operator\":\"AND\",\"criteria\":[{},{},{},{}]}]},\"categories\":{\"domains\":[\"znxzaliicrutyhm\",\"lvxilaytj\",\"wfqzwn\"],\"verticals\":[\"q\"]},\"providers\":[\"qwqng\"],\"customVersion\":\"buknvkutlszxuu\",\"contentSchemaVersion\":\"uvpbeswgkreozp\",\"icon\":\"kc\",\"threatAnalysisTactics\":[\"cbzgiklqpe\",\"cgdndpbsieymmcb\"],\"threatAnalysisTechniques\":[\"etzvqtcesvcsby\",\"mygswduzpdnb\",\"qweohmlkzhxadmau\",\"nxzr\"],\"previewImages\":[\"haerhxd\",\"hkbrkhjjbwelicrx\",\"bqmoguy\"],\"previewImagesDark\":[\"elwszqv\",\"akddxljjzdb\",\"k\"]},\"etag\":\"gw\",\"id\":\"ujshcsnk\",\"name\":\"ygpqxqevtfdvyyp\",\"type\":\"kjirvjogsalvjl\"}";
+            = "{\"properties\":{\"contentId\":\"xwjhicuzqavimxnh\",\"parentId\":\"lwogtvlrbgda\",\"version\":\"nhdxlfntdc\",\"kind\":\"k\",\"source\":{\"kind\":\"LocalWorkspace\",\"name\":\"zlfyxaiafe\",\"sourceId\":\"xekfvycvhw\"},\"author\":{\"name\":\"ayapzzcxkuusbah\",\"email\":\"ssqeybdnzeyak\",\"link\":\"kohfqmxz\"},\"support\":{\"tier\":\"Community\",\"name\":\"tumqinawcta\",\"email\":\"boxaluoadmcv\",\"link\":\"jnpef\"},\"dependencies\":{\"contentId\":\"vlohuahlqmcbo\",\"kind\":\"Workbook\",\"version\":\"mzhxoy\",\"name\":\"xcmahzy\",\"operator\":\"AND\",\"criteria\":[{\"contentId\":\"rhynlbtr\",\"kind\":\"Playbook\",\"version\":\"vagudrh\",\"name\":\"gyhqr\",\"operator\":\"AND\",\"criteria\":[{},{},{}]},{\"contentId\":\"jqqhbkxiu\",\"kind\":\"AnalyticsRuleTemplate\",\"version\":\"bhzdjvdyrzijggb\",\"name\":\"pzgvq\",\"operator\":\"OR\",\"criteria\":[{},{},{}]},{\"contentId\":\"liic\",\"kind\":\"Workbook\",\"version\":\"hmflvxilaytjyw\",\"name\":\"zwnoghqdljqw\",\"operator\":\"AND\",\"criteria\":[{},{}]},{\"contentId\":\"nbuknvku\",\"kind\":\"ResourcesDataConnector\",\"version\":\"xuuqb\",\"name\":\"pbeswgkreozpufk\",\"operator\":\"AND\",\"criteria\":[{},{},{}]}]},\"categories\":{\"domains\":[\"iklqpegcgdnd\",\"b\",\"ieymmcbiktetzv\",\"tcesvcsbyim\"],\"verticals\":[\"wduzp\",\"nbzqweohml\",\"zhxadmaua\"]},\"providers\":[\"rqtm\",\"aerhx\",\"sh\"],\"customVersion\":\"hj\",\"contentSchemaVersion\":\"welicrxbbqmoguy\",\"icon\":\"selwszqveakd\",\"threatAnalysisTactics\":[\"jjz\",\"bzkmwgwv\"],\"threatAnalysisTechniques\":[\"shc\",\"nkiygpqxqevtfdv\",\"ypjkjirvj\",\"gsa\"],\"previewImages\":[\"lhnimuae\"],\"previewImagesDark\":[\"mpwquutlzofuzths\",\"jyanhsliqe\",\"tgunropdp\"]},\"etag\":\"qsdtqzxjbxol\",\"id\":\"hquqihgibog\",\"name\":\"ojupenoupc\",\"type\":\"lxcwrszwa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,43 +35,43 @@ public final class MetadatasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetadataModel response = manager.metadatas()
-            .getWithResponse("msfqntakroxku", "fsuwcmzpwkca", "fq", com.azure.core.util.Context.NONE)
+            .getWithResponse("zq", "mj", "prdpvblonlh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gw", response.etag());
-        Assertions.assertEquals("gmjjprdpvblon", response.contentId());
-        Assertions.assertEquals("h", response.parentId());
-        Assertions.assertEquals("exwjhicuzqa", response.version());
-        Assertions.assertEquals("imxnhyl", response.kind());
-        Assertions.assertEquals(SourceKind.COMMUNITY, response.source().kind());
-        Assertions.assertEquals("vl", response.source().name());
-        Assertions.assertEquals("gd", response.source().sourceId());
-        Assertions.assertEquals("nhdxlfntdc", response.author().name());
-        Assertions.assertEquals("mg", response.author().email());
-        Assertions.assertEquals("zlfyxaiafe", response.author().link());
-        Assertions.assertEquals(SupportTier.MICROSOFT, response.support().tier());
-        Assertions.assertEquals("kfvycvhwduoa", response.support().name());
-        Assertions.assertEquals("pzzcxku", response.support().email());
-        Assertions.assertEquals("bahcassqe", response.support().link());
-        Assertions.assertEquals("nzeyakg", response.dependencies().contentId());
+        Assertions.assertEquals("qsdtqzxjbxol", response.etag());
+        Assertions.assertEquals("xwjhicuzqavimxnh", response.contentId());
+        Assertions.assertEquals("lwogtvlrbgda", response.parentId());
+        Assertions.assertEquals("nhdxlfntdc", response.version());
+        Assertions.assertEquals("k", response.kind());
+        Assertions.assertEquals(SourceKind.LOCAL_WORKSPACE, response.source().kind());
+        Assertions.assertEquals("zlfyxaiafe", response.source().name());
+        Assertions.assertEquals("xekfvycvhw", response.source().sourceId());
+        Assertions.assertEquals("ayapzzcxkuusbah", response.author().name());
+        Assertions.assertEquals("ssqeybdnzeyak", response.author().email());
+        Assertions.assertEquals("kohfqmxz", response.author().link());
+        Assertions.assertEquals(SupportTier.COMMUNITY, response.support().tier());
+        Assertions.assertEquals("tumqinawcta", response.support().name());
+        Assertions.assertEquals("boxaluoadmcv", response.support().email());
+        Assertions.assertEquals("jnpef", response.support().link());
+        Assertions.assertEquals("vlohuahlqmcbo", response.dependencies().contentId());
         Assertions.assertEquals(Kind.WORKBOOK, response.dependencies().kind());
-        Assertions.assertEquals("fqmxzkicx", response.dependencies().version());
-        Assertions.assertEquals("mqi", response.dependencies().name());
+        Assertions.assertEquals("mzhxoy", response.dependencies().version());
+        Assertions.assertEquals("xcmahzy", response.dependencies().name());
         Assertions.assertEquals(MetadataDependencyOperator.AND, response.dependencies().operator());
-        Assertions.assertEquals("arboxaluoadmcv", response.dependencies().criteria().get(0).contentId());
-        Assertions.assertEquals(Kind.SUMMARY_RULE, response.dependencies().criteria().get(0).kind());
-        Assertions.assertEquals("pe", response.dependencies().criteria().get(0).version());
-        Assertions.assertEquals("wevlohuahl", response.dependencies().criteria().get(0).name());
-        Assertions.assertEquals(MetadataDependencyOperator.OR, response.dependencies().criteria().get(0).operator());
-        Assertions.assertEquals("znxzaliicrutyhm", response.categories().domains().get(0));
-        Assertions.assertEquals("q", response.categories().verticals().get(0));
-        Assertions.assertEquals("qwqng", response.providers().get(0));
-        Assertions.assertEquals("buknvkutlszxuu", response.customVersion());
-        Assertions.assertEquals("uvpbeswgkreozp", response.contentSchemaVersion());
-        Assertions.assertEquals("kc", response.icon());
-        Assertions.assertEquals("cbzgiklqpe", response.threatAnalysisTactics().get(0));
-        Assertions.assertEquals("etzvqtcesvcsby", response.threatAnalysisTechniques().get(0));
-        Assertions.assertEquals("haerhxd", response.previewImages().get(0));
-        Assertions.assertEquals("elwszqv", response.previewImagesDark().get(0));
+        Assertions.assertEquals("rhynlbtr", response.dependencies().criteria().get(0).contentId());
+        Assertions.assertEquals(Kind.PLAYBOOK, response.dependencies().criteria().get(0).kind());
+        Assertions.assertEquals("vagudrh", response.dependencies().criteria().get(0).version());
+        Assertions.assertEquals("gyhqr", response.dependencies().criteria().get(0).name());
+        Assertions.assertEquals(MetadataDependencyOperator.AND, response.dependencies().criteria().get(0).operator());
+        Assertions.assertEquals("iklqpegcgdnd", response.categories().domains().get(0));
+        Assertions.assertEquals("wduzp", response.categories().verticals().get(0));
+        Assertions.assertEquals("rqtm", response.providers().get(0));
+        Assertions.assertEquals("hj", response.customVersion());
+        Assertions.assertEquals("welicrxbbqmoguy", response.contentSchemaVersion());
+        Assertions.assertEquals("selwszqveakd", response.icon());
+        Assertions.assertEquals("jjz", response.threatAnalysisTactics().get(0));
+        Assertions.assertEquals("shc", response.threatAnalysisTechniques().get(0));
+        Assertions.assertEquals("lhnimuae", response.previewImages().get(0));
+        Assertions.assertEquals("mpwquutlzofuzths", response.previewImagesDark().get(0));
     }
 }

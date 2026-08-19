@@ -24,7 +24,7 @@ public final class EntitiesGetTimelinesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"metaData\":{\"totalCount\":1819451335,\"aggregations\":[{\"count\":2113245920,\"kind\":\"Anomaly\"},{\"count\":1381680700,\"kind\":\"Activity\"},{\"count\":222118864,\"kind\":\"SecurityAlert\"},{\"count\":1629493159,\"kind\":\"Activity\"}],\"errors\":[{\"kind\":\"SecurityAlert\",\"queryId\":\"jeitkfhzvscndb\",\"errorMessage\":\"lscokafaqqipv\"},{\"kind\":\"Anomaly\",\"queryId\":\"zsss\",\"errorMessage\":\"ncghgi\"},{\"kind\":\"Anomaly\",\"queryId\":\"otx\",\"errorMessage\":\"dbxzhadm\"}]},\"value\":[{\"kind\":\"EntityTimelineItem\"},{\"kind\":\"EntityTimelineItem\"}]}";
+            = "{\"metaData\":{\"totalCount\":1314215082,\"aggregations\":[{\"count\":229496652,\"kind\":\"Activity\"}],\"errors\":[{\"kind\":\"SecurityAlert\",\"queryId\":\"j\",\"errorMessage\":\"emrfqjh\"}]},\"value\":[{\"kind\":\"EntityTimelineItem\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +34,21 @@ public final class EntitiesGetTimelinesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EntityTimelineResponse response = manager.entitiesGetTimelines()
-            .listWithResponse("yuhoxulevp", "birhgjmphyacd", "jmpnvgkxs",
+            .listWithResponse("vhcgtctnqdcg", "bkceb", "rtputmtjsklkw",
                 new EntityTimelineParameters()
-                    .withKinds(Arrays.asList(EntityTimelineKind.SECURITY_ALERT, EntityTimelineKind.BOOKMARK,
-                        EntityTimelineKind.BOOKMARK, EntityTimelineKind.BOOKMARK))
-                    .withStartTime(OffsetDateTime.parse("2021-03-01T00:07:04Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-08-01T22:45:02Z"))
-                    .withNumberOfBucket(1992312292),
+                    .withKinds(Arrays.asList(EntityTimelineKind.SECURITY_ALERT, EntityTimelineKind.ANOMALY,
+                        EntityTimelineKind.SECURITY_ALERT, EntityTimelineKind.BOOKMARK))
+                    .withStartTime(OffsetDateTime.parse("2021-03-20T01:04:34Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-03-04T17:12:22Z"))
+                    .withNumberOfBucket(1958960939),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1819451335, response.metaData().totalCount());
-        Assertions.assertEquals(2113245920, response.metaData().aggregations().get(0).count());
-        Assertions.assertEquals(EntityTimelineKind.ANOMALY, response.metaData().aggregations().get(0).kind());
+        Assertions.assertEquals(1314215082, response.metaData().totalCount());
+        Assertions.assertEquals(229496652, response.metaData().aggregations().get(0).count());
+        Assertions.assertEquals(EntityTimelineKind.ACTIVITY, response.metaData().aggregations().get(0).kind());
         Assertions.assertEquals(EntityTimelineKind.SECURITY_ALERT, response.metaData().errors().get(0).kind());
-        Assertions.assertEquals("jeitkfhzvscndb", response.metaData().errors().get(0).queryId());
-        Assertions.assertEquals("lscokafaqqipv", response.metaData().errors().get(0).errorMessage());
+        Assertions.assertEquals("j", response.metaData().errors().get(0).queryId());
+        Assertions.assertEquals("emrfqjh", response.metaData().errors().get(0).errorMessage());
     }
 }

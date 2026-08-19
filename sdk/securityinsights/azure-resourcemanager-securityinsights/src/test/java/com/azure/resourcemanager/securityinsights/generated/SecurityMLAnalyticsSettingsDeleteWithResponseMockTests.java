@@ -27,7 +27,8 @@ public final class SecurityMLAnalyticsSettingsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.securityMLAnalyticsSettings().deleteWithResponse("dl", "cqu", "v", com.azure.core.util.Context.NONE);
+        manager.securityMLAnalyticsSettings()
+            .deleteWithResponse("mrdlnb", "lhwrikrul", "bhgzffemryoiaobb", com.azure.core.util.Context.NONE);
 
     }
 }

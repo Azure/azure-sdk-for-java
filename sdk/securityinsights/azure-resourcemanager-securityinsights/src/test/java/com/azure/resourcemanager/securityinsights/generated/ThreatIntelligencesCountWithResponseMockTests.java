@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 public final class ThreatIntelligencesCountWithResponseMockTests {
     @Test
     public void testCountWithResponse() throws Exception {
-        String responseStr = "{\"count\":2097230752}";
+        String responseStr = "{\"count\":1857906000}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,11 +35,20 @@ public final class ThreatIntelligencesCountWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ThreatIntelligenceCount response = manager.threatIntelligences()
-            .countWithResponse("ayuqwntghjm", "jmmjnxhy", TiType.MAIN,
-                new CountQuery().withCondition(
-                    new ConditionProperties().withClauses(Arrays.asList(new ConditionClause().withField("qpimbchiskwa")
-                        .withOperator(Operator.GREATER_THAN_EQUAL)
-                        .withValues(Arrays.asList("jqn"))))),
+            .countWithResponse("u", "iscbz", TiType.MAIN,
+                new CountQuery().withCondition(new ConditionProperties().withClauses(Arrays.asList(
+                    new ConditionClause().withField("elv")
+                        .withOperator(Operator.IS_TRUE)
+                        .withValues(Arrays.asList("tm")),
+                    new ConditionClause().withField("lq")
+                        .withOperator(Operator.ARRAY_CONTAINS)
+                        .withValues(Arrays.asList("mjwwoxan", "fell")),
+                    new ConditionClause().withField("gog")
+                        .withOperator(Operator.LESS_THAN_EQUAL)
+                        .withValues(Arrays.asList("w")),
+                    new ConditionClause().withField("thcbvuvwdpy")
+                        .withOperator(Operator.STRING_NOT_ENDS_WITH)
+                        .withValues(Arrays.asList("naghgla", "j", "nbmfml"))))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

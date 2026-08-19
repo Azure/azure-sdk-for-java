@@ -21,7 +21,7 @@ public final class EntityRelationsGetRelationWithResponseMockTests {
     @Test
     public void testGetRelationWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"relatedResourceId\":\"qjrytymfnojjh\",\"relatedResourceName\":\"nthjqgovviv\",\"relatedResourceType\":\"xytrafettwytavp\",\"relatedResourceKind\":\"lgyql\"},\"etag\":\"lgspy\",\"id\":\"apnhhvp\",\"name\":\"ukourqviyf\",\"type\":\"segwez\"}";
+            = "{\"properties\":{\"relatedResourceId\":\"yb\",\"relatedResourceName\":\"bhmpmeglolpotclm\",\"relatedResourceType\":\"pqjryty\",\"relatedResourceKind\":\"no\"},\"etag\":\"ht\",\"id\":\"thjqgovvivlr\",\"name\":\"y\",\"type\":\"rafet\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,10 @@ public final class EntityRelationsGetRelationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relation response = manager.entityRelations()
-            .getRelationWithResponse("iznnnadn", "isbpxlserq", "xnhfcccdutxybnjb", "mpmeglolpotclmb",
-                com.azure.core.util.Context.NONE)
+            .getRelationWithResponse("adnpi", "bpxlserqgxnhfc", "c", "u", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lgspy", response.etag());
-        Assertions.assertEquals("qjrytymfnojjh", response.relatedResourceId());
+        Assertions.assertEquals("ht", response.etag());
+        Assertions.assertEquals("yb", response.relatedResourceId());
     }
 }

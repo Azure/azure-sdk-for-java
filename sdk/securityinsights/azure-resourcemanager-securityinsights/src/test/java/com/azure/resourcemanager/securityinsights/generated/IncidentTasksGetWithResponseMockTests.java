@@ -22,7 +22,7 @@ public final class IncidentTasksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"jckakikkkajmnvb\",\"description\":\"mnkrqdyc\",\"status\":\"New\",\"createdTimeUtc\":\"2021-03-27T03:11:33Z\",\"lastModifiedTimeUtc\":\"2021-02-07T05:27:50Z\",\"createdBy\":{\"email\":\"klqr\",\"name\":\"cg\",\"objectId\":\"adaypxeqedftkigm\",\"userPrincipalName\":\"kt\"},\"lastModifiedBy\":{\"email\":\"yvzixmusiidiv\",\"name\":\"rtzfli\",\"objectId\":\"tnoegxoqpuc\",\"userPrincipalName\":\"dytwdaiexisa\"}},\"etag\":\"giiouka\",\"id\":\"zzfgivfiy\",\"name\":\"fvwyzjsix\",\"type\":\"rvigrxmptufde\"}";
+            = "{\"properties\":{\"title\":\"urqviyfksegwezgf\",\"description\":\"ujtcpdtdz\",\"status\":\"New\",\"createdTimeUtc\":\"2021-03-03T11:47:10Z\",\"lastModifiedTimeUtc\":\"2021-04-09T12:25:33Z\",\"createdBy\":{\"email\":\"jckakikkkajmnvb\",\"name\":\"mnkrqdyc\",\"objectId\":\"bgkxxpklq\",\"userPrincipalName\":\"bcgsa\"},\"lastModifiedBy\":{\"email\":\"ypxeqedftkig\",\"name\":\"n\",\"objectId\":\"tvzyvzixmusiidi\",\"userPrincipalName\":\"brtzfliqntnoeg\"}},\"etag\":\"qpuclid\",\"id\":\"wdaiexisapygii\",\"name\":\"ukaffzzfgivfiypf\",\"type\":\"wyzjsixorvigrxmp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,20 +32,20 @@ public final class IncidentTasksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IncidentTask response = manager.incidentTasks()
-            .getWithResponse("fq", "ujtcpdtdz", "y", "gzba", com.azure.core.util.Context.NONE)
+            .getWithResponse("wyt", "vpiilgy", "luolgspyqsapnh", "vpbuk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("giiouka", response.etag());
-        Assertions.assertEquals("jckakikkkajmnvb", response.title());
-        Assertions.assertEquals("mnkrqdyc", response.description());
+        Assertions.assertEquals("qpuclid", response.etag());
+        Assertions.assertEquals("urqviyfksegwezgf", response.title());
+        Assertions.assertEquals("ujtcpdtdz", response.description());
         Assertions.assertEquals(IncidentTaskStatus.NEW, response.status());
-        Assertions.assertEquals("klqr", response.createdBy().email());
-        Assertions.assertEquals("cg", response.createdBy().name());
-        Assertions.assertEquals("adaypxeqedftkigm", response.createdBy().objectId());
-        Assertions.assertEquals("kt", response.createdBy().userPrincipalName());
-        Assertions.assertEquals("yvzixmusiidiv", response.lastModifiedBy().email());
-        Assertions.assertEquals("rtzfli", response.lastModifiedBy().name());
-        Assertions.assertEquals("tnoegxoqpuc", response.lastModifiedBy().objectId());
-        Assertions.assertEquals("dytwdaiexisa", response.lastModifiedBy().userPrincipalName());
+        Assertions.assertEquals("jckakikkkajmnvb", response.createdBy().email());
+        Assertions.assertEquals("mnkrqdyc", response.createdBy().name());
+        Assertions.assertEquals("bgkxxpklq", response.createdBy().objectId());
+        Assertions.assertEquals("bcgsa", response.createdBy().userPrincipalName());
+        Assertions.assertEquals("ypxeqedftkig", response.lastModifiedBy().email());
+        Assertions.assertEquals("n", response.lastModifiedBy().name());
+        Assertions.assertEquals("tvzyvzixmusiidi", response.lastModifiedBy().objectId());
+        Assertions.assertEquals("brtzfliqntnoeg", response.lastModifiedBy().userPrincipalName());
     }
 }

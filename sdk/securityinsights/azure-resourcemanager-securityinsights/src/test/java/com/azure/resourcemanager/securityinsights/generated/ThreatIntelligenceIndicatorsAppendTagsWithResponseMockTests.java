@@ -30,8 +30,8 @@ public final class ThreatIntelligenceIndicatorsAppendTagsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.threatIntelligenceIndicators()
-            .appendTagsWithResponse("pjecjixcya", "kiitrdbtr", "vlu", new ThreatIntelligenceAppendTags()
-                .withThreatIntelligenceTags(Arrays.asList("su", "zfrwmctrngjqc", "sfbkrtpu")),
+            .appendTagsWithResponse("dvtv", "yqlthnnd", "plksdie",
+                new ThreatIntelligenceAppendTags().withThreatIntelligenceTags(Arrays.asList("jbat")),
                 com.azure.core.util.Context.NONE);
 
     }

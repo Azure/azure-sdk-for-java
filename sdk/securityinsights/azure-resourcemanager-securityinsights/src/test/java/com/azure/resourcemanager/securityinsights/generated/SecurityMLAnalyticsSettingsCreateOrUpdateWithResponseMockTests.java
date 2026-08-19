@@ -22,7 +22,7 @@ public final class SecurityMLAnalyticsSettingsCreateOrUpdateWithResponseMockTest
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"h\",\"id\":\"ikruljbhgzff\",\"name\":\"mryoiao\",\"type\":\"bz\"}";
+            = "{\"kind\":\"SecurityMLAnalyticsSetting\",\"etag\":\"hupyajkdejparjvs\",\"id\":\"zfjbd\",\"name\":\"yxhjf\",\"type\":\"jb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class SecurityMLAnalyticsSettingsCreateOrUpdateWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SecurityMLAnalyticsSetting response = manager.securityMLAnalyticsSettings()
-            .createOrUpdateWithResponse("qnvvw", "aorulboawzplwghf", "qoarmtuprqt",
-                new SecurityMLAnalyticsSettingInner().withEtag("qkohupyajkde"), com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("sbubzfayy", "qecwrtreder", "snfgmohhc",
+                new SecurityMLAnalyticsSettingInner().withEtag("vsmvvfpkym"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("h", response.etag());
+        Assertions.assertEquals("hupyajkdejparjvs", response.etag());
     }
 }

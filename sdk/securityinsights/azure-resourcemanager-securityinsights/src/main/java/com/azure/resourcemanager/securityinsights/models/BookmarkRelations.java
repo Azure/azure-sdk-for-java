@@ -7,6 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 
 /**
  * Resource collection API of BookmarkRelations.
@@ -41,6 +42,39 @@ public interface BookmarkRelations {
      * @return a bookmark relation.
      */
     Relation get(String resourceGroupName, String workspaceName, String bookmarkId, String relationName);
+
+    /**
+     * Creates the bookmark relation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bookmarkId Bookmark ID.
+     * @param relationName Relation Name.
+     * @param relation Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a relation between two resources along with {@link Response}.
+     */
+    Response<Relation> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String bookmarkId,
+        String relationName, RelationInner relation, Context context);
+
+    /**
+     * Creates the bookmark relation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bookmarkId Bookmark ID.
+     * @param relationName Relation Name.
+     * @param relation Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a relation between two resources.
+     */
+    Relation createOrUpdate(String resourceGroupName, String workspaceName, String bookmarkId, String relationName,
+        RelationInner relation);
 
     /**
      * Delete the bookmark relation.
@@ -104,57 +138,4 @@ public interface BookmarkRelations {
      */
     PagedIterable<Relation> list(String resourceGroupName, String workspaceName, String bookmarkId, String filter,
         String orderby, Integer top, String skipToken, Context context);
-
-    /**
-     * Gets a bookmark relation.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark relation along with {@link Response}.
-     */
-    Relation getById(String id);
-
-    /**
-     * Gets a bookmark relation.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a bookmark relation along with {@link Response}.
-     */
-    Response<Relation> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Delete the bookmark relation.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Delete the bookmark relation.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new Relation resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new Relation definition.
-     */
-    Relation.DefinitionStages.Blank define(String name);
 }

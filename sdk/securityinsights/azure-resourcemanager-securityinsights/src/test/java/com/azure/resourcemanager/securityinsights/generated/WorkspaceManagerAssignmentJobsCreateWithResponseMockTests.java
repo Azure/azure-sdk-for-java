@@ -21,7 +21,7 @@ public final class WorkspaceManagerAssignmentJobsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endTime\":\"2021-07-14T12:48:04Z\",\"items\":[{\"resourceId\":\"zyebpatw\",\"status\":\"InProgress\",\"executionTime\":\"2021-07-09T20:09:01Z\",\"errors\":[{\"memberResourceName\":\"hnwo\",\"errorMessage\":\"lcahhfuydgdhit\"},{\"memberResourceName\":\"v\",\"errorMessage\":\"ayu\"}]},{\"resourceId\":\"zlcvib\",\"status\":\"Closed\",\"executionTime\":\"2021-03-27T09:47:09Z\",\"errors\":[{\"memberResourceName\":\"defepwkhruzzw\",\"errorMessage\":\"bbozivfoy\"},{\"memberResourceName\":\"vnlhsxeasxsqqu\",\"errorMessage\":\"vscbpkmo\"},{\"memberResourceName\":\"dukp\",\"errorMessage\":\"qyibwu\"},{\"memberResourceName\":\"vmo\",\"errorMessage\":\"syirfkxazuboi\"}]},{\"resourceId\":\"rw\",\"status\":\"Failed\",\"executionTime\":\"2021-08-12T20:43:01Z\",\"errors\":[{\"memberResourceName\":\"aqoilgkznnzpvjw\",\"errorMessage\":\"g\"},{\"memberResourceName\":\"viceqyrajdvvsaat\",\"errorMessage\":\"yper\"},{\"memberResourceName\":\"azcchvwwc\",\"errorMessage\":\"azztvotf\"}]},{\"resourceId\":\"ayfxkfgx\",\"status\":\"Closed\",\"executionTime\":\"2021-01-08T13:21:25Z\",\"errors\":[{\"memberResourceName\":\"uw\",\"errorMessage\":\"oszcmfmynljigj\"},{\"memberResourceName\":\"nk\",\"errorMessage\":\"dmwtiv\"},{\"memberResourceName\":\"knewpnpun\",\"errorMessage\":\"vjbnhbxvvuf\"}]}],\"provisioningState\":\"Succeeded\",\"startTime\":\"2021-01-01T23:00:57Z\",\"errorMessage\":\"sajq\"},\"etag\":\"rcqdthmlqam\",\"id\":\"cukdmrvr\",\"name\":\"akc\",\"type\":\"lsnprda\"}";
+            = "{\"properties\":{\"endTime\":\"2021-03-10T21:47:37Z\",\"items\":[{\"resourceId\":\"jshicvrmwbgpc\",\"status\":\"Active\",\"executionTime\":\"2021-01-01T12:01:51Z\",\"errors\":[{\"memberResourceName\":\"vpgsrf\",\"errorMessage\":\"hkj\"},{\"memberResourceName\":\"spb\",\"errorMessage\":\"aevtxibrooogij\"},{\"memberResourceName\":\"qwxwpubdhqnpr\",\"errorMessage\":\"vruhdjzivlaxii\"}]}],\"provisioningState\":\"Canceled\",\"startTime\":\"2021-06-17T09:12:24Z\",\"errorMessage\":\"fptzixmksxxb\"},\"etag\":\"jvvng\",\"id\":\"kkzulmqx\",\"name\":\"ic\",\"type\":\"nwij\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class WorkspaceManagerAssignmentJobsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Job response = manager.workspaceManagerAssignmentJobs()
-            .createWithResponse("bhqkvbins", "qwnpegoupdq", "flvdfaqcql", com.azure.core.util.Context.NONE)
+            .createWithResponse("hylqgeovnlb", "fsol", "rqu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rcqdthmlqam", response.etag());
-        Assertions.assertEquals("zyebpatw", response.items().get(0).resourceId());
-        Assertions.assertEquals("hnwo", response.items().get(0).errors().get(0).memberResourceName());
-        Assertions.assertEquals("lcahhfuydgdhit", response.items().get(0).errors().get(0).errorMessage());
+        Assertions.assertEquals("jvvng", response.etag());
+        Assertions.assertEquals("jshicvrmwbgpc", response.items().get(0).resourceId());
+        Assertions.assertEquals("vpgsrf", response.items().get(0).errors().get(0).memberResourceName());
+        Assertions.assertEquals("hkj", response.items().get(0).errors().get(0).errorMessage());
     }
 }

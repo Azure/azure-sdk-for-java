@@ -22,7 +22,7 @@ public final class WorkspaceManagerAssignmentJobsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"endTime\":\"2021-02-16T13:46:03Z\",\"items\":[{\"resourceId\":\"hj\",\"status\":\"Succeeded\",\"executionTime\":\"2021-01-06T15:50:01Z\",\"errors\":[{\"memberResourceName\":\"utqoh\",\"errorMessage\":\"btqibqbougcwzgd\"}]},{\"resourceId\":\"rdxoutkgezulnnt\",\"status\":\"Backlog\",\"executionTime\":\"2021-09-23T23:27:05Z\",\"errors\":[{\"memberResourceName\":\"jhlxoljbpoeo\",\"errorMessage\":\"wykhhavwh\"},{\"memberResourceName\":\"ivvzrccyfrxl\",\"errorMessage\":\"ypwudeearbbxan\"},{\"memberResourceName\":\"viqkju\",\"errorMessage\":\"v\"}]}],\"provisioningState\":\"Canceled\",\"startTime\":\"2021-05-27T13:44:59Z\",\"errorMessage\":\"ppqcgbp\"},\"etag\":\"ni\",\"id\":\"hd\",\"name\":\"xup\",\"type\":\"btlharjbakp\"}]}";
+            = "{\"value\":[{\"properties\":{\"endTime\":\"2021-04-26T04:33:13Z\",\"items\":[{\"resourceId\":\"e\",\"status\":\"New\",\"executionTime\":\"2021-04-19T00:36:49Z\",\"errors\":[{\"memberResourceName\":\"nuglmyrkrtdkpox\",\"errorMessage\":\"wgrsni\"}]},{\"resourceId\":\"mca\",\"status\":\"Closed\",\"executionTime\":\"2021-04-24T14:46:57Z\",\"errors\":[{\"memberResourceName\":\"fjzqqgypanwejbn\",\"errorMessage\":\"ojnakswy\"},{\"memberResourceName\":\"kwtf\",\"errorMessage\":\"aafksor\"},{\"memberResourceName\":\"fhruhwxmnrdfjobh\",\"errorMessage\":\"voneaupjmjigypb\"}]},{\"resourceId\":\"rtasaurxtox\",\"status\":\"Backlog\",\"executionTime\":\"2021-03-21T21:09:49Z\",\"errors\":[{\"memberResourceName\":\"tsyrxynnfsknycis\",\"errorMessage\":\"hcp\"}]}],\"provisioningState\":\"Failed\",\"startTime\":\"2021-05-11T20:15:26Z\",\"errorMessage\":\"cduq\"},\"etag\":\"urfqaa\",\"id\":\"y\",\"name\":\"tzslfrztpnry\",\"type\":\"xxa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,13 @@ public final class WorkspaceManagerAssignmentJobsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Job> response = manager.workspaceManagerAssignmentJobs()
-            .list("er", "ttobosjxb", "ytten", "uditumyycvtya", 2093579646, "yimhspjqhi",
+            .list("qi", "bite", "vowiypyljzkx", "dfyvgcftaqydcr", 1876950395, "hmneykxewemtazmr",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ni", response.iterator().next().etag());
-        Assertions.assertEquals("hj", response.iterator().next().items().get(0).resourceId());
-        Assertions.assertEquals("utqoh",
+        Assertions.assertEquals("urfqaa", response.iterator().next().etag());
+        Assertions.assertEquals("e", response.iterator().next().items().get(0).resourceId());
+        Assertions.assertEquals("nuglmyrkrtdkpox",
             response.iterator().next().items().get(0).errors().get(0).memberResourceName());
-        Assertions.assertEquals("btqibqbougcwzgd",
-            response.iterator().next().items().get(0).errors().get(0).errorMessage());
+        Assertions.assertEquals("wgrsni", response.iterator().next().items().get(0).errors().get(0).errorMessage());
     }
 }

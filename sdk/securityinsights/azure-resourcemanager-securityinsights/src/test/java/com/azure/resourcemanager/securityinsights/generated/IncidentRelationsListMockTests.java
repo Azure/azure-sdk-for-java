@@ -22,7 +22,7 @@ public final class IncidentRelationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"relatedResourceId\":\"wupciokdrjd\",\"relatedResourceName\":\"fnqanba\",\"relatedResourceType\":\"zpqctuplpkj\",\"relatedResourceKind\":\"qnrnzla\"},\"etag\":\"goeftrbxomaa\",\"id\":\"arf\",\"name\":\"verxelq\",\"type\":\"qze\"}]}";
+            = "{\"value\":[{\"properties\":{\"relatedResourceId\":\"ogjiowandefmebp\",\"relatedResourceName\":\"zpyptgwm\",\"relatedResourceType\":\"rhc\",\"relatedResourceKind\":\"svmp\"},\"etag\":\"rzilvcncdazw\",\"id\":\"goravovqpn\",\"name\":\"pufvg\",\"type\":\"vfgmezfyelfxlbkb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class IncidentRelationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Relation> response = manager.incidentRelations()
-            .list("wva", "lfgvtczzvqzhtme", "iptudw", "h", "rpsjkq", 478857066, "bjuakt",
+            .list("sjwawl", "qmznkcwiok", "yk", "vxmobnehbb", "htcoelx", 897815683, "npxumgnjmskuv",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("goeftrbxomaa", response.iterator().next().etag());
-        Assertions.assertEquals("wupciokdrjd", response.iterator().next().relatedResourceId());
+        Assertions.assertEquals("rzilvcncdazw", response.iterator().next().etag());
+        Assertions.assertEquals("ogjiowandefmebp", response.iterator().next().relatedResourceId());
     }
 }

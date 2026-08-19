@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.securityinsights.SecurityInsightsManager;
+import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import com.azure.resourcemanager.securityinsights.models.Relation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -21,7 +22,7 @@ public final class BookmarkRelationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"relatedResourceId\":\"nqbkpobjufksddxk\",\"relatedResourceName\":\"wxlylxfpvoylf\",\"relatedResourceType\":\"srgu\",\"relatedResourceKind\":\"bthauivgbimededq\"},\"etag\":\"rvulzg\",\"id\":\"ckpdpdcnr\",\"name\":\"qskikq\",\"type\":\"qiybqtlvofjjse\"}";
+            = "{\"properties\":{\"relatedResourceId\":\"iecurfs\",\"relatedResourceName\":\"shfmgi\",\"relatedResourceType\":\"urveekhsmulvmywo\",\"relatedResourceKind\":\"kpuuuxiuwhcyc\"},\"etag\":\"kmufipygtmoycp\",\"id\":\"maosongtbh\",\"name\":\"hsqvubwwqgiyu\",\"type\":\"nrvwjxmwalh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +32,12 @@ public final class BookmarkRelationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Relation response = manager.bookmarkRelations()
-            .define("yujnrvwjxmwalhlj")
-            .withExistingBookmark("gtmoy", "potmaosongt", "hvhsqvubwwqg")
-            .withEtag("vpjydwmaqeytjp")
-            .withRelatedResourceId("snbpiuvqhodfm")
-            .create();
+            .createOrUpdateWithResponse("uveljfa", "in", "fziztgddahymvk", "jtdhmig",
+                new RelationInner().withEtag("llbpegcetezaa").withRelatedResourceId("aoexgienylsijqyg"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("rvulzg", response.etag());
-        Assertions.assertEquals("nqbkpobjufksddxk", response.relatedResourceId());
+        Assertions.assertEquals("kmufipygtmoycp", response.etag());
+        Assertions.assertEquals("iecurfs", response.relatedResourceId());
     }
 }

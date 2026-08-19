@@ -28,7 +28,8 @@ public final class BookmarkRelationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.bookmarkRelations()
-            .deleteWithResponse("uveljfa", "in", "fziztgddahymvk", "jtdhmig", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jtnsnbpiuvqho", "fmortrsnpbsungn", "kkmkzfbjucg", "gzjyrdiiwhmrhz",
+                com.azure.core.util.Context.NONE);
 
     }
 }

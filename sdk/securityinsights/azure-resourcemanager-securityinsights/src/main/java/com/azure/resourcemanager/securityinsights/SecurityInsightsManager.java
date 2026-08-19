@@ -616,7 +616,7 @@ public final class SecurityInsightsManager {
     }
 
     /**
-     * Gets the resource collection API of BookmarkRelations. It manages Relation.
+     * Gets the resource collection API of BookmarkRelations.
      * 
      * @return Resource collection API of BookmarkRelations.
      */
@@ -1035,7 +1035,7 @@ public final class SecurityInsightsManager {
     }
 
     /**
-     * Gets the resource collection API of IncidentRelations.
+     * Gets the resource collection API of IncidentRelations. It manages Relation.
      * 
      * @return Resource collection API of IncidentRelations.
      */

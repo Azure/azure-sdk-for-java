@@ -22,7 +22,7 @@ public final class ThreatIntelligenceIndicatorsOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"ujeia\",\"id\":\"yeefjss\",\"name\":\"yrwyffutezx\",\"type\":\"p\"}]}";
+            = "{\"value\":[{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"maw\",\"id\":\"aagazryyjjwggpc\",\"name\":\"ugwd\",\"type\":\"obpcs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ThreatIntelligenceIndicatorsOperationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ThreatIntelligenceInformation> response = manager.threatIntelligenceIndicatorsOperations()
-            .list("tlxqlz", "kbxwncggamxbtqi", "ydaiolnkkgh", 455677843, "xvq", "bnwmokzxyltbpqj",
+            .list("nidbaykvlrsbrni", "c", "oqpim", 1041196550, "hiskwaffsjqnj", "cybugojzcarg",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ujeia", response.iterator().next().etag());
+        Assertions.assertEquals("maw", response.iterator().next().etag());
     }
 }

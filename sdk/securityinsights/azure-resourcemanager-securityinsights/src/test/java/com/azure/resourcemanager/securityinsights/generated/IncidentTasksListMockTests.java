@@ -23,7 +23,7 @@ public final class IncidentTasksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"title\":\"xw\",\"description\":\"thivapuaxosw\",\"status\":\"Completed\",\"createdTimeUtc\":\"2021-08-11T03:49:35Z\",\"lastModifiedTimeUtc\":\"2021-06-17T16:33:55Z\",\"createdBy\":{\"email\":\"gkcnpdkwerxfezl\",\"name\":\"sekvsuzyo\",\"objectId\":\"af\",\"userPrincipalName\":\"fr\"},\"lastModifiedBy\":{\"email\":\"v\",\"name\":\"pltnyyeyj\",\"objectId\":\"fpbxnretpg\",\"userPrincipalName\":\"tohruqtximrxeyz\"}},\"etag\":\"nxb\",\"id\":\"yglfyfcsbkjhoxtb\",\"name\":\"ybpefojpnix\",\"type\":\"gqjk\"}]}";
+            = "{\"value\":[{\"properties\":{\"title\":\"wdsthktsaljk\",\"description\":\"pgtpgxkkoyp\",\"status\":\"New\",\"createdTimeUtc\":\"2021-12-07T14:48:53Z\",\"lastModifiedTimeUtc\":\"2021-06-30T07:27:21Z\",\"createdBy\":{\"email\":\"a\",\"name\":\"axoswqw\",\"objectId\":\"lrzlgk\",\"userPrincipalName\":\"pd\"},\"lastModifiedBy\":{\"email\":\"rxfezlmzse\",\"name\":\"su\",\"objectId\":\"owrafvofre\",\"userPrincipalName\":\"v\"}},\"etag\":\"pltnyyeyj\",\"id\":\"fpbxnretpg\",\"name\":\"xtoh\",\"type\":\"uqtximrxey\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class IncidentTasksListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IncidentTask> response = manager.incidentTasks()
-            .list("pnzijpyyvecruhqy", "wdsthktsaljk", "lpgtpgxkkoy", com.azure.core.util.Context.NONE);
+            .list("udbiacuqouc", "fuvuslvbuj", "pnzijpyyvecruhqy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nxb", response.iterator().next().etag());
-        Assertions.assertEquals("xw", response.iterator().next().title());
-        Assertions.assertEquals("thivapuaxosw", response.iterator().next().description());
-        Assertions.assertEquals(IncidentTaskStatus.COMPLETED, response.iterator().next().status());
-        Assertions.assertEquals("gkcnpdkwerxfezl", response.iterator().next().createdBy().email());
-        Assertions.assertEquals("sekvsuzyo", response.iterator().next().createdBy().name());
-        Assertions.assertEquals("af", response.iterator().next().createdBy().objectId());
-        Assertions.assertEquals("fr", response.iterator().next().createdBy().userPrincipalName());
-        Assertions.assertEquals("v", response.iterator().next().lastModifiedBy().email());
-        Assertions.assertEquals("pltnyyeyj", response.iterator().next().lastModifiedBy().name());
-        Assertions.assertEquals("fpbxnretpg", response.iterator().next().lastModifiedBy().objectId());
-        Assertions.assertEquals("tohruqtximrxeyz", response.iterator().next().lastModifiedBy().userPrincipalName());
+        Assertions.assertEquals("pltnyyeyj", response.iterator().next().etag());
+        Assertions.assertEquals("wdsthktsaljk", response.iterator().next().title());
+        Assertions.assertEquals("pgtpgxkkoyp", response.iterator().next().description());
+        Assertions.assertEquals(IncidentTaskStatus.NEW, response.iterator().next().status());
+        Assertions.assertEquals("a", response.iterator().next().createdBy().email());
+        Assertions.assertEquals("axoswqw", response.iterator().next().createdBy().name());
+        Assertions.assertEquals("lrzlgk", response.iterator().next().createdBy().objectId());
+        Assertions.assertEquals("pd", response.iterator().next().createdBy().userPrincipalName());
+        Assertions.assertEquals("rxfezlmzse", response.iterator().next().lastModifiedBy().email());
+        Assertions.assertEquals("su", response.iterator().next().lastModifiedBy().name());
+        Assertions.assertEquals("owrafvofre", response.iterator().next().lastModifiedBy().objectId());
+        Assertions.assertEquals("v", response.iterator().next().lastModifiedBy().userPrincipalName());
     }
 }

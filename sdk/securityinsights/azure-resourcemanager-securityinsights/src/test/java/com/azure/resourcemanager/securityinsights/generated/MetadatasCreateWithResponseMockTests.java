@@ -31,7 +31,7 @@ public final class MetadatasCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"contentId\":\"plmytnhvyjz\",\"parentId\":\"erh\",\"version\":\"stiawywppq\",\"kind\":\"ujxbdyczplm\",\"source\":{\"kind\":\"LocalWorkspace\",\"name\":\"s\",\"sourceId\":\"wsftytpjmu\"},\"author\":{\"name\":\"nhqlzantahuykxs\",\"email\":\"mpsxmoadwiqnsm\",\"link\":\"eyjvlzqsyv\"},\"support\":{\"tier\":\"Community\",\"name\":\"eq\",\"email\":\"corkemobobxfh\",\"link\":\"tuvwzjyc\"},\"dependencies\":{\"contentId\":\"eagxikzvnghtknrw\",\"kind\":\"ResourcesDataConnector\",\"version\":\"nm\",\"name\":\"v\",\"operator\":\"OR\",\"criteria\":[{\"contentId\":\"apxwt\",\"kind\":\"LogicAppsCustomConnector\",\"version\":\"elf\",\"name\":\"ehr\",\"operator\":\"OR\",\"criteria\":[{},{},{},{}]},{\"contentId\":\"jcziytfwk\",\"kind\":\"Workbook\",\"version\":\"brdo\",\"name\":\"qahn\",\"operator\":\"AND\",\"criteria\":[{}]}]},\"categories\":{\"domains\":[\"dzvuhw\"],\"verticals\":[\"azjv\",\"iiezdnezxtq\",\"dbrmyutzttroym\",\"vkkuzrvcegyz\"]},\"providers\":[\"cfuwmxezzum\",\"lro\"],\"customVersion\":\"h\",\"contentSchemaVersion\":\"spxblyokjwsszye\",\"icon\":\"oukdhnf\",\"threatAnalysisTactics\":[\"gg\",\"ihnzvoeh\",\"wgqgc\",\"kghg\"],\"threatAnalysisTechniques\":[\"xouxi\",\"dwpgmhqhvne\",\"nwxqwcxaqlymm\"],\"previewImages\":[\"netecfyusfkcwfpo\",\"flgkzgzx\",\"wvvfkqbgk\"],\"previewImagesDark\":[\"gdvllbbdfulvhpw\",\"sxygrniqnxpsebaz\",\"tyrj\",\"oqgnsfzrrapi\"]},\"etag\":\"u\",\"id\":\"qzgy\",\"name\":\"myywhfdkjykvez\",\"type\":\"o\"}";
+            = "{\"properties\":{\"contentId\":\"apxwt\",\"parentId\":\"pxoelfobehr\",\"version\":\"glojjcziytf\",\"kind\":\"kvirmb\",\"source\":{\"kind\":\"Community\",\"name\":\"nqahnkmsfy\",\"sourceId\":\"kdzv\"},\"author\":{\"name\":\"senazjvyiiezdne\",\"email\":\"tqzdbrmyutztt\",\"link\":\"y\"},\"support\":{\"tier\":\"Partner\",\"name\":\"kuz\",\"email\":\"cegyztzhcfuwm\",\"link\":\"z\"},\"dependencies\":{\"contentId\":\"k\",\"kind\":\"ResourcesDataConnector\",\"version\":\"gflhhospxblyokj\",\"name\":\"szye\",\"operator\":\"AND\",\"criteria\":[{\"contentId\":\"hn\",\"kind\":\"AnalyticsRuleTemplate\",\"version\":\"gg\",\"name\":\"hnzvoehgwgqgc\",\"operator\":\"OR\",\"criteria\":[{},{}]},{\"contentId\":\"zjxouxigdwpgmh\",\"kind\":\"Solution\",\"version\":\"exnwxqw\",\"name\":\"aqlymmhzvnetecfy\",\"operator\":\"OR\",\"criteria\":[{},{},{}]},{\"contentId\":\"fpoaflgkzgzxqwvv\",\"kind\":\"AzureFunction\",\"version\":\"gkssygdvllbbd\",\"name\":\"l\",\"operator\":\"OR\",\"criteria\":[{},{},{}]},{\"contentId\":\"xygrniqnxpsebazb\",\"kind\":\"Playbook\",\"version\":\"roq\",\"name\":\"sfzrrapimtuojqz\",\"operator\":\"OR\",\"criteria\":[{}]}]},\"categories\":{\"domains\":[\"fdkjykvezso\",\"tzd\",\"z\",\"bmzldplamccql\"],\"verticals\":[\"veqleozqqwiawb\",\"zyvbu\",\"fhysatoplqcujsrl\"]},\"providers\":[\"qkprf\",\"ocowtoqfwbsbko\",\"bdssjhwhfcxwrjbr\"],\"customVersion\":\"etttul\",\"contentSchemaVersion\":\"ajb\",\"icon\":\"spfgmosiskihfsl\",\"threatAnalysisTactics\":[\"jzgmxqa\",\"pypxg\",\"ypokoo\"],\"threatAnalysisTechniques\":[\"ysnozjnlfucmhon\"],\"previewImages\":[\"seuqxelmmxwmp\",\"iyc\"],\"previewImagesDark\":[\"swe\",\"kfofyfw\",\"u\",\"wpcutzlvx\"]},\"etag\":\"lvedzrjkrpormvdd\",\"id\":\"o\",\"name\":\"rdglk\",\"type\":\"gcxmkrldfoidyhcw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -41,99 +41,91 @@ public final class MetadatasCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetadataModel response = manager.metadatas()
-            .define("nc")
-            .withExistingWorkspace("vgyafttbetzydt", "p")
-            .withEtag("jplk")
-            .withContentId("oybjkuokajkyrh")
-            .withParentId("cbfkaql")
-            .withVersion("zpteron")
-            .withKind("qaktao")
-            .withSource(new MetadataSource().withKind(SourceKind.SOLUTION)
-                .withName("fobcqvzmywvsyns")
-                .withSourceId("mosqvojgolmkklz"))
-            .withAuthor(new MetadataAuthor().withName("uvnclntaoidjhoy").withEmail("tyvrn").withLink("kiree"))
-            .withSupport(new MetadataSupport().withTier(SupportTier.PARTNER)
-                .withName("izafdgjhnuvndg")
-                .withEmail("l")
-                .withLink("a"))
-            .withDependencies(new MetadataDependencies().withContentId("ipfwl")
-                .withKind(Kind.WATCHLIST_TEMPLATE)
-                .withVersion("jd")
-                .withName("mqteirrjjmvrzfpp")
-                .withOperator(MetadataDependencyOperator.AND)
+            .define("ql")
+            .withExistingWorkspace("w", "dipnd")
+            .withEtag("xfhtbtuvw")
+            .withContentId("hctbr")
+            .withParentId("e")
+            .withVersion("amoyvqfjpkezq")
+            .withKind("izbyczmepcacgvln")
+            .withSource(new MetadataSource().withKind(SourceKind.LOCAL_WORKSPACE).withName("yryrk").withSourceId("vde"))
+            .withAuthor(new MetadataAuthor().withName("rulnhbqtvyhs").withEmail("crff").withLink("exupcuizvx"))
+            .withSupport(new MetadataSupport().withTier(SupportTier.MICROSOFT)
+                .withName("h")
+                .withEmail("eotdscqkxzrfloqz")
+                .withLink("emliyddfqfnf"))
+            .withDependencies(new MetadataDependencies().withContentId("hhgwawi")
+                .withKind(Kind.SOLUTION)
+                .withVersion("vcfxdvk")
+                .withName("fg")
+                .withOperator(MetadataDependencyOperator.OR)
                 .withCriteria(Arrays.asList(
-                    new MetadataDependencies().withContentId("gzhnpxbuwauytqd")
-                        .withKind(Kind.HUNTING_QUERY)
-                        .withVersion("loafwsuaxqrok")
-                        .withName("dipnd")
+                    new MetadataDependencies().withContentId("xhq")
+                        .withKind(Kind.WORKBOOK_TEMPLATE)
+                        .withVersion("dyya")
+                        .withName("xnepub")
                         .withOperator(MetadataDependencyOperator.OR)
-                        .withCriteria(Arrays.asList(new MetadataDependencies(), new MetadataDependencies())),
-                    new MetadataDependencies().withContentId("hctbr")
-                        .withKind(Kind.SUMMARY_RULE)
-                        .withVersion("amoyvqfjpkezq")
-                        .withName("zbyczm")
-                        .withOperator(MetadataDependencyOperator.AND)
                         .withCriteria(Arrays.asList(new MetadataDependencies(), new MetadataDependencies(),
                             new MetadataDependencies(), new MetadataDependencies())),
-                    new MetadataDependencies().withContentId("vlnpjjbyr")
-                        .withKind(Kind.SOLUTION)
-                        .withVersion("uvdestarul")
-                        .withName("b")
-                        .withOperator(MetadataDependencyOperator.AND)
-                        .withCriteria(Arrays.asList(new MetadataDependencies())),
-                    new MetadataDependencies().withContentId("xhcrffj")
-                        .withKind(Kind.WORKBOOK)
-                        .withVersion("pcuizvxjsvzh")
-                        .withName("eotdscqkxzrfloqz")
+                    new MetadataDependencies().withContentId("uytm")
+                        .withKind(Kind.RESOURCES_DATA_CONNECTOR)
+                        .withVersion("yqyjkmfotwmxedlc")
+                        .withName("y")
                         .withOperator(MetadataDependencyOperator.OR)
-                        .withCriteria(Arrays.asList(new MetadataDependencies(), new MetadataDependencies(),
-                            new MetadataDependencies())))))
-            .withCategories(new MetadataCategories().withDomains(Arrays.asList("dfqfnftrrhhgwaw", "zhanvcf", "dvkdnf"))
-                .withVerticals(Arrays.asList("xultxhqqvdhdyy", "dtxnep", "bs", "infauytmqvsdyqyj")))
-            .withProviders(Arrays.asList("otwmxedlcxmyxt", "bapojkn", "xantlpspi", "pfgdnq"))
-            .withCustomVersion("rhoqy")
-            .withContentSchemaVersion("d")
-            .withIcon("ruoduexhskh")
-            .withThreatAnalysisTactics(Arrays.asList("vocrddqxhegco"))
-            .withThreatAnalysisTechniques(Arrays.asList("zcklqrunqw"))
-            .withPreviewImages(Arrays.asList("kabyxxyfnipywgjg", "bsfsvay", "ejypokk", "ptnwpwskck"))
-            .withPreviewImagesDark(Arrays.asList("mfyxpgvqioqrebwa"))
+                        .withCriteria(Arrays.asList(new MetadataDependencies())),
+                    new MetadataDependencies().withContentId("oj")
+                        .withKind(Kind.RESOURCES_DATA_CONNECTOR)
+                        .withVersion("antlpsp")
+                        .withName("pfgdnq")
+                        .withOperator(MetadataDependencyOperator.OR)
+                        .withCriteria(Arrays.asList(new MetadataDependencies(), new MetadataDependencies())))))
+            .withCategories(new MetadataCategories()
+                .withDomains(Arrays.asList("yvqdvnruoduexhs", "hkqlvocr", "dqxhegcolhqz", "klq"))
+                .withVerticals(Arrays.asList("q", "crkkab", "xxyfnipywgjgfbsf", "vayge")))
+            .withProviders(Arrays.asList("okkiptnwpwskck", "wymfy", "pgvqioq", "ebwarljplkp"))
+            .withCustomVersion("dreqaqvspsyve")
+            .withContentSchemaVersion("wtkrbscw")
+            .withIcon("wvwmcrhyo")
+            .withThreatAnalysisTactics(Arrays.asList("plmytnhvyjz", "erh"))
+            .withThreatAnalysisTechniques(Arrays.asList("tiawywp", "qxujxbdyczplmlj", "isxbwsftytpjm"))
+            .withPreviewImages(Arrays.asList("ynhqlzantahuy", "xsjympsxmoadwiq"))
+            .withPreviewImagesDark(Arrays.asList("pfeyjvlzq", "yvryoleqikco", "kemob"))
             .create();
 
-        Assertions.assertEquals("u", response.etag());
-        Assertions.assertEquals("plmytnhvyjz", response.contentId());
-        Assertions.assertEquals("erh", response.parentId());
-        Assertions.assertEquals("stiawywppq", response.version());
-        Assertions.assertEquals("ujxbdyczplm", response.kind());
-        Assertions.assertEquals(SourceKind.LOCAL_WORKSPACE, response.source().kind());
-        Assertions.assertEquals("s", response.source().name());
-        Assertions.assertEquals("wsftytpjmu", response.source().sourceId());
-        Assertions.assertEquals("nhqlzantahuykxs", response.author().name());
-        Assertions.assertEquals("mpsxmoadwiqnsm", response.author().email());
-        Assertions.assertEquals("eyjvlzqsyv", response.author().link());
-        Assertions.assertEquals(SupportTier.COMMUNITY, response.support().tier());
-        Assertions.assertEquals("eq", response.support().name());
-        Assertions.assertEquals("corkemobobxfh", response.support().email());
-        Assertions.assertEquals("tuvwzjyc", response.support().link());
-        Assertions.assertEquals("eagxikzvnghtknrw", response.dependencies().contentId());
+        Assertions.assertEquals("lvedzrjkrpormvdd", response.etag());
+        Assertions.assertEquals("apxwt", response.contentId());
+        Assertions.assertEquals("pxoelfobehr", response.parentId());
+        Assertions.assertEquals("glojjcziytf", response.version());
+        Assertions.assertEquals("kvirmb", response.kind());
+        Assertions.assertEquals(SourceKind.COMMUNITY, response.source().kind());
+        Assertions.assertEquals("nqahnkmsfy", response.source().name());
+        Assertions.assertEquals("kdzv", response.source().sourceId());
+        Assertions.assertEquals("senazjvyiiezdne", response.author().name());
+        Assertions.assertEquals("tqzdbrmyutztt", response.author().email());
+        Assertions.assertEquals("y", response.author().link());
+        Assertions.assertEquals(SupportTier.PARTNER, response.support().tier());
+        Assertions.assertEquals("kuz", response.support().name());
+        Assertions.assertEquals("cegyztzhcfuwm", response.support().email());
+        Assertions.assertEquals("z", response.support().link());
+        Assertions.assertEquals("k", response.dependencies().contentId());
         Assertions.assertEquals(Kind.RESOURCES_DATA_CONNECTOR, response.dependencies().kind());
-        Assertions.assertEquals("nm", response.dependencies().version());
-        Assertions.assertEquals("v", response.dependencies().name());
-        Assertions.assertEquals(MetadataDependencyOperator.OR, response.dependencies().operator());
-        Assertions.assertEquals("apxwt", response.dependencies().criteria().get(0).contentId());
-        Assertions.assertEquals(Kind.LOGIC_APPS_CUSTOM_CONNECTOR, response.dependencies().criteria().get(0).kind());
-        Assertions.assertEquals("elf", response.dependencies().criteria().get(0).version());
-        Assertions.assertEquals("ehr", response.dependencies().criteria().get(0).name());
+        Assertions.assertEquals("gflhhospxblyokj", response.dependencies().version());
+        Assertions.assertEquals("szye", response.dependencies().name());
+        Assertions.assertEquals(MetadataDependencyOperator.AND, response.dependencies().operator());
+        Assertions.assertEquals("hn", response.dependencies().criteria().get(0).contentId());
+        Assertions.assertEquals(Kind.ANALYTICS_RULE_TEMPLATE, response.dependencies().criteria().get(0).kind());
+        Assertions.assertEquals("gg", response.dependencies().criteria().get(0).version());
+        Assertions.assertEquals("hnzvoehgwgqgc", response.dependencies().criteria().get(0).name());
         Assertions.assertEquals(MetadataDependencyOperator.OR, response.dependencies().criteria().get(0).operator());
-        Assertions.assertEquals("dzvuhw", response.categories().domains().get(0));
-        Assertions.assertEquals("azjv", response.categories().verticals().get(0));
-        Assertions.assertEquals("cfuwmxezzum", response.providers().get(0));
-        Assertions.assertEquals("h", response.customVersion());
-        Assertions.assertEquals("spxblyokjwsszye", response.contentSchemaVersion());
-        Assertions.assertEquals("oukdhnf", response.icon());
-        Assertions.assertEquals("gg", response.threatAnalysisTactics().get(0));
-        Assertions.assertEquals("xouxi", response.threatAnalysisTechniques().get(0));
-        Assertions.assertEquals("netecfyusfkcwfpo", response.previewImages().get(0));
-        Assertions.assertEquals("gdvllbbdfulvhpw", response.previewImagesDark().get(0));
+        Assertions.assertEquals("fdkjykvezso", response.categories().domains().get(0));
+        Assertions.assertEquals("veqleozqqwiawb", response.categories().verticals().get(0));
+        Assertions.assertEquals("qkprf", response.providers().get(0));
+        Assertions.assertEquals("etttul", response.customVersion());
+        Assertions.assertEquals("ajb", response.contentSchemaVersion());
+        Assertions.assertEquals("spfgmosiskihfsl", response.icon());
+        Assertions.assertEquals("jzgmxqa", response.threatAnalysisTactics().get(0));
+        Assertions.assertEquals("ysnozjnlfucmhon", response.threatAnalysisTechniques().get(0));
+        Assertions.assertEquals("seuqxelmmxwmp", response.previewImages().get(0));
+        Assertions.assertEquals("swe", response.previewImagesDark().get(0));
     }
 }

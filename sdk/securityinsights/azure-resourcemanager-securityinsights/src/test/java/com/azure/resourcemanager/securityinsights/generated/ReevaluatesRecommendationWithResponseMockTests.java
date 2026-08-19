@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ReevaluatesRecommendationWithResponseMockTests {
     @Test
     public void testRecommendationWithResponse() throws Exception {
-        String responseStr = "{\"lastEvaluatedTimeUtc\":\"2021-09-19T02:20:01Z\"}";
+        String responseStr = "{\"lastEvaluatedTimeUtc\":\"2021-02-21T00:59:35Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,10 @@ public final class ReevaluatesRecommendationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ReevaluateResponse response = manager.reevaluates()
-            .recommendationWithResponse("pmvppvgrigjegrl", "koqbzrc", "arrtfmfkuv", com.azure.core.util.Context.NONE)
+            .recommendationWithResponse("hmlqamdlcukdm", "vryakcclsnprdart", "gabbxexacgmtpk",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T02:20:01Z"), response.lastEvaluatedTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-21T00:59:35Z"), response.lastEvaluatedTimeUtc());
     }
 }

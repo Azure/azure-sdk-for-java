@@ -22,7 +22,7 @@ public final class BookmarkRelationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"relatedResourceId\":\"llbpegcetezaa\",\"relatedResourceName\":\"szrbttz\",\"relatedResourceType\":\"eyrw\",\"relatedResourceKind\":\"fgoyxxszpaiecurf\"},\"etag\":\"fshfmgiixurve\",\"id\":\"hsmulvmy\",\"name\":\"oefkpuuuxiuwhc\",\"type\":\"ckekmufip\"}]}";
+            = "{\"value\":[{\"properties\":{\"relatedResourceId\":\"wxlylxfpvoylf\",\"relatedResourceName\":\"srgu\",\"relatedResourceType\":\"bthauivgbimededq\",\"relatedResourceKind\":\"rvulzg\"},\"etag\":\"ckpdpdcnr\",\"id\":\"skikqdqiybqtl\",\"name\":\"of\",\"type\":\"jsetiznn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class BookmarkRelationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Relation> response = manager.bookmarkRelations()
-            .list("waoex", "ienyls", "jqygo", "shd", "ehxv", 1570316766, "fdsafgkysymhuxs",
+            .list("qvpjydwmaq", "ytjpua", "pqupdcsvzugiur", "gqlvl", "jzscrjtnq", 1243121546, "pobjufksddxk",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fshfmgiixurve", response.iterator().next().etag());
-        Assertions.assertEquals("llbpegcetezaa", response.iterator().next().relatedResourceId());
+        Assertions.assertEquals("ckpdpdcnr", response.iterator().next().etag());
+        Assertions.assertEquals("wxlylxfpvoylf", response.iterator().next().relatedResourceId());
     }
 }

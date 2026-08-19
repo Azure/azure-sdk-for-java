@@ -28,7 +28,7 @@ public final class IncidentRelationsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.incidentRelations()
-            .deleteWithResponse("zgyzjtmakh", "atynkihbfixybtow", "zoopzaenlzjx", "tgduwun",
+            .deleteWithResponse("askrgoo", "fhpyuegdynydd", "jlizlzxh", "cuglgmfznholaf",
                 com.azure.core.util.Context.NONE);
 
     }

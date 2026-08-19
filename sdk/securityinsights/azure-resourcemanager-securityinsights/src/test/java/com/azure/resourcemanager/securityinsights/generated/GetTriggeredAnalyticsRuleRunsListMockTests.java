@@ -22,7 +22,7 @@ public final class GetTriggeredAnalyticsRuleRunsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"executionTimeUtc\":\"2021-02-10T02:35:16Z\",\"ruleId\":\"vzqhv\",\"triggeredAnalyticsRuleRunId\":\"jdsnv\",\"provisioningState\":\"Canceled\",\"ruleRunAdditionalData\":{\"ozjrc\":\"\\\"dataani\\\"\"}},\"etag\":\"qugjalmzpfylq\",\"id\":\"wwvzn\",\"name\":\"dxcizropzgjle\",\"type\":\"cf\"}]}";
+            = "{\"value\":[{\"properties\":{\"executionTimeUtc\":\"2021-03-04T06:39:50Z\",\"ruleId\":\"q\",\"triggeredAnalyticsRuleRunId\":\"kdl\",\"provisioningState\":\"Canceled\",\"ruleRunAdditionalData\":{\"mksfejzmyvlbz\":\"\\\"datamkc\\\"\",\"xzpdnb\":\"\\\"datan\\\"\",\"kjfkaoe\":\"\\\"dataovhddvtnbtvl\\\"\",\"vyxyrykn\":\"\\\"dataimyizdglzzaufin\\\"\"}},\"etag\":\"tjgpyvjgsjyjnhwb\",\"id\":\"wrncxw\",\"name\":\"uerrvpam\",\"type\":\"piniopbfkmfbru\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class GetTriggeredAnalyticsRuleRunsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TriggeredAnalyticsRuleRun> response
-            = manager.getTriggeredAnalyticsRuleRuns().list("moramsh", "vkuq", com.azure.core.util.Context.NONE);
+        PagedIterable<TriggeredAnalyticsRuleRun> response = manager.getTriggeredAnalyticsRuleRuns()
+            .list("obovexsnm", "whbmujlsztp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qugjalmzpfylq", response.iterator().next().etag());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T02:35:16Z"),
+        Assertions.assertEquals("tjgpyvjgsjyjnhwb", response.iterator().next().etag());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T06:39:50Z"),
             response.iterator().next().executionTimeUtc());
-        Assertions.assertEquals("vzqhv", response.iterator().next().ruleId());
-        Assertions.assertEquals("jdsnv", response.iterator().next().triggeredAnalyticsRuleRunId());
+        Assertions.assertEquals("q", response.iterator().next().ruleId());
+        Assertions.assertEquals("kdl", response.iterator().next().triggeredAnalyticsRuleRunId());
     }
 }

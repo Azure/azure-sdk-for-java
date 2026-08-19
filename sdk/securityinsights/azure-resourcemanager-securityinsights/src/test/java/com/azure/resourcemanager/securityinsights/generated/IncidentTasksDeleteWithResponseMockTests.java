@@ -28,8 +28,7 @@ public final class IncidentTasksDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.incidentTasks()
-            .deleteWithResponse("bpqghxdp", "ihfimlyxdmix", "udbiacuqouc", "fuvuslvbuj",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("u", "de", "bpqghxdp", "ihfimlyxdmix", com.azure.core.util.Context.NONE);
 
     }
 }

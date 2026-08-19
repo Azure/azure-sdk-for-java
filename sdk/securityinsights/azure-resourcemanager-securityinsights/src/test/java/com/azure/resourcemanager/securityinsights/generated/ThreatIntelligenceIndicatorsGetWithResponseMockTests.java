@@ -21,7 +21,7 @@ public final class ThreatIntelligenceIndicatorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"nveqleozqqw\",\"id\":\"wbwzyvbuifhy\",\"name\":\"atoplqc\",\"type\":\"jsrlzwu\"}";
+            = "{\"kind\":\"ThreatIntelligenceInformation\",\"etag\":\"fwknlytvx\",\"id\":\"ocadtnmqrpjecj\",\"name\":\"xcyai\",\"type\":\"ii\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ThreatIntelligenceIndicatorsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ThreatIntelligenceInformation response = manager.threatIntelligenceIndicators()
-            .getWithResponse("tzd", "z", "bmzldplamccql", com.azure.core.util.Context.NONE)
+            .getWithResponse("gvyuusexenywwkd", "qqg", "sxpaapmthdqv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nveqleozqqw", response.etag());
+        Assertions.assertEquals("fwknlytvx", response.etag());
     }
 }

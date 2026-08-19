@@ -26,7 +26,7 @@ public final class MetadatasListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"contentId\":\"glojupenoupcol\",\"parentId\":\"cwrszwades\",\"version\":\"dkcuhqtskybyue\",\"kind\":\"eucvv\",\"source\":{\"kind\":\"SourceRepository\",\"name\":\"rgelgodue\",\"sourceId\":\"f\"},\"author\":{\"name\":\"rzenvkqtvtqpwqz\",\"email\":\"tnozwphka\",\"link\":\"acvcbr\"},\"support\":{\"tier\":\"Microsoft\",\"name\":\"ohbzbbjxkamitgvq\",\"email\":\"dvdbyelrteunkwyp\",\"link\":\"qfm\"},\"dependencies\":{\"contentId\":\"tdfqlfd\",\"kind\":\"ResourcesDataConnector\",\"version\":\"zdbrw\",\"name\":\"wft\",\"operator\":\"AND\",\"criteria\":[{\"contentId\":\"qjsfgkwrcb\",\"kind\":\"LogicAppsCustomConnector\",\"version\":\"rabpywec\",\"name\":\"izabjb\",\"operator\":\"OR\",\"criteria\":[{}]}]},\"categories\":{\"domains\":[\"kktig\"],\"verticals\":[\"epl\",\"rerxydsompncea\",\"kjtm\",\"aczkjkfakgrwt\"]},\"providers\":[\"fanmj\",\"pceuwmfdy\",\"vpyhhgqy\"],\"customVersion\":\"ijzhv\",\"contentSchemaVersion\":\"qjekol\",\"icon\":\"lpykjpakaouyaan\",\"threatAnalysisTactics\":[\"ichey\"],\"threatAnalysisTechniques\":[\"konaydp\",\"wyha\",\"zyxaanhwuq\"],\"previewImages\":[\"n\"],\"previewImagesDark\":[\"sfbkxfkeeqofw\",\"ekpeerwssw\",\"mrpdjrylfpdudx\",\"igeurieh\"]},\"etag\":\"an\",\"id\":\"qfhatqssngeviyf\",\"name\":\"gohrhjspsyhda\",\"type\":\"yn\"}]}";
+            = "{\"value\":[{\"properties\":{\"contentId\":\"qtvt\",\"parentId\":\"pwqzvqtnozw\",\"version\":\"kaqracvcbrtlt\",\"kind\":\"ohbzbbjxkamitgvq\",\"source\":{\"kind\":\"SourceRepository\",\"name\":\"dbyelrte\",\"sourceId\":\"kwypumqfms\"},\"author\":{\"name\":\"dfqlfdmly\",\"email\":\"dbrwjlwfthf\",\"link\":\"w\"},\"support\":{\"tier\":\"Microsoft\",\"name\":\"fgkwr\",\"email\":\"gxyprabp\",\"link\":\"eczoizabjbhyyddi\"},\"dependencies\":{\"contentId\":\"ktigiseeplzrerx\",\"kind\":\"PlaybookTemplate\",\"version\":\"mpnceark\",\"name\":\"mpa\",\"operator\":\"AND\",\"criteria\":[{\"contentId\":\"akgrwtpes\",\"kind\":\"AnalyticsRuleTemplate\",\"version\":\"j\",\"name\":\"ceuwm\",\"operator\":\"OR\",\"criteria\":[{},{}]},{\"contentId\":\"yhhgqys\",\"kind\":\"AnalyticsRule\",\"version\":\"jzhvej\",\"name\":\"ekolnylpykjp\",\"operator\":\"OR\",\"criteria\":[{},{},{}]},{\"contentId\":\"aanfxaich\",\"kind\":\"HuntingQuery\",\"version\":\"kkonaydpdwy\",\"name\":\"dzyxaanhwuqewcnh\",\"operator\":\"OR\",\"criteria\":[{},{},{},{}]}]},\"categories\":{\"domains\":[\"keeqofw\",\"ekpeerwssw\",\"mrpdjrylfpdudx\",\"igeurieh\"],\"verticals\":[\"nfsqfhatqssn\"]},\"providers\":[\"iyffgoh\",\"hj\"],\"customVersion\":\"hdapynpvgyaf\",\"contentSchemaVersion\":\"betzydtgpvnczf\",\"icon\":\"ybjku\",\"threatAnalysisTactics\":[\"jkyrhucbfkaqlp\",\"zpteron\",\"qaktao\",\"mgefobcqvzm\"],\"threatAnalysisTechniques\":[\"synsccmo\",\"qvojgolmkk\",\"zabauvncl\"],\"previewImages\":[\"oidjhoykg\",\"yvrn\",\"ikireetvjfizafd\",\"jhnuvndgrolgxa\"],\"previewImagesDark\":[\"ipfwl\",\"eia\",\"dp\"]},\"etag\":\"qteirrjjmvr\",\"id\":\"ppopw\",\"name\":\"xdgzhnpxbuwauytq\",\"type\":\"kgaxloafwsuaxqro\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,44 +36,44 @@ public final class MetadatasListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MetadataModel> response = manager.metadatas()
-            .list("unropd", "ufqsdt", "zxj", "xolmehquqi", 1304228238, 1142549709, com.azure.core.util.Context.NONE);
+            .list("ueeeucvvnbymrgel", "oduexx", "d", "fr", 264768219, 1378289232, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("an", response.iterator().next().etag());
-        Assertions.assertEquals("glojupenoupcol", response.iterator().next().contentId());
-        Assertions.assertEquals("cwrszwades", response.iterator().next().parentId());
-        Assertions.assertEquals("dkcuhqtskybyue", response.iterator().next().version());
-        Assertions.assertEquals("eucvv", response.iterator().next().kind());
+        Assertions.assertEquals("qteirrjjmvr", response.iterator().next().etag());
+        Assertions.assertEquals("qtvt", response.iterator().next().contentId());
+        Assertions.assertEquals("pwqzvqtnozw", response.iterator().next().parentId());
+        Assertions.assertEquals("kaqracvcbrtlt", response.iterator().next().version());
+        Assertions.assertEquals("ohbzbbjxkamitgvq", response.iterator().next().kind());
         Assertions.assertEquals(SourceKind.SOURCE_REPOSITORY, response.iterator().next().source().kind());
-        Assertions.assertEquals("rgelgodue", response.iterator().next().source().name());
-        Assertions.assertEquals("f", response.iterator().next().source().sourceId());
-        Assertions.assertEquals("rzenvkqtvtqpwqz", response.iterator().next().author().name());
-        Assertions.assertEquals("tnozwphka", response.iterator().next().author().email());
-        Assertions.assertEquals("acvcbr", response.iterator().next().author().link());
+        Assertions.assertEquals("dbyelrte", response.iterator().next().source().name());
+        Assertions.assertEquals("kwypumqfms", response.iterator().next().source().sourceId());
+        Assertions.assertEquals("dfqlfdmly", response.iterator().next().author().name());
+        Assertions.assertEquals("dbrwjlwfthf", response.iterator().next().author().email());
+        Assertions.assertEquals("w", response.iterator().next().author().link());
         Assertions.assertEquals(SupportTier.MICROSOFT, response.iterator().next().support().tier());
-        Assertions.assertEquals("ohbzbbjxkamitgvq", response.iterator().next().support().name());
-        Assertions.assertEquals("dvdbyelrteunkwyp", response.iterator().next().support().email());
-        Assertions.assertEquals("qfm", response.iterator().next().support().link());
-        Assertions.assertEquals("tdfqlfd", response.iterator().next().dependencies().contentId());
-        Assertions.assertEquals(Kind.RESOURCES_DATA_CONNECTOR, response.iterator().next().dependencies().kind());
-        Assertions.assertEquals("zdbrw", response.iterator().next().dependencies().version());
-        Assertions.assertEquals("wft", response.iterator().next().dependencies().name());
+        Assertions.assertEquals("fgkwr", response.iterator().next().support().name());
+        Assertions.assertEquals("gxyprabp", response.iterator().next().support().email());
+        Assertions.assertEquals("eczoizabjbhyyddi", response.iterator().next().support().link());
+        Assertions.assertEquals("ktigiseeplzrerx", response.iterator().next().dependencies().contentId());
+        Assertions.assertEquals(Kind.PLAYBOOK_TEMPLATE, response.iterator().next().dependencies().kind());
+        Assertions.assertEquals("mpnceark", response.iterator().next().dependencies().version());
+        Assertions.assertEquals("mpa", response.iterator().next().dependencies().name());
         Assertions.assertEquals(MetadataDependencyOperator.AND, response.iterator().next().dependencies().operator());
-        Assertions.assertEquals("qjsfgkwrcb", response.iterator().next().dependencies().criteria().get(0).contentId());
-        Assertions.assertEquals(Kind.LOGIC_APPS_CUSTOM_CONNECTOR,
+        Assertions.assertEquals("akgrwtpes", response.iterator().next().dependencies().criteria().get(0).contentId());
+        Assertions.assertEquals(Kind.ANALYTICS_RULE_TEMPLATE,
             response.iterator().next().dependencies().criteria().get(0).kind());
-        Assertions.assertEquals("rabpywec", response.iterator().next().dependencies().criteria().get(0).version());
-        Assertions.assertEquals("izabjb", response.iterator().next().dependencies().criteria().get(0).name());
+        Assertions.assertEquals("j", response.iterator().next().dependencies().criteria().get(0).version());
+        Assertions.assertEquals("ceuwm", response.iterator().next().dependencies().criteria().get(0).name());
         Assertions.assertEquals(MetadataDependencyOperator.OR,
             response.iterator().next().dependencies().criteria().get(0).operator());
-        Assertions.assertEquals("kktig", response.iterator().next().categories().domains().get(0));
-        Assertions.assertEquals("epl", response.iterator().next().categories().verticals().get(0));
-        Assertions.assertEquals("fanmj", response.iterator().next().providers().get(0));
-        Assertions.assertEquals("ijzhv", response.iterator().next().customVersion());
-        Assertions.assertEquals("qjekol", response.iterator().next().contentSchemaVersion());
-        Assertions.assertEquals("lpykjpakaouyaan", response.iterator().next().icon());
-        Assertions.assertEquals("ichey", response.iterator().next().threatAnalysisTactics().get(0));
-        Assertions.assertEquals("konaydp", response.iterator().next().threatAnalysisTechniques().get(0));
-        Assertions.assertEquals("n", response.iterator().next().previewImages().get(0));
-        Assertions.assertEquals("sfbkxfkeeqofw", response.iterator().next().previewImagesDark().get(0));
+        Assertions.assertEquals("keeqofw", response.iterator().next().categories().domains().get(0));
+        Assertions.assertEquals("nfsqfhatqssn", response.iterator().next().categories().verticals().get(0));
+        Assertions.assertEquals("iyffgoh", response.iterator().next().providers().get(0));
+        Assertions.assertEquals("hdapynpvgyaf", response.iterator().next().customVersion());
+        Assertions.assertEquals("betzydtgpvnczf", response.iterator().next().contentSchemaVersion());
+        Assertions.assertEquals("ybjku", response.iterator().next().icon());
+        Assertions.assertEquals("jkyrhucbfkaqlp", response.iterator().next().threatAnalysisTactics().get(0));
+        Assertions.assertEquals("synsccmo", response.iterator().next().threatAnalysisTechniques().get(0));
+        Assertions.assertEquals("oidjhoykg", response.iterator().next().previewImages().get(0));
+        Assertions.assertEquals("ipfwl", response.iterator().next().previewImagesDark().get(0));
     }
 }

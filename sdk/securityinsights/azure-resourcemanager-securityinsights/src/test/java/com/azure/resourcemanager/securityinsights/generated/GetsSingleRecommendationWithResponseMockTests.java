@@ -22,7 +22,7 @@ public final class GetsSingleRecommendationWithResponseMockTests {
     @Test
     public void testSingleRecommendationWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"recommendationTypeId\":\"wjrs\",\"state\":\"Dismissed\",\"title\":\"rykkhxawohs\",\"description\":\"e\",\"creationTimeUtc\":\"2021-04-14T11:58:22Z\",\"lastEvaluatedTimeUtc\":\"2021-05-10T22:32:39Z\",\"lastModifiedTimeUtc\":\"2021-06-25T05:05:03Z\",\"suggestions\":[{\"suggestionTypeId\":\"lweyzvrixcv\",\"title\":\"serltlhc\",\"description\":\"gjuopvkrmspksf\",\"action\":\"dmbxfy\",\"additionalProperties\":{\"xgoxsveiu\":\"iqvhfyv\",\"vygttd\":\"uxwnojvcrgqmbn\",\"ngguucp\":\"fjalpsycvcksz\",\"wffthbziieo\":\"tsxnu\"}}],\"resourceId\":\"bccccrauabdevj\",\"additionalProperties\":{\"bksvvyvoibvvuqwl\":\"cdxqgsteek\"}},\"etag\":\"zpyukrwvvhcgtc\",\"id\":\"qdcgobkcebzrtput\",\"name\":\"tjsk\",\"type\":\"kwtnqqiqckm\"}";
+            = "{\"properties\":{\"recommendationTypeId\":\"ltlftraylxz\",\"state\":\"InProgress\",\"title\":\"jpu\",\"description\":\"baogfwbkxdha\",\"creationTimeUtc\":\"2021-01-08T23:47:25Z\",\"lastEvaluatedTimeUtc\":\"2021-11-11T02:46:54Z\",\"lastModifiedTimeUtc\":\"2021-05-26T06:41:16Z\",\"suggestions\":[{\"suggestionTypeId\":\"qsmlbzi\",\"title\":\"pdatvndvwwejvqpw\",\"description\":\"r\",\"action\":\"oqwmhcpujygntx\",\"additionalProperties\":{\"socfxlrzjjffl\":\"bssqthcywyoqxp\",\"ljf\":\"zm\",\"ygnepj\":\"ulwlze\",\"yxjqranpztla\":\"uxqdrph\"}}],\"resourceId\":\"pfzsf\",\"additionalProperties\":{\"cavk\":\"apbrwviovvyhso\"}},\"etag\":\"y\",\"id\":\"gzwedfteratvpkga\",\"name\":\"rmujizd\",\"type\":\"hepfjdiwzg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,23 +32,25 @@ public final class GetsSingleRecommendationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Recommendation response = manager.gets()
-            .singleRecommendationWithResponse("nootcyyupa", "d", "odhnzkmjoyby", com.azure.core.util.Context.NONE)
+            .singleRecommendationWithResponse("wlezbfgullq", "cijyxcmqcggksror", "ejfhar",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zpyukrwvvhcgtc", response.etag());
-        Assertions.assertEquals("wjrs", response.recommendationTypeId());
-        Assertions.assertEquals(State.DISMISSED, response.state());
-        Assertions.assertEquals("rykkhxawohs", response.title());
-        Assertions.assertEquals("e", response.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T11:58:22Z"), response.creationTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-10T22:32:39Z"), response.lastEvaluatedTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T05:05:03Z"), response.lastModifiedTimeUtc());
-        Assertions.assertEquals("lweyzvrixcv", response.suggestions().get(0).suggestionTypeId());
-        Assertions.assertEquals("serltlhc", response.suggestions().get(0).title());
-        Assertions.assertEquals("gjuopvkrmspksf", response.suggestions().get(0).description());
-        Assertions.assertEquals("dmbxfy", response.suggestions().get(0).action());
-        Assertions.assertEquals("iqvhfyv", response.suggestions().get(0).additionalProperties().get("xgoxsveiu"));
-        Assertions.assertEquals("bccccrauabdevj", response.resourceId());
-        Assertions.assertEquals("cdxqgsteek", response.additionalProperties().get("bksvvyvoibvvuqwl"));
+        Assertions.assertEquals("y", response.etag());
+        Assertions.assertEquals("ltlftraylxz", response.recommendationTypeId());
+        Assertions.assertEquals(State.IN_PROGRESS, response.state());
+        Assertions.assertEquals("jpu", response.title());
+        Assertions.assertEquals("baogfwbkxdha", response.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T23:47:25Z"), response.creationTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T02:46:54Z"), response.lastEvaluatedTimeUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T06:41:16Z"), response.lastModifiedTimeUtc());
+        Assertions.assertEquals("qsmlbzi", response.suggestions().get(0).suggestionTypeId());
+        Assertions.assertEquals("pdatvndvwwejvqpw", response.suggestions().get(0).title());
+        Assertions.assertEquals("r", response.suggestions().get(0).description());
+        Assertions.assertEquals("oqwmhcpujygntx", response.suggestions().get(0).action());
+        Assertions.assertEquals("bssqthcywyoqxp",
+            response.suggestions().get(0).additionalProperties().get("socfxlrzjjffl"));
+        Assertions.assertEquals("pfzsf", response.resourceId());
+        Assertions.assertEquals("apbrwviovvyhso", response.additionalProperties().get("cavk"));
     }
 }

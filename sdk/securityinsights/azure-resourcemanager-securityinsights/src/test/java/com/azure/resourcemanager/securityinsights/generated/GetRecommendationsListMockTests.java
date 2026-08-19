@@ -23,7 +23,7 @@ public final class GetRecommendationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recommendationTypeId\":\"fjdiwzgwmumuc\",\"state\":\"Dismissed\",\"title\":\"q\",\"description\":\"hscvaqdxge\",\"creationTimeUtc\":\"2021-09-05T11:29:27Z\",\"lastEvaluatedTimeUtc\":\"2021-03-05T04:37:39Z\",\"lastModifiedTimeUtc\":\"2021-07-06T04:43:57Z\",\"suggestions\":[{\"suggestionTypeId\":\"tqkgavgoullxpayl\",\"title\":\"rast\",\"description\":\"kskkziebm\",\"action\":\"yodfmp\",\"additionalProperties\":{\"txbrdbwwqtxpfo\":\"x\",\"rlkdoukqscmdsjg\":\"rfvhbbnoevk\",\"lgu\":\"ws\"}},{\"suggestionTypeId\":\"peqlhhmbyfacexp\",\"title\":\"pqykicesqpvmoxil\",\"description\":\"pkqiqs\",\"action\":\"iubemxmuygmr\",\"additionalProperties\":{\"yngm\":\"bngcafmophtkyzsg\",\"g\":\"wvcnv\",\"roqxrvycjdni\":\"xqhysuapdns\"}}],\"resourceId\":\"ggyxmpmsacbamto\",\"additionalProperties\":{\"gz\":\"amoyxdigk\",\"fiottdawgkaohh\":\"ylqhqeosxdsxil\"}},\"etag\":\"tyhypi\",\"id\":\"jjjfcysk\",\"name\":\"nkkxoicb\",\"type\":\"smfvltbocqhv\"}]}";
+            = "{\"value\":[{\"properties\":{\"recommendationTypeId\":\"b\",\"state\":\"CompletedByUser\",\"title\":\"stqwnpegoupdq\",\"description\":\"flvdfaqcql\",\"creationTimeUtc\":\"2021-07-17T17:47:44Z\",\"lastEvaluatedTimeUtc\":\"2020-12-22T05:27:09Z\",\"lastModifiedTimeUtc\":\"2021-07-14T12:48:04Z\",\"suggestions\":[{\"suggestionTypeId\":\"ekzyebpatwbbfjdf\",\"title\":\"hnwo\",\"description\":\"lcahhfuydgdhit\",\"action\":\"v\",\"additionalProperties\":{\"vibp\":\"uspzl\",\"efepwkhruzzwgbb\":\"uzeeb\"}},{\"suggestionTypeId\":\"zivfoyqv\",\"title\":\"lhsxeasxs\",\"description\":\"quvvsc\",\"action\":\"pkmohd\",\"additionalProperties\":{\"uzvmorsyirf\":\"rqyib\"}},{\"suggestionTypeId\":\"xazuboigorwpbbjz\",\"title\":\"vaqoilgkznn\",\"description\":\"pvjwegoviceqyraj\",\"action\":\"vvsaatyyp\",\"additionalProperties\":{\"azztvotf\":\"azcchvwwc\"}}],\"resourceId\":\"ayfxkfgx\",\"additionalProperties\":{\"zcmfmyn\":\"zliguwqo\",\"kadmwtivs\":\"jigjc\"}},\"etag\":\"ewpnpu\",\"id\":\"vjbnhbxvvuf\",\"name\":\"ukjuo\",\"type\":\"ajqnsrcqd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,26 +33,26 @@ public final class GetRecommendationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Recommendation> response
-            = manager.getRecommendations().list("eratvpkg", "wrmujizdmh", com.azure.core.util.Context.NONE);
+            = manager.getRecommendations().list("ecffb", "q", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tyhypi", response.iterator().next().etag());
-        Assertions.assertEquals("fjdiwzgwmumuc", response.iterator().next().recommendationTypeId());
-        Assertions.assertEquals(State.DISMISSED, response.iterator().next().state());
-        Assertions.assertEquals("q", response.iterator().next().title());
-        Assertions.assertEquals("hscvaqdxge", response.iterator().next().description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T11:29:27Z"),
+        Assertions.assertEquals("ewpnpu", response.iterator().next().etag());
+        Assertions.assertEquals("b", response.iterator().next().recommendationTypeId());
+        Assertions.assertEquals(State.COMPLETED_BY_USER, response.iterator().next().state());
+        Assertions.assertEquals("stqwnpegoupdq", response.iterator().next().title());
+        Assertions.assertEquals("flvdfaqcql", response.iterator().next().description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T17:47:44Z"),
             response.iterator().next().creationTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-05T04:37:39Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T05:27:09Z"),
             response.iterator().next().lastEvaluatedTimeUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-06T04:43:57Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T12:48:04Z"),
             response.iterator().next().lastModifiedTimeUtc());
-        Assertions.assertEquals("tqkgavgoullxpayl", response.iterator().next().suggestions().get(0).suggestionTypeId());
-        Assertions.assertEquals("rast", response.iterator().next().suggestions().get(0).title());
-        Assertions.assertEquals("kskkziebm", response.iterator().next().suggestions().get(0).description());
-        Assertions.assertEquals("yodfmp", response.iterator().next().suggestions().get(0).action());
-        Assertions.assertEquals("x",
-            response.iterator().next().suggestions().get(0).additionalProperties().get("txbrdbwwqtxpfo"));
-        Assertions.assertEquals("ggyxmpmsacbamto", response.iterator().next().resourceId());
-        Assertions.assertEquals("amoyxdigk", response.iterator().next().additionalProperties().get("gz"));
+        Assertions.assertEquals("ekzyebpatwbbfjdf", response.iterator().next().suggestions().get(0).suggestionTypeId());
+        Assertions.assertEquals("hnwo", response.iterator().next().suggestions().get(0).title());
+        Assertions.assertEquals("lcahhfuydgdhit", response.iterator().next().suggestions().get(0).description());
+        Assertions.assertEquals("v", response.iterator().next().suggestions().get(0).action());
+        Assertions.assertEquals("uspzl",
+            response.iterator().next().suggestions().get(0).additionalProperties().get("vibp"));
+        Assertions.assertEquals("ayfxkfgx", response.iterator().next().resourceId());
+        Assertions.assertEquals("zliguwqo", response.iterator().next().additionalProperties().get("zcmfmyn"));
     }
 }

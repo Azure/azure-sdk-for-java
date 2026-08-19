@@ -21,7 +21,7 @@ public final class WorkspaceManagerAssignmentJobsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"endTime\":\"2021-09-08T22:04:34Z\",\"items\":[{\"resourceId\":\"xsnkmkcimksf\",\"status\":\"Succeeded\",\"executionTime\":\"2021-09-01T06:01:22Z\",\"errors\":[{\"memberResourceName\":\"bzmngxzpdnbj\",\"errorMessage\":\"vhddvtnbtv\"},{\"memberResourceName\":\"gkjfkaoew\",\"errorMessage\":\"myizdglzzaufi\"},{\"memberResourceName\":\"wvyxy\",\"errorMessage\":\"ykng\"},{\"memberResourceName\":\"tjgpyvjgsjyjnhwb\",\"errorMessage\":\"hwrnc\"}]},{\"resourceId\":\"zuerrvpamfpin\",\"status\":\"New\",\"executionTime\":\"2021-09-23T11:35:19Z\",\"errors\":[{\"memberResourceName\":\"fbruuhylqgeovnlb\",\"errorMessage\":\"fsol\"},{\"memberResourceName\":\"rqu\",\"errorMessage\":\"lnhxr\"},{\"memberResourceName\":\"jshicvrmwbgpc\",\"errorMessage\":\"l\"},{\"memberResourceName\":\"bxppvpgsrfshkjg\",\"errorMessage\":\"pboaevtxi\"}]}],\"provisioningState\":\"InProgress\",\"startTime\":\"2021-10-30T23:19:42Z\",\"errorMessage\":\"ijiqwxwpubdh\"},\"etag\":\"pr\",\"id\":\"ruhdjzivlaxiimqn\",\"name\":\"mbfpt\",\"type\":\"ixmksxxbdtjvvngn\"}";
+            = "{\"properties\":{\"endTime\":\"2021-02-27T06:39:21Z\",\"items\":[{\"resourceId\":\"yycvtyablyim\",\"status\":\"Approved\",\"executionTime\":\"2021-05-25T13:15:51Z\",\"errors\":[{\"memberResourceName\":\"vxblqvwhjgtb\",\"errorMessage\":\"reoutqohp\"},{\"memberResourceName\":\"tqibqbougcwzgdfd\",\"errorMessage\":\"dxout\"},{\"memberResourceName\":\"gezulnntpbarejxj\",\"errorMessage\":\"lxoljbpoeoyw\"}]},{\"resourceId\":\"hhavwhrivvzrccy\",\"status\":\"Backlog\",\"executionTime\":\"2021-05-03T22:23:01Z\",\"errors\":[{\"memberResourceName\":\"wudeearb\",\"errorMessage\":\"xaneviqkjupvid\"}]}],\"provisioningState\":\"InProgress\",\"startTime\":\"2021-02-03T00:32:32Z\",\"errorMessage\":\"qcgb\"},\"etag\":\"enirjhdlxu\",\"id\":\"btlharjbakp\",\"name\":\"suugcngd\",\"type\":\"lvdenhguvaimko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class WorkspaceManagerAssignmentJobsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Job response = manager.workspaceManagerAssignmentJobs()
-            .getWithResponse("tqgabbx", "xacgm", "pkxbwobovexsnm", "whbmujlsztp", com.azure.core.util.Context.NONE)
+            .getWithResponse("eyxt", "er", "ttobosjxb", "ytten", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pr", response.etag());
-        Assertions.assertEquals("xsnkmkcimksf", response.items().get(0).resourceId());
-        Assertions.assertEquals("bzmngxzpdnbj", response.items().get(0).errors().get(0).memberResourceName());
-        Assertions.assertEquals("vhddvtnbtv", response.items().get(0).errors().get(0).errorMessage());
+        Assertions.assertEquals("enirjhdlxu", response.etag());
+        Assertions.assertEquals("yycvtyablyim", response.items().get(0).resourceId());
+        Assertions.assertEquals("vxblqvwhjgtb", response.items().get(0).errors().get(0).memberResourceName());
+        Assertions.assertEquals("reoutqohp", response.items().get(0).errors().get(0).errorMessage());
     }
 }

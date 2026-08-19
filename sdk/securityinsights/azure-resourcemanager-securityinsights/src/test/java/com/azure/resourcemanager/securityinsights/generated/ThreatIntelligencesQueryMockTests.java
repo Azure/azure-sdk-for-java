@@ -30,7 +30,7 @@ public final class ThreatIntelligencesQueryMockTests {
     @Test
     public void testQuery() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"TIObject\",\"properties\":{\"data\":{\"zcdlnvupi\":\"\\\"datasmaa\\\"\",\"elv\":\"\\\"datacbzyhtbjyycac\\\"\"},\"createdBy\":{\"email\":\"tm\",\"name\":\"alqqrymjwwo\",\"objectId\":\"nefellhdsgogdu\"},\"source\":\"malthcbvuvwdp\",\"firstIngestedTimeUtc\":\"2021-01-11T01:15:25Z\",\"lastIngestedTimeUtc\":\"2021-02-23T22:06:13Z\",\"ingestionRulesVersion\":\"ghglaxj\",\"lastUpdateMethod\":\"bmfm\",\"lastModifiedBy\":{\"email\":\"atswvt\",\"name\":\"picwnbtvlrs\",\"objectId\":\"trmodknxerkaiik\"},\"lastUpdatedDateTimeUtc\":\"2021-11-23T04:16:47Z\",\"relationshipHints\":[{\"fieldName\":\"pqrke\",\"source\":\"juaezkbr\"}]},\"id\":\"aulhtqvtpkodijc\",\"name\":\"dwoyqvcyqjjx\",\"type\":\"ijbf\"}]}";
+            = "{\"value\":[{\"kind\":\"TIObject\",\"properties\":{\"data\":{\"kotxodbxzhadm\":\"\\\"datassncghgid\\\"\",\"yy\":\"\\\"datajnnoot\\\"\",\"oodhnzkmjoy\":\"\\\"datapaq\\\"\"},\"createdBy\":{\"email\":\"gwjrssnrykkhxawo\",\"name\":\"jewxphnlweyzvri\",\"objectId\":\"veserltlhcjgjuop\"},\"source\":\"rmspksfxdmb\",\"firstIngestedTimeUtc\":\"2021-08-12T21:59:55Z\",\"lastIngestedTimeUtc\":\"2021-09-08T04:37:03Z\",\"ingestionRulesVersion\":\"iqvhfyv\",\"lastUpdateMethod\":\"goxsveiucuxwno\",\"lastModifiedBy\":{\"email\":\"rgqmbnfvyg\",\"name\":\"dcf\",\"objectId\":\"lpsycvcksz\"},\"lastUpdatedDateTimeUtc\":\"2021-10-24T13:45:47Z\",\"relationshipHints\":[{\"fieldName\":\"cp\",\"source\":\"sxnujwffthbzii\"},{\"fieldName\":\"xlbcc\",\"source\":\"rauabdevjrbgcdx\"},{\"fieldName\":\"steeksb\",\"source\":\"vvyvo\"}]},\"id\":\"vvu\",\"name\":\"wljmz\",\"type\":\"yukrw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,22 +39,30 @@ public final class ThreatIntelligencesQueryMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TIObject> response = manager.threatIntelligences()
-            .query("bugojzcargs", "maw", TiType.MAIN,
-                new Query()
-                    .withCondition(new QueryCondition().withStixObjectType("gazryyjjwggpcdu")
-                        .withClauses(Arrays.asList(
-                            new ConditionClause().withField("obpcs")
-                                .withOperator(Operator.STRING_NOT_STARTS_WITH)
-                                .withValues(Arrays.asList("xedzmmcgqifh", "hzugwkqnmh", "m", "lorvht")),
-                            new ConditionClause().withField("rweeqkdmpfmcrce")
-                                .withOperator(Operator.STRING_NOT_ENDS_WITH)
-                                .withValues(Arrays.asList("jftnfdcj", "veibntwikm", "wxysut", "ofdhrifekstrmsb"))))
-                        .withConditionConnective(Connective.OR))
-                    .withSortBy(new QuerySortBy().withDirection(SortingDirection.ASC).withField("u"))
-                    .withMaxPageSize(1662057563)
-                    .withMinPageSize(91618654),
-                com.azure.core.util.Context.NONE);
+        PagedIterable<TIObject> response
+            = manager.threatIntelligences()
+                .query("swvtd", "picwnbtvlrs", TiType.MAIN,
+                    new Query()
+                        .withCondition(
+                            new QueryCondition().withStixObjectType("modknxerkai")
+                                .withClauses(
+                                    Arrays.asList(
+                                        new ConditionClause().withField("f")
+                                            .withOperator(Operator.EQUALS)
+                                            .withValues(Arrays.asList("pqrke", "h", "uaez")),
+                                        new ConditionClause().withField("vtaul")
+                                            .withOperator(Operator.STRING_NOT_CONTAINS)
+                                            .withValues(Arrays.asList("vtpkodijcndwoyq", "cyqjj", "hijbfiyuho")),
+                                        new ConditionClause().withField("evpdbirh")
+                                            .withOperator(Operator.STRING_CONTAINS)
+                                            .withValues(Arrays.asList("phyacdhjm", "nvgkxshh", "jtkuyvytfuq",
+                                                "stqbxpyfawkjei"))))
+                                .withConditionConnective(Connective.AND))
+                        .withSortBy(
+                            new QuerySortBy().withDirection(SortingDirection.DESC).withField("cndbklscokafaqqi"))
+                        .withMaxPageSize(714590623)
+                        .withMinPageSize(545681155),
+                    com.azure.core.util.Context.NONE);
 
     }
 }

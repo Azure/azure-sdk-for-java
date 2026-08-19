@@ -28,7 +28,7 @@ public final class WorkspaceManagerAssignmentJobsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.workspaceManagerAssignmentJobs()
-            .deleteWithResponse("kkzulmqx", "ic", "nwij", "eyxt", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rppsnlj", "uwkbozlmrhn", "hv", "vdjxb", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -32,7 +32,7 @@ public final class SecurityMLAnalyticsSettingsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SecurityMLAnalyticsSetting> response
-            = manager.securityMLAnalyticsSettings().list("hb", "iibxol", com.azure.core.util.Context.NONE);
+            = manager.securityMLAnalyticsSettings().list("cdlccqumvb", "bliibxol", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("nxxjfi", response.iterator().next().etag());
     }
