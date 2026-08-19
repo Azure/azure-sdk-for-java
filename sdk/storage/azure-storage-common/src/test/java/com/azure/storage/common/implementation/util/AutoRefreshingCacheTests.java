@@ -204,6 +204,29 @@ public class AutoRefreshingCacheTests {
     }
 
     @Test
+    public void forcedRefreshFromWithinOnNextStartsNewCreation() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createAsync()).thenReturn(Mono.just(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME))))
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)))));
+
+        // Mirrors the production pipeline: a downstream subscriber inspects the response for the
+        // "session expiring" hint and forces a refresh from inside onNext, which runs before the
+        // creation Mono has reached its terminal signal.
+        TestExpiringValue delivered
+            = cache.getValidValueAsync().doOnNext(ignored -> cache.forceRefreshValueInBackground()).block();
+
+        assertEquals(FIRST_VALUE, delivered.getValue());
+        // The reentrant force must start a brand new creation rather than handing back the creation
+        // that is still mid-delivery.
+        verify(provider, times(2)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+    }
+
+    @Test
     public void noRefreshBeforeJitterWindowWithoutHint() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
