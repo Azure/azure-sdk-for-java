@@ -564,6 +564,24 @@ See the full sample in [FabricIQSync.java](https://github.com/Azure/azure-sdk-fo
 
 ---
 
+##### **Work IQ (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/work-iq))
+
+Ground agent responses in the signed-in user's Microsoft 365 work context through a Work IQ project connection:
+
+```java com.azure.ai.agents.define_work_iq
+// Create a Work IQ tool with a fully qualified project connection resource ID
+WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId);
+```
+
+Set `FOUNDRY_PROJECT_ENDPOINT`, `FOUNDRY_MODEL_NAME`, and `WORK_IQ_PROJECT_CONNECTION_ID` before running the
+sample. `FOUNDRY_AGENT_NAME` and `WORK_IQ_USER_INPUT` are optional. Work IQ uses delegated authentication and
+honors the signed-in user's Microsoft 365 permissions.
+
+See the full samples in [WorkIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WorkIQSync.java)
+and [WorkIQAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WorkIQAsync.java).
+
+---
+
 ##### **Microsoft SharePoint (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/sharepoint?pivots=java))
 
 Search through SharePoint documents for grounding:
