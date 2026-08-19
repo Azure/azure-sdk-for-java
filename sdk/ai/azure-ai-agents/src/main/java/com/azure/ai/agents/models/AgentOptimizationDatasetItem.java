@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationDatasetItem implements JsonSerializable<OptimizationDatasetItem> {
+public final class AgentOptimizationDatasetItem implements JsonSerializable<AgentOptimizationDatasetItem> {
 
     /*
      * The user query / prompt.
@@ -42,13 +42,13 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * Per-item evaluation criteria.
      */
     @Generated
-    private List<OptimizationDatasetCriterion> criteria;
+    private List<AgentOptimizationDatasetCriterion> criteria;
 
     /**
-     * Creates an instance of OptimizationDatasetItem class.
+     * Creates an instance of AgentOptimizationDatasetItem class.
      */
     @Generated
-    public OptimizationDatasetItem() {
+    public AgentOptimizationDatasetItem() {
     }
 
     /**
@@ -65,10 +65,10 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * Set the query property: The user query / prompt.
      *
      * @param query the query value to set.
-     * @return the OptimizationDatasetItem object itself.
+     * @return the AgentOptimizationDatasetItem object itself.
      */
     @Generated
-    public OptimizationDatasetItem setQuery(String query) {
+    public AgentOptimizationDatasetItem setQuery(String query) {
         this.query = query;
         return this;
     }
@@ -87,10 +87,10 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * Set the groundTruth property: Expected ground truth answer.
      *
      * @param groundTruth the groundTruth value to set.
-     * @return the OptimizationDatasetItem object itself.
+     * @return the AgentOptimizationDatasetItem object itself.
      */
     @Generated
-    public OptimizationDatasetItem setGroundTruth(String groundTruth) {
+    public AgentOptimizationDatasetItem setGroundTruth(String groundTruth) {
         this.groundTruth = groundTruth;
         return this;
     }
@@ -109,10 +109,10 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * Set the desiredNumTurns property: Desired number of conversation turns for simulation mode (1-20).
      *
      * @param desiredNumTurns the desiredNumTurns value to set.
-     * @return the OptimizationDatasetItem object itself.
+     * @return the AgentOptimizationDatasetItem object itself.
      */
     @Generated
-    public OptimizationDatasetItem setDesiredNumTurns(Integer desiredNumTurns) {
+    public AgentOptimizationDatasetItem setDesiredNumTurns(Integer desiredNumTurns) {
         this.desiredNumTurns = desiredNumTurns;
         return this;
     }
@@ -123,7 +123,7 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * @return the criteria value.
      */
     @Generated
-    public List<OptimizationDatasetCriterion> getCriteria() {
+    public List<AgentOptimizationDatasetCriterion> getCriteria() {
         return this.criteria;
     }
 
@@ -131,10 +131,10 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
      * Set the criteria property: Per-item evaluation criteria.
      *
      * @param criteria the criteria value to set.
-     * @return the OptimizationDatasetItem object itself.
+     * @return the AgentOptimizationDatasetItem object itself.
      */
     @Generated
-    public OptimizationDatasetItem setCriteria(List<OptimizationDatasetCriterion> criteria) {
+    public AgentOptimizationDatasetItem setCriteria(List<AgentOptimizationDatasetCriterion> criteria) {
         this.criteria = criteria;
         return this;
     }
@@ -154,35 +154,35 @@ public final class OptimizationDatasetItem implements JsonSerializable<Optimizat
     }
 
     /**
-     * Reads an instance of OptimizationDatasetItem from the JsonReader.
+     * Reads an instance of AgentOptimizationDatasetItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationDatasetItem if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OptimizationDatasetItem.
+     * @return An instance of AgentOptimizationDatasetItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentOptimizationDatasetItem.
      */
     @Generated
-    public static OptimizationDatasetItem fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationDatasetItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationDatasetItem deserializedOptimizationDatasetItem = new OptimizationDatasetItem();
+            AgentOptimizationDatasetItem deserializedAgentOptimizationDatasetItem = new AgentOptimizationDatasetItem();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("query".equals(fieldName)) {
-                    deserializedOptimizationDatasetItem.query = reader.getString();
+                    deserializedAgentOptimizationDatasetItem.query = reader.getString();
                 } else if ("ground_truth".equals(fieldName)) {
-                    deserializedOptimizationDatasetItem.groundTruth = reader.getString();
+                    deserializedAgentOptimizationDatasetItem.groundTruth = reader.getString();
                 } else if ("desired_num_turns".equals(fieldName)) {
-                    deserializedOptimizationDatasetItem.desiredNumTurns = reader.getNullable(JsonReader::getInt);
+                    deserializedAgentOptimizationDatasetItem.desiredNumTurns = reader.getNullable(JsonReader::getInt);
                 } else if ("criteria".equals(fieldName)) {
-                    List<OptimizationDatasetCriterion> criteria
-                        = reader.readArray(reader1 -> OptimizationDatasetCriterion.fromJson(reader1));
-                    deserializedOptimizationDatasetItem.criteria = criteria;
+                    List<AgentOptimizationDatasetCriterion> criteria
+                        = reader.readArray(reader1 -> AgentOptimizationDatasetCriterion.fromJson(reader1));
+                    deserializedAgentOptimizationDatasetItem.criteria = criteria;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedOptimizationDatasetItem;
+            return deserializedAgentOptimizationDatasetItem;
         });
     }
 }

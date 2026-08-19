@@ -16,13 +16,13 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationReferenceDatasetInput extends OptimizationDatasetInput {
+public final class AgentOptimizationReferenceDatasetInput extends AgentOptimizationDatasetInput {
 
     /*
      * Dataset input type discriminator.
      */
     @Generated
-    private OptimizationDatasetInputType type = OptimizationDatasetInputType.REFERENCE;
+    private AgentOptimizationDatasetInputType type = AgentOptimizationDatasetInputType.REFERENCE;
 
     /*
      * Registered dataset name.
@@ -37,12 +37,12 @@ public final class OptimizationReferenceDatasetInput extends OptimizationDataset
     private String version;
 
     /**
-     * Creates an instance of OptimizationReferenceDatasetInput class.
+     * Creates an instance of AgentOptimizationReferenceDatasetInput class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public OptimizationReferenceDatasetInput(String name) {
+    public AgentOptimizationReferenceDatasetInput(String name) {
         this.name = name;
     }
 
@@ -53,7 +53,7 @@ public final class OptimizationReferenceDatasetInput extends OptimizationDataset
      */
     @Generated
     @Override
-    public OptimizationDatasetInputType getType() {
+    public AgentOptimizationDatasetInputType getType() {
         return this.type;
     }
 
@@ -81,10 +81,10 @@ public final class OptimizationReferenceDatasetInput extends OptimizationDataset
      * Set the version property: Dataset version. If not specified, the latest version is used.
      *
      * @param version the version value to set.
-     * @return the OptimizationReferenceDatasetInput object itself.
+     * @return the AgentOptimizationReferenceDatasetInput object itself.
      */
     @Generated
-    public OptimizationReferenceDatasetInput setVersion(String version) {
+    public AgentOptimizationReferenceDatasetInput setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -103,19 +103,19 @@ public final class OptimizationReferenceDatasetInput extends OptimizationDataset
     }
 
     /**
-     * Reads an instance of OptimizationReferenceDatasetInput from the JsonReader.
+     * Reads an instance of AgentOptimizationReferenceDatasetInput from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationReferenceDatasetInput if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of AgentOptimizationReferenceDatasetInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationReferenceDatasetInput.
+     * @throws IOException If an error occurs while reading the AgentOptimizationReferenceDatasetInput.
      */
     @Generated
-    public static OptimizationReferenceDatasetInput fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationReferenceDatasetInput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            OptimizationDatasetInputType type = OptimizationDatasetInputType.REFERENCE;
+            AgentOptimizationDatasetInputType type = AgentOptimizationDatasetInputType.REFERENCE;
             String version = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -123,18 +123,18 @@ public final class OptimizationReferenceDatasetInput extends OptimizationDataset
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    type = OptimizationDatasetInputType.fromString(reader.getString());
+                    type = AgentOptimizationDatasetInputType.fromString(reader.getString());
                 } else if ("version".equals(fieldName)) {
                     version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            OptimizationReferenceDatasetInput deserializedOptimizationReferenceDatasetInput
-                = new OptimizationReferenceDatasetInput(name);
-            deserializedOptimizationReferenceDatasetInput.type = type;
-            deserializedOptimizationReferenceDatasetInput.version = version;
-            return deserializedOptimizationReferenceDatasetInput;
+            AgentOptimizationReferenceDatasetInput deserializedAgentOptimizationReferenceDatasetInput
+                = new AgentOptimizationReferenceDatasetInput(name);
+            deserializedAgentOptimizationReferenceDatasetInput.type = type;
+            deserializedAgentOptimizationReferenceDatasetInput.version = version;
+            return deserializedAgentOptimizationReferenceDatasetInput;
         });
     }
 }

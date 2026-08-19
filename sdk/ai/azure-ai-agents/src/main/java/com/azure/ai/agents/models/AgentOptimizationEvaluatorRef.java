@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationEvaluatorRef implements JsonSerializable<OptimizationEvaluatorRef> {
+public final class AgentOptimizationEvaluatorRef implements JsonSerializable<AgentOptimizationEvaluatorRef> {
 
     /*
      * Evaluator name.
@@ -32,12 +32,12 @@ public final class OptimizationEvaluatorRef implements JsonSerializable<Optimiza
     private String version;
 
     /**
-     * Creates an instance of OptimizationEvaluatorRef class.
+     * Creates an instance of AgentOptimizationEvaluatorRef class.
      *
      * @param name the name value to set.
      */
     @Generated
-    public OptimizationEvaluatorRef(String name) {
+    public AgentOptimizationEvaluatorRef(String name) {
         this.name = name;
     }
 
@@ -65,10 +65,10 @@ public final class OptimizationEvaluatorRef implements JsonSerializable<Optimiza
      * Set the version property: Evaluator version. If not specified, the latest version is used.
      *
      * @param version the version value to set.
-     * @return the OptimizationEvaluatorRef object itself.
+     * @return the AgentOptimizationEvaluatorRef object itself.
      */
     @Generated
-    public OptimizationEvaluatorRef setVersion(String version) {
+    public AgentOptimizationEvaluatorRef setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -86,16 +86,16 @@ public final class OptimizationEvaluatorRef implements JsonSerializable<Optimiza
     }
 
     /**
-     * Reads an instance of OptimizationEvaluatorRef from the JsonReader.
+     * Reads an instance of AgentOptimizationEvaluatorRef from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationEvaluatorRef if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of AgentOptimizationEvaluatorRef if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationEvaluatorRef.
+     * @throws IOException If an error occurs while reading the AgentOptimizationEvaluatorRef.
      */
     @Generated
-    public static OptimizationEvaluatorRef fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationEvaluatorRef fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String version = null;
@@ -110,9 +110,10 @@ public final class OptimizationEvaluatorRef implements JsonSerializable<Optimiza
                     reader.skipChildren();
                 }
             }
-            OptimizationEvaluatorRef deserializedOptimizationEvaluatorRef = new OptimizationEvaluatorRef(name);
-            deserializedOptimizationEvaluatorRef.version = version;
-            return deserializedOptimizationEvaluatorRef;
+            AgentOptimizationEvaluatorRef deserializedAgentOptimizationEvaluatorRef
+                = new AgentOptimizationEvaluatorRef(name);
+            deserializedAgentOptimizationEvaluatorRef.version = version;
+            return deserializedAgentOptimizationEvaluatorRef;
         });
     }
 }

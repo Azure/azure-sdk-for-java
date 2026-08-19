@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationDatasetCriterion implements JsonSerializable<OptimizationDatasetCriterion> {
+public final class AgentOptimizationDatasetCriterion implements JsonSerializable<AgentOptimizationDatasetCriterion> {
 
     /*
      * Criterion name.
@@ -32,13 +32,13 @@ public final class OptimizationDatasetCriterion implements JsonSerializable<Opti
     private final String instruction;
 
     /**
-     * Creates an instance of OptimizationDatasetCriterion class.
+     * Creates an instance of AgentOptimizationDatasetCriterion class.
      *
      * @param name the name value to set.
      * @param instruction the instruction value to set.
      */
     @Generated
-    public OptimizationDatasetCriterion(String name, String instruction) {
+    public AgentOptimizationDatasetCriterion(String name, String instruction) {
         this.name = name;
         this.instruction = instruction;
     }
@@ -76,16 +76,16 @@ public final class OptimizationDatasetCriterion implements JsonSerializable<Opti
     }
 
     /**
-     * Reads an instance of OptimizationDatasetCriterion from the JsonReader.
+     * Reads an instance of AgentOptimizationDatasetCriterion from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationDatasetCriterion if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of AgentOptimizationDatasetCriterion if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationDatasetCriterion.
+     * @throws IOException If an error occurs while reading the AgentOptimizationDatasetCriterion.
      */
     @Generated
-    public static OptimizationDatasetCriterion fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationDatasetCriterion fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String instruction = null;
@@ -100,7 +100,7 @@ public final class OptimizationDatasetCriterion implements JsonSerializable<Opti
                     reader.skipChildren();
                 }
             }
-            return new OptimizationDatasetCriterion(name, instruction);
+            return new AgentOptimizationDatasetCriterion(name, instruction);
         });
     }
 }
