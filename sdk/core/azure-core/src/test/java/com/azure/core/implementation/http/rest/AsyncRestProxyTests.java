@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
@@ -213,12 +213,12 @@ public class AsyncRestProxyTests {
     @MethodSource("streamingResponseOwnershipSupplier")
     public void streamingResponseIsUnbufferedAndCloseable(String accept, String contentType) throws IOException {
         byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
-        AtomicBoolean responseClosed = new AtomicBoolean();
+        AtomicInteger responseCloseCount = new AtomicInteger();
         HttpClient client = request -> Mono.just(new MockHttpResponse(request, 200,
             new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), expectedBytes) {
             @Override
             public void close() {
-                responseClosed.set(true);
+                responseCloseCount.incrementAndGet();
                 super.close();
             }
         });
@@ -233,8 +233,38 @@ public class AsyncRestProxyTests {
         assertTrue(response instanceof Closeable);
         assertFalse(response.getValue().isReplayable());
         assertArraysEqual(expectedBytes, response.getValue().toBytes());
+        assertEquals(1, responseCloseCount.get());
         ((Closeable) response).close();
-        assertTrue(responseClosed.get());
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void cancellingStreamingBinaryDataClosesResponse() {
+        byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        HttpClient client = request -> Mono.just(new MockHttpResponse(request, 200,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream"), expectedBytes) {
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return Flux.concat(Flux.just(ByteBuffer.wrap(expectedBytes)), Flux.never());
+            }
+
+            @Override
+            public void close() {
+                responseCloseCount.incrementAndGet();
+                super.close();
+            }
+        });
+        MockService service = RestProxy.create(MockService.class, new HttpPipelineBuilder().httpClient(client).build());
+
+        Flux<ByteBuffer> body = service.getStreamingResponse(new RequestOptions(), Context.NONE)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+
+        StepVerifier.create(body)
+            .assertNext(buffer -> assertArraysEqual(expectedBytes, buffer.array()))
+            .thenCancel()
+            .verify();
+        assertEquals(1, responseCloseCount.get());
     }
 
     private static Stream<Arguments> streamingResponseOwnershipSupplier() {
