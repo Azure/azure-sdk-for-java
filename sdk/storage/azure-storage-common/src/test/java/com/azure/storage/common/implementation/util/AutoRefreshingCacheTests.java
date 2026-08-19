@@ -76,6 +76,134 @@ public class AutoRefreshingCacheTests {
     }
 
     @Test
+    public void failedBackgroundRefreshIsThrottled() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
+        when(provider.createAsync()).thenReturn(Mono.error(new RuntimeException("boom")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        clock.advance(VALUE_LIFETIME.minusSeconds(2));
+
+        for (int i = 0; i < 3; i++) {
+            assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        }
+
+        verify(provider, times(1)).createSync();
+        verify(provider, times(1)).createAsync();
+    }
+
+    @Test
+    public void throttledRefreshRetriesAfterBackoffElapses() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
+        when(provider.createAsync()).thenReturn(Mono.error(new RuntimeException("boom")))
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)))));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        cache.forceRefreshValueInBackground();
+
+        verify(provider, times(1)).createAsync();
+
+        // One second before the backoff elapses the retry must still be suppressed.
+        clock.advance(Duration.ofSeconds(29));
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+
+        // Once it elapses the retry proceeds and the new value is adopted.
+        clock.advance(Duration.ofSeconds(1));
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+    }
+
+    @Test
+    public void forcedRefreshRespectsFailureBackoff() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
+        when(provider.createAsync()).thenReturn(Mono.error(new RuntimeException("boom")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        clock.advance(VALUE_LIFETIME.minusSeconds(2));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+
+        cache.forceRefreshValueInBackground();
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+    }
+
+    @Test
+    public void expiredValueIsStillCreatedDuringBackoff() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)))
+            .thenReturn(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2))));
+        when(provider.createAsync()).thenReturn(Mono.error(new RuntimeException("boom")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        clock.advance(VALUE_LIFETIME.minusSeconds(2));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+
+        clock.advance(Duration.ofSeconds(3));
+
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createSync();
+        verify(provider, times(1)).createAsync();
+    }
+
+    @Test
+    public void successfulCreationClearsFailureBackoff() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        // The replacement is deliberately short-lived so its own refresh window opens while the failure
+        // backoff armed by the first value would still have been active.
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)))
+            .thenReturn(value(SECOND_VALUE, now(clock).plus(Duration.ofSeconds(321))));
+        when(provider.createAsync()).thenReturn(Mono.error(new RuntimeException("boom")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+
+        // T+298s: inside the first value's refresh window. The background refresh fails and arms the
+        // backoff until T+328s.
+        clock.advance(VALUE_LIFETIME.minusSeconds(2));
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+
+        // T+301s: the first value has expired, so the unthrottled foreground path mints a replacement.
+        clock.advance(Duration.ofSeconds(3));
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createSync();
+
+        // T+317s: inside the replacement's refresh window but still before T+328s, so this refresh can
+        // only happen because the successful creation cleared the backoff.
+        clock.advance(Duration.ofSeconds(16));
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createAsync();
+    }
+
+    @Test
     public void noRefreshBeforeJitterWindowWithoutHint() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);

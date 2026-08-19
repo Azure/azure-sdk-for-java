@@ -30,6 +30,7 @@ public final class AutoRefreshingCache<T> {
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoRefreshingCache.class);
     private static final Duration SAFETY_BUFFER = Duration.ofSeconds(5);
+    private static final Duration REFRESH_RETRY_DELAY = Duration.ofSeconds(30);
     private static final double JITTER_WINDOW_START_RATIO = 0.8d;
 
     private final ValueProvider<T> valueProvider;
@@ -40,6 +41,9 @@ public final class AutoRefreshingCache<T> {
     private volatile OffsetDateTime nextRefreshTime;
     private volatile boolean refreshing;
     private volatile Mono<T> inflightCreation;
+    // Throttles background refresh retries after creation failures so a failing provider is not retried
+    // once per caller request. Foreground creation remains intentionally unthrottled.
+    private volatile OffsetDateTime retryNotBefore;
 
     public AutoRefreshingCache(ValueProvider<T> valueProvider, Function<T, OffsetDateTime> expirationExtractor) {
         this(valueProvider, expirationExtractor, Clock.systemUTC());
@@ -114,7 +118,7 @@ public final class AutoRefreshingCache<T> {
     public void refreshValueInBackground() {
         synchronized (creationLock) {
             OffsetDateTime now = OffsetDateTime.now(clock);
-            if (!isUsable(value, now) || !isRefreshDue(now) || refreshing) {
+            if (!isUsable(value, now) || !isRefreshDue(now) || refreshing || isRetryBackoffActive(now)) {
                 return;
             }
             refreshing = true;
@@ -153,6 +157,10 @@ public final class AutoRefreshingCache<T> {
                 synchronized (creationLock) {
                     setActiveValue(cred);
                 }
+            }).doOnError(error -> {
+                synchronized (creationLock) {
+                    retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
+                }
             }).doFinally(ignored -> {
                 synchronized (creationLock) {
                     if (inflightCreation == creationReference.get()) {
@@ -172,6 +180,7 @@ public final class AutoRefreshingCache<T> {
         value = newValue;
         nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), expirationExtractor.apply(newValue));
         refreshing = false;
+        retryNotBefore = null;
         // Clear the in-flight marker here (not just in doFinally). doFinally only runs once the Mono
         // reaches its terminal signal, but a downstream subscriber's onNext handler (e.g. inspecting the
         // HTTP response for a "session expiring" hint) can run synchronously before that terminal signal
@@ -188,6 +197,11 @@ public final class AutoRefreshingCache<T> {
     private boolean isRefreshDue(OffsetDateTime now) {
         OffsetDateTime refresh = nextRefreshTime;
         return refresh != null && !now.isBefore(refresh);
+    }
+
+    private boolean isRetryBackoffActive(OffsetDateTime now) {
+        OffsetDateTime notBefore = retryNotBefore;
+        return notBefore != null && now.isBefore(notBefore);
     }
 
     private static OffsetDateTime computeRefreshTime(OffsetDateTime now, OffsetDateTime expiration) {
