@@ -14,6 +14,7 @@
 
 ### Features Added
 
+- Added `azure-deprecating` to the default allowed (unsanitized) HTTP request and response header list so it is logged without redaction. ([#49946](https://github.com/Azure/azure-sdk-for-java/pull/49946))
 - Promoted `AccessTokenCache` to a public API in the `com.azure.core.credential` package. This class provides a thread-safe, proactively refreshing token cache that wraps a `TokenCredential`, supporting both synchronous and asynchronous token retrieval.
 
 ### Bugs Fixed

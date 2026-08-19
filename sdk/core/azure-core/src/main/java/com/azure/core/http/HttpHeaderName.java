@@ -182,6 +182,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName AZURE_ASYNCOPERATION = fromString("Azure-AsyncOperation");
 
     /**
+     * {@code azure-deprecating}
+     */
+    public static final HttpHeaderName AZURE_DEPRECATING = fromString("azure-deprecating");
+
+    /**
      * {@code Cache-Control}/{@code cache-control}
      */
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
