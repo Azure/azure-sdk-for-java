@@ -36,12 +36,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -184,6 +186,13 @@ public abstract class RestProxyBase {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
         Object bodyAsObject, boolean responseBodyStreaming) {
+        return createResponse(response, entityType, bodyAsObject,
+            responseBodyStreaming ? new ResponseBodyOwner(response.getSourceResponse()) : null);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    final Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+        Object bodyAsObject, ResponseBodyOwner responseBodyOwner) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -197,8 +206,8 @@ public abstract class RestProxyBase {
         // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
         if (cls.equals(Response.class)) {
-            if (responseBodyStreaming) {
-                return cls.cast(new CloseableResponse<>(httpResponse, bodyAsObject));
+            if (responseBodyOwner != null) {
+                return cls.cast(new CloseableResponse<>(responseBodyOwner, bodyAsObject));
             }
 
             // For Response return a new instance of ResponseBase cast to the class.
@@ -230,12 +239,30 @@ public abstract class RestProxyBase {
     }
 
     private static final class CloseableResponse<T> extends SimpleResponse<T> implements Closeable {
+        private final ResponseBodyOwner responseBodyOwner;
+
+        private CloseableResponse(ResponseBodyOwner responseBodyOwner, T value) {
+            super(responseBodyOwner.response.getRequest(), responseBodyOwner.response.getStatusCode(),
+                responseBodyOwner.response.getHeaders(), value);
+            this.responseBodyOwner = responseBodyOwner;
+        }
+
+        @Override
+        public void close() {
+            responseBodyOwner.close();
+        }
+    }
+
+    static final class ResponseBodyOwner implements Closeable {
         private final AtomicBoolean closed = new AtomicBoolean();
         private final HttpResponse response;
 
-        private CloseableResponse(HttpResponse response, T value) {
-            super(response.getRequest(), response.getStatusCode(), response.getHeaders(), value);
+        ResponseBodyOwner(HttpResponse response) {
             this.response = response;
+        }
+
+        Flux<ByteBuffer> getBody() {
+            return Flux.using(() -> this, ignored -> response.getBody(), ResponseBodyOwner::close);
         }
 
         @Override
