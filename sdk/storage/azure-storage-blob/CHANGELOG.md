@@ -4,8 +4,8 @@
 
 ### Features Added
 - Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
-  `Expect: 100-continue` is applied to requests that carry a body. By default the header is applied only for a
-  period after the service responds 429, 500, or 503, so that a body is not uploaded just to be rejected again.
+  `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
+  requires an HTTP client that withholds the request body until the service responds.
 
 ### Breaking Changes
 

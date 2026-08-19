@@ -620,10 +620,11 @@ public class BuilderHelperTests {
 
     @Test
     public void expectContinuePolicyIsPerRetryAndBeforeCredentials() {
-        HttpPipeline pipeline
-            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
-                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
-                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.APPLY_ON_THROTTLE),
+            new ClientLogger(BuilderHelperTests.class));
 
         int retryIndex = indexOfPolicy(pipeline, RequestRetryPolicy.class);
         int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class);
@@ -634,6 +635,17 @@ public class BuilderHelperTests {
             "Expect-continue policy must be after the retry policy so it is evaluated on every attempt.");
         assertTrue(expectContinueIndex < credentialIndex,
             "Expect-continue policy must be before the credential policy.");
+    }
+
+    @Test
+    public void expectContinueIsNotAppliedByDefault() {
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
+
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
     }
 
     @Test

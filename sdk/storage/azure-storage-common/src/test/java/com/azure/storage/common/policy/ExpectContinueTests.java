@@ -244,9 +244,17 @@ public class ExpectContinueTests {
     }
 
     @Test
-    public void nullOptionsGetApplyOnThrottlePolicy() {
+    public void nullOptionsAddNoPolicy() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         BuilderUtils.addExpectContinuePolicy(policies, null);
+
+        assertTrue(policies.isEmpty());
+    }
+
+    @Test
+    public void explicitApplyOnThrottleOptionsAddThePolicy() {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        BuilderUtils.addExpectContinuePolicy(policies, options(ExpectContinueMode.APPLY_ON_THROTTLE));
 
         assertEquals(1, policies.size());
         assertTrue(policies.get(0) instanceof ExpectContinueOnThrottlePolicy);

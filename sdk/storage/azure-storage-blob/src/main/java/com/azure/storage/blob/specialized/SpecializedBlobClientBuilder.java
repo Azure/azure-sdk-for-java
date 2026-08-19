@@ -785,6 +785,9 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
 
     /**
      * Sets the behavior for applying the HTTP header {@code Expect: 100-continue} to requests that carry a body.
+     * <p>
+     * The header is not applied unless this is set, and requires an HTTP client that withholds the request body
+     * until the service responds.
      *
      * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
      * @return the updated SpecializedBlobClientBuilder object

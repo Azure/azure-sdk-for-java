@@ -41,14 +41,20 @@ public final class BuilderUtils {
     /**
      * Adds the policy applying HTTP header {@code Expect: 100-continue}, if the given options call for one. Must be
      * called after the retry policy has been added, and before the credential policies.
+     * <p>
+     * The header is only applied when options are supplied. It is not applied by default, as the handshake needs
+     * support from the HTTP client and the default transport does not withhold the request body.
      *
      * @param policies The pipeline policies being built up.
-     * @param expectContinueOptions The options, or null to use the default behavior.
+     * @param expectContinueOptions The options, or null to leave the header unapplied.
      */
     public static void addExpectContinuePolicy(List<HttpPipelinePolicy> policies,
         ExpectContinueOptions expectContinueOptions) {
-        ExpectContinueOptions options
-            = expectContinueOptions == null ? new ExpectContinueOptions() : expectContinueOptions;
+        if (expectContinueOptions == null) {
+            return;
+        }
+
+        ExpectContinueOptions options = expectContinueOptions;
         Long threshold = options.getContentLengthThreshold();
 
         switch (options.getMode()) {
