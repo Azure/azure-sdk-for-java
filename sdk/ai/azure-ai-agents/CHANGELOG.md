@@ -26,6 +26,7 @@
 
 ### Other Changes
 
+- Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
 - `WorkflowAgentDefinition` documentation was updated to note that Microsoft Foundry is retiring workflows on December 1, 2026, with a link to the workflow migration guide.
 - Regenerated client from the updated TypeSpec specification.
 
