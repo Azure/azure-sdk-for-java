@@ -60,6 +60,13 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
     @Generated
     private Map<String, ContentField> fields;
 
+    /*
+     * Metadata extracted from the input as string key/value pairs, such as author, title, creation date, or media
+     * properties. Keys and values are strings. Only keys with extracted values are present.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
     /**
      * Creates an instance of AnalysisContent class.
      * 
@@ -201,6 +208,30 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
     }
 
     /**
+     * Get the metadata property: Metadata extracted from the input as string key/value pairs, such as author, title,
+     * creation date, or media properties. Keys and values are strings. Only keys with extracted values are present.
+     * 
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Metadata extracted from the input as string key/value pairs, such as author, title,
+     * creation date, or media properties. Keys and values are strings. Only keys with extracted values are present.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the AnalysisContent object itself.
+     */
+    @Generated
+    AnalysisContent setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -214,6 +245,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeStringField("markdown", this.markdown);
         jsonWriter.writeMapField("fields", this.fields, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -264,6 +296,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
             String path = null;
             String markdown = null;
             Map<String, ContentField> fields = null;
+            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -282,6 +315,8 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
                     markdown = reader.getString();
                 } else if ("fields".equals(fieldName)) {
                     fields = reader.readMap(reader1 -> ContentField.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -293,6 +328,7 @@ public class AnalysisContent implements JsonSerializable<AnalysisContent> {
             deserializedAnalysisContent.path = path;
             deserializedAnalysisContent.markdown = markdown;
             deserializedAnalysisContent.fields = fields;
+            deserializedAnalysisContent.metadata = metadata;
 
             return deserializedAnalysisContent;
         });

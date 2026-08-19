@@ -18,7 +18,7 @@ import java.time.ZoneOffset;
  * A one-shot timer routine trigger.
  */
 @Fluent
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class TimerRoutineTrigger extends RoutineTrigger {
 
     /*

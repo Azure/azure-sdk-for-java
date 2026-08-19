@@ -23,6 +23,13 @@ public final class VirtualMachineScaleSetHardwareProfile
      */
     private VMSizeProperties vmSizeProperties;
 
+    /*
+     * Specifies the processor mode for the virtual machine scale set. Optional; if omitted, the platform default
+     * applies (currently Deterministic). This property can be updated on a running VMSS without deallocation or reboot.
+     * Minimum api-version: 2026-04-01.
+     */
+    private ProcessorMode processorMode;
+
     /**
      * Creates an instance of VirtualMachineScaleSetHardwareProfile class.
      */
@@ -54,6 +61,30 @@ public final class VirtualMachineScaleSetHardwareProfile
     }
 
     /**
+     * Get the processorMode property: Specifies the processor mode for the virtual machine scale set. Optional; if
+     * omitted, the platform default applies (currently Deterministic). This property can be updated on a running VMSS
+     * without deallocation or reboot. Minimum api-version: 2026-04-01.
+     * 
+     * @return the processorMode value.
+     */
+    public ProcessorMode processorMode() {
+        return this.processorMode;
+    }
+
+    /**
+     * Set the processorMode property: Specifies the processor mode for the virtual machine scale set. Optional; if
+     * omitted, the platform default applies (currently Deterministic). This property can be updated on a running VMSS
+     * without deallocation or reboot. Minimum api-version: 2026-04-01.
+     * 
+     * @param processorMode the processorMode value to set.
+     * @return the VirtualMachineScaleSetHardwareProfile object itself.
+     */
+    public VirtualMachineScaleSetHardwareProfile withProcessorMode(ProcessorMode processorMode) {
+        this.processorMode = processorMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -71,6 +102,7 @@ public final class VirtualMachineScaleSetHardwareProfile
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("vmSizeProperties", this.vmSizeProperties);
+        jsonWriter.writeStringField("processorMode", this.processorMode == null ? null : this.processorMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -93,6 +125,9 @@ public final class VirtualMachineScaleSetHardwareProfile
                 if ("vmSizeProperties".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetHardwareProfile.vmSizeProperties
                         = VMSizeProperties.fromJson(reader);
+                } else if ("processorMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetHardwareProfile.processorMode
+                        = ProcessorMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

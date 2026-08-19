@@ -14,6 +14,7 @@ import com.azure.resourcemanager.monitor.models.PrivateEndpoint;
 import com.azure.resourcemanager.monitor.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.monitor.models.PrivateLinkServiceConnectionState;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Private Endpoint Connection resource.
@@ -97,6 +98,15 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the groupIds property: The group ids for the private endpoint resource.
+     * 
+     * @return the groupIds value.
+     */
+    public List<String> groupIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().groupIds();
     }
 
     /**

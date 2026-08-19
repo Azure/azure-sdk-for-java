@@ -13,6 +13,7 @@
 * Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
 * Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
 * Fixed thin-client (Gateway V2) queries with a prefix (partial) hierarchical partition key returning co-located documents from other logical partitions. - See PR [49688](https://github.com/Azure/azure-sdk-for-java/pull/49688).
+* Fixed hedged requests losing request-scoped routing, timeout, authorization, throughput-control, and metadata state when cloning the original request. - See [PR 50069](https://github.com/Azure/azure-sdk-for-java/pull/50069).
 
 #### Other Changes
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
