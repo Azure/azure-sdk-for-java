@@ -68,18 +68,17 @@ final class CseV2NonceOrderValidator {
      * @param actualNonce The nonce read from the downloaded region.
      * @param nonceLength The length of the nonce.
      * @param expectedRegion The expected 0-based region index for this region's position.
-     * @return A {@link RuntimeException} describing the tampering or unverifiable state if the region is invalid, or
-     * {@code null} if the nonce is valid.
+     * @throws RuntimeException If the region is invalid or its integrity cannot be verified.
      */
-    RuntimeException validateRegion(byte[] actualNonce, int nonceLength, long expectedRegion) {
+    void validateRegion(byte[] actualNonce, int nonceLength, long expectedRegion) {
         if (!validationEnabled) {
-            return null;
+            return;
         }
 
         // Cannot reconstruct the expected nonce if it is too short to hold the region index. This should never happen
         // for CSEv2 (nonce length is 12), so treat it as unverifiable rather than a failure.
         if (nonceLength < Long.BYTES || actualNonce.length < Long.BYTES) {
-            return null;
+            return;
         }
 
         boolean pastJavaNonceWrap = expectedRegion >= NONCE_WRAP_REGION_COUNT;
@@ -89,11 +88,12 @@ final class CseV2NonceOrderValidator {
         if (current.size() == 1) {
             NonceScheme locked = current.iterator().next();
             if (pastJavaNonceWrap && locked == NonceScheme.JAVA) {
-                return nonceWrapException(expectedRegion);
+                throw nonceWrapException();
             }
-            return Arrays.equals(locked.expectedNonce(expectedRegion, nonceLength), actualNonce)
-                ? null
-                : reorderException(expectedRegion, actualNonce);
+            if (!Arrays.equals(locked.expectedNonce(expectedRegion, nonceLength), actualNonce)) {
+                throw reorderException();
+            }
+            return;
         }
 
         // Determine which schemes are consistent with this region at its position.
@@ -108,9 +108,9 @@ final class CseV2NonceOrderValidator {
         }
 
         if (matchesHere.isEmpty()) {
-            return pastJavaNonceWrap
-                ? nonceWrapException(expectedRegion)
-                : reorderException(expectedRegion, actualNonce);
+            throw pastJavaNonceWrap
+                ? nonceWrapException()
+                : reorderException();
         }
 
         // Intersect the shared candidate set with the schemes matching this region. Atomic and order-independent, so it
@@ -122,23 +122,22 @@ final class CseV2NonceOrderValidator {
             next.retainAll(matchesHere);
             return next;
         });
-        return remaining.isEmpty() ? reorderException(expectedRegion, actualNonce) : null;
+        if (remaining.isEmpty()) {
+            throw reorderException();
+        }
     }
 
-    private static RuntimeException reorderException(long expectedRegion, byte[] actualNonce) {
+    private static RuntimeException reorderException() {
         return LOGGER.logExceptionAsError(new IllegalStateException(
             "Encountered an out-of-order authenticated region while decrypting client-side encrypted (v2) content. "
                 + "This may indicate that the blob's authenticated regions have been rearranged or otherwise tampered "
-                + "with. The nonce at region index " + expectedRegion + " (0x" + bytesToHex(actualNonce) + ") does not "
-                + "match the recognized client-side encryption nonce scheme for that position. "
-                + recoveryInstruction()));
+                + "with." + recoveryInstruction()));
     }
 
-    private static RuntimeException nonceWrapException(long expectedRegion) {
+    private static RuntimeException nonceWrapException() {
         return LOGGER.logExceptionAsError(new IllegalStateException("Cannot verify the integrity of client-side"
             + " encrypted (v2) content at or beyond " + NONCE_WRAP_REGION_COUNT
-            + " authenticated regions (region index " + expectedRegion
-            + "). For content encrypted by this (Java) SDK the encryption nonce repeats past that"
+            + " authenticated regions. For content encrypted by this (Java) SDK the encryption nonce repeats past that"
             + " point, resulting in GCM nonce reuse, and the blob is too large for its authenticated region size to be"
             + " safely verified. " + recoveryInstruction()));
     }

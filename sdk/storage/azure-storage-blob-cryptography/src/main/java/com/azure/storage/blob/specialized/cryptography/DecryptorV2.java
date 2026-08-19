@@ -77,10 +77,7 @@ class DecryptorV2 extends Decryptor {
                 byte[] gmcIv = indexedAggregator.getT2().getFirstNBytes(nonceLength);
 
                 long expectedRegion = initialRegion + indexedAggregator.getT1();
-                RuntimeException reorderError = nonceValidator.validateRegion(gmcIv, nonceLength, expectedRegion);
-                if (reorderError != null) {
-                    return Mono.error(reorderError);
-                }
+                nonceValidator.validateRegion(gmcIv, nonceLength, expectedRegion);
 
                 Cipher gmcCipher;
                 try {
@@ -91,7 +88,7 @@ class DecryptorV2 extends Decryptor {
 
                 ByteBuffer decryptedRegion = ByteBuffer.allocate(authenticatedRegionDataLength);
                 return indexedAggregator.getT2().asFlux().map(buffer -> {
-                    // Write into the preallocated buffer and always return this buffer.
+                    // Write into the pre-allocated buffer and always return this buffer.
                     try {
                         gmcCipher.update(buffer, decryptedRegion);
                     } catch (ShortBufferException e) {
