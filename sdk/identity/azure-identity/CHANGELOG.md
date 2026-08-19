@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `AzureDeveloperCliCredential` error parsing for Azure Developer CLI v1.23.7 and later, which previously surfaced the friendly wrapper "Authentication with Azure failed." instead of the underlying error text. The parser now prefers the structured top-level `error` field while preserving fallback behavior for older `consoleMessage` output.
+- Structured AAD failures from `azd` (e.g. `invalid_tenant`, `AADSTS*`) now surface as `ClientAuthenticationException` rather than being misclassified as `CredentialUnavailableException`.
 - Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications.
 
 ### Other Changes
