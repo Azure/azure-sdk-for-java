@@ -1,0 +1,8 @@
+[
+  {
+    "name": "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
+  }
+]
