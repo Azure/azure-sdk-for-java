@@ -180,6 +180,20 @@ public interface ComputeManagementClient {
     VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
 
     /**
+     * Gets the VirtualMachineDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineDiagnosticRunCommandsClient object.
+     */
+    VirtualMachineDiagnosticRunCommandsClient getVirtualMachineDiagnosticRunCommands();
+
+    /**
+     * Gets the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object to access its operations.
+     * 
+     * @return the VirtualMachineScaleSetVMDiagnosticRunCommandsClient object.
+     */
+    VirtualMachineScaleSetVMDiagnosticRunCommandsClient getVirtualMachineScaleSetVMDiagnosticRunCommands();
+
+    /**
      * Gets the DisksClient object to access its operations.
      * 
      * @return the DisksClient object.
