@@ -109,12 +109,10 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
                     boolean padding = hasPadding(responseHeaders, encryptionData, encryptedRange);
 
-                    // Use the operation-scoped validator if one was installed (e.g. downloadContentWithResponse always
-                    // sets it up, even for a full-blob request). Sharing it means a reliable-download ranged resume of
-                    // this same operation - which re-enters the pipeline through the range branch with the same context
-                    // - enforces one nonce scheme across the initial and resumed portions. Falls back to a fresh
-                    // per-call validator when none is present (e.g. a full-blob downloadStream that never set up
-                    // context), which is a single chunk anyway.
+                    // Use the operation-scoped validator if one was installed (e.g. downloadContentWithResponse and
+                    // ranged downloads always set it up). Sharing it means a reliable-download ranged resume of this
+                    // same operation - which re-enters the pipeline through the range branch with the same context -
+                    // enforces one nonce scheme across the initial and resumed portions.
                     CseV2NonceOrderValidator nonceValidator
                         = (CseV2NonceOrderValidator) context.getData(CryptographyConstants.GCM_NONCE_VALIDATOR_KEY)
                             .orElse(null);
