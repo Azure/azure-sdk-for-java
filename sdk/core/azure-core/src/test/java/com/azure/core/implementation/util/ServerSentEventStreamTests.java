@@ -121,6 +121,21 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
+    public void toFluxClosesBodyOwnedNoContentResponse() {
+        AtomicBoolean bodyClosed = new AtomicBoolean();
+        BinaryData body
+            = BinaryData
+                .fromFlux(Flux.using(() -> bodyClosed, ignored -> Flux.never(), ignored -> bodyClosed.set(true)), null,
+                    false)
+                .block();
+        ResponseBase<Object, BinaryData> response = new ResponseBase<>(null, 204, new HttpHeaders(), body, null);
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data)).verifyComplete();
+
+        assertTrue(bodyClosed.get());
+    }
+
+    @Test
     public void toFluxRejectsInvalidContentTypeAndClosesResponse() {
         TestResponse response = response(200, BinaryData.fromString("data: one\n\n"), "application/json");
 
@@ -210,12 +225,37 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void toFluxRejectsNonCloseableResponseBeforeValidatingContentType() {
-        ResponseBase<Object, BinaryData> response
-            = new ResponseBase<>(null, 200, new HttpHeaders(), BinaryData.fromString("data: one\n\n"), null);
+    public void toFluxConsumesBodyOwnedNonCloseableResponse() {
+        AtomicBoolean bodyClosed = new AtomicBoolean();
+        BinaryData body = BinaryData.fromFlux(Flux.using(() -> bodyClosed,
+            ignored -> Flux.just(ByteBuffer.wrap("data: one\n\n".getBytes(StandardCharsets.UTF_8))),
+            ignored -> bodyClosed.set(true)), null, false).block();
+        ResponseBase<Object, BinaryData> response = new ResponseBase<>(null, 200,
+            new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream"), body, null);
 
-        assertThrows(IllegalArgumentException.class,
-            () -> ServerSentEventStreams.toFlux(response, (event, data) -> data).blockLast());
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .assertNext(event -> assertEquals("one", event.getData()))
+            .verifyComplete();
+
+        assertTrue(bodyClosed.get());
+    }
+
+    @Test
+    public void toFluxClosesBodyOwnedNonCloseableResponseOnValidationFailure() {
+        AtomicBoolean bodyClosed = new AtomicBoolean();
+        BinaryData body
+            = BinaryData
+                .fromFlux(Flux.using(() -> bodyClosed, ignored -> Flux.never(), ignored -> bodyClosed.set(true)), null,
+                    false)
+                .block();
+        ResponseBase<Object, BinaryData> response = new ResponseBase<>(null, 200, new HttpHeaders(), body, null);
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
+            .expectErrorMessage(
+                "Expected a successful server-sent event response to have Content-Type " + "'text/event-stream'.")
+            .verify();
+
+        assertTrue(bodyClosed.get());
     }
 
     @Test

@@ -7,18 +7,18 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Owns a physical response used by a logical server-sent event stream.
- *
- * <p>The source response must implement {@link Closeable}; otherwise this class rejects it with
- * {@link IllegalArgumentException} because it cannot guarantee physical response cleanup.</p>
  */
 final class ServerSentEventStreamResponse implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventStreamResponse.class);
@@ -35,17 +35,13 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
     }
 
     /**
-     * Creates a stream response from a closeable REST response.
+     * Creates a stream response from a REST response.
      *
      * @param response The REST response.
      * @return The stream response.
-     * @throws IllegalArgumentException If {@code response} does not implement {@link Closeable}.
      */
     static ServerSentEventStreamResponse fromResponse(Response<BinaryData> response) {
         Objects.requireNonNull(response, "'response' cannot be null.");
-        if (!(response instanceof Closeable)) {
-            throw new IllegalArgumentException("'response' must own a closeable streaming response.");
-        }
         if (response.getStatusCode() != 200 && response.getStatusCode() != 204) {
             closeResponse(response);
             throw LOGGER.logExceptionAsError(
@@ -65,16 +61,33 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
                 throw new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
             }
         }
-        return new ServerSentEventStreamResponse(response.getStatusCode(), body, (Closeable) response);
+        return new ServerSentEventStreamResponse(response.getStatusCode(), body,
+            response instanceof Closeable ? (Closeable) response : null);
     }
 
     private static void closeResponse(Response<BinaryData> response) {
-        if (!(response instanceof Closeable)) {
+        if (response instanceof Closeable) {
+            close((Closeable) response);
             return;
         }
 
+        closeBody(response.getValue());
+    }
+
+    private static void closeBody(BinaryData body) {
+        if (body != null) {
+            body.toFluxByteBuffer().subscribe(new BaseSubscriber<ByteBuffer>() {
+                @Override
+                protected void hookOnSubscribe(Subscription subscription) {
+                    cancel();
+                }
+            });
+        }
+    }
+
+    private static void close(Closeable response) {
         try {
-            ((Closeable) response).close();
+            response.close();
         } catch (IOException exception) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
@@ -94,10 +107,10 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
             return;
         }
 
-        try {
-            response.close();
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+        if (response != null) {
+            close(response);
+        } else if (statusCode == 204 && body != null) {
+            closeBody(body);
         }
     }
 }

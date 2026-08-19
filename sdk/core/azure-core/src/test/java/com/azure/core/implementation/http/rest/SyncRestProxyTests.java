@@ -29,18 +29,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -67,6 +73,10 @@ public class SyncRestProxyTests {
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
         Response<InputStream> testInputStreamResponse(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({ 200 })
+        Response<BinaryData> testBinaryDataResponse(Context context);
     }
 
     @Test
@@ -191,6 +201,74 @@ public class SyncRestProxyTests {
         InputStream stream = inputStreamResponse.getValue();
         byte[] bytes = MockHttpResponse.readAllBytes(stream);
         assertEquals("hello", new String(bytes));
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnCompletion() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.just(ByteBuffer.wrap("hello".getBytes())), responseCloseCount);
+
+        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+
+        assertFalse(responseBody.isReplayable());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+        assertEquals("hello", responseBody.toString());
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnCancellation() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        Flux<ByteBuffer> responseBody = Flux.concat(Flux.just(ByteBuffer.wrap("hello".getBytes())), Flux.never());
+        TestInterface testInterface = createBinaryDataService(responseBody, responseCloseCount);
+
+        Disposable subscription
+            = testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer().subscribe();
+        subscription.dispose();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    @Test
+    public void binaryDataResponseClosesOnError() {
+        AtomicInteger responseCloseCount = new AtomicInteger();
+        TestInterface testInterface
+            = createBinaryDataService(Flux.error(new IllegalStateException("Body read failed.")), responseCloseCount);
+
+        StepVerifier.create(testInterface.testBinaryDataResponse(Context.NONE).getValue().toFluxByteBuffer())
+            .expectErrorMessage("Body read failed.")
+            .verify();
+
+        assertEquals(1, responseCloseCount.get());
+    }
+
+    private static TestInterface createBinaryDataService(Flux<ByteBuffer> responseBody,
+        AtomicInteger responseCloseCount) {
+        HttpClient client = new HttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.error(new IllegalStateException("Async Send API was Invoked."));
+            }
+
+            @Override
+            public HttpResponse sendSync(HttpRequest request, Context context) {
+                return new MockHttpResponse(request, 200) {
+                    @Override
+                    public BinaryData getBodyAsBinaryData() {
+                        return BinaryData.fromFlux(responseBody, null, false).block();
+                    }
+
+                    @Override
+                    public void close() {
+                        responseCloseCount.incrementAndGet();
+                        super.close();
+                    }
+                };
+            }
+        };
+        return RestProxy.create(TestInterface.class, new HttpPipelineBuilder().httpClient(client).build());
     }
 
     private static Stream<Arguments> mergeRequestOptionsContextSupplier() {

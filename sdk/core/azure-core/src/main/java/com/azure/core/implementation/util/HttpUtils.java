@@ -93,8 +93,7 @@ public final class HttpUtils {
         }
 
         for (String value : splitHeaderValue(headerValue, ',')) {
-            List<String> mediaRange = splitHeaderValue(value, ';');
-            if (!mediaRange.isEmpty() && TEXT_EVENT_STREAM.equalsIgnoreCase(mediaRange.get(0).trim())) {
+            if (isTextEventStreamContentType(value)) {
                 return true;
             }
         }

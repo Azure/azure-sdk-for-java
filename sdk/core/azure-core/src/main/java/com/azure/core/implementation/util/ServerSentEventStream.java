@@ -44,8 +44,9 @@ import java.util.function.Predicate;
  * <p>Event streams are always decoded as UTF-8. A {@code charset} parameter in the response Content-Type doesn't
  * select another encoding.</p>
  *
- * <p>Response-based methods require a {@link Response} that implements {@link java.io.Closeable}. They reject
- * non-closeable responses with {@link IllegalArgumentException}, as stream cleanup cannot otherwise be guaranteed.</p>
+ * <p>Response-based methods consume the response body exactly once. Streaming {@link BinaryData} returned by
+ * RestProxy owns the physical response and closes it when body consumption terminates. Custom responses that implement
+ * {@link java.io.Closeable} are also closed when processing terminates.</p>
  */
 public final class ServerSentEventStream {
     private static final String DEFAULT_EVENT = "message";
@@ -96,8 +97,6 @@ public final class ServerSentEventStream {
 
     /**
      * Decodes an SSE response, closing its physical response on completion, failure, or cancellation.
-     *
-     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
         BiFunction<String, String, T> deserializer) {
@@ -109,8 +108,6 @@ public final class ServerSentEventStream {
 
     /**
      * Decodes an SSE response until an inclusive terminal event is emitted, closing its physical response.
-     *
-     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> Flux<ServerSentEvent<T>> toFlux(Response<BinaryData> response,
         BiFunction<String, String, T> deserializer, Predicate<ServerSentEvent<T>> terminalEvent) {
@@ -155,8 +152,6 @@ public final class ServerSentEventStream {
 
     /**
      * Processes an SSE response, closing its physical response on completion, failure, or interruption.
-     *
-     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> deserializer,
         ServerSentEventListener<T> listener) {
@@ -182,8 +177,6 @@ public final class ServerSentEventStream {
 
     /**
      * Processes an SSE response until an inclusive terminal event is delivered, closing its physical response.
-     *
-     * @throws IllegalArgumentException If {@code response} does not implement {@link java.io.Closeable}.
      */
     public static <T> void listen(Response<BinaryData> response, BiFunction<String, String, T> deserializer,
         Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
