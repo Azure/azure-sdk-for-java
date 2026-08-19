@@ -212,37 +212,32 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Lists the IDs of sessions that have active messages in this entity.
+     * Lists the IDs of sessions that have active messages or stored session state in this entity.
      *
-     * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
-     * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
-     * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
-     * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
-     * equivalent on the underlying {@code PagedFlux}).</p>
-     *
-     * @return A {@link PagedIterable} of session ID strings.
-     */
+     * <p>Sessions with neither active messages nor stored session state are excluded.</p>
+    *
+    * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
+    * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
+    * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
+    * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
+    * equivalent on the underlying {@code PagedFlux}).</p>
+    *
+    * @return A {@link PagedIterable} of session ID strings.
+    */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSessions() {
         return new PagedIterable<>(sessionAsyncClient.listSessions());
     }
 
     /**
-     * Lists the IDs of sessions whose state was updated after the specified time.
+    * Lists the IDs of sessions whose state was set or updated after the specified time.
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
      * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
      * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
      * equivalent on the underlying {@code PagedFlux}).</p>
-     *
-     * <p>Values at or beyond the active-messages sentinel value
-     * ({@code new Date(253402300800000L)}, rendered by {@code OffsetDateTime.toString()} as
-     * {@code +10000-01-01T00:00Z}, matching Track 1's {@code SessionBrowser.MAXDATE}) are clamped
-     * to that sentinel and behave the same as {@link #listSessions()}, returning sessions that
-     * have active messages.</p>
-     *
-     * @param sessionStateUpdatedAfter Only sessions whose session state was updated after this time are returned.
+    * @param sessionStateUpdatedAfter Only sessions whose session state was set or updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
      * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */

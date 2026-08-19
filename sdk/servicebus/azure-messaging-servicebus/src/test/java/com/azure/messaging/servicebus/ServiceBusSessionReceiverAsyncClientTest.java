@@ -401,19 +401,19 @@ class ServiceBusSessionReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies the no-arg listSessions() drives the broker with the active-messages sentinel and
+    * Verifies the no-arg listSessions() drives the broker with the default-listing sentinel and
      * collects every page until the broker returns a short page (fewer IDs than the requested page
      * size), which terminates pagination.
      */
     @Test
-    void listSessionsActiveModeStreamsAllPagesUntilShortPage() {
+    void listSessionsDefaultListingModeStreamsAllPagesUntilShortPage() {
         // First page: a full page (100 sessions) continues; server-returned skip = 100.
         final List<String> firstPage = fullPage("s");
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(100),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
             isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
         // Cursor for the second page is server-skip (100) + base64url(lastSessionId "s99"). The second
         // page is short (2 < 100), which terminates pagination.
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(100), eq(100),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
             eq("s99"))).thenReturn(Mono.just(new MessageSessionsResult(Arrays.asList("t1", "t2"), 102)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
@@ -479,11 +479,11 @@ class ServiceBusSessionReceiverAsyncClientTest {
         // page encodes it; a full page also drives the second request under short-page termination.
         final List<String> firstPage = fullPage("x", 99);
         firstPage.add(sessionWithPipe);
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(100),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(100),
             isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 100)));
         // The second-page request must decode the cursor back to lastSessionId=sessionWithPipe intact
         // (pipe and all); the short (empty) page then terminates pagination.
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(100), eq(100),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(100), eq(100),
             eq(sessionWithPipe))).thenReturn(Mono.just(new MessageSessionsResult(Collections.emptyList(), 100)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
@@ -563,9 +563,9 @@ class ServiceBusSessionReceiverAsyncClientTest {
         // page is full (25 items) so a second page is requested; the short second page (1 < 25)
         // terminates pagination.
         final List<String> firstPage = fullPage("s", 25);
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(0), eq(25),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(0), eq(25),
             isNull())).thenReturn(Mono.just(new MessageSessionsResult(firstPage, 25)));
-        when(managementNode.getMessageSessions(eq(ManagementConstants.ACTIVE_MESSAGES_SENTINEL), eq(25), eq(25),
+        when(managementNode.getMessageSessions(eq(ManagementConstants.DEFAULT_LISTING_SENTINEL), eq(25), eq(25),
             eq("s24"))).thenReturn(Mono.just(new MessageSessionsResult(Collections.singletonList("t1"), 26)));
 
         final ServiceBusSessionReceiverAsyncClient client = newSessionReceiver();
