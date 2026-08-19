@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Demonstrates how to asynchronously list sessions using both supported modes. Default listing returns sessions with
@@ -59,7 +60,7 @@ public class ListSessionsAsyncSample {
                     },
                     countdownLatch::countDown);
 
-            countdownLatch.await();
+            countdownLatch.await(30, TimeUnit.SECONDS);
         } finally {
             sessionReceiver.close();
         }

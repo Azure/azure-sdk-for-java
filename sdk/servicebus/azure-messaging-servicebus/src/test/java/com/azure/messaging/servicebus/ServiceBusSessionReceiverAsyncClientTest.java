@@ -401,7 +401,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     }
 
     /**
-    * Verifies the no-arg listSessions() drives the broker with the default-listing sentinel and
+     * Verifies the no-arg listSessions() drives the broker with the default-listing sentinel and
      * collects every page until the broker returns a short page (fewer IDs than the requested page
      * size), which terminates pagination.
      */

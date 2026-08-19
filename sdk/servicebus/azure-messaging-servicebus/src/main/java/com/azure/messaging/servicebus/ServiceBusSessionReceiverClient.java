@@ -215,29 +215,29 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * Lists the IDs of sessions that have active messages or stored session state in this entity.
      *
      * <p>Sessions with neither active messages nor stored session state are excluded.</p>
-    *
-    * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
-    * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
-    * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
-    * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
-    * equivalent on the underlying {@code PagedFlux}).</p>
-    *
-    * @return A {@link PagedIterable} of session ID strings.
-    */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listSessions() {
-        return new PagedIterable<>(sessionAsyncClient.listSessions());
-    }
-
-    /**
-    * Lists the IDs of sessions whose state was set or updated after the specified time.
      *
      * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
      * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
      * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
      * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
      * equivalent on the underlying {@code PagedFlux}).</p>
-    * @param sessionStateUpdatedAfter Only sessions whose session state was set or updated after this time are returned.
+     *
+     * @return A {@link PagedIterable} of session ID strings.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listSessions() {
+        return new PagedIterable<>(sessionAsyncClient.listSessions());
+    }
+
+    /**
+     * Lists the IDs of sessions whose state was set or updated after the specified time.
+     *
+     * <p>The returned {@link PagedIterable} fetches additional pages from the broker on demand;
+     * iterate the {@code PagedIterable} (or call {@link PagedIterable#stream()}) to receive every
+     * session ID. Pages are fetched lazily as the iterator advances. The default page size is 100;
+     * callers can request a different size via {@link PagedIterable#iterableByPage(int)} (or the
+     * equivalent on the underlying {@code PagedFlux}).</p>
+     * @param sessionStateUpdatedAfter Only sessions whose session state was set or updated after this time are returned.
      * @return A {@link PagedIterable} of session ID strings.
      * @throws NullPointerException if {@code sessionStateUpdatedAfter} is null.
      */

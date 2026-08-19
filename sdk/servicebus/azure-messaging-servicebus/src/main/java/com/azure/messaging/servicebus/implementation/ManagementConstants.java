@@ -36,9 +36,9 @@ public class ManagementConstants {
     public static final String SESSION_IDS = "sessions-ids";
 
     /**
-    * Sentinel timestamp the broker recognizes as the default list mode for the
-    * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. This mode returns sessions with active
-    * messages or stored session state and excludes sessions with neither. Matches Track 1's
+     * Sentinel timestamp the broker recognizes as the default list mode for the
+     * {@code OPERATION_GET_MESSAGE_SESSIONS} operation. This mode returns sessions with active
+     * messages or stored session state and excludes sessions with neither. Matches Track 1's
      * {@code SessionBrowser.MAXDATE = new Date(253402300800000L)}
      * (rendered by {@link OffsetDateTime#toString()} as {@code +10000-01-01T00:00Z} - the leading
      * {@code +} is required by ISO 8601 for years with more than four digits); using any other

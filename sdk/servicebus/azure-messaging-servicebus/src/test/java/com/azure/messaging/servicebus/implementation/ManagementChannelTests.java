@@ -1116,10 +1116,10 @@ class ManagementChannelTests {
     }
 
     /**
-    * Verifies getMessageSessions in default listing mode uses the Track 1 default-listing sentinel.
+     * Verifies getMessageSessions in default listing mode uses the Track 1 default-listing sentinel.
      * Track 1's {@code SessionBrowser.MAXDATE} is {@code new Date(253402300800000L)}
      * (10000-01-01T00:00:00Z UTC, 1 ms past 9999-12-31T23:59:59.999Z), which the broker recognizes
-    * as the mode that lists sessions with active messages or stored session state.
+     * as the mode that lists sessions with active messages or stored session state.
      */
     @Test
     void getMessageSessionsDefaultListingMode() {
