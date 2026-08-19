@@ -54,26 +54,36 @@ public final class HostedAgentsSampleUtils {
         AgentVersionDetails agent = createHostedAgentVersion(agentsClient, agentName, image);
         waitForAgentVersionActive(agentsClient, agentName, agent.getVersion());
 
-        AgentSessionResource session = agentsClient.createSessionWithResponse(agentName,
-            BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions()).getValue()
-            .toObject(AgentSessionResource.class);
-        System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(), session.getStatus());
+        AgentSessionResource session = createSession(agentsClient, agentName, agent.getVersion());
 
         return new HostedAgentSessionResources(agent, session);
+    }
+
+    public static AgentSessionResource createSession(AgentsClient agentsClient, String agentName, String agentVersion) {
+        AgentSessionResource session = agentsClient.createSessionWithResponse(agentName,
+            BinaryData.fromObject(createSessionRequest(agentVersion)), new RequestOptions()).getValue()
+            .toObject(AgentSessionResource.class);
+        System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(), session.getStatus());
+        return session;
     }
 
     public static Mono<HostedAgentSessionResources> createAgentAndSessionAsync(AgentsAsyncClient agentsAsyncClient,
         String agentName, String image) {
         return createHostedAgentVersionAsync(agentsAsyncClient, agentName, image)
             .flatMap(agent -> waitForAgentVersionActiveAsync(agentsAsyncClient, agentName, agent.getVersion())
-                .then(agentsAsyncClient.createSessionWithResponse(agentName,
-                    BinaryData.fromObject(createSessionRequest(agent.getVersion())), new RequestOptions())
-                    .map(response -> response.getValue().toObject(AgentSessionResource.class)))
+                .then(createSessionAsync(agentsAsyncClient, agentName, agent.getVersion()))
                 .map(session -> {
-                    System.out.printf("Session created (id: %s, status: %s)%n", session.getAgentSessionId(),
-                        session.getStatus());
                     return new HostedAgentSessionResources(agent, session);
                 }));
+    }
+
+    public static Mono<AgentSessionResource> createSessionAsync(AgentsAsyncClient agentsAsyncClient,
+        String agentName, String agentVersion) {
+        return agentsAsyncClient.createSessionWithResponse(agentName,
+            BinaryData.fromObject(createSessionRequest(agentVersion)), new RequestOptions())
+            .map(response -> response.getValue().toObject(AgentSessionResource.class))
+            .doOnNext(session -> System.out.printf("Session created (id: %s, status: %s)%n",
+                session.getAgentSessionId(), session.getStatus()));
     }
 
     public static void cleanup(AgentsClient agentsClient, String agentName,
