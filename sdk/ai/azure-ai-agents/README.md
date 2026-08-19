@@ -548,19 +548,24 @@ See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-
 
 ---
 
-##### **Fabric IQ (Preview)**
+##### **Fabric IQ (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/fabric-iq))
 
 Connect agents to Fabric IQ project connections for enterprise data grounding:
 
 ```java com.azure.ai.agents.define_fabric_iq
 
 FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-    .setServerLabel("fabric_iq")
+    .setServerLabel("fabriciq-tool")
     .setRequireApproval("never");
 
 ```
 
-See the full sample in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java).
+The samples use `FOUNDRY_PROJECT_ENDPOINT`, `FOUNDRY_MODEL_NAME`, and the fully qualified
+`FABRIC_IQ_PROJECT_CONNECTION_ID`. `FOUNDRY_AGENT_NAME` and `FABRIC_IQ_USER_INPUT` are optional.
+The response text and any returned annotations are printed before the temporary agent version is deleted.
+
+See the full samples in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java)
+and [FabricIQAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQAsync.java).
 
 ---
 

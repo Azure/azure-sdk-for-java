@@ -29,6 +29,8 @@
 - Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
 - Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
   advanced memory-store workflows, and agent optimization.
+- Improved the Fabric IQ sync and async samples with configurable agent names, readable response and annotation
+  output, and reliable asynchronous cleanup.
 - `WorkflowAgentDefinition` documentation was updated to note that Microsoft Foundry is retiring workflows on December 1, 2026, with a link to the workflow migration guide.
 - Regenerated client from the updated TypeSpec specification.
 
