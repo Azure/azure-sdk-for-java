@@ -45,7 +45,7 @@ public final class CreateAgentOptions {
     private String description;
 
     /*
-     * The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * The agent definition. This can be a prompt, workflow, hosted, external, or voice agent definition.
      */
     @Generated
     private final AgentDefinition definition;
@@ -149,8 +149,8 @@ public final class CreateAgentOptions {
     }
 
     /**
-     * Get the definition property: The agent definition. This can be a workflow, hosted agent, or a simple agent
-     * definition.
+     * Get the definition property: The agent definition. This can be a prompt, workflow, hosted, external, or voice
+     * agent definition.
      *
      * @return the definition value.
      */

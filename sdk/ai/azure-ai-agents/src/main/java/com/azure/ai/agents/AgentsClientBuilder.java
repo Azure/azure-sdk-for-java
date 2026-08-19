@@ -63,10 +63,14 @@ import java.util.stream.Stream;
         BetaMemoryStoresClient.class,
         BetaAgentsClient.class,
         AgentsClient.class,
+        VoiceAgentWebSocketClient.class,
+        AgentEndpointConversationsClient.class,
         ToolboxesClient.class,
         BetaMemoryStoresAsyncClient.class,
         BetaAgentsAsyncClient.class,
         AgentsAsyncClient.class,
+        VoiceAgentWebSocketAsyncClient.class,
+        AgentEndpointConversationsAsyncClient.class,
         ToolboxesAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
@@ -680,5 +684,45 @@ public final class AgentsClientBuilder
     @Generated
     public ToolboxesClient buildToolboxesClient() {
         return new ToolboxesClient(buildInnerClient().getToolboxes());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentWebSocketAsyncClient class.
+     *
+     * @return an instance of VoiceAgentWebSocketAsyncClient.
+     */
+    @Generated
+    public VoiceAgentWebSocketAsyncClient buildVoiceAgentWebSocketAsyncClient() {
+        return new VoiceAgentWebSocketAsyncClient(buildInnerClient().getVoiceAgentWebSockets());
+    }
+
+    /**
+     * Builds an instance of AgentEndpointConversationsAsyncClient class.
+     *
+     * @return an instance of AgentEndpointConversationsAsyncClient.
+     */
+    @Generated
+    public AgentEndpointConversationsAsyncClient buildAgentEndpointConversationsAsyncClient() {
+        return new AgentEndpointConversationsAsyncClient(buildInnerClient().getAgentEndpointConversations());
+    }
+
+    /**
+     * Builds an instance of VoiceAgentWebSocketClient class.
+     *
+     * @return an instance of VoiceAgentWebSocketClient.
+     */
+    @Generated
+    public VoiceAgentWebSocketClient buildVoiceAgentWebSocketClient() {
+        return new VoiceAgentWebSocketClient(buildInnerClient().getVoiceAgentWebSockets());
+    }
+
+    /**
+     * Builds an instance of AgentEndpointConversationsClient class.
+     *
+     * @return an instance of AgentEndpointConversationsClient.
+     */
+    @Generated
+    public AgentEndpointConversationsClient buildAgentEndpointConversationsClient() {
+        return new AgentEndpointConversationsClient(buildInnerClient().getAgentEndpointConversations());
     }
 }

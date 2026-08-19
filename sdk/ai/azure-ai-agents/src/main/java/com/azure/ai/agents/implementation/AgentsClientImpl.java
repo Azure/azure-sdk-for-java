@@ -123,6 +123,34 @@ public final class AgentsClientImpl {
     }
 
     /**
+     * The VoiceAgentWebSocketsImpl object to access its operations.
+     */
+    private final VoiceAgentWebSocketsImpl voiceAgentWebSockets;
+
+    /**
+     * Gets the VoiceAgentWebSocketsImpl object to access its operations.
+     * 
+     * @return the VoiceAgentWebSocketsImpl object.
+     */
+    public VoiceAgentWebSocketsImpl getVoiceAgentWebSockets() {
+        return this.voiceAgentWebSockets;
+    }
+
+    /**
+     * The AgentEndpointConversationsImpl object to access its operations.
+     */
+    private final AgentEndpointConversationsImpl agentEndpointConversations;
+
+    /**
+     * Gets the AgentEndpointConversationsImpl object to access its operations.
+     * 
+     * @return the AgentEndpointConversationsImpl object.
+     */
+    public AgentEndpointConversationsImpl getAgentEndpointConversations() {
+        return this.agentEndpointConversations;
+    }
+
+    /**
      * The ToolboxesImpl object to access its operations.
      */
     private final ToolboxesImpl toolboxes;
@@ -187,6 +215,8 @@ public final class AgentsClientImpl {
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
         this.betaAgents = new BetaAgentsImpl(this);
         this.agents = new AgentsImpl(this);
+        this.voiceAgentWebSockets = new VoiceAgentWebSocketsImpl(this);
+        this.agentEndpointConversations = new AgentEndpointConversationsImpl(this);
         this.toolboxes = new ToolboxesImpl(this);
     }
 }
