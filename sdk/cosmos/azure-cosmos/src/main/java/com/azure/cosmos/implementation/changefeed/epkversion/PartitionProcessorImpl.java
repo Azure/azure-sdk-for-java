@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedObserverContextImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.changefeed.common.ExceptionClassifier;
 import com.azure.cosmos.implementation.changefeed.common.StatusCodeErrorType;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
@@ -197,10 +198,20 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn(
-                        "Lease with token " + this.lease.getLeaseToken() + ": CosmosException was thrown from thread " +
-                            Thread.currentThread().getId() + " for lease with owner " + this.lease.getOwner(),
-                        clientException);
+                    if (Exceptions.isCommonlyExpectedExceptionPossiblyCausingNoisyLogs(
+                        clientException.getStatusCode(), clientException.getSubStatusCode())) {
+                        logger.warn(
+                            "Lease with token {}: CosmosException was thrown from thread {} for lease with owner {} {}",
+                            this.lease.getLeaseToken(),
+                            Thread.currentThread().getId(),
+                            this.lease.getOwner(),
+                            clientException.getShortMessage());
+                    } else {
+                        logger.warn(
+                            "Lease with token " + this.lease.getLeaseToken() + ": CosmosException was thrown from thread " +
+                                Thread.currentThread().getId() + " for lease with owner " + this.lease.getOwner(),
+                            clientException);
+                    }
                     StatusCodeErrorType docDbError =
                         ExceptionClassifier.classifyClientException(clientException);
 
