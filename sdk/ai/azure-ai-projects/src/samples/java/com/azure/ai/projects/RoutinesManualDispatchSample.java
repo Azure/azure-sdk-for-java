@@ -51,6 +51,7 @@ public class RoutinesManualDispatchSample {
             // The sample routine does not already exist.
         }
 
+        Routine created = null;
         try {
             RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
             CustomRoutineTrigger trigger = new CustomRoutineTrigger("manual",
@@ -58,7 +59,7 @@ public class RoutinesManualDispatchSample {
             Map<String, RoutineTrigger> triggers = new HashMap<>();
             triggers.put("manual", trigger);
 
-            Routine created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
+            created = routinesClient.createOrUpdateRoutine(ROUTINE_NAME,
                 "Routine used by manual dispatch sample.", true, triggers, action);
             System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
 
@@ -71,11 +72,13 @@ public class RoutinesManualDispatchSample {
 
             System.out.printf("Waiting up to %d minutes for the dispatched run...%n", RUN_TIMEOUT.toMinutes());
             RoutineRun completedRun = RoutinesSampleUtils.waitForCompletedRun(routinesClient, created.getName(),
-                RUN_TIMEOUT);
+                dispatch.getDispatchId(), RUN_TIMEOUT);
             RoutinesSampleUtils.reportRun(completedRun, RUN_TIMEOUT);
         } finally {
-            routinesClient.deleteRoutine(ROUTINE_NAME);
-            System.out.println("Routine deleted");
+            if (created != null) {
+                routinesClient.deleteRoutine(ROUTINE_NAME);
+                System.out.println("Routine deleted");
+            }
         }
     }
 }

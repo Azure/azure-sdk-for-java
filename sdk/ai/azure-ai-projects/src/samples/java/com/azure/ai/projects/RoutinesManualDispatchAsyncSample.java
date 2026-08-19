@@ -47,7 +47,7 @@ public class RoutinesManualDispatchAsyncSample {
         Map<String, RoutineTrigger> triggers = new HashMap<>();
         triggers.put("manual", trigger);
 
-        routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
+        Mono<Void> workflow = routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
                 "Routine used by manual dispatch sample.", true, triggers, action))
@@ -61,11 +61,16 @@ public class RoutinesManualDispatchAsyncSample {
                         System.out.printf("Waiting up to %d minutes for the dispatched run...%n",
                             RUN_TIMEOUT.toMinutes());
                         return RoutinesSampleUtils.waitForCompletedRunAsync(routinesAsyncClient, created.getName(),
-                                RUN_TIMEOUT)
+                                dispatch.getDispatchId(), RUN_TIMEOUT)
                             .doOnNext(completedRun -> RoutinesSampleUtils.reportRun(completedRun, RUN_TIMEOUT))
                             .then();
                     });
-            })
+            });
+
+        workflow
+            .onErrorResume(error -> routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
+                .onErrorResume(ignored -> Mono.empty())
+                .then(Mono.<Void>error(error)))
             .then(routinesAsyncClient.deleteRoutine(ROUTINE_NAME))
             .doOnSuccess(unused -> System.out.println("Routine deleted"))
             .block();
