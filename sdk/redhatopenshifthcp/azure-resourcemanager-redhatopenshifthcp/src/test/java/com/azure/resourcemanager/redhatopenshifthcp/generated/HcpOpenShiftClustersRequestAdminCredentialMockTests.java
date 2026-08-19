@@ -11,6 +11,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredential;
+import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredentialRequest;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class HcpOpenShiftClustersRequestAdminCredentialMockTests {
     @Test
     public void testRequestAdminCredential() throws Exception {
-        String responseStr = "{\"kubeconfig\":\"fatkld\",\"expirationTimestamp\":\"2021-04-08T15:13:01Z\"}";
+        String responseStr = "{\"kubeconfig\":\"oz\",\"expirationTimestamp\":\"2021-03-28T00:35:09Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +30,9 @@ public final class HcpOpenShiftClustersRequestAdminCredentialMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HcpOpenShiftClusterAdminCredential response = manager.hcpOpenShiftClusters()
-            .requestAdminCredential("vxwc", "elpcirelsfeaenwa", com.azure.core.util.Context.NONE);
+            .requestAdminCredential("vxwc", "elpcirelsfeaenwa",
+                new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest("atklddxbjhwuaa"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

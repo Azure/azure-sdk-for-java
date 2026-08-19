@@ -38,6 +38,7 @@ import com.azure.resourcemanager.redhatopenshifthcp.fluent.HcpOpenShiftClustersC
 import com.azure.resourcemanager.redhatopenshifthcp.fluent.models.HcpOpenShiftClusterAdminCredentialInner;
 import com.azure.resourcemanager.redhatopenshifthcp.fluent.models.HcpOpenShiftClusterInner;
 import com.azure.resourcemanager.redhatopenshifthcp.implementation.models.HcpOpenShiftClusterListResult;
+import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredentialRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -187,25 +188,25 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/requestAdminCredential")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> requestAdminCredential(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hcpOpenShiftClusterName") String hcpOpenShiftClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("hcpOpenShiftClusterName") String hcpOpenShiftClusterName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") HcpOpenShiftClusterAdminCredentialRequest body, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/requestAdminCredential")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> requestAdminCredentialSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hcpOpenShiftClusterName") String hcpOpenShiftClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("hcpOpenShiftClusterName") String hcpOpenShiftClusterName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") HcpOpenShiftClusterAdminCredentialRequest body, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/revokeCredentials")
@@ -1044,6 +1045,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1051,12 +1053,13 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> requestAdminCredentialWithResponseAsync(String resourceGroupName,
-        String hcpOpenShiftClusterName) {
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.requestAdminCredential(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, context))
+            .withContext(context -> service.requestAdminCredential(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
+                hcpOpenShiftClusterName, contentType, accept, body, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1065,6 +1068,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1072,10 +1076,12 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> requestAdminCredentialWithResponse(String resourceGroupName,
-        String hcpOpenShiftClusterName) {
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.requestAdminCredentialSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, contentType, accept, body,
+            Context.NONE);
     }
 
     /**
@@ -1083,6 +1089,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1091,10 +1098,12 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> requestAdminCredentialWithResponse(String resourceGroupName,
-        String hcpOpenShiftClusterName, Context context) {
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body, Context context) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.requestAdminCredentialSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, hcpOpenShiftClusterName, contentType, accept, body,
+            context);
     }
 
     /**
@@ -1102,6 +1111,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1109,9 +1119,10 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HcpOpenShiftClusterAdminCredentialInner>, HcpOpenShiftClusterAdminCredentialInner>
-        beginRequestAdminCredentialAsync(String resourceGroupName, String hcpOpenShiftClusterName) {
+        beginRequestAdminCredentialAsync(String resourceGroupName, String hcpOpenShiftClusterName,
+            HcpOpenShiftClusterAdminCredentialRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = requestAdminCredentialWithResponseAsync(resourceGroupName, hcpOpenShiftClusterName);
+            = requestAdminCredentialWithResponseAsync(resourceGroupName, hcpOpenShiftClusterName, body);
         return this.client
             .<HcpOpenShiftClusterAdminCredentialInner, HcpOpenShiftClusterAdminCredentialInner>getLroResult(mono,
                 this.client.getHttpPipeline(), HcpOpenShiftClusterAdminCredentialInner.class,
@@ -1123,6 +1134,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1130,8 +1142,10 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterAdminCredentialInner>, HcpOpenShiftClusterAdminCredentialInner>
-        beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName) {
-        Response<BinaryData> response = requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName);
+        beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
+            HcpOpenShiftClusterAdminCredentialRequest body) {
+        Response<BinaryData> response
+            = requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName, body);
         return this.client
             .<HcpOpenShiftClusterAdminCredentialInner, HcpOpenShiftClusterAdminCredentialInner>getLroResult(response,
                 HcpOpenShiftClusterAdminCredentialInner.class, HcpOpenShiftClusterAdminCredentialInner.class,
@@ -1143,6 +1157,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1151,9 +1166,10 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HcpOpenShiftClusterAdminCredentialInner>, HcpOpenShiftClusterAdminCredentialInner>
-        beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName, Context context) {
+        beginRequestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
+            HcpOpenShiftClusterAdminCredentialRequest body, Context context) {
         Response<BinaryData> response
-            = requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName, context);
+            = requestAdminCredentialWithResponse(resourceGroupName, hcpOpenShiftClusterName, body, context);
         return this.client
             .<HcpOpenShiftClusterAdminCredentialInner, HcpOpenShiftClusterAdminCredentialInner>getLroResult(response,
                 HcpOpenShiftClusterAdminCredentialInner.class, HcpOpenShiftClusterAdminCredentialInner.class, context);
@@ -1164,6 +1180,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1171,8 +1188,8 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HcpOpenShiftClusterAdminCredentialInner> requestAdminCredentialAsync(String resourceGroupName,
-        String hcpOpenShiftClusterName) {
-        return beginRequestAdminCredentialAsync(resourceGroupName, hcpOpenShiftClusterName).last()
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
+        return beginRequestAdminCredentialAsync(resourceGroupName, hcpOpenShiftClusterName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1181,6 +1198,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1188,8 +1206,8 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterAdminCredentialInner requestAdminCredential(String resourceGroupName,
-        String hcpOpenShiftClusterName) {
-        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName).getFinalResult();
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
+        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body).getFinalResult();
     }
 
     /**
@@ -1197,6 +1215,7 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1205,8 +1224,8 @@ public final class HcpOpenShiftClustersClientImpl implements HcpOpenShiftCluster
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HcpOpenShiftClusterAdminCredentialInner requestAdminCredential(String resourceGroupName,
-        String hcpOpenShiftClusterName, Context context) {
-        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, context).getFinalResult();
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body, Context context) {
+        return beginRequestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, context).getFinalResult();
     }
 
     /**

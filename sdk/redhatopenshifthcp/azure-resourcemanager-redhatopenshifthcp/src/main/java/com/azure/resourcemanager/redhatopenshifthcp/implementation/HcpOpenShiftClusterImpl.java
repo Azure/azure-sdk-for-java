@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.redhatopenshifthcp.fluent.models.HcpOpenShiftClusterInner;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftCluster;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredential;
+import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredentialRequest;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterProperties;
 import com.azure.resourcemanager.redhatopenshifthcp.models.ManagedServiceIdentity;
 import java.util.Collections;
@@ -151,13 +152,15 @@ public final class HcpOpenShiftClusterImpl
         return this;
     }
 
-    public HcpOpenShiftClusterAdminCredential requestAdminCredential() {
-        return serviceManager.hcpOpenShiftClusters().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName);
+    public HcpOpenShiftClusterAdminCredential requestAdminCredential(HcpOpenShiftClusterAdminCredentialRequest body) {
+        return serviceManager.hcpOpenShiftClusters()
+            .requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body);
     }
 
-    public HcpOpenShiftClusterAdminCredential requestAdminCredential(Context context) {
+    public HcpOpenShiftClusterAdminCredential requestAdminCredential(HcpOpenShiftClusterAdminCredentialRequest body,
+        Context context) {
         return serviceManager.hcpOpenShiftClusters()
-            .requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, context);
+            .requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, context);
     }
 
     public void revokeCredentials() {

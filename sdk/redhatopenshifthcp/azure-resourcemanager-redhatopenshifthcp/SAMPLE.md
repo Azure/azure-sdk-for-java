@@ -64,7 +64,7 @@ import java.util.Arrays;
  */
 public final class ExternalAuthsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_CreateOrUpdate_MaximumSet.
@@ -111,7 +111,7 @@ public final class ExternalAuthsCreateOrUpdateSamples {
  */
 public final class ExternalAuthsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_Delete_MaximumSet.
@@ -134,7 +134,7 @@ public final class ExternalAuthsDeleteSamples {
  */
 public final class ExternalAuthsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_Get_MaximumSet.
@@ -157,7 +157,7 @@ public final class ExternalAuthsGetSamples {
  */
 public final class ExternalAuthsListByParentSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_ListByParent_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_ListByParent_MaximumSet.
@@ -195,7 +195,7 @@ import java.util.Arrays;
  */
 public final class ExternalAuthsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_Update_MaximumSet.
@@ -275,7 +275,7 @@ import java.util.Map;
  */
 public final class HcpOpenShiftClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_CreateOrUpdate.
@@ -365,7 +365,7 @@ public final class HcpOpenShiftClustersCreateOrUpdateSamples {
  */
 public final class HcpOpenShiftClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_Delete.
@@ -387,7 +387,7 @@ public final class HcpOpenShiftClustersDeleteSamples {
  */
 public final class HcpOpenShiftClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_Get.
@@ -410,7 +410,7 @@ public final class HcpOpenShiftClustersGetByResourceGroupSamples {
  */
 public final class HcpOpenShiftClustersListSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_ListBySubscription.
@@ -432,7 +432,7 @@ public final class HcpOpenShiftClustersListSamples {
  */
 public final class HcpOpenShiftClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_ListByResourceGroup.
@@ -449,12 +449,14 @@ public final class HcpOpenShiftClustersListByResourceGroupSamples {
 ### HcpOpenShiftClusters_RequestAdminCredential
 
 ```java
+import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredentialRequest;
+
 /**
  * Samples for HcpOpenShiftClusters RequestAdminCredential.
  */
 public final class HcpOpenShiftClustersRequestAdminCredentialSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_RequestAdminCredential_MaximumSet.
@@ -464,7 +466,10 @@ public final class HcpOpenShiftClustersRequestAdminCredentialSamples {
     public static void hcpOpenShiftClustersRequestAdminCredentialMaximumSet(
         com.azure.resourcemanager.redhatopenshifthcp.RedHatOpenShiftHostedControlPlanesManager manager) {
         manager.hcpOpenShiftClusters()
-            .requestAdminCredential("rgopenapi", "hcpCluster-name", com.azure.core.util.Context.NONE);
+            .requestAdminCredential("rgopenapi", "hcpCluster-name",
+                new HcpOpenShiftClusterAdminCredentialRequest().withCertificateSigningRequest(
+                    "-----BEGIN CERTIFICATE REQUEST-----\nMIIBhTCB7wIBADBFMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExDjAMBgNVBAoM\nBVRlc3QxGTAXBgNVBAMMEHRlc3QuZXhhbXBsZS5jb20wdjAQBgcqhkjOPQIBBgUr\ngQQAIgNiAARIm+7hphQ7m8kzCB5keJ3lPVQvsEH6ABXz0kIvxkNF7+OBFCdPJIBT\nksaGJnJFfPUROYGJIo7FMOO/vEqE9gHqRCVao0RPDaZLtceCYqbeI0vFhW7qTmYL\nNp/RTer7C0+gITAfBgkqhkiG9w0BCQ4xEjAQMA4GA1UdEQQHMAWCA2FiYzAKBggq\nhkjOPQQDAgNoADBlAjBLQDR3K8k1XPFH3Y0oEFYrBi3L4FOX0kz0aK/JuFJN/kBP\nA2ViVNHl+5iVxvpJE5sCMQCF+nPr18qRaib09BHSBKl+ZVpXC1K3PN/VGjYv+Zjl\nK8eCiPwwRBpRMbqMSXxlS3Q=\n-----END CERTIFICATE REQUEST-----\n"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -477,7 +482,7 @@ public final class HcpOpenShiftClustersRequestAdminCredentialSamples {
  */
 public final class HcpOpenShiftClustersRevokeCredentialsSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_RevokeCredentials_MaximumSet.
@@ -507,7 +512,7 @@ import java.util.Map;
  */
 public final class HcpOpenShiftClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_Update.
@@ -550,7 +555,7 @@ public final class HcpOpenShiftClustersUpdateSamples {
  */
 public final class HcpOpenShiftVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftVersions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftVersions_Get_MaximumSet - generated by [MaximumSet] rule.
@@ -572,7 +577,7 @@ public final class HcpOpenShiftVersionsGetSamples {
  */
 public final class HcpOpenShiftVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftVersions_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftVersions_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftVersions_List_MaximumSet - generated by [MaximumSet] rule.
@@ -594,7 +599,7 @@ public final class HcpOpenShiftVersionsListSamples {
  */
 public final class HcpOperatorIdentityRoleSetsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOperatorIdentityRoleSets_Get_MaximumSet.
@@ -617,7 +622,7 @@ public final class HcpOperatorIdentityRoleSetsGetSamples {
  */
 public final class HcpOperatorIdentityRoleSetsListSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOperatorIdentityRoleSets_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOperatorIdentityRoleSets_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOperatorIdentityRoleSets_List_MaximumSet.
@@ -653,7 +658,7 @@ import java.util.Map;
  */
 public final class NodePoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_CreateOrUpdate.
@@ -711,7 +716,7 @@ public final class NodePoolsCreateOrUpdateSamples {
  */
 public final class NodePoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_Delete.
@@ -733,7 +738,7 @@ public final class NodePoolsDeleteSamples {
  */
 public final class NodePoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_Get.
@@ -756,7 +761,7 @@ public final class NodePoolsGetSamples {
  */
 public final class NodePoolsListByParentSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_ListByParent_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_ListByParent.
@@ -791,7 +796,7 @@ import java.util.Map;
  */
 public final class NodePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_Update.
@@ -838,7 +843,7 @@ public final class NodePoolsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Maximum.
@@ -851,7 +856,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-30-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Minimum.

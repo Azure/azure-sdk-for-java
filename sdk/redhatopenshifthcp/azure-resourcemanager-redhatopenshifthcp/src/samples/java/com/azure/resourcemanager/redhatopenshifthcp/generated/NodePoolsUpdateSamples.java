@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class NodePoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_Update.

@@ -22,7 +22,7 @@ public final class HcpOpenShiftVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"channelGroup\":\"yfwnylr\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-04-16T19:38:50Z\"},\"id\":\"sttp\",\"name\":\"iwkkbn\",\"type\":\"jrywvtylbfpnc\"}]}";
+            = "{\"value\":[{\"properties\":{\"channelGroup\":\"gnyhmossxkkg\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-06-21T18:07:23Z\"},\"id\":\"hxjbdhqxvc\",\"name\":\"gf\",\"type\":\"pdso\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class HcpOpenShiftVersionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HcpOpenShiftVersion> response
-            = manager.hcpOpenShiftVersions().list("jujbypelmcuvhixb", com.azure.core.util.Context.NONE);
+            = manager.hcpOpenShiftVersions().list("sgogczhonnxk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yfwnylr", response.iterator().next().properties().channelGroup());
+        Assertions.assertEquals("gnyhmossxkkg", response.iterator().next().properties().channelGroup());
         Assertions.assertFalse(response.iterator().next().properties().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T19:38:50Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T18:07:23Z"),
             response.iterator().next().properties().endOfLifeTimestamp());
     }
 }

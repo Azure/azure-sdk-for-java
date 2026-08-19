@@ -42,7 +42,7 @@ import java.util.Map;
  */
 public final class HcpOpenShiftClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_CreateOrUpdate.

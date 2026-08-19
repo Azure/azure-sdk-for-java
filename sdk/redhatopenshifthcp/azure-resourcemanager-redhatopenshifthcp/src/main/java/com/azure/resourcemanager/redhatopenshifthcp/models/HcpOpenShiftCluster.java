@@ -300,22 +300,26 @@ public interface HcpOpenShiftCluster {
     /**
      * Request a temporary admin kubeconfig for the cluster.
      * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hCP cluster admin credential.
      */
-    HcpOpenShiftClusterAdminCredential requestAdminCredential();
+    HcpOpenShiftClusterAdminCredential requestAdminCredential(HcpOpenShiftClusterAdminCredentialRequest body);
 
     /**
      * Request a temporary admin kubeconfig for the cluster.
      * 
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hCP cluster admin credential.
      */
-    HcpOpenShiftClusterAdminCredential requestAdminCredential(Context context);
+    HcpOpenShiftClusterAdminCredential requestAdminCredential(HcpOpenShiftClusterAdminCredentialRequest body,
+        Context context);
 
     /**
      * Revoke all credentials issued by requestAdminCredential.

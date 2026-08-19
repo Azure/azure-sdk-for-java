@@ -35,7 +35,7 @@ public final class ExternalAuthsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":{\"conditions\":[{\"type\":\"Available\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2021-08-05T12:13:03Z\",\"reason\":\"ikdgszywkbir\",\"message\":\"yuzhlhkjoqrvq\"},{\"type\":\"Degraded\",\"status\":\"False\",\"lastTransitionTime\":\"2021-10-29T20:59:14Z\",\"reason\":\"jinrvgoupmfiibfg\",\"message\":\"jioolvrwxk\"}]},\"issuer\":{\"url\":\"tkkgllqwjy\",\"audiences\":[\"jayvblmhv\",\"zuhbxvvyhgsopb\",\"rqufegxuvwz\",\"bnhlmc\"],\"ca\":\"p\"},\"clients\":[{\"component\":{\"name\":\"itvgbmhrixkwm\",\"authClientNamespace\":\"ijejvegrhbpn\"},\"clientId\":\"ixexcc\",\"extraScopes\":[\"eaxhcexdrrvqahqk\",\"htpwij\",\"hyjsvfycx\"],\"type\":\"Public\"},{\"component\":{\"name\":\"fvoow\",\"authClientNamespace\":\"rvmtgjq\"},\"clientId\":\"pyostronzmyhgfi\",\"extraScopes\":[\"xkmcwaekrrjre\"],\"type\":\"Confidential\"}],\"claim\":{\"mappings\":{\"username\":{\"claim\":\"xt\",\"prefix\":\"umh\",\"prefixPolicy\":\"NoPrefix\"},\"groups\":{\"claim\":\"kkxwslol\",\"prefix\":\"pvuzlmv\"}},\"validationRules\":[{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"gplcrpwjxeznoigb\",\"requiredValue\":\"njwmwkpnbsazejj\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"gfhsxttaugzxn\",\"requiredValue\":\"aa\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"tnkdmkqj\",\"requiredValue\":\"lwuenvrkp\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"ibreb\",\"requiredValue\":\"aays\"}}]}},\"id\":\"ixqtn\",\"name\":\"ttezlw\",\"type\":\"ffiakp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":{\"conditions\":[{\"type\":\"Available\",\"status\":\"True\",\"lastTransitionTime\":\"2021-02-19T04:07:09Z\",\"reason\":\"on\",\"message\":\"myhgfipnsxkmc\"},{\"type\":\"Available\",\"status\":\"Unknown\",\"lastTransitionTime\":\"2020-12-24T09:43:24Z\",\"reason\":\"rrjreafxtsgu\",\"message\":\"hjglikk\"}]},\"issuer\":{\"url\":\"wslolbqp\",\"audiences\":[\"zlmvfelfktgp\"],\"ca\":\"rpw\"},\"clients\":[{\"component\":{\"name\":\"znoigbrn\",\"authClientNamespace\":\"w\"},\"clientId\":\"wkpnbsaz\",\"extraScopes\":[\"oqkag\",\"hsxttaugzxnf\",\"azpxdtnkdmkqjjl\"],\"type\":\"Confidential\"},{\"component\":{\"name\":\"envrkpyouaibrebq\",\"authClientNamespace\":\"aysjkixqtnqttez\"},\"clientId\":\"wfff\",\"extraScopes\":[\"pjpqqmtedltmmji\"],\"type\":\"Public\"}],\"claim\":{\"mappings\":{\"username\":{\"claim\":\"eozphv\",\"prefix\":\"uyqncygupkvipmd\",\"prefixPolicy\":\"NoPrefix\"},\"groups\":{\"claim\":\"qupevzh\",\"prefix\":\"totxhojujb\"}},\"validationRules\":[{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"uvhixbjxyfwn\",\"requiredValue\":\"lrcoolsttpki\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"nujrywvtyl\",\"requiredValue\":\"fpncurdo\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"thtywub\",\"requiredValue\":\"cbihwqk\"}},{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"twjchrdg\",\"requiredValue\":\"ihxumwctondzj\"}}]}},\"id\":\"udfdlwgg\",\"name\":\"tsbwtovvtgse\",\"type\":\"nqfiufxqknpi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -45,61 +45,69 @@ public final class ExternalAuthsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExternalAuth response = manager.externalAuths()
-            .define("pgvmpipaslthaqfx")
-            .withExistingHcpOpenShiftCluster("ayuhqlbjbsy", "bqwrvtldgm")
-            .withProperties(new ExternalAuthProperties().withIssuer(
-                new TokenIssuerProfile().withUrl("lfzxiavrmbzonoki").withAudiences(Arrays.asList("jq")).withCa("rgz"))
+            .define("otzi")
+            .withExistingHcpOpenShiftCluster("fzdm", "yqtfihwh")
+            .withProperties(new ExternalAuthProperties()
+                .withIssuer(new TokenIssuerProfile().withUrl("cjaesgvvs")
+                    .withAudiences(Arrays.asList("yajguqfhwygzlv", "nk"))
+                    .withCa("usemdwzrmuhap"))
                 .withClients(Arrays.asList(
                     new ExternalAuthClientProfile()
-                        .withComponent(new ExternalAuthClientComponentProfile().withName("lazszrn")
-                            .withAuthClientNamespace("oiindfpwpjy"))
-                        .withClientId("wbtlhflsjcdh")
-                        .withExtraScopes(Arrays.asList("jvfbgofelja", "rqmq", "ldvriiiojnalghfk", "tvsexsowuel"))
-                        .withType(ExternalAuthClientType.PUBLIC),
-                    new ExternalAuthClientProfile()
-                        .withComponent(new ExternalAuthClientComponentProfile().withName("hhahhxvrhmzkwpjg")
-                            .withAuthClientNamespace("wspughftqsxhqx"))
-                        .withClientId("j")
-                        .withExtraScopes(Arrays.asList("ndxdigrjguufzdm", "yqtfihwh", "otzi"))
+                        .withComponent(new ExternalAuthClientComponentProfile().withName("dpsqx")
+                            .withAuthClientNamespace("vpsvuoymgcce"))
+                        .withClientId("vezrypqlmfeo")
+                        .withExtraScopes(Arrays.asList("qwkyhkobop", "xedk"))
                         .withType(ExternalAuthClientType.CONFIDENTIAL),
                     new ExternalAuthClientProfile()
-                        .withComponent(new ExternalAuthClientComponentProfile().withName("amvpphoszqzudph")
-                            .withAuthClientNamespace("amvdkfwynwcvtbv"))
-                        .withClientId("ayhmtnvyqiatkz")
-                        .withExtraScopes(Arrays.asList("npwzcjaes", "vvsccyajguq", "hwyg", "lvdnkfx"))
+                        .withComponent(new ExternalAuthClientComponentProfile().withName("epbqpcrfkbw")
+                            .withAuthClientNamespace("csnjvcdwxlpqekft"))
+                        .withClientId("khtj")
+                        .withExtraScopes(Arrays.asList("ngwfqatm"))
+                        .withType(ExternalAuthClientType.PUBLIC),
+                    new ExternalAuthClientProfile()
+                        .withComponent(new ExternalAuthClientComponentProfile().withName("htmdvy")
+                            .withAuthClientNamespace("gikdgsz"))
+                        .withClientId("w")
+                        .withExtraScopes(Arrays.asList("rryuzhlhkjo", "rvqqaatj", "nrvgoupmfiibfgg"))
                         .withType(ExternalAuthClientType.PUBLIC)))
                 .withClaim(new ExternalAuthClaimProfile()
                     .withMappings(new TokenClaimMappingsProfile()
-                        .withUsername(new UsernameClaimProfile().withClaim("emdwzrmuhapfc")
-                            .withPrefix("psqxq")
-                            .withPrefixPolicy(UsernameClaimPrefixPolicy.NO_PREFIX))
-                        .withGroups(new GroupClaimProfile().withClaim("uoymgccelvezry").withPrefix("lmfeokerq")))
+                        .withUsername(new UsernameClaimProfile().withClaim("ool")
+                            .withPrefix("wxkvtkkgll")
+                            .withPrefixPolicy(UsernameClaimPrefixPolicy.PREFIX))
+                        .withGroups(new GroupClaimProfile().withClaim("gvjayvblmh").withPrefix("zuhbxvvyhgsopb")))
                     .withValidationRules(
                         Arrays.asList(new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
-                            .withRequiredClaim(new TokenRequiredClaim().withClaim("bopgxedkowepbqp")
-                                .withRequiredValue("rfkbwccsnjvcdwxl"))))))
+                            .withRequiredClaim(new TokenRequiredClaim().withClaim("g").withRequiredValue("uvwzfbnh")),
+                            new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
+                                .withRequiredClaim(new TokenRequiredClaim().withClaim("l").withRequiredValue("dn")),
+                            new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
+                                .withRequiredClaim(new TokenRequiredClaim().withClaim("gbmhrixkwmyi")
+                                    .withRequiredValue("ejvegrhbpnaixex")),
+                            new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
+                                .withRequiredClaim(new TokenRequiredClaim().withClaim("reaxhcexdr")
+                                    .withRequiredValue("vqahqkghtpwi"))))))
             .create();
 
-        Assertions.assertEquals("tkkgllqwjy", response.properties().issuer().url());
-        Assertions.assertEquals("jayvblmhv", response.properties().issuer().audiences().get(0));
-        Assertions.assertEquals("p", response.properties().issuer().ca());
-        Assertions.assertEquals("itvgbmhrixkwm", response.properties().clients().get(0).component().name());
-        Assertions.assertEquals("ijejvegrhbpn",
-            response.properties().clients().get(0).component().authClientNamespace());
-        Assertions.assertEquals("ixexcc", response.properties().clients().get(0).clientId());
-        Assertions.assertEquals("eaxhcexdrrvqahqk", response.properties().clients().get(0).extraScopes().get(0));
-        Assertions.assertEquals(ExternalAuthClientType.PUBLIC, response.properties().clients().get(0).type());
-        Assertions.assertEquals("xt", response.properties().claim().mappings().username().claim());
-        Assertions.assertEquals("umh", response.properties().claim().mappings().username().prefix());
+        Assertions.assertEquals("wslolbqp", response.properties().issuer().url());
+        Assertions.assertEquals("zlmvfelfktgp", response.properties().issuer().audiences().get(0));
+        Assertions.assertEquals("rpw", response.properties().issuer().ca());
+        Assertions.assertEquals("znoigbrn", response.properties().clients().get(0).component().name());
+        Assertions.assertEquals("w", response.properties().clients().get(0).component().authClientNamespace());
+        Assertions.assertEquals("wkpnbsaz", response.properties().clients().get(0).clientId());
+        Assertions.assertEquals("oqkag", response.properties().clients().get(0).extraScopes().get(0));
+        Assertions.assertEquals(ExternalAuthClientType.CONFIDENTIAL, response.properties().clients().get(0).type());
+        Assertions.assertEquals("eozphv", response.properties().claim().mappings().username().claim());
+        Assertions.assertEquals("uyqncygupkvipmd", response.properties().claim().mappings().username().prefix());
         Assertions.assertEquals(UsernameClaimPrefixPolicy.NO_PREFIX,
             response.properties().claim().mappings().username().prefixPolicy());
-        Assertions.assertEquals("kkxwslol", response.properties().claim().mappings().groups().claim());
-        Assertions.assertEquals("pvuzlmv", response.properties().claim().mappings().groups().prefix());
+        Assertions.assertEquals("qupevzh", response.properties().claim().mappings().groups().claim());
+        Assertions.assertEquals("totxhojujb", response.properties().claim().mappings().groups().prefix());
         Assertions.assertEquals(TokenValidationRuleType.REQUIRED_CLAIM,
             response.properties().claim().validationRules().get(0).type());
-        Assertions.assertEquals("gplcrpwjxeznoigb",
+        Assertions.assertEquals("uvhixbjxyfwn",
             response.properties().claim().validationRules().get(0).requiredClaim().claim());
-        Assertions.assertEquals("njwmwkpnbsazejj",
+        Assertions.assertEquals("lrcoolsttpki",
             response.properties().claim().validationRules().get(0).requiredClaim().requiredValue());
     }
 }

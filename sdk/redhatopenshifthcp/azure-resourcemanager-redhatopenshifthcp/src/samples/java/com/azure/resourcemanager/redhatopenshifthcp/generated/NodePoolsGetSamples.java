@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redhatopenshifthcp.generated;
  */
 public final class NodePoolsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_Get.

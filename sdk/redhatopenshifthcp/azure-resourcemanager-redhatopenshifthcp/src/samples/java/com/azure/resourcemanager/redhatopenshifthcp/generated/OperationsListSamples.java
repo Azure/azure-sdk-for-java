@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redhatopenshifthcp.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Maximum.
@@ -22,7 +22,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-30-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_Minimum.

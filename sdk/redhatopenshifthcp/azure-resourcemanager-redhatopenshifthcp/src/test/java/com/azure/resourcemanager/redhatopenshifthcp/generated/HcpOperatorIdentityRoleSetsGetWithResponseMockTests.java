@@ -22,7 +22,7 @@ public final class HcpOperatorIdentityRoleSetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"vjzhpjbib\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"fxumv\",\"resourceId\":\"cluyovwxnbkf\"},{\"name\":\"zzxscyhwzdgiruj\",\"resourceId\":\"zbomvzzbtdcqvpni\"},{\"name\":\"ujviylwdshfs\",\"resourceId\":\"n\"},{\"name\":\"bgye\",\"resourceId\":\"rymsgaojfmw\"}]},{\"name\":\"cotmr\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"rctym\",\"resourceId\":\"xoftpipiwyczu\"},{\"name\":\"xacpqjli\",\"resourceId\":\"hyus\"},{\"name\":\"skasdvlmfwdgzxu\",\"resourceId\":\"ucvpamrs\"},{\"name\":\"euzvx\",\"resourceId\":\"risjnhnytxifqjz\"}]},{\"name\":\"xmrhu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"pcesutrg\",\"resourceId\":\"upauut\"}]},{\"name\":\"woqhihe\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"w\",\"resourceId\":\"pnfqntcyp\"}]}],\"dataPlaneOperators\":[{\"name\":\"jv\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"mwks\",\"resourceId\":\"ircizjxvy\"},{\"name\":\"fceacvlhvygd\",\"resourceId\":\"ftumrtwnawjslbiw\"},{\"name\":\"ojgcyzt\",\"resourceId\":\"fmznba\"}]},{\"name\":\"qphchqnrnrpxehuw\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"qgaifmviklbydv\",\"resourceId\":\"hbejdznxcvdsrhnj\"}]},{\"name\":\"volvtn\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"fzg\",\"resourceId\":\"mjdftu\"},{\"name\":\"jltduceam\",\"resourceId\":\"mczuo\"},{\"name\":\"ejwcwwqiok\",\"resourceId\":\"ssxmojms\"}]}]},\"id\":\"kjprvk\",\"name\":\"cfzq\",\"type\":\"jyxgtczh\"}";
+            = "{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"mfwdgzxu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"vpa\",\"resourceId\":\"rsre\"}]},{\"name\":\"zvxurisjnhny\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"fq\",\"resourceId\":\"zgxmr\"},{\"name\":\"ublwpcesutrg\",\"resourceId\":\"upauut\"}]}],\"dataPlaneOperators\":[{\"name\":\"oqh\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"jqgwzp\",\"resourceId\":\"fqntcyp\"},{\"name\":\"xjvfoimwksl\",\"resourceId\":\"rcizjxvyd\"}]},{\"name\":\"ceacvlhvygdy\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"mrtwna\",\"resourceId\":\"jslb\"},{\"name\":\"wkojgcyztsfmzn\",\"resourceId\":\"aeqphchqnr\"},{\"name\":\"rpxeh\",\"resourceId\":\"wrykqgai\"}]}]},\"id\":\"viklb\",\"name\":\"dvk\",\"type\":\"bejdznxcv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,22 +32,22 @@ public final class HcpOperatorIdentityRoleSetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HcpOperatorIdentityRoleSet response = manager.hcpOperatorIdentityRoleSets()
-            .getWithResponse("gufhyaomtbg", "havgrvk", com.azure.core.util.Context.NONE)
+            .getWithResponse("h", "yuspskas", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vjzhpjbib", response.properties().controlPlaneOperators().get(0).name());
+        Assertions.assertEquals("mfwdgzxu", response.properties().controlPlaneOperators().get(0).name());
         Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
             response.properties().controlPlaneOperators().get(0).required());
-        Assertions.assertEquals("fxumv",
+        Assertions.assertEquals("vpa",
             response.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("cluyovwxnbkf",
+        Assertions.assertEquals("rsre",
             response.properties().controlPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
-        Assertions.assertEquals("jv", response.properties().dataPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
+        Assertions.assertEquals("oqh", response.properties().dataPlaneOperators().get(0).name());
+        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
             response.properties().dataPlaneOperators().get(0).required());
-        Assertions.assertEquals("mwks",
+        Assertions.assertEquals("jqgwzp",
             response.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("ircizjxvy",
+        Assertions.assertEquals("fqntcyp",
             response.properties().dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
     }
 }

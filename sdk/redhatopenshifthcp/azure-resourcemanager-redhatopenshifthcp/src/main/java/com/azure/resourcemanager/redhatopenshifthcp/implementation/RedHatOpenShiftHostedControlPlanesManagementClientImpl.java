@@ -234,7 +234,7 @@ public final class RedHatOpenShiftHostedControlPlanesManagementClientImpl
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-06-30-preview";
+        this.apiVersion = "2026-09-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.hcpOpenShiftClusters = new HcpOpenShiftClustersClientImpl(this);
         this.nodePools = new NodePoolsClientImpl(this);

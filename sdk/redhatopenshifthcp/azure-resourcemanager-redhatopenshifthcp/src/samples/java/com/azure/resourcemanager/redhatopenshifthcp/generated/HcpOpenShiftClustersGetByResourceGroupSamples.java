@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redhatopenshifthcp.generated;
  */
 public final class HcpOpenShiftClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOpenShiftClusters_Get.

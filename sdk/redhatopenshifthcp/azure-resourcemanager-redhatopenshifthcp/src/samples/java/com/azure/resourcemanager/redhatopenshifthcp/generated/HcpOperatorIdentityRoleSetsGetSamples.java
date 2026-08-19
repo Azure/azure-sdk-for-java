@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redhatopenshifthcp.generated;
  */
 public final class HcpOperatorIdentityRoleSetsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: HcpOperatorIdentityRoleSets_Get_MaximumSet.

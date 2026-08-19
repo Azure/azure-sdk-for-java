@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redhatopenshifthcp.generated;
  */
 public final class ExternalAuthsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_Get_MaximumSet.

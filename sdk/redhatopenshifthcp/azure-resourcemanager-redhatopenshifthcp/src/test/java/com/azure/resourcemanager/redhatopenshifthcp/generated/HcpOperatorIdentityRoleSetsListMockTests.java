@@ -23,7 +23,7 @@ public final class HcpOperatorIdentityRoleSetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"iithtywu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"bihwqknfdnt\",\"resourceId\":\"jchrdgoihxumw\"},{\"name\":\"ton\",\"resourceId\":\"zj\"}]},{\"name\":\"uu\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"lwg\",\"resourceId\":\"ytsbwtovv\"},{\"name\":\"gseinq\",\"resourceId\":\"iufxqknpir\"},{\"name\":\"nepttwqmsni\",\"resourceId\":\"fcdmqnrojlpijn\"},{\"name\":\"rxfrddhc\",\"resourceId\":\"atiz\"}]},{\"name\":\"ronasxift\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"yzhftwesgogczh\",\"resourceId\":\"nnxk\"},{\"name\":\"lgnyhmo\",\"resourceId\":\"sxkkg\"}]}],\"dataPlaneOperators\":[{\"name\":\"rrghxjbdhqxvcxgf\",\"required\":\"Always\",\"roleDefinitions\":[{\"name\":\"sofbshrn\",\"resourceId\":\"vbuswd\"},{\"name\":\"z\",\"resourceId\":\"ybycnunvj\"},{\"name\":\"rtkfawnopq\",\"resourceId\":\"ikyzirtxdy\"}]}]},\"id\":\"zejntps\",\"name\":\"wgioilqukry\",\"type\":\"xtqmieoxor\"}]}";
+            = "{\"value\":[{\"properties\":{\"controlPlaneOperators\":[{\"name\":\"ybycnunvj\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"kfawnopqgikyz\",\"resourceId\":\"rtxdyuxzejnt\"}]},{\"name\":\"sewgioilqukr\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"tqmieox\",\"resourceId\":\"rgguf\"},{\"name\":\"yaomtb\",\"resourceId\":\"hhavgrvkffovjz\"},{\"name\":\"pjbi\",\"resourceId\":\"gjmfxumvfcl\"}]}],\"dataPlaneOperators\":[{\"name\":\"ovwxnbkfezzxsc\",\"required\":\"OnEnablement\",\"roleDefinitions\":[{\"name\":\"zdgiruj\",\"resourceId\":\"zbomvzzbtdcqvpni\"},{\"name\":\"ujviylwdshfs\",\"resourceId\":\"n\"},{\"name\":\"bgye\",\"resourceId\":\"rymsgaojfmw\"}]}]},\"id\":\"otmrfhir\",\"name\":\"tymoxoftp\",\"type\":\"piwyczuhxacpqjl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class HcpOperatorIdentityRoleSetsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HcpOperatorIdentityRoleSet> response
-            = manager.hcpOperatorIdentityRoleSets().list("rd", com.azure.core.util.Context.NONE);
+            = manager.hcpOperatorIdentityRoleSets().list("bshrnsvbuswd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iithtywu",
+        Assertions.assertEquals("ybycnunvj",
             response.iterator().next().properties().controlPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
+        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
             response.iterator().next().properties().controlPlaneOperators().get(0).required());
-        Assertions.assertEquals("bihwqknfdnt",
+        Assertions.assertEquals("kfawnopqgikyz",
             response.iterator().next().properties().controlPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("jchrdgoihxumw",
+        Assertions.assertEquals("rtxdyuxzejnt",
             response.iterator()
                 .next()
                 .properties()
@@ -50,13 +50,13 @@ public final class HcpOperatorIdentityRoleSetsListMockTests {
                 .roleDefinitions()
                 .get(0)
                 .resourceId());
-        Assertions.assertEquals("rrghxjbdhqxvcxgf",
+        Assertions.assertEquals("ovwxnbkfezzxsc",
             response.iterator().next().properties().dataPlaneOperators().get(0).name());
-        Assertions.assertEquals(OperatorIdentityRequired.ALWAYS,
+        Assertions.assertEquals(OperatorIdentityRequired.ON_ENABLEMENT,
             response.iterator().next().properties().dataPlaneOperators().get(0).required());
-        Assertions.assertEquals("sofbshrn",
+        Assertions.assertEquals("zdgiruj",
             response.iterator().next().properties().dataPlaneOperators().get(0).roleDefinitions().get(0).name());
-        Assertions.assertEquals("vbuswd",
+        Assertions.assertEquals("zbomvzzbtdcqvpni",
             response.iterator().next().properties().dataPlaneOperators().get(0).roleDefinitions().get(0).resourceId());
     }
 }

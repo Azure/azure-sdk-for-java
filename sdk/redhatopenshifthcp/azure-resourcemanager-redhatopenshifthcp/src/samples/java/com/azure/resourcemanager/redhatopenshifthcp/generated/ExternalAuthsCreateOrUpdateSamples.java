@@ -24,7 +24,7 @@ import java.util.Arrays;
  */
 public final class ExternalAuthsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ExternalAuths_CreateOrUpdate_MaximumSet.

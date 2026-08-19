@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public final class NodePoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-30-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: NodePools_CreateOrUpdate.

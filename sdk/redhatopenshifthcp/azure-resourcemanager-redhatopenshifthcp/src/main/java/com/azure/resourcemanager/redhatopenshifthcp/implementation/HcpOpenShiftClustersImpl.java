@@ -14,6 +14,7 @@ import com.azure.resourcemanager.redhatopenshifthcp.fluent.models.HcpOpenShiftCl
 import com.azure.resourcemanager.redhatopenshifthcp.fluent.models.HcpOpenShiftClusterInner;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftCluster;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredential;
+import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusterAdminCredentialRequest;
 import com.azure.resourcemanager.redhatopenshifthcp.models.HcpOpenShiftClusters;
 
 public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
@@ -77,9 +78,9 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName,
-        String hcpOpenShiftClusterName) {
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body) {
         HcpOpenShiftClusterAdminCredentialInner inner
-            = this.serviceClient().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName);
+            = this.serviceClient().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body);
         if (inner != null) {
             return new HcpOpenShiftClusterAdminCredentialImpl(inner, this.manager());
         } else {
@@ -88,9 +89,9 @@ public final class HcpOpenShiftClustersImpl implements HcpOpenShiftClusters {
     }
 
     public HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName,
-        String hcpOpenShiftClusterName, Context context) {
+        String hcpOpenShiftClusterName, HcpOpenShiftClusterAdminCredentialRequest body, Context context) {
         HcpOpenShiftClusterAdminCredentialInner inner
-            = this.serviceClient().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, context);
+            = this.serviceClient().requestAdminCredential(resourceGroupName, hcpOpenShiftClusterName, body, context);
         if (inner != null) {
             return new HcpOpenShiftClusterAdminCredentialImpl(inner, this.manager());
         } else {

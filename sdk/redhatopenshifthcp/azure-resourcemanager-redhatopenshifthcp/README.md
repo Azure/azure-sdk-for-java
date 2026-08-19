@@ -2,7 +2,7 @@
 
 Azure Resource Manager Red Hat OpenShift Hosted Control Planes client library for Java.
 
-This package contains Microsoft Azure SDK for Red Hat OpenShift Hosted Control Planes Management SDK.  Package api-version 2026-06-30-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Red Hat OpenShift Hosted Control Planes Management SDK.  Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

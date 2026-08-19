@@ -109,18 +109,21 @@ public interface HcpOpenShiftClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hCP cluster admin credential.
      */
-    HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName);
+    HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
+        HcpOpenShiftClusterAdminCredentialRequest body);
 
     /**
      * Request a temporary admin kubeconfig for the cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hcpOpenShiftClusterName The name of the HcpOpenShiftCluster.
+     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +131,7 @@ public interface HcpOpenShiftClusters {
      * @return hCP cluster admin credential.
      */
     HcpOpenShiftClusterAdminCredential requestAdminCredential(String resourceGroupName, String hcpOpenShiftClusterName,
-        Context context);
+        HcpOpenShiftClusterAdminCredentialRequest body, Context context);
 
     /**
      * Revoke all credentials issued by requestAdminCredential.
