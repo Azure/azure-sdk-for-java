@@ -6,12 +6,14 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
-import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.UUID;
 
 /**
  * This sample demonstrates disabling and enabling a hosted agent.
@@ -23,10 +25,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * </ul>
  */
 public class HostedAgentDisableSample {
+    private static final String AGENT_NAME = "java-disable-sync-" + UUID.randomUUID().toString().substring(0, 8);
+
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String image = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_CONTAINER_IMAGE");
-        String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME;
+        String agentName = AGENT_NAME;
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -34,9 +38,10 @@ public class HostedAgentDisableSample {
             .allowPreview(true);
         AgentsClient agentsClient = builder.buildAgentsClient();
 
-        HostedAgentSessionResources resources = null;
-        AgentSessionResource additionalSession = null;
+        AgentVersionDetails agent = null;
+        AgentSessionResource unexpectedSession = null;
         boolean agentDisabled = false;
+        RuntimeException cleanupError = null;
         try {
             try {
                 agentsClient.enableAgent(agentName);
@@ -44,15 +49,15 @@ public class HostedAgentDisableSample {
                 // The sample agent does not already exist.
             }
 
-            resources = HostedAgentsSampleUtils.createAgentAndSession(agentsClient, agentName, image);
-            String agentVersion = resources.getAgent().getVersion();
+            agent = HostedAgentsSampleUtils.createActiveHostedAgentVersion(agentsClient, agentName, image);
+            String agentVersion = agent.getVersion();
 
             // BEGIN: com.azure.ai.agents.hostedagents.HostedAgentDisableSample.disableAgent
 
             agentsClient.disableAgent(agentName);
             agentDisabled = true;
             try {
-                additionalSession = HostedAgentsSampleUtils.createSession(agentsClient, agentName, agentVersion);
+                unexpectedSession = HostedAgentsSampleUtils.createSession(agentsClient, agentName, agentVersion);
                 throw new IllegalStateException("A disabled agent unexpectedly created a session.");
             } catch (HttpResponseException ex) {
                 if (ex.getResponse().getStatusCode() != 403) {
@@ -66,7 +71,6 @@ public class HostedAgentDisableSample {
 
             agentsClient.enableAgent(agentName);
             agentDisabled = false;
-            additionalSession = HostedAgentsSampleUtils.createSession(agentsClient, agentName, agentVersion);
 
             // END: com.azure.ai.agents.hostedagents.HostedAgentDisableSample.enableAgent
         } finally {
@@ -80,14 +84,32 @@ public class HostedAgentDisableSample {
                 }
             }
 
-            if (additionalSession != null) {
+            if (unexpectedSession != null) {
                 try {
-                    agentsClient.deleteSession(agentName, additionalSession.getAgentSessionId());
+                    agentsClient.deleteSession(agentName, unexpectedSession.getAgentSessionId());
                 } catch (ResourceNotFoundException ignored) {
                     // The sample may have already deleted the session.
+                } catch (RuntimeException error) {
+                    cleanupError = error;
                 }
             }
-            HostedAgentsSampleUtils.cleanup(agentsClient, agentName, resources);
+            if (agent != null) {
+                try {
+                    agentsClient.deleteAgentVersion(agentName, agent.getVersion());
+                    System.out.printf("Agent version %s deleted.%n", agent.getVersion());
+                } catch (ResourceNotFoundException ignored) {
+                    // The sample may have already deleted the agent version.
+                } catch (RuntimeException error) {
+                    if (cleanupError == null) {
+                        cleanupError = error;
+                    } else {
+                        cleanupError.addSuppressed(error);
+                    }
+                }
+            }
+            if (cleanupError != null) {
+                throw cleanupError;
+            }
         }
     }
 }

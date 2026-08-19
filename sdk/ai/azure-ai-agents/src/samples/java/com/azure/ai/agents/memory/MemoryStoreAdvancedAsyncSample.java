@@ -38,8 +38,9 @@ import java.util.Arrays;
  * </ul>
  */
 public class MemoryStoreAdvancedAsyncSample {
-    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java";
-    private static final Duration POLL_TIMEOUT = Duration.ofSeconds(30);
+    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java_async";
+    private static final Duration POLL_TIMEOUT = Duration.ofMinutes(3);
+    private static final Duration CLEANUP_TIMEOUT = Duration.ofMinutes(1);
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
@@ -62,7 +63,9 @@ public class MemoryStoreAdvancedAsyncSample {
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
             .then(memoryStoresAsyncClient.createMemoryStore(
                 MEMORY_STORE_NAME, definition, "Example memory store for conversations", null))
-            .flatMap(memoryStore -> runAdvancedMemoryOperations(memoryStoresAsyncClient, memoryStore))
+            .flatMap(memoryStore -> runAdvancedMemoryOperations(memoryStoresAsyncClient, memoryStore)
+                .onErrorResume(error -> cleanupAsync(memoryStoresAsyncClient, memoryStore.getName(), "user_123")
+                    .then(Mono.error(error))))
             .block();
     }
 
@@ -73,6 +76,7 @@ public class MemoryStoreAdvancedAsyncSample {
             EasyInputMessage.builder()
                 .role(EasyInputMessage.Role.USER)
                 .content("I prefer dark roast coffee and usually drink it in the morning")
+                .type(EasyInputMessage.Type.MESSAGE)
                 .build());
 
         PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> initialPoller
@@ -89,6 +93,7 @@ public class MemoryStoreAdvancedAsyncSample {
                     EasyInputMessage.builder()
                         .role(EasyInputMessage.Role.USER)
                         .content("I also like cappuccinos in the afternoon")
+                        .type(EasyInputMessage.Type.MESSAGE)
                         .build());
                 PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> chainedPoller
                     = memoryStoresClient.beginUpdateMemories(
@@ -120,6 +125,7 @@ public class MemoryStoreAdvancedAsyncSample {
             EasyInputMessage.builder()
                 .role(EasyInputMessage.Role.USER)
                 .content("What are my morning coffee preferences?")
+                .type(EasyInputMessage.Type.MESSAGE)
                 .build());
 
         return memoryStoresClient.searchMemories(
@@ -130,11 +136,13 @@ public class MemoryStoreAdvancedAsyncSample {
                     EasyInputMessage.builder()
                         .role(EasyInputMessage.Role.ASSISTANT)
                         .content("You previously indicated a preference for dark roast coffee in the morning.")
+                        .type(EasyInputMessage.Type.MESSAGE)
                         .build());
                 ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(
                     EasyInputMessage.builder()
                         .role(EasyInputMessage.Role.USER)
                         .content("What about afternoon?")
+                        .type(EasyInputMessage.Type.MESSAGE)
                         .build());
 
                 return memoryStoresClient.searchMemories(
@@ -148,9 +156,27 @@ public class MemoryStoreAdvancedAsyncSample {
     private static Mono<MemoryStoreUpdateCompletedResult> waitForUpdateCompletion(
         PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> poller) {
         return poller.takeUntil(response -> response.getStatus().isComplete())
-            .timeout(POLL_TIMEOUT)
             .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .timeout(POLL_TIMEOUT);
+    }
+
+    private static Mono<Void> cleanupAsync(BetaMemoryStoresAsyncClient memoryStoresClient, String memoryStoreName,
+        String scope) {
+        return memoryStoresClient.deleteScope(memoryStoreName, scope)
+            .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+            .timeout(CLEANUP_TIMEOUT)
+            .onErrorResume(error -> {
+                System.err.println("Unable to delete the memory scope: " + error.getMessage());
+                return Mono.empty();
+            })
+            .then(memoryStoresClient.deleteMemoryStore(memoryStoreName)
+                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+                .timeout(CLEANUP_TIMEOUT)
+                .onErrorResume(error -> {
+                    System.err.println("Unable to delete the memory store: " + error.getMessage());
+                    return Mono.empty();
+                }));
     }
 
     private static void printSearchResults(MemoryStoreSearchResponse searchResponse) {

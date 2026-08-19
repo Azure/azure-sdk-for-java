@@ -6,8 +6,8 @@ package com.azure.ai.agents.hostedagents;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils;
-import com.azure.ai.agents.hostedagents.utils.HostedAgentsSampleUtils.HostedAgentSessionResources;
 import com.azure.ai.agents.models.AgentSessionResource;
+import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
@@ -15,6 +15,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -28,10 +29,14 @@ import java.util.concurrent.atomic.AtomicReference;
  * </ul>
  */
 public class HostedAgentDisableAsyncSample {
+    private static final String AGENT_NAME = "java-disable-async-" + UUID.randomUUID().toString().substring(0, 8);
+    private static final Duration WORKFLOW_TIMEOUT = Duration.ofMinutes(5);
+    private static final Duration CLEANUP_TIMEOUT = Duration.ofMinutes(1);
+
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String image = Configuration.getGlobalConfiguration().get("FOUNDRY_AGENT_CONTAINER_IMAGE");
-        String agentName = HostedAgentsSampleUtils.SAMPLE_AGENT_NAME;
+        String agentName = AGENT_NAME;
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -39,23 +44,23 @@ public class HostedAgentDisableAsyncSample {
             .allowPreview(true);
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
 
-        AtomicReference<HostedAgentSessionResources> resourcesRef = new AtomicReference<>();
-        AtomicReference<AgentSessionResource> additionalSessionRef = new AtomicReference<>();
+        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
+        AtomicReference<AgentSessionResource> unexpectedSessionRef = new AtomicReference<>();
         AtomicBoolean agentDisabled = new AtomicBoolean();
 
         Mono<Void> workflow = agentsAsyncClient.enableAgent(agentName)
             .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-            .then(HostedAgentsSampleUtils.createAgentAndSessionAsync(agentsAsyncClient, agentName, image))
-            .flatMap(resources -> {
-                resourcesRef.set(resources);
-                String agentVersion = resources.getAgent().getVersion();
+            .then(HostedAgentsSampleUtils.createActiveHostedAgentVersionAsync(agentsAsyncClient, agentName, image))
+            .flatMap(agent -> {
+                agentRef.set(agent);
+                String agentVersion = agent.getVersion();
 
                 // BEGIN: com.azure.ai.agents.hostedagents.HostedAgentDisableAsyncSample.disableAgent
 
                 return agentsAsyncClient.disableAgent(agentName)
                     .doOnSuccess(unused -> agentDisabled.set(true))
                     .then(HostedAgentsSampleUtils.createSessionAsync(agentsAsyncClient, agentName, agentVersion)
-                        .doOnNext(additionalSessionRef::set)
+                        .doOnNext(unexpectedSessionRef::set)
                         .flatMap(unused -> Mono.error(new IllegalStateException(
                             "A disabled agent unexpectedly created a session.")))
                         .onErrorResume(HttpResponseException.class, ex -> {
@@ -72,24 +77,22 @@ public class HostedAgentDisableAsyncSample {
 
                     .then(agentsAsyncClient.enableAgent(agentName))
                     .doOnSuccess(unused -> agentDisabled.set(false))
-                    .then(HostedAgentsSampleUtils.createSessionAsync(agentsAsyncClient, agentName, agentVersion)
-                        .doOnNext(additionalSessionRef::set))
                     .then();
 
                     // END: com.azure.ai.agents.hostedagents.HostedAgentDisableAsyncSample.enableAgent
             });
 
-        workflow
-            .onErrorResume(error -> cleanupAsync(agentsAsyncClient, agentName, agentDisabled, additionalSessionRef,
-                resourcesRef).then(Mono.error(error)))
-            .then(cleanupAsync(agentsAsyncClient, agentName, agentDisabled, additionalSessionRef, resourcesRef))
-            .timeout(Duration.ofMinutes(15))
+        workflow.timeout(WORKFLOW_TIMEOUT)
+            .onErrorResume(error -> Mono.defer(() -> cleanupAsync(agentsAsyncClient, agentName, agentDisabled,
+                unexpectedSessionRef, agentRef)).then(Mono.error(error)))
+            .then(Mono.defer(() -> cleanupAsync(agentsAsyncClient, agentName, agentDisabled, unexpectedSessionRef,
+                agentRef)))
             .block();
     }
 
     private static Mono<Void> cleanupAsync(AgentsAsyncClient agentsAsyncClient, String agentName,
-        AtomicBoolean agentDisabled, AtomicReference<AgentSessionResource> additionalSessionRef,
-        AtomicReference<HostedAgentSessionResources> resourcesRef) {
+        AtomicBoolean agentDisabled, AtomicReference<AgentSessionResource> unexpectedSessionRef,
+        AtomicReference<AgentVersionDetails> agentRef) {
         Mono<Void> restoreAgent = Mono.defer(() -> {
             if (!agentDisabled.get()) {
                 return Mono.empty();
@@ -97,6 +100,7 @@ public class HostedAgentDisableAsyncSample {
             return agentsAsyncClient.enableAgent(agentName)
                 .doOnSuccess(unused -> agentDisabled.set(false))
                 .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+                .timeout(CLEANUP_TIMEOUT)
                 .onErrorResume(error -> {
                     System.err.println("Unable to restore the agent to the enabled state: " + error.getMessage());
                     return Mono.empty();
@@ -104,16 +108,33 @@ public class HostedAgentDisableAsyncSample {
         });
 
         Mono<Void> deleteSession = Mono.defer(() -> {
-            AgentSessionResource session = additionalSessionRef.get();
+            AgentSessionResource session = unexpectedSessionRef.get();
             if (session == null) {
                 return Mono.empty();
             }
             return agentsAsyncClient.deleteSession(agentName, session.getAgentSessionId())
-                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
+                .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
+                .timeout(CLEANUP_TIMEOUT)
+                .onErrorResume(error -> {
+                    System.err.println("Unable to delete the unexpected session: " + error.getMessage());
+                    return Mono.empty();
+                });
         });
 
         return restoreAgent
             .then(deleteSession)
-            .then(HostedAgentsSampleUtils.cleanupAsync(agentsAsyncClient, agentName, resourcesRef.get()));
+            .then(Mono.defer(() -> {
+                AgentVersionDetails agent = agentRef.get();
+                if (agent == null) {
+                    return Mono.empty();
+                }
+                return agentsAsyncClient.deleteAgentVersion(agentName, agent.getVersion())
+                    .doOnSuccess(unused -> System.out.printf("Agent version %s deleted.%n", agent.getVersion()));
+            })
+                .timeout(CLEANUP_TIMEOUT)
+                .onErrorResume(error -> {
+                    System.err.println("Unable to finish hosted-agent cleanup: " + error.getMessage());
+                    return Mono.empty();
+                }));
     }
 }

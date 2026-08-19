@@ -9,10 +9,12 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Sample demonstrating how to create and inspect draft agent versions using the asynchronous
@@ -35,16 +37,15 @@ public class AgentDraftAsyncSample {
             .allowPreview(true)
             .buildAgentsAsyncClient();
 
-        String agentName = "myAgentWithDraft";
-        Mono<Void> deleteExisting = agentsAsyncClient.deleteAgent(agentName)
-            .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty());
+        String agentName = "java-draft-agent-" + UUID.randomUUID();
+        AtomicBoolean agentCreated = new AtomicBoolean();
 
-        Mono<Void> workflow = deleteExisting
-            .then(agentsAsyncClient.createAgentVersion(agentName,
+        Mono<Void> workflow = agentsAsyncClient.createAgentVersion(agentName,
                 new CreateAgentVersionInput(new PromptAgentDefinition(model)
                     .setInstructions("You are a prompt agent that gives helpful answers."))
-                    .setDescription("Released agent version created by the draft sample.")))
+                    .setDescription("Released agent version created by the draft sample."))
             .doOnNext(releaseVersion -> {
+                agentCreated.set(true);
                 System.out.printf("Agent created: name: %s, version: %s%n",
                     releaseVersion.getName(), releaseVersion.getVersion());
             })
@@ -70,14 +71,19 @@ public class AgentDraftAsyncSample {
                 .doOnNext(version -> printVersion("All", version))
                 .then());
 
-        Mono<Void> cleanup = agentsAsyncClient.deleteAgent(agentName)
-            .onErrorResume(ResourceNotFoundException.class, ignored -> Mono.empty())
-            .doOnSuccess(unused -> System.out.printf("Agent deleted (name: %s)%n", agentName));
-
         workflow
-            .onErrorResume(error -> cleanup.then(Mono.error(error)))
-            .then(cleanup)
+            .onErrorResume(error -> cleanup(agentsAsyncClient, agentName, agentCreated).then(Mono.error(error)))
+            .then(Mono.defer(() -> cleanup(agentsAsyncClient, agentName, agentCreated)))
             .block();
+    }
+
+    private static Mono<Void> cleanup(AgentsAsyncClient agentsAsyncClient, String agentName,
+        AtomicBoolean agentCreated) {
+        if (!agentCreated.get()) {
+            return Mono.empty();
+        }
+        return agentsAsyncClient.deleteAgent(agentName)
+            .doOnSuccess(unused -> System.out.printf("Agent deleted (name: %s)%n", agentName));
     }
 
     private static void printLatestVersion(AgentDetails agent) {

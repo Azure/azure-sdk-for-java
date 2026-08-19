@@ -9,9 +9,10 @@ import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CreateAgentVersionInput;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.UUID;
 
 /**
  * Sample demonstrating how to create and inspect draft agent versions using the synchronous {@link AgentsClient}.
@@ -33,20 +34,16 @@ public class AgentDraftSample {
             .allowPreview(true)
             .buildAgentsClient();
 
-        String agentName = "myAgentWithDraft";
+        String agentName = "java-draft-agent-" + UUID.randomUUID();
+        boolean agentCreated = false;
 
         try {
-            try {
-                agentsClient.deleteAgent(agentName);
-            } catch (ResourceNotFoundException ignored) {
-                // The sample agent does not already exist.
-            }
-
             // BEGIN:com.azure.ai.agents.agents.AgentDraftSample.createReleaseVersion
             AgentVersionDetails releaseVersion = agentsClient.createAgentVersion(agentName,
                 new CreateAgentVersionInput(new PromptAgentDefinition(model)
                     .setInstructions("You are a prompt agent that gives helpful answers."))
                     .setDescription("Released agent version created by the draft sample."));
+            agentCreated = true;
             System.out.printf("Agent created: name: %s, version: %s%n",
                 releaseVersion.getName(), releaseVersion.getVersion());
 
@@ -78,8 +75,10 @@ public class AgentDraftSample {
                 System.out.printf("    %s (is draft: %s)%n", version.getVersion(), isDraft(version));
             }
         } finally {
-            agentsClient.deleteAgent(agentName);
-            System.out.printf("Agent deleted (name: %s)%n", agentName);
+            if (agentCreated) {
+                agentsClient.deleteAgent(agentName);
+                System.out.printf("Agent deleted (name: %s)%n", agentName);
+            }
         }
     }
 

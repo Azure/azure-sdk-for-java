@@ -35,8 +35,8 @@ import java.util.Arrays;
  * </ul>
  */
 public class MemoryStoreAdvancedSample {
-    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java";
-    private static final Duration POLL_TIMEOUT = Duration.ofSeconds(30);
+    private static final String MEMORY_STORE_NAME = "memory_advanced_store_java_sync";
+    private static final Duration POLL_TIMEOUT = Duration.ofMinutes(3);
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
@@ -70,6 +70,7 @@ public class MemoryStoreAdvancedSample {
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
                     .content("I prefer dark roast coffee and usually drink it in the morning")
+                    .type(EasyInputMessage.Type.MESSAGE)
                     .build());
 
             SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> initialPoller
@@ -83,6 +84,7 @@ public class MemoryStoreAdvancedSample {
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
                     .content("I also like cappuccinos in the afternoon")
+                    .type(EasyInputMessage.Type.MESSAGE)
                     .build());
             SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> chainedPoller
                 = memoryStoresClient.beginUpdateMemories(
@@ -107,6 +109,7 @@ public class MemoryStoreAdvancedSample {
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
                     .content("What are my morning coffee preferences?")
+                    .type(EasyInputMessage.Type.MESSAGE)
                     .build());
             MemoryStoreSearchResponse searchResponse = memoryStoresClient.searchMemories(
                 memoryStore.getName(), scope, Arrays.asList(searchQuery), null, searchOptions);
@@ -116,11 +119,13 @@ public class MemoryStoreAdvancedSample {
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.ASSISTANT)
                     .content("You previously indicated a preference for dark roast coffee in the morning.")
+                    .type(EasyInputMessage.Type.MESSAGE)
                     .build());
             ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(
                 EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
                     .content("What about afternoon?")
+                    .type(EasyInputMessage.Type.MESSAGE)
                     .build());
             MemoryStoreSearchResponse followupSearchResponse = memoryStoresClient.searchMemories(
                 memoryStore.getName(), scope, Arrays.asList(agentMessage, followupQuery),
