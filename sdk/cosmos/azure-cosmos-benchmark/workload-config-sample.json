@@ -18,14 +18,8 @@
       "enableJvmStats": true,
       "enableNettyHttpMetrics": true,
       "destination": {
-        "cosmos": {
-          "serviceEndpoint": "https://gatewayv2-scale-test.documents.azure.com:443/",
-          "masterKey": "<your-metrics-account-key>",
-          "database": "benchmarkdb",
-          "container": "cosmosbenchmarkmetricsfeed",
-          "testVariationName": "container-fault-injection",
-          "branchName": "<your-branch>",
-          "commitId": "<your-commit>"
+        "csv": {
+          "reportingDirectory": "/tmp/benchmark-output"
         }
       }
     },
@@ -34,14 +28,7 @@
       "consistencyLevel": "Session",
       "connectionMode": "Direct",
       "numberOfPreCreatedDocuments": 1000,
-      "documentDataFieldSize": 20,
-      "faultInjection": {
-        "serverErrorType": "SERVICE_UNAVAILABLE",
-        "region": "West US",
-        "startDelay": "PT30S",
-        "duration": "PT30S",
-        "injectionRate": 1.0
-      }
+      "documentDataFieldSize": 20
     },
 
     "tenants": [

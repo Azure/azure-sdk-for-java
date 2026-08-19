@@ -19,15 +19,6 @@ public interface Benchmark {
     void shutdown();
 
     /**
-     * Arm workload-scoped fault injection after setup and immediately before dispatch.
-     *
-     * @return a Mono that completes when fault injection is ready
-     */
-    default Mono<Void> armFaultInjection() {
-        return Mono.empty();
-    }
-
-    /**
      * Execute a single operation for this benchmark. The orchestrator calls this
      * when randomly selecting this tenant for an operation slot. Each benchmark
      * maintains its own operation counter internally.

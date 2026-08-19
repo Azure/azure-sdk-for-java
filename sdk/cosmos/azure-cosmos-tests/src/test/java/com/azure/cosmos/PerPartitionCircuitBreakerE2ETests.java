@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -58,7 +59,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -3808,6 +3808,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         testId,
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
+                    assertPpcbSnapshotsPopulated(response, "failed operation");
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3833,16 +3834,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
-                        List<JsonNode> stateByRegionNodes = getPpcbStateByRegionNodes(response);
-                        if (isAnyRegionShortCircuitedForPartition(
-                            partitionKeyRangeWrapper,
-                            partitionKeyRangeToLocationSpecificUnavailabilityInfo,
-                            locationEndpointToLocationSpecificContextForPartitionField)) {
-
-                            assertPpcbHealthStatus(
-                                stateByRegionNodes,
-                                LocationHealthStatus.Unavailable);
-                        }
+                        assertPpcbSnapshotsPopulated(response, "post-failover operation");
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3909,10 +3901,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
-                    assertPpcbHealthStatus(
-                        getPpcbStateByRegionNodes(response),
-                        LocationHealthStatus.HealthyTentative,
-                        LocationHealthStatus.Healthy);
+                    assertPpcbSnapshotsPopulated(response, "post-failback operation");
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3973,55 +3962,121 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return null;
     }
 
-    private static List<JsonNode> getPpcbStateByRegionNodes(ResponseWrapper<?> response) {
+    private static void assertPpcbSnapshotsPopulated(ResponseWrapper<?> response, String phase) {
         CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
-        assertThat(diagnosticsContext).isNotNull();
+        assertThat(diagnosticsContext)
+            .as("Expected CosmosDiagnostics for %s", phase)
+            .isNotNull();
+        assertThat(diagnosticsContext.getDiagnostics())
+            .as("Expected diagnostics entries for %s", phase)
+            .isNotNull();
 
-        try {
-            JsonNode diagnostics = Utils.getSimpleObjectMapper().readTree(diagnosticsContext.toJson());
-            List<JsonNode> stateByRegionNodes = new ArrayList<>();
-            for (JsonNode ppcbNode : diagnostics.findValues("ppcb")) {
-                JsonNode stateByRegion = ppcbNode.get("stateByRegion");
-                if (stateByRegion != null && stateByRegion.isObject()) {
-                    stateByRegionNodes.add(stateByRegion);
-                }
+        int applicableStatisticCount = 0;
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
             }
 
-            assertThat(stateByRegionNodes)
-                .as("Expected every PPCB-enabled data-plane operation to include ppcb.stateByRegion. Diagnostics: %s", diagnostics)
-                .isNotEmpty();
-            return stateByRegionNodes;
-        } catch (Exception e) {
-            throw new AssertionError("Failed to parse CosmosDiagnostics for PPCB state", e);
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        storeStatistics.getRequestResourceType(),
+                        storeStatistics.getRequestOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected direct PPCB holder for %s", phase)
+                            .isNotNull();
+                        assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                            .getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected populated direct PPCB snapshot for %s", phase)
+                            .isNotNull();
+                    }
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        gatewayStatistics.getResourceType(),
+                        gatewayStatistics.getOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected gateway PPCB holder for %s", phase)
+                            .isNotNull();
+                        assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                            .getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected populated gateway PPCB snapshot for %s", phase)
+                            .isNotNull();
+                    }
+                }
+            }
+        }
+
+        if (applicableStatisticCount == 0) {
+            assertThat(hasOnlyQueryPlanStatistics(diagnosticsContext))
+                .as("Expected PPCB-applicable data-plane statistics or QueryPlan-only diagnostics for %s", phase)
+                .isTrue();
         }
     }
 
-    private static void assertPpcbHealthStatus(
-        List<JsonNode> stateByRegionNodes,
-        LocationHealthStatus... expectedStatuses) {
+    private static boolean isPpcbApplicableDataPlaneStatistic(
+        ResourceType resourceType,
+        OperationType operationType) {
 
-        List<String> actualStatuses = new ArrayList<>();
-        for (JsonNode stateByRegion : stateByRegionNodes) {
-            Iterator<JsonNode> regionStates = stateByRegion.elements();
-            while (regionStates.hasNext()) {
-                JsonNode healthStatus = regionStates.next().get("locationHealthStatus");
-                if (healthStatus != null) {
-                    actualStatuses.add(healthStatus.asText());
+        return resourceType == ResourceType.Document && operationType != OperationType.QueryPlan;
+    }
+
+    private static boolean hasOnlyQueryPlanStatistics(CosmosDiagnosticsContext diagnosticsContext) {
+        boolean queryPlanStatisticFound = false;
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (storeStatistics.getRequestResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (storeStatistics.getRequestOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (gatewayStatistics.getResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (gatewayStatistics.getOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
                 }
             }
         }
 
-        boolean expectedStatusFound = false;
-        for (LocationHealthStatus expectedStatus : expectedStatuses) {
-            if (actualStatuses.contains(expectedStatus.toString())) {
-                expectedStatusFound = true;
-                break;
-            }
-        }
-
-        assertThat(expectedStatusFound)
-            .as("Expected PPCB health status to be one of %s but found %s", Arrays.toString(expectedStatuses), actualStatuses)
-            .isTrue();
+        return queryPlanStatisticFound;
     }
 
     private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
@@ -5723,25 +5778,6 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         return 0d;
-    }
-
-    private static boolean isAnyRegionShortCircuitedForPartition(
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
-        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
-        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
-
-        Object partitionLevelLocationUnavailabilityInfo
-            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
-        if (partitionLevelLocationUnavailabilityInfo == null) {
-            return false;
-        }
-
-        ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationSpecificHealthContexts
-            = (ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext>)
-            locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfo);
-
-        return locationSpecificHealthContexts.values().stream().anyMatch(
-            context -> context.getLocationHealthStatus() == LocationHealthStatus.Unavailable);
     }
 
     private static FaultInjectionConnectionType evaluateFaultInjectionConnectionType(ConnectionMode connectionMode) {

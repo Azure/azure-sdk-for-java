@@ -212,9 +212,6 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientCorrelationTag = Tag.of(
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
-        this.asyncDocumentClient
-            .getGlobalPartitionEndpointManagerForCircuitBreaker()
-            .setClientCorrelationId(this.clientCorrelationTag.getValue());
 
         this.clientMetricRegistrySnapshot = clientTelemetryConfigAccessor()
             .getClientMetricRegistry(effectiveTelemetryConfig);
@@ -223,8 +220,6 @@ public final class CosmosAsyncClient implements Closeable {
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_CPU);
         CosmosMeterOptions memoryMeterOptions = clientTelemetryConfigAccessor()
             .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.SYSTEM_MEMORY_FREE);
-        CosmosMeterOptions failbackPendingRecoveryMeterOptions = clientTelemetryConfigAccessor()
-            .getMeterOptions(effectiveTelemetryConfig, CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT);
 
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot, cpuMeterOptions, memoryMeterOptions);
@@ -241,13 +236,6 @@ public final class CosmosAsyncClient implements Closeable {
                 effectiveTelemetryConfig,
                 this.accountTagValue
             );
-            if (failbackPendingRecoveryMeterOptions.isEnabled()) {
-                this.asyncDocumentClient
-                    .getGlobalPartitionEndpointManagerForCircuitBreaker()
-                    .registerFailbackPendingRecoveryMeter(
-                        this.clientMetricRegistrySnapshot,
-                        this.clientCorrelationTag);
-            }
 
             clientTelemetryConfigAccessor().addDiagnosticsHandler(
                 effectiveTelemetryConfig,
@@ -575,9 +563,6 @@ public final class CosmosAsyncClient implements Closeable {
     @Override
     public void close() {
         if (this.clientMetricRegistrySnapshot != null) {
-            this.asyncDocumentClient
-                .getGlobalPartitionEndpointManagerForCircuitBreaker()
-                .removeFailbackPendingRecoveryMeter();
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
         }
         asyncDocumentClient.close();

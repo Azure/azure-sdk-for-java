@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitio
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -36,7 +35,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -182,53 +180,6 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
         } finally {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
         }
-    }
-
-    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void reusesDiagnosticsSnapshotUntilHealthStateChanges(
-        String partitionLevelCircuitBreakerConfigAsJsonString,
-        boolean readOperationTrue) {
-
-        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker manager
-            = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManagerMock);
-        manager.resetCircuitBreakerConfig(
-            PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfigAsJsonString));
-        String collectionResourceId = "dbs/db1/colls/coll1";
-        RxDocumentServiceRequest[] requests = new RxDocumentServiceRequest[3];
-        for (int i = 0; i < requests.length; i++) {
-            requests[i] = constructRxDocumentServiceRequestInstance(
-                readOperationTrue ? OperationType.Read : OperationType.Create,
-                ResourceType.Document,
-                collectionResourceId,
-                "0",
-                collectionResourceId,
-                "AA",
-                "BB",
-                LocationEastUs2EndpointToLocationPair.getKey());
-        }
-
-        manager.handleLocationSuccessForPartitionKeyRange(requests[0]);
-        Map<String, LocationSpecificHealthContext> firstSnapshot = getPpcbState(requests[0]);
-
-        manager.handleLocationSuccessForPartitionKeyRange(requests[1]);
-        assertThat(getPpcbState(requests[1])).isSameAs(firstSnapshot);
-
-        manager.handleLocationExceptionForPartitionKeyRange(
-            requests[2],
-            new RegionalRoutingContext(LocationEastUs2EndpointToLocationPair.getKey()),
-            false);
-        Map<String, LocationSpecificHealthContext> failureSnapshot = getPpcbState(requests[2]);
-
-        assertThat(failureSnapshot).isNotSameAs(firstSnapshot);
-        assertThat(failureSnapshot.get("eastus2").getLocationHealthStatus())
-            .isEqualTo(LocationHealthStatus.HealthyWithFailures);
-        assertThat(firstSnapshot.get("eastus2").getLocationHealthStatus())
-            .isEqualTo(LocationHealthStatus.Healthy);
-    }
-
-    private static Map<String, LocationSpecificHealthContext> getPpcbState(RxDocumentServiceRequest request) {
-        return request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
-            .getPerPartitionCircuitBreakerInfoHolder();
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")

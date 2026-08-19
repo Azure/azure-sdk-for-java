@@ -16,12 +16,11 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import java.time.Instant;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -52,42 +51,11 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
     }
 
     @Test(groups = {"unit"})
-    public void snapshotSharesImmutableStateAndRetainsStateAtSnapshotTime() {
-        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
-        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
-            "eastus",
-            createHealthContext(LocationHealthStatus.Unavailable)));
-
-        PerPartitionCircuitBreakerInfoHolder snapshot = holder.snapshot();
-        PerPartitionCircuitBreakerInfoHolder destination = new PerPartitionCircuitBreakerInfoHolder();
-        destination.setPerPartitionCircuitBreakerInfoHolderSnapshot(
-            holder.getPerPartitionCircuitBreakerInfoHolder());
-
-        assertThat(snapshot).isNotSameAs(holder);
-        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder())
-            .isSameAs(holder.getPerPartitionCircuitBreakerInfoHolder());
-        assertThat(destination.getPerPartitionCircuitBreakerInfoHolder())
-            .isSameAs(snapshot.getPerPartitionCircuitBreakerInfoHolder());
-
-        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
-            "westus",
-            createHealthContext(LocationHealthStatus.Healthy)));
-
-        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder()).containsOnlyKeys("eastus");
-        assertThat(destination.getPerPartitionCircuitBreakerInfoHolder()).containsOnlyKeys("eastus");
-        assertThatThrownBy(() -> snapshot.getPerPartitionCircuitBreakerInfoHolder().clear())
-            .isInstanceOf(UnsupportedOperationException.class);
-    }
-
-    @Test(groups = {"unit"})
     public void initializedEmptyStateIsSerialized() throws Exception {
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
         holder.setPerPartitionCircuitBreakerInfoHolder(Collections.emptyMap());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new SimpleModule().addSerializer(
-            PerPartitionCircuitBreakerInfoHolder.class,
-            new PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer()));
 
         assertThat(objectMapper.writeValueAsString(holder))
             .isEqualTo("{\"stateByRegion\":{}}");
@@ -102,19 +70,7 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
         holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap(
             "eastus",
             createHealthContext(LocationHealthStatus.Unavailable)));
-
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            diagnosticsClientContext,
-            OperationType.Read,
-            ResourceType.Document);
-        request.requestContext.setCrossRegionAvailabilityContext(
-            new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
-                null,
-                null,
-                null,
-                new AtomicBoolean(false),
-                holder,
-                new PerPartitionAutomaticFailoverInfoHolder()));
+        RxDocumentServiceRequest request = createRequest(diagnosticsClientContext, holder);
 
         ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(diagnosticsClientContext);
         statistics.recordResponse(request, null, null);

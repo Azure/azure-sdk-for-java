@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 // Note: CpuMemoryReader is an SDK internal API. Acceptable for benchmark tooling
 // which already depends on SDK internals (e.g., ImplementationBridgeHelpers).
-import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -210,17 +209,11 @@ public class CosmosMetricsReporter {
 
     private void reportGauge(String timestamp, Gauge gauge, double cpuPercent) {
         double value = gauge.value();
-        if (!shouldReportGauge(gauge.getId().getName(), value)) return;
+        if (Double.isNaN(value) || value == 0) return;
 
         ObjectNode doc = createBaseDoc(timestamp, gauge, "gauge", cpuPercent);
         doc.put("Value", round(value));
         uploadDoc(doc);
-    }
-
-    static boolean shouldReportGauge(String metricName, double value) {
-        return !Double.isNaN(value)
-            && (value != 0
-                || CosmosMetricName.PPCB_FAILBACK_PENDING_COUNT.toString().equals(metricName));
     }
 
     private void reportDistributionSummary(String timestamp, DistributionSummary summary, double cpuPercent) {

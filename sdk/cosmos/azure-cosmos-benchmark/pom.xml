@@ -38,7 +38,6 @@ Licensed under the MIT License.
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <jacoco.skip>true</jacoco.skip>
-    <azure-cosmos.version>4.82.0-beta.1</azure-cosmos.version>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <revapi.skip>true</revapi.skip>
@@ -53,13 +52,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>${azure-cosmos.version}</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-cosmos-test</artifactId>
-      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-cosmos-test;current} -->
+      <version>4.82.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>

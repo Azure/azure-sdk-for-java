@@ -111,9 +111,6 @@ class TenantDefaultConfig {
     @JsonProperty("useSync")
     protected Boolean useSync;
 
-    @JsonProperty("faultInjection")
-    protected FaultInjectionConfig faultInjection;
-
     @JsonProperty("proactiveConnectionRegionsCount")
     protected Integer proactiveConnectionRegionsCount;
 
@@ -212,7 +209,6 @@ class TenantDefaultConfig {
     public int getBulkloadBatchSize() { return bulkloadBatchSize != null ? bulkloadBatchSize : 200000; }
     public String getTestScenario() { return testScenario != null ? testScenario : "GET"; }
     public boolean isSync() { return useSync != null && useSync; }
-    public FaultInjectionConfig getFaultInjectionConfig() { return faultInjection; }
 
     public ConnectionMode getConnectionMode() {
         return connectionMode == null ? ConnectionMode.DIRECT : ConnectionMode.valueOf(connectionMode.toUpperCase());
@@ -283,7 +279,6 @@ class TenantDefaultConfig {
         if (testScenario != null && tenant.testScenario == null) tenant.testScenario = testScenario;
         if (environment != null && tenant.environment == null) tenant.environment = environment;
         if (useSync != null && tenant.useSync == null) tenant.useSync = useSync;
-        if (faultInjection != null && tenant.faultInjection == null) tenant.faultInjection = faultInjection;
         if (proactiveConnectionRegionsCount != null && tenant.proactiveConnectionRegionsCount == null) tenant.proactiveConnectionRegionsCount = proactiveConnectionRegionsCount;
         if (aggressiveWarmupDuration != null && tenant.aggressiveWarmupDuration == null) tenant.aggressiveWarmupDuration = aggressiveWarmupDuration;
         if (connectionMode != null && tenant.connectionMode == null) tenant.connectionMode = connectionMode;
