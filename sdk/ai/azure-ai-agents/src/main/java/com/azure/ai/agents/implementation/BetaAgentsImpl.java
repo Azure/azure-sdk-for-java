@@ -5,8 +5,8 @@
 package com.azure.ai.agents.implementation;
 
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.models.OptimizationJob;
-import com.azure.ai.agents.models.OptimizationJobResult;
+import com.azure.ai.agents.models.AgentOptimizationJob;
+import com.azure.ai.agents.models.AgentOptimizationJobResult;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -775,8 +775,8 @@ public final class BetaAgentsImpl {
      * an agent's configuration (instructions, model, skills, tools) to maximize evaluation scores.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OptimizationJob, OptimizationJobResult> beginCreateOptimizationJobWithModelAsync(BinaryData job,
-        RequestOptions requestOptions) {
+    public PollerFlux<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJobWithModelAsync(BinaryData job, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponseAsync(job, requestOptions),
             new com.azure.ai.agents.implementation.OperationLocationPollingStrategy<>(
@@ -787,8 +787,8 @@ public final class BetaAgentsImpl {
                         : Context.NONE)
                     .setServiceVersion(this.client.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(OptimizationJob.class),
-            TypeReference.createInstance(OptimizationJobResult.class));
+            TypeReference.createInstance(AgentOptimizationJob.class),
+            TypeReference.createInstance(AgentOptimizationJobResult.class));
     }
 
     /**
@@ -981,8 +981,8 @@ public final class BetaAgentsImpl {
      * an agent's configuration (instructions, model, skills, tools) to maximize evaluation scores.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OptimizationJob, OptimizationJobResult> beginCreateOptimizationJobWithModel(BinaryData job,
-        RequestOptions requestOptions) {
+    public SyncPoller<AgentOptimizationJob, AgentOptimizationJobResult>
+        beginCreateOptimizationJobWithModel(BinaryData job, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createOptimizationJobWithResponse(job, requestOptions),
             new com.azure.ai.agents.implementation.SyncOperationLocationPollingStrategy<>(
@@ -993,8 +993,8 @@ public final class BetaAgentsImpl {
                         : Context.NONE)
                     .setServiceVersion(this.client.getServiceVersion().getVersion()),
                 "result"),
-            TypeReference.createInstance(OptimizationJob.class),
-            TypeReference.createInstance(OptimizationJobResult.class));
+            TypeReference.createInstance(AgentOptimizationJob.class),
+            TypeReference.createInstance(AgentOptimizationJobResult.class));
     }
 
     /**
@@ -1495,6 +1495,13 @@ public final class BetaAgentsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
+     * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1600,6 +1607,13 @@ public final class BetaAgentsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Retry-After</td><td>int</td><td>Recommended number of seconds to wait before polling again.</td></tr>
+     * </table>
      * 
      * @param jobId The ID of the job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

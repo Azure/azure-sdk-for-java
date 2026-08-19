@@ -8,21 +8,26 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
-import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -36,10 +41,6 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
 
     /**
      * Asynchronous sample for getting result files from a completed analysis operation.
-     * <p>
-     * Note: The Azure Content Understanding service requires extended time after analysis
-     * completion for keyframe result files to become available. This test uses retry logic
-     * to handle the delay.
      */
     @Test
     public void testGetResultFileAsync() throws IOException {
@@ -58,23 +59,23 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
 
         System.out.println("Started analysis operation");
 
-        // Use reactive pattern: chain operations using flatMap
-        // In a real application, you would use subscribe() instead of block()
-        // Use AtomicReference to capture the operation ID from the polling response
-        AtomicReference<String> operationIdRef = new AtomicReference<>();
-        AnalysisResult result = poller.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                // Capture the operation ID for later use with getResultFile()
-                operationIdRef.set(pollResponse.getValue().getId());
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block(); // block() is used here for testing; in production, use subscribe()
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(), pollResponse.getFinalResult(),
+                "Video analysis").map(result -> {
+                    String operationId = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Video analysis completed without an operation ID.");
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Video analysis completed without an operation result.");
+        }
 
+        String operationId = analysis.getKey();
+        AnalysisResult result = analysis.getValue();
         System.out.println("Analysis completed successfully!");
-        String operationId = operationIdRef.get();
         System.out.println("Operation ID: " + operationId);
 
         // END: com.azure.ai.contentunderstanding.getResultFileAsync
@@ -120,29 +121,18 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image using convenience method with retry logic
-            // Result files may not be immediately available after analysis completion
-            BinaryData fileData = null;
-            int maxRetries = 12;
-            int retryDelayMs = 10000;
-            for (int attempt = 1; attempt <= maxRetries; attempt++) {
-                try {
-                    fileData = contentUnderstandingAsyncClient.getResultFile(operationId, framePath).block();
-                    break; // Success, exit retry loop
-                } catch (Exception e) {
-                    if (attempt == maxRetries) {
-                        throw e; // Re-throw on final attempt
-                    }
-                    System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
-                    System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
-                    try {
-                        Thread.sleep(retryDelayMs);
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Interrupted while waiting for retry", ie);
-                    }
-                }
+            Response<BinaryData> fileResponse = contentUnderstandingAsyncClient
+                .getResultFileWithResponse(operationId, framePath, new RequestOptions())
+                .block();
+            assertNotNull(fileResponse, "File response should not be null");
+            assertEquals(200, fileResponse.getStatusCode(), "Result file request should succeed");
+            String contentType = fileResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+            if (contentType != null) {
+                assertTrue(contentType.regionMatches(true, 0, "image/", 0, "image/".length()),
+                    "Result file should have an image content type");
             }
+            BinaryData fileData = fileResponse.getValue();
+            assertNotNull(fileData, "File data should not be null");
             byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
@@ -188,7 +178,6 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
 
             // Verify file data
             System.out.println("\n📥 File Data Verification:");
-            assertNotNull(fileData, "File data should not be null");
 
             // Verify image data
             System.out.println("\nVerifying image data...");
@@ -215,6 +204,7 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
             // Verify file can be read back
             byte[] readBackBytes = Files.readAllBytes(outputPath);
             assertEquals(imageBytes.length, readBackBytes.length, "Read back file size should match original");
+            assertArrayEquals(imageBytes, readBackBytes, "Read back file content should match original");
             System.out.println("File content verified (read back matches original)");
 
             // Test additional keyframes if available
@@ -243,31 +233,20 @@ public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientT
             System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
             System.out.println("  Saved to: " + outputPath.toAbsolutePath());
             System.out.println("  File verified: Yes");
+            Files.deleteIfExists(outputPath);
         } else {
-            // No video content (expected for document analysis)
-            System.out.println("\n📚 GetResultFile API Usage Example:");
-            System.out.println("   For video analysis with keyframes:");
-            System.out.println("   1. Analyze video with prebuilt-videoSearch");
-            System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimes()");
-            System.out.println("   3. Retrieve keyframes using getResultFile():");
-            System.out.println("      BinaryData fileData = contentUnderstandingAsyncClient.getResultFile(\""
-                + operationId + "\", \"keyframes/1000\").block();");
-            System.out.println("   4. Save or process the keyframe image");
-
-            // Verify content type
-            if (result.getContents().get(0) instanceof DocumentContent) {
-                DocumentContent docContent = (DocumentContent) result.getContents().get(0);
-                System.out.println("\nContent type: DocumentContent (as expected)");
-                System.out.println("  MIME type: "
-                    + (docContent.getMimeType() != null ? docContent.getMimeType() : "(not specified)"));
-                System.out
-                    .println("  Pages: " + docContent.getStartPageNumber() + " - " + docContent.getEndPageNumber());
-            }
-
-            assertNotNull(operationId, "Operation ID should be available for GetResultFile API");
-            assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
-            System.out.println("Operation ID available for GetResultFile API: " + operationId);
+            throw new AssertionError("Video analysis must return AudioVisualContent with keyframes.");
         }
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 
     /**

@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.DocumentFormula;
 import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -24,8 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -36,10 +35,17 @@ import java.util.stream.Collectors;
  * 3. Extracting hyperlinks from documents
  * 4. Extracting formulas from document pages
  * 5. Extracting annotations from documents
+ *
+ * <p>The {@code prebuilt-documentSearch} analyzer enables detailed output, OCR, layout, formula extraction, figure
+ * descriptions, and figure analysis by default. It returns charts in Chart.js format, tables in HTML, and annotations
+ * in Markdown.</p>
+ *
+ * <p>Signature detection is available in {@code 2026-06-01-preview} when layout extraction and detailed output are
+ * enabled. See {@link Sample_Advanced_DetectSignaturesAsync} for reading signature regions and metadata.</p>
  */
 public class Sample10_AnalyzeConfigsAsync {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample10Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -71,18 +77,9 @@ public class Sample10_AnalyzeConfigsAsync {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
             = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
 
-        CountDownLatch latch = new CountDownLatch(1);
-
         operation.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
             .doOnNext(result -> {
                 // BEGIN:ContentUnderstandingExtractChartsAsync
                 // Extract charts from document content (enabled by EnableFigureAnalysis config)
@@ -183,27 +180,19 @@ public class Sample10_AnalyzeConfigsAsync {
                     }
                 }
                 // END:ContentUnderstandingExtractAnnotationsAsync
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
-        // END:ContentUnderstandingAnalyzeWithConfigsAsync
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(2, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeWithConfigsAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
         }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

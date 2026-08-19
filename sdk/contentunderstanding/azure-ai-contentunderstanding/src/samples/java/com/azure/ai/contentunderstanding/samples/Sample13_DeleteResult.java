@@ -12,14 +12,20 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationS
 import com.azure.ai.contentunderstanding.models.ContentField;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * Sample demonstrates how to delete analysis results after they are no longer needed.
+ *
+ * <p>Analysis results are automatically deleted after 24 hours. Delete a result earlier when it contains sensitive
+ * data or a shorter retention period is required. Deletion cannot be undone, so save any required data first.</p>
+ *
+ * <p>Before running this sample, configure the model deployment defaults as shown in
+ * {@link Sample00_UpdateDefaults}.</p>
  */
 public class Sample13_DeleteResult {
 
@@ -58,12 +64,21 @@ public class Sample13_DeleteResult {
         System.out.println("Started analysis operation");
 
         // Wait for completion
+        LongRunningOperationStatus status = poller.waitForCompletion().getStatus();
+        requireSuccessfulCompletion(status, "Invoice analysis");
         AnalysisResult result = poller.getFinalResult();
+        if (result == null) {
+            throw new IllegalStateException("Invoice analysis completed without a final result.");
+        }
         System.out.println("Analysis completed successfully!");
 
         // Get the operation ID using the getId() convenience method
         // This ID is extracted from the Operation-Location header and is needed for deleteResult()
-        String operationId = poller.poll().getValue().getId();
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = poller.poll().getValue();
+        String operationId = operationStatus == null ? null : operationStatus.getId();
+        if (operationId == null || operationId.trim().isEmpty()) {
+            throw new IllegalStateException("Invoice analysis completed without an operation ID.");
+        }
         System.out.println("Operation ID: " + operationId);
 
         // Display some sample results using getValue() convenience method
@@ -86,10 +101,17 @@ public class Sample13_DeleteResult {
 
         // Step 2: Delete the analysis result using the operation ID
         // This cleans up the server-side resources (including keyframe images for video analysis)
+        System.out.println("Deleting analysis result (Operation ID: " + operationId + ")...");
         client.deleteResult(operationId);
         System.out.println("Analysis result deleted successfully!");
         // END: com.azure.ai.contentunderstanding.deleteResult
 
         System.out.println("\nSample completed successfully!");
+    }
+
+    static void requireSuccessfulCompletion(LongRunningOperationStatus status, String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException(operationName + " completed unsuccessfully with status: " + status);
+        }
     }
 }
