@@ -166,6 +166,90 @@ public class SessionTokenCredentialPolicyTest {
         verify(bearerPolicy, times(1)).process(any(), any());
     }
 
+    /**
+     * Invalidating a rejected session means the next request creates a brand new one. Where sessions cannot work at
+     * all, that would repeat forever, so consecutive rejections must eventually suppress session authentication.
+     */
+    @Test
+    public void repeatedSessionRejectionStartsAccountCooldown() {
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(200); // fourth request: cooldown active, bearer only
+        HttpPipeline pipeline = buildPipeline(transport);
+
+        for (int i = 0; i < 4; i++) {
+            StepVerifier.create(pipeline.send(blobGetRequest()))
+                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .verifyComplete();
+        }
+
+        // Three rejections trip the cooldown, so the fourth request never acquires a session.
+        verify(sessionProvider, times(3)).getSessionAsync(any());
+        assertEquals(7, transport.getRequestCount());
+    }
+
+    @Test
+    public void acceptedSessionResetsRejectionCount() {
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(200) // session accepted, clearing the count
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(200); // fifth request still attempts a session
+        HttpPipeline pipeline = buildPipeline(transport);
+
+        for (int i = 0; i < 5; i++) {
+            StepVerifier.create(pipeline.send(blobGetRequest()))
+                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .verifyComplete();
+        }
+
+        // Four rejections total, but the accepted session reset the run, so the threshold is never reached.
+        verify(sessionProvider, times(5)).getSessionAsync(any());
+    }
+
+    @Test
+    public void sessionRejectionCooldownExpiresAfterFiveMinutes() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        policy = createPolicy(clock);
+        when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
+
+        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(401)
+            .enqueueResponse(200)
+            .enqueueResponse(200)  // fourth request: cooldown active
+            .enqueueResponse(200); // fifth request: cooldown expired, session attempted again
+        HttpPipeline pipeline = buildPipeline(transport);
+
+        for (int i = 0; i < 4; i++) {
+            StepVerifier.create(pipeline.send(blobGetRequest()))
+                .assertNext(r -> assertEquals(200, r.getStatusCode()))
+                .verifyComplete();
+        }
+        verify(sessionProvider, times(3)).getSessionAsync(any());
+
+        clock.advance(Duration.ofMinutes(5));
+
+        StepVerifier.create(pipeline.send(blobGetRequest()))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
+            .verifyComplete();
+
+        verify(sessionProvider, times(4)).getSessionAsync(any());
+    }
+
     @Test
     public void policyReturns403WithoutRetry() {
         HttpRequest request = blobGetRequest();
@@ -344,6 +428,42 @@ public class SessionTokenCredentialPolicyTest {
             String authHeader = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             assertTrue(authHeader == null || !authHeader.startsWith("Session"),
                 "Session auth should have been stripped but was: " + authHeader);
+        }
+    }
+
+    @Test
+    public void repeatedSessionRejectionStartsAccountCooldownSync() {
+        when(sessionProvider.getSession(any())).thenReturn(credentialWithToken());
+
+        for (int i = 0; i < 3; i++) {
+            HttpPipelineCallContext context = createContext();
+            HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+            HttpPipelineNextSyncPolicy retryNext = mock(HttpPipelineNextSyncPolicy.class);
+            HttpResponse rejectedResponse = mock(HttpResponse.class);
+            HttpResponse bearerResponse = mock(HttpResponse.class);
+
+            when(next.clone()).thenReturn(retryNext);
+            when(next.processSync()).thenReturn(rejectedResponse);
+            when(retryNext.processSync()).thenReturn(bearerResponse);
+            when(rejectedResponse.getStatusCode()).thenReturn(401);
+            when(bearerResponse.getStatusCode()).thenReturn(200);
+
+            policy.processSync(context, next).close();
+        }
+
+        verify(sessionProvider, times(3)).getSession(any());
+
+        // The cooldown is now active, so this request goes straight to bearer without acquiring a session.
+        HttpPipelineCallContext context = createContext();
+        HttpPipelineNextSyncPolicy next = mock(HttpPipelineNextSyncPolicy.class);
+        HttpResponse bearerResponse = mock(HttpResponse.class);
+        when(next.processSync()).thenReturn(bearerResponse);
+        when(bearerResponse.getStatusCode()).thenReturn(200);
+
+        try (HttpResponse actualResponse = policy.processSync(context, next)) {
+            assertEquals(bearerResponse, actualResponse);
+            verify(sessionProvider, times(3)).getSession(any());
+            verify(next, times(0)).clone();
         }
     }
 

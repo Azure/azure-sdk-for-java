@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A pipeline policy that selects between session token and bearer token authentication.
@@ -39,6 +40,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * {@link StorageBearerTokenChallengeAuthorizationPolicy}. For eligible blob GET requests,
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
+ * <p>
+ * If session authentication cannot be used against an account, either because sessions cannot be acquired or
+ * because the service repeatedly rejects them, the account is placed in a five minute cooldown during which
+ * requests go straight to bearer authentication.
  */
 public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
@@ -47,13 +52,15 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final String SESSION_EXPIRING = "session_expiring";
     private static final String SESSION_PREFIX = "Session ";
-    private static final Duration SESSION_ACQUISITION_COOLDOWN = Duration.ofMinutes(5);
+    private static final Duration SESSION_COOLDOWN = Duration.ofMinutes(5);
+    private static final int MAX_CONSECUTIVE_SESSION_REJECTIONS = 3;
 
     private final StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy;
     private final SessionProvider sessionProvider;
     private final SessionOptions sessionOptions;
     private final Clock clock;
     private final ConcurrentHashMap<String, OffsetDateTime> accountCooldowns = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, AtomicInteger> accountRejections = new ConcurrentHashMap<>();
 
     SessionTokenCredentialPolicy(StorageBearerTokenChallengeAuthorizationPolicy bearerPolicy,
         SessionProvider sessionProvider, SessionOptions sessionOptions) {
@@ -163,7 +170,9 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         handleSessionExpiringHeader(response, requestContext);
 
         if (response.getStatusCode() == 401) {
-            logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+            handleSessionRejection(requestContext, session);
+        } else {
+            recordSessionAccepted(requestContext);
         }
 
         if (shouldFallBackToBearer(context, response)) {
@@ -186,7 +195,9 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         handleSessionExpiringHeader(response, requestContext);
 
         if (response.getStatusCode() == 401) {
-            logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+            handleSessionRejection(requestContext, session);
+        } else {
+            recordSessionAccepted(requestContext);
         }
 
         if (shouldFallBackToBearer(context, response)) {
@@ -224,6 +235,38 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         String signature = sharedKeyAuthorization.substring(sharedKeyAuthorization.indexOf(':') + 1);
         context.getHttpRequest()
             .setHeader(HttpHeaderName.AUTHORIZATION, SESSION_PREFIX + credential.getSessionToken() + ":" + signature);
+    }
+
+    /**
+     * Handles a session credential being rejected by the service. The rejected credential is invalidated so it is not
+     * reused, and the rejection is counted. Because invalidation causes the next request to create a brand new
+     * session, an environment that cannot use sessions at all would otherwise create and lose one session per
+     * request indefinitely. After {@value #MAX_CONSECUTIVE_SESSION_REJECTIONS} consecutive rejections the account is
+     * placed in cooldown so requests fall straight through to bearer.
+     */
+    private void handleSessionRejection(SessionRequestContext requestContext, SessionCredential session) {
+        logSessionInvalidation(requestContext, sessionProvider.invalidateSession(requestContext, session));
+
+        int consecutiveRejections = accountRejections
+            .computeIfAbsent(normalize(requestContext.getAccountName()), ignored -> new AtomicInteger())
+            .incrementAndGet();
+
+        if (consecutiveRejections >= MAX_CONSECUTIVE_SESSION_REJECTIONS
+            && beginAccountCooldown(requestContext.getAccountName())) {
+            LOGGER.warning(
+                "Session authentication was rejected {} times in a row for container '{}'. Suppressing session "
+                    + "authentication for this account for five minutes and using bearer token.",
+                consecutiveRejections, requestContext.getContainerName());
+        }
+    }
+
+    /**
+     * Clears the consecutive rejection count once the service accepts a session credential. Any response other than
+     * 401 means the session authenticated successfully, so an account where sessions work never reaches the
+     * rejection threshold.
+     */
+    private void recordSessionAccepted(SessionRequestContext requestContext) {
+        accountRejections.remove(normalize(requestContext.getAccountName()));
     }
 
     private void handleSessionExpiringHeader(HttpResponse response, SessionRequestContext requestContext) {
@@ -272,7 +315,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             if (statusCode == 400 || statusCode == 403 || (statusCode >= 500 && statusCode <= 599)) {
                 if (beginAccountCooldown(requestContext.getAccountName())) {
                     LOGGER.warning(
-                        "Session acquisition failed with HTTP {}. Suppressing session acquisition for this account "
+                        "Session acquisition failed with HTTP {}. Suppressing session authentication for this account "
                             + "for five minutes and using bearer token.",
                         statusCode);
                 }
@@ -302,7 +345,7 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private boolean beginAccountCooldown(String accountName) {
         String key = normalize(accountName);
         OffsetDateTime now = OffsetDateTime.now(clock);
-        OffsetDateTime cooldownUntil = now.plus(SESSION_ACQUISITION_COOLDOWN);
+        OffsetDateTime cooldownUntil = now.plus(SESSION_COOLDOWN);
         AtomicBoolean cooldownStarted = new AtomicBoolean();
         accountCooldowns.compute(key, (ignored, currentExpirationTime) -> {
             if (currentExpirationTime != null && now.isBefore(currentExpirationTime)) {
@@ -312,6 +355,12 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
             cooldownStarted.set(true);
             return cooldownUntil;
         });
+
+        if (cooldownStarted.get()) {
+            // Reset the count so the account gets a fresh set of attempts once the cooldown lapses.
+            accountRejections.remove(key);
+        }
+
         return cooldownStarted.get();
     }
 
