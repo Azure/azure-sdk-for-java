@@ -186,6 +186,15 @@ Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. T
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 
+### Agent optimization
+
+The preview `BetaAgentsClient` and `BetaAgentsAsyncClient` can create and monitor agent optimization jobs. These jobs
+evaluate an agent against a registered dataset and evaluator, then return scored candidates for instructions, skills,
+tools, or model improvements. Agent optimization is currently in preview and requires an allow-listed Foundry project.
+See [Agent optimizer in Foundry Agent Service][agent_optimizer_overview] for the service workflow and the complete
+examples in [AgentOptimizationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationSample.java)
+and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationAsyncSample.java).
+
 ### Memory item management
 
 `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
@@ -911,3 +920,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_conversations_api_docs]: https://platform.openai.com/docs/api-reference/conversations
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+[agent_optimizer_overview]: https://learn.microsoft.com/azure/foundry/agents/concepts/agent-optimizer-overview
