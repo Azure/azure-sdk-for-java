@@ -34,9 +34,13 @@ import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
 import com.azure.search.documents.indexes.models.KnowledgeBaseModel;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
+import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFieldValueBoost;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFilterHint;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceQueryHints;
 import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
@@ -48,21 +52,28 @@ import com.azure.search.documents.knowledgebases.models.AzureBlobKnowledgeSource
 import com.azure.search.documents.knowledgebases.models.FabricDataAgentKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FabricOntologyKnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.FileKnowledgeSourceParams;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAzureBlobReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseFileReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedOneLakeReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSharePointReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexReference;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalAutoReasoningEffort;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
+import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffortKind;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.PurviewSensitivityLabelInfo;
 import com.azure.search.documents.knowledgebases.models.SearchIndexKnowledgeSourceParams;
+import com.azure.search.documents.models.QueryType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -407,6 +418,108 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
+    public void knowledgeBaseCostAttributionTagsPersistSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        Map<String, String> tags = createCostAttributionTags("FIN-042");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setTags(tags);
+
+        KnowledgeBase created = indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBase retrieved = indexClient.getKnowledgeBase(created.getName());
+        KnowledgeBase listed = indexClient.listKnowledgeBases()
+            .stream()
+            .filter(item -> created.getName().equals(item.getName()))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected tagged knowledge base in list response"));
+
+        assertEquals(tags, created.getTags());
+        assertEquals(tags, retrieved.getTags());
+        assertEquals(tags, listed.getTags());
+    }
+
+    @Test
+    public void knowledgeBaseCostAttributionTagsPersistAsync() {
+        SearchIndexAsyncClient indexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        Map<String, String> tags = createCostAttributionTags("FIN-042");
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setTags(tags);
+
+        StepVerifier
+            .create(indexClient.createKnowledgeBase(knowledgeBase)
+                .flatMap(created -> indexClient.getKnowledgeBase(created.getName())))
+            .assertNext(retrieved -> assertEquals(tags, retrieved.getTags()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void knowledgeBaseCostAttributionTagsCanBeUpdatedSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setTags(createCostAttributionTags("FIN-042"));
+        indexClient.createKnowledgeBase(knowledgeBase);
+        Map<String, String> updatedTags = createCostAttributionTags("FIN-108");
+        updatedTags.put("environment", "production");
+
+        indexClient.createOrUpdateKnowledgeBase(knowledgeBase.setTags(updatedTags));
+
+        assertEquals(updatedTags, indexClient.getKnowledgeBase(knowledgeBase.getName()).getTags());
+    }
+
+    @Test
+    public void knowledgeBaseCostAttributionTagsCanBeUpdatedAsync() {
+        SearchIndexAsyncClient indexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setTags(createCostAttributionTags("FIN-042"));
+        Map<String, String> updatedTags = createCostAttributionTags("FIN-108");
+        updatedTags.put("environment", "production");
+
+        StepVerifier
+            .create(indexClient.createKnowledgeBase(knowledgeBase)
+                .flatMap(created -> indexClient.createOrUpdateKnowledgeBase(created.setTags(updatedTags)))
+                .flatMap(updated -> indexClient.getKnowledgeBase(updated.getName())))
+            .assertNext(retrieved -> assertEquals(updatedTags, retrieved.getTags()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void taggedKnowledgeBaseRetrievalRemainsUnchangedSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setTags(createCostAttributionTags("FIN-042"));
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setIncludeActivity(true);
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(request);
+
+        assertNotNull(response.getResponse());
+        assertNotNull(response.getActivity());
+        assertEquals(createCostAttributionTags("FIN-042"),
+            indexClient.getKnowledgeBase(knowledgeBase.getName()).getTags());
+    }
+
+    @Test
+    public void knowledgeBaseCostAttributionTagsRoundTripJson() throws IOException {
+        Map<String, String> tags = createCostAttributionTags("FIN-042");
+        KnowledgeBase knowledgeBase = new KnowledgeBase("capital-markets-kb", KNOWLEDGE_SOURCE_REFERENCE).setTags(tags);
+
+        KnowledgeBase deserialized;
+        try (JsonReader reader = JsonProviders.createReader(knowledgeBase.toJsonString())) {
+            deserialized = KnowledgeBase.fromJson(reader);
+        }
+
+        assertEquals(tags, deserialized.getTags());
+    }
+
+    @Test
     public void basicRetrievalSync() {
         // Test knowledge base retrieval functionality.
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -493,6 +606,58 @@ public class KnowledgeBaseTests extends SearchTestBase {
         StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
             assertNotNull(response);
             assertNotNull(response.getResponse());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void retrievalWithPersistedAutoReasoningEffortSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL)
+                .setOutputMode(KnowledgeRetrievalOutputMode.ANSWER_SYNTHESIS)
+                .setRetrievalReasoningEffort(new KnowledgeRetrievalAutoReasoningEffort());
+        KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        assertInstanceOf(KnowledgeRetrievalAutoReasoningEffort.class, created.getRetrievalReasoningEffort());
+        assertEquals(KnowledgeRetrievalReasoningEffortKind.AUTO, created.getRetrievalReasoningEffort().getKind());
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(created.getName()).buildClient();
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Which hotel has an infinity pool, spa, and concierge?"))
+            .setIncludeActivity(true);
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+
+        assertNotNull(response);
+        assertNotNull(response.getResponse());
+        assertAutoReasoningActivity(response);
+    }
+
+    @Test
+    public void retrievalWithRequestAutoReasoningEffortAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        Mono<KnowledgeBaseRetrievalResult> createAndRetrieveMono
+            = searchIndexClient.createKnowledgeBase(knowledgeBase).flatMap(created -> {
+                KnowledgeBaseRetrievalAsyncClient knowledgeBaseClient
+                    = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                        .buildAsyncClient();
+                KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+                    .setIntents(
+                        new KnowledgeRetrievalSemanticIntent("Which hotel has an infinity pool, spa, and concierge?"))
+                    .setRetrievalReasoningEffort(new KnowledgeRetrievalAutoReasoningEffort())
+                    .setIncludeActivity(true);
+
+                return knowledgeBaseClient.retrieve(retrievalRequest);
+            });
+
+        StepVerifier.create(createAndRetrieveMono).assertNext(response -> {
+            assertNotNull(response);
+            assertNotNull(response.getResponse());
+            assertAutoReasoningActivity(response);
         }).verifyComplete();
     }
 
@@ -694,6 +859,252 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
+    public void retrievalNeverQueriesExcludedSourceSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        String excludedSourceName = randomKnowledgeBaseName() + "-excluded";
+        indexClient.createKnowledgeSource(new SearchIndexKnowledgeSource(excludedSourceName,
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME)));
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME),
+                new KnowledgeSourceReference(excludedSourceName)).setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalOptions request = createNeverQuerySourceRequest(excludedSourceName);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(request);
+
+        assertNeverQuerySourceResult(response, excludedSourceName);
+        KnowledgeBase persisted = indexClient.getKnowledgeBase(knowledgeBase.getName());
+        assertEquals(2, persisted.getKnowledgeSources().size());
+        assertTrue(
+            persisted.getKnowledgeSources().stream().anyMatch(source -> excludedSourceName.equals(source.getName())));
+    }
+
+    @Test
+    public void retrievalNeverQueriesExcludedSourceAsync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        String excludedSourceName = randomKnowledgeBaseName() + "-excluded";
+        indexClient.createKnowledgeSource(new SearchIndexKnowledgeSource(excludedSourceName,
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME)));
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(HOTEL_KNOWLEDGE_SOURCE_NAME),
+                new KnowledgeSourceReference(excludedSourceName)).setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalAsyncClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(knowledgeBase.getName())
+                .buildAsyncClient();
+
+        StepVerifier.create(retrievalClient.retrieve(createNeverQuerySourceRequest(excludedSourceName)))
+            .assertNext(response -> assertNeverQuerySourceResult(response, excludedSourceName))
+            .verifyComplete();
+    }
+
+    @Test
+    public void retrievalRejectsConflictingSourceSelectionSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setNeverQuerySource(true);
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> retrievalClient.retrieve(request));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().contains("alwaysQuerySource"));
+        assertTrue(exception.getMessage().contains("neverQuerySource"));
+    }
+
+    @Test
+    public void retrievalRejectsConflictingSourceSelectionAsync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalAsyncClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(knowledgeBase.getName())
+                .buildAsyncClient();
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setNeverQuerySource(true);
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        StepVerifier.create(retrievalClient.retrieve(request)).verifyErrorSatisfies(error -> {
+            HttpResponseException exception = assertInstanceOf(HttpResponseException.class, error);
+            assertEquals(400, exception.getResponse().getStatusCode());
+            assertTrue(exception.getMessage().contains("alwaysQuerySource"));
+            assertTrue(exception.getMessage().contains("neverQuerySource"));
+        });
+    }
+
+    @Test
+    public void neverQuerySourceRoundTripsThroughPolymorphicModel() throws IOException {
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setNeverQuerySource(true)
+                .setFailOnError(true);
+
+        KnowledgeSourceParams deserialized
+            = KnowledgeSourceParams.fromJson(JsonProviders.createReader(sourceParams.toJsonString()));
+
+        SearchIndexKnowledgeSourceParams actual
+            = assertInstanceOf(SearchIndexKnowledgeSourceParams.class, deserialized);
+        assertEquals(Boolean.TRUE, actual.isNeverQuerySource());
+        assertEquals(Boolean.TRUE, actual.isFailOnError());
+    }
+
+    @Test
+    public void knowledgeSourceResultsProcessingNonePersistsSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchIndexKnowledgeSource knowledgeSource
+            = createRerankerKnowledgeSource(KnowledgeSourceResultsProcessing.NONE);
+
+        SearchIndexKnowledgeSource created
+            = assertInstanceOf(SearchIndexKnowledgeSource.class, indexClient.createKnowledgeSource(knowledgeSource));
+        SearchIndexKnowledgeSource retrieved
+            = assertInstanceOf(SearchIndexKnowledgeSource.class, indexClient.getKnowledgeSource(created.getName()));
+
+        assertEquals(KnowledgeSourceResultsProcessing.NONE, created.getResultsProcessing());
+        assertEquals(KnowledgeSourceResultsProcessing.NONE, retrieved.getResultsProcessing());
+        assertEquals("semantic-config", retrieved.getSearchIndexParameters().getSemanticConfigurationName());
+    }
+
+    @Test
+    public void knowledgeSourceResultsProcessingNonePersistsAsync() {
+        SearchIndexAsyncClient indexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        SearchIndexKnowledgeSource knowledgeSource
+            = createRerankerKnowledgeSource(KnowledgeSourceResultsProcessing.NONE);
+
+        StepVerifier.create(indexClient.createKnowledgeSource(knowledgeSource)
+            .flatMap(created -> indexClient.getKnowledgeSource(created.getName()))).assertNext(retrieved -> {
+                SearchIndexKnowledgeSource actual = assertInstanceOf(SearchIndexKnowledgeSource.class, retrieved);
+                assertEquals(KnowledgeSourceResultsProcessing.NONE, actual.getResultsProcessing());
+                assertEquals("semantic-config", actual.getSearchIndexParameters().getSemanticConfigurationName());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void storedResultsProcessingNoneSkipsRerankerSync() {
+        RerankerTestResources resources = createRerankerTestResources(KnowledgeSourceResultsProcessing.NONE);
+        KnowledgeBaseRetrievalResult response
+            = resources.client.retrieve(createRerankerRequest(resources.knowledgeSourceName, null, null));
+
+        assertRerankerDisabled(response, resources.knowledgeSourceName);
+    }
+
+    @Test
+    public void runtimeResultsProcessingNoneOverridesStoredRerankAsync() {
+        RerankerTestResources resources = createRerankerTestResources(KnowledgeSourceResultsProcessing.RERANK);
+        KnowledgeBaseRetrievalAsyncClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(resources.knowledgeBaseName)
+                .buildAsyncClient();
+
+        StepVerifier
+            .create(retrievalClient.retrieve(
+                createRerankerRequest(resources.knowledgeSourceName, KnowledgeSourceResultsProcessing.NONE, null)))
+            .assertNext(response -> assertRerankerDisabled(response, resources.knowledgeSourceName))
+            .verifyComplete();
+    }
+
+    @Test
+    public void runtimeResultsProcessingRerankOverridesStoredNoneSync() {
+        RerankerTestResources resources = createRerankerTestResources(KnowledgeSourceResultsProcessing.NONE);
+        KnowledgeBaseRetrievalResult response = resources.client.retrieve(
+            createRerankerRequest(resources.knowledgeSourceName, KnowledgeSourceResultsProcessing.RERANK, 0.0F));
+
+        KnowledgeBaseSearchIndexActivityRecord activity
+            = getSearchIndexActivity(response, resources.knowledgeSourceName);
+        assertEquals("semantic-config", activity.getSearchIndexArguments().getSemanticConfigurationName());
+    }
+
+    @Test
+    public void rerankerThresholdRejectedWhenStoredProcessingIsNoneSync() {
+        RerankerTestResources resources = createRerankerTestResources(KnowledgeSourceResultsProcessing.NONE);
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> resources.client.retrieve(createRerankerRequest(resources.knowledgeSourceName, null, 2.5F)));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+        assertTrue(exception.getMessage().toLowerCase().contains("rerankerthreshold"));
+    }
+
+    @Test
+    public void rerankerThresholdRejectedWhenRuntimeProcessingIsNoneAsync() {
+        RerankerTestResources resources = createRerankerTestResources(KnowledgeSourceResultsProcessing.RERANK);
+        KnowledgeBaseRetrievalAsyncClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(resources.knowledgeBaseName)
+                .buildAsyncClient();
+
+        StepVerifier
+            .create(retrievalClient.retrieve(
+                createRerankerRequest(resources.knowledgeSourceName, KnowledgeSourceResultsProcessing.NONE, 2.5F)))
+            .verifyErrorSatisfies(error -> {
+                HttpResponseException exception = assertInstanceOf(HttpResponseException.class, error);
+                assertEquals(400, exception.getResponse().getStatusCode());
+                assertTrue(exception.getMessage().toLowerCase().contains("rerankerthreshold"));
+            });
+    }
+
+    @Test
+    public void resultsProcessingRoundTripsResourceAndRuntimeModels() throws IOException {
+        SearchIndexKnowledgeSource source = createRerankerKnowledgeSource(KnowledgeSourceResultsProcessing.NONE);
+        SearchIndexKnowledgeSourceParams runtimeParams = new SearchIndexKnowledgeSourceParams(source.getName())
+            .setResultsProcessing(KnowledgeSourceResultsProcessing.RERANK);
+
+        SearchIndexKnowledgeSource deserializedSource;
+        try (JsonReader reader = JsonProviders.createReader(source.toJsonString())) {
+            deserializedSource = SearchIndexKnowledgeSource.fromJson(reader);
+        }
+        KnowledgeSourceParams deserializedParams
+            = KnowledgeSourceParams.fromJson(JsonProviders.createReader(runtimeParams.toJsonString()));
+
+        assertEquals(KnowledgeSourceResultsProcessing.NONE, deserializedSource.getResultsProcessing());
+        assertEquals(KnowledgeSourceResultsProcessing.RERANK, deserializedParams.getResultsProcessing());
+    }
+
+    @Test
+    public void retrievalReturnsCitationUrlWithoutSourceDataSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        KnowledgeBaseRetrievalClient knowledgeBaseClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setIncludeReferences(true)
+                .setIncludeReferenceSourceData(false)
+                .setMaxOutputDocuments(50);
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Which hotel has an infinity pool, spa, and concierge?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+
+        KnowledgeBaseRetrievalResult response = knowledgeBaseClient.retrieve(retrievalRequest);
+
+        assertNotNull(response.getReferences());
+        assertFalse(response.getReferences().isEmpty());
+        response.getReferences().forEach(reference -> {
+            KnowledgeBaseSearchIndexReference searchIndexReference
+                = assertInstanceOf(KnowledgeBaseSearchIndexReference.class, reference);
+            assertNotNull(searchIndexReference.getDocKey());
+            assertNotNull(searchIndexReference.getCitationUrl());
+            assertTrue(searchIndexReference.getCitationUrl().contains(searchIndexReference.getDocKey()));
+            assertNull(searchIndexReference.getSourceData());
+        });
+    }
+
+    @Test
     public void retrievalWithMaxOutputSizeSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase
@@ -881,6 +1292,205 @@ public class KnowledgeBaseTests extends SearchTestBase {
             assertNotNull(response);
             assertNotNull(response.getResponse());
         }).verifyComplete();
+    }
+
+    @Test
+    public void retrievalUsesKnowledgeSourceFilterHintsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        String knowledgeSourceName = testResourceNamer.randomName("query-hint-source-", 63);
+        SearchIndexKnowledgeSourceFilterHint filterHint
+            = new SearchIndexKnowledgeSourceFilterHint("Category", Collections.singletonList("Luxury"))
+                .setFilterInstructions("Filter by the hotel category requested by the user.");
+        SearchIndexKnowledgeSourceQueryHints queryHints
+            = new SearchIndexKnowledgeSourceQueryHints().setFilters(Collections.singletonList(filterHint));
+        SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(knowledgeSourceName,
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME).setQueryHints(queryHints));
+
+        SearchIndexKnowledgeSource created = assertInstanceOf(SearchIndexKnowledgeSource.class,
+            searchIndexClient.createKnowledgeSource(knowledgeSource));
+        assertNotNull(created.getSearchIndexParameters().getQueryHints());
+        assertEquals("Category", created.getSearchIndexParameters().getQueryHints().getFilters().get(0).getField());
+
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(knowledgeSourceName))
+                .setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(knowledgeSourceName).setAlwaysQuerySource(true);
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Find a luxury hotel with an infinity pool."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams))
+            .setIncludeActivity(true);
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(retrievalRequest);
+
+        assertNotNull(response.getResponse());
+        KnowledgeBaseSearchIndexActivityRecord activity = getSearchIndexActivity(response, knowledgeSourceName);
+        assertNotNull(activity.getQueryHintProcessing());
+        assertNotNull(activity.getQueryHintProcessing().getGeneratedFilter());
+        assertTrue(activity.getQueryHintProcessing().getGeneratedFilter().contains("Luxury"));
+        assertNotNull(activity.getSearchIndexArguments());
+        assertTrue(activity.getSearchIndexArguments().getFilter().contains("Luxury"));
+    }
+
+    @Test
+    public void retrievalUsesQueryHintBoostOverrideSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        SearchIndexKnowledgeSourceFieldValueBoost boost = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 2.0)
+            .setFieldValues(Collections.singletonList("Luxury"))
+            .setBoostInstructions("Prefer the hotel category requested by the user.");
+        SearchIndexKnowledgeSourceQueryHints queryHintOverrides
+            = new SearchIndexKnowledgeSourceQueryHints().setBoosts(Collections.singletonList(boost));
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setQueryHintOverrides(queryHintOverrides);
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Prefer luxury hotels with an infinity pool."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams))
+            .setIncludeActivity(true);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(retrievalRequest);
+
+        assertNotNull(response.getResponse());
+        KnowledgeBaseSearchIndexActivityRecord activity = getSearchIndexActivity(response, HOTEL_KNOWLEDGE_SOURCE_NAME);
+        assertNotNull(activity.getQueryHintProcessing());
+        assertNotNull(activity.getQueryHintProcessing().getGeneratedBoost());
+        assertTrue(activity.getQueryHintProcessing().getGeneratedBoost().contains("Luxury"));
+        assertNotNull(activity.getSearchIndexArguments());
+        assertEquals(QueryType.FULL, activity.getSearchIndexArguments().getQueryType());
+        assertTrue(activity.getSearchIndexArguments().getSearch().contains("Luxury"));
+    }
+
+    @Test
+    public void retrievalCombinesQueryHintBoostWithFilterAddOnSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        SearchIndexKnowledgeSourceFieldValueBoost boost = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 2.0)
+            .setFieldValues(Collections.singletonList("Budget"))
+            .setBoostInstructions("Prefer the hotel category requested by the user.");
+        SearchIndexKnowledgeSourceQueryHints queryHintOverrides
+            = new SearchIndexKnowledgeSourceQueryHints().setBoosts(Collections.singletonList(boost));
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setFilterAddOn("ParkingIncluded eq true")
+                .setQueryHintOverrides(queryHintOverrides);
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Find a budget hotel with parking."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams))
+            .setIncludeActivity(true);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(retrievalRequest);
+
+        assertNotNull(response.getResponse());
+        KnowledgeBaseSearchIndexActivityRecord activity = getSearchIndexActivity(response, HOTEL_KNOWLEDGE_SOURCE_NAME);
+        assertNotNull(activity.getQueryHintProcessing());
+        assertNotNull(activity.getQueryHintProcessing().getGeneratedBoost());
+        assertTrue(activity.getQueryHintProcessing().getGeneratedBoost().contains("Budget"));
+        assertNull(activity.getQueryHintProcessing().getGeneratedFilter());
+        assertNotNull(activity.getSearchIndexArguments());
+        assertEquals(QueryType.FULL, activity.getSearchIndexArguments().getQueryType());
+        assertTrue(activity.getSearchIndexArguments().getFilter().contains("ParkingIncluded eq true"));
+    }
+
+    @Test
+    public void emptyQueryHintOverrideSuppressesKnowledgeSourceHintsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        String knowledgeSourceName = testResourceNamer.randomName("query-hint-source-", 63);
+        SearchIndexKnowledgeSourceFilterHint filterHint
+            = new SearchIndexKnowledgeSourceFilterHint("Category", Collections.singletonList("Luxury"))
+                .setFilterInstructions("Filter by the hotel category requested by the user.");
+        SearchIndexKnowledgeSourceQueryHints queryHints
+            = new SearchIndexKnowledgeSourceQueryHints().setFilters(Collections.singletonList(filterHint));
+        searchIndexClient.createKnowledgeSource(new SearchIndexKnowledgeSource(knowledgeSourceName,
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME).setQueryHints(queryHints)));
+
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(knowledgeSourceName))
+                .setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+        SearchIndexKnowledgeSourceQueryHints emptyOverride
+            = new SearchIndexKnowledgeSourceQueryHints().setFilters(Collections.emptyList())
+                .setBoosts(Collections.emptyList());
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(knowledgeSourceName).setAlwaysQuerySource(true)
+                .setQueryHintOverrides(emptyOverride);
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Find a luxury hotel with an infinity pool."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams))
+            .setIncludeActivity(true);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        KnowledgeBaseRetrievalResult response = retrievalClient.retrieve(retrievalRequest);
+
+        assertNotNull(response.getResponse());
+        KnowledgeBaseSearchIndexActivityRecord activity = getSearchIndexActivity(response, knowledgeSourceName);
+        assertNotNull(activity.getSearchIndexArguments());
+        assertNull(activity.getSearchIndexArguments().getFilter());
+        if (activity.getQueryHintProcessing() != null) {
+            assertNull(activity.getQueryHintProcessing().getGeneratedFilter());
+            assertNull(activity.getQueryHintProcessing().getGeneratedBoost());
+        }
+    }
+
+    @Test
+    public void retrievalRejectsInvalidQueryHintBoostSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        searchIndexClient.createKnowledgeBase(knowledgeBase);
+
+        SearchIndexKnowledgeSourceFieldValueBoost invalidBoost
+            = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 1.0)
+                .setFieldValues(Collections.singletonList("Luxury"));
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setQueryHintOverrides(
+                    new SearchIndexKnowledgeSourceQueryHints().setBoosts(Collections.singletonList(invalidBoost)));
+        KnowledgeBaseRetrievalOptions retrievalRequest = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Find a luxury hotel."))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> retrievalClient.retrieve(retrievalRequest));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void queryHintsDeserializePolymorphicBoosts() throws IOException {
+        SearchIndexKnowledgeSourceFieldValueBoost boost = new SearchIndexKnowledgeSourceFieldValueBoost("Category", 2.0)
+            .setFieldValues(Collections.singletonList("Luxury"))
+            .setBoostInstructions("Prefer luxury hotels.");
+        SearchIndexKnowledgeSourceQueryHints queryHints
+            = new SearchIndexKnowledgeSourceQueryHints().setBoosts(Collections.singletonList(boost));
+
+        try (JsonReader reader = JsonProviders.createReader(queryHints.toJsonString())) {
+            SearchIndexKnowledgeSourceQueryHints deserialized = SearchIndexKnowledgeSourceQueryHints.fromJson(reader);
+
+            assertEquals(1, deserialized.getBoosts().size());
+            SearchIndexKnowledgeSourceFieldValueBoost deserializedBoost
+                = assertInstanceOf(SearchIndexKnowledgeSourceFieldValueBoost.class, deserialized.getBoosts().get(0));
+            assertEquals("Category", deserializedBoost.getField());
+            assertEquals(Collections.singletonList("Luxury"), deserializedBoost.getFieldValues());
+            assertEquals(2.0, deserializedBoost.getBoost());
+            assertEquals("Prefer luxury hotels.", deserializedBoost.getBoostInstructions());
+        }
     }
 
     @Disabled("Requires an embedding model deployment (e.g., text-embedding-3-large) on the AOAI resource")
@@ -1306,6 +1916,49 @@ public class KnowledgeBaseTests extends SearchTestBase {
     }
 
     @Test
+    public void retrievalResultDeserializesCitationUrls() throws IOException {
+        String citationBaseUrl = "https://contoso.search.windows.net/knowledgesources/source/docs/";
+        String json
+            = "{" + "\"response\":[{\"role\":\"assistant\",\"content\":[{\"type\":\"text\",\"text\":\"Answer.\"}]}],"
+                + "\"references\":["
+                + "{\"type\":\"searchIndex\",\"id\":\"0\",\"activitySource\":1,\"docKey\":\"search-doc\","
+                + "\"citationUrl\":\"" + citationBaseUrl + "search-doc/citation?api-version=2026-08-01-preview\"},"
+                + "{\"type\":\"azureBlob\",\"id\":\"1\",\"activitySource\":1,\"blobUrl\":\"https://blob/doc.pdf\","
+                + "\"citationUrl\":\"" + citationBaseUrl + "blob-doc/citation?api-version=2026-08-01-preview\"},"
+                + "{\"type\":\"indexedOneLake\",\"id\":\"2\",\"activitySource\":1," + "\"citationUrl\":\""
+                + citationBaseUrl + "onelake-doc/citation?api-version=2026-08-01-preview\"},"
+                + "{\"type\":\"indexedSharePoint\",\"id\":\"3\",\"activitySource\":1," + "\"citationUrl\":\""
+                + citationBaseUrl + "sharepoint-doc/citation?api-version=2026-08-01-preview\"},"
+                + "{\"type\":\"indexedSql\",\"id\":\"4\",\"activitySource\":1,\"docUrl\":\"sql-doc\","
+                + "\"citationUrl\":\"" + citationBaseUrl + "sql-doc/citation?api-version=2026-08-01-preview\"},"
+                + "{\"type\":\"file\",\"id\":\"5\",\"activitySource\":1,\"docName\":\"file.md\"," + "\"citationUrl\":\""
+                + citationBaseUrl + "file-doc/citation?api-version=2026-08-01-preview\"}" + "]}";
+
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            KnowledgeBaseRetrievalResult result = KnowledgeBaseRetrievalResult.fromJson(reader);
+
+            assertEquals(6, result.getReferences().size());
+            assertEquals(citationBaseUrl + "search-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseSearchIndexReference.class, result.getReferences().get(0))
+                    .getCitationUrl());
+            assertEquals(citationBaseUrl + "blob-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseAzureBlobReference.class, result.getReferences().get(1))
+                    .getCitationUrl());
+            assertEquals(citationBaseUrl + "onelake-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseIndexedOneLakeReference.class, result.getReferences().get(2))
+                    .getCitationUrl());
+            assertEquals(citationBaseUrl + "sharepoint-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseIndexedSharePointReference.class, result.getReferences().get(3))
+                    .getCitationUrl());
+            assertEquals(citationBaseUrl + "sql-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseIndexedSqlReference.class, result.getReferences().get(4))
+                    .getCitationUrl());
+            assertEquals(citationBaseUrl + "file-doc/citation?api-version=2026-08-01-preview",
+                assertInstanceOf(KnowledgeBaseFileReference.class, result.getReferences().get(5)).getCitationUrl());
+        }
+    }
+
+    @Test
     public void createKnowledgeBaseWithCorsOptionsSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         CorsOptions corsOptions = new CorsOptions("https://myapp.example.com").setMaxAgeInSeconds(600L);
@@ -1690,6 +2343,139 @@ public class KnowledgeBaseTests extends SearchTestBase {
     private String randomKnowledgeBaseName() {
         // Generate a random name for the knowledge base.
         return testResourceNamer.randomName("knowledge-base-", 63);
+    }
+
+    private static Map<String, String> createCostAttributionTags(String costCenter) {
+        Map<String, String> tags = new java.util.LinkedHashMap<>();
+        tags.put("businessUnit", "CapitalMarkets");
+        tags.put("costCenter", costCenter);
+        tags.put("owner", "RBC Capital Markets");
+        return tags;
+    }
+
+    private SearchIndexKnowledgeSource
+        createRerankerKnowledgeSource(KnowledgeSourceResultsProcessing resultsProcessing) {
+        return new SearchIndexKnowledgeSource(randomKnowledgeBaseName() + "-source",
+            new SearchIndexKnowledgeSourceParameters(HOTEL_INDEX_NAME).setSemanticConfigurationName("semantic-config"))
+                .setResultsProcessing(resultsProcessing);
+    }
+
+    private RerankerTestResources
+        createRerankerTestResources(KnowledgeSourceResultsProcessing storedResultsProcessing) {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        SearchIndexKnowledgeSource source = createRerankerKnowledgeSource(storedResultsProcessing);
+        indexClient.createKnowledgeSource(source);
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), new KnowledgeSourceReference(source.getName()))
+                .setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        return new RerankerTestResources(source.getName(), knowledgeBase.getName(), retrievalClient);
+    }
+
+    private static KnowledgeBaseRetrievalOptions createRerankerRequest(String knowledgeSourceName,
+        KnowledgeSourceResultsProcessing resultsProcessing, Float rerankerThreshold) {
+        SearchIndexKnowledgeSourceParams sourceParams
+            = new SearchIndexKnowledgeSourceParams(knowledgeSourceName).setAlwaysQuerySource(true)
+                .setIncludeReferences(true)
+                .setMaxOutputDocuments(50)
+                .setResultsProcessing(resultsProcessing)
+                .setRerankerThreshold(rerankerThreshold);
+        return new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("Which hotel has an infinity pool, spa, and concierge?"))
+            .setKnowledgeSourceParams(Collections.singletonList(sourceParams))
+            .setIncludeActivity(true);
+    }
+
+    private static void assertRerankerDisabled(KnowledgeBaseRetrievalResult response, String knowledgeSourceName) {
+        KnowledgeBaseSearchIndexActivityRecord activity = getSearchIndexActivity(response, knowledgeSourceName);
+        assertNotNull(activity.getSearchIndexArguments());
+        assertNull(activity.getSearchIndexArguments().getSemanticConfigurationName());
+        assertNotNull(activity.getCount());
+        assertNotNull(response.getReferences());
+        assertFalse(response.getReferences().isEmpty());
+        response.getReferences().forEach(reference -> assertNull(reference.getRerankerScore()));
+    }
+
+    private static final class RerankerTestResources {
+        private final String knowledgeSourceName;
+        private final String knowledgeBaseName;
+        private final KnowledgeBaseRetrievalClient client;
+
+        private RerankerTestResources(String knowledgeSourceName, String knowledgeBaseName,
+            KnowledgeBaseRetrievalClient client) {
+            this.knowledgeSourceName = knowledgeSourceName;
+            this.knowledgeBaseName = knowledgeBaseName;
+            this.client = client;
+        }
+    }
+
+    private static void assertAutoReasoningActivity(KnowledgeBaseRetrievalResult response) {
+        assertNotNull(response.getActivity());
+        List<KnowledgeBaseAgenticReasoningActivityRecord> reasoningActivity = response.getActivity()
+            .stream()
+            .filter(KnowledgeBaseAgenticReasoningActivityRecord.class::isInstance)
+            .map(KnowledgeBaseAgenticReasoningActivityRecord.class::cast)
+            .collect(Collectors.toList());
+        assertFalse(reasoningActivity.isEmpty());
+
+        reasoningActivity.forEach(record -> {
+            assertNotNull(record.getLogicalReasoningEffort());
+            assertEquals(KnowledgeRetrievalReasoningEffortKind.AUTO, record.getLogicalReasoningEffort().getKind());
+            assertNotNull(record.getRetrievalReasoningEffort());
+            KnowledgeRetrievalReasoningEffortKind executedKind = record.getRetrievalReasoningEffort().getKind();
+            assertTrue(KnowledgeRetrievalReasoningEffortKind.MINIMAL.equals(executedKind)
+                || KnowledgeRetrievalReasoningEffortKind.LOW.equals(executedKind)
+                || KnowledgeRetrievalReasoningEffortKind.MEDIUM.equals(executedKind));
+        });
+    }
+
+    private static KnowledgeBaseRetrievalOptions createNeverQuerySourceRequest(String excludedSourceName) {
+        SearchIndexKnowledgeSourceParams includedSource
+            = new SearchIndexKnowledgeSourceParams(HOTEL_KNOWLEDGE_SOURCE_NAME).setAlwaysQuerySource(true)
+                .setIncludeReferences(true)
+                .setMaxOutputDocuments(50);
+        SearchIndexKnowledgeSourceParams excludedSource
+            = new SearchIndexKnowledgeSourceParams(excludedSourceName).setNeverQuerySource(true).setFailOnError(true);
+        return new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setKnowledgeSourceParams(java.util.Arrays.asList(includedSource, excludedSource))
+            .setIncludeActivity(true);
+    }
+
+    private static void assertNeverQuerySourceResult(KnowledgeBaseRetrievalResult response, String excludedSourceName) {
+        assertNotNull(response.getResponse());
+        KnowledgeBaseSearchIndexActivityRecord includedActivity
+            = getSearchIndexActivity(response, HOTEL_KNOWLEDGE_SOURCE_NAME);
+        assertNotNull(includedActivity.getSearchIndexArguments());
+
+        KnowledgeBaseSearchIndexActivityRecord excludedActivity = response.getActivity()
+            .stream()
+            .filter(KnowledgeBaseSearchIndexActivityRecord.class::isInstance)
+            .map(KnowledgeBaseSearchIndexActivityRecord.class::cast)
+            .filter(activity -> excludedSourceName.equals(activity.getKnowledgeSourceName()))
+            .findFirst()
+            .orElse(null);
+        if (excludedActivity != null) {
+            assertNull(excludedActivity.getSearchIndexArguments());
+            if (response.getReferences() != null) {
+                response.getReferences()
+                    .forEach(reference -> assertFalse(reference.getActivitySource() == excludedActivity.getId()));
+            }
+        }
+    }
+
+    private static KnowledgeBaseSearchIndexActivityRecord getSearchIndexActivity(KnowledgeBaseRetrievalResult response,
+        String knowledgeSourceName) {
+        assertNotNull(response.getActivity());
+        return response.getActivity()
+            .stream()
+            .filter(KnowledgeBaseSearchIndexActivityRecord.class::isInstance)
+            .map(KnowledgeBaseSearchIndexActivityRecord.class::cast)
+            .filter(activity -> knowledgeSourceName.equals(activity.getKnowledgeSourceName()))
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected search index activity for " + knowledgeSourceName));
     }
 
     private static SearchIndexClient setupIndex() {

@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
@@ -22,17 +23,21 @@ import com.azure.search.documents.indexes.models.FabricOntologyKnowledgeSourcePa
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
 import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.ContentColumnMapping;
+import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.EmbeddingColumnMapping;
 import com.azure.search.documents.indexes.models.FileKnowledgeSource;
 import com.azure.search.documents.indexes.models.FileKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.FileUploadMetadata;
 import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSource;
 import com.azure.search.documents.indexes.models.IndexedSqlKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
+import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceResultsProcessing;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.McpServerAuthentication;
 import com.azure.search.documents.indexes.models.McpServerFoundryConnectionAuthentication;
 import com.azure.search.documents.indexes.models.McpServerFoundryConnectionParameters;
@@ -51,20 +56,25 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SearchIndexerDataUserAssignedIdentity;
 import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.TextSplitMode;
+import com.azure.search.documents.indexes.models.UpdateKnowledgeSourceFileRequest;
+import com.azure.search.documents.indexes.models.UploadKnowledgeSourceFileMultipartRequest;
 import com.azure.search.documents.indexes.models.WebKnowledgeSource;
 import com.azure.search.documents.indexes.models.WebKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.EntraAppAuthentication;
 import com.azure.search.documents.indexes.models.WorkIQKnowledgeSource;
 import com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters;
+import com.azure.search.documents.knowledgebases.models.AiServices;
 import com.azure.search.documents.knowledgebases.models.FreshnessPolicy;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceAzureOpenAIVectorizer;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestionParameters;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
+import com.azure.search.documents.models.ContentFileDetails;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -83,6 +93,7 @@ import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -2374,6 +2385,138 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
+    public void createFileKnowledgeSourceWithStandardExtractionAndCorsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSourceIngestionParameters ingestionParameters = createFileKnowledgeSourceIngestionParameters()
+            .setContentExtractionMode(KnowledgeSourceContentExtractionMode.STANDARD)
+            .setAiServices(new AiServices(AI_SERVICES_ENDPOINT).setApiKey(AI_SERVICES_API_KEY));
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(),
+            new FileKnowledgeSourceParameters().setIngestionParameters(ingestionParameters))
+                .setCorsOptions(new CorsOptions("https://app.contoso.com").setMaxAgeInSeconds(300L));
+
+        FileKnowledgeSource created
+            = assertInstanceOf(FileKnowledgeSource.class, searchIndexClient.createKnowledgeSource(knowledgeSource));
+
+        assertEquals(KnowledgeSourceContentExtractionMode.STANDARD,
+            created.getFileParameters().getIngestionParameters().getContentExtractionMode());
+        assertEquals(AI_SERVICES_ENDPOINT,
+            created.getFileParameters().getIngestionParameters().getAiServices().getUrl());
+        assertEquals(Collections.singletonList("https://app.contoso.com"),
+            created.getCorsOptions().getAllowedOrigins());
+        assertEquals(300L, created.getCorsOptions().getMaxAgeInSeconds());
+    }
+
+    @Test
+    public void createFileKnowledgeSourceWithStandardExtractionWithoutAiServicesFailsSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeSourceIngestionParameters ingestionParameters = createFileKnowledgeSourceIngestionParameters()
+            .setContentExtractionMode(KnowledgeSourceContentExtractionMode.STANDARD);
+        FileKnowledgeSource knowledgeSource = new FileKnowledgeSource(randomKnowledgeSourceName(),
+            new FileKnowledgeSourceParameters().setIngestionParameters(ingestionParameters));
+
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> searchIndexClient.createKnowledgeSource(knowledgeSource));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    @Disabled("Requires a configured Azure OpenAI embedding deployment")
+    public void uploadFileKnowledgeSourceFileWithMetadataSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSource knowledgeSource = createFileKnowledgeSource(searchIndexClient);
+        Map<String, String> metadata = new LinkedHashMap<>();
+        metadata.put("team", "kr");
+        metadata.put("source", "build26-notes");
+
+        KnowledgeSourceFile uploaded = searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSource.getName(),
+            createFileUploadRequest("notes/build26/kr-features.md",
+                "# File Knowledge Source updates\n\nThis document describes the August File KS upload improvements.",
+                metadata));
+
+        assertNotNull(uploaded.getFileId());
+        assertEquals("notes/build26/kr-features.md", uploaded.getFileName());
+        assertEquals("notes/build26/", uploaded.getPrefix());
+        assertEquals(metadata, uploaded.getMetadata());
+        assertEquals("markdown", uploaded.getParsingMode().toString());
+        assertNotNull(uploaded.getExtractionMode());
+        assertNotNull(uploaded.getCreatedAt());
+        assertNotNull(uploaded.getLastUpdatedAt());
+        assertNull(uploaded.getErrorMessage());
+    }
+
+    @Test
+    @Disabled("Requires a configured Azure OpenAI embedding deployment")
+    public void listFileKnowledgeSourceFilesByPrefixSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSource knowledgeSource = createFileKnowledgeSource(searchIndexClient);
+        searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSource.getName(),
+            createFileUploadRequest("notes/build26/kr-features.md",
+                "# Build 26\n\nKnowledge retrieval features planned for the Build 26 release.",
+                Collections.emptyMap()));
+        searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSource.getName(),
+            createFileUploadRequest("notes/build27/kr-features.md",
+                "# Build 27\n\nKnowledge retrieval features planned for the Build 27 release.",
+                Collections.emptyMap()));
+
+        List<KnowledgeSourceFile> files = searchIndexClient
+            .listKnowledgeSourceFiles(knowledgeSource.getName(), "notes/build26/", null, null, ListingSearchType.PREFIX)
+            .stream()
+            .collect(Collectors.toList());
+
+        assertEquals(1, files.size());
+        assertEquals("notes/build26/kr-features.md", files.get(0).getFileName());
+        assertEquals("notes/build26/", files.get(0).getPrefix());
+    }
+
+    @Test
+    @Disabled("Requires a configured Azure OpenAI embedding deployment")
+    public void updateFileKnowledgeSourceFileInPlaceAsync() {
+        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        FileKnowledgeSource knowledgeSource = createFileKnowledgeSource();
+        Map<String, String> originalMetadata = Collections.singletonMap("version", "1");
+        Map<String, String> updatedMetadata = Collections.singletonMap("version", "2");
+
+        Mono<KnowledgeSourceFile> uploadAndUpdate = searchIndexClient.createKnowledgeSource(knowledgeSource)
+            .then(searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSource.getName(),
+                createFileUploadRequest("notes/build26/kr-features.md",
+                    "# Version 1\n\nThe original File KS document content.", originalMetadata)))
+            .flatMap(
+                uploaded -> searchIndexClient
+                    .updateKnowledgeSourceFile(uploaded.getFileId(), knowledgeSource.getName(),
+                        new UpdateKnowledgeSourceFileRequest(
+                            new FileUploadMetadata().setFileName(uploaded.getFileName()).setMetadata(updatedMetadata),
+                            createFileContent("# Version 2\n\nThe updated File KS document content.",
+                                "kr-features.md")))
+                    .map(updated -> {
+                        assertEquals(uploaded.getFileId(), updated.getFileId());
+                        return updated;
+                    }));
+
+        StepVerifier.create(uploadAndUpdate).assertNext(updated -> {
+            assertEquals("notes/build26/kr-features.md", updated.getFileName());
+            assertEquals("notes/build26/", updated.getPrefix());
+            assertEquals(updatedMetadata, updated.getMetadata());
+            assertNotNull(updated.getExtractionMode());
+            assertTrue(!updated.getLastUpdatedAt().isBefore(updated.getCreatedAt()));
+        }).verifyComplete();
+    }
+
+    @Test
+    public void uploadFileKnowledgeSourceFileRejectsPathTraversalSync() {
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
+        FileKnowledgeSource knowledgeSource = createFileKnowledgeSource(searchIndexClient);
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> searchIndexClient.uploadKnowledgeSourceFileMultipart(knowledgeSource.getName(),
+                createFileUploadRequest("../kr-features.md",
+                    "# Invalid path\n\nThis upload must be rejected because its path traverses a parent directory.",
+                    Collections.emptyMap())));
+
+        assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    @Test
     public void createSearchIndexKnowledgeSourceWithBaseFilterSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         SearchIndexKnowledgeSourceParameters params
@@ -2595,6 +2738,40 @@ public class KnowledgeSourceTests extends SearchTestBase {
         WorkIQKnowledgeSourceParameters parameters = new WorkIQKnowledgeSourceParameters(
             new EntraAppAuthentication("00000000-0000-0000-0000-000000000000", "44444444-4444-4444-4444-444444444444"));
         return new WorkIQKnowledgeSource(name, parameters);
+    }
+
+    private FileKnowledgeSource createFileKnowledgeSource(SearchIndexClient client) {
+        FileKnowledgeSource knowledgeSource = createFileKnowledgeSource();
+        client.createKnowledgeSource(knowledgeSource);
+        return knowledgeSource;
+    }
+
+    private FileKnowledgeSource createFileKnowledgeSource() {
+        return new FileKnowledgeSource(randomKnowledgeSourceName(),
+            new FileKnowledgeSourceParameters().setIngestionParameters(createFileKnowledgeSourceIngestionParameters()));
+    }
+
+    private KnowledgeSourceIngestionParameters createFileKnowledgeSourceIngestionParameters() {
+        return new KnowledgeSourceIngestionParameters()
+            .setEmbeddingModel(new KnowledgeSourceAzureOpenAIVectorizer()
+                .setAzureOpenAIParameters(new AzureOpenAIVectorizerParameters().setResourceUrl(OPENAI_ENDPOINT)
+                    .setDeploymentName(OPENAI_EMBEDDING_DEPLOYMENT_NAME)
+                    .setModelName(AzureOpenAIModelName.fromString(OPENAI_EMBEDDING_MODEL_NAME))
+                    .setAuthIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY))))
+            .setContentExtractionMode(KnowledgeSourceContentExtractionMode.MINIMAL);
+    }
+
+    private static UploadKnowledgeSourceFileMultipartRequest createFileUploadRequest(String fileName, String contents,
+        Map<String, String> metadata) {
+        FileUploadMetadata fileMetadata = new FileUploadMetadata().setFileName(fileName).setMetadata(metadata);
+        String contentFileName = fileName.substring(fileName.lastIndexOf('/') + 1);
+        return new UploadKnowledgeSourceFileMultipartRequest(fileMetadata,
+            createFileContent(contents, contentFileName));
+    }
+
+    private static ContentFileDetails createFileContent(String contents, String fileName) {
+        return new ContentFileDetails(BinaryData.fromString(contents)).setFilename(fileName)
+            .setContentType(fileName.endsWith(".md") ? "text/markdown; charset=utf-8" : "text/plain; charset=utf-8");
     }
 
     private String randomKnowledgeSourceName() {

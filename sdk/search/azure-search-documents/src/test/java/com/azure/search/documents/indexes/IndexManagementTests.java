@@ -3,6 +3,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -14,6 +15,7 @@ import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
@@ -412,6 +414,78 @@ public class IndexManagementTests extends SearchTestBase {
         StepVerifier.create(asyncClient.listIndexNames().collect(Collectors.toSet()))
             .assertNext(actualIndexNames2 -> assertTrue(actualIndexNames2.containsAll(expectedIndexNames)))
             .verifyComplete();
+    }
+
+    @Test
+    public void canListIndexesByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
+
+        List<PagedResponse<SearchIndex>> pages = new ArrayList<>();
+        client.listIndexes(requestOptions).iterableByPage().forEach(pages::add);
+
+        assertEquals(expectedIndexes.size(), pages.size());
+        assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+            pages.stream()
+                .flatMap(page -> page.getElements().stream())
+                .map(SearchIndex::getName)
+                .collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        assertNull(pages.get(pages.size() - 1).getContinuationToken());
+    }
+
+    @Test
+    public void canListIndexesByPrefixAcrossPagesAsync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("search", prefix)
+            .addQueryParam("pageSize", "1")
+            .addQueryParam("searchType", ListingSearchType.PREFIX.toString());
+
+        StepVerifier.create(asyncClient.listIndexes(requestOptions).byPage().collectList()).assertNext(pages -> {
+            assertEquals(expectedIndexes.size(), pages.size());
+            assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+                pages.stream()
+                    .flatMap(page -> page.getElements().stream())
+                    .map(SearchIndex::getName)
+                    .collect(Collectors.toSet()));
+            pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+            assertNotNull(pages.get(0).getContinuationToken());
+            assertNull(pages.get(pages.size() - 1).getContinuationToken());
+        }).verifyComplete();
+    }
+
+    @Test
+    public void listIndexesRejectsPageSizeAboveServiceMaximumSync() {
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("pageSize", "5000");
+
+        HttpResponseException exception = assertThrows(HttpResponseException.class,
+            () -> client.listIndexes(requestOptions).iterableByPage().iterator().next());
+
+        assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, exception.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void canListIndexStatsByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-index-", 40);
+        List<SearchIndex> expectedIndexes = createIndexesForPagination(prefix);
+
+        List<PagedResponse<IndexStatisticsSummary>> pages = new ArrayList<>();
+        client.listIndexStatsSummary(prefix, 1, ListingSearchType.PREFIX).iterableByPage().forEach(pages::add);
+
+        assertEquals(expectedIndexes.size(), pages.size());
+        assertEquals(expectedIndexes.stream().map(SearchIndex::getName).collect(Collectors.toSet()),
+            pages.stream()
+                .flatMap(page -> page.getElements().stream())
+                .map(IndexStatisticsSummary::getName)
+                .collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        assertNull(pages.get(pages.size() - 1).getContinuationToken());
     }
 
     @Test
@@ -1524,6 +1598,16 @@ public class IndexManagementTests extends SearchTestBase {
         assertEquals(true, labelIdField.isSensitivityLabelId());
         assertEquals(true, labelNameField.isSensitivityLabelName());
         assertEquals(true, sourceDocField.isSourceDocumentId());
+    }
+
+    private List<SearchIndex> createIndexesForPagination(String prefix) {
+        List<SearchIndex> indexes = Arrays.asList(createTestIndex(prefix + "-a"), createTestIndex(prefix + "-b"),
+            createTestIndex(prefix + "-c"));
+        indexes.forEach(index -> {
+            client.createIndex(index);
+            indexesToDelete.add(index.getName());
+        });
+        return indexes;
     }
 
     @Test

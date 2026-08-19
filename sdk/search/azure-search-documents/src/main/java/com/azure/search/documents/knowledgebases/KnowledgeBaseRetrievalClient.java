@@ -380,4 +380,73 @@ public final class KnowledgeBaseRetrievalClient {
         return hiddenGeneratedRetrieveWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions).getValue()
             .toObject(KnowledgeBaseRetrievalResult.class);
     }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
+     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
+        String querySourceAuthorization, String queryWorkIQSourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (queryWorkIQSourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
+                queryWorkIQSourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BinaryData hiddenGeneratedRetrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        // Generated convenience method for hiddenGeneratedRetrieveStreamWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .getValue();
+    }
 }

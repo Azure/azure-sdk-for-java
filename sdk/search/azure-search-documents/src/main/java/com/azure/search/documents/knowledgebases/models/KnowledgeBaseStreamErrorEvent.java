@@ -22,20 +22,13 @@ public final class KnowledgeBaseStreamErrorEvent implements JsonSerializable<Kno
      * The error detail explaining why the retrieval stream failed.
      */
     @Generated
-    private KnowledgeBaseErrorDetail error;
+    private final KnowledgeBaseErrorDetail error;
 
     /*
      * Activity records that completed before the retrieval failed.
      */
     @Generated
     private List<KnowledgeBaseActivityRecord> activity;
-
-    /**
-     * Creates an instance of KnowledgeBaseStreamErrorEvent class.
-     */
-    @Generated
-    private KnowledgeBaseStreamErrorEvent() {
-    }
 
     /**
      * Get the error property: The error detail explaining why the retrieval stream failed.
@@ -75,27 +68,39 @@ public final class KnowledgeBaseStreamErrorEvent implements JsonSerializable<Kno
      * @param jsonReader The JsonReader being read.
      * @return An instance of KnowledgeBaseStreamErrorEvent if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeBaseStreamErrorEvent.
      */
     @Generated
     public static KnowledgeBaseStreamErrorEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KnowledgeBaseStreamErrorEvent deserializedKnowledgeBaseStreamErrorEvent
-                = new KnowledgeBaseStreamErrorEvent();
+            KnowledgeBaseErrorDetail error = null;
+            List<KnowledgeBaseActivityRecord> activity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("error".equals(fieldName)) {
-                    deserializedKnowledgeBaseStreamErrorEvent.error = KnowledgeBaseErrorDetail.fromJson(reader);
+                    error = KnowledgeBaseErrorDetail.fromJson(reader);
                 } else if ("activity".equals(fieldName)) {
-                    List<KnowledgeBaseActivityRecord> activity
-                        = reader.readArray(reader1 -> KnowledgeBaseActivityRecord.fromJson(reader1));
-                    deserializedKnowledgeBaseStreamErrorEvent.activity = activity;
+                    activity = reader.readArray(reader1 -> KnowledgeBaseActivityRecord.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
+            KnowledgeBaseStreamErrorEvent deserializedKnowledgeBaseStreamErrorEvent
+                = new KnowledgeBaseStreamErrorEvent(error);
+            deserializedKnowledgeBaseStreamErrorEvent.activity = activity;
             return deserializedKnowledgeBaseStreamErrorEvent;
         });
+    }
+
+    /**
+     * Creates an instance of KnowledgeBaseStreamErrorEvent class.
+     *
+     * @param error the error value to set.
+     */
+    @Generated
+    private KnowledgeBaseStreamErrorEvent(KnowledgeBaseErrorDetail error) {
+        this.error = error;
     }
 }

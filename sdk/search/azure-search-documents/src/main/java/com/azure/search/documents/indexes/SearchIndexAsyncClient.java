@@ -36,7 +36,6 @@ import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceFile;
-import com.azure.search.documents.indexes.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -347,70 +346,6 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteSynonymMapWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * <tr><td>search</td><td>String</td><td>No</td><td>A string used to narrow down the listing so that fewer results
-     * need to be paged through. If omitted or an empty string is passed, no narrowing is applied.</td></tr>
-     * <tr><td>pageSize</td><td>Integer</td><td>No</td><td>The maximum number of items to return in a single page. The
-     * server enforces a maximum; if omitted, the server determines a suitable default.</td></tr>
-     * <tr><td>searchType</td><td>String</td><td>No</td><td>Specifies how the search parameter is interpreted. Currently
-     * only 'prefix' is supported. Allowed values: "prefix".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             format: String (Required)
-     *             synonyms (Required): [
-     *                 String (Required)
-     *             ]
-     *             encryptionKey (Optional): {
-     *                 keyVaultKeyName: String (Required)
-     *                 keyVaultKeyVersion: String (Optional)
-     *                 keyVaultUri: String (Required)
-     *                 accessCredentials (Optional): {
-     *                     applicationId: String (Required)
-     *                     applicationSecret: String (Optional)
-     *                 }
-     *                 identity (Optional): {
-     *                     &#64;odata.type: String (Required)
-     *                 }
-     *                 isServiceLevelKey: Boolean (Optional)
-     *             }
-     *             &#64;odata.etag: String (Optional)
-     *         }
-     *     ]
-     *     &#64;odata.nextLink: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSynonymMapsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -1430,15 +1365,12 @@ public final class SearchIndexAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
+     * @return response from a List SynonymMaps request as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSynonymMapsResult> getSynonymMaps() {
-        // Generated convenience method for getSynonymMapsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListSynonymMapsResult.class));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SynonymMap> getSynonymMaps() {
+        return getSynonymMaps(null, null, null, null);
     }
 
     /**
@@ -1453,54 +1385,18 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions())
-            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue().getSynonymMaps(), null, null)));
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ListSynonymMapsResult>> listSynonymMapsWithResponse(RequestOptions requestOptions) {
-        return mapResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
+        return getSynonymMaps(null, null, null, null);
     }
 
     /**
      * Lists the names of all synonym maps available for a search service.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the names of all synonym maps as paginated response with {@link PagedFlux}.
+     * @return the names of all synonym maps as a paginated response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSynonymMapNames() {
-        return new PagedFlux<>(() -> listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"))
-            .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                response.getValue().getSynonymMaps().stream().map(SynonymMap::getName).collect(Collectors.toList()),
-                null, null)));
+        return getSynonymMaps(java.util.Collections.singletonList("name"), null, null, null)
+            .mapPage(SynonymMap::getName);
     }
 
     /**
@@ -4771,10 +4667,16 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Lists all synonym maps available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve.
+     * @param search A string used to narrow down the listing.
+     * @param pageSize The maximum number of items to return in a single page.
+     * @param searchType Specifies how the search parameter is interpreted.
+     * @return all matching synonym maps as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSynonymMapsResult> getSynonymMaps(List<String> select) {
-        // Generated convenience method for getSynonymMapsWithResponse
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SynonymMap> getSynonymMaps(List<String> select, String search, Integer pageSize,
+        ListingSearchType searchType) {
         RequestOptions requestOptions = new RequestOptions();
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -4783,8 +4685,17 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getSynonymMapsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListSynonymMapsResult.class));
+        if (search != null) {
+            requestOptions.addQueryParam("search", search, false);
+        }
+        if (pageSize != null) {
+            requestOptions.addQueryParam("pageSize", String.valueOf(pageSize), false);
+        }
+        if (searchType != null) {
+            requestOptions.addQueryParam("searchType", searchType.toString(), false);
+        }
+        return serviceClient.getSynonymMapsAsync(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SynonymMap.class));
     }
 
     /**
@@ -5022,8 +4933,8 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name, custom
-     * metadata, and optional parsing/extraction overrides) and a 'content' part with the raw file bytes.
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5066,8 +4977,8 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
-     * multipart/form-data: a JSON 'metadata' part (file name, custom metadata, and optional extraction override) and a
-     * 'content' part with the raw file bytes.
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5110,8 +5021,8 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name, custom
-     * metadata, and optional parsing/extraction overrides) and a 'content' part with the raw file bytes.
+     * Uploads a file to a File knowledge source using multipart/form-data: a JSON 'metadata' part (file name and custom
+     * metadata) and a 'content' part with the raw file bytes.
      *
      * @param name The name of the knowledge source.
      * @param body The multipart/form-data body containing the metadata and content parts.
@@ -5193,8 +5104,8 @@ public final class SearchIndexAsyncClient {
 
     /**
      * Updates an existing file in a File knowledge source in place, replacing its indexed content. Uses
-     * multipart/form-data: a JSON 'metadata' part (file name, custom metadata, and optional extraction override) and a
-     * 'content' part with the raw file bytes.
+     * multipart/form-data: a JSON 'metadata' part (file name and custom metadata) and a 'content' part with the raw
+     * file bytes.
      *
      * @param fileId The unique identifier of the file to update.
      * @param name The name of the knowledge source.
