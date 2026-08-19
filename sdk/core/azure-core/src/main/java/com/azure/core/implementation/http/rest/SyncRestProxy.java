@@ -22,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
 import com.azure.xml.XmlSerializable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
@@ -152,8 +154,10 @@ public class SyncRestProxy extends RestProxyBase {
                 response.getSourceResponse().close();
                 return createResponse(response, entityType, null, responseBodyStreaming);
             } else {
-                Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
-                Response<?> httpResponse = createResponse(response, entityType, bodyAsObject, responseBodyStreaming);
+                Object bodyAsObject = TypeUtil.isTypeOrSubTypeOf(bodyType, BinaryData.class)
+                    ? getOwnedResponseBody(response.getSourceResponse())
+                    : handleBodyReturnType(response, methodParser, bodyType);
+                Response<?> httpResponse = createResponse(response, entityType, bodyAsObject);
                 if (httpResponse == null) {
                     return createResponse(response, entityType, null, responseBodyStreaming);
                 }
@@ -200,6 +204,37 @@ public class SyncRestProxy extends RestProxyBase {
             result = response.getDecodedBody(null);
         }
         return result;
+    }
+
+    private static BinaryData getOwnedResponseBody(HttpResponse response) {
+        BinaryData responseBody = response.getBodyAsBinaryData();
+        if (responseBody == null || responseBody.isReplayable()) {
+            return responseBody;
+        }
+
+        ResponseBodyOwner responseBodyOwner = new ResponseBodyOwner(response);
+        return BinaryData
+            .fromFlux(responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), false)
+            .block();
+    }
+
+    private static final class ResponseBodyOwner {
+        private final AtomicBoolean closed = new AtomicBoolean();
+        private final HttpResponse response;
+
+        private ResponseBodyOwner(HttpResponse response) {
+            this.response = response;
+        }
+
+        private Flux<ByteBuffer> getBody(Flux<ByteBuffer> responseBody) {
+            return Flux.using(() -> this, ignored -> responseBody, ResponseBodyOwner::close);
+        }
+
+        private void close() {
+            if (closed.compareAndSet(false, true)) {
+                response.close();
+            }
+        }
     }
 
     /**
