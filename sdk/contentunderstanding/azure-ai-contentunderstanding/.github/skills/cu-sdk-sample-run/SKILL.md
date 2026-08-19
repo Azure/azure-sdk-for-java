@@ -42,11 +42,11 @@ src/samples/java/com/azure/ai/contentunderstanding/samples/
 ### Getting Started (Run These First)
 
 #### `Sample00_UpdateDefaults` -- Required First!
-**One-time setup** - Configures model deployment mappings (GPT-4.1, GPT-4.1-mini, text-embedding-3-large) for your Microsoft Foundry resource. Must run before using prebuilt analyzers.
+**One-time setup** - Configures completion and embedding model deployment mappings and prebuilt analyzer aliases for your Microsoft Foundry resource. Must run before using prebuilt analyzers.
 
 #### `Sample02_AnalyzeUrl` -- Start Here!
-Analyzes content from a URL using `prebuilt-documentSearch`. Works with documents, images, audio, and video.
-- Key concepts: URL input, markdown extraction, multi-modal content
+Analyzes URL input across modalities using the matching RAG analyzer (`prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, or `prebuilt-videoSearch`).
+- Key concepts: URL input, markdown extraction, multi-modal content, long-running operations
 
 #### `Sample01_AnalyzeBinary`
 Analyzes local PDF/image files using `prebuilt-documentSearch`.
@@ -82,6 +82,20 @@ Builds an analyzer using **labeled training data** loaded from Azure Blob Storag
 - Requires either: (a) a SAS URL for an Azure Blob container with labeled data uploaded, or (b) accepting that no training data is used
 - For an easier labeling workflow, use [Azure AI Content Understanding Studio](https://contentunderstanding.ai.azure.com/)
 
+### Preview Analysis Capabilities
+
+#### `Sample17_CreateAnalyzerWorkflow`
+Compares default extraction with `agentic` reasoning for answers built from evidence, including latency and billing considerations.
+
+#### `Sample18_AnalyzeChunking`
+Configures semantic chunking for retrieval and resolves returned document chunk spans into Markdown.
+
+#### `Sample19_AnalyzeInline`
+Analyzes URL input inline with `prebuilt-layout` and compares inline with LRO behavior, including supported analyzers, persistence, limits, and failures.
+
+#### `Sample20_AnalyzeBinaryInline`
+Analyzes binary input inline with `prebuilt-layout`, `ContentRange`, and `AnalyzeBinaryOptions`; covers the five-page success boundary and page-limit rejection behavior.
+
 ### Analyzer Management
 
 #### `Sample06_GetAnalyzer`
@@ -101,7 +115,7 @@ Deletes a custom analyzer.
 Copies analyzer within the same resource.
 
 #### `Sample15_GrantCopyAuth`
-Cross-resource copying between different Azure resources/regions.
+Cross-resource copying between different Azure resources/regions using the SDK's default service API version.
 - Requires additional env vars: `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID`, `CONTENTUNDERSTANDING_SOURCE_REGION`, `CONTENTUNDERSTANDING_TARGET_ENDPOINT`, `CONTENTUNDERSTANDING_TARGET_RESOURCE_ID`, `CONTENTUNDERSTANDING_TARGET_REGION`, `CONTENTUNDERSTANDING_TARGET_KEY` (optional)
 
 ### Result Management
@@ -115,6 +129,21 @@ Deletes analysis results for data cleanup.
 - Key concepts: Result retention (24-hour auto-deletion), compliance
 
 ### Advanced Helpers
+
+#### `Sample_Advanced_AnalysisDiagnostics`
+Inspects human-readable diagnostics in `AnalysisResult.getInfos()`. Diagnostic messages can change and should not be parsed as structured telemetry.
+
+#### `Sample_Advanced_ClassifyInPageSegments`
+Enables in-page segmentation and inspects each segment's confidence and source expression.
+
+#### `Sample_Advanced_DetectSignatures`
+Enables detailed document output and inspects detected signature IDs, roles, spans, and source expressions.
+
+#### `Sample_Advanced_ExtractDocumentMetadata`
+Inspects metadata extracted by the service from PDF and DOCX documents.
+
+#### `Sample_Advanced_ContentSource`
+Demonstrates source expressions that locate analyzed content in its original input.
 
 #### `Sample_Advanced_ToLlmInput`
 Advanced usage of the `LlmInputHelper.toLlmInput` helper that converts an `AnalysisResult` into LLM-ready text. For introductory usage, see `Sample01_AnalyzeBinary`, `Sample03_AnalyzeInvoice`, and `Sample05_CreateClassifier`.
@@ -175,10 +204,13 @@ CONTENTUNDERSTANDING_ENDPOINT=https://your-foundry.services.ai.azure.com/
 # Optional: API key (leave empty to use DefaultAzureCredential via az login)
 CONTENTUNDERSTANDING_KEY=
 
-# Model deployment names (used by Sample00_UpdateDefaults)
-GPT_4_1_DEPLOYMENT=gpt-4.1
-GPT_4_1_MINI_DEPLOYMENT=gpt-4.1-mini
-TEXT_EMBEDDING_3_LARGE_DEPLOYMENT=text-embedding-3-large
+# Model names and deployment names (used by Sample00_UpdateDefaults)
+CU_COMPLETION_MODEL=gpt-5.2
+CU_COMPLETION_MODEL_MINI=gpt-5.2
+CU_EMBEDDING_MODEL=text-embedding-3-large
+CU_COMPLETION_MODEL_DEPLOYMENT=gpt-5.2
+CU_COMPLETION_MINI_DEPLOYMENT=gpt-5.2
+CU_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 ```
 
 **Then load it into your shell:**
@@ -198,9 +230,12 @@ set -a && source .env && set +a
 export CONTENTUNDERSTANDING_ENDPOINT="https://your-foundry.services.ai.azure.com/"
 export CONTENTUNDERSTANDING_KEY=""   # Leave empty to use DefaultAzureCredential
 
-export GPT_4_1_DEPLOYMENT="gpt-4.1"
-export GPT_4_1_MINI_DEPLOYMENT="gpt-4.1-mini"
-export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
+export CU_COMPLETION_MODEL="gpt-5.2"
+export CU_COMPLETION_MODEL_MINI="gpt-5.2"
+export CU_EMBEDDING_MODEL="text-embedding-3-large"
+export CU_COMPLETION_MODEL_DEPLOYMENT="gpt-5.2"
+export CU_COMPLETION_MINI_DEPLOYMENT="gpt-5.2"
+export CU_EMBEDDING_DEPLOYMENT="text-embedding-3-large"
 ```
 
 **Windows (PowerShell):**
@@ -209,9 +244,12 @@ export TEXT_EMBEDDING_3_LARGE_DEPLOYMENT="text-embedding-3-large"
 $env:CONTENTUNDERSTANDING_ENDPOINT = "https://your-foundry.services.ai.azure.com/"
 $env:CONTENTUNDERSTANDING_KEY = ""   # Leave empty to use DefaultAzureCredential
 
-$env:GPT_4_1_DEPLOYMENT = "gpt-4.1"
-$env:GPT_4_1_MINI_DEPLOYMENT = "gpt-4.1-mini"
-$env:TEXT_EMBEDDING_3_LARGE_DEPLOYMENT = "text-embedding-3-large"
+$env:CU_COMPLETION_MODEL = "gpt-5.2"
+$env:CU_COMPLETION_MODEL_MINI = "gpt-5.2"
+$env:CU_EMBEDDING_MODEL = "text-embedding-3-large"
+$env:CU_COMPLETION_MODEL_DEPLOYMENT = "gpt-5.2"
+$env:CU_COMPLETION_MINI_DEPLOYMENT = "gpt-5.2"
+$env:CU_EMBEDDING_DEPLOYMENT = "text-embedding-3-large"
 ```
 
 </details>
@@ -266,10 +304,13 @@ Most samples only need the base environment variables from Step 3. The following
 | Setting                                      | Required By                       | Description                                                                                                  |
 | -------------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `CONTENTUNDERSTANDING_ENDPOINT`              | **All samples**                   | Your Microsoft Foundry resource endpoint URL                                                                 |
-| `CONTENTUNDERSTANDING_KEY`                   | All samples (optional)            | API key for key-based auth. If empty, `DefaultAzureCredential` is used (recommended — run `az login` first) |
-| `GPT_4_1_DEPLOYMENT`                         | Sample00_UpdateDefaults           | Deployment name for gpt-4.1 model (default: `gpt-4.1`)                                                       |
-| `GPT_4_1_MINI_DEPLOYMENT`                    | Sample00_UpdateDefaults           | Deployment name for gpt-4.1-mini model (default: `gpt-4.1-mini`)                                             |
-| `TEXT_EMBEDDING_3_LARGE_DEPLOYMENT`          | Sample00_UpdateDefaults           | Deployment name for text-embedding-3-large model (default: `text-embedding-3-large`)                         |
+| `CONTENTUNDERSTANDING_KEY`                   | All samples (optional)            | API key for key-based auth. Leave empty to use `DefaultAzureCredential`.                                       |
+| `CU_COMPLETION_MODEL`                        | Sample00 and custom analyzers     | Logical completion model name (default: `gpt-5.2`)                                                           |
+| `CU_COMPLETION_MODEL_MINI`                   | Sample00_UpdateDefaults           | Logical mini completion model name (default: `CU_COMPLETION_MODEL`)                                          |
+| `CU_EMBEDDING_MODEL`                         | Sample00_UpdateDefaults           | Logical embedding model name (default: `text-embedding-3-large`)                                             |
+| `CU_COMPLETION_MODEL_DEPLOYMENT`             | Sample00_UpdateDefaults           | Completion model deployment name                                                                             |
+| `CU_COMPLETION_MINI_DEPLOYMENT`              | Sample00_UpdateDefaults           | Optional mini deployment name (default: `CU_COMPLETION_MODEL_DEPLOYMENT`)                                    |
+| `CU_EMBEDDING_DEPLOYMENT`                    | Sample00_UpdateDefaults           | Embedding model deployment name                                                                              |
 | `CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID`    | Sample15_GrantCopyAuth            | Source ARM resource ID for cross-resource copy                                                               |
 | `CONTENTUNDERSTANDING_SOURCE_REGION`         | Sample15_GrantCopyAuth            | Region of the source Foundry resource (e.g., `westus`)                                                       |
 | `CONTENTUNDERSTANDING_TARGET_ENDPOINT`       | Sample15_GrantCopyAuth            | Target Foundry resource endpoint for cross-resource copy                                                     |
@@ -284,7 +325,7 @@ Most samples only need the base environment variables from Step 3. The following
 
 #### Have you run `Sample00_UpdateDefaults`?
 
-Most samples that use prebuilt analyzers (e.g., `Sample02_AnalyzeUrl`, `Sample03_AnalyzeInvoice`, `Sample10_AnalyzeConfigs`, `Sample11_AnalyzeReturnRawJson`) require model deployments to be configured. `Sample00_UpdateDefaults` writes a one-time mapping from logical model names (gpt-4.1, gpt-4.1-mini, text-embedding-3-large) to your Foundry resource's actual deployment names. Without it, prebuilt analyzers fail with `Model deployment not found`.
+Most samples that use prebuilt analyzers (e.g., `Sample02_AnalyzeUrl`, `Sample03_AnalyzeInvoice`, `Sample10_AnalyzeConfigs`, `Sample11_AnalyzeReturnRawJson`) require model deployments to be configured. `Sample00_UpdateDefaults` writes a one-time mapping for gpt-5.2, text-embedding-3-large, and the three prebuilt analyzer aliases. Without it, prebuilt analyzers fail with `Model deployment not found`.
 
 > **[ASK USER] Update defaults check:**
 > Ask: "Have you previously run `Sample00_UpdateDefaults` for this Foundry resource?"
@@ -467,8 +508,8 @@ After the sample completes, the skill **must** do the following for the user (do
    - **Client creation** — how `ContentUnderstandingClient` is constructed via the builder (endpoint + `DefaultAzureCredentialBuilder` or `AzureKeyCredential`)
    - **Analyzer selection** — which prebuilt (`prebuilt-documentSearch`, `prebuilt-invoice`, etc.) or custom analyzer is used and why
    - **Input type** — URL vs. `BinaryData` vs. local file
-   - **Result processing** — how the returned `AnalyzeResult` is traversed (pages, fields, contents)
-   - **Content type casting** — e.g., casting `AnalyzedContent` to `AnalyzedDocumentContent` / `AnalyzedImageContent` / `AnalyzedAudioContent` / `AnalyzedVideoContent` when needed
+   - **Result processing** — how the returned `AnalysisResult` is traversed (pages, fields, contents)
+   - **Content type casting** — e.g., casting `AnalysisContent` to `DocumentContent` or `AudioVisualContent` when needed
    - **Long-running operation polling** — if the sample uses `SyncPoller` / `beginAnalyze`
 
 > **[ASK USER] Sample result:**
