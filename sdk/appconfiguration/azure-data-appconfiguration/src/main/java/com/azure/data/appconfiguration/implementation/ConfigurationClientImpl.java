@@ -119,6 +119,20 @@ public final class ConfigurationClientImpl {
     }
 
     /**
+     * The FeatureFlagClientsImpl object to access its operations.
+     */
+    private final FeatureFlagClientsImpl featureFlagClients;
+
+    /**
+     * Gets the FeatureFlagClientsImpl object to access its operations.
+     * 
+     * @return the FeatureFlagClientsImpl object.
+     */
+    public FeatureFlagClientsImpl getFeatureFlagClients() {
+        return this.featureFlagClients;
+    }
+
+    /**
      * Initializes an instance of AzureAppConfiguration client.
      * 
      * @param endpoint
@@ -155,6 +169,7 @@ public final class ConfigurationClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
+        this.featureFlagClients = new FeatureFlagClientsImpl(this);
         this.service
             = RestProxy.create(ConfigurationClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -3220,6 +3235,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3272,6 +3289,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3323,6 +3342,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3374,6 +3395,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3425,6 +3448,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
@@ -3470,6 +3495,8 @@ public final class ConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * <tr><td>$Select</td><td>List&lt;String&gt;</td><td>No</td><td>Used to select what fields are present in the
      * returned resource(s). In the form of "," separated string.</td></tr>
+     * <tr><td>resourceType</td><td>String</td><td>No</td><td>A filter used to indicate the resource type of the labels.
+     * Accepted values: 'kv' for key-value labels, 'ff' for feature flag labels.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>

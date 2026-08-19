@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Updated to support `2026-05-01-preview`
+
 ## 1.10.0 (2026-06-15)
 
 ### Features Added
