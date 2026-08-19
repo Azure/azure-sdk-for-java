@@ -657,6 +657,32 @@ for (ToolboxTool tool : version.getTools()) {
 
 See the full sample in [ToolboxSearchToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ToolboxSearchToolboxSample.java).
 
+##### **Reminder (preview)**
+
+The Reminder tool lets a hosted agent schedule itself to run again at a future time. It is connectionless and is available only to hosted agents, not prompt agents.
+
+```java com.azure.ai.agents.toolboxes.ReminderPreviewToolboxSample.createReminderToolbox
+
+ReminderPreviewToolboxTool reminderTool = new ReminderPreviewToolboxTool()
+    .setName("schedule_reminder")
+    .setDescription("Schedule a reminder that re-invokes this agent at a future time.");
+
+ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
+    toolboxName,
+    Collections.<ToolboxTool>singletonList(reminderTool),
+    "Built-in reminder tool for a self-scheduling agent.",
+    null,
+    null,
+    null);
+
+System.out.printf("Created toolbox: %s%n", version.getName());
+System.out.printf("Toolbox version: %s%n", version.getVersion());
+System.out.printf("Tool type: %s%n", version.getTools().get(0).getType());
+
+```
+
+See the full samples in [ReminderPreviewToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxSample.java) and [ReminderPreviewToolboxAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxAsyncSample.java).
+
 ---
 
 ### Streaming responses
