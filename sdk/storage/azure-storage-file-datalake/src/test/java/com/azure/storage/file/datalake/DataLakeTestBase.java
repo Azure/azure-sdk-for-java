@@ -136,10 +136,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }

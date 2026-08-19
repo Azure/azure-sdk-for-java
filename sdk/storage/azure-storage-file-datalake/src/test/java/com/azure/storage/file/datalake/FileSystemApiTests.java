@@ -43,7 +43,6 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -2528,8 +2527,10 @@ public class FileSystemApiTests extends DataLakeTestBase {
     //        assertThrows(DataLakeStorageException.class, () -> dataLakeFileSystemClient.rename(generateFileSystemName()));
     //    }
 
+    // Session credentials are bound to the network context of the CreateSession call, so any TLS-terminating
+    // intermediary (including the test proxy) causes the service to reject the session-signed reads.
     @Test
-    @Disabled("This test is disabled because it requires a session-enabled account to run. It will be re-enabled once we have a session-enabled account available for testing.")
+    @LiveOnly
     @ResourceLock("DataLakeSessionAuth")
     public void readFileOverSessionAuth() {
         int fileCount = 5;
