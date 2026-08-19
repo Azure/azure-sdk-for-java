@@ -40,6 +40,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import reactor.core.publisher.Flux;
 
@@ -103,6 +104,7 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
     private Configuration configuration;
     private BlobServiceVersion version;
     private BlobAudience audience;
+    private ExpectContinueOptions expectContinueOptions;
 
     /**
      * Creates a new instance of {@link SpecializedBlobClientBuilder}.
@@ -242,7 +244,7 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
             ? httpPipeline
             : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
                 endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+                perRetryPolicies, configuration, audience, expectContinueOptions, LOGGER);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -778,6 +780,20 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
      */
     public SpecializedBlobClientBuilder audience(BlobAudience audience) {
         this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Sets the behavior for applying the HTTP header {@code Expect: 100-continue} to requests that carry a body.
+     * <p>
+     * The header is not applied unless this is set, and requires an HTTP client that withholds the request body
+     * until the service responds.
+     *
+     * @param expectContinueOptions {@link ExpectContinueOptions} to be used when sending requests with a body.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder expectContinueBehavior(ExpectContinueOptions expectContinueOptions) {
+        this.expectContinueOptions = expectContinueOptions;
         return this;
     }
 }

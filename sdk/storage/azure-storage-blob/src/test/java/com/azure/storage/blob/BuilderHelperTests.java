@@ -17,6 +17,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
@@ -27,8 +28,14 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.ExpectContinueOnThrottlePolicy;
+import com.azure.storage.common.policy.ExpectContinuePolicy;
+import com.azure.storage.common.policy.ExpectContinueMode;
+import com.azure.storage.common.policy.ExpectContinueOptions;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.RetryPolicyType;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,6 +51,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -75,7 +83,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline
             = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
                 BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new FreshDateTestClient(),
-                new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+                new ArrayList<>(), new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -176,7 +184,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -305,7 +313,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
             new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
-            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -608,6 +616,83 @@ public class BuilderHelperTests {
                 .retryOptions(REQUEST_RETRY_OPTIONS)
                 .retryOptions(CORE_RETRY_OPTIONS)
                 .buildBlockBlobClient());
+    }
+
+    @Test
+    public void expectContinuePolicyIsPerRetryAndBeforeCredentials() {
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.APPLY_ON_THROTTLE),
+            new ClientLogger(BuilderHelperTests.class));
+
+        int retryIndex = indexOfPolicy(pipeline, RequestRetryPolicy.class);
+        int expectContinueIndex = indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class);
+        int credentialIndex = indexOfPolicy(pipeline, StorageSharedKeyCredentialPolicy.class);
+
+        assertNotEquals(-1, expectContinueIndex, "Expect-continue policy was not added to the pipeline.");
+        assertTrue(retryIndex < expectContinueIndex,
+            "Expect-continue policy must be after the retry policy so it is evaluated on every attempt.");
+        assertTrue(expectContinueIndex < credentialIndex,
+            "Expect-continue policy must be before the credential policy.");
+    }
+
+    @Test
+    public void expectContinueIsNotAppliedByDefault() {
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+                new ArrayList<>(), null, null, null, new ClientLogger(BuilderHelperTests.class));
+
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
+    }
+
+    @Test
+    public void expectContinueOptionsAreHonoredByBuilder() {
+        HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT,
+            REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ExpectContinueOptions().setMode(ExpectContinueMode.OFF), new ClientLogger(BuilderHelperTests.class));
+
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinueOnThrottlePolicy.class));
+        assertEquals(-1, indexOfPolicy(pipeline, ExpectContinuePolicy.class));
+    }
+
+    @Test
+    public void expectContinueHeaderReachesTransport() throws MalformedURLException {
+        AtomicReference<String> expectHeader = new AtomicReference<>();
+        HttpPipeline pipeline
+            = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, REQUEST_RETRY_OPTIONS, null,
+                BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient() {
+                    @Override
+                    public HttpResponse sendSync(HttpRequest request, Context context) {
+                        expectHeader.set(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+                        return new MockHttpResponse(request, 201);
+                    }
+                }, new ArrayList<>(), new ArrayList<>(), null, null,
+                new ExpectContinueOptions().setMode(ExpectContinueMode.ON), new ClientLogger(BuilderHelperTests.class));
+
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL(ENDPOINT)).setBody(new byte[1024]);
+        pipeline.sendSync(request, Context.NONE);
+
+        assertEquals("100-continue", expectHeader.get());
+    }
+
+    @Test
+    public void expectHeaderIsAllowedInDefaultLogOptions() {
+        assertTrue(BuilderHelper.getDefaultHttpLogOptions()
+            .getAllowedHeaderNames()
+            .contains(HttpHeaderName.EXPECT.getCaseSensitiveName()));
+    }
+
+    private static int indexOfPolicy(HttpPipeline pipeline, Class<?> policyType) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (policyType.isInstance(pipeline.getPolicy(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private static final class FreshDateTestClient implements HttpClient {
