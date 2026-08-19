@@ -183,7 +183,10 @@ public class CosmosPointWriter extends CosmosWriterBase {
                                 ObjectNode.class);
                     }).then();
             },
-            (throwable) -> false, // no exceptions should be ignored
+            // A 412 on patch can only originate from the configured filter predicate because etag/If-Match
+            // is not wired for patch today. If etag support is added, these two causes must be distinguished.
+            (throwable) -> StringUtils.isNotEmpty(this.writeConfig.getCosmosPatchConfig().getFilter())
+                && KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable),
             sinkOperation
         );
     }
@@ -242,4 +245,3 @@ public class CosmosPointWriter extends CosmosWriterBase {
         return itemRequestOptions;
     }
 }
-
