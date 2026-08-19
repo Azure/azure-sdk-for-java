@@ -29,7 +29,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -211,7 +210,7 @@ public class AsyncRestProxyTests {
 
     @ParameterizedTest
     @MethodSource("streamingResponseOwnershipSupplier")
-    public void streamingResponseIsUnbufferedAndCloseable(String accept, String contentType) throws IOException {
+    public void streamingResponseIsUnbufferedAndClosedOnConsumption(String accept, String contentType) {
         byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         AtomicInteger responseCloseCount = new AtomicInteger();
         HttpClient client = request -> Mono.just(new MockHttpResponse(request, 200,
@@ -230,11 +229,8 @@ public class AsyncRestProxyTests {
 
         Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE).block();
 
-        assertTrue(response instanceof Closeable);
         assertFalse(response.getValue().isReplayable());
         assertArraysEqual(expectedBytes, response.getValue().toBytes());
-        assertEquals(1, responseCloseCount.get());
-        ((Closeable) response).close();
         assertEquals(1, responseCloseCount.get());
     }
 

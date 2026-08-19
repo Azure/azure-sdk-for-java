@@ -157,13 +157,11 @@ public class AsyncRestProxy extends RestProxyBase {
                 Flux<ByteBuffer> responseBody
                     = responseBodyOwner == null ? response.getSourceResponse().getBody() : responseBodyOwner.getBody();
                 return responseBody.ignoreElements()
-                    .then(Mono.fromCallable(() -> createResponse(response, entityType, null, responseBodyOwner)));
+                    .then(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             } else {
                 return handleBodyReturnType(response.getSourceResponse(), decodeBytes(response), methodParser, bodyType,
-                    responseBodyOwner)
-                        .map(bodyAsObject -> createResponse(response, entityType, bodyAsObject, responseBodyOwner))
-                        .switchIfEmpty(
-                            Mono.fromCallable(() -> createResponse(response, entityType, null, responseBodyOwner)));
+                    responseBodyOwner).map(bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                        .switchIfEmpty(Mono.fromCallable(() -> createResponse(response, entityType, null)));
             }
         } else {
             // For now, we're just throwing if the Maybe didn't emit a value.
