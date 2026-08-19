@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * Initializes a new instance of the synchronous AzureAppConfiguration type.
  */
-@ServiceClient(builder = AzureAppConfigurationBuilder.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class)
 public final class FeatureFlagClient {
     @Generated
     private final FeatureFlagClientsImpl serviceClient;

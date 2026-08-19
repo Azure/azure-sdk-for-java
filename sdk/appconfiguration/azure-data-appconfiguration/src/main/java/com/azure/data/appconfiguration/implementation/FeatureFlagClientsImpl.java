@@ -33,7 +33,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.data.appconfiguration.AzureAppConfigurationServiceVersion;
+import com.azure.data.appconfiguration.ConfigurationServiceVersion;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,14 +51,14 @@ public final class FeatureFlagClientsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final AzureAppConfigurationImpl client;
+    private final ConfigurationClientImpl client;
 
     /**
      * Initializes an instance of FeatureFlagClientsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FeatureFlagClientsImpl(AzureAppConfigurationImpl client) {
+    FeatureFlagClientsImpl(ConfigurationClientImpl client) {
         this.service = RestProxy.create(FeatureFlagClientsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
@@ -69,7 +69,7 @@ public final class FeatureFlagClientsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public AzureAppConfigurationServiceVersion getServiceVersion() {
+    public ConfigurationServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 

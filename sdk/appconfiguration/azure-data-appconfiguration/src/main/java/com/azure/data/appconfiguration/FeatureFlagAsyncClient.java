@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AzureAppConfiguration type.
  */
-@ServiceClient(builder = AzureAppConfigurationBuilder.class, isAsync = true)
+@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true)
 public final class FeatureFlagAsyncClient {
     @Generated
     private final FeatureFlagClientsImpl serviceClient;
