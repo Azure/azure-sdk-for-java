@@ -47,8 +47,8 @@
 
 #### `models.TIDataConnector` was modified
 
-* `validate()` was removed
 * `withEtag(java.lang.String)` was removed
+* `validate()` was removed
 
 #### `models.OfficeDataConnector` was modified
 
@@ -63,25 +63,25 @@
 #### `models.ScheduledAlertRuleTemplate` was modified
 
 * `ScheduledAlertRuleTemplate()` was changed to private access
-* `validate()` was removed
-* `withTechniques(java.util.List)` was removed
-* `withCustomDetails(java.util.Map)` was removed
-* `withSeverity(models.AlertSeverity)` was removed
-* `withAlertRulesCreatedByTemplateCount(java.lang.Integer)` was removed
-* `withQueryFrequency(java.time.Duration)` was removed
 * `withEntityMappings(java.util.List)` was removed
-* `withTriggerThreshold(java.lang.Integer)` was removed
-* `withVersion(java.lang.String)` was removed
-* `withTriggerOperator(models.TriggerOperator)` was removed
-* `withAlertDetailsOverride(models.AlertDetailsOverride)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withAlertRulesCreatedByTemplateCount(java.lang.Integer)` was removed
+* `withTechniques(java.util.List)` was removed
 * `withQueryPeriod(java.time.Duration)` was removed
+* `withStatus(models.TemplateStatus)` was removed
+* `withSeverity(models.AlertSeverity)` was removed
+* `withRequiredDataConnectors(java.util.List)` was removed
+* `withCustomDetails(java.util.Map)` was removed
+* `withTriggerOperator(models.TriggerOperator)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withTactics(java.util.List)` was removed
+* `withAlertDetailsOverride(models.AlertDetailsOverride)` was removed
+* `withTriggerThreshold(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withQueryFrequency(java.time.Duration)` was removed
+* `withEventGroupingSettings(models.EventGroupingSettings)` was removed
 * `withQuery(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-* `withEventGroupingSettings(models.EventGroupingSettings)` was removed
-* `withRequiredDataConnectors(java.util.List)` was removed
-* `withDisplayName(java.lang.String)` was removed
-* `withTactics(java.util.List)` was removed
-* `withStatus(models.TemplateStatus)` was removed
 
 #### `models.ActionPropertiesBase` was modified
 
@@ -95,13 +95,13 @@
 
 * `FusionAlertRuleTemplate()` was changed to private access
 * `withSeverity(models.AlertSeverity)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withStatus(models.TemplateStatus)` was removed
+* `withTactics(java.util.List)` was removed
 * `withRequiredDataConnectors(java.util.List)` was removed
 * `withDisplayName(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
-* `validate()` was removed
-* `withStatus(models.TemplateStatus)` was removed
 * `withTechniques(java.util.List)` was removed
-* `withTactics(java.util.List)` was removed
+* `validate()` was removed
 * `withAlertRulesCreatedByTemplateCount(java.lang.Integer)` was removed
 
 #### `models.Watchlist$Update` was modified
@@ -129,9 +129,9 @@
 
 #### `models.ClientInfo` was modified
 
-* `withObjectId(java.util.UUID)` was removed
 * `validate()` was removed
 * `java.util.UUID objectId()` -> `java.lang.String objectId()`
+* `withObjectId(java.util.UUID)` was removed
 
 #### `models.PlaybookActionProperties` was modified
 
@@ -142,8 +142,8 @@
 #### `models.AccountEntity` was modified
 
 * `AccountEntity()` was changed to private access
-* `java.util.UUID objectGuid()` -> `java.lang.String objectGuid()`
 * `validate()` was removed
+* `java.util.UUID objectGuid()` -> `java.lang.String objectGuid()`
 
 #### `models.IncidentPropertiesAction` was modified
 
@@ -155,9 +155,9 @@
 
 #### `models.IncidentOwnerInfo` was modified
 
+* `java.util.UUID objectId()` -> `java.lang.String objectId()`
 * `withObjectId(java.util.UUID)` was removed
 * `validate()` was removed
-* `java.util.UUID objectId()` -> `java.lang.String objectId()`
 
 #### `models.RegistryKeyEntity` was modified
 
@@ -166,8 +166,8 @@
 
 #### `models.AwsCloudTrailDataConnector` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.AutomationRulePropertyValuesCondition` was modified
 
@@ -190,9 +190,9 @@
 * `ThreatIntelligenceMetric()` was changed to private access
 * `withThreatTypeMetrics(java.util.List)` was removed
 * `validate()` was removed
-* `withPatternTypeMetrics(java.util.List)` was removed
 * `withLastUpdatedTimeUtc(java.lang.String)` was removed
 * `withSourceMetrics(java.util.List)` was removed
+* `withPatternTypeMetrics(java.util.List)` was removed
 
 #### `models.OfficeDataConnectorDataTypes` was modified
 
@@ -219,8 +219,8 @@
 #### `models.AlertRuleTemplateDataSource` was modified
 
 * `AlertRuleTemplateDataSource()` was changed to private access
-* `withConnectorId(java.lang.String)` was removed
 * `validate()` was removed
+* `withConnectorId(java.lang.String)` was removed
 * `withDataTypes(java.util.List)` was removed
 
 #### `models.EventGroupingSettings` was modified
@@ -229,17 +229,17 @@
 
 #### `models.MdatpDataConnector` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withDescription(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
 * `validate()` was removed
+* `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 
 #### `models.MicrosoftSecurityIncidentCreationAlertRule` was modified
 
@@ -265,14 +265,14 @@
 #### `models.SubmissionMailEntity` was modified
 
 * `SubmissionMailEntity()` was changed to private access
+* `validate()` was removed
 * `java.util.UUID submissionId()` -> `java.lang.String submissionId()`
 * `java.util.UUID networkMessageId()` -> `java.lang.String networkMessageId()`
-* `validate()` was removed
 
 #### `models.AadDataConnector` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.ResourceWithEtag` was modified
 
@@ -317,8 +317,8 @@
 
 #### `models.McasDataConnector` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.IncidentConfiguration` was modified
 
@@ -336,8 +336,8 @@
 
 * `ThreatIntelligenceMetricEntity()` was changed to private access
 * `validate()` was removed
-* `withMetricName(java.lang.String)` was removed
 * `withMetricValue(java.lang.Integer)` was removed
+* `withMetricName(java.lang.String)` was removed
 
 #### `models.MailboxEntity` was modified
 
@@ -352,8 +352,8 @@
 #### `models.HostEntity` was modified
 
 * `HostEntity()` was changed to private access
-* `validate()` was removed
 * `withOsFamily(models.OSFamily)` was removed
+* `validate()` was removed
 
 #### `models.AlertsDataTypeOfDataConnector` was modified
 
@@ -387,14 +387,14 @@
 #### `models.ThreatIntelligenceMetrics` was modified
 
 * `ThreatIntelligenceMetrics()` was changed to private access
-* `validate()` was removed
 * `withProperties(models.ThreatIntelligenceMetric)` was removed
+* `validate()` was removed
 
 #### `models.SecurityGroupEntity` was modified
 
 * `SecurityGroupEntity()` was changed to private access
-* `validate()` was removed
 * `java.util.UUID objectGuid()` -> `java.lang.String objectGuid()`
+* `validate()` was removed
 
 #### `models.ActionRequest` was modified
 
@@ -406,14 +406,14 @@
 
 #### `models.AatpDataConnector` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.AnomalySecurityMLAnalyticsSettings` was modified
 
+* `withSettingsDefinitionId(java.util.UUID)` was removed
 * `java.util.UUID settingsDefinitionId()` -> `java.lang.String settingsDefinitionId()`
 * `withEtag(java.lang.String)` was removed
-* `withSettingsDefinitionId(java.util.UUID)` was removed
 * `validate()` was removed
 
 #### `models.AwsCloudTrailDataConnectorDataTypes` was modified
@@ -441,16 +441,16 @@
 #### `models.MicrosoftSecurityIncidentCreationAlertRuleTemplate` was modified
 
 * `MicrosoftSecurityIncidentCreationAlertRuleTemplate()` was changed to private access
-* `withRequiredDataConnectors(java.util.List)` was removed
-* `withDisplayName(java.lang.String)` was removed
-* `withSeveritiesFilter(java.util.List)` was removed
 * `withAlertRulesCreatedByTemplateCount(java.lang.Integer)` was removed
 * `withDisplayNamesExcludeFilter(java.util.List)` was removed
+* `withStatus(models.TemplateStatus)` was removed
+* `withSeveritiesFilter(java.util.List)` was removed
+* `withDisplayNamesFilter(java.util.List)` was removed
+* `withProductFilter(models.MicrosoftSecurityProductName)` was removed
 * `withDescription(java.lang.String)` was removed
 * `validate()` was removed
-* `withProductFilter(models.MicrosoftSecurityProductName)` was removed
-* `withStatus(models.TemplateStatus)` was removed
-* `withDisplayNamesFilter(java.util.List)` was removed
+* `withRequiredDataConnectors(java.util.List)` was removed
+* `withDisplayName(java.lang.String)` was removed
 
 #### `models.ThreatIntelligenceParsedPatternTypeValue` was modified
 
@@ -482,18 +482,18 @@
 #### `models.HuntingBookmark` was modified
 
 * `HuntingBookmark()` was changed to private access
+* `withLabels(java.util.List)` was removed
 * `withIncidentInfo(models.IncidentInfo)` was removed
-* `withUpdated(java.time.OffsetDateTime)` was removed
-* `withEventTime(java.time.OffsetDateTime)` was removed
 * `withUpdatedBy(models.UserInfo)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withNotes(java.lang.String)` was removed
-* `withQueryResult(java.lang.String)` was removed
-* `withQuery(java.lang.String)` was removed
+* `validate()` was removed
 * `withCreatedBy(models.UserInfo)` was removed
 * `withCreated(java.time.OffsetDateTime)` was removed
-* `validate()` was removed
-* `withLabels(java.util.List)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withQuery(java.lang.String)` was removed
+* `withQueryResult(java.lang.String)` was removed
+* `withUpdated(java.time.OffsetDateTime)` was removed
+* `withEventTime(java.time.OffsetDateTime)` was removed
 
 #### `models.ThreatIntelligenceAppendTags` was modified
 
@@ -508,13 +508,13 @@
 
 * `IncidentEntitiesResultsMetadata()` was changed to private access
 * `withEntityKind(models.EntityKindEnum)` was removed
-* `validate()` was removed
 * `withCount(int)` was removed
+* `validate()` was removed
 
 #### `models.FusionAlertRule` was modified
 
-* `withEtag(java.lang.String)` was removed
 * `validate()` was removed
+* `withEtag(java.lang.String)` was removed
 
 #### `models.TIDataConnectorDataTypes` was modified
 
@@ -537,16 +537,16 @@
 #### `models.MailMessageEntity` was modified
 
 * `MailMessageEntity()` was changed to private access
-* `java.util.UUID networkMessageId()` -> `java.lang.String networkMessageId()`
-* `withDeliveryAction(models.DeliveryAction)` was removed
-* `withBodyFingerprintBin5(java.lang.Integer)` was removed
-* `withBodyFingerprintBin3(java.lang.Integer)` was removed
 * `withAntispamDirection(models.AntispamMailDirection)` was removed
-* `withBodyFingerprintBin1(java.lang.Integer)` was removed
-* `validate()` was removed
-* `withDeliveryLocation(models.DeliveryLocation)` was removed
-* `withBodyFingerprintBin2(java.lang.Integer)` was removed
+* `withBodyFingerprintBin3(java.lang.Integer)` was removed
 * `withBodyFingerprintBin4(java.lang.Integer)` was removed
+* `withBodyFingerprintBin5(java.lang.Integer)` was removed
+* `withBodyFingerprintBin2(java.lang.Integer)` was removed
+* `withDeliveryAction(models.DeliveryAction)` was removed
+* `java.util.UUID networkMessageId()` -> `java.lang.String networkMessageId()`
+* `withDeliveryLocation(models.DeliveryLocation)` was removed
+* `validate()` was removed
+* `withBodyFingerprintBin1(java.lang.Integer)` was removed
 
 #### `models.ThreatIntelligenceParsedPattern` was modified
 
@@ -578,8 +578,8 @@
 #### `models.ProcessEntity` was modified
 
 * `ProcessEntity()` was changed to private access
-* `withElevationToken(models.ElevationToken)` was removed
 * `validate()` was removed
+* `withElevationToken(models.ElevationToken)` was removed
 
 #### `models.IncidentInfo` was modified
 
@@ -1471,20 +1471,20 @@
 
 #### `models.IncidentAdditionalData` was modified
 
-* `mergedIncidentNumber()` was added
 * `mergedIncidentUrl()` was added
-* `techniques()` was added
+* `mergedIncidentNumber()` was added
 * `providerIncidentUrl()` was added
+* `techniques()` was added
 
 #### `models.ScheduledAlertRuleTemplate` was modified
 
-* `subTechniques()` was added
 * `sentinelEntitiesMappings()` was added
+* `subTechniques()` was added
 
 #### `models.FusionAlertRuleTemplate` was modified
 
-* `subTechniques()` was added
 * `sourceSettings()` was added
+* `subTechniques()` was added
 
 #### `models.Watchlist$Update` was modified
 
@@ -1493,28 +1493,28 @@
 
 #### `models.IoTDeviceEntity` was modified
 
-* `isAuthorized()` was added
-* `zone()` was added
-* `deviceSubType()` was added
-* `nicEntityIds()` was added
-* `isProgramming()` was added
-* `isScanner()` was added
-* `purdueLayer()` was added
-* `owners()` was added
-* `site()` was added
-* `sensor()` was added
 * `importance()` was added
+* `isScanner()` was added
+* `site()` was added
+* `owners()` was added
+* `nicEntityIds()` was added
+* `isAuthorized()` was added
+* `purdueLayer()` was added
+* `isProgramming()` was added
+* `deviceSubType()` was added
+* `sensor()` was added
+* `zone()` was added
 
 #### `models.Watchlist$Definition` was modified
 
-* `withSource(java.lang.String)` was added
 * `withSourceType(models.SourceType)` was added
+* `withSource(java.lang.String)` was added
 
 #### `models.Bookmark$Update` was modified
 
-* `withTechniques(java.util.List)` was added
 * `withTactics(java.util.List)` was added
 * `withEntityMappings(java.util.List)` was added
+* `withTechniques(java.util.List)` was added
 
 #### `models.ConditionType` was modified
 
@@ -1571,31 +1571,31 @@
 
 #### `models.ScheduledAlertRuleCommonProperties` was modified
 
-* `withSentinelEntitiesMappings(java.util.List)` was added
 * `sentinelEntitiesMappings()` was added
+* `withSentinelEntitiesMappings(java.util.List)` was added
 
 #### `models.ScheduledAlertRule` was modified
 
-* `withSentinelEntitiesMappings(java.util.List)` was added
-* `withSubTechniques(java.util.List)` was added
 * `subTechniques()` was added
+* `withSentinelEntitiesMappings(java.util.List)` was added
 * `sentinelEntitiesMappings()` was added
+* `withSubTechniques(java.util.List)` was added
 
 #### `models.Bookmark$Definition` was modified
 
+* `withEntityMappings(java.util.List)` was added
 * `withTechniques(java.util.List)` was added
 * `withTactics(java.util.List)` was added
-* `withEntityMappings(java.util.List)` was added
 
 #### `models.AlertDetailsOverride` was modified
 
-* `alertDynamicProperties()` was added
 * `withAlertDynamicProperties(java.util.List)` was added
+* `alertDynamicProperties()` was added
 
 #### `models.Watchlist` was modified
 
-* `provisioningState()` was added
 * `sourceType()` was added
+* `provisioningState()` was added
 
 #### `models.ActionType` was modified
 
@@ -1603,9 +1603,9 @@
 
 #### `models.Bookmark` was modified
 
-* `tactics()` was added
 * `techniques()` was added
 * `entityMappings()` was added
+* `tactics()` was added
 
 #### `models.AlertRuleKind` was modified
 
@@ -1615,10 +1615,10 @@
 
 #### `models.DataConnectors` was modified
 
-* `connect(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody)` was added
-* `connectWithResponse(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody,com.azure.core.util.Context)` was added
 * `disconnect(java.lang.String,java.lang.String,java.lang.String)` was added
 * `disconnectWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `connectWithResponse(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody,com.azure.core.util.Context)` was added
+* `connect(java.lang.String,java.lang.String,java.lang.String,models.DataConnectorConnectBody)` was added
 
 #### `models.Incidents` was modified
 
@@ -1627,55 +1627,55 @@
 
 #### `models.Incident` was modified
 
-* `providerName()` was added
 * `providerIncidentId()` was added
 * `teamInformation()` was added
+* `providerName()` was added
 
 #### `SecurityInsightsManager` was modified
 
 * `huntComments()` was added
-* `officeConsents()` was added
-* `resourceProviders()` was added
-* `entities()` was added
-* `getRecommendations()` was added
-* `updates()` was added
-* `metadatas()` was added
-* `huntRelations()` was added
-* `productSettings()` was added
-* `entitiesRelations()` was added
-* `workspaceManagerAssignmentJobs()` was added
-* `entityQueryTemplates()` was added
-* `workspaceManagerConfigurations()` was added
-* `contentPackages()` was added
-* `incidentTasks()` was added
-* `getTriggeredAnalyticsRuleRuns()` was added
-* `sourceControls()` was added
-* `triggeredAnalyticsRuleRunOperations()` was added
 * `entitiesGetTimelines()` was added
-* `entityRelations()` was added
-* `workspaceManagerAssignments()` was added
-* `alertRuleOperations()` was added
-* `contentTemplates()` was added
 * `productTemplates()` was added
-* `bookmarkOperations()` was added
-* `entityQueries()` was added
-* `contentTemplatesOperations()` was added
-* `billingStatistics()` was added
-* `sourceControlOperations()` was added
-* `dataConnectorDefinitions()` was added
-* `threatIntelligences()` was added
-* `productPackagesOperations()` was added
+* `getTriggeredAnalyticsRuleRuns()` was added
 * `reevaluates()` was added
-* `bookmarkRelations()` was added
-* `dataConnectorsCheckRequirementsOperations()` was added
-* `gets()` was added
-* `workspaceManagerMembers()` was added
-* `productTemplatesOperations()` was added
+* `workspaceManagerAssignmentJobs()` was added
 * `fileImports()` was added
-* `workspaceManagerGroups()` was added
+* `contentTemplatesOperations()` was added
+* `contentTemplates()` was added
+* `workspaceManagerAssignments()` was added
+* `officeConsents()` was added
 * `contentPackageOperations()` was added
+* `metadatas()` was added
+* `getRecommendations()` was added
+* `workspaceManagerGroups()` was added
+* `entitiesRelations()` was added
+* `entities()` was added
+* `sourceControlOperations()` was added
+* `workspaceManagerConfigurations()` was added
+* `gets()` was added
 * `productPackages()` was added
 * `hunts()` was added
+* `workspaceManagerMembers()` was added
+* `threatIntelligences()` was added
+* `updates()` was added
+* `entityQueryTemplates()` was added
+* `entityQueries()` was added
+* `bookmarkRelations()` was added
+* `productTemplatesOperations()` was added
+* `triggeredAnalyticsRuleRunOperations()` was added
+* `resourceProviders()` was added
+* `entityRelations()` was added
+* `huntRelations()` was added
+* `bookmarkOperations()` was added
+* `contentPackages()` was added
+* `sourceControls()` was added
+* `alertRuleOperations()` was added
+* `billingStatistics()` was added
+* `productPackagesOperations()` was added
+* `dataConnectorsCheckRequirementsOperations()` was added
+* `dataConnectorDefinitions()` was added
+* `incidentTasks()` was added
+* `productSettings()` was added
 
 #### `models.EntityKindEnum` was modified
 
@@ -1692,9 +1692,9 @@
 #### `models.FusionAlertRule` was modified
 
 * `withScenarioExclusionPatterns(java.util.List)` was added
+* `withSourceSettings(java.util.List)` was added
 * `scenarioExclusionPatterns()` was added
 * `subTechniques()` was added
-* `withSourceSettings(java.util.List)` was added
 * `sourceSettings()` was added
 
 #### `models.UserInfo` was modified
