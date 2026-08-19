@@ -88,10 +88,10 @@ final class CseV2NonceOrderValidator {
         if (current.size() == 1) {
             NonceScheme locked = current.iterator().next();
             if (pastJavaNonceWrap && locked == NonceScheme.JAVA) {
-                throw nonceWrapException();
+                throw LOGGER.logExceptionAsError(nonceWrapException());
             }
             if (!Arrays.equals(locked.expectedNonce(expectedRegion, nonceLength), actualNonce)) {
-                throw reorderException();
+                throw LOGGER.logExceptionAsError(reorderException());
             }
             return;
         }
@@ -108,9 +108,7 @@ final class CseV2NonceOrderValidator {
         }
 
         if (matchesHere.isEmpty()) {
-            throw pastJavaNonceWrap
-                ? nonceWrapException()
-                : reorderException();
+            throw LOGGER.logExceptionAsError(pastJavaNonceWrap ? nonceWrapException() : reorderException());
         }
 
         // Intersect the shared candidate set with the schemes matching this region. Atomic and order-independent, so it
@@ -123,37 +121,29 @@ final class CseV2NonceOrderValidator {
             return next;
         });
         if (remaining.isEmpty()) {
-            throw reorderException();
+            throw LOGGER.logExceptionAsError(reorderException());
         }
     }
 
     private static RuntimeException reorderException() {
-        return LOGGER.logExceptionAsError(new IllegalStateException(
+        return new IllegalStateException(
             "Encountered an out-of-order authenticated region while decrypting client-side encrypted (v2) content. "
                 + "This may indicate that the blob's authenticated regions have been rearranged or otherwise tampered "
-                + "with." + recoveryInstruction()));
+                + "with." + recoveryInstruction());
     }
 
     private static RuntimeException nonceWrapException() {
-        return LOGGER.logExceptionAsError(new IllegalStateException("Cannot verify the integrity of client-side"
+        return new IllegalStateException("Cannot verify the integrity of client-side"
             + " encrypted (v2) content at or beyond " + NONCE_WRAP_REGION_COUNT
             + " authenticated regions. For content encrypted by this (Java) SDK the encryption nonce repeats past that"
             + " point, resulting in GCM nonce reuse, and the blob is too large for its authenticated region size to be"
-            + " safely verified. " + recoveryInstruction()));
+            + " safely verified. " + recoveryInstruction());
     }
 
     private static String recoveryInstruction() {
         return "To recover data from an affected blob, set the \"" + ALLOW_MISORDERED_REGIONS_ENV_VAR
             + "\" environment variable (or the \"" + ALLOW_MISORDERED_REGIONS_PROPERTY
             + "\" system property) to \"true\".";
-    }
-
-    private static String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder(bytes.length * 2);
-        for (byte b : bytes) {
-            sb.append(Character.forDigit((b >> 4) & 0xF, 16)).append(Character.forDigit(b & 0xF, 16));
-        }
-        return sb.toString();
     }
 
     /**
