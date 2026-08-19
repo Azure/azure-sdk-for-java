@@ -16,14 +16,9 @@ steps:
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
   # as we require the GitHub service connection to be loaded.
   - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-      parameters:
-        Paths:
-          - '**/*.xml'
-          - '**/ci*.yml' # necessary for save-package-properties.yml
-          - ${{ if not(parameters.CheckoutRecordings) }}:
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+    - checkout: self
+      fetchDepth: 1
+      fetchTags: false
 
   - task: UsePythonVersion@0
     displayName: 'Use Python $(PythonVersion)'

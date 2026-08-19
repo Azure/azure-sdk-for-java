@@ -34,13 +34,9 @@ extends:
               # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
               # as we require the GitHub service connection to be loaded.
               - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                    parameters:
-                      Paths:
-                        - '**/*.xml'
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
-                        - 'sdk/tools/linting-extensions'
+                - checkout: self
+                  fetchDepth: 1
+                  fetchTags: false
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python $(PythonVersion)'
@@ -77,10 +73,9 @@ extends:
                   arguments: '--set-skip-linting-projects SkipLintingProjects --artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
                   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                parameters:
-                  SkipCheckoutNone: true
-                  Paths: $(SparseCheckoutDirectories)
+              - checkout: self
+                fetchDepth: 1
+                fetchTags: false
 
               - task: PowerShell@2
                 inputs:
