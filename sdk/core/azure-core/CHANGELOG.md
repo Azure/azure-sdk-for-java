@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
+
 ### Other Changes
 
 ## 1.59.0 (2026-08-12)
