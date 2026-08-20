@@ -1192,8 +1192,10 @@ public class GatewayAddressCache implements IAddressCache {
                     && exception instanceof Exception
                     && WebExceptionUtility.isNetworkFailure((Exception) exception)) {
 
+                    // Fail on the first network exception so PPCB can refresh addresses without waiting for other probes.
                     sink.error(exception);
                 } else {
+                    // Keep non-network failures until all probes finish in case a later probe reports a network failure.
                     sink.next(response);
                 }
             })
@@ -1233,6 +1235,7 @@ public class GatewayAddressCache implements IAddressCache {
     private Flux<OpenConnectionResponse> validateOpenConnectionResponses(
         List<OpenConnectionResponse> openConnectionResponses) {
 
+        // No network exception short-circuited the probes, so surface the first remaining connection failure.
         for (OpenConnectionResponse response : openConnectionResponses) {
             if (!response.isConnected()) {
                 Throwable exception = response.getException();
