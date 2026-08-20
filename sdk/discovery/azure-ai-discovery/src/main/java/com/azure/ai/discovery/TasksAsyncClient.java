@@ -522,9 +522,9 @@ public final class TasksAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stableUpdateWithResponse(String projectName, String investigationName,
-        String taskName, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.stableUpdateWithResponseAsync(projectName, investigationName, taskName, resource,
+    public Mono<Response<BinaryData>> updateWithResponse(String projectName, String investigationName, String taskName,
+        BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponseAsync(projectName, investigationName, taskName, resource,
             requestOptions);
     }
 
@@ -995,15 +995,15 @@ public final class TasksAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> stableUpdate(String projectName, String investigationName, String taskName, Task resource) {
-        // Generated convenience method for stableUpdateWithResponse
+    public Mono<Task> update(String projectName, String investigationName, String taskName, Task resource) {
+        // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getTaskAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         resourceInBinaryData.getLength();
         JsonMergePatchHelper.getTaskAccessor().prepareModelForJsonMergePatch(resource, false);
-        return stableUpdateWithResponse(projectName, investigationName, taskName, resourceInBinaryData, requestOptions)
+        return updateWithResponse(projectName, investigationName, taskName, resourceInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }

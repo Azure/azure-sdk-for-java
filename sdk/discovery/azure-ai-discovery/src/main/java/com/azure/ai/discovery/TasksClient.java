@@ -516,9 +516,9 @@ public final class TasksClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stableUpdateWithResponse(String projectName, String investigationName, String taskName,
+    public Response<BinaryData> updateWithResponse(String projectName, String investigationName, String taskName,
         BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.stableUpdateWithResponse(projectName, investigationName, taskName, resource,
+        return this.serviceClient.updateWithResponse(projectName, investigationName, taskName, resource,
             requestOptions);
     }
 
@@ -967,15 +967,15 @@ public final class TasksClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task stableUpdate(String projectName, String investigationName, String taskName, Task resource) {
-        // Generated convenience method for stableUpdateWithResponse
+    public Task update(String projectName, String investigationName, String taskName, Task resource) {
+        // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getTaskAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         resourceInBinaryData.getLength();
         JsonMergePatchHelper.getTaskAccessor().prepareModelForJsonMergePatch(resource, false);
-        return stableUpdateWithResponse(projectName, investigationName, taskName, resourceInBinaryData, requestOptions)
+        return updateWithResponse(projectName, investigationName, taskName, resourceInBinaryData, requestOptions)
             .getValue()
             .toObject(Task.class);
     }

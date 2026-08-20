@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link TasksAsyncClient}, covering create, get, list, stableUpdate, start, addComment,
+ * Tests for {@link TasksAsyncClient}, covering create, get, list, update, start, addComment,
  * addExecutionHistory, and delete.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -89,7 +89,7 @@ public final class TasksAsyncClientTest extends DiscoveryClientTestBase {
         try {
             Task updated
                 = client
-                    .stableUpdate(projectName, investigationName, created.getName(),
+                    .update(projectName, investigationName, created.getName(),
                         new Task().setDescription("Updated by SDK tests"))
                     .block();
             assertNotNull(updated);

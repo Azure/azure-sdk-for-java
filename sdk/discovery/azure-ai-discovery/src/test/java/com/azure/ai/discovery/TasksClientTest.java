@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link TasksClient}, covering create, get, list (with and without filter), stableUpdate, start,
+ * Tests for {@link TasksClient}, covering create, get, list (with and without filter), update, start,
  * addComment, addExecutionHistory, and delete.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -84,7 +84,7 @@ public final class TasksClientTest extends DiscoveryClientTestBase {
         TasksClient client = getTasksClient();
         Task created = createTask(client, "Task before update");
         try {
-            Task updated = client.stableUpdate(projectName, investigationName, created.getName(),
+            Task updated = client.update(projectName, investigationName, created.getName(),
                 new Task().setDescription("Updated by SDK tests"));
             assertNotNull(updated);
             assertEquals(created.getName(), updated.getName());

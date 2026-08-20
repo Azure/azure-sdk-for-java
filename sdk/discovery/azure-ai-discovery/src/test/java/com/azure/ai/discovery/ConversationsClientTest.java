@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Tests for {@link ConversationsClient}, covering all convenience operations: create, get, list, stableUpdate, and
+ * Tests for {@link ConversationsClient}, covering all convenience operations: create, get, list, update, and
  * delete.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -74,7 +74,7 @@ public final class ConversationsClientTest extends DiscoveryClientTestBase {
             "Conversation before update");
 
         Conversation updated
-            = client.stableUpdate(created.getName(), new Conversation().setDisplayName("Conversation after update"));
+            = client.update(created.getName(), new Conversation().setDisplayName("Conversation after update"));
 
         assertNotNull(updated);
         assertEquals(created.getName(), updated.getName());

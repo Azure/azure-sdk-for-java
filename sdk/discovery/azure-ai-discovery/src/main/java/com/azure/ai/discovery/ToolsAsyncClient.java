@@ -254,9 +254,9 @@ public final class ToolsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCancelRunLro(String projectName, String operationId,
+    public PollerFlux<BinaryData, BinaryData> beginCancelRun(String projectName, String operationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCancelRunLroAsync(projectName, operationId, requestOptions);
+        return this.serviceClient.beginCancelRunAsync(projectName, operationId, requestOptions);
     }
 
     /**
@@ -439,10 +439,10 @@ public final class ToolsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollOperationDetails, RunResult> beginCancelRunLro(String projectName, String operationId) {
-        // Generated convenience method for beginCancelRunLroWithModel
+    public PollerFlux<PollOperationDetails, RunResult> beginCancelRun(String projectName, String operationId) {
+        // Generated convenience method for beginCancelRunWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCancelRunLroWithModelAsync(projectName, operationId, requestOptions);
+        return serviceClient.beginCancelRunWithModelAsync(projectName, operationId, requestOptions);
     }
 
     /**

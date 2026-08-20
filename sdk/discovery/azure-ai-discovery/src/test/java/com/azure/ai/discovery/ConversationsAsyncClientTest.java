@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Tests for {@link ConversationsAsyncClient}, covering create, get, list, stableUpdate, and delete.
+ * Tests for {@link ConversationsAsyncClient}, covering create, get, list, update, and delete.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public final class ConversationsAsyncClientTest extends DiscoveryClientTestBase {
@@ -72,8 +72,7 @@ public final class ConversationsAsyncClientTest extends DiscoveryClientTestBase 
             .block();
 
         Conversation updated
-            = client.stableUpdate(created.getName(), new Conversation().setDisplayName("Conversation after update"))
-                .block();
+            = client.update(created.getName(), new Conversation().setDisplayName("Conversation after update")).block();
 
         assertNotNull(updated);
         assertEquals("Conversation after update", updated.getDisplayName());

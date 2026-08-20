@@ -251,9 +251,9 @@ public final class ToolsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCancelRunLro(String projectName, String operationId,
+    public SyncPoller<BinaryData, BinaryData> beginCancelRun(String projectName, String operationId,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCancelRunLro(projectName, operationId, requestOptions);
+        return this.serviceClient.beginCancelRun(projectName, operationId, requestOptions);
     }
 
     /**
@@ -435,10 +435,10 @@ public final class ToolsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollOperationDetails, RunResult> beginCancelRunLro(String projectName, String operationId) {
-        // Generated convenience method for beginCancelRunLroWithModel
+    public SyncPoller<PollOperationDetails, RunResult> beginCancelRun(String projectName, String operationId) {
+        // Generated convenience method for beginCancelRunWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCancelRunLroWithModel(projectName, operationId, requestOptions);
+        return serviceClient.beginCancelRunWithModel(projectName, operationId, requestOptions);
     }
 
     /**

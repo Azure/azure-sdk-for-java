@@ -121,7 +121,7 @@ public final class ConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> stableUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("conversationName") String conversationName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
@@ -133,7 +133,7 @@ public final class ConversationsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> stableUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("conversationName") String conversationName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
@@ -399,12 +399,12 @@ public final class ConversationsImpl {
      * @return a conversation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stableUpdateWithResponseAsync(String conversationName, BinaryData resource,
+    public Mono<Response<BinaryData>> updateWithResponseAsync(String conversationName, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.stableUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            context -> service.update(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 conversationName, contentType, accept, resource, requestOptions, context));
     }
 
@@ -458,11 +458,11 @@ public final class ConversationsImpl {
      * @return a conversation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stableUpdateWithResponse(String conversationName, BinaryData resource,
+    public Response<BinaryData> updateWithResponse(String conversationName, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.stableUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             conversationName, contentType, accept, resource, requestOptions, Context.NONE);
     }
 

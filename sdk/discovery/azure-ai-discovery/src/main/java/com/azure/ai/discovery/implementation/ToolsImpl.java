@@ -127,7 +127,7 @@ public final class ToolsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelRunLro(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> cancelRun(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -138,7 +138,7 @@ public final class ToolsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelRunLroSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> cancelRunSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -1006,10 +1006,10 @@ public final class ToolsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> cancelRunLroWithResponseAsync(String projectName, String operationId,
+    private Mono<Response<BinaryData>> cancelRunWithResponseAsync(String projectName, String operationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.cancelRunLro(this.client.getEndpoint(),
+        return FluxUtil.withContext(context -> service.cancelRun(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), projectName, operationId, accept, requestOptions, context));
     }
 
@@ -1059,10 +1059,10 @@ public final class ToolsImpl {
      * @return response model for the cancel run operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> cancelRunLroWithResponse(String projectName, String operationId,
+    private Response<BinaryData> cancelRunWithResponse(String projectName, String operationId,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelRunLroSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+        return service.cancelRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             projectName, operationId, accept, requestOptions, Context.NONE);
     }
 
@@ -1112,10 +1112,10 @@ public final class ToolsImpl {
      * @return the {@link PollerFlux} for polling of response model for the cancel run operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollOperationDetails, RunResult> beginCancelRunLroWithModelAsync(String projectName,
+    public PollerFlux<PollOperationDetails, RunResult> beginCancelRunWithModelAsync(String projectName,
         String operationId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cancelRunLroWithResponseAsync(projectName, operationId, requestOptions),
+            () -> this.cancelRunWithResponseAsync(projectName, operationId, requestOptions),
             new com.azure.ai.discovery.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1173,10 +1173,10 @@ public final class ToolsImpl {
      * @return the {@link SyncPoller} for polling of response model for the cancel run operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollOperationDetails, RunResult> beginCancelRunLroWithModel(String projectName,
-        String operationId, RequestOptions requestOptions) {
+    public SyncPoller<PollOperationDetails, RunResult> beginCancelRunWithModel(String projectName, String operationId,
+        RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cancelRunLroWithResponse(projectName, operationId, requestOptions),
+            () -> this.cancelRunWithResponse(projectName, operationId, requestOptions),
             new com.azure.ai.discovery.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1234,10 +1234,10 @@ public final class ToolsImpl {
      * @return the {@link PollerFlux} for polling of response model for the cancel run operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCancelRunLroAsync(String projectName, String operationId,
+    public PollerFlux<BinaryData, BinaryData> beginCancelRunAsync(String projectName, String operationId,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.cancelRunLroWithResponseAsync(projectName, operationId, requestOptions),
+            () -> this.cancelRunWithResponseAsync(projectName, operationId, requestOptions),
             new com.azure.ai.discovery.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
@@ -1295,10 +1295,10 @@ public final class ToolsImpl {
      * @return the {@link SyncPoller} for polling of response model for the cancel run operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCancelRunLro(String projectName, String operationId,
+    public SyncPoller<BinaryData, BinaryData> beginCancelRun(String projectName, String operationId,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.cancelRunLroWithResponse(projectName, operationId, requestOptions),
+            () -> this.cancelRunWithResponse(projectName, operationId, requestOptions),
             new com.azure.ai.discovery.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.client.getHttpPipeline())
                     .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))

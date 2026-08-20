@@ -173,9 +173,9 @@ public final class ConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stableUpdateWithResponse(String conversationName, BinaryData resource,
+    public Response<BinaryData> updateWithResponse(String conversationName, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.stableUpdateWithResponse(conversationName, resource, requestOptions);
+        return this.serviceClient.updateWithResponse(conversationName, resource, requestOptions);
     }
 
     /**
@@ -328,15 +328,15 @@ public final class ConversationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Conversation stableUpdate(String conversationName, Conversation resource) {
-        // Generated convenience method for stableUpdateWithResponse
+    public Conversation update(String conversationName, Conversation resource) {
+        // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getConversationAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         resourceInBinaryData.getLength();
         JsonMergePatchHelper.getConversationAccessor().prepareModelForJsonMergePatch(resource, false);
-        return stableUpdateWithResponse(conversationName, resourceInBinaryData, requestOptions).getValue()
+        return updateWithResponse(conversationName, resourceInBinaryData, requestOptions).getValue()
             .toObject(Conversation.class);
     }
 

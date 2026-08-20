@@ -154,7 +154,7 @@ public final class TasksImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> stableUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("investigationName") String investigationName, @PathParam("taskName") String taskName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -167,7 +167,7 @@ public final class TasksImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> stableUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("projectName") String projectName,
             @PathParam("investigationName") String investigationName, @PathParam("taskName") String taskName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
@@ -1298,12 +1298,12 @@ public final class TasksImpl {
      * @return task resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stableUpdateWithResponseAsync(String projectName, String investigationName,
+    public Mono<Response<BinaryData>> updateWithResponseAsync(String projectName, String investigationName,
         String taskName, BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.stableUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            context -> service.update(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
                 projectName, investigationName, taskName, contentType, accept, resource, requestOptions, context));
     }
 
@@ -1453,12 +1453,12 @@ public final class TasksImpl {
      * @return task resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stableUpdateWithResponse(String projectName, String investigationName, String taskName,
+    public Response<BinaryData> updateWithResponse(String projectName, String investigationName, String taskName,
         BinaryData resource, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.stableUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            projectName, investigationName, taskName, contentType, accept, resource, requestOptions, Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), projectName,
+            investigationName, taskName, contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -2318,20 +2318,26 @@ public final class TasksImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

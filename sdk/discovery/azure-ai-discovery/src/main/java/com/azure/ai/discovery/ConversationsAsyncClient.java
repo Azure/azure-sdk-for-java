@@ -175,9 +175,9 @@ public final class ConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stableUpdateWithResponse(String conversationName, BinaryData resource,
+    public Mono<Response<BinaryData>> updateWithResponse(String conversationName, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.stableUpdateWithResponseAsync(conversationName, resource, requestOptions);
+        return this.serviceClient.updateWithResponseAsync(conversationName, resource, requestOptions);
     }
 
     /**
@@ -334,16 +334,15 @@ public final class ConversationsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Conversation> stableUpdate(String conversationName, Conversation resource) {
-        // Generated convenience method for stableUpdateWithResponse
+    public Mono<Conversation> update(String conversationName, Conversation resource) {
+        // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getConversationAccessor().prepareModelForJsonMergePatch(resource, true);
         BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         resourceInBinaryData.getLength();
         JsonMergePatchHelper.getConversationAccessor().prepareModelForJsonMergePatch(resource, false);
-        return stableUpdateWithResponse(conversationName, resourceInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateWithResponse(conversationName, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Conversation.class));
     }
 
