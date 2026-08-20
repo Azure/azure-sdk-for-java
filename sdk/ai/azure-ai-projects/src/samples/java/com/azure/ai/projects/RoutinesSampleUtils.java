@@ -46,8 +46,7 @@ final class RoutinesSampleUtils {
     }
 
     private static boolean isTerminalPhase(RoutineRunPhase phase) {
-        return phase != null
-            && ("completed".equalsIgnoreCase(phase.toString()) || "failed".equalsIgnoreCase(phase.toString()));
+        return RoutineRunPhase.COMPLETED.equals(phase) || RoutineRunPhase.FAILED.equals(phase);
     }
 
     private static boolean isTerminalRun(RoutineRun run) {
@@ -55,7 +54,7 @@ final class RoutinesSampleUtils {
     }
 
     private static boolean isFailedRun(RoutineRun run) {
-        return (run.getPhase() != null && "failed".equalsIgnoreCase(run.getPhase().toString()))
+        return RoutineRunPhase.FAILED.equals(run.getPhase())
             || "failed".equalsIgnoreCase(run.getStatus())
             || "killed".equalsIgnoreCase(run.getStatus());
     }
