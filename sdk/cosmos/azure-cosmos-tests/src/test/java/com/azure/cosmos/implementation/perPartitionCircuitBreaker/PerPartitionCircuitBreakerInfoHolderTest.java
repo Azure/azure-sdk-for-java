@@ -54,13 +54,14 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
     }
 
     @Test(groups = {"unit"})
-    public void uninitializedSnapshotIsSharedAndReadOnly() {
+    public void uninitializedSnapshotIsSharedAndIgnoresUpdates() throws Exception {
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
 
         assertThat(holder.snapshot()).isSameAs(PerPartitionCircuitBreakerInfoHolder.EMPTY);
-        assertThatThrownBy(() -> PerPartitionCircuitBreakerInfoHolder.EMPTY
-            .setPerPartitionCircuitBreakerInfoHolder(Collections.emptyMap()))
-            .isInstanceOf(UnsupportedOperationException.class);
+        PerPartitionCircuitBreakerInfoHolder.EMPTY
+            .setPerPartitionCircuitBreakerInfoHolder(Collections.emptyMap());
+        assertThat(new ObjectMapper().writeValueAsString(PerPartitionCircuitBreakerInfoHolder.EMPTY))
+            .isEqualTo("null");
     }
 
     @Test(groups = {"unit"})

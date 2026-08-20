@@ -29,7 +29,7 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
     public void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
         if (this == EMPTY) {
-            throw new UnsupportedOperationException("This PPCB diagnostics snapshot is read-only.");
+            return;
         }
 
         this.perPartitionCircuitBreakerInfoHolder = locationSpecificHealthContext == null
