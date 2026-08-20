@@ -51,6 +51,7 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1162,7 +1163,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     public Flux<OpenConnectionResponse> submitOpenConnectionTasks(
         PartitionKeyRange partitionKeyRange,
-        String collectionRid) {
+        String collectionRid,
+        boolean forceRefresh) {
 
         if (this.proactiveOpenConnectionsProcessor == null) {
             return Flux.empty();
@@ -1173,14 +1175,74 @@ public class GatewayAddressCache implements IAddressCache {
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, partitionKeyRange.getId());
 
-        return this.serverPartitionAddressCache.getAsync(partitionKeyRangeIdentity, cachedAddresses -> Mono.just(cachedAddresses), cachedAddresses -> true)
-            .flatMapMany(cachedAddresses -> Flux.fromArray(cachedAddresses))
+        return this.serverPartitionAddressCache.getAsync(
+                partitionKeyRangeIdentity,
+                cachedAddresses -> cachedAddresses != null && !forceRefresh
+                    ? Mono.just(cachedAddresses)
+                    : this.getAddressesForRangeId(
+                        this.createPartitionAddressRequest(collectionRid),
+                        partitionKeyRangeIdentity,
+                        forceRefresh,
+                        cachedAddresses),
+                cachedAddresses -> forceRefresh)
+            .flatMapMany(cachedAddresses -> this.openConnections(collectionRid, cachedAddresses))
+            .<OpenConnectionResponse>handle((response, sink) -> {
+                Throwable exception = response.getException();
+                if (!response.isConnected()
+                    && exception instanceof Exception
+                    && WebExceptionUtility.isNetworkFailure((Exception) exception)) {
+
+                    sink.error(exception);
+                } else {
+                    sink.next(response);
+                }
+            })
+            .collectList()
+            .flatMapMany(this::validateOpenConnectionResponses);
+    }
+
+    private RxDocumentServiceRequest createPartitionAddressRequest(String collectionRid) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this.clientContext,
+            OperationType.Read,
+            collectionRid,
+            ResourceType.DocumentCollection,
+            Collections.emptyMap());
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(this.serviceEndpoint);
+        request.faultInjectionRequestContext.setRegionalRoutingContextToRoute(
+            request.requestContext.regionalRoutingContextToRoute);
+        return request;
+    }
+
+    private Flux<OpenConnectionResponse> openConnections(
+        String collectionRid,
+        AddressInformation[] addresses) {
+
+        return Flux.fromArray(addresses)
             .flatMap(addressInformation -> Mono.fromFuture(
                 this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                     collectionRid,
-                    this.addressEndpoint,
+                    this.serviceEndpoint,
                     addressInformation.getPhysicalUri(),
-                    1)));
+                    1),
+                true)
+                .onErrorResume(throwable -> Mono.just(
+                    new OpenConnectionResponse(addressInformation.getPhysicalUri(), false, throwable, 0))));
+    }
+
+    private Flux<OpenConnectionResponse> validateOpenConnectionResponses(
+        List<OpenConnectionResponse> openConnectionResponses) {
+
+        for (OpenConnectionResponse response : openConnectionResponses) {
+            if (!response.isConnected()) {
+                Throwable exception = response.getException();
+                return Flux.error(exception != null
+                    ? exception
+                    : new IllegalStateException("Failed to open a connection without an exception."));
+            }
+        }
+
+        return Flux.fromIterable(openConnectionResponses);
     }
 
     private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(
