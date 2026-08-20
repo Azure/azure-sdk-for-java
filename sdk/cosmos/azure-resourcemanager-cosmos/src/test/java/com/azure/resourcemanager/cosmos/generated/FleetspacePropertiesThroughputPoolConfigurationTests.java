@@ -12,25 +12,25 @@ public final class FleetspacePropertiesThroughputPoolConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspacePropertiesThroughputPoolConfiguration model = BinaryData.fromString(
-            "{\"minThroughput\":326530419,\"maxThroughput\":342537841,\"dedicatedRUs\":4415414185373352874,\"maxConsumableRUs\":9164451009862825116}")
+            "{\"minThroughput\":1520186432,\"maxThroughput\":970852790,\"dedicatedRUs\":6534731570373706775,\"maxConsumableRUs\":1612514202751885810}")
             .toObject(FleetspacePropertiesThroughputPoolConfiguration.class);
-        Assertions.assertEquals(326530419, model.minThroughput());
-        Assertions.assertEquals(342537841, model.maxThroughput());
-        Assertions.assertEquals(4415414185373352874L, model.dedicatedRUs());
-        Assertions.assertEquals(9164451009862825116L, model.maxConsumableRUs());
+        Assertions.assertEquals(1520186432, model.minThroughput());
+        Assertions.assertEquals(970852790, model.maxThroughput());
+        Assertions.assertEquals(6534731570373706775L, model.dedicatedRUs());
+        Assertions.assertEquals(1612514202751885810L, model.maxConsumableRUs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetspacePropertiesThroughputPoolConfiguration model
-            = new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(326530419)
-                .withMaxThroughput(342537841)
-                .withDedicatedRUs(4415414185373352874L)
-                .withMaxConsumableRUs(9164451009862825116L);
+            = new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(1520186432)
+                .withMaxThroughput(970852790)
+                .withDedicatedRUs(6534731570373706775L)
+                .withMaxConsumableRUs(1612514202751885810L);
         model = BinaryData.fromObject(model).toObject(FleetspacePropertiesThroughputPoolConfiguration.class);
-        Assertions.assertEquals(326530419, model.minThroughput());
-        Assertions.assertEquals(342537841, model.maxThroughput());
-        Assertions.assertEquals(4415414185373352874L, model.dedicatedRUs());
-        Assertions.assertEquals(9164451009862825116L, model.maxConsumableRUs());
+        Assertions.assertEquals(1520186432, model.minThroughput());
+        Assertions.assertEquals(970852790, model.maxThroughput());
+        Assertions.assertEquals(6534731570373706775L, model.dedicatedRUs());
+        Assertions.assertEquals(1612514202751885810L, model.maxConsumableRUs());
     }
 }

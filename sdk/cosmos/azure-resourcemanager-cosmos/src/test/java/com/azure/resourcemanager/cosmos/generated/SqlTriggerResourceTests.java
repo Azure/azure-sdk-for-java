@@ -14,23 +14,23 @@ public final class SqlTriggerResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlTriggerResource model = BinaryData
-            .fromString("{\"id\":\"e\",\"body\":\"q\",\"triggerType\":\"Pre\",\"triggerOperation\":\"All\"}")
+            .fromString("{\"id\":\"r\",\"body\":\"rohkpigqfusu\",\"triggerType\":\"Pre\",\"triggerOperation\":\"All\"}")
             .toObject(SqlTriggerResource.class);
-        Assertions.assertEquals("e", model.id());
-        Assertions.assertEquals("q", model.body());
+        Assertions.assertEquals("r", model.id());
+        Assertions.assertEquals("rohkpigqfusu", model.body());
         Assertions.assertEquals(TriggerType.PRE, model.triggerType());
         Assertions.assertEquals(TriggerOperation.ALL, model.triggerOperation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlTriggerResource model = new SqlTriggerResource().withId("e")
-            .withBody("q")
+        SqlTriggerResource model = new SqlTriggerResource().withId("r")
+            .withBody("rohkpigqfusu")
             .withTriggerType(TriggerType.PRE)
             .withTriggerOperation(TriggerOperation.ALL);
         model = BinaryData.fromObject(model).toObject(SqlTriggerResource.class);
-        Assertions.assertEquals("e", model.id());
-        Assertions.assertEquals("q", model.body());
+        Assertions.assertEquals("r", model.id());
+        Assertions.assertEquals("rohkpigqfusu", model.body());
         Assertions.assertEquals(TriggerType.PRE, model.triggerType());
         Assertions.assertEquals(TriggerOperation.ALL, model.triggerOperation());
     }

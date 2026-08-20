@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupSchedule model = BinaryData
-            .fromString("{\"scheduleName\":\"fsxxby\",\"cronExpression\":\"sqlv\",\"retentionInHours\":1742759496}")
-            .toObject(BackupSchedule.class);
-        Assertions.assertEquals("fsxxby", model.scheduleName());
-        Assertions.assertEquals("sqlv", model.cronExpression());
-        Assertions.assertEquals(1742759496, model.retentionInHours());
+        BackupSchedule model
+            = BinaryData.fromString("{\"scheduleName\":\"qh\",\"cronExpression\":\"p\",\"retentionInHours\":727688571}")
+                .toObject(BackupSchedule.class);
+        Assertions.assertEquals("qh", model.scheduleName());
+        Assertions.assertEquals("p", model.cronExpression());
+        Assertions.assertEquals(727688571, model.retentionInHours());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupSchedule model = new BackupSchedule().withScheduleName("fsxxby")
-            .withCronExpression("sqlv")
-            .withRetentionInHours(1742759496);
+        BackupSchedule model
+            = new BackupSchedule().withScheduleName("qh").withCronExpression("p").withRetentionInHours(727688571);
         model = BinaryData.fromObject(model).toObject(BackupSchedule.class);
-        Assertions.assertEquals("fsxxby", model.scheduleName());
-        Assertions.assertEquals("sqlv", model.cronExpression());
-        Assertions.assertEquals(1742759496, model.retentionInHours());
+        Assertions.assertEquals("qh", model.scheduleName());
+        Assertions.assertEquals("p", model.cronExpression());
+        Assertions.assertEquals(727688571, model.retentionInHours());
     }
 }

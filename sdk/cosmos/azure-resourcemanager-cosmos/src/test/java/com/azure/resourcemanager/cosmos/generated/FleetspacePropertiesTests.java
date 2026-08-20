@@ -16,15 +16,15 @@ public final class FleetspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetspaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Uninitialized\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"BusinessCritical\",\"dataRegions\":[\"lfvhlqcskkqjm\"],\"throughputPoolConfiguration\":{\"minThroughput\":267955466,\"maxThroughput\":1067653949,\"dedicatedRUs\":5067502145305671473,\"maxConsumableRUs\":8917923588503952120}}")
+            "{\"provisioningState\":\"Succeeded\",\"fleetspaceApiKind\":\"NoSQL\",\"serviceTier\":\"BusinessCritical\",\"dataRegions\":[\"nhptjlrkdcy\"],\"throughputPoolConfiguration\":{\"minThroughput\":1382485200,\"maxThroughput\":1551514224,\"dedicatedRUs\":3667394137675611990,\"maxConsumableRUs\":6586563088968830874}}")
             .toObject(FleetspaceProperties.class);
         Assertions.assertEquals(FleetspacePropertiesFleetspaceApiKind.NO_SQL, model.fleetspaceApiKind());
         Assertions.assertEquals(FleetspacePropertiesServiceTier.BUSINESS_CRITICAL, model.serviceTier());
-        Assertions.assertEquals("lfvhlqcskkqjm", model.dataRegions().get(0));
-        Assertions.assertEquals(267955466, model.throughputPoolConfiguration().minThroughput());
-        Assertions.assertEquals(1067653949, model.throughputPoolConfiguration().maxThroughput());
-        Assertions.assertEquals(5067502145305671473L, model.throughputPoolConfiguration().dedicatedRUs());
-        Assertions.assertEquals(8917923588503952120L, model.throughputPoolConfiguration().maxConsumableRUs());
+        Assertions.assertEquals("nhptjlrkdcy", model.dataRegions().get(0));
+        Assertions.assertEquals(1382485200, model.throughputPoolConfiguration().minThroughput());
+        Assertions.assertEquals(1551514224, model.throughputPoolConfiguration().maxThroughput());
+        Assertions.assertEquals(3667394137675611990L, model.throughputPoolConfiguration().dedicatedRUs());
+        Assertions.assertEquals(6586563088968830874L, model.throughputPoolConfiguration().maxConsumableRUs());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,19 +32,19 @@ public final class FleetspacePropertiesTests {
         FleetspaceProperties model
             = new FleetspaceProperties().withFleetspaceApiKind(FleetspacePropertiesFleetspaceApiKind.NO_SQL)
                 .withServiceTier(FleetspacePropertiesServiceTier.BUSINESS_CRITICAL)
-                .withDataRegions(Arrays.asList("lfvhlqcskkqjm"))
+                .withDataRegions(Arrays.asList("nhptjlrkdcy"))
                 .withThroughputPoolConfiguration(
-                    new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(267955466)
-                        .withMaxThroughput(1067653949)
-                        .withDedicatedRUs(5067502145305671473L)
-                        .withMaxConsumableRUs(8917923588503952120L));
+                    new FleetspacePropertiesThroughputPoolConfiguration().withMinThroughput(1382485200)
+                        .withMaxThroughput(1551514224)
+                        .withDedicatedRUs(3667394137675611990L)
+                        .withMaxConsumableRUs(6586563088968830874L));
         model = BinaryData.fromObject(model).toObject(FleetspaceProperties.class);
         Assertions.assertEquals(FleetspacePropertiesFleetspaceApiKind.NO_SQL, model.fleetspaceApiKind());
         Assertions.assertEquals(FleetspacePropertiesServiceTier.BUSINESS_CRITICAL, model.serviceTier());
-        Assertions.assertEquals("lfvhlqcskkqjm", model.dataRegions().get(0));
-        Assertions.assertEquals(267955466, model.throughputPoolConfiguration().minThroughput());
-        Assertions.assertEquals(1067653949, model.throughputPoolConfiguration().maxThroughput());
-        Assertions.assertEquals(5067502145305671473L, model.throughputPoolConfiguration().dedicatedRUs());
-        Assertions.assertEquals(8917923588503952120L, model.throughputPoolConfiguration().maxConsumableRUs());
+        Assertions.assertEquals("nhptjlrkdcy", model.dataRegions().get(0));
+        Assertions.assertEquals(1382485200, model.throughputPoolConfiguration().minThroughput());
+        Assertions.assertEquals(1551514224, model.throughputPoolConfiguration().maxThroughput());
+        Assertions.assertEquals(3667394137675611990L, model.throughputPoolConfiguration().dedicatedRUs());
+        Assertions.assertEquals(6586563088968830874L, model.throughputPoolConfiguration().maxConsumableRUs());
     }
 }

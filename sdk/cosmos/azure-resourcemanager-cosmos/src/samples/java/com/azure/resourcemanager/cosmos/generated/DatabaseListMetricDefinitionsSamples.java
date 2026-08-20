@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseListMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBDatabaseGetMetricDefinitions.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBDatabaseGetMetricDefinitions.json
      */
     /**
      * Sample code: CosmosDBDatabaseGetMetricDefinitions.

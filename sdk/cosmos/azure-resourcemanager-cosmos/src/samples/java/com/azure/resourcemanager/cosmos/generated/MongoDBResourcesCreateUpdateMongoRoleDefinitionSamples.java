@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class MongoDBResourcesCreateUpdateMongoRoleDefinitionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBRoleDefinitionCreateUpdate.

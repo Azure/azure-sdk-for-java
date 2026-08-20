@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Column model = BinaryData.fromString("{\"name\":\"clkfkee\",\"type\":\"vop\"}").toObject(Column.class);
-        Assertions.assertEquals("clkfkee", model.name());
-        Assertions.assertEquals("vop", model.type());
+        Column model = BinaryData.fromString("{\"name\":\"ahxm\",\"type\":\"ryarvsxzqb\"}").toObject(Column.class);
+        Assertions.assertEquals("ahxm", model.name());
+        Assertions.assertEquals("ryarvsxzqb", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Column model = new Column().withName("clkfkee").withType("vop");
+        Column model = new Column().withName("ahxm").withType("ryarvsxzqb");
         model = BinaryData.fromObject(model).toObject(Column.class);
-        Assertions.assertEquals("clkfkee", model.name());
-        Assertions.assertEquals("vop", model.type());
+        Assertions.assertEquals("ahxm", model.name());
+        Assertions.assertEquals("ryarvsxzqb", model.type());
     }
 }

@@ -14,10 +14,10 @@ public final class SqlTriggerGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlTriggerGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"tutmzl\",\"_ts\":91.25174,\"_etag\":\"lvfhrbbp\",\"id\":\"eqvcwwyyurmoch\",\"body\":\"rprsnm\",\"triggerType\":\"Post\",\"triggerOperation\":\"Update\"}}")
+            "{\"resource\":{\"_rid\":\"axpunjqikczvv\",\"_ts\":62.381447,\"_etag\":\"gx\",\"id\":\"fcsserxhtvsox\",\"body\":\"wntsjgqrsxy\",\"triggerType\":\"Post\",\"triggerOperation\":\"Update\"}}")
             .toObject(SqlTriggerGetProperties.class);
-        Assertions.assertEquals("eqvcwwyyurmoch", model.resource().id());
-        Assertions.assertEquals("rprsnm", model.resource().body());
+        Assertions.assertEquals("fcsserxhtvsox", model.resource().id());
+        Assertions.assertEquals("wntsjgqrsxy", model.resource().body());
         Assertions.assertEquals(TriggerType.POST, model.resource().triggerType());
         Assertions.assertEquals(TriggerOperation.UPDATE, model.resource().triggerOperation());
     }

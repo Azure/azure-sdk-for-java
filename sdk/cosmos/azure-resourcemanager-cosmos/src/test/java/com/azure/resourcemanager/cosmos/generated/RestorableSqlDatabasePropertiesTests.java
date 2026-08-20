@@ -14,13 +14,13 @@ public final class RestorableSqlDatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableSqlDatabaseProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"bfetwily\",\"operationType\":\"Recreate\",\"canUndelete\":\"pdxqlfrolqownkiu\",\"canUndeleteReason\":\"ewnahwkxjjmzt\",\"eventTimestamp\":\"mso\",\"ownerId\":\"tmvecdhdyswcrptv\",\"ownerResourceId\":\"jczxvlgsrg\",\"database\":{\"_rid\":\"izrpywlptyuqhrl\",\"_ts\":67.06087,\"_etag\":\"ykpfu\",\"_colls\":\"ixcnpcf\",\"_users\":\"kpyyc\",\"_self\":\"wmpjprd\",\"id\":\"wrpcfpcfjfwzlgza\",\"restoreParameters\":{\"restoreSource\":\"yep\",\"restoreTimestampInUtc\":\"2021-03-28T10:01:10Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"}}}")
+            "{\"resource\":{\"_rid\":\"pxjhxzubfjzabbwz\",\"operationType\":\"Delete\",\"canUndelete\":\"aix\",\"canUndeleteReason\":\"ckixsps\",\"eventTimestamp\":\"gavkmv\",\"ownerId\":\"zerejr\",\"ownerResourceId\":\"zjbyetjxryopta\",\"database\":{\"_rid\":\"whlbecgihzbpem\",\"_ts\":14.304572,\"_etag\":\"bovr\",\"_colls\":\"xywpjhspboxhif\",\"_users\":\"skpeswyhhmifjua\",\"_self\":\"wwv\",\"id\":\"mmp\",\"restoreParameters\":{\"restoreSource\":\"y\",\"restoreTimestampInUtc\":\"2020-12-29T18:48:44Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}}}")
             .toObject(RestorableSqlDatabaseProperties.class);
-        Assertions.assertEquals("wrpcfpcfjfwzlgza", model.resource().database().id());
-        Assertions.assertEquals("yep", model.resource().database().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T10:01:10Z"),
+        Assertions.assertEquals("mmp", model.resource().database().id());
+        Assertions.assertEquals("y", model.resource().database().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-29T18:48:44Z"),
             model.resource().database().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().database().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().database().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().database().createMode());
     }
 }
