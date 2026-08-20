@@ -5717,6 +5717,15 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             throw new SkipException("Test requires a multi-region account");
         }
 
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(getClientBuilder());
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
         String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
         TestObject testObject = TestObject.create();
         PartitionKey partitionKey = new PartitionKey(testObject.getId());

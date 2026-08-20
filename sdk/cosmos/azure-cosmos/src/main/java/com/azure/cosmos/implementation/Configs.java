@@ -361,6 +361,7 @@ public class Configs {
     // Below sets a time limit on how long these connection establishments be attempted for
     // Covers one address probe pass with the default proactive connection retry policy.
     private static final int DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 20;
+    private static final int MIN_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 10;
     private static final String CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
 
     private static final boolean DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = true;
@@ -1489,13 +1490,17 @@ public class Configs {
         String valueFromSystemProperty = System.getProperty(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
-            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+            return Math.max(
+                Integer.parseInt(valueFromSystemProperty),
+                MIN_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
         }
 
         String valueFromEnvVariable = System.getenv(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
 
         if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
-            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+            return Math.max(
+                Integer.parseInt(valueFromEnvVariable),
+                MIN_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
         }
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
