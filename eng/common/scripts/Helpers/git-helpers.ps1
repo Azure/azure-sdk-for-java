@@ -52,6 +52,9 @@ function Get-ChangedFiles {
   }
   Write-Host $command
   $changedFiles = Invoke-Expression -Command $command
+  if ($LASTEXITCODE -ne 0) {
+    throw "git diff failed with exit code $LASTEXITCODE for '$TargetCommittish...$SourceCommittish'"
+  }
   if (!$changedFiles) {
     Write-Host "No changed files in git diff between $TargetCommittish and $SourceCommittish"
   }

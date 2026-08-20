@@ -46,10 +46,14 @@ steps:
         arguments: >-
           -CspellConfigPath ${{ parameters.CspellConfigPath }}
           -ExitWithError:(!$${{ parameters.ContinueOnError }})
+          -SourceCommittish 'HEAD'
+          -TargetCommittish 'HEAD^1'
         pwsh: true
     - ${{ if ne('', parameters.ScriptToValidateUpgrade) }}:
       - pwsh: |
-          $changedFiles = ./eng/common/scripts/get-changedfiles.ps1
+          $changedFiles = ./eng/common/scripts/get-changedfiles.ps1 `
+            -SourceCommittish 'HEAD' `
+            -TargetCommittish 'HEAD^1'
 
           if ($changedFiles -notcontains 'eng/common/spelling/package-lock.json') {
             Write-Host "No changes to cspell package-lock.json detected."

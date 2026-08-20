@@ -37,6 +37,8 @@ steps:
             -TargetPath '${{ parameters.TargetPath }}'
             -ArtifactPath '${{ parameters.DiffDirectory }}'
             -ExcludePaths ('${{ convertToJson(parameters.ExcludePaths) }}' | ConvertFrom-Json)
+            -SourceCommittish 'HEAD'
+            -TargetCommittish 'HEAD^1'
           pwsh: true
           workingDirectory: '${{ parameters.WorkingDirectory }}'
 

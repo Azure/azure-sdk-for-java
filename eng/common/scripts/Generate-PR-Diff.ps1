@@ -10,6 +10,12 @@ The folder in which the result will be written.
 
 .PARAMETER TargetPath
 The path under which changes will be detected.
+
+.PARAMETER SourceCommittish
+Commit or ref containing the proposed changes.
+
+.PARAMETER TargetCommittish
+Commit or ref used as the comparison base.
 #>
 [CmdletBinding()]
 Param (
@@ -19,7 +25,11 @@ Param (
   [string] $TargetPath,
   [Parameter(Mandatory=$false)]
   [AllowEmptyCollection()]
-  [array] $ExcludePaths
+  [array] $ExcludePaths,
+  [Parameter(Mandatory=$false)]
+  [string] $SourceCommittish = "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}",
+  [Parameter(Mandatory=$false)]
+  [string] $TargetCommittish = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/")
 )
 
 . (Join-Path $PSScriptRoot "Helpers" "git-helpers.ps1")
@@ -47,8 +57,15 @@ $ArtifactName = Join-Path $ArtifactPath "diff.json"
 $changedFiles = @()
 $changedServices = @()
 
-$changedFiles = Get-ChangedFiles -DiffPath $TargetPath
-$deletedFiles = Get-ChangedFiles -DiffPath $TargetPath -DiffFilterType "D"
+$changedFiles = Get-ChangedFiles `
+  -SourceCommittish $SourceCommittish `
+  -TargetCommittish $TargetCommittish `
+  -DiffPath $TargetPath
+$deletedFiles = Get-ChangedFiles `
+  -SourceCommittish $SourceCommittish `
+  -TargetCommittish $TargetCommittish `
+  -DiffPath $TargetPath `
+  -DiffFilterType "D"
 
 if ($changedFiles) {
   $changedServices = Get-ChangedServices -ChangedFiles $changedFiles
