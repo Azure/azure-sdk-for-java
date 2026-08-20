@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cdn.models.SkuName;
  */
 public final class ProfilesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Profiles_Migrate.json
+     * x-ms-original-file: 2026-07-01/Profiles_Migrate.json
      */
     /**
      * Sample code: Profiles_Migrate.

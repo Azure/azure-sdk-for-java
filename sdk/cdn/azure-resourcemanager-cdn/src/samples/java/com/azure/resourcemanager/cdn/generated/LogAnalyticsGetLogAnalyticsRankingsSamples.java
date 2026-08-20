@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class LogAnalyticsGetLogAnalyticsRankingsSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/LogAnalytics_GetLogAnalyticsRankings.json
+     * x-ms-original-file: 2026-07-01/LogAnalytics_GetLogAnalyticsRankings.json
      */
     /**
      * Sample code: LogAnalytics_GetLogAnalyticsRankings.

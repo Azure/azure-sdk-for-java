@@ -1,16 +1,668 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.54.0 (2026-08-20)
 
-### Features Added
-
-- Supported `defineAfdEndpoint`, `defineOriginGroup`, `defineRuleSet` method in `CdnProfile` for Azure Front Door Standard/Premium Sku.
+- Package api-version 2026-07-01.
 
 ### Breaking Changes
 
-- Changed `typeName()` return type from `String` to enum types (`DeliveryRuleActionParametersType`, `DeliveryRuleConditionParametersType`, `CertificateSourceParametersType`, `KeyVaultSigningKeyParametersType`) in condition/action parameter classes.
-- Changed `withTypeName(String)` parameter type to corresponding enum type in condition/action parameter classes.
-- Removed `fromInt(int)` method from `PolicySettingsDefaultCustomBlockResponseStatusCode` class. Use `fromValue(Integer)` instead.
+#### `models.RuleListResult` was removed
+
+#### `models.UsagesListResult` was removed
+
+#### `models.SecurityPolicyListResult` was removed
+
+#### `models.OperationsListResult` was removed
+
+#### `models.RuleSetListResult` was removed
+
+#### `models.CdnWebApplicationFirewallPolicyList` was removed
+
+#### `models.ManagedRuleSetDefinitionList` was removed
+
+#### `models.AfdDomainListResult` was removed
+
+#### `models.ResourceUsageListResult` was removed
+
+#### `models.AfdEndpointListResult` was removed
+
+#### `models.RouteListResult` was removed
+
+#### `models.AfdOriginGroupListResult` was removed
+
+#### `models.OriginGroupListResult` was removed
+
+#### `models.EndpointListResult` was removed
+
+#### `models.ProfileListResult` was removed
+
+#### `models.EdgenodeResult` was removed
+
+#### `models.SecretListResult` was removed
+
+#### `models.OriginListResult` was removed
+
+#### `models.AfdOriginListResult` was removed
+
+#### `models.CustomDomainListResult` was removed
+
+#### `models.DeepCreatedCustomDomain` was modified
+
+* `DeepCreatedCustomDomain()` was changed to private access
+* `withHostname(java.lang.String)` was removed
+* `withValidationData(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.RequestSchemeMatchConditionParameters` was modified
+
+* `withOperator(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.RequestUriMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.WafMetricsResponseSeriesItem` was modified
+
+* `WafMetricsResponseSeriesItem()` was changed to private access
+* `withUnit(models.WafMetricsSeriesUnit)` was removed
+* `withData(java.util.List)` was removed
+* `withMetric(java.lang.String)` was removed
+* `withGroups(java.util.List)` was removed
+
+#### `models.RankingsResponseTablesPropertiesItemsItem` was modified
+
+* `RankingsResponseTablesPropertiesItemsItem()` was changed to private access
+* `withMetrics(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.EndpointResource` was modified
+
+* `EndpointResource()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.KeyVaultCertificateSourceParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.CertificateSourceParametersType typeName()`
+
+#### `models.KeyVaultSigningKeyParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.KeyVaultSigningKeyParametersType typeName()`
+
+#### `models.MetricsResponseSeriesItem` was modified
+
+* `MetricsResponseSeriesItem()` was changed to private access
+* `withGroups(java.util.List)` was removed
+* `withData(java.util.List)` was removed
+* `withUnit(models.MetricsSeriesUnit)` was removed
+* `withMetric(java.lang.String)` was removed
+
+#### `models.IpAddressGroup` was modified
+
+* `IpAddressGroup()` was changed to private access
+* `withIpv4Addresses(java.util.List)` was removed
+* `withDeliveryRegion(java.lang.String)` was removed
+* `withIpv6Addresses(java.util.List)` was removed
+
+#### `models.RequestMethodMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.RankingsResponseTablesItem` was modified
+
+* `RankingsResponseTablesItem()` was changed to private access
+* `withRanking(java.lang.String)` was removed
+* `withData(java.util.List)` was removed
+
+#### `models.RankingsResponseTablesPropertiesItemsMetricsItem` was modified
+
+* `RankingsResponseTablesPropertiesItemsMetricsItem()` was changed to private access
+* `withMetric(java.lang.String)` was removed
+* `withPercentage(java.lang.Float)` was removed
+* `withValue(java.lang.Long)` was removed
+
+#### `models.UrlFileNameMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.RouteConfigurationOverrideActionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+
+#### `models.ContinentsResponseCountryOrRegionsItem` was modified
+
+* `ContinentsResponseCountryOrRegionsItem()` was changed to private access
+* `withContinentId(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.UrlRedirectActionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.SslProtocolMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.RequestHeaderMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.CacheKeyQueryStringActionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+
+#### `models.HttpVersionMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.MetricsResponseSeriesPropertiesItemsItem` was modified
+
+* `MetricsResponseSeriesPropertiesItemsItem()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.PolicySettingsDefaultCustomBlockResponseStatusCode` was modified
+
+* `PolicySettingsDefaultCustomBlockResponseStatusCode()` was removed
+* `fromInt(int)` was removed
+
+#### `models.ResourcesResponseCustomDomainsItem` was modified
+
+* `ResourcesResponseCustomDomainsItem()` was changed to private access
+* `withEndpointId(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withHistory(java.lang.Boolean)` was removed
+
+#### `models.CookiesMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.MigrationErrorType` was modified
+
+* `MigrationErrorType()` was changed to private access
+
+#### `models.IsDeviceMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.ManagedRuleGroupDefinition` was modified
+
+* `ManagedRuleGroupDefinition()` was changed to private access
+
+#### `models.UrlPathMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.HostnameMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.ResourcesResponseEndpointsItem` was modified
+
+* `ResourcesResponseEndpointsItem()` was changed to private access
+* `withHistory(java.lang.Boolean)` was removed
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withCustomDomains(java.util.List)` was removed
+
+#### `models.MetricsResponseSeriesItemData` was modified
+
+* `MetricsResponseSeriesItemData()` was changed to private access
+* `withDateTime(java.time.OffsetDateTime)` was removed
+* `withValue(java.lang.Float)` was removed
+
+#### `models.QueryStringMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.WafMetricsResponseSeriesPropertiesItemsItem` was modified
+
+* `WafMetricsResponseSeriesPropertiesItemsItem()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ContinentsResponseContinentsItem` was modified
+
+* `ContinentsResponseContinentsItem()` was changed to private access
+* `withId(java.lang.String)` was removed
+
+#### `models.HeaderActionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+
+#### `models.SocketAddrMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withLogFilterPattern(java.lang.String)` was removed
+* `withBlobDuration(java.lang.String)` was removed
+
+#### `models.RemoteAddressMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.WafMetricsResponseSeriesItemData` was modified
+
+* `WafMetricsResponseSeriesItemData()` was changed to private access
+* `withDateTime(java.time.OffsetDateTime)` was removed
+* `withValue(java.lang.Float)` was removed
+
+#### `models.MetricAvailability` was modified
+
+* `MetricAvailability()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withTimeGrain(java.lang.String)` was removed
+
+#### `models.WafRankingsResponseDataItemMetric` was modified
+
+* `WafRankingsResponseDataItemMetric()` was changed to private access
+* `withValue(java.lang.Long)` was removed
+* `withMetric(java.lang.String)` was removed
+* `withPercentage(java.lang.Double)` was removed
+
+#### `models.DimensionProperties` was modified
+
+* `DimensionProperties()` was changed to private access
+* `withInternalName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
+
+#### `models.WafRankingsResponseDataItem` was modified
+
+* `WafRankingsResponseDataItem()` was changed to private access
+* `withGroupValues(java.util.List)` was removed
+* `withMetrics(java.util.List)` was removed
+
+#### `models.CustomerCertificateParameters` was modified
+
+* `withSubjectAlternativeNames(java.util.List)` was removed
+
+#### `models.ClientPortMatchConditionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+
+#### `models.ServerPortMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.DomainValidationProperties` was modified
+
+* `DomainValidationProperties()` was changed to private access
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+
+#### `models.UrlFileExtensionMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withUnit(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withAvailabilities(java.util.List)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withMetricFilterPattern(java.lang.String)` was removed
+* `withSupportedTimeGrainTypes(java.util.List)` was removed
+* `withIsInternal(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.CacheExpirationActionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.UrlRewriteActionParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+
+#### `models.OriginGroupOverrideActionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.UrlSigningActionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleActionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.ManagedRuleDefinition` was modified
+
+* `ManagedRuleDefinition()` was changed to private access
+
+#### `models.ResourcesResponseEndpointsPropertiesItemsItem` was modified
+
+* `ResourcesResponseEndpointsPropertiesItemsItem()` was changed to private access
+* `withEndpointId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `withHistory(java.lang.Boolean)` was removed
+
+#### `models.RequestBodyMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.PostArgsMatchConditionParameters` was modified
+
+* `java.lang.String typeName()` -> `models.DeliveryRuleConditionParametersType typeName()`
+* `withTypeName(java.lang.String)` was removed
+
+#### `models.CdnCertificateSourceParameters` was modified
+
+* `withTypeName(java.lang.String)` was removed
+* `java.lang.String typeName()` -> `models.CertificateSourceParametersType typeName()`
+
+#### `models.CidrIpAddress` was modified
+
+* `CidrIpAddress()` was changed to private access
+* `withPrefixLength(java.lang.Integer)` was removed
+* `withBaseIpAddress(java.lang.String)` was removed
+
+### Features Added
+
+* `models.EnforceMtlsEnabledState` was added
+
+* `models.DeliveryRuleConditionParametersType` was added
+
+* `models.DeliveryRuleConditionParameters` was added
+
+* `models.Route$UpdateDefinitionStages` was added
+
+* `models.DeliveryRuleEdgeActionParameters` was added
+
+* `models.CertificateRevocationCheckEnabledState` was added
+
+* `models.Route$DefinitionStages` was added
+
+* `models.Route$Definition` was added
+
+* `models.Rule$Update` was added
+
+* `models.Rule$UpdateDefinitionStages$WithOrder` was added
+
+* `models.AfdCipherSuiteSetType` was added
+
+* `models.ClientCertificateRequiredAndValidatedAdvancedSettings` was added
+
+* `models.OriginAuthenticationType` was added
+
+* `models.OriginGroup$Update` was added
+
+* `models.Origin$UpdateDefinitionStages$Blank` was added
+
+* `models.AfdDomainMtlsParameters` was added
+
+* `models.OriginAuthenticationTokenDestinationHeader` was added
+
+* `models.Route$UpdateDefinitionStages$WithAttach` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$WithAttach` was added
+
+* `models.ClientCertificateValidatedIfPresentedAdvancedSettings` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$Blank` was added
+
+* `models.RuleSet$UpdateDefinitionStages$WithAttach` was added
+
+* `models.Origin` was added
+
+* `models.Route` was added
+
+* `models.CertificateNameCheckValidationMode` was added
+
+* `models.RuleSet$UpdateDefinitionStages$Blank` was added
+
+* `models.Origin$UpdateDefinitionStages$WithAttach` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$WithAttach` was added
+
+* `models.CompleteMtlsPassthroughToOriginAdvancedSettings` was added
+
+* `models.DeliveryRuleActionParametersType` was added
+
+* `models.CdnMigrationToAfdParameters` was added
+
+* `models.AfdDomainHttpsCustomizedCipherSuiteSet` was added
+
+* `models.AfdSecretMtlsCertificateChain` was added
+
+* `models.MigrationEndpointMapping` was added
+
+* `models.ClientCertificateRequiredAndOriginValidatesAdvancedSettings` was added
+
+* `models.AfdEndpoint` was added
+
+* `models.DeliveryRuleActionParameters` was added
+
+* `models.RuleSet$Definition` was added
+
+* `models.Origin$UpdateDefinitionStages$WithHostname` was added
+
+* `models.RuleSet$Update` was added
+
+* `models.OriginGroup$UpdateDefinitionStages` was added
+
+* `models.Rule$UpdateDefinitionStages$WithAttach` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$Attachable` was added
+
+* `models.Origin$UpdateDefinitionStages$Attachable` was added
+
+* `models.Rule$UpdateDefinitionStages$Blank` was added
+
+* `models.AfdUrlSigningActionParameters` was added
+
+* `models.CertificateSourceParameters` was added
+
+* `models.AfdServerTlsGroupPolicy` was added
+
+* `models.RuleSet` was added
+
+* `models.Usage` was added
+
+* `models.AfdEndpoint$Definition` was added
+
+* `models.Rule$UpdateDefinitionStages` was added
+
+* `models.Rule` was added
+
+* `models.Origin$DefinitionStages` was added
+
+* `models.OriginGroup$DefinitionStages` was added
+
+* `models.Route$UpdateDefinitionStages$Attachable` was added
+
+* `models.EdgeAction` was added
+
+* `models.Origin$Update` was added
+
+* `models.Rule$DefinitionStages` was added
+
+* `models.OriginGroup` was added
+
+* `models.RuleSet$DefinitionStages` was added
+
+* `models.BatchRuleProperties` was added
+
+* `models.OriginAuthenticationProperties` was added
+
+* `models.Origin$Definition` was added
+
+* `models.InvocationPoint` was added
+
+* `models.AfdCustomizedCipherSuiteForTls12` was added
+
+* `models.AfdCustomizedCipherSuiteForTls13` was added
+
+* `models.Rule$Definition` was added
+
+* `models.Route$UpdateDefinitionStages$WithOriginGroup` was added
+
+* `models.AfdServerTlsGroup` was added
+
+* `models.AfdUrlSigningAction` was added
+
+* `models.CertificateSourceParametersType` was added
+
+* `models.KeyVaultSigningKeyParametersType` was added
+
+* `models.Route$Update` was added
+
+* `models.RuleSet$UpdateDefinitionStages$Attachable` was added
+
+* `models.Origin$UpdateDefinitionStages` was added
+
+* `models.AfdEndpoint$Update` was added
+
+* `models.OriginGroup$UpdateDefinitionStages$Attachable` was added
+
+* `models.RuleSet$UpdateDefinitionStages` was added
+
+* `models.OriginGroup$Definition` was added
+
+* `models.Rule$UpdateDefinitionStages$WithActions` was added
+
+* `models.Rule$UpdateDefinitionStages$Attachable` was added
+
+* `models.MtlsScenarioType` was added
+
+* `models.AfdEndpoint$DefinitionStages` was added
+
+* `models.AfdEndpoint$UpdateDefinitionStages$Blank` was added
+
+* `models.TypeName` was added
+
+* `models.Route$UpdateDefinitionStages$Blank` was added
+
+#### `models.CdnProfile` was modified
+
+* `ruleSets()` was added
+* `afdEndpoints()` was added
+* `originGroups()` was added
+
+#### `models.CdnProfile$Definition` was modified
+
+* `withGlobal()` was added
+
+#### `models.KeyVaultSigningKeyParameters` was modified
+
+* `withTypeName(models.KeyVaultSigningKeyParametersType)` was added
+
+#### `models.AfdOriginGroupUpdateParameters` was modified
+
+* `withAuthentication(models.OriginAuthenticationProperties)` was added
+* `authentication()` was added
+
+#### `models.PolicySettingsDefaultCustomBlockResponseStatusCode` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `hashCode()` was added
+* `fromValue(java.lang.Integer)` was added
+* `equals(java.lang.Object)` was added
+* `getValue()` was added
+* `toString()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AfdMinimumTlsVersion` was modified
+
+* `TLS13` was added
+
+#### `models.SecurityPolicyWebApplicationFirewallAssociation` was modified
+
+* `withRoutes(java.util.List)` was added
+* `routes()` was added
+
+#### `models.AfdOriginUpdateParameters` was modified
+
+* `withCustomCertificateSubjects(java.util.List)` was added
+* `certificateNameCheckValidationMode()` was added
+* `customCertificateSubjects()` was added
+* `withCertificateNameCheckValidationMode(models.CertificateNameCheckValidationMode)` was added
+
+#### `models.AfdDomainHttpsParameters` was modified
+
+* `cipherSuiteSetType()` was added
+* `withServerTlsGroups(java.util.List)` was added
+* `serverTlsGroupPolicy()` was added
+* `withCustomizedCipherSuiteSet(models.AfdDomainHttpsCustomizedCipherSuiteSet)` was added
+* `serverTlsGroups()` was added
+* `customizedCipherSuiteSet()` was added
+* `withCipherSuiteSetType(models.AfdCipherSuiteSetType)` was added
+* `withServerTlsGroupPolicy(models.AfdServerTlsGroupPolicy)` was added
+
+#### `models.AfdEndpointUpdateParameters` was modified
+
+* `withEnforceMtls(models.EnforceMtlsEnabledState)` was added
+* `enforceMtls()` was added
+
+#### `models.AfdDomainUpdateParameters` was modified
+
+* `mtlsSettings()` was added
+* `withMtlsSettings(models.AfdDomainMtlsParameters)` was added
+
+#### `models.SecretType` was modified
+
+* `MTLS_CERTIFICATE_CHAIN` was added
+
+#### `models.SecurityPolicyWebApplicationFirewallParameters` was modified
+
+* `isProfileLevel()` was added
+* `withIsProfileLevel(java.lang.Boolean)` was added
+
+#### `models.DeliveryRuleActionValue` was modified
+
+* `AFD_URL_SIGNING` was added
+* `EDGE_ACTION` was added
 
 ## 2.53.9 (2026-07-01)
 

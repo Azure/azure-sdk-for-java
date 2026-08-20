@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdOriginGroupsListByProfileSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDOriginGroups_ListByProfile.json
+     * x-ms-original-file: 2026-07-01/AFDOriginGroups_ListByProfile.json
      */
     /**
      * Sample code: AFDOriginGroups_ListByProfile.

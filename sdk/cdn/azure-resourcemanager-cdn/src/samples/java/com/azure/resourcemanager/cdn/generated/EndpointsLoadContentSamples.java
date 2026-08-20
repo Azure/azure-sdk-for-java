@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class EndpointsLoadContentSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Endpoints_LoadContent.json
+     * x-ms-original-file: 2026-07-01/Endpoints_LoadContent.json
      */
     /**
      * Sample code: Endpoints_LoadContent.
