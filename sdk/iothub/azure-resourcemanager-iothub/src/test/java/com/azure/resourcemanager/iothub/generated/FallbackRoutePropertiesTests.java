@@ -14,27 +14,27 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FallbackRouteProperties model = BinaryData.fromString(
-            "{\"name\":\"bebrjcxerfuwuttt\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"jrbirphxepcyv\",\"endpointNames\":[\"fnljky\",\"xjvuujqgidokg\"],\"isEnabled\":true}")
+            "{\"name\":\"debfqkkrbmpukgri\",\"source\":\"DeviceMessages\",\"condition\":\"zlfbxzpuzycispnq\",\"endpointNames\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"isEnabled\":false}")
             .toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
-        Assertions.assertEquals("jrbirphxepcyv", model.condition());
-        Assertions.assertEquals("fnljky", model.endpointNames().get(0));
-        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
+        Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
+        Assertions.assertFalse(model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FallbackRouteProperties model = new FallbackRouteProperties().withName("bebrjcxerfuwuttt")
-            .withSource(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS)
-            .withCondition("jrbirphxepcyv")
-            .withEndpointNames(Arrays.asList("fnljky", "xjvuujqgidokg"))
-            .withIsEnabled(true);
+        FallbackRouteProperties model = new FallbackRouteProperties().withName("debfqkkrbmpukgri")
+            .withSource(RoutingSource.DEVICE_MESSAGES)
+            .withCondition("zlfbxzpuzycispnq")
+            .withEndpointNames(Arrays.asList("hmgkbrpyy", "hibnuqqkpika"))
+            .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
-        Assertions.assertEquals("bebrjcxerfuwuttt", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_CONNECTION_STATE_EVENTS, model.source());
-        Assertions.assertEquals("jrbirphxepcyv", model.condition());
-        Assertions.assertEquals("fnljky", model.endpointNames().get(0));
-        Assertions.assertTrue(model.isEnabled());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.name());
+        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
+        Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
+        Assertions.assertFalse(model.isEnabled());
     }
 }

@@ -116,13 +116,14 @@ AZURE_TEST_MODE=LIVE mvn -f sdk/{service}/pom.xml -Dmaven.wagon.http.pool=false 
 
 ### SDK Generation
 
-Many client libraries are generated from OpenAPI specifications using AutoRest:
+Most client libraries are generated from TypeSpec specifications using [tsp-client](https://github.com/Azure/azure-sdk-tools/tree/main/tools/tsp-client). To re-generate a library after spec changes, run the following from the module directory (`sdk/<service>/<module>/`):
 
 ```bash
-# Typical codegen command
-autorest --version=3.9.7 --java --use=@autorest/java@4.1.59 \
-  --input-file=<spec-file> --namespace=<namespace> --output-folder=<output>
+# Re-generate SDK from the configured TypeSpec source
+tsp-client update
 ```
+
+See [TypeSpec Quickstart](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md) for details.
 
 ## Design Guidelines
 

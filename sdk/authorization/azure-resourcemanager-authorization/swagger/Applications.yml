@@ -2062,7 +2062,7 @@ components:
         key:
           type: string
           description: 'The certificate''s raw data in byte array converted to Base64 string; for example, [System.Convert]::ToBase64String($Cert.GetRawCertData()).'
-          format: base64url
+          format: byte
           nullable: true
         keyId:
           pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'

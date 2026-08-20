@@ -206,29 +206,29 @@ public interface Alerts {
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName);
+    PagedIterable<Alert> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation);
 
     /**
      * List all the alerts that are associated with the resource group that are stored in a specific location.
      * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      * locations.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Alert> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName, Context context);
+    PagedIterable<Alert> listResourceGroupLevelByRegion(String resourceGroupName, String ascLocation, Context context);
 
     /**
      * Update the alert's state.

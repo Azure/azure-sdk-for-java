@@ -12,17 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateOperationRequestResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateOperationRequestResource model = BinaryData
-            .fromString("{\"id\":\"jfoknubnoitpkp\",\"properties\":{\"objectType\":\"ValidateOperationRequest\"}}")
-            .toObject(ValidateOperationRequestResource.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.id());
+        ValidateOperationRequestResource model
+            = BinaryData.fromString("{\"id\":\"byl\",\"properties\":{\"objectType\":\"ValidateOperationRequest\"}}")
+                .toObject(ValidateOperationRequestResource.class);
+        Assertions.assertEquals("byl", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateOperationRequestResource model = new ValidateOperationRequestResource().withId("jfoknubnoitpkp")
-            .withProperties(new ValidateOperationRequest());
+        ValidateOperationRequestResource model
+            = new ValidateOperationRequestResource().withId("byl").withProperties(new ValidateOperationRequest());
         model = BinaryData.fromObject(model).toObject(ValidateOperationRequestResource.class);
-        Assertions.assertEquals("jfoknubnoitpkp", model.id());
+        Assertions.assertEquals("byl", model.id());
     }
 }

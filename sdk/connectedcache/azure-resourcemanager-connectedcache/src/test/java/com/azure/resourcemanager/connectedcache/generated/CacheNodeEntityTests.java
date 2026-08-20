@@ -14,66 +14,84 @@ public final class CacheNodeEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheNodeEntity model = BinaryData.fromString(
-            "{\"fullyQualifiedResourceId\":\"gnzscxaqwo\",\"customerId\":\"hcbonqvpkvlr\",\"customerName\":\"jease\",\"ipAddress\":\"heoflokeyyienjbd\",\"customerIndex\":\"tgrhpdjpjumas\",\"cacheNodeId\":\"zj\",\"cacheNodeName\":\"yegu\",\"customerAsn\":285130790,\"isEnabled\":true,\"maxAllowableEgressInMbps\":1163750271,\"maxAllowableProbability\":8.031827791444979,\"xCid\":\"zvdudgwdslfhotwm\",\"isEnterpriseManaged\":true,\"createAsyncOperationId\":\"wlbjnpgacftade\",\"deleteAsyncOperationId\":\"nltyfsoppusuesnz\",\"clientTenantId\":\"ej\",\"category\":\"vorxzdmohct\",\"releaseVersion\":1095350861,\"lastSyncWithAzureTimestamp\":\"2021-09-06T08:59:32Z\",\"lastUpdatedTimestamp\":\"2021-02-11T14:48:18Z\",\"synchWithAzureAttemptsCount\":1222672575,\"containerConfigurations\":\"nvowgujju\",\"cidrCsv\":[\"kcglhslaz\",\"dyggdtjixhbku\"],\"cidrCsvLastUpdateTime\":\"2020-12-23T07:48:17Z\",\"bgpCidrCsvLastUpdateTime\":\"2021-02-13T10:06:52Z\",\"bgpLastReportedTime\":\"2021-11-08T12:34:04Z\",\"bgpReviewStateText\":\"menevfyexfwh\",\"bgpReviewState\":\"AttentionRequired\",\"bgpReviewFeedback\":\"bvyvdcsity\",\"bgpNumberOfTimesUpdated\":1750107554,\"bgpNumberOfRecords\":1611277697,\"bgpCidrBlocksCount\":1553066482,\"bgpAddressSpace\":1602339472,\"shouldMigrate\":true,\"bgpFileBytesTruncated\":113034311,\"cidrSelectionType\":1860942440,\"isFrozen\":false,\"reviewState\":230831104,\"reviewStateText\":\"vhezrkgqhcj\",\"reviewFeedback\":\"fovgmkqsleyyvxy\",\"configurationState\":\"Configured\",\"configurationStateText\":\"cattpngjcrcczsq\",\"addressSpace\":1452431495,\"workerConnections\":1112494803,\"workerConnectionsLastUpdatedDateTime\":\"2021-01-08T07:37:25Z\",\"containerResyncTrigger\":243553198,\"imageUri\":\"ysou\",\"fullyQualifiedDomainName\":\"e\",\"autoUpdateRingType\":\"Fast\",\"autoUpdateRequestedWeek\":389510865,\"autoUpdateRequestedDay\":996084293,\"autoUpdateRequestedTime\":\"fhyhltrpmopjmcma\"}")
+            "{\"fullyQualifiedResourceId\":\"rhpdjpjumas\",\"customerId\":\"zj\",\"customerName\":\"yegu\",\"ipAddress\":\"hb\",\"customerIndex\":\"hejjz\",\"cacheNodeId\":\"dudgwdslfhot\",\"cacheNodeName\":\"cynpwlbjnp\",\"customerAsn\":1690822953,\"isEnabled\":true,\"maxAllowableEgressInMbps\":1405360141,\"maxAllowableProbability\":1.3006697238957976,\"xCid\":\"ltyfsop\",\"isEnterpriseManaged\":false,\"createAsyncOperationId\":\"esnzwde\",\"deleteAsyncOperationId\":\"avo\",\"clientTenantId\":\"zdmohctbqvu\",\"category\":\"xdn\",\"releaseVersion\":378897714,\"lastSyncWithAzureTimestamp\":\"2021-04-03T23:08:08Z\",\"lastUpdatedTimestamp\":\"2021-02-13T18:55:04Z\",\"synchWithAzureAttemptsCount\":884625398,\"containerConfigurations\":\"gwdkcglhsl\",\"cidrCsv\":[\"dyggdtjixhbku\",\"fqweykhmene\",\"fyexfwhy\"],\"cidrCsvLastUpdateTime\":\"2021-05-17T05:51:50Z\",\"bgpNetworkInterface\":\"vyvdcs\",\"bgpCidrCsvLastUpdateTime\":\"2021-07-21T20:03:09Z\",\"bgpLastReportedTime\":\"2021-08-30T10:09:11Z\",\"bgpReviewStateText\":\"amdecte\",\"bgpReviewState\":\"Approved\",\"bgpReviewFeedback\":\"scjeypv\",\"bgpNumberOfTimesUpdated\":1363658384,\"bgpNumberOfRecords\":902064602,\"bgpCidrBlocksCount\":177141497,\"bgpAddressSpace\":61185346,\"shouldMigrate\":true,\"bgpFileBytesTruncated\":1843167961,\"cidrSelectionType\":2125253056,\"isFrozen\":true,\"reviewState\":668805249,\"reviewStateText\":\"leyyvx\",\"reviewFeedback\":\"jpkcattpng\",\"configurationState\":\"NotConfigured_Ip\",\"configurationStateText\":\"czsqpjhvm\",\"addressSpace\":330627677,\"workerConnections\":1964386727,\"workerConnectionsLastUpdatedDateTime\":\"2021-09-30T19:57Z\",\"containerResyncTrigger\":340667292,\"imageUri\":\"q\",\"fullyQualifiedDomainName\":\"a\",\"autoUpdateRingType\":\"Fast\",\"autoUpdateRequestedWeek\":996084293,\"autoUpdateRequestedDay\":1901274446,\"autoUpdateRequestedTime\":\"yhltrpmopjmcm\",\"openFirewallPort80\":false,\"openFirewallPort443\":false,\"openFirewallPort5000\":true,\"openFirewallPort5001\":true,\"runtimeAccountType\":\"uaodsfcpk\"}")
             .toObject(CacheNodeEntity.class);
-        Assertions.assertEquals("gnzscxaqwo", model.fullyQualifiedResourceId());
-        Assertions.assertEquals("jease", model.customerName());
-        Assertions.assertEquals("heoflokeyyienjbd", model.ipAddress());
-        Assertions.assertEquals("tgrhpdjpjumas", model.customerIndex());
-        Assertions.assertEquals("zj", model.cacheNodeId());
-        Assertions.assertEquals("yegu", model.cacheNodeName());
-        Assertions.assertEquals(285130790, model.customerAsn());
+        Assertions.assertEquals("rhpdjpjumas", model.fullyQualifiedResourceId());
+        Assertions.assertEquals("yegu", model.customerName());
+        Assertions.assertEquals("hb", model.ipAddress());
+        Assertions.assertEquals("hejjz", model.customerIndex());
+        Assertions.assertEquals("dudgwdslfhot", model.cacheNodeId());
+        Assertions.assertEquals("cynpwlbjnp", model.cacheNodeName());
+        Assertions.assertEquals(1690822953, model.customerAsn());
         Assertions.assertTrue(model.isEnabled());
-        Assertions.assertEquals(1163750271, model.maxAllowableEgressInMbps());
-        Assertions.assertTrue(model.isEnterpriseManaged());
-        Assertions.assertEquals("kcglhslaz", model.cidrCsv().get(0));
+        Assertions.assertEquals(1405360141, model.maxAllowableEgressInMbps());
+        Assertions.assertFalse(model.isEnterpriseManaged());
+        Assertions.assertEquals("dyggdtjixhbku", model.cidrCsv().get(0));
+        Assertions.assertEquals("vyvdcs", model.bgpNetworkInterface());
         Assertions.assertTrue(model.shouldMigrate());
-        Assertions.assertEquals(1860942440, model.cidrSelectionType());
-        Assertions.assertEquals("e", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(2125253056, model.cidrSelectionType());
+        Assertions.assertEquals("a", model.fullyQualifiedDomainName());
         Assertions.assertEquals(AutoUpdateRingType.FAST, model.autoUpdateRingType());
-        Assertions.assertEquals(389510865, model.autoUpdateRequestedWeek());
-        Assertions.assertEquals(996084293, model.autoUpdateRequestedDay());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.autoUpdateRequestedTime());
+        Assertions.assertEquals(996084293, model.autoUpdateRequestedWeek());
+        Assertions.assertEquals(1901274446, model.autoUpdateRequestedDay());
+        Assertions.assertEquals("yhltrpmopjmcm", model.autoUpdateRequestedTime());
+        Assertions.assertFalse(model.openFirewallPort80());
+        Assertions.assertFalse(model.openFirewallPort443());
+        Assertions.assertTrue(model.openFirewallPort5000());
+        Assertions.assertTrue(model.openFirewallPort5001());
+        Assertions.assertEquals("uaodsfcpk", model.runtimeAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheNodeEntity model = new CacheNodeEntity().withFullyQualifiedResourceId("gnzscxaqwo")
-            .withCustomerName("jease")
-            .withIpAddress("heoflokeyyienjbd")
-            .withCustomerIndex("tgrhpdjpjumas")
-            .withCacheNodeId("zj")
-            .withCacheNodeName("yegu")
-            .withCustomerAsn(285130790)
+        CacheNodeEntity model = new CacheNodeEntity().withFullyQualifiedResourceId("rhpdjpjumas")
+            .withCustomerName("yegu")
+            .withIpAddress("hb")
+            .withCustomerIndex("hejjz")
+            .withCacheNodeId("dudgwdslfhot")
+            .withCacheNodeName("cynpwlbjnp")
+            .withCustomerAsn(1690822953)
             .withIsEnabled(true)
-            .withMaxAllowableEgressInMbps(1163750271)
-            .withIsEnterpriseManaged(true)
-            .withCidrCsv(Arrays.asList("kcglhslaz", "dyggdtjixhbku"))
+            .withMaxAllowableEgressInMbps(1405360141)
+            .withIsEnterpriseManaged(false)
+            .withCidrCsv(Arrays.asList("dyggdtjixhbku", "fqweykhmene", "fyexfwhy"))
+            .withBgpNetworkInterface("vyvdcs")
             .withShouldMigrate(true)
-            .withCidrSelectionType(1860942440)
-            .withFullyQualifiedDomainName("e")
+            .withCidrSelectionType(2125253056)
+            .withFullyQualifiedDomainName("a")
             .withAutoUpdateRingType(AutoUpdateRingType.FAST)
-            .withAutoUpdateRequestedWeek(389510865)
-            .withAutoUpdateRequestedDay(996084293)
-            .withAutoUpdateRequestedTime("fhyhltrpmopjmcma");
+            .withAutoUpdateRequestedWeek(996084293)
+            .withAutoUpdateRequestedDay(1901274446)
+            .withAutoUpdateRequestedTime("yhltrpmopjmcm")
+            .withOpenFirewallPort80(false)
+            .withOpenFirewallPort443(false)
+            .withOpenFirewallPort5000(true)
+            .withOpenFirewallPort5001(true)
+            .withRuntimeAccountType("uaodsfcpk");
         model = BinaryData.fromObject(model).toObject(CacheNodeEntity.class);
-        Assertions.assertEquals("gnzscxaqwo", model.fullyQualifiedResourceId());
-        Assertions.assertEquals("jease", model.customerName());
-        Assertions.assertEquals("heoflokeyyienjbd", model.ipAddress());
-        Assertions.assertEquals("tgrhpdjpjumas", model.customerIndex());
-        Assertions.assertEquals("zj", model.cacheNodeId());
-        Assertions.assertEquals("yegu", model.cacheNodeName());
-        Assertions.assertEquals(285130790, model.customerAsn());
+        Assertions.assertEquals("rhpdjpjumas", model.fullyQualifiedResourceId());
+        Assertions.assertEquals("yegu", model.customerName());
+        Assertions.assertEquals("hb", model.ipAddress());
+        Assertions.assertEquals("hejjz", model.customerIndex());
+        Assertions.assertEquals("dudgwdslfhot", model.cacheNodeId());
+        Assertions.assertEquals("cynpwlbjnp", model.cacheNodeName());
+        Assertions.assertEquals(1690822953, model.customerAsn());
         Assertions.assertTrue(model.isEnabled());
-        Assertions.assertEquals(1163750271, model.maxAllowableEgressInMbps());
-        Assertions.assertTrue(model.isEnterpriseManaged());
-        Assertions.assertEquals("kcglhslaz", model.cidrCsv().get(0));
+        Assertions.assertEquals(1405360141, model.maxAllowableEgressInMbps());
+        Assertions.assertFalse(model.isEnterpriseManaged());
+        Assertions.assertEquals("dyggdtjixhbku", model.cidrCsv().get(0));
+        Assertions.assertEquals("vyvdcs", model.bgpNetworkInterface());
         Assertions.assertTrue(model.shouldMigrate());
-        Assertions.assertEquals(1860942440, model.cidrSelectionType());
-        Assertions.assertEquals("e", model.fullyQualifiedDomainName());
+        Assertions.assertEquals(2125253056, model.cidrSelectionType());
+        Assertions.assertEquals("a", model.fullyQualifiedDomainName());
         Assertions.assertEquals(AutoUpdateRingType.FAST, model.autoUpdateRingType());
-        Assertions.assertEquals(389510865, model.autoUpdateRequestedWeek());
-        Assertions.assertEquals(996084293, model.autoUpdateRequestedDay());
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.autoUpdateRequestedTime());
+        Assertions.assertEquals(996084293, model.autoUpdateRequestedWeek());
+        Assertions.assertEquals(1901274446, model.autoUpdateRequestedDay());
+        Assertions.assertEquals("yhltrpmopjmcm", model.autoUpdateRequestedTime());
+        Assertions.assertFalse(model.openFirewallPort80());
+        Assertions.assertFalse(model.openFirewallPort443());
+        Assertions.assertTrue(model.openFirewallPort5000());
+        Assertions.assertTrue(model.openFirewallPort5001());
+        Assertions.assertEquals("uaodsfcpk", model.runtimeAccountType());
     }
 }

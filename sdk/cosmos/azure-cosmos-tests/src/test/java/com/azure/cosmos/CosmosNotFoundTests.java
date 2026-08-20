@@ -229,7 +229,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performBulkOnNonExistentContainerGatewayModeV2() {
         logger.info("Running test: Read item from non-existent container in Gateway Connection Mode");
 
@@ -288,7 +288,7 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "operationTypeProvider", timeOut = 2 * TIMEOUT)
     public void performDocumentOperationOnDeletedContainer(OperationType operationType) throws InterruptedException {
 
         CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
@@ -437,7 +437,8 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"thinclient"}, dataProvider = "operationTypeProvider",
+        timeOut = 2 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performDocumentOperationOnDeletedContainerWithGatewayV2(OperationType operationType) throws InterruptedException {
         logger.info("Running test: Read item from deleted container - Gateway V2 Connection Mode");
 

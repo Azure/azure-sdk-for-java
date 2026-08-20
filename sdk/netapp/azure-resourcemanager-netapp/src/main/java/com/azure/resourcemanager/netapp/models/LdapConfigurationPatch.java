@@ -45,6 +45,32 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
     private String certificateCNHost;
 
     /*
+     * List of DNS server IPv4 addresses for resolving the CN host certificate. This parameter is used when LDAP over
+     * TLS is enabled.
+     */
+    private List<String> dnsServers;
+
+    /*
+     * Port number for LDAP communication. Default is 389 for LDAP.
+     */
+    private Integer ldapPort;
+
+    /*
+     * This specifies the user DN (Distinguished Name), which overrides the base DN for user lookups.
+     */
+    private String userDN;
+
+    /*
+     * This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
+     */
+    private String groupDN;
+
+    /*
+     * This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
+     */
+    private String netGroupDN;
+
+    /*
      * The authentication level to use when binding to the LDAP server, defaults to Anonymous.
      */
     private BindAuthenticationLevel bindAuthenticationLevel;
@@ -170,6 +196,114 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
     }
 
     /**
+     * Get the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @return the dnsServers value.
+     */
+    public List<String> dnsServers() {
+        return this.dnsServers;
+    }
+
+    /**
+     * Set the dnsServers property: List of DNS server IPv4 addresses for resolving the CN host certificate. This
+     * parameter is used when LDAP over TLS is enabled.
+     * 
+     * @param dnsServers the dnsServers value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withDnsServers(List<String> dnsServers) {
+        this.dnsServers = dnsServers;
+        return this;
+    }
+
+    /**
+     * Get the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @return the ldapPort value.
+     */
+    public Integer ldapPort() {
+        return this.ldapPort;
+    }
+
+    /**
+     * Set the ldapPort property: Port number for LDAP communication. Default is 389 for LDAP.
+     * 
+     * @param ldapPort the ldapPort value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withLdapPort(Integer ldapPort) {
+        this.ldapPort = ldapPort;
+        return this;
+    }
+
+    /**
+     * Get the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @return the userDN value.
+     */
+    public String userDN() {
+        return this.userDN;
+    }
+
+    /**
+     * Set the userDN property: This specifies the user DN (Distinguished Name), which overrides the base DN for user
+     * lookups.
+     * 
+     * @param userDN the userDN value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withUserDN(String userDN) {
+        this.userDN = userDN;
+        return this;
+    }
+
+    /**
+     * Get the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @return the groupDN value.
+     */
+    public String groupDN() {
+        return this.groupDN;
+    }
+
+    /**
+     * Set the groupDN property: This specifies the group DN (Distinguished Name), which overrides the base DN for group
+     * lookups.
+     * 
+     * @param groupDN the groupDN value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withGroupDN(String groupDN) {
+        this.groupDN = groupDN;
+        return this;
+    }
+
+    /**
+     * Get the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @return the netGroupDN value.
+     */
+    public String netGroupDN() {
+        return this.netGroupDN;
+    }
+
+    /**
+     * Set the netGroupDN property: This specifies the netgroup DN (Distinguished Name), which overrides the base DN for
+     * netgroup lookups.
+     * 
+     * @param netGroupDN the netGroupDN value to set.
+     * @return the LdapConfigurationPatch object itself.
+     */
+    public LdapConfigurationPatch withNetGroupDN(String netGroupDN) {
+        this.netGroupDN = netGroupDN;
+        return this;
+    }
+
+    /**
      * Get the bindAuthenticationLevel property: The authentication level to use when binding to the LDAP server,
      * defaults to Anonymous.
      * 
@@ -255,6 +389,11 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
         jsonWriter.writeBooleanField("ldapOverTLS", this.ldapOverTLS);
         jsonWriter.writeStringField("serverCACertificate", this.serverCACertificate);
         jsonWriter.writeStringField("certificateCNHost", this.certificateCNHost);
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("ldapPort", this.ldapPort);
+        jsonWriter.writeStringField("userDN", this.userDN);
+        jsonWriter.writeStringField("groupDN", this.groupDN);
+        jsonWriter.writeStringField("netGroupDN", this.netGroupDN);
         jsonWriter.writeStringField("bindAuthenticationLevel",
             this.bindAuthenticationLevel == null ? null : this.bindAuthenticationLevel.toString());
         jsonWriter.writeStringField("bindDN", this.bindDN);
@@ -288,6 +427,17 @@ public final class LdapConfigurationPatch implements JsonSerializable<LdapConfig
                     deserializedLdapConfigurationPatch.serverCACertificate = reader.getString();
                 } else if ("certificateCNHost".equals(fieldName)) {
                     deserializedLdapConfigurationPatch.certificateCNHost = reader.getString();
+                } else if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLdapConfigurationPatch.dnsServers = dnsServers;
+                } else if ("ldapPort".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.ldapPort = reader.getNullable(JsonReader::getInt);
+                } else if ("userDN".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.userDN = reader.getString();
+                } else if ("groupDN".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.groupDN = reader.getString();
+                } else if ("netGroupDN".equals(fieldName)) {
+                    deserializedLdapConfigurationPatch.netGroupDN = reader.getString();
                 } else if ("bindAuthenticationLevel".equals(fieldName)) {
                     deserializedLdapConfigurationPatch.bindAuthenticationLevel
                         = BindAuthenticationLevel.fromString(reader.getString());

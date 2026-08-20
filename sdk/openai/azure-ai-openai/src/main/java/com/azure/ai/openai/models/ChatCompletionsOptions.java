@@ -154,7 +154,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     private FunctionCallConfig functionCallConfig;
 
     /*
-     * The configuration entries for Azure OpenAI chat extensions that use them.
+     * The configuration entries for Azure OpenAI chat extensions
+     * that use them.
      * This additional specification is only compatible with Azure OpenAI.
      */
     @Generated
@@ -636,7 +637,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * Get the dataSources property: The configuration entries for Azure OpenAI chat extensions that use them.
+     * Get the dataSources property: The configuration entries for Azure OpenAI chat extensions
+     * that use them.
      * This additional specification is only compatible with Azure OpenAI.
      *
      * @return the dataSources value.
@@ -647,7 +649,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * Set the dataSources property: The configuration entries for Azure OpenAI chat extensions that use them.
+     * Set the dataSources property: The configuration entries for Azure OpenAI chat extensions
+     * that use them.
      * This additional specification is only compatible with Azure OpenAI.
      *
      * @param dataSources the dataSources value to set.

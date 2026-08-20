@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
      */
     /**
      * Sample code: Gets the recommended sensitivity labels of a given database in a managed database.

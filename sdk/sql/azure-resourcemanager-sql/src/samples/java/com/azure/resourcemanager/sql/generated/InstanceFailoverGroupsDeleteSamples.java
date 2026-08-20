@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class InstanceFailoverGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/InstanceFailoverGroupDelete.json
+     * x-ms-original-file: 2025-01-01/InstanceFailoverGroupDelete.json
      */
     /**
      * Sample code: Delete failover group.

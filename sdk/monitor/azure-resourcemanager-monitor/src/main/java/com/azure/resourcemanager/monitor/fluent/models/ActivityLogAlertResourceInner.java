@@ -27,12 +27,13 @@ public final class ActivityLogAlertResourceInner extends Resource {
     private AlertRuleProperties innerProperties;
 
     /*
-     * Resource tags.
+     * The tags of the resource.
      */
     private Map<String, String> tags;
 
     /*
-     * The geo-location where the resource lives
+     * The location of the resource. Azure Activity Log Alert rules are supported on Global, West Europe and North
+     * Europe regions.
      */
     private String location;
 
@@ -72,7 +73,7 @@ public final class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the tags property: The tags of the resource.
      *
      * @return the tags value.
      */
@@ -81,7 +82,7 @@ public final class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Set the tags property: The tags of the resource.
      *
      * @param tags the tags value to set.
      * @return the ActivityLogAlertResourceInner object itself.
@@ -92,7 +93,8 @@ public final class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: The location of the resource. Azure Activity Log Alert rules are supported on Global,
+     * West Europe and North Europe regions.
      *
      * @return the location value.
      */
@@ -101,7 +103,8 @@ public final class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: The location of the resource. Azure Activity Log Alert rules are supported on Global,
+     * West Europe and North Europe regions.
      *
      * @param location the location value to set.
      * @return the ActivityLogAlertResourceInner object itself.

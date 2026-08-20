@@ -21,12 +21,12 @@ public final class LicensePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"tenantId\":\"d\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Standard\",\"type\":\"vCore\",\"processors\":1914162243,\"assignedLicenses\":2141844336,\"immutableId\":\"nhutjeltmrldhugj\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 2\",\"invoiceId\":\"xhocdgeablgphuti\"},{\"programYear\":\"Year 1\",\"invoiceId\":\"kao\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"ftyhxhurokf\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"lniwpwcukjfkgiaw\"}]}}")
+            "{\"provisioningState\":\"Accepted\",\"tenantId\":\"d\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012\",\"edition\":\"Standard\",\"type\":\"vCore\",\"processors\":1914162243,\"assignedLicenses\":2141844336,\"immutableId\":\"nhutjeltmrldhugj\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 2\",\"invoiceId\":\"xhocdgeablgphuti\"},{\"programYear\":\"Year 1\",\"invoiceId\":\"kao\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"ftyhxhurokf\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"lniwpwcukjfkgiaw\"}]}}")
             .toObject(LicenseProperties.class);
         Assertions.assertEquals("d", model.tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.licenseDetails().state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.licenseDetails().target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.licenseDetails().target());
         Assertions.assertEquals(LicenseEdition.STANDARD, model.licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.licenseDetails().type());
         Assertions.assertEquals(1914162243, model.licenseDetails().processors());
@@ -39,7 +39,7 @@ public final class LicensePropertiesTests {
         LicenseProperties model = new LicenseProperties().withTenantId("d")
             .withLicenseType(LicenseType.ESU)
             .withLicenseDetails(new LicenseDetails().withState(LicenseState.DEACTIVATED)
-                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
+                .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
                 .withEdition(LicenseEdition.STANDARD)
                 .withType(LicenseCoreType.V_CORE)
                 .withProcessors(1914162243)
@@ -52,7 +52,7 @@ public final class LicensePropertiesTests {
         Assertions.assertEquals("d", model.tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.DEACTIVATED, model.licenseDetails().state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.licenseDetails().target());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.licenseDetails().target());
         Assertions.assertEquals(LicenseEdition.STANDARD, model.licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.licenseDetails().type());
         Assertions.assertEquals(1914162243, model.licenseDetails().processors());

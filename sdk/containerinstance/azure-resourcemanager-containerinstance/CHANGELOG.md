@@ -10,6 +10,32 @@
 
 ### Other Changes
 
+## 2.53.12 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.59.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.57.1`.
+
+## 2.53.11 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.5` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-network` from `2.58.2` to version `2.58.3`.
+- Upgraded `azure-resourcemanager-msi` from `2.53.8` to version `2.53.9`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-storage-file-share` from `12.29.3` to version `12.31.0`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+
+
 ## 2.53.10 (2026-05-05)
 
 ### Other Changes

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.DtcName;
  */
 public final class ManagedInstanceDtcsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceDtcGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceDtcGet.json
      */
     /**
      * Sample code: Gets managed instance DTC settings.

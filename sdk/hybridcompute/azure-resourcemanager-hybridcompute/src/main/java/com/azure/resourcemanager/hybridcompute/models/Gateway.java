@@ -93,6 +93,14 @@ public interface Gateway {
     List<String> allowedFeatures();
 
     /**
+     * Gets the gatewayBypass property: Specifies the list of domain names that should bypass the gateway. Each entry
+     * must be a valid DNS hostname.
+     * 
+     * @return the gatewayBypass value.
+     */
+    List<String> gatewayBypass();
+
+    /**
      * Gets the region of the resource.
      * 
      * @return the region of the resource.
@@ -175,8 +183,8 @@ public interface Gateway {
          * The stage of the Gateway definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithGatewayType, DefinitionStages.WithAllowedFeatures {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithGatewayType,
+            DefinitionStages.WithAllowedFeatures, DefinitionStages.WithGatewayBypass {
             /**
              * Executes the create request.
              * 
@@ -232,6 +240,21 @@ public interface Gateway {
              */
             WithCreate withAllowedFeatures(List<String> allowedFeatures);
         }
+
+        /**
+         * The stage of the Gateway definition allowing to specify gatewayBypass.
+         */
+        interface WithGatewayBypass {
+            /**
+             * Specifies the gatewayBypass property: Specifies the list of domain names that should bypass the gateway.
+             * Each entry must be a valid DNS hostname..
+             * 
+             * @param gatewayBypass Specifies the list of domain names that should bypass the gateway. Each entry must
+             * be a valid DNS hostname.
+             * @return the next definition stage.
+             */
+            WithCreate withGatewayBypass(List<String> gatewayBypass);
+        }
     }
 
     /**
@@ -244,7 +267,7 @@ public interface Gateway {
     /**
      * The template for Gateway update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAllowedFeatures {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAllowedFeatures, UpdateStages.WithGatewayBypass {
         /**
          * Executes the update request.
          * 
@@ -290,6 +313,21 @@ public interface Gateway {
              * @return the next definition stage.
              */
             Update withAllowedFeatures(List<String> allowedFeatures);
+        }
+
+        /**
+         * The stage of the Gateway update allowing to specify gatewayBypass.
+         */
+        interface WithGatewayBypass {
+            /**
+             * Specifies the gatewayBypass property: Specifies the list of domain names that should bypass the gateway.
+             * Each entry must be a valid DNS hostname..
+             * 
+             * @param gatewayBypass Specifies the list of domain names that should bypass the gateway. Each entry must
+             * be a valid DNS hostname.
+             * @return the next definition stage.
+             */
+            Update withGatewayBypass(List<String> gatewayBypass);
         }
     }
 

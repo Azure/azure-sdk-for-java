@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SubscriptionUsagesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SubscriptionUsageGet.json
+     * x-ms-original-file: 2025-01-01/SubscriptionUsageGet.json
      */
     /**
      * Sample code: Get specific subscription usage in the given location.

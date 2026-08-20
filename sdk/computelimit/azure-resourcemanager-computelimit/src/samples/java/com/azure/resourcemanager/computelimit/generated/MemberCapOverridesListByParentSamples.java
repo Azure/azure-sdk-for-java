@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computelimit.generated;
  */
 public final class MemberCapOverridesListByParentSamples {
     /*
-     * x-ms-original-file: 2026-07-01/MemberCapOverrides_ListByParent.json
+     * x-ms-original-file: 2026-07-31/MemberCapOverrides_ListByParent.json
      */
     /**
      * Sample code: List all member cap overrides under a shared limit cap.

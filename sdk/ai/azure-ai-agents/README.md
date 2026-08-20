@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.2.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -118,6 +118,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 | Tool class | Description |
 |---|---|
+| `A2ATool` | Agent-to-agent (A2A) protocol |
 | `AzureAISearchTool` | Azure AI Search |
 | `AzureFunctionTool` | Azure Functions |
 | `BingGroundingTool` | Bing grounding |
@@ -136,7 +137,6 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 | Tool class | Description |
 |---|---|
-| `A2APreviewTool` | Agent-to-agent communication |
 | `BingCustomSearchPreviewTool` | Bing custom search |
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
@@ -576,13 +576,13 @@ See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azu
 
 ---
 
-##### **Agent-to-Agent (A2A) (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
+##### **Agent-to-Agent (A2A)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
 
 Enable agent-to-agent communication with remote A2A endpoints:
 
 ```java com.azure.ai.agents.define_agent_to_agent
-// Create agent-to-agent tool with connection ID
-A2APreviewTool a2aTool = new A2APreviewTool()
+// Create agent-to-agent tool with A2A protocol version and connection ID
+A2ATool a2aTool = new A2ATool(A2AProtocolVersion.V1_0)
     .setProjectConnectionId(a2aConnectionId);
 ```
 
@@ -629,20 +629,20 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses.
 
-##### **Toolbox Search (Preview)**
+##### **Toolbox Search**
 
-Use `ToolboxSearchPreviewToolboxTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
+Toolbox Search lets an agent search the available toolbox tools at runtime. The GA implementation is `ToolSearchToolboxTool` (`toolbox_search`), and the preview implementation `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is maintained alongside it for backward compatibility.
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-ToolboxSearchPreviewToolboxTool toolboxSearchTool = new ToolboxSearchPreviewToolboxTool()
+ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
     .setName("search_tools")
     .setDescription("Search over available toolbox tools at runtime.");
 
 ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
     toolboxName,
     Collections.singletonList(toolboxSearchTool),
-    "Toolbox version with a Toolbox Search preview tool.",
+    "Toolbox version with a Toolbox Search tool.",
     null,
     null,
     null);

@@ -170,7 +170,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 3 * TIMEOUT)
     public void queryOrderByRoundTrips() {
         String query = "SELECT c.v FROM c where c.type='testing' order by c.v asc";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();

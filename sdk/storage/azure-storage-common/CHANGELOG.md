@@ -1,15 +1,22 @@
 # Release History
 
-## 12.35.0-beta.1 (Unreleased)
+## 12.35.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
 
 ### Other Changes
+
+## 12.35.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
 
 ## 12.34.0 (2026-06-11)
 

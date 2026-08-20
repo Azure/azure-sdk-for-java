@@ -11,7 +11,7 @@ public final class ProvisioningIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisioningIssue model = BinaryData.fromString(
-            "{\"name\":\"klvxwmyg\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Warning\",\"description\":\"hiszepnnbjcrxgib\",\"suggestedResourceIds\":[\"xconfozauors\",\"kokwbqplhlvnu\",\"epzl\"],\"suggestedAccessRules\":[{\"name\":\"zsoldwey\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"mnnrwr\",\"i\"]}}]}}")
+            "{\"name\":\"rwfscjfnynszquj\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Error\",\"description\":\"tiby\",\"suggestedResourceIds\":[\"blgyavutpthj\",\"xoi\",\"msksbp\"],\"suggestedAccessRules\":[{\"name\":\"oljxkcgx\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"gcvizqzdwlvwlyou\",\"fgfb\"]}}]}}")
             .toObject(ProvisioningIssue.class);
     }
 }

@@ -34,12 +34,18 @@ private class CosmosWriter(
   ) with OutputMetricsPublisherTrait {
 
   private val recordsWritten = new AtomicLong(0)
+  private val recordsSkipped = new AtomicLong(0)
   private val bytesWritten = new AtomicLong(0)
   private val totalRequestCharge = new AtomicLong(0)
 
   private val  recordsWrittenMetric = new CustomTaskMetric {
     override def name(): String = CosmosConstants.MetricNames.RecordsWritten
     override def value(): Long = recordsWritten.get()
+  }
+
+  private val recordsSkippedMetric = new CustomTaskMetric {
+    override def name(): String = CosmosConstants.MetricNames.RecordsSkipped
+    override def value(): Long = recordsSkipped.get()
   }
 
   private val bytesWrittenMetric = new CustomTaskMetric {
@@ -55,7 +61,7 @@ private class CosmosWriter(
     override def value(): Long = totalRequestCharge.get() / 100L
   }
 
-  private val metrics = Array(recordsWrittenMetric, bytesWrittenMetric, totalRequestChargeMetric)
+  private val metrics = Array(recordsWrittenMetric, recordsSkippedMetric, bytesWrittenMetric, totalRequestChargeMetric)
 
   override def currentMetricsValues(): Array[CustomTaskMetric] = {
     metrics
@@ -68,6 +74,18 @@ private class CosmosWriter(
       recordsWritten.addAndGet(recordCount)
     }
 
+    trackDiagnostics(diagnostics)
+  }
+
+  override def trackSkippedOperation(recordCount: Long, diagnostics: Option[CosmosDiagnosticsContext]): Unit = {
+    if (recordCount > 0) {
+      recordsSkipped.addAndGet(recordCount)
+    }
+
+    trackDiagnostics(diagnostics)
+  }
+
+  private[this] def trackDiagnostics(diagnostics: Option[CosmosDiagnosticsContext]): Unit = {
     diagnostics match {
       case Some(ctx) =>
         // Capturing RU/s with 2 fractional digits internally

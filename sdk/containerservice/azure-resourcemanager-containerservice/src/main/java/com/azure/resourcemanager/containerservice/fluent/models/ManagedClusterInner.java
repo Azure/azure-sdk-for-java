@@ -1319,7 +1319,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Get the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @return the schedulerProfile value.
      */
@@ -1328,7 +1329,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the schedulerProfile property: Profile of the pod scheduler configuration.
+     * Set the schedulerProfile property: Profile with scheduler-related settings, like the configuration mode for each
+     * scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
      * 
      * @param schedulerProfile the schedulerProfile value to set.
      * @return the ManagedClusterInner object itself.

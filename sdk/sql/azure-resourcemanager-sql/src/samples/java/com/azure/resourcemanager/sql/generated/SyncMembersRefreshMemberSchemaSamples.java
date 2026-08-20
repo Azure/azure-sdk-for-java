@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncMembersRefreshMemberSchemaSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncMemberRefreshSchema.json
+     * x-ms-original-file: 2025-01-01/SyncMemberRefreshSchema.json
      */
     /**
      * Sample code: Refresh a sync member database schema.

@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for Network.
- * APIs to manage web application firewall rules.
+ * APIs to manage Microsoft Azure network resources.
  */
 package com.azure.resourcemanager.network.models;

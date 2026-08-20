@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class OutboundFirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/OutboundFirewallRuleCreate.json
+     * x-ms-original-file: 2025-01-01/OutboundFirewallRuleCreate.json
      */
     /**
      * Sample code: Approve or reject a outbound firewall rule with a given name.

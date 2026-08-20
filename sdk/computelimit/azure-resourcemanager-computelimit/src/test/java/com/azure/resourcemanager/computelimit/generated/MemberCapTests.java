@@ -12,16 +12,16 @@ public final class MemberCapTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MemberCap model
-            = BinaryData.fromString("{\"subscriptionId\":\"a\",\"cap\":1963237214}").toObject(MemberCap.class);
-        Assertions.assertEquals("a", model.subscriptionId());
-        Assertions.assertEquals(1963237214, model.cap());
+            = BinaryData.fromString("{\"subscriptionId\":\"qidtqajzyu\",\"cap\":743908174}").toObject(MemberCap.class);
+        Assertions.assertEquals("qidtqajzyu", model.subscriptionId());
+        Assertions.assertEquals(743908174, model.cap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MemberCap model = new MemberCap().withSubscriptionId("a").withCap(1963237214);
+        MemberCap model = new MemberCap().withSubscriptionId("qidtqajzyu").withCap(743908174);
         model = BinaryData.fromObject(model).toObject(MemberCap.class);
-        Assertions.assertEquals("a", model.subscriptionId());
-        Assertions.assertEquals(1963237214, model.cap());
+        Assertions.assertEquals("qidtqajzyu", model.subscriptionId());
+        Assertions.assertEquals(743908174, model.cap());
     }
 }

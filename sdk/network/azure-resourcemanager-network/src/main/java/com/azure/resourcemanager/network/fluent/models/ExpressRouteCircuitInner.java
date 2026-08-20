@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.ResiliencyLevel;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -398,6 +399,61 @@ public final class ExpressRouteCircuitInner extends Resource {
      */
     public Integer stag() {
         return this.innerProperties() == null ? null : this.innerProperties().stag();
+    }
+
+    /**
+     * Get the resiliencyLevel property: The resiliency level of the ExpressRoute circuit.
+     * 
+     * @return the resiliencyLevel value.
+     */
+    public ResiliencyLevel resiliencyLevel() {
+        return this.innerProperties() == null ? null : this.innerProperties().resiliencyLevel();
+    }
+
+    /**
+     * Get the partnerAccountId property: Account ID of customer account on partner cloud provider.
+     * 
+     * @return the partnerAccountId value.
+     */
+    public String partnerAccountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerAccountId();
+    }
+
+    /**
+     * Set the partnerAccountId property: Account ID of customer account on partner cloud provider.
+     * 
+     * @param partnerAccountId the partnerAccountId value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withPartnerAccountId(String partnerAccountId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withPartnerAccountId(partnerAccountId);
+        return this;
+    }
+
+    /**
+     * Get the activationKey property: Activation Key from partner cloud provider.
+     * 
+     * @return the activationKey value.
+     */
+    public String activationKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().activationKey();
+    }
+
+    /**
+     * Set the activationKey property: Activation Key from partner cloud provider.
+     * 
+     * @param activationKey the activationKey value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withActivationKey(String activationKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withActivationKey(activationKey);
+        return this;
     }
 
     /**

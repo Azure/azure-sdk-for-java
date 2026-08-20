@@ -76,6 +76,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -98,6 +99,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -228,6 +230,7 @@ public final class AgentsClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -357,6 +360,7 @@ public final class AgentsClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -563,6 +567,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -585,6 +590,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -697,6 +703,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -719,6 +726,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -865,6 +873,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -887,6 +896,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -995,6 +1005,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1017,6 +1028,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1142,6 +1154,7 @@ public final class AgentsClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -1373,6 +1386,7 @@ public final class AgentsClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -1511,6 +1525,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1533,6 +1548,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2123,6 +2139,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2145,6 +2162,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2211,7 +2229,7 @@ public final class AgentsClient {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2245,6 +2263,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2267,6 +2286,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2335,7 +2355,7 @@ public final class AgentsClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2421,6 +2441,7 @@ public final class AgentsClient {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2443,6 +2464,7 @@ public final class AgentsClient {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2557,6 +2579,7 @@ public final class AgentsClient {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -2573,7 +2596,7 @@ public final class AgentsClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2618,6 +2641,14 @@ public final class AgentsClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-agent-version</td><td>String</td><td>The version of the agent whose code zip is returned in the
+     * response body.</td></tr>
+     * </table>
      *
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2709,7 +2740,7 @@ public final class AgentsClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3247,7 +3278,7 @@ public final class AgentsClient {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3285,7 +3316,7 @@ public final class AgentsClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3358,7 +3389,7 @@ public final class AgentsClient {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3543,7 +3574,7 @@ public final class AgentsClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.
@@ -3888,7 +3919,7 @@ public final class AgentsClient {
      *
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      *
      * @param agentName The name of the agent to create a session for.
      * @param versionIndicator Determines which agent version backs the session.

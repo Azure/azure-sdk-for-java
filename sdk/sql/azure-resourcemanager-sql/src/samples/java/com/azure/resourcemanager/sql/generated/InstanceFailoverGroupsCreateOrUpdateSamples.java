@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class InstanceFailoverGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/InstanceFailoverGroupCreateOrUpdate.json
+     * x-ms-original-file: 2025-01-01/InstanceFailoverGroupCreateOrUpdate.json
      */
     /**
      * Sample code: Create failover group.

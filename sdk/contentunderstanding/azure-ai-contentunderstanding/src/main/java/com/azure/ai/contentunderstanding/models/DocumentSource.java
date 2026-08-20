@@ -145,7 +145,8 @@ public final class DocumentSource extends ContentSource {
      * @param source The source string (may contain {@code ;} delimiters).
      * @return An unmodifiable list of {@link DocumentSource} instances.
      * @throws NullPointerException if {@code source} is null.
-     * @throws IllegalArgumentException if any segment is not in the expected format.
+     * @throws IllegalArgumentException if {@code source} contains no document source segments or any segment is not
+     * in the expected format.
      */
     public static List<DocumentSource> parse(String source) {
         Objects.requireNonNull(source, "'source' cannot be null.");
@@ -159,6 +160,10 @@ public final class DocumentSource extends ContentSource {
             if (!trimmed.isEmpty()) {
                 results.add(new DocumentSource(trimmed));
             }
+        }
+        if (results.isEmpty()) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'source' must contain at least one document source segment."));
         }
         return Collections.unmodifiableList(results);
     }

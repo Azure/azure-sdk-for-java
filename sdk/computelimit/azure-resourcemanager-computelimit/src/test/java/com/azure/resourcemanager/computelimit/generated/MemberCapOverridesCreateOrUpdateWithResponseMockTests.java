@@ -22,7 +22,7 @@ public final class MemberCapOverridesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"cap\":1907592616,\"provisioningState\":\"Succeeded\"},\"id\":\"pnvjtoqnermclf\",\"name\":\"lphox\",\"type\":\"scrpabgyepsbjt\"}";
+            = "{\"properties\":{\"cap\":559757947,\"provisioningState\":\"Failed\"},\"id\":\"j\",\"name\":\"bwpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class MemberCapOverridesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MemberCapOverride response = manager.memberCapOverrides()
-            .define("vce")
-            .withExistingSharedLimitCap("togt", "rupqsxvnmicy")
-            .withProperties(new MemberCapOverrideProperties().withCap(579723655))
+            .define("ali")
+            .withExistingSharedLimitCap("lf", "isgwbnbbeldawkz")
+            .withProperties(new MemberCapOverrideProperties().withCap(12612409))
             .create();
 
-        Assertions.assertEquals(1907592616, response.properties().cap());
+        Assertions.assertEquals(559757947, response.properties().cap());
     }
 }

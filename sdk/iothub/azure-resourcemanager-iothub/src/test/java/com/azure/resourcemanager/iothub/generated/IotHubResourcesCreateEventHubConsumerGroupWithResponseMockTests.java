@@ -21,7 +21,7 @@ public final class IotHubResourcesCreateEventHubConsumerGroupWithResponseMockTes
     @Test
     public void testCreateEventHubConsumerGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vbuswd\":\"\\\"datasofbshrn\\\"\",\"ybycnunvj\":\"\\\"dataz\\\"\",\"ikyzirtxdy\":\"\\\"datartkfawnopq\\\"\"},\"etag\":\"zejntps\",\"id\":\"gioilqu\",\"name\":\"rydxtqm\",\"type\":\"eoxorggufhyao\"}";
+            = "{\"properties\":{\"fxtsgum\":\"\\\"dataxkmcwaekrrjre\\\"\"},\"etag\":\"glikkxwslolb\",\"id\":\"vuzlm\",\"name\":\"felfktg\",\"type\":\"lcrpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class IotHubResourcesCreateEventHubConsumerGroupWithResponseMockTes
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EventHubConsumerGroupInfo response = manager.iotHubResources()
-            .defineEventHubConsumerGroup("jbdhqxvc")
-            .withExistingEventHubEndpoint("honnxkrlgnyhmos", "xkk", "thrrgh")
-            .withProperties(new EventHubConsumerGroupName().withName("gf"))
+            .defineEventHubConsumerGroup("rvmtgjq")
+            .withExistingEventHubEndpoint("yjsvfyc", "z", "fvoow")
+            .withProperties(new EventHubConsumerGroupName().withName("pyostronzmyhgfi"))
             .create();
 
     }

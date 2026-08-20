@@ -33,7 +33,7 @@ public class ThinClientPointOperationE2ETest extends ThinClientTestBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientDocumentPointOperations() {
         String idValue = UUID.randomUUID().toString();
         ObjectNode doc = createTestDocument(idValue, idValue);
@@ -85,7 +85,7 @@ public class ThinClientPointOperationE2ETest extends ThinClientTestBase {
         assertThinClientEndpointUsed(deleteResponse.getDiagnostics());
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientBulk() {
         String idValue = UUID.randomUUID().toString();
         ObjectNode doc = createTestDocument(idValue, idValue);
@@ -101,7 +101,7 @@ public class ThinClientPointOperationE2ETest extends ThinClientTestBase {
         assertThinClientEndpointUsed(bulkResponse.getCosmosDiagnostics());
     }
 
-    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    @Test(groups = {"thinclient", "thinclientEndpointProbe"}, timeOut = TIMEOUT)
     public void testThinClientBatch() {
         String pkValue = UUID.randomUUID().toString();
         String idValue1 = UUID.randomUUID().toString();

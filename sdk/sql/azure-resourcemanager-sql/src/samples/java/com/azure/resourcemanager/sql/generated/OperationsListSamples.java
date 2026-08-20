@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ListOperations.json
+     * x-ms-original-file: 2025-01-01/ListOperations.json
      */
     /**
      * Sample code: Lists all of the available SQL Rest API operations.

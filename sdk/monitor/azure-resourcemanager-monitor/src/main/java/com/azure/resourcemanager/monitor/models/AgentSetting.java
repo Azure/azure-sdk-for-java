@@ -17,6 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class AgentSetting implements JsonSerializable<AgentSetting> {
     /*
+     * 
      * The name of the setting.
      * Must be part of the list of supported settings
      */
@@ -34,7 +35,8 @@ public final class AgentSetting implements JsonSerializable<AgentSetting> {
     }
 
     /**
-     * Get the name property: The name of the setting.
+     * Get the name property:
+     * The name of the setting.
      * Must be part of the list of supported settings.
      * 
      * @return the name value.
@@ -44,7 +46,8 @@ public final class AgentSetting implements JsonSerializable<AgentSetting> {
     }
 
     /**
-     * Set the name property: The name of the setting.
+     * Set the name property:
+     * The name of the setting.
      * Must be part of the list of supported settings.
      * 
      * @param name the name value to set.

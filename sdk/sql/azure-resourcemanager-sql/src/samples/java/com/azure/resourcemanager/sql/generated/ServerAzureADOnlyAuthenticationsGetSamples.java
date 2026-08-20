@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.AuthenticationName;
  */
 public final class ServerAzureADOnlyAuthenticationsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/AzureADOnlyAuthGet.json
+     * x-ms-original-file: 2025-01-01/AzureADOnlyAuthGet.json
      */
     /**
      * Sample code: Gets a Azure Active Directory only authentication property.

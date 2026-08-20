@@ -9,6 +9,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,13 +17,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to analyze documents and get raw JSON response using protocol methods asynchronously.
@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample11_AnalyzeReturnRawJsonAsync {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample11Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -60,103 +60,58 @@ public class Sample11_AnalyzeReturnRawJsonAsync {
         // Load local sample file
         Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
-        // Prepare request body with binary data using JSON format
-        // Note: The API expects a JSON request with "inputs" array containing document data
-        String base64Data = java.util.Base64.getEncoder().encodeToString(fileBytes);
-        String requestJson = String.format("{\"inputs\": [{\"data\": \"%s\"}]}", base64Data);
-        BinaryData requestBody = BinaryData.fromString(requestJson);
-
-        // Use protocol method to get raw JSON response
+        // Use the binary protocol method to get the raw JSON response without Base64-encoding the input
         // Note: For production use, prefer the object model approach (beginAnalyze with typed parameters)
         // which returns AnalysisResult objects that are easier to work with
         PollerFlux<BinaryData, BinaryData> operation
-            = client.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", "application/octet-stream", binaryData,
+                new RequestOptions());
 
-        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
-
-        CountDownLatch latch = new CountDownLatch(1);
-
-        operation.last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    System.out.println("Analysis operation completed with status: " + pollResponse.getStatus());
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(responseData -> {
-                System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
-
-                // Verify response data can be converted to string
-                String responseString = responseData.toString();
-                System.out.println("Response string length: " + String.format("%,d", responseString.length()) + " characters");
-
-                // Verify response is valid JSON format
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.readTree(responseData.toBytes());
-                    System.out.println("Response is valid JSON format");
-                } catch (Exception ex) {
-                    System.err.println("Response data is not valid JSON: " + ex.getMessage());
-                }
-
-                System.out.println("Raw JSON analysis operation completed successfully");
-
-                // BEGIN:ContentUnderstandingParseRawJsonAsync
-                // Parse the raw JSON response
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode jsonNode = mapper.readTree(responseData.toBytes());
-
-                    // Pretty-print the JSON
-                    String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-
-                    // Create output directory if it doesn't exist
-                    Path outputDir = Paths.get("target/sample_output");
-                    Files.createDirectories(outputDir);
-
-                    // Save to file
-                    String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-                    String outputFileName = "analyze_result_" + timestamp + ".json";
-                    Path outputPath = outputDir.resolve(outputFileName);
-                    Files.write(outputPath, prettyJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-
-                    System.out.println("Raw JSON response saved to: " + outputPath);
-                    System.out.println("File size: " + String.format("%,d", prettyJson.length()) + " characters");
-
-                    System.out.println("\nRaw JSON result saved to: " + outputPath);
-                    long fileSize = Files.size(outputPath);
-                    System.out.println("File size: " + String.format("%,d", fileSize) + " bytes");
-                } catch (IOException e) {
-                    System.err.println("Error saving JSON file: " + e.getMessage());
-                    e.printStackTrace();
-                }
-                // END:ContentUnderstandingParseRawJsonAsync
-            })
-            .doOnError(error -> {
-                System.err.println("Error occurred: " + error.getMessage());
-                error.printStackTrace();
-            })
-            .subscribe(
-                result -> {
-                    // Success - operations completed
-                    latch.countDown();
-                },
-                error -> {
-                    // Error already handled in doOnError
-                    latch.countDown();
-                }
-            );
+        BinaryData responseData = operation.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
+            .block();
         // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we use a CountDownLatch so the program does not end before the async operations complete.
-        if (!latch.await(2, TimeUnit.MINUTES)) {
-            System.err.println("Timed out waiting for async operations to complete.");
+        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
+        System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
+
+        // BEGIN:ContentUnderstandingParseRawJsonAsync
+        // Parse the raw JSON response
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(responseData.toBytes());
+        if (jsonNode == null) {
+            throw new IOException("Analysis response did not contain a JSON document.");
         }
+
+        // Pretty-print the JSON
+        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+        byte[] prettyJsonBytes = prettyJson.getBytes(StandardCharsets.UTF_8);
+
+        // Create output directory if it doesn't exist
+        Path outputDir = Paths.get("target/sample_output");
+        Files.createDirectories(outputDir);
+
+        // Save to file
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String outputFileName = "analyze_result_" + timestamp + ".json";
+        Path outputPath = outputDir.resolve(outputFileName);
+        Files.write(outputPath, prettyJsonBytes);
+
+        System.out.println("Raw JSON response saved to: " + outputPath);
+        System.out.println("File size: " + String.format("%,d", prettyJsonBytes.length) + " bytes");
+        // END:ContentUnderstandingParseRawJsonAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
     }
 }

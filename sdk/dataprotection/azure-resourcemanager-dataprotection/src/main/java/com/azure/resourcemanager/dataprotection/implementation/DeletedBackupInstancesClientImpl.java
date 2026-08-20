@@ -336,7 +336,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -356,7 +356,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -374,7 +374,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -393,7 +393,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -413,7 +413,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -431,7 +431,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -450,7 +450,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -467,7 +467,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
@@ -482,7 +482,7 @@ public final class DeletedBackupInstancesClientImpl implements DeletedBackupInst
     }
 
     /**
-     * A long-running resource action.
+     * The undelete operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedServerSecurityAlertPoliciesListByInstanceSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedServerSecurityAlertListByInstance.json
+     * x-ms-original-file: 2025-01-01/ManagedServerSecurityAlertListByInstance.json
      */
     /**
      * Sample code: Get the managed server's threat detection policies.

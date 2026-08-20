@@ -1,5 +1,14 @@
 # Release History
 
+## 1.3.8 (2026-07-22)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added new library entries to the BOM:
+    - [`azure-ai-speech-transcription`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/transcription/azure-ai-speech-transcription)
+    - [`azure-ai-voicelive`](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/voicelive/azure-ai-voicelive)
+
 ## 1.3.7 (2026-05-18)
 
 ### Dependency Updates
