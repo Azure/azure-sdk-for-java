@@ -415,6 +415,42 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertArraysEqual(expected, decrypted.toByteArray());
     }
 
+    // Cross-SDK interoperability: Java must decrypt CSE v2 blobs written by other SDKs, whose per-region GCM nonces
+    // encode the region counter differently than Java's. This exercises a container of .NET-produced blobs. Requires
+    // a container coordinated between languages; run manually. Verification/reorder-detection of the nonce schemes is
+    // covered without a live account by DecryptorV2ReorderTests.
+    @Disabled
+    @Test
+    public void crossPlatDecryptDotnetV2() {
+        // A256KW (RFC 3394) key wrap with the fixed KEK coordinated across the .NET/Python/Java cross-SDK tests. .NET's
+        // test helper stores the key under the id "local:key1" (Python uses "key1"), so the id must match here.
+        byte[] kek = fromHex("bea4114b9e4a07da664683ad2bad76412043e8bc90a4117d47c30fd4b4196d11");
+        AsyncKeyEncryptionKey key = new A256KwKey("local:key1", kek);
+
+        String containerName = "cross-sdk-cse-v2";
+        String endpoint = ENV.getPrimaryAccount().getBlobEndpoint();
+
+        // Reference plaintext uploaded alongside the encrypted blob.
+        BlobClient plaintextClient = new BlobClientBuilder().endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("dotnet_plaintext")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildClient();
+        byte[] expected = plaintextClient.downloadContent().toBytes();
+
+        // Decrypt the .NET-encrypted blob (.NET nonce scheme) and confirm it round-trips without a false reorder.
+        EncryptedBlobClient decryptionClient = new EncryptedBlobClientBuilder(EncryptionVersion.V2).endpoint(endpoint)
+            .containerName(containerName)
+            .blobName("dotnet_encrypted")
+            .key(key, "A256KW")
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .buildEncryptedBlobClient();
+        ByteArrayOutputStream decrypted = new ByteArrayOutputStream();
+        decryptionClient.downloadStream(decrypted);
+
+        assertArraysEqual(expected, decrypted.toByteArray());
+    }
+
     private static byte[] fromHex(String hex) {
         byte[] out = new byte[hex.length() / 2];
         for (int i = 0; i < out.length; i++) {
