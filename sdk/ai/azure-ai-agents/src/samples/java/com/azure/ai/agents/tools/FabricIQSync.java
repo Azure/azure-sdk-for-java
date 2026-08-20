@@ -51,7 +51,7 @@ public class FabricIQSync {
         // BEGIN: com.azure.ai.agents.define_fabric_iq
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-            .setServerLabel("fabriciq-tool")
+            .setServerLabel("fabric-iq-tool")
             .setRequireApproval("never");
 
         // END: com.azure.ai.agents.define_fabric_iq

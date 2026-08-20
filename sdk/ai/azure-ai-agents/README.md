@@ -555,7 +555,7 @@ Connect agents to Fabric IQ project connections for enterprise data grounding:
 ```java com.azure.ai.agents.define_fabric_iq
 
 FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-    .setServerLabel("fabriciq-tool")
+    .setServerLabel("fabric-iq-tool")
     .setRequireApproval("never");
 
 ```

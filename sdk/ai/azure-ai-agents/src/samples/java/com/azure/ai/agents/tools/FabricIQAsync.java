@@ -51,7 +51,7 @@ public class FabricIQAsync {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 
         FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-            .setServerLabel("fabriciq-tool")
+            .setServerLabel("fabric-iq-tool")
             .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
