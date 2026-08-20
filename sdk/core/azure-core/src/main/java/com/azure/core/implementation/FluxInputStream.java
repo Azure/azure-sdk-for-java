@@ -29,7 +29,7 @@ public class FluxInputStream extends InputStream {
     private final Flux<ByteBuffer> data;
 
     // Subscription to request more data from as needed
-    private Subscription subscription;
+    private volatile Subscription subscription;
 
     private ByteArrayInputStream buffer;
 
@@ -151,6 +151,9 @@ public class FluxInputStream extends InputStream {
         // Unblock any thread waiting in blockForData().
         lock.lock();
         try {
+            if (!subscribed) {
+                subscribeToData();
+            }
             waitingForData = false;
             dataAvailable.signal();
         } finally {
@@ -227,13 +230,13 @@ public class FluxInputStream extends InputStream {
                 this::signalOnCompleteOrError,
                 // Subscription consumer
                 subscription -> {
+                    this.subscription = subscription;
+                    this.subscribed = true;
                     if (this.closed) {
                         subscription.cancel();
                         return;
                     }
-                    this.subscription = subscription;
-                    this.subscribed = true;
-                    this.subscription.request(1);
+                    subscription.request(1);
                 });
     }
 
