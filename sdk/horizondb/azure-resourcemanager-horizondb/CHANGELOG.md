@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-08-14)
+## 1.0.0-beta.2 (2026-08-20)
 
 - Azure Resource Manager HorizonDb client library for Java. This package contains Microsoft Azure SDK for HorizonDb Management SDK. Azure Resource Provider API for managing HorizonDB clusters, pools, replicas, and firewall rules. Package api-version 2026-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -14,10 +14,10 @@
 
 #### `models.HorizonDbPrivateEndpointConnections` was modified
 
-* `update(java.lang.String,java.lang.String,models.PrivateEndpointConnectionUpdate)` was removed
 * `update(java.lang.String,java.lang.String,models.PrivateEndpointConnectionUpdate,com.azure.core.util.Context)` was removed
-* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `deleteByResourceGroup(java.lang.String,java.lang.String)` was removed
+* `update(java.lang.String,java.lang.String,models.PrivateEndpointConnectionUpdate)` was removed
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 ### Features Added
 
@@ -63,28 +63,28 @@
 
 #### `models.HorizonDbClusters` was modified
 
-* `stop(java.lang.String,java.lang.String)` was added
 * `start(java.lang.String,java.lang.String)` was added
 * `restart(java.lang.String,java.lang.String)` was added
-* `restart(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `start(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `stop(java.lang.String,java.lang.String)` was added
+* `restart(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `stop(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.HorizonDbPrivateEndpointConnections` was modified
 
-* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `updateStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionResourceInner,com.azure.core.util.Context)` was added
 * `updateStatus(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionResourceInner)` was added
 
 #### `models.HorizonDbClusterPropertiesForPatchUpdate` was modified
 
-* `authConfig()` was added
-* `withAuthConfig(models.HorizonDbClusterAuthConfig)` was added
-* `computeModel()` was added
-* `withComputeModel(models.HorizonDbComputeModel)` was added
 * `withMirroring(models.HorizonDbClusterMirroring)` was added
+* `withAuthConfig(models.HorizonDbClusterAuthConfig)` was added
+* `withComputeModel(models.HorizonDbComputeModel)` was added
 * `mirroring()` was added
+* `authConfig()` was added
+* `computeModel()` was added
 
 #### `models.PrivateEndpointConnectionProperties` was modified
 
@@ -93,22 +93,22 @@
 
 #### `models.HorizonDbCluster` was modified
 
-* `start()` was added
-* `restart()` was added
-* `start(com.azure.core.util.Context)` was added
 * `stop()` was added
-* `restart(com.azure.core.util.Context)` was added
-* `stop(com.azure.core.util.Context)` was added
+* `start()` was added
 * `identity()` was added
+* `stop(com.azure.core.util.Context)` was added
+* `start(com.azure.core.util.Context)` was added
+* `restart()` was added
+* `restart(com.azure.core.util.Context)` was added
 
 #### `models.HorizonDbClusterProperties` was modified
 
+* `mirroring()` was added
+* `computeModel()` was added
+* `authConfig()` was added
 * `withMirroring(models.HorizonDbClusterMirroring)` was added
 * `withComputeModel(models.HorizonDbComputeModel)` was added
-* `computeModel()` was added
 * `withAuthConfig(models.HorizonDbClusterAuthConfig)` was added
-* `mirroring()` was added
-* `authConfig()` was added
 
 #### `models.HorizonDbClusterForPatchUpdate` was modified
 
