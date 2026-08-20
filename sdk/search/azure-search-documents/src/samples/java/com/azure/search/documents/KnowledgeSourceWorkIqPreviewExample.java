@@ -6,10 +6,12 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.indexes.models.KnowledgeBase;
-import com.azure.search.documents.indexes.models.KnowledgeSource;
-import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
+import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
+import com.azure.search.documents.indexes.models.AzureOpenAIVectorizerParameters;
 import com.azure.search.documents.indexes.models.EntraAppAuthentication;
+import com.azure.search.documents.indexes.models.KnowledgeBase;
+import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
+import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
 import com.azure.search.documents.indexes.models.WorkIQKnowledgeSource;
 import com.azure.search.documents.indexes.models.WorkIQKnowledgeSourceParameters;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
@@ -17,57 +19,98 @@ import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBui
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.knowledgebases.models.WorkIQKnowledgeSourceParams;
+
+import java.util.Collections;
+import java.util.UUID;
 
 /**
- * Demonstrates creating and using a Work IQ knowledge source in the preview API.
+ * Demonstrates a Work IQ knowledge source using a customer-owned Microsoft Entra application.
+ *
+ * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_WORK_IQ_APPLICATION_ID},
+ * {@code SEARCH_WORK_IQ_FEDERATED_CREDENTIAL_ID}, {@code SEARCH_WORK_IQ_USER_ASSERTION},
+ * {@code SEARCH_OPENAI_ENDPOINT}, {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and
+ * {@code SEARCH_OPENAI_MODEL_NAME}. Set {@code SEARCH_WORK_IQ_TENANT_ID} only when the application is in a different
+ * tenant from the Search service.</p>
  */
 public class KnowledgeSourceWorkIqPreviewExample {
-
-    private static final String KB_NAME = "workiq-kind-sample-kb";
-    private static final String KS_NAME = "workiq-kind-sample-ks";
-
     public static void main(String[] args) {
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         String apiKey = System.getenv("SEARCH_API_KEY");
+        String tenantId = System.getenv("SEARCH_WORK_IQ_TENANT_ID");
 
-        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-            .endpoint(endpoint)
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
 
-        KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(apiKey))
-            .knowledgeBaseName(KB_NAME)
-            .buildClient();
+        String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        String knowledgeSourceName = "work-iq-source-" + suffix;
+        String knowledgeBaseName = "work-iq-kb-" + suffix;
+        boolean knowledgeSourceCreated = false;
+        boolean knowledgeBaseCreated = false;
 
         try {
-            // Create KS with the customer-owned Entra app used for Work IQ on-behalf-of authentication.
-            WorkIQKnowledgeSourceParameters parameters = new WorkIQKnowledgeSourceParameters(
-                new EntraAppAuthentication("<application-id>", "<federated-credential-id>")
-                    .setTenantId("<tenant-id>"));
-            WorkIQKnowledgeSource knowledgeSource = new WorkIQKnowledgeSource(KS_NAME, parameters);
-            searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+            EntraAppAuthentication entraAuthentication = new EntraAppAuthentication(
+                System.getenv("SEARCH_WORK_IQ_APPLICATION_ID"),
+                System.getenv("SEARCH_WORK_IQ_FEDERATED_CREDENTIAL_ID"));
+            if (tenantId != null && !tenantId.isEmpty()) {
+                entraAuthentication.setTenantId(tenantId);
+            }
 
-            // Verify KS kind
-            KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(KS_NAME);
-            System.out.println("KnowledgeSource kind = " + retrieved.getKind());
+            // Federation is configured on the Entra application and Search service identity. The SDK doesn't accept a
+            // client secret or a user-assigned identity resource ID for this Work IQ configuration.
+            WorkIQKnowledgeSource knowledgeSource = new WorkIQKnowledgeSource(knowledgeSourceName,
+                new WorkIQKnowledgeSourceParameters(entraAuthentication));
+            WorkIQKnowledgeSource created
+                = (WorkIQKnowledgeSource) searchIndexClient.createKnowledgeSource(knowledgeSource);
+            knowledgeSourceCreated = true;
 
-            // Hook up KS to a KB
-            KnowledgeSourceReference ref = new KnowledgeSourceReference(KS_NAME);
-            KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, ref);
-            searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
-            System.out.println("Created KnowledgeBase " + KB_NAME + " referencing " + KS_NAME);
+            EntraAppAuthentication persistedAuthentication
+                = created.getWorkIQParameters().getEntraAppAuthentication();
+            if (!entraAuthentication.getApplicationId().equals(persistedAuthentication.getApplicationId())
+                || !entraAuthentication.getFederatedCredentialId()
+                    .equals(persistedAuthentication.getFederatedCredentialId())
+                || (tenantId == null && persistedAuthentication.getTenantId() != null)
+                || (tenantId != null && !tenantId.equals(persistedAuthentication.getTenantId()))) {
+                throw new IllegalStateException("The Work IQ Entra application configuration wasn't persisted.");
+            }
 
-            // Issue retrieval request to verify everything is wired up end-to-end
+            KnowledgeBase knowledgeBase
+                = new KnowledgeBase(knowledgeBaseName, new KnowledgeSourceReference(knowledgeSourceName))
+                    .setModels(new KnowledgeBaseAzureOpenAIModel(new AzureOpenAIVectorizerParameters()
+                        .setResourceUrl(System.getenv("SEARCH_OPENAI_ENDPOINT"))
+                        .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
+                        .setDeploymentName(System.getenv("SEARCH_OPENAI_DEPLOYMENT_NAME"))
+                        .setModelName(AzureOpenAIModelName.fromString(System.getenv("SEARCH_OPENAI_MODEL_NAME")))));
+            searchIndexClient.createKnowledgeBase(knowledgeBase);
+            knowledgeBaseCreated = true;
+
+            KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder().endpoint(endpoint)
+                .credential(new AzureKeyCredential(apiKey))
+                .knowledgeBaseName(knowledgeBaseName)
+                .buildClient();
+            WorkIQKnowledgeSourceParams sourceParams
+                = new WorkIQKnowledgeSourceParams(knowledgeSourceName).setAlwaysQuerySource(true)
+                    .setIncludeReferences(true);
             KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions()
-                .setIntents(new KnowledgeRetrievalSemanticIntent("What work items are relevant?"));
-            KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(options);
-            System.out.println("Response messages: " + result.getResponse().size());
+                .setIntents(new KnowledgeRetrievalSemanticIntent("What work items are relevant?"))
+                .setKnowledgeSourceParams(Collections.singletonList(sourceParams));
 
+            // Search authentication is supplied by the client credential. The Work IQ user assertion is supplied
+            // separately in x-ms-query-work-iq-source-authorization; it isn't a Search API key or access token.
+            String workIqUserAssertion = System.getenv("SEARCH_WORK_IQ_USER_ASSERTION");
+            KnowledgeBaseRetrievalResult result = retrievalClient.retrieve(options, null, workIqUserAssertion);
+            if (result.getResponse() == null) {
+                throw new IllegalStateException("Work IQ retrieval didn't return a response.");
+            }
+            System.out.println("Work IQ retrieval completed with " + result.getResponse().size() + " messages.");
         } finally {
-            searchIndexClient.deleteKnowledgeBase(KB_NAME);
-            searchIndexClient.deleteKnowledgeSource(KS_NAME);
+            if (knowledgeBaseCreated) {
+                searchIndexClient.deleteKnowledgeBase(knowledgeBaseName);
+            }
+            if (knowledgeSourceCreated) {
+                searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
+            }
         }
     }
 }
