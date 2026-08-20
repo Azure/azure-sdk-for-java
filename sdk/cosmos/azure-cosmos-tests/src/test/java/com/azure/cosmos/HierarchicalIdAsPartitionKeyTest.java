@@ -43,7 +43,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 /**
  * Validates that when a container's (hierarchical) partition key definition ends with "/id" the SDK
  * automatically appends the item id to the partition key, so callers can address an item using only
- * the prefix of the partition key.
+ * the prefix of the partition key. For a single-path "/id" definition, only APIs that support an
+ * omitted partition key can use the empty-prefix shorthand; APIs requiring a partition key continue
+ * to require the full id value.
  */
 public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
 
@@ -162,7 +164,16 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
             new CosmosItemIdentity(prefixPartitionKey, id2));
 
         FeedResponse<TestItem> feedResponse = hpkContainer.readMany(itemIdentities, TestItem.class);
-        assertThat(feedResponse.getResults()).hasSize(2);
+        assertThat(feedResponse.getResults())
+            .extracting(TestItem::getId)
+            .containsExactlyInAnyOrder(id1, id2);
+
+        FeedResponse<TestItem> singletonResponse = hpkContainer.readMany(
+            Collections.singletonList(new CosmosItemIdentity(prefixPartitionKey, id3)),
+            TestItem.class);
+        assertThat(singletonResponse.getResults())
+            .extracting(TestItem::getId)
+            .containsExactly(id3);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -287,11 +298,41 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
         List<CosmosItemOperation> operations = Collections.singletonList(
             CosmosBulkOperations.getDeleteItemOperation(id, PartitionKey.NONE));
 
-        assertThatThrownBy(() -> hpkContainer.executeBulkOperations(operations).iterator().hasNext())
-            .isInstanceOf(IllegalArgumentException.class);
+        CosmosBulkOperationResponse<Object> response =
+            hpkContainer.<Object>executeBulkOperations(operations).iterator().next();
+        assertThat(response.getException()).isInstanceOf(IllegalArgumentException.class);
         assertThat(hpkContainer.readItem(
             id, new PartitionKeyBuilder().addNullValue().build(), TestItem.class).getItem().getId())
             .isEqualTo(id);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkBulkPartitionKeyCompletionFailureIsScopedToOperation() {
+        PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add("pkBulkFailure").build();
+        String validId = UUID.randomUUID().toString();
+        List<CosmosItemOperation> operations = Arrays.asList(
+            CosmosBulkOperations.getCreateItemOperation(
+                new TestItem(null, "pkBulkFailure", "invalid"),
+                prefixPartitionKey),
+            CosmosBulkOperations.getCreateItemOperation(
+                new TestItem(validId, "pkBulkFailure", "valid"),
+                prefixPartitionKey));
+
+        List<CosmosBulkOperationResponse<Object>> responses = new ArrayList<>();
+        hpkContainer.<Object>executeBulkOperations(operations).forEach(responses::add);
+
+        assertThat(responses).hasSize(2);
+        assertThat(responses)
+            .filteredOn(response -> response.getException() != null)
+            .singleElement()
+            .extracting(CosmosBulkOperationResponse::getException)
+            .isInstanceOf(IllegalArgumentException.class);
+        assertThat(responses)
+            .filteredOn(response -> response.getException() == null)
+            .singleElement()
+            .satisfies(response -> assertThat(response.getResponse().getStatusCode()).isEqualTo(201));
+        assertThat(hpkContainer.readItem(validId, prefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("valid");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -377,9 +418,10 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void idOnlyContainerCreateWithoutPartitionKey() {
         String id = UUID.randomUUID().toString();
-        // No partition key supplied - it is derived from the item's id.
+        // Create permits the zero-component prefix to be represented by an omitted partition key.
         idContainer.createItem(new TestItem(id, null, "v1"));
 
+        // APIs that require a partition key continue to use the full id value.
         CosmosItemResponse<TestItem> readResponse =
             idContainer.readItem(id, new PartitionKey(id), TestItem.class);
         assertThat(readResponse.getItem().getProp()).isEqualTo("v1");

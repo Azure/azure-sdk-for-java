@@ -55,7 +55,9 @@ public class PartitionKeyHelper {
      * item id. This is limited to containers whose last partition key path is "/id" and callers
      * that either omitted the partition key or provided exactly its prefix (component count ==
      * pathCount - 1). Other incomplete or malformed partition keys are not eligible for automatic
-     * completion.
+     * completion. A zero-component prefix for a single-path "/id" definition is represented by an
+     * omitted key, so it is available only through APIs that permit callers to omit the partition
+     * key.
      *
      * @param partitionKeyDefinition the partition key definition of the container (may be null).
      * @param providedPartitionKey the partition key provided by the caller (may be null).
@@ -104,7 +106,8 @@ public class PartitionKeyHelper {
     /**
      * When the last path of a (hierarchical) partition key definition is "/id", ensures the item's
      * id is part of the partition key so callers can address an item using only the prefix of the
-     * partition key (i.e. without repeating the id).
+     * partition key (i.e. without repeating the id). For a single-path "/id" definition, the empty
+     * prefix is available only through APIs that permit an omitted partition key.
      *
      * <ul>
      *   <li>If the last partition key path is not "/id", the provided partition key is returned unchanged.</li>

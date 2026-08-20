@@ -169,6 +169,37 @@ final class BulkExecutorUtil {
         Supplier<String> itemIdSupplier,
         Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
 
+        return resolvePartitionKeyRangeId(
+            docClientWrapper,
+            container,
+            partitionKey,
+            itemIdSupplier,
+            partitionKeyInternalConsumer,
+            false);
+    }
+
+    static Mono<String> resolvePartitionKeyRangeIdForFullPartitionKey(
+        AsyncDocumentClient docClientWrapper,
+        CosmosAsyncContainer container,
+        PartitionKey partitionKey) {
+
+        return resolvePartitionKeyRangeId(
+            docClientWrapper,
+            container,
+            partitionKey,
+            null,
+            null,
+            true);
+    }
+
+    private static Mono<String> resolvePartitionKeyRangeId(
+        AsyncDocumentClient docClientWrapper,
+        CosmosAsyncContainer container,
+        PartitionKey partitionKey,
+        Supplier<String> itemIdSupplier,
+        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer,
+        boolean requireFullPartitionKey) {
+
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
         return Mono.defer(() ->
@@ -177,11 +208,22 @@ final class BulkExecutorUtil {
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
                                PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
+                               if (requireFullPartitionKey
+                                   && !PartitionKeyHelper.isFullPartitionKey(definition, partitionKeyInternal)) {
+
+                                   throw new IllegalArgumentException(
+                                       "A transactional batch requires a full partition key matching all paths in "
+                                           + "the container's partition key definition.");
+                               }
+
                                // Hierarchical partition key ending in "/id": append the item id so
                                // callers can pass only the prefix of the partition key. The item id
                                // (resolving which may serialize the item) is only fetched when the
                                // provided key is omitted or is exactly the prefix ending before /id.
-                               if (PartitionKeyHelper.canCompletePartitionKeyWithId(definition, partitionKeyInternal)) {
+                               if (!requireFullPartitionKey
+                                   && PartitionKeyHelper.canCompletePartitionKeyWithId(
+                                       definition, partitionKeyInternal)) {
+
                                    String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();
                                    partitionKeyInternal =
                                        PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
