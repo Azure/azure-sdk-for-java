@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -36,11 +37,13 @@ public final class AutoRefreshingCache<T> {
     private final ValueProvider<T> valueProvider;
     private final Function<T, OffsetDateTime> expirationExtractor;
     private final Clock clock;
-    private final Object creationLock = new Object();
-    private volatile T value;
+    // Doubles as the "a creation is in flight" flag and the latch that wakes callers waiting on that
+    // creation. The thread that wins the compare-and-set owns the creation and must terminate the sink
+    // and clear this reference. Clearing happens before the value is delivered downstream, so a caller
+    // that reacts inside onNext sees no creation in flight and can start a fresh one.
+    private final AtomicReference<Sinks.One<T>> wip = new AtomicReference<>();
+    private final AtomicReference<T> value = new AtomicReference<>();
     private volatile OffsetDateTime nextRefreshTime;
-    private volatile boolean refreshing;
-    private volatile Mono<T> inflightCreation;
     // Throttles background refresh retries after creation failures so a failing provider is not retried
     // once per caller request. Foreground creation remains intentionally unthrottled.
     private volatile OffsetDateTime retryNotBefore;
@@ -57,40 +60,24 @@ public final class AutoRefreshingCache<T> {
     }
 
     public Mono<T> getValidValueAsync() {
-        OffsetDateTime now = OffsetDateTime.now(clock);
-        T current = value;
-        if (isUsable(current, now)) {
-            if (isRefreshDue(now)) {
-                refreshValueInBackground();
+        return Mono.defer(() -> {
+            OffsetDateTime now = OffsetDateTime.now(clock);
+            T current = value.get();
+            if (isUsable(current, now)) {
+                if (isRefreshDue(now)) {
+                    refreshValueInBackground();
+                }
+                return Mono.just(current);
             }
-            return Mono.just(current);
-        }
 
-        return startSessionCreationAsync();
+            return createOrJoinAsync();
+        });
     }
 
     public T getValidValueSync() {
-        OffsetDateTime now = OffsetDateTime.now(clock);
-        T current = value;
-        if (isUsable(current, now)) {
-            if (isRefreshDue(now)) {
-                refreshValueInBackground();
-            }
-            return current;
-        }
-
-        // Join in-flight async creation outside the lock to avoid deadlock with doOnNext.
-        Mono<T> inFlight = inflightCreation;
-        if (inFlight != null) {
-            T refreshed = inFlight.block();
-            if (refreshed != null) {
-                return refreshed;
-            }
-        }
-
-        synchronized (creationLock) {
-            current = value;
-            now = OffsetDateTime.now(clock);
+        while (true) {
+            OffsetDateTime now = OffsetDateTime.now(clock);
+            T current = value.get();
             if (isUsable(current, now)) {
                 if (isRefreshDue(now)) {
                     refreshValueInBackground();
@@ -98,96 +85,124 @@ public final class AutoRefreshingCache<T> {
                 return current;
             }
 
-            T created = valueProvider.createSync();
-            setActiveValue(created);
-            return created;
+            Sinks.One<T> latch = Sinks.one();
+            if (wip.compareAndSet(null, latch)) {
+                T created;
+                try {
+                    // Re-check under ownership: another caller may have published a value between the
+                    // check at the top of this loop and the compare-and-set above.
+                    created = value.get();
+                    if (!isUsable(created, OffsetDateTime.now(clock))) {
+                        created = valueProvider.createSync();
+                        setActiveValue(created);
+                    }
+                } catch (RuntimeException e) {
+                    armRetryBackoff();
+                    wip.compareAndSet(latch, null);
+                    latch.tryEmitError(e);
+                    throw LOGGER.logExceptionAsError(e);
+                }
+                // Clear ownership before waking waiters and before returning, so a caller reacting to
+                // this value sees no creation in flight.
+                wip.compareAndSet(latch, null);
+                latch.tryEmitValue(created);
+                return created;
+            }
+
+            Sinks.One<T> inFlight = wip.get();
+            if (inFlight != null) {
+                // Join the in-flight creation rather than minting a duplicate. Blocking here is the
+                // same exposure the previous implementation had. Return what the owner published
+                // rather than re-testing it, so a value that is already expired on arrival is
+                // surfaced once instead of sending this loop back for another attempt.
+                T joined = inFlight.asMono().block();
+                if (joined != null) {
+                    return joined;
+                }
+            }
         }
     }
 
-    public void invalidateValue(T target) {
-        synchronized (creationLock) {
-            if (value == target) {
-                value = null;
-                nextRefreshTime = null;
-                refreshing = false;
-            }
-            inflightCreation = null;
+    /**
+     * Clears the cached value, but only if it is still the value the caller is rejecting.
+     *
+     * @param target The value the caller believes is cached.
+     * @return true if {@code target} was still the cached value and has been cleared; false if it had
+     * already been replaced or removed, in which case the cache is left untouched.
+     */
+    public boolean invalidateValue(T target) {
+        boolean invalidated = target != null && value.compareAndSet(target, null);
+        if (invalidated) {
+            nextRefreshTime = null;
         }
+        wip.set(null);
+        return invalidated;
     }
 
     public void refreshValueInBackground() {
-        synchronized (creationLock) {
-            OffsetDateTime now = OffsetDateTime.now(clock);
-            if (!isUsable(value, now) || !isRefreshDue(now) || refreshing || isRetryBackoffActive(now)) {
-                return;
-            }
-            refreshing = true;
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (!isUsable(value.get(), now) || !isRefreshDue(now) || wip.get() != null || isRetryBackoffActive(now)) {
+            return;
         }
 
-        startSessionCreationAsync().subscribe(ignored -> {
+        createOrJoinAsync().subscribe(ignored -> {
         }, error -> LOGGER.warning("Background session refresh failed.", error));
     }
 
     public void forceRefreshValueInBackground() {
-        synchronized (creationLock) {
-            if (isUsable(value, OffsetDateTime.now(clock))) {
-                nextRefreshTime = OffsetDateTime.now(clock);
-            }
+        OffsetDateTime now = OffsetDateTime.now(clock);
+        if (isUsable(value.get(), now)) {
+            nextRefreshTime = now;
         }
 
         refreshValueInBackground();
     }
 
-    private Mono<T> startSessionCreationAsync() {
-        synchronized (creationLock) {
+    private Mono<T> createOrJoinAsync() {
+        return Mono.defer(() -> {
             OffsetDateTime now = OffsetDateTime.now(clock);
-            T current = value;
+            T current = value.get();
             if (isUsable(current, now) && !isRefreshDue(now)) {
                 return Mono.just(current);
             }
 
-            if (inflightCreation != null) {
-                return inflightCreation;
+            Sinks.One<T> latch = Sinks.one();
+            if (wip.compareAndSet(null, latch)) {
+                return Mono.using(() -> latch, ignored -> valueProvider.createAsync().doOnNext(created -> {
+                    setActiveValue(created);
+                    // Clear ownership before waking waiters so a caller reacting to this value
+                    // sees no creation in flight.
+                    wip.compareAndSet(latch, null);
+                    latch.tryEmitValue(created);
+                }).doOnError(error -> {
+                    armRetryBackoff();
+                    wip.compareAndSet(latch, null);
+                    latch.tryEmitError(error);
+                }), owned -> {
+                    wip.compareAndSet(owned, null);
+                    // No-op when the creation already emitted. On cancellation it releases anyone
+                    // waiting on the latch so they retry instead of hanging.
+                    owned.tryEmitEmpty();
+                }).cache();
             }
 
-            refreshing = true;
+            Sinks.One<T> inFlight = wip.get();
+            if (inFlight == null) {
+                return createOrJoinAsync();
+            }
 
-            AtomicReference<Mono<T>> creationReference = new AtomicReference<>();
-            Mono<T> creation = valueProvider.createAsync().doOnNext(cred -> {
-                synchronized (creationLock) {
-                    setActiveValue(cred);
-                }
-            }).doOnError(error -> {
-                synchronized (creationLock) {
-                    retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
-                }
-            }).doFinally(ignored -> {
-                synchronized (creationLock) {
-                    if (inflightCreation == creationReference.get()) {
-                        inflightCreation = null;
-                        refreshing = false;
-                    }
-                }
-            }).cache();
-            creationReference.set(creation);
-            inflightCreation = creation;
-
-            return inflightCreation;
-        }
+            return inFlight.asMono().switchIfEmpty(Mono.defer(this::createOrJoinAsync));
+        });
     }
 
     private void setActiveValue(T newValue) {
-        value = newValue;
+        value.set(newValue);
         nextRefreshTime = computeRefreshTime(OffsetDateTime.now(clock), expirationExtractor.apply(newValue));
-        refreshing = false;
         retryNotBefore = null;
-        // Clear the in-flight marker here (not just in doFinally). doFinally only runs once the Mono
-        // reaches its terminal signal, but a downstream subscriber's onNext handler (e.g. inspecting the
-        // HTTP response for a "session expiring" hint) can run synchronously before that terminal signal
-        // is emitted. If a forced background refresh is triggered from within that onNext handler, it
-        // must see this creation as no-longer-in-flight so it starts a fresh one instead of returning the
-        // same (already-delivering) cached Mono.
-        inflightCreation = null;
+    }
+
+    private void armRetryBackoff() {
+        retryNotBefore = OffsetDateTime.now(clock).plus(REFRESH_RETRY_DELAY);
     }
 
     private boolean isUsable(T value, OffsetDateTime now) {

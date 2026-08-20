@@ -12,8 +12,17 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -227,6 +236,31 @@ public class AutoRefreshingCacheTests {
     }
 
     @Test
+    public void forcedRefreshFromWithinJoinerOnNextStartsNewCreation() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        when(provider.createAsync())
+            // The first creation is delayed so a joiner can attach.
+            .thenReturn(
+                Mono.just(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME))).delayElement(Duration.ofMillis(500)))
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)))));
+
+        Mono<TestExpiringValue> owner = cache.getValidValueAsync();
+        Mono<TestExpiringValue> joiner
+            = cache.getValidValueAsync().doOnNext(ignored -> cache.forceRefreshValueInBackground());
+
+        // Run both owner and joiner pipelines. The joiner will be notified when the owner completes.
+        reactor.core.publisher.Mono.when(owner, joiner).block();
+
+        // The reentrant force from the joiner must start a brand new creation.
+        verify(provider, times(2)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+    }
+
+    @Test
     public void noRefreshBeforeJitterWindowWithoutHint() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
@@ -244,6 +278,148 @@ public class AutoRefreshingCacheTests {
 
         verify(provider, times(1)).createSync();
         verify(provider, never()).createAsync();
+    }
+
+    @Test
+    public void invalidateValueClearsMatchingValue() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        TestExpiringValue first = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        TestExpiringValue second = value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)));
+        when(provider.createSync()).thenReturn(first).thenReturn(second);
+
+        assertSame(first, cache.getValidValueSync());
+
+        assertTrue(cache.invalidateValue(first), "Invalidating the live value should report success.");
+
+        // The rejected value was the live one, so the next call must mint a replacement.
+        assertSame(second, cache.getValidValueSync());
+        verify(provider, times(2)).createSync();
+    }
+
+    @Test
+    public void invalidateValueIgnoresStaleTarget() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        TestExpiringValue live = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        when(provider.createSync()).thenReturn(live);
+
+        assertSame(live, cache.getValidValueSync());
+
+        // A late rejection naming a value that has already been replaced must not evict the live one.
+        assertFalse(cache.invalidateValue(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME))),
+            "Invalidating a value that is not the cached one should report failure.");
+
+        assertSame(live, cache.getValidValueSync());
+        verify(provider, times(1)).createSync();
+    }
+
+    @Test
+    public void concurrentSyncCallersShareASingleCreation() throws Exception {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        TestExpiringValue created = value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME));
+        CountDownLatch creationEntered = new CountDownLatch(1);
+        CountDownLatch releaseCreation = new CountDownLatch(1);
+        when(provider.createSync()).thenAnswer(invocation -> {
+            creationEntered.countDown();
+            assertTrue(releaseCreation.await(10, TimeUnit.SECONDS));
+            return created;
+        });
+
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        try {
+            Future<TestExpiringValue> owner = pool.submit(cache::getValidValueSync);
+            // Only start the second caller once the first genuinely owns the in-flight creation.
+            assertTrue(creationEntered.await(10, TimeUnit.SECONDS));
+            Future<TestExpiringValue> joiner = pool.submit(cache::getValidValueSync);
+
+            releaseCreation.countDown();
+
+            assertSame(created, owner.get(10, TimeUnit.SECONDS));
+            assertSame(created, joiner.get(10, TimeUnit.SECONDS));
+        } finally {
+            pool.shutdownNow();
+        }
+
+        // The joiner must have reused the owner's creation rather than minting a duplicate.
+        verify(provider, times(1)).createSync();
+    }
+
+    @Test
+    public void valueThatIsAlreadyExpiredOnArrivalIsReturnedNotRecreated() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        // Clock skew can make a freshly minted value look expired the moment it arrives. It must be
+        // handed back once rather than sending the caller into another creation.
+        TestExpiringValue stillborn = value(FIRST_VALUE, now(clock).minusSeconds(1));
+        when(provider.createSync()).thenReturn(stillborn);
+
+        assertSame(stillborn, cache.getValidValueSync());
+        verify(provider, times(1)).createSync();
+    }
+
+    @Test
+    public void syncJoinerReturnsAnAlreadyExpiredValueWithoutRecreating() throws Exception {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache
+            = new AutoRefreshingCache<>(provider, TestExpiringValue::getExpiration, clock);
+
+        TestExpiringValue stillborn = value(FIRST_VALUE, now(clock).minusSeconds(1));
+        CountDownLatch creationEntered = new CountDownLatch(1);
+        CountDownLatch releaseCreation = new CountDownLatch(1);
+        when(provider.createSync()).thenAnswer(invocation -> {
+            creationEntered.countDown();
+            assertTrue(releaseCreation.await(10, TimeUnit.SECONDS));
+            return stillborn;
+        });
+
+        AtomicReference<Thread> joinerThread = new AtomicReference<>();
+        ExecutorService pool = Executors.newFixedThreadPool(2);
+        try {
+            Future<TestExpiringValue> owner = pool.submit(cache::getValidValueSync);
+            assertTrue(creationEntered.await(10, TimeUnit.SECONDS));
+
+            Future<TestExpiringValue> joiner = pool.submit(() -> {
+                joinerThread.set(Thread.currentThread());
+                return cache.getValidValueSync();
+            });
+
+            // Wait until the joiner has actually parked on the in-flight creation's latch.
+            long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+            Thread running = joinerThread.get();
+            while (System.nanoTime() < deadline
+                && (running == null
+                    || running.getState() == Thread.State.RUNNABLE
+                    || running.getState() == Thread.State.NEW)) {
+                Thread.yield();
+                running = joinerThread.get();
+            }
+
+            releaseCreation.countDown();
+
+            assertSame(stillborn, owner.get(10, TimeUnit.SECONDS));
+            // The joiner must hand back what the owner published even though it is already expired,
+            // rather than looping and minting a second value.
+            assertSame(stillborn, joiner.get(10, TimeUnit.SECONDS));
+        } finally {
+            pool.shutdownNow();
+        }
+
+        verify(provider, times(1)).createSync();
     }
 
     private static OffsetDateTime now(Clock clock) {
