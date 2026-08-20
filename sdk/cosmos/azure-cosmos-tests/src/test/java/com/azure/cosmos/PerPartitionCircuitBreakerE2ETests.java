@@ -5805,7 +5805,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     .times(3)
                     .build())
                 .duration(Duration.ofMinutes(10))
-                .hitLimit(30)
+                // Keep recovery probes faulted until the test has observed failover.
+                .hitLimit(60)
                 .build();
             CosmosFaultInjectionHelper.configureFaultInjectionRules(
                 container,
@@ -5830,7 +5831,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 }
             }
 
-            assertThat(addressRefreshRule.getHitCount()).isEqualTo(30);
+            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(30);
             assertThat(hasUnavailableLocationForPartition(
                 partitionKeyRangeWrapper,
                 partitionUnavailabilityMap,
