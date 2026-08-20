@@ -11,7 +11,9 @@ Verify in order:
 
 1. The cited file, line, symbol, or release entry exists at the session SHA.
 2. The evidence was introduced by this PR.
-3. The rule ID exists in the cited data-plane rule reference.
+3. The rule ID exists in the imported data-plane rule references. Treat those
+   imports as authoritative; do not search the reviewed repository for rule
+   definitions.
 4. Every trigger is satisfied and every exception or false-positive defense
    has been applied.
 5. The severity does not exceed the rule or change-class ceiling.

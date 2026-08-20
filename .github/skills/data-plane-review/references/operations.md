@@ -31,6 +31,10 @@ LRO methods start with `begin`, return `SyncPoller<T, U>` or
 instead of `void`. Do not infer that an operation is long-running from its name
 alone.
 
+**Exception:** a delete LRO may use `Void` as its final-result type when the
+service returns no deleted resource or other terminal result. Do not report the
+delete operation solely for `SyncPoller<T, Void>` or `PollerFlux<T, Void>`.
+
 **Correct form:** `SyncPoller<WidgetOperation, Widget> beginCreateWidget(...)`.
 
 ## `DP-ASYNC-01`: keep async APIs non-blocking

@@ -123,3 +123,15 @@ model: gpt-5.6-terra
 {{#runtime-import .github/agents/data-plane-review-critic.agent.md}}
 
 {{#runtime-import .github/agents/protocols/data-plane-review-critic.protocol.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/rule-summary.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/client-api.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/operations.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/models-security.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/versioning-build-generation.md}}
+
+{{#runtime-import .github/skills/data-plane-review/references/documentation-testing.md}}

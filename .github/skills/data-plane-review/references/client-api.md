@@ -31,6 +31,12 @@ Service-client constructors must not be public or protected. Use
 `buildAsyncClient()`. The builder must reject incomplete or mutually exclusive
 configuration with `IllegalStateException`.
 
+Do not treat a caller-supplied `HttpPipeline` taking precedence over
+individually configured HTTP clients, credentials, retry options, logging
+options, or policies as an invalid builder state. This is the standard
+generated builder precedence and is not evidence that configuration is
+silently ignored.
+
 **Correct form:** `new WidgetClientBuilder().endpoint(endpoint)
 .credential(credential).buildClient()`.
 

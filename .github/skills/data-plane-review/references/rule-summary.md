@@ -33,7 +33,7 @@ Canonical definitions are grouped by review area:
 | `DP-BUILD-01` | Warning | Dependency scope, minimum set, and markers | Java module and repository version guidance |
 | `DP-BUILD-02` | Warning | Standard POM and module registration | Java Maven and repository module guidance |
 | `DP-SPEC-01` | Warning | Generated-code source ownership | Repository TypeSpec workflow and repeated review evidence |
-| `DP-TEST-01` | Suggestion | HTTP-client and service-version coverage | Java testing guidelines |
+| `DP-TEST-01` | Suggestion | Existing non-generated test coverage | Java testing guidelines |
 
 The full trigger, exception, source comment, and correct form for each rule are
 defined in the reference files above.

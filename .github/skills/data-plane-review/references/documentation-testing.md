@@ -28,6 +28,9 @@ general-docs-operation-combinations; repository docs/contributor/building.md
 Examples demonstrate one customer task, include required setup, compile in CI,
 and are injected from maintained Java sample sources.
 
+Files under `src/samples/**/generated/` are emitter-generated examples and do
+not count as maintained customer samples.
+
 **Correct form:** place the sample under `src/samples/java`, use
 `readme-sample-<descriptiveName>`, and rebuild the package to inject it.
 
@@ -52,11 +55,21 @@ boilerplate merely for style.
 - **Severity:** Suggestion
 
 <!-- Sources: Java implementation java-testing-params; repository
-CONTRIBUTING.md "Building and Unit Testing". -->
+CONTRIBUTING.md "Building and Unit Testing"; repository
+eng/automation/generate_utils.py remove_generated_source_code. -->
 
 New behavior should be exercised across applicable HTTP clients and service
 versions. Do not demand live coverage for behavior that repository playback or
 unit tests can verify.
 
-**Correct form:** parameterize applicable tests; use the repository's normal
-PR subset and the full transport/version matrix for live validation.
+Before reporting missing coverage, inspect the package's complete `src/test`
+tree at the pinned PR head, including unchanged tests. Do not infer missing
+coverage merely because the PR does not add or modify a test file. Report only
+when the changed behavior lacks applicable existing coverage.
+
+Exclude files under `src/test/**/generated/`; they are emitter-generated
+examples and do not count as tests.
+
+**Correct form:** add applicable tests outside `generated`, parameterize them
+for supported HTTP clients and service versions, and use the repository's
+normal PR subset plus the full transport/version matrix for live validation.

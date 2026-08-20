@@ -36,18 +36,24 @@ scope, orchestration, verification, and output only.
 
 1. Pin the PR head SHA and classify the package as `new-module`,
    `new-version`, or `maintenance`.
-2. Build the changed public API picture before applying individual rules:
+2. Inventory the complete affected package at the pinned head, not only the
+   changed-file list. Include the package root, `src/main`, `src/test` and
+   `src/samples` outside nested `generated` segments, resources, POM, version
+   metadata, CHANGELOG, README, generated metadata, and generation
+   configuration when present. Use unchanged files to verify existing
+   documentation, samples, and tests; findings still require changed evidence.
+3. Build the changed public API picture before applying individual rules:
    clients, builders, operations, models, exceptions, package metadata, and
    documentation.
-3. Load the applicable rule references from the table above.
-4. Produce candidates only for changed evidence. Do not report legacy issues.
-5. Do not duplicate the exact output of a deterministic check. A distinct
+4. Load the applicable rule references from the table above.
+5. Produce candidates only for changed evidence. Do not report legacy issues.
+6. Do not duplicate the exact output of a deterministic check. A distinct
    design issue or repository-prescribed remediation may still be useful.
-6. Self-verify every candidate, then dispatch the Data-Plane Review Critic
+7. Self-verify every candidate, then dispatch the Data-Plane Review Critic
    using
    [`../../agents/protocols/data-plane-review-critic.protocol.md`](../../agents/protocols/data-plane-review-critic.protocol.md).
-7. Apply `PASS`, `DOWNGRADE`, and `FAIL` verdicts without override.
-8. Emit one report or the no-findings form. Do not post it.
+8. Apply `PASS`, `DOWNGRADE`, and `FAIL` verdicts without override.
+9. Emit one report or the no-findings form. Do not post it.
 
 ## Severity and finding form
 
