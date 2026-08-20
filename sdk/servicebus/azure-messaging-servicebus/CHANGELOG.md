@@ -1,6 +1,6 @@
 # Release History
 
-## 7.18.0-beta.3 (2026-08-19)
+## 7.18.0-beta.3 (2026-08-21)
 
 ### Features Added
 
