@@ -163,6 +163,24 @@ public class StorageImplUtils {
     }
 
     /**
+     * Converts a potentially unquoted ETag into an RFC 9110 entity-tag value suitable for use in HTTP conditions.
+     *
+     * @param eTag ETag value to normalize.
+     * @return An RFC 9110 conformant entity-tag, or the original value when no conversion is needed.
+     */
+    public static String toETagHeaderValue(String eTag) {
+        if (eTag == null || eTag.isEmpty() || "*".equals(eTag)) {
+            return eTag;
+        }
+
+        if (eTag.length() >= 2 && (eTag.startsWith("\"") || eTag.startsWith("W/\"")) && eTag.endsWith("\"")) {
+            return eTag;
+        }
+
+        return "\"" + eTag + "\"";
+    }
+
+    /**
      * Asserts that a value is not {@code null}.
      *
      * @param param Name of the parameter

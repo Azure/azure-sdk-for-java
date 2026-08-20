@@ -2029,15 +2029,16 @@ public class BlobAsyncClientBase {
 
     private static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source,
         String layoutETag) {
+        // ScrubEtagPolicy strips the quotes from the response ETag, but RFC 9110 requires them on the wire.
         if (source == null) {
-            return new BlobRequestConditions().setIfMatch(layoutETag);
+            return new BlobRequestConditions().setIfMatch(StorageImplUtils.toETagHeaderValue(layoutETag));
         }
 
         return new BlobRequestConditions().setLeaseId(source.getLeaseId())
             .setTagsConditions(source.getTagsConditions())
             .setIfModifiedSince(source.getIfModifiedSince())
             .setIfUnmodifiedSince(source.getIfUnmodifiedSince())
-            .setIfMatch(layoutETag == null ? source.getIfMatch() : layoutETag)
+            .setIfMatch(layoutETag == null ? source.getIfMatch() : StorageImplUtils.toETagHeaderValue(layoutETag))
             .setIfNoneMatch(source.getIfNoneMatch());
     }
 

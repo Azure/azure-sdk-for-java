@@ -210,9 +210,9 @@ class BlobAsyncClientBaseLayoutPaginationTests {
     private static final String FIRST_PAGE_ETAG = "\"0x8DFIRSTPAGE\"";
     private static final String SECOND_PAGE_ETAG = "\"0x8DSECONDPAGE\"";
 
-    // ScrubEtagPolicy removes the quotes from response ETag headers, so this is the value the SDK reads from
-    // the first page and sends back as If-Match.
-    private static final String FIRST_PAGE_ETAG_SCRUBBED = "0x8DFIRSTPAGE";
+    // ScrubEtagPolicy strips quotes from the response ETag, and the SDK re-adds them per RFC 9110 before sending
+    // If-Match on continuation pages.
+    private static final String FIRST_PAGE_ETAG_IF_MATCH = "\"0x8DFIRSTPAGE\"";
 
     private static final String FIRST_PAGE = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         + "<BlobLayout><Ranges><Range Start=\"0\" End=\"99\" EndpointIndex=\"0\" /></Ranges>"
@@ -244,7 +244,7 @@ class BlobAsyncClientBaseLayoutPaginationTests {
 
         // The first call must not be conditioned on a layout ETag it has not seen yet.
         assertNull(first.ifMatch);
-        assertEquals(FIRST_PAGE_ETAG_SCRUBBED, second.ifMatch);
+        assertEquals(FIRST_PAGE_ETAG_IF_MATCH, second.ifMatch);
 
         // The range must stay identical across pages so the service returns a consistent layout.
         assertEquals(first.range, second.range);
