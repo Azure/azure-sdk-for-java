@@ -12,8 +12,8 @@ public final class RouteErrorPositionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteErrorPosition model
-            = BinaryData.fromString("{\"line\":709486053,\"column\":1315398087}").toObject(RouteErrorPosition.class);
-        Assertions.assertEquals(709486053, model.line());
-        Assertions.assertEquals(1315398087, model.column());
+            = BinaryData.fromString("{\"line\":712184183,\"column\":1259752874}").toObject(RouteErrorPosition.class);
+        Assertions.assertEquals(712184183, model.line());
+        Assertions.assertEquals(1259752874, model.column());
     }
 }

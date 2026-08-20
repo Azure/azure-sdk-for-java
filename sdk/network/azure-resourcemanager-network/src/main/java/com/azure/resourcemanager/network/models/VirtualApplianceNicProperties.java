@@ -38,6 +38,18 @@ public final class VirtualApplianceNicProperties implements JsonSerializable<Vir
     private String privateIpAddress;
 
     /*
+     * Public IPv6 address. Populated for dual-stack NVAs, including on additional-NIC configurations when the NVA is
+     * dual-stack.
+     */
+    private String publicIpAddressV6;
+
+    /*
+     * Private IPv6 address. Populated for dual-stack NVAs, including on additional-NIC configurations when the NVA is
+     * dual-stack.
+     */
+    private String privateIpAddressV6;
+
+    /*
      * Instance on which nic is attached.
      */
     private String instanceName;
@@ -83,6 +95,26 @@ public final class VirtualApplianceNicProperties implements JsonSerializable<Vir
      */
     public String privateIpAddress() {
         return this.privateIpAddress;
+    }
+
+    /**
+     * Get the publicIpAddressV6 property: Public IPv6 address. Populated for dual-stack NVAs, including on
+     * additional-NIC configurations when the NVA is dual-stack.
+     * 
+     * @return the publicIpAddressV6 value.
+     */
+    public String publicIpAddressV6() {
+        return this.publicIpAddressV6;
+    }
+
+    /**
+     * Get the privateIpAddressV6 property: Private IPv6 address. Populated for dual-stack NVAs, including on
+     * additional-NIC configurations when the NVA is dual-stack.
+     * 
+     * @return the privateIpAddressV6 value.
+     */
+    public String privateIpAddressV6() {
+        return this.privateIpAddressV6;
     }
 
     /**
@@ -136,6 +168,10 @@ public final class VirtualApplianceNicProperties implements JsonSerializable<Vir
                     deserializedVirtualApplianceNicProperties.publicIpAddress = reader.getString();
                 } else if ("privateIpAddress".equals(fieldName)) {
                     deserializedVirtualApplianceNicProperties.privateIpAddress = reader.getString();
+                } else if ("publicIpAddressV6".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.publicIpAddressV6 = reader.getString();
+                } else if ("privateIpAddressV6".equals(fieldName)) {
+                    deserializedVirtualApplianceNicProperties.privateIpAddressV6 = reader.getString();
                 } else if ("instanceName".equals(fieldName)) {
                     deserializedVirtualApplianceNicProperties.instanceName = reader.getString();
                 } else {

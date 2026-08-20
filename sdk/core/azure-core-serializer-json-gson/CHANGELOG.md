@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.4.6 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+
 ## 1.4.5 (2026-06-08)
 
 ### Other Changes

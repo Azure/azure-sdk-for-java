@@ -48,6 +48,22 @@
           "code": "java\\.method\\.removed",
           "old": "method .* com\\.azure\\.ai\\.projects\\.BetaEvaluators(Async)?Client::createEvaluatorGenerationJob(WithResponse)?\\(.*\\)",
           "justification": "Breaking change in beta operation: createEvaluatorGenerationJob was replaced by the long-running-operation beginCreateEvaluatorGenerationJob to align with the current Evaluators preview contract."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": "method .* com\\.azure\\.ai\\.projects\\.BetaRoutines(Async)?Client::(listRoutines|listRoutineRuns)\\(.*\\)",
+          "justification": "Breaking change in beta operation: BetaRoutines(Async)Client listRoutines/listRoutineRuns dropped the 'before' parameter and now take PageOrder instead of String for 'order' to align with the current Routines preview contract."
+        },
+        {
+          "code": "java.field.removed",
+          "old": "field com.azure.ai.projects.models.DataGenerationJobType.TASK_GENERATION",
+          "justification": "Breaking change in beta operation: DataGenerationJobType.TASK_GENERATION was renamed to SIMULATION_SEED to align with the current DataGenerationJobs preview contract."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.ai.projects.models.TaskGenerationDataGenerationJobOptions",
+          "justification": "Breaking change in beta operation: TaskGenerationDataGenerationJobOptions was renamed to SimulationSeedDataGenerationJobOptions to align with the current DataGenerationJobs preview contract."
         }
       ]
     }

@@ -8,6 +8,12 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 2.12.1 (2026-08-12)
+
+### Bugs Fixed
+
 - Fixed a memory leak in `RequestResponseChannel` (used by management/request-response operations such as
   lock renewal, peek, schedule, and session state). The channel's `SendLinkHandler` emits a link-credit value
   on every AMQP flow frame into a unicast, unbounded-buffer sink, but the channel never subscribed to it, so the
@@ -15,6 +21,11 @@
   the credit flux. ([#47261](https://github.com/Azure/azure-sdk-for-java/issues/47261))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.58.2`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
 
 ## 2.12.0 (2026-06-08)
 
