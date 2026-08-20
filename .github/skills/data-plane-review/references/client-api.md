@@ -24,9 +24,7 @@ non-service helper or a protocol that has an approved exception.
 <!-- Sources: Java guidelines java-service-client-constructors,
 java-service-client-fluent-builder, java-service-client-builder-annotation,
 java-service-client-builder-consistency, java-service-client-builder-state,
-java-client-construction, and java-service-client-builder-validity. Historical
-support: REVIEW-RULE-CATALOG API-001, including
-https://github.com/Azure/azure-sdk-for-java/pull/29580#discussion_r925248169. -->
+java-client-construction, and java-service-client-builder-validity. -->
 
 Service-client constructors must not be public or protected. Use
 `<Service>ClientBuilder`, `@ServiceClientBuilder`, `buildClient()`, and
@@ -60,9 +58,7 @@ implementation remains package-private or under `.implementation`.
 <!-- Sources: Java guidelines java-async-suffix, java-service-client-verbs,
 java-service-client-context, java-service-client-context-async,
 java-response-logical-entity, java-response-async-logical-entity,
-java-params-complex-naming, and java-params-complex. Historical support:
-REVIEW-RULE-CATALOG NAME-001, including
-https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r691930389. -->
+java-params-complex-naming, and java-params-complex. -->
 
 Use standard CRUD verbs, no `Async` method suffix, `Context`/`RequestOptions`
 only on maximal sync overloads, and `WithResponse` for complete responses.

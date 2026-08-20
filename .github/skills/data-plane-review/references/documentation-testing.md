@@ -6,9 +6,7 @@
 - **Severity:** Suggestion
 
 <!-- Sources: General documentation deliverables and
-general-docs-to-silence; repository docs/STRUCTURE.md library documentation.
-Historical support: REVIEW-RULE-CATALOG DOC-001 and DOC-002, including
-https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r691815034. -->
+general-docs-to-silence; repository docs/STRUCTURE.md library documentation. -->
 
 The package README must accurately cover installation, authentication or
 client creation, key concepts, examples, troubleshooting, and current links.
@@ -25,9 +23,7 @@ retaining generator placeholders or text copied from another service.
 <!-- Sources: General documentation general-docs-include-snippets,
 general-docs-build-snippets, general-docs-snippets-in-docstrings, and
 general-docs-operation-combinations; repository docs/contributor/building.md
-"Code Snippets in README Files". Historical support: REVIEW-RULE-CATALOG
-DOC-003 and DOC-004, including
-https://github.com/Azure/azure-sdk-for-java/pull/33719#discussion_r1123609134. -->
+"Code Snippets in README Files". -->
 
 Examples demonstrate one customer task, include required setup, compile in CI,
 and are injected from maintained Java sample sources.
@@ -41,8 +37,7 @@ and are injected from maintained Java sample sources.
 - **Severity:** Suggestion
 
 <!-- Sources: General documentation general-docs-to-silence; Java guidelines
-java-errors-document-all; repository docs/contributor/javadocs.md. Historical
-support: REVIEW-RULE-CATALOG DOC-005. -->
+java-errors-document-all; repository docs/contributor/javadocs.md. -->
 
 Public JavaDoc explains behavior, parameters, return values, and non-obvious
 failure contracts. Group repeated omissions. Do not report generated
@@ -57,8 +52,7 @@ boilerplate merely for style.
 - **Severity:** Suggestion
 
 <!-- Sources: Java implementation java-testing-params; repository
-CONTRIBUTING.md "Building and Unit Testing". Historical support:
-REVIEW-RULE-CATALOG TEST-001. -->
+CONTRIBUTING.md "Building and Unit Testing". -->
 
 New behavior should be exercised across applicable HTTP clients and service
 versions. Do not demand live coverage for behavior that repository playback or

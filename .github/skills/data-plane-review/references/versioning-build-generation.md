@@ -39,9 +39,7 @@ preview, or default the stable package to a GA `ServiceVersion`.
 
 <!-- Sources: Repository CONTRIBUTING.md "Versions and versioning",
 docs/contributor/versioning.md "Updating Versions", and
-docs/contributor/adding-a-module.md "Versioning Management". Historical
-support: REVIEW-RULE-CATALOG REL-002, including
-https://github.com/Azure/azure-sdk-for-java/pull/24634#discussion_r724547019. -->
+docs/contributor/adding-a-module.md "Versioning Management". -->
 
 Package, dependency, README, and central version metadata must agree. For a new
 module, require its `version_client.txt` entry and update markers.
@@ -60,8 +58,7 @@ python eng/versioning/update_versions.py --sr
 
 <!-- Sources: Java guidelines java-module-requires and
 java-auth-azure-identity-dependency; repository CONTRIBUTING.md version-tag
-guidance. Historical support: REVIEW-RULE-CATALOG BUILD-001, including
-https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r691812542. -->
+guidance. -->
 
 Remove unused dependencies, add required ones, use test scope for test-only
 dependencies, and use repository version markers. Never add compile-scope
@@ -76,9 +73,7 @@ the appropriate `{x-version-update;...}` marker.
 - **Severity:** Warning
 
 <!-- Sources: Java guidelines java-maven-pom through java-maven-developers and
-java-module-info; repository docs/contributor/adding-a-module.md. Historical
-support: REVIEW-RULE-CATALOG BUILD-002 and BUILD-003, including
-https://github.com/Azure/azure-sdk-for-java/pull/29580#discussion_r925223302. -->
+java-module-info; repository docs/contributor/adding-a-module.md. -->
 
 Use the standard client-library parent and inherited plugins. New modules
 include required package files and registrations; do not duplicate inherited
@@ -93,9 +88,7 @@ aggregate POM, JavaDoc, code-snippet, version, CI, and CODEOWNERS registration.
 - **Severity:** Warning
 
 <!-- Sources: Repository AGENTS.md "SDK Generation" and
-docs/contributor/typespec-quickstart.md. Historical support:
-REVIEW-RULE-CATALOG SPEC-001, including
-https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r691814247. -->
+docs/contributor/typespec-quickstart.md. -->
 
 Do not request a hand edit to generated Java for an API-shape defect. Identify
 whether the likely source is TypeSpec, `client.tsp`, generator configuration,
@@ -103,4 +96,3 @@ or supported customization.
 
 **Correct form:** update the maintained source, then run `tsp-client update`
 from the package directory and review the regenerated output.
-

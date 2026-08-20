@@ -7,9 +7,7 @@
 
 <!-- Sources: Java guidelines java-models-builder, java-models-constructors,
 java-models-constructors-args, java-models-constructors-args-required,
-java-models-fluent-api, java-models-javabeans, and java-models-interface.
-Historical support: REVIEW-RULE-CATALOG MODEL-001, including
-https://github.com/Azure/azure-sdk-for-java/pull/31279#discussion_r991610890. -->
+java-models-fluent-api, java-models-javabeans, and java-models-interface. -->
 
 Constructible models expose constructors for required properties and fluent
 JavaBean setters for optional properties. Output-only models do not expose
@@ -50,4 +48,3 @@ references or redacted logs.
 **Correct form:** accept `TokenCredential` or `AzureKeyCredential` in the
 builder, use the Azure Core authentication policy, and let the credential
 refresh tokens.
-

@@ -56,8 +56,7 @@ and `then`.
 <!-- Sources: Java guidelines java-params-client-validation,
 java-params-service-validation, and java-params-test-devex; general
 implementation general-params-client-validation, general-params-server-validation,
-and general-params-server-defaults. Historical support: REVIEW-RULE-CATALOG
-API-001. -->
+and general-params-server-defaults. -->
 
 Validate client-only inputs and required path values. Let the service validate
 request bodies, headers, and other wire parameters; do not encode service
@@ -75,8 +74,7 @@ send an invalid service field so the service returns its documented error.
 java-errors-system-errors, java-errors-no-new-errors, java-errors-document-all,
 java-errors-exception-tree, and java-response-errors; general implementation
 general-errors-include-request-response, general-errors-rich-info, and
-general-errors-no-new-types. Historical support: REVIEW-RULE-CATALOG DOC-005,
-including https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r692538290. -->
+general-errors-no-new-types. -->
 
 Failed service requests throw appropriate unchecked Azure Core exceptions that
 retain request, response, and rich service error details. Use standard Java
