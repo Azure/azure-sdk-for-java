@@ -31,8 +31,7 @@ extends:
               os: linux
 
             steps:
-              # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-              # as we require the GitHub service connection to be loaded.
+              # Use the default service-connection checkout for private mirrored repositories.
               - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
                 - checkout: self
                   fetchDepth: 2
@@ -62,12 +61,9 @@ extends:
               # Authenticate with Azure Artifacts
               - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
-              # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
-              # is for FromSource runs or, in the case of code quality reports, a run that needs to build
-              # everything using the latest source. It'll greedily set any service directories as it figures
-              # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
+              # Generate the source dependency graph and identify projects that can skip linting.
               - task: PythonScript@0
-                displayName: 'Generate FromSource POM and directories for sparse checkout'
+                displayName: 'Generate FromSource POM and linting project list'
                 inputs:
                   scriptPath: 'eng/scripts/generate_from_source_pom.py'
                   arguments: '--set-skip-linting-projects SkipLintingProjects --artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
@@ -79,6 +75,7 @@ extends:
                   arguments: >
                     -BuildReason $(Build.Reason)
                     -SourceBranch "HEAD"
+                    -TargetBranch "HEAD^1"
                     -LintingPipelineVariable "LintingGoals"
                   pwsh: true
                 displayName: 'Generate Linting Commands'

@@ -108,8 +108,7 @@ jobs:
             exit 1
           displayName: 'Validate: at least one package is selected for release'
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
+      # Use the default service-connection checkout for private mirrored repositories.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - checkout: self
           fetchDepth: 2
@@ -128,25 +127,6 @@ jobs:
         displayName: 'Use Python $(PythonVersion)'
         inputs:
           versionSpec: $(PythonVersion)
-
-      # This step needs to run before we update to using dev versions otherwise dependency
-      # check in the script will not fully work because the versions will mismatch
-      - task: PowerShell@2
-        displayName: Generate directories variable for sparse checkout
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
-          arguments: >
-            -SourcesDirectory $(Build.SourcesDirectory)
-            -ProjectList $(ProjectList)
-
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
-          parameters:
-            Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -313,8 +293,7 @@ jobs:
         inputs:
           versionSpec: $(PythonVersion)
 
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
+      # Use the default service-connection checkout for private mirrored repositories.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - checkout: self
           fetchDepth: 2
@@ -338,23 +317,6 @@ jobs:
           JobType: 'Analyze'
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
-
-      - task: PowerShell@2
-        displayName: Generate directories variable for sparse checkout
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
-          arguments: >
-            -SourcesDirectory $(Build.SourcesDirectory)
-            -ProjectList $(ProjectList)
-
-      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-      # as we require the GitHub service connection to be loaded.
-      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
-          parameters:
-            Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - task: UseNode@1
         inputs:

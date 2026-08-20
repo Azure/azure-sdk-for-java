@@ -13,6 +13,7 @@ Param (
   [string] $APIViewUri,
   [string] $RepoFullName = "",
   [string] $ArtifactName = "packages",
+  [string] $SourceCommittish = "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}",
   [string] $TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/"),
   [string] $DevopsProject = "internal"
 )
@@ -98,7 +99,11 @@ function Submit-Request($filePath, $packageInfo)
 function Should-Process-Package($packageInfo)
 {
     $packagePath = $packageInfo.DirectoryPath
-    $modifiedFiles  = @(Get-ChangedFiles -DiffPath "$packagePath/*" -DiffFilterType '')
+    $modifiedFiles = @(Get-ChangedFiles `
+        -SourceCommittish $SourceCommittish `
+        -TargetCommittish $TargetBranch `
+        -DiffPath "$packagePath/*" `
+        -DiffFilterType '')
     $filteredFileCount = $modifiedFiles.Count
     LogInfo "Number of modified files for package: $filteredFileCount"
     return ($filteredFileCount -gt 0 -and $packageInfo.IsNewSdk)
