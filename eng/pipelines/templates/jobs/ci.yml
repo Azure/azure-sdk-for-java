@@ -112,7 +112,7 @@ jobs:
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - checkout: self
-          fetchDepth: 1
+          fetchDepth: 2
           fetchTags: false
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
@@ -317,7 +317,7 @@ jobs:
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
         - checkout: self
-          fetchDepth: 1
+          fetchDepth: 2
           fetchTags: false
 
       - task: PowerShell@2
