@@ -64,11 +64,34 @@ java-params-complex-naming, and java-params-complex. Historical support:
 REVIEW-RULE-CATALOG NAME-001, including
 https://github.com/Azure/azure-sdk-for-java/pull/23666#discussion_r691930389. -->
 
-Use standard CRUD verbs, no `Async` method suffix, `Context` only on maximal
-sync overloads, `WithResponse` for complete responses, and
-`<Operation>Options` for complex inputs. Group related naming inconsistencies
-into one finding.
+Use standard CRUD verbs, no `Async` method suffix, `Context`/`RequestOptions`
+only on maximal sync overloads, and `WithResponse` for complete responses.
+Group related naming inconsistencies into one finding.
+
+**Correct form:** `createWidget(...)` and
+`createWidgetWithResponse(..., Context context)`.
+
+## `DP-METHOD-02`: use an options bag for more than six parameters
+
+- **Rule ID:** `DP-METHOD-02`
+- **Severity:** Warning
+
+<!-- Sources: Java guidelines "Service Method Parameters", which defines simple
+methods as having up to six parameters, plus java-params-complex-naming,
+java-params-complex, java-params-complex-overloads,
+java-params-complex-withResponse, java-params-options-package, and
+java-params-options-design. -->
+
+A newly added user-facing service method with more than six service parameters
+must replace the service parameters with an `<Operation>Options` bag. Do not
+count `Context`, `RequestOptions`, timeout, or other client-only parameters
+toward the threshold. Do not report generated low-level protocol methods.
+Methods with six or fewer parameters may still use an options bag when growth
+is expected.
+
+The options type requires mandatory values through its constructor and exposes
+optional values through fluent setters. The corresponding `WithResponse`
+method uses the same options type.
 
 **Correct form:** `createWidget(CreateWidgetOptions options)` and
 `createWidgetWithResponse(CreateWidgetOptions options, Context context)`.
-

@@ -13,7 +13,8 @@ Canonical definitions are grouped by review area:
 | `DP-CLIENT-01` | Warning | Sync and async service clients | Java client guidelines |
 | `DP-CLIENT-02` | Warning | Fluent client builder and valid construction | Java builder guidelines |
 | `DP-API-01` | Warning | Implementation leakage | Java implementation and module guidelines |
-| `DP-METHOD-01` | Suggestion | Service method names, overloads, options, and context | Java method guidelines |
+| `DP-METHOD-01` | Suggestion | Service method names, overloads, response options, and context | Java method guidelines |
+| `DP-METHOD-02` | Warning | Options bag for more than six service parameters | Java service-method parameter guidelines |
 | `DP-PAGING-01` | Warning | Collection return types | Java paging guidelines |
 | `DP-LRO-01` | Warning | Poller types and `begin` methods | Java LRO guidelines |
 | `DP-ASYNC-01` | Warning | Blocking work in async APIs | Java implementation guidelines |
