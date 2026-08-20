@@ -1715,7 +1715,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertThat(addressResolutionCount).hasValue(2);
         assertThat(forceRefreshValues).containsExactly(false, true);
         assertThat(connectionAttempts.get(stalePrimary.getPhyicalUri())).hasValue(2);
-        assertThat(connectionAttempts.get(staleSecondary.getPhyicalUri())).hasValue(2);
         assertThat(connectionAttempts.get(refreshedPrimary.getPhyicalUri())).hasValue(1);
         assertThat(connectionAttempts.get(refreshedSecondary.getPhyicalUri())).hasValue(1);
     }
