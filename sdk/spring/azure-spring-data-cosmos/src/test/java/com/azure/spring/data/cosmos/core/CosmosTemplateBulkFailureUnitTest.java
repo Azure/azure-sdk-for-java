@@ -91,4 +91,13 @@ public class CosmosTemplateBulkFailureUnitTest {
                 .hasCause(bulkException))
             .verify();
     }
+
+    @Test
+    public void reactiveDeleteEntitiesPropagatesBulkExceptionWhenResponseIsMissing() {
+        StepVerifier.create(reactiveCosmosTemplate.deleteEntities(entityInformation, Flux.just(entity)))
+            .expectErrorSatisfies(error -> assertThat(error)
+                .isInstanceOf(CosmosAccessException.class)
+                .hasCause(bulkException))
+            .verify();
+    }
 }
