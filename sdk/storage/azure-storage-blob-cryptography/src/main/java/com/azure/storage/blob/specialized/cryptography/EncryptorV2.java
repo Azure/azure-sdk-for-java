@@ -68,9 +68,22 @@ class EncryptorV2 extends Encryptor {
                 new EncryptedRegionInfo(encryptionOptions.getAuthenticatedRegionDataLengthInBytes(), NONCE_LENGTH));
     }
 
-    private Cipher getCipher(int index) throws GeneralSecurityException {
+    /**
+     * Computes the {@link CryptographyConstants#NONCE_LENGTH}-byte GCM nonce for a CSEv2 authenticated region from its
+     * zero-based sequential index. The index is written as an 8-byte big-endian value into the leading bytes of the
+     * nonce and the remaining bytes are left zero. The full 64-bit index is used (rather than a truncated 32-bit value)
+     * so that every region within a blob is guaranteed a unique nonce, which AES-GCM requires to remain secure.
+     *
+     * @param index The zero-based region index.
+     * @return The nonce bytes for the region.
+     */
+    static byte[] computeRegionNonce(long index) {
+        return ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
+    }
+
+    private Cipher getCipher(long index) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
-        byte[] iv = ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
+        byte[] iv = computeRegionNonce(index);
 
         cipher.init(Cipher.ENCRYPT_MODE, aesKey, new GCMParameterSpec(TAG_LENGTH * 8, iv));
         return cipher;
@@ -94,9 +107,10 @@ class EncryptorV2 extends Encryptor {
                 .flatMapSequential(tuple -> {
                     Cipher gcmCipher;
                     try {
-                        // We use the index as the nonce as a counter guarantees each nonce is used
-                        // only once with a given key.
-                        gcmCipher = getCipher(tuple.getT1().intValue());
+                        // We use the full 64-bit region index as the nonce counter so that each nonce is used only
+                        // once with a given key. Truncating the index to 32 bits would cause nonces to repeat - and
+                        // AES-GCM security to break - once a blob exceeds 2^32 authenticated regions.
+                        gcmCipher = getCipher(tuple.getT1());
                     } catch (GeneralSecurityException e) {
                         throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
                     }
