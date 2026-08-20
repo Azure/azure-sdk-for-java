@@ -135,6 +135,35 @@ public class PartitionKeyRangeServerBatchRequestTests {
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void bulkCreateWithFullPartitionKeyDoesNotCacheSerializedItem() {
+        AtomicInteger serializationCount = new AtomicInteger();
+        CosmosItemSerializer serializer = new CosmosItemSerializer() {
+            @Override
+            public <T> Map<String, Object> serialize(T item) {
+                serializationCount.incrementAndGet();
+                return Collections.singletonMap("id", "id");
+            }
+
+            @Override
+            public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                return null;
+            }
+        };
+        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
+            CosmosItemOperationType.CREATE,
+            null,
+            new PartitionKey("full-key"),
+            null,
+            new Object(),
+            null);
+
+        operation.getSerializedOperation(serializer);
+
+        assertThat(operation.getCachedSerializedItem()).isNull();
+        assertThat(serializationCount).hasValue(1);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void changingPartitionKeyInvalidatesSerializedOperationAndLength() {
         ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,

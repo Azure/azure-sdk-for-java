@@ -51,17 +51,17 @@ public class PartitionKeyHelper {
     }
 
     /**
-     * Returns {@code true} when the item id has to be appended to complete the provided partition
-     * key for a container whose last partition key path is "/id". This is the case when the caller
-     * either provided no partition key at all, or provided exactly the prefix of the partition key
-     * (component count == pathCount - 1). When the partition key is already fully specified (the id
-     * is present) or has an unexpected number of components, no id is required.
+     * Returns {@code true} when the SDK can complete the provided partition key by appending the
+     * item id. This is limited to containers whose last partition key path is "/id" and callers
+     * that either omitted the partition key or provided exactly its prefix (component count ==
+     * pathCount - 1). Other incomplete or malformed partition keys are not eligible for automatic
+     * completion.
      *
      * @param partitionKeyDefinition the partition key definition of the container (may be null).
      * @param providedPartitionKey the partition key provided by the caller (may be null).
-     * @return {@code true} if the item id is needed to complete the partition key.
+     * @return {@code true} if the partition key can be completed with the item id.
      */
-    public static boolean partitionKeyRequiresIdComponent(
+    public static boolean canCompletePartitionKeyWithId(
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal providedPartitionKey) {
 
@@ -124,14 +124,14 @@ public class PartitionKeyHelper {
      * @param itemId the item id (may be null/empty).
      * @return the (possibly augmented) partition key internal.
      */
-    public static PartitionKeyInternal ensureIdIsInPartitionKeyInternal(
+    public static PartitionKeyInternal completePartitionKeyInternalWithIdIfNeeded(
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal providedPartitionKey,
         String itemId) {
 
         // The provided partition key is already complete (or the container does not end in "/id"),
         // so there is nothing to append and it is returned unchanged.
-        if (!partitionKeyRequiresIdComponent(partitionKeyDefinition, providedPartitionKey)) {
+        if (!canCompletePartitionKeyWithId(partitionKeyDefinition, providedPartitionKey)) {
             return providedPartitionKey;
         }
 
@@ -160,29 +160,25 @@ public class PartitionKeyHelper {
     }
 
     /**
-     * {@link PartitionKey} overload of {@link #ensureIdIsInPartitionKeyInternal}. Returns the
-     * original {@code providedPartitionKey} instance when no augmentation is needed.
+     * Completes a {@link PartitionKey} with the item id when eligible. Returns the original
+     * {@code providedPartitionKey} instance when no augmentation is needed.
      *
      * @param partitionKeyDefinition the partition key definition of the container.
      * @param providedPartitionKey the partition key provided by the caller (may be null).
      * @param itemId the item id (may be null/empty).
      * @return the (possibly augmented) partition key.
      */
-    public static PartitionKey ensureIdIsInPartitionKey(
+    public static PartitionKey completePartitionKeyWithIdIfNeeded(
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKey providedPartitionKey,
         String itemId) {
-
-        if (!isLastPartitionKeyPathId(partitionKeyDefinition)) {
-            return providedPartitionKey;
-        }
 
         PartitionKeyInternal providedInternal = providedPartitionKey == null
             ? null
             : ModelBridgeInternal.getPartitionKeyInternal(providedPartitionKey);
 
         PartitionKeyInternal result =
-            ensureIdIsInPartitionKeyInternal(partitionKeyDefinition, providedInternal, itemId);
+            completePartitionKeyInternalWithIdIfNeeded(partitionKeyDefinition, providedInternal, itemId);
 
         if (result == providedInternal) {
             return providedPartitionKey;

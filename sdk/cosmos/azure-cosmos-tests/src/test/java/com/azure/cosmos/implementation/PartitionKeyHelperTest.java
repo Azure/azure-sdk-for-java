@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * Unit tests for {@link PartitionKeyHelper#isLastPartitionKeyPathId} and
- * {@link PartitionKeyHelper#ensureIdIsInPartitionKeyInternal} that validate the behaviour of
+ * {@link PartitionKeyHelper#completePartitionKeyInternalWithIdIfNeeded} that validate the behaviour of
  * appending the item id to a hierarchical partition key whose last path is "/id".
  */
 public class PartitionKeyHelperTest {
@@ -60,7 +60,7 @@ public class PartitionKeyHelperTest {
         PartitionKeyInternal provided = toInternal(new PartitionKeyBuilder().add("10001").build());
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
     }
@@ -72,7 +72,7 @@ public class PartitionKeyHelperTest {
             toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build());
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result.getComponents()).hasSize(3);
         assertThat(result.toObjectArray()).containsExactly("10001", "Seattle", "myId");
@@ -102,7 +102,7 @@ public class PartitionKeyHelperTest {
             toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").add("myId").build());
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
         assertThat(result.getComponents()).hasSize(3);
@@ -113,10 +113,12 @@ public class PartitionKeyHelperTest {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id");
         PartitionKeyInternal provided = toInternal(PartitionKey.NONE);
 
-        assertThat(PartitionKeyHelper.partitionKeyRequiresIdComponent(definition, provided)).isFalse();
-        assertThat(PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId"))
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(definition, provided)).isFalse();
+        assertThat(PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
+            definition, provided, "myId"))
             .isSameAs(provided);
-        assertThat(PartitionKeyHelper.ensureIdIsInPartitionKey(definition, PartitionKey.NONE, "myId"))
+        assertThat(PartitionKeyHelper.completePartitionKeyWithIdIfNeeded(
+            definition, PartitionKey.NONE, "myId"))
             .isSameAs(PartitionKey.NONE);
     }
 
@@ -125,7 +127,7 @@ public class PartitionKeyHelperTest {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id");
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, null, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, null, "myId");
 
         assertThat(result.getComponents()).hasSize(3);
         assertThat(result.toObjectArray()).containsExactly(null, null, "myId");
@@ -136,7 +138,7 @@ public class PartitionKeyHelperTest {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.HASH, "/id");
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, null, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, null, "myId");
 
         assertThat(result.getComponents()).hasSize(1);
         assertThat(result.toObjectArray()).containsExactly("myId");
@@ -149,7 +151,7 @@ public class PartitionKeyHelperTest {
             toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build());
 
         assertThatThrownBy(() ->
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, null))
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, null))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("itemId needs to be specified");
     }
@@ -161,7 +163,7 @@ public class PartitionKeyHelperTest {
             toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build());
 
         assertThatThrownBy(() ->
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, ""))
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, ""))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("itemId needs to be specified");
     }
@@ -173,7 +175,7 @@ public class PartitionKeyHelperTest {
         PartitionKeyInternal provided = toInternal(new PartitionKeyBuilder().add("10001").build());
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
     }
@@ -184,28 +186,30 @@ public class PartitionKeyHelperTest {
         PartitionKeyInternal provided = toInternal(new PartitionKeyBuilder().add("pkValue").build());
 
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result.getComponents()).hasSize(2);
         assertThat(result.toObjectArray()).containsExactly("pkValue", "myId");
     }
 
     @Test(groups = "unit")
-    public void ensureIdIsInPartitionKey_partitionKeyOverload_appendsId() {
+    public void completePartitionKeyWithIdIfNeeded_appendsId() {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/pk", "/id");
         PartitionKey provided = new PartitionKeyBuilder().add("pkValue").build();
 
-        PartitionKey result = PartitionKeyHelper.ensureIdIsInPartitionKey(definition, provided, "myId");
+        PartitionKey result =
+            PartitionKeyHelper.completePartitionKeyWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(toInternal(result).toObjectArray()).containsExactly("pkValue", "myId");
     }
 
     @Test(groups = "unit")
-    public void ensureIdIsInPartitionKey_partitionKeyOverload_nonIdLastPath_returnsSameInstance() {
+    public void completePartitionKeyWithIdIfNeeded_nonIdLastPath_returnsSameInstance() {
         PartitionKeyDefinition definition = pkDefinition(PartitionKind.HASH, "/pk");
         PartitionKey provided = new PartitionKey("pkValue");
 
-        PartitionKey result = PartitionKeyHelper.ensureIdIsInPartitionKey(definition, provided, "myId");
+        PartitionKey result =
+            PartitionKeyHelper.completePartitionKeyWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
     }
@@ -219,7 +223,7 @@ public class PartitionKeyHelperTest {
 
         PartitionKeyInternal provided = toInternal(new PartitionKey("pkValue"));
         PartitionKeyInternal result =
-            PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(definition, provided, "myId");
+            PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
     }

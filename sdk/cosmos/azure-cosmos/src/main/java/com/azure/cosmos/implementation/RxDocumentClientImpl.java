@@ -2356,7 +2356,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
         boolean pkNeedsId =
             !isNonePartitionKey
-                && shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal);
+                && shouldCompletePointOperationPartitionKeyWithId(
+                    request, partitionKeyDefinition, partitionKeyInternal);
         boolean itemIdNeedsExtraction =
             pkNeedsId && Strings.isNullOrEmpty(itemId);
         boolean materializeDocument = partitionKeyNeedsExtraction || itemIdNeedsExtraction;
@@ -2416,7 +2417,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         // Complete only an exact prefix after resolving the id from the request path or item body.
         if (pkNeedsId) {
-            partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
+            partitionKeyInternal = PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
                 partitionKeyDefinition, partitionKeyInternal, itemId);
         }
 
@@ -2429,7 +2430,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
     }
 
-    private static boolean shouldCompletePkWithId(
+    private static boolean shouldCompletePointOperationPartitionKeyWithId(
         RxDocumentServiceRequest request,
         PartitionKeyDefinition partitionKeyDefinition,
         PartitionKeyInternal partitionKeyInternal) {
@@ -2442,7 +2443,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return false;
         }
 
-        return PartitionKeyHelper.partitionKeyRequiresIdComponent(
+        return PartitionKeyHelper.canCompletePartitionKeyWithId(
             partitionKeyDefinition, partitionKeyInternal);
     }
 
@@ -5303,7 +5304,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return itemIdentity;
         }
 
-        PartitionKey augmentedPartitionKey = PartitionKeyHelper.ensureIdIsInPartitionKey(
+        PartitionKey augmentedPartitionKey = PartitionKeyHelper.completePartitionKeyWithIdIfNeeded(
             partitionKeyDefinition, itemIdentity.getPartitionKey(), itemIdentity.getId());
 
         if (augmentedPartitionKey == itemIdentity.getPartitionKey()) {

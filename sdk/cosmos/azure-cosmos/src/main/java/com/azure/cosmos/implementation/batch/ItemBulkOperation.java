@@ -116,13 +116,20 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                     internalDefaultSerializer(),
                     false);
             } else {
-                Map<String, Object> serializedItem =
-                    this.getSerializedItem(this.getEffectiveItemSerializerForResult());
-                jsonSerializable.set(
-                    BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    serializedItem,
-                    internalDefaultSerializer(),
-                    true);
+                Map<String, Object> cachedSerializedItem = this.getCachedSerializedItem();
+                if (cachedSerializedItem != null) {
+                    jsonSerializable.set(
+                        BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                        cachedSerializedItem,
+                        internalDefaultSerializer(),
+                        true);
+                } else {
+                    jsonSerializable.set(
+                        BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
+                        this.getItemInternal(),
+                        this.getEffectiveItemSerializerForResult(),
+                        true);
+                }
             }
         }
 
@@ -165,7 +172,11 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         return this.item;
     }
 
-    synchronized Map<String, Object> getSerializedItem(CosmosItemSerializer effectiveItemSerializer) {
+    Map<String, Object> getCachedSerializedItem() {
+        return this.serializedItem.get();
+    }
+
+    synchronized Map<String, Object> serializeAndCacheItem(CosmosItemSerializer effectiveItemSerializer) {
         this.effectiveItemSerializerForResult = effectiveItemSerializer;
 
         if (this.serializedItem.get() == null) {

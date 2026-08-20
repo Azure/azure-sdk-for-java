@@ -157,7 +157,7 @@ final class BulkExecutorUtil {
         }
 
         checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
-        Map<String, Object> serializedItem = operation.getSerializedItem(effectiveItemSerializer);
+        Map<String, Object> serializedItem = operation.serializeAndCacheItem(effectiveItemSerializer);
         Object idValue = serializedItem == null ? null : serializedItem.get(Constants.Properties.ID);
         return idValue == null ? null : idValue.toString();
     }
@@ -180,11 +180,12 @@ final class BulkExecutorUtil {
                                // Hierarchical partition key ending in "/id": append the item id so
                                // callers can pass only the prefix of the partition key. The item id
                                // (resolving which may serialize the item) is only fetched when the
-                               // provided partition key is not already fully specified.
-                               if (PartitionKeyHelper.partitionKeyRequiresIdComponent(definition, partitionKeyInternal)) {
+                               // provided key is omitted or is exactly the prefix ending before /id.
+                               if (PartitionKeyHelper.canCompletePartitionKeyWithId(definition, partitionKeyInternal)) {
                                    String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();
-                                   partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
-                                       definition, partitionKeyInternal, itemId);
+                                   partitionKeyInternal =
+                                       PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
+                                           definition, partitionKeyInternal, itemId);
                                }
                                if (partitionKeyInternalConsumer != null) {
                                    partitionKeyInternalConsumer.accept(partitionKeyInternal);
