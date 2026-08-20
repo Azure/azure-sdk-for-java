@@ -5827,8 +5827,12 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                 partitionUnavailabilityMap,
                 locationContextMapField)).isTrue();
             assertThat(lastDiagnostics).isNotNull();
+
+            CosmosItemResponse<TestObject> failedOverResponse = container
+                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                .block();
             assertContactedRegionsContain(
-                lastDiagnostics.getDiagnosticsContext(),
+                failedOverResponse.getDiagnostics().getDiagnosticsContext(),
                 getRegionNameForAssertion(this.readRegions.get(1)),
                 "PPCB should route the partition to the second preferred region");
 
