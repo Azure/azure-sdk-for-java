@@ -91,7 +91,7 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         assertThat(new ObjectMapper().writeValueAsString(holder))
             .isEqualTo("{\"stateByRegion\":{\"eastus\":{\"st\":\"Unavailable\",\"rErr\":1,\"wErr\":2,"
-                + "\"rOk\":3,\"wOk\":4,\"since\":\"1970-01-01T00:00:00Z\"}}}");
+                + "\"rOk\":3,\"wOk\":4,\"unavailableSince\":\"1970-01-01T00:00:00Z\"}}}");
     }
 
     @Test(groups = {"unit"})
@@ -166,7 +166,6 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         assertThat(manager.getUnavailableRegionsForPartitionKeyRange(request, "collectionRid", partitionKeyRange))
             .isEmpty();
-        assertThat(holder.isInitialized()).isTrue();
         assertThat(holder.getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
 
         ClientSideRequestStatistics statistics = new ClientSideRequestStatistics(diagnosticsClientContext);

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
-import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -17,48 +16,35 @@ import java.util.Map;
 @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
 public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
-    public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder(true);
+    public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder();
 
-    private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> perPartitionCircuitBreakerInfoHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
-    private final boolean readOnly;
-    private boolean initialized;
+    private volatile Map<String, LocationSpecificHealthContext> perPartitionCircuitBreakerInfoHolder;
 
     public PerPartitionCircuitBreakerInfoHolder() {
-        this(false);
     }
 
-    private PerPartitionCircuitBreakerInfoHolder(boolean readOnly) {
-        this.readOnly = readOnly;
+    private PerPartitionCircuitBreakerInfoHolder(Map<String, LocationSpecificHealthContext> perPartitionCircuitBreakerInfoHolder) {
+        this.perPartitionCircuitBreakerInfoHolder = perPartitionCircuitBreakerInfoHolder;
     }
 
-    public synchronized void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
-        if (this.readOnly) {
+    public void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
+        if (this == EMPTY) {
             throw new UnsupportedOperationException("This PPCB diagnostics snapshot is read-only.");
         }
 
-        this.initialized = true;
-        this.perPartitionCircuitBreakerInfoHolder.v = locationSpecificHealthContext == null
+        this.perPartitionCircuitBreakerInfoHolder = locationSpecificHealthContext == null
             ? Collections.emptyMap()
             : Collections.unmodifiableMap(new LinkedHashMap<>(locationSpecificHealthContext));
     }
 
-    public synchronized Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
-        return perPartitionCircuitBreakerInfoHolder.v;
+    public Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
+        return this.perPartitionCircuitBreakerInfoHolder;
     }
 
-    public synchronized PerPartitionCircuitBreakerInfoHolder snapshot() {
-        if (!this.initialized) {
-            return EMPTY;
-        }
+    public PerPartitionCircuitBreakerInfoHolder snapshot() {
+        Map<String, LocationSpecificHealthContext> snapshot = this.perPartitionCircuitBreakerInfoHolder;
 
-        PerPartitionCircuitBreakerInfoHolder snapshot = new PerPartitionCircuitBreakerInfoHolder(true);
-        snapshot.initialized = true;
-        snapshot.perPartitionCircuitBreakerInfoHolder.v = this.perPartitionCircuitBreakerInfoHolder.v;
-        return snapshot;
-    }
-
-    synchronized boolean isInitialized() {
-        return this.initialized;
+        return snapshot == null ? EMPTY : new PerPartitionCircuitBreakerInfoHolder(snapshot);
     }
 
     public static class PerPartitionCircuitBreakerInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionCircuitBreakerInfoHolder> {
@@ -68,7 +54,7 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
             Map<String, LocationSpecificHealthContext> locationToLocationSpecificHealthContext = value.getPerPartitionCircuitBreakerInfoHolder();
 
-            if (value.isInitialized()) {
+            if (locationToLocationSpecificHealthContext != null) {
                 gen.writeStartObject();
 
                 gen.writePOJOField("stateByRegion", locationToLocationSpecificHealthContext);
