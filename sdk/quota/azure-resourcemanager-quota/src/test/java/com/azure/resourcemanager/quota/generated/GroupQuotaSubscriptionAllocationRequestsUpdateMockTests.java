@@ -26,7 +26,7 @@ public final class GroupQuotaSubscriptionAllocationRequestsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"zrtuzq\",\"limit\":1189193758157462805,\"shareableQuota\":7533861003101149495,\"name\":{}}},{\"properties\":{\"resourceName\":\"nwnwme\",\"limit\":6186896239001555469,\"shareableQuota\":6866960913101862569,\"name\":{}}},{\"properties\":{\"resourceName\":\"oibjudpfrxtrthz\",\"limit\":4537388686790142089,\"shareableQuota\":7184151913556268269,\"name\":{}}}],\"nextLink\":\"rqubpaxhexiil\"},\"id\":\"pdtii\",\"name\":\"q\",\"type\":\"d\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"value\":[{\"properties\":{\"resourceName\":\"vokqdzfv\",\"limit\":7036583010545466260,\"shareableQuota\":970275008823237835,\"name\":{}}},{\"properties\":{\"resourceName\":\"tbajlkatn\",\"limit\":5021220265156889425,\"shareableQuota\":8960034655868417955,\"name\":{}}}],\"nextLink\":\"qqfkuv\"},\"id\":\"xkdmligo\",\"name\":\"ibrxkp\",\"type\":\"loazuruocbgoo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,25 +35,22 @@ public final class GroupQuotaSubscriptionAllocationRequestsUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SubscriptionQuotaAllocationsList response = manager.groupQuotaSubscriptionAllocationRequests()
-            .update("ag", "rvimjwosytxitcsk", "cktqumiekkezzi", "hlyfjhdgqgg",
-                new SubscriptionQuotaAllocationsListInner()
+        SubscriptionQuotaAllocationsList response
+            = manager.groupQuotaSubscriptionAllocationRequests()
+                .update("byowbblgyavutp", "hjoxo", "smsks", "pi", new SubscriptionQuotaAllocationsListInner()
                     .withProperties(new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
                         new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("eqidbqfatpx")
-                                .withLimit(206169158541368718L)),
-                        new SubscriptionQuotaAllocations().withProperties(
-                            new SubscriptionQuotaAllocationsProperties().withResourceName("dsuvarmywdmjsjqb")
-                                .withLimit(7225316446060950851L)),
+                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("cgxxlxs")
+                                .withLimit(8403705796490340876L)),
                         new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("co")
-                                .withLimit(1636515357486481431L)),
+                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("wlvwlyoupf")
+                                .withLimit(7840356601497751767L)),
                         new SubscriptionQuotaAllocations()
-                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("areqna")
-                                .withLimit(2889589874455644460L))))),
-                com.azure.core.util.Context.NONE);
+                            .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("gkfmins")
+                                .withLimit(3264236544937493152L))))),
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zrtuzq", response.properties().value().get(0).properties().resourceName());
-        Assertions.assertEquals(1189193758157462805L, response.properties().value().get(0).properties().limit());
+        Assertions.assertEquals("vokqdzfv", response.properties().value().get(0).properties().resourceName());
+        Assertions.assertEquals(7036583010545466260L, response.properties().value().get(0).properties().limit());
     }
 }

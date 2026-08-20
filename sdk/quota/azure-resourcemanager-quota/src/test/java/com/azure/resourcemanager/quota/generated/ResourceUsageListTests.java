@@ -12,11 +12,11 @@ public final class ResourceUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceUsageList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"qbzvddntwnd\",\"localizedValue\":\"cbtwnpzaoqvuh\"},\"limit\":2446371757978717753,\"usages\":4808758286738610936,\"unit\":\"dglmjthjqkwp\"},\"id\":\"icxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"},{\"properties\":{\"name\":{\"value\":\"e\",\"localizedValue\":\"a\"},\"limit\":199478075825684377,\"usages\":1064952201771132395,\"unit\":\"vvtpgvdfgio\"},\"id\":\"ftutqxlngxlefgu\",\"name\":\"nxkrx\",\"type\":\"qmi\"},{\"properties\":{\"name\":{\"value\":\"zrvqdr\",\"localizedValue\":\"hjybigehoqfbo\"},\"limit\":5938581958460041100,\"usages\":4187351799054769848,\"unit\":\"zlcuiywgqywgndrv\"},\"id\":\"hzgpphrcgyncocpe\",\"name\":\"fvm\",\"type\":\"coofsxlzev\"}],\"nextLink\":\"m\"}")
+            "{\"value\":[{\"properties\":{\"name\":{\"value\":\"nbbelda\",\"localizedValue\":\"zbaliourqha\"},\"limit\":131133871653701525,\"usages\":5909550063004998256,\"unit\":\"fwxosowzxcu\"},\"id\":\"cjooxdjebwpucwwf\",\"name\":\"ovbvmeueciv\",\"type\":\"hzceuojgjrwjue\"},{\"properties\":{\"name\":{\"value\":\"mcdytdxwitxnrj\",\"localizedValue\":\"gqwgxhniskxfbkp\"},\"limit\":4717872847934328056,\"usages\":6732175570490023476,\"unit\":\"nhjdauw\"},\"id\":\"ylwz\",\"name\":\"tdhxujznbmpowuwp\",\"type\":\"zqlveualupjmkhf\"},{\"properties\":{\"name\":{\"value\":\"cswsrtjri\",\"localizedValue\":\"rbpbewtghfgblcg\"},\"limit\":5418002986537845043,\"usages\":692631569824073211,\"unit\":\"jkbegibtnmxiebww\"},\"id\":\"oayqc\",\"name\":\"wrtz\",\"type\":\"uzgwyzmhtx\"}],\"nextLink\":\"gmtsavjcbpwxqpsr\"}")
             .toObject(ResourceUsageList.class);
-        Assertions.assertEquals(2446371757978717753L, model.value().get(0).properties().limit());
-        Assertions.assertEquals(4808758286738610936L, model.value().get(0).properties().usages());
-        Assertions.assertEquals("qbzvddntwnd", model.value().get(0).properties().value());
-        Assertions.assertEquals("m", model.nextLink());
+        Assertions.assertEquals(131133871653701525L, model.value().get(0).properties().limit());
+        Assertions.assertEquals(5909550063004998256L, model.value().get(0).properties().usages());
+        Assertions.assertEquals("nbbelda", model.value().get(0).properties().value());
+        Assertions.assertEquals("gmtsavjcbpwxqpsr", model.nextLink());
     }
 }

@@ -15,30 +15,20 @@ public final class SubscriptionQuotaAllocationsListPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaAllocationsListProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Invalid\",\"value\":[{\"properties\":{\"resourceName\":\"fmvfaxkffeiit\",\"limit\":5737658832403848483,\"shareableQuota\":2197932099493132198,\"name\":{\"value\":\"hxmzsbbzoggig\",\"localizedValue\":\"wburvjxxjnspydpt\"}}},{\"properties\":{\"resourceName\":\"nkoukn\",\"limit\":5351704758336650999,\"shareableQuota\":5050642493378346293,\"name\":{\"value\":\"ldngkpoci\",\"localizedValue\":\"z\"}}},{\"properties\":{\"resourceName\":\"egukgjnpiucg\",\"limit\":3635341992285510008,\"shareableQuota\":8629618049254562854,\"name\":{\"value\":\"pmr\",\"localizedValue\":\"izcdrqjsd\"}}},{\"properties\":{\"resourceName\":\"nfyhx\",\"limit\":5446401731314405625,\"shareableQuota\":1641594420313598643,\"name\":{\"value\":\"ifsjttgzfbishcb\",\"localizedValue\":\"ajdeyeamdphaga\"}}}],\"nextLink\":\"buxwgip\"}")
+            "{\"provisioningState\":\"InProgress\",\"value\":[{\"properties\":{\"resourceName\":\"vaolpsslqlf\",\"limit\":940610692718193227,\"shareableQuota\":8429294403968263642,\"name\":{\"value\":\"pswiydmcwyh\",\"localizedValue\":\"xssadbzmnvdf\"}}}],\"nextLink\":\"ud\"}")
             .toObject(SubscriptionQuotaAllocationsListProperties.class);
-        Assertions.assertEquals("fmvfaxkffeiit", model.value().get(0).properties().resourceName());
-        Assertions.assertEquals(5737658832403848483L, model.value().get(0).properties().limit());
+        Assertions.assertEquals("vaolpsslqlf", model.value().get(0).properties().resourceName());
+        Assertions.assertEquals(940610692718193227L, model.value().get(0).properties().limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionQuotaAllocationsListProperties model
-            = new SubscriptionQuotaAllocationsListProperties().withValue(Arrays.asList(
-                new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("fmvfaxkffeiit")
-                        .withLimit(5737658832403848483L)),
-                new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("nkoukn")
-                        .withLimit(5351704758336650999L)),
-                new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("egukgjnpiucg")
-                        .withLimit(3635341992285510008L)),
-                new SubscriptionQuotaAllocations()
-                    .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("nfyhx")
-                        .withLimit(5446401731314405625L))));
+        SubscriptionQuotaAllocationsListProperties model = new SubscriptionQuotaAllocationsListProperties()
+            .withValue(Arrays.asList(new SubscriptionQuotaAllocations()
+                .withProperties(new SubscriptionQuotaAllocationsProperties().withResourceName("vaolpsslqlf")
+                    .withLimit(940610692718193227L))));
         model = BinaryData.fromObject(model).toObject(SubscriptionQuotaAllocationsListProperties.class);
-        Assertions.assertEquals("fmvfaxkffeiit", model.value().get(0).properties().resourceName());
-        Assertions.assertEquals(5737658832403848483L, model.value().get(0).properties().limit());
+        Assertions.assertEquals("vaolpsslqlf", model.value().get(0).properties().resourceName());
+        Assertions.assertEquals(940610692718193227L, model.value().get(0).properties().limit());
     }
 }
