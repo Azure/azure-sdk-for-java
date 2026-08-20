@@ -82,6 +82,13 @@ Failed service requests throw appropriate unchecked Azure Core exceptions that
 retain request, response, and rich service error details. Use standard Java
 exceptions for preconditions and document thrown exceptions.
 
+**Exception:** do not report an implementation helper with the shape
+`List<BinaryData> getValues(BinaryData binaryData, ...)` for catching
+`RuntimeException` during response conversion and returning `null`. This is an
+intentional guard for a malformed service response, not a swallowed service
+request failure. Apply this exception only to that generated paging conversion
+helper shape.
+
 **Correct form:** throw `HttpResponseException` or its applicable Azure Core
 subtype and include `@throws` in the public method JavaDoc.
 
@@ -102,4 +109,3 @@ provides one.
 
 **Correct form:** build `HttpPipeline` with repository-standard policies and
 pass the maximal sync overload's `Context` to the generated service call.
-
