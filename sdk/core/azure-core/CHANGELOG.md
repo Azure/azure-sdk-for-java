@@ -13,8 +13,9 @@
 - Added optional service-defined terminal-event predicates for server-sent event streams. Predicate overloads complete
   after delivering a terminal event and report an incomplete stream when response-body EOF occurs first; existing
   overloads continue to complete on HTTP 204 or EOF.
-- Server-sent event response streams are single-subscription and accept only closeable HTTP 200 or 204 responses.
-  Terminal-event predicates require a terminal event even when the response is HTTP 204.
+- Server-sent event response streams are single-subscription. Their non-replayable `BinaryData` bodies own the physical
+  responses and release them when body consumption terminates. Terminal-event predicates require a terminal event even
+  when the response is HTTP 204.
 ### Breaking Changes
 
 ### Bugs Fixed

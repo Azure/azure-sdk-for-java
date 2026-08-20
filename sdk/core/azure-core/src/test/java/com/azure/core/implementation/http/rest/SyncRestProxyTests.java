@@ -216,8 +216,10 @@ public class SyncRestProxyTests {
         TestInterface testInterface
             = createBinaryDataService(Flux.just(ByteBuffer.wrap("hello".getBytes())), responseCloseCount);
 
-        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+        Response<BinaryData> response = testInterface.testBinaryDataResponse(Context.NONE);
+        BinaryData responseBody = response.getValue();
 
+        assertFalse(response instanceof java.io.Closeable);
         assertFalse(responseBody.isReplayable());
         assertEquals("hello", responseBody.toString());
         assertEquals(1, responseCloseCount.get());

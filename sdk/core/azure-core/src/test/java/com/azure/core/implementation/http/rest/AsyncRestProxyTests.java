@@ -229,6 +229,7 @@ public class AsyncRestProxyTests {
 
         Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE).block();
 
+        assertFalse(response instanceof java.io.Closeable);
         assertFalse(response.getValue().isReplayable());
         assertArraysEqual(expectedBytes, response.getValue().toBytes());
         assertEquals(1, responseCloseCount.get());

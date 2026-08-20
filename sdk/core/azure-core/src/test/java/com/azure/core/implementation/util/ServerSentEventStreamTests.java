@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -116,8 +115,6 @@ public class ServerSentEventStreamTests {
         TestResponse response = response(204, null);
 
         StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data)).verifyComplete();
-
-        assertTrue(response.closed.get());
     }
 
     @Test
@@ -269,13 +266,12 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void toFluxRejectsNullBodyAndClosesResponse() {
+    public void toFluxRejectsNullBody() {
         TestResponse response = response(200, null);
 
         assertThrows(NullPointerException.class,
             () -> ServerSentEventStreams.toFlux(response, (event, data) -> data).blockLast());
 
-        assertTrue(response.closed.get());
     }
 
     @Test
@@ -638,38 +634,6 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void toFluxCloseFailureFailsNormalCompletion() {
-        IOException closeFailure = new IOException("close failed");
-        TestResponse response
-            = response(200, BinaryData.fromString("data: one\n\n"), "text/event-stream", closeFailure);
-
-        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
-            .assertNext(event -> assertEquals("one", event.getData()))
-            .expectErrorMatches(
-                error -> error instanceof java.io.UncheckedIOException && error.getCause() == closeFailure)
-            .verify();
-
-        assertTrue(response.closed.get());
-    }
-
-    @Test
-    public void toFluxPrioritizesCloseFailureWhenBodyAndCloseFail() {
-        IOException bodyFailure = new IOException("body failed");
-        IOException closeFailure = new IOException("close failed");
-        BinaryData body = BinaryData.fromFlux(Flux.error(bodyFailure), null, false).block();
-        TestResponse response = response(200, body, "text/event-stream", closeFailure);
-
-        StepVerifier.create(ServerSentEventStreams.toFlux(response, (event, data) -> data))
-            .expectErrorMatches(error -> error instanceof java.io.UncheckedIOException
-                && error.getCause() == closeFailure
-                && error.getSuppressed().length == 1
-                && error.getSuppressed()[0] == bodyFailure)
-            .verify();
-
-        assertTrue(response.closed.get());
-    }
-
-    @Test
     public void toFluxPropagatesConverterFailureAndClosesResponse() {
         RuntimeException failure = new IllegalStateException("invalid event");
         TestResponse response = response(200, BinaryData.fromString("data: invalid\n\n"));
@@ -759,7 +723,6 @@ public class ServerSentEventStreamTests {
         })).expectErrorMessage("The server-sent event stream ended before a terminal event.").verify();
 
         assertFalse(predicateInvoked.get());
-        assertTrue(response.closed.get());
     }
 
     @Test
@@ -841,7 +804,6 @@ public class ServerSentEventStreamTests {
 
         assertFalse(predicateInvoked.get());
         assertSame(exception, reportedError.get());
-        assertTrue(response.closed.get());
     }
 
     @Test
@@ -881,34 +843,28 @@ public class ServerSentEventStreamTests {
     }
 
     private static TestResponse response(int statusCode, BinaryData body, String contentType) {
-        return response(statusCode, body, contentType, null);
+        return new TestResponse(statusCode, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), body);
     }
 
-    private static TestResponse response(int statusCode, BinaryData body, String contentType,
-        IOException closeFailure) {
-        return new TestResponse(statusCode, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType), body,
-            closeFailure);
-    }
-
-    private static final class TestResponse extends ResponseBase<Object, BinaryData> implements Closeable {
-        private final AtomicBoolean closed = new AtomicBoolean();
-        private final IOException closeFailure;
+    private static final class TestResponse extends ResponseBase<Object, BinaryData> {
+        private final AtomicBoolean closed;
 
         private TestResponse(int statusCode, HttpHeaders headers, BinaryData value) {
-            this(statusCode, headers, value, null);
+            this(statusCode, headers, value, new AtomicBoolean());
         }
 
-        private TestResponse(int statusCode, HttpHeaders headers, BinaryData value, IOException closeFailure) {
-            super(null, statusCode, headers, value, null);
-            this.closeFailure = closeFailure;
+        private TestResponse(int statusCode, HttpHeaders headers, BinaryData value, AtomicBoolean closed) {
+            super(null, statusCode, headers, trackBody(value, closed), null);
+            this.closed = closed;
         }
 
-        @Override
-        public void close() throws IOException {
-            closed.set(true);
-            if (closeFailure != null) {
-                throw closeFailure;
-            }
+        private static BinaryData trackBody(BinaryData body, AtomicBoolean closed) {
+            return body == null
+                ? null
+                : BinaryData.fromFlux(body.toFluxByteBuffer()
+                    .doOnComplete(() -> closed.set(true))
+                    .doOnError(ignored -> closed.set(true))
+                    .doOnCancel(() -> closed.set(true)), null, false).block();
         }
     }
 }

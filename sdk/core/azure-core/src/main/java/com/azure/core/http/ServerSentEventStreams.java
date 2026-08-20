@@ -14,15 +14,11 @@ import java.util.function.Predicate;
 /**
  * Consumes a single HTTP response as a server-sent event stream.
  *
- * <p>The response body owns the physical response and closes it when consumption ends. Custom responses that implement
- * {@link java.io.Closeable} are also closed when processing terminates.</p>
+ * <p>The response body owns the physical response and closes it when consumption ends.</p>
  *
  * <p>A returned {@link Flux} consumes one supplied physical response and supports exactly one subscription. Before
  * that subscription claims the response, ownership remains with the caller; if it is never subscribed, the caller
- * must close the response.</p>
- *
- * <p>For a custom response that implements {@link java.io.Closeable}, if both stream processing and response cleanup
- * fail, the cleanup failure is emitted and the processing failure is suppressed.</p>
+ * must consume or cancel the response body.</p>
  *
  * <p>Event streams are always decoded as UTF-8. A {@code charset} parameter in the response Content-Type doesn't
  * select another encoding.</p>

@@ -45,8 +45,7 @@ import java.util.function.Predicate;
  * select another encoding.</p>
  *
  * <p>Response-based methods consume the response body exactly once. Streaming {@link BinaryData} returned by
- * RestProxy owns the physical response and closes it when body consumption terminates. Custom responses that implement
- * {@link java.io.Closeable} are also closed when processing terminates.</p>
+ * RestProxy owns the physical response and closes it when body consumption terminates.</p>
  */
 public final class ServerSentEventStream {
     private static final String DEFAULT_EVENT = "message";
@@ -142,11 +141,8 @@ public final class ServerSentEventStream {
                 });
             }
 
-            Flux<ServerSentEvent<T>> decodedEvents = events;
-            return Flux.using(() -> streamResponse,
-                ignored -> decodedEvents
-                    .concatWith(Mono.fromRunnable(() -> terminalPolicy.validateCompletion(terminalObserved.get()))),
-                ServerSentEventStreamResponse::close, true);
+            return events
+                .concatWith(Mono.fromRunnable(() -> terminalPolicy.validateCompletion(terminalObserved.get())));
         });
     }
 
@@ -159,7 +155,8 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(deserializer, "'deserializer' cannot be null.");
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
-        try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
+        try {
+            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
             boolean terminalObserved = streamResponse.getStatusCode() != 204
                 && processBody(streamResponse.getBody(), new StreamState(), deserializer,
                     TerminalEventPolicy.endOnResponseCompletion(), listener);
@@ -185,7 +182,8 @@ public final class ServerSentEventStream {
         Objects.requireNonNull(terminalEvent, "'terminalEvent' cannot be null.");
         Objects.requireNonNull(listener, "'listener' cannot be null.");
 
-        try (ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response)) {
+        try {
+            ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
             TerminalEventPolicy<T> terminalPolicy = TerminalEventPolicy.requireTerminal(terminalEvent);
             boolean terminalObserved = streamResponse.getStatusCode() != 204
                 && processBody(streamResponse.getBody(), new StreamState(), deserializer, terminalPolicy, listener);

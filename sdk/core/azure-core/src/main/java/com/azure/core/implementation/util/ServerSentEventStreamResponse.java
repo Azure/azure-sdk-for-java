@@ -10,28 +10,21 @@ import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Owns a physical response used by a logical server-sent event stream.
+ * Validates the response used by a logical server-sent event stream.
  */
-final class ServerSentEventStreamResponse implements AutoCloseable {
+final class ServerSentEventStreamResponse {
     private static final ClientLogger LOGGER = new ClientLogger(ServerSentEventStreamResponse.class);
 
     private final int statusCode;
     private final BinaryData body;
-    private final Closeable response;
-    private final AtomicBoolean closed = new AtomicBoolean();
 
-    ServerSentEventStreamResponse(int statusCode, BinaryData body, Closeable response) {
+    ServerSentEventStreamResponse(int statusCode, BinaryData body) {
         this.statusCode = statusCode;
         this.body = body;
-        this.response = response;
     }
 
     /**
@@ -61,16 +54,13 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
                 throw new NullPointerException("'response.getValue()' cannot be null unless the status code is 204.");
             }
         }
-        return new ServerSentEventStreamResponse(response.getStatusCode(), body,
-            response instanceof Closeable ? (Closeable) response : null);
+        if (response.getStatusCode() == 204) {
+            closeBody(body);
+        }
+        return new ServerSentEventStreamResponse(response.getStatusCode(), body);
     }
 
     private static void closeResponse(Response<BinaryData> response) {
-        if (response instanceof Closeable) {
-            close((Closeable) response);
-            return;
-        }
-
         closeBody(response.getValue());
     }
 
@@ -85,32 +75,11 @@ final class ServerSentEventStreamResponse implements AutoCloseable {
         }
     }
 
-    private static void close(Closeable response) {
-        try {
-            response.close();
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
-        }
-    }
-
     int getStatusCode() {
         return statusCode;
     }
 
     BinaryData getBody() {
         return body;
-    }
-
-    @Override
-    public void close() {
-        if (!closed.compareAndSet(false, true)) {
-            return;
-        }
-
-        if (response != null) {
-            close(response);
-        } else if (statusCode == 204 && body != null) {
-            closeBody(body);
-        }
     }
 }
