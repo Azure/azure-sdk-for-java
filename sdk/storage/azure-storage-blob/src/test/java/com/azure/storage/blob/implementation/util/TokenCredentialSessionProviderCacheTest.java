@@ -121,6 +121,55 @@ public class TokenCredentialSessionProviderCacheTest {
     }
 
     /**
+     * Invalidation must evict the live credential and cause the next request to mint a replacement.
+     */
+    @Test
+    public void invalidateSessionEvictsTheLiveCredential() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        ScriptedHttpClient httpClient = createHttpClient();
+        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
+        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
+            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        SessionRequestContext context = contextFor(CONTAINER_A);
+
+        SessionCredential credential = provider.getSession(context);
+        assertTrue(provider.invalidateSession(context, credential));
+
+        SessionCredential replacement = provider.getSession(context);
+        assertEquals(SECOND_TOKEN, replacement.getSessionToken());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    /**
+     * A stale rejection must not evict a credential that a background refresh has already replaced.
+     */
+    @Test
+    public void invalidateSessionIgnoresACredentialAlreadyReplacedByRefresh() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        ScriptedHttpClient httpClient = createHttpClient();
+        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
+        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
+            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
+        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        SessionRequestContext context = contextFor(CONTAINER_A);
+
+        SessionCredential firstCredential = provider.getSession(context);
+
+        // Before the shadow copy was removed, this late rejection incorrectly reported success even though the
+        // background refresh had already replaced the cached credential.
+        clock.advance(SESSION_LIFETIME.minusSeconds(2));
+        assertEquals(FIRST_TOKEN, provider.getSession(context).getSessionToken());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+        assertEquals(SECOND_TOKEN, waitForToken(() -> provider.getSession(context)).getSessionToken());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+
+        assertFalse(provider.invalidateSession(context, firstCredential));
+        assertEquals(SECOND_TOKEN, provider.getSession(context).getSessionToken());
+        assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
+    }
+
+    /**
      * Two different containers must refresh completely independently: advancing the clock past one
      * container's jittered refresh point must trigger a background refresh for that container only, leaving
      * the other container's still-fresh session untouched.

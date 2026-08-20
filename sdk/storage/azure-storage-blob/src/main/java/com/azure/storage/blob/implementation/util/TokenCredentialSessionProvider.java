@@ -42,16 +42,18 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <h2>Invalidation</h2>
  * <p>
- * {@link #invalidateSession} performs a compare-and-swap: only the first caller presenting a given
- * rejected credential succeeds; later callers presenting the same instance return {@code false}.
- * This prevents a stale 401 response from evicting a credential that was already replaced by a
- * concurrent refresh.
+ * {@link #invalidateSession} delegates to the cache's compare-and-swap: it succeeds only for the
+ * caller presenting the credential that is still cached. A caller presenting a credential that a
+ * concurrent refresh has already replaced gets {@code false} and the newer credential is left in
+ * place, so a stale 401 cannot evict a healthy session.
  *
  * <h2>Background refresh</h2>
  * <p>
  * {@link #refreshSession} forces an immediate background refresh even when the client's own
- * jittered refresh timer has not yet elapsed, ensuring the service's
- * {@code x-ms-auth-info: session_expiring} hint is always honoured.
+ * jittered refresh timer has not yet elapsed, so the service's
+ * {@code x-ms-auth-info: session_expiring} hint is acted on promptly. The one exception is that the
+ * refresh is suppressed while the cache is backing off from a recent session creation failure, which
+ * stops a failing service from being retried once per request.
  *
  * <p>
  * Follows the same constructor pattern as {@link com.azure.storage.blob.BlobContainerClient}:
@@ -93,9 +95,7 @@ final class TokenCredentialSessionProvider implements SessionProvider {
         return Mono.defer(() -> {
             String container = requireContainerName(context);
             String resolvedAccount = resolveAccountName(context);
-            ContainerSessionCache containerSessionCache = updateCache(container, resolvedAccount);
-            return containerSessionCache.cache.getValidValueAsync()
-                .doOnNext(containerSessionCache::setSessionCredential);
+            return updateCache(container, resolvedAccount).cache.getValidValueAsync();
         });
     }
 
@@ -103,10 +103,7 @@ final class TokenCredentialSessionProvider implements SessionProvider {
     public SessionCredential getSession(SessionRequestContext context) {
         String container = requireContainerName(context);
         String resolvedAccount = resolveAccountName(context);
-        ContainerSessionCache containerSessionCache = updateCache(container, resolvedAccount);
-        SessionCredential cred = containerSessionCache.cache.getValidValueSync();
-        containerSessionCache.setSessionCredential(cred);
-        return cred;
+        return updateCache(container, resolvedAccount).cache.getValidValueSync();
     }
 
     @Override
@@ -114,9 +111,8 @@ final class TokenCredentialSessionProvider implements SessionProvider {
         if (context == null) {
             return false;
         }
-        String key = normalize(context.getContainerName());
-        ContainerSessionCache containerSessionCache = containerSessionCaches.get(key);
-        return containerSessionCache != null && containerSessionCache.invalidateSession(rejectedCredential);
+        ContainerSessionCache containerSessionCache = containerSessionCaches.get(normalize(context.getContainerName()));
+        return containerSessionCache != null && containerSessionCache.cache.invalidateValue(rejectedCredential);
     }
 
     @Override
@@ -216,7 +212,6 @@ final class TokenCredentialSessionProvider implements SessionProvider {
     private static final class ContainerSessionCache {
         final AutoRefreshingCache<SessionCredential> cache;
         volatile OffsetDateTime lastAccess;
-        private SessionCredential currentSessionCredential;
 
         private ContainerSessionCache(TokenCredentialSessionProvider provider, Clock clock, String containerName,
             String resolvedAccountName, OffsetDateTime lastAccess) {
@@ -241,17 +236,5 @@ final class TokenCredentialSessionProvider implements SessionProvider {
             return new AutoRefreshingCache<>(valueProvider, SessionCredential::getExpiresAt, clock);
         }
 
-        synchronized void setSessionCredential(SessionCredential credential) {
-            currentSessionCredential = credential;
-        }
-
-        synchronized boolean invalidateSession(SessionCredential credential) {
-            if (currentSessionCredential != credential) {
-                return false;
-            }
-            cache.invalidateValue(credential);
-            currentSessionCredential = null;
-            return true;
-        }
     }
 }
