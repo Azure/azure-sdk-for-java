@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.FluxInputStream;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -102,7 +103,16 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(toBytes());
+        byte[] cachedBytes = BYTES_UPDATER.get(this);
+        if (cachedBytes != null) {
+            return new ByteArrayInputStream(cachedBytes);
+        }
+
+        if (isReplayable) {
+            return new ByteArrayInputStream(toBytes());
+        }
+
+        return new FluxInputStream(content);
     }
 
     @Override

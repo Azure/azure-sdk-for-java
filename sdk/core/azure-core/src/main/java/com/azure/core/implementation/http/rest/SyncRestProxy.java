@@ -14,6 +14,7 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -207,8 +208,8 @@ public class SyncRestProxy extends RestProxyBase {
         }
 
         ResponseBodyOwner responseBodyOwner = new ResponseBodyOwner(response);
-        return BinaryDataHelper.createBinaryData(new StreamingResponseContent(
-            responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), responseBodyOwner));
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(
+            responseBodyOwner.getBody(responseBody.toFluxByteBuffer()), responseBody.getLength(), false));
     }
 
     /**

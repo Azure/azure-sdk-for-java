@@ -23,6 +23,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -49,6 +51,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -283,7 +286,9 @@ public class SyncRestProxyTests {
         AtomicInteger responseCloseCount = new AtomicInteger();
         TestInterface testInterface = createBinaryDataService(Flux.never(), responseCloseCount);
 
-        testInterface.testBinaryDataResponse(Context.NONE).getValue().toStream().close();
+        BinaryData responseBody = testInterface.testBinaryDataResponse(Context.NONE).getValue();
+        assertInstanceOf(FluxByteBufferContent.class, BinaryDataHelper.getContent(responseBody));
+        responseBody.toStream().close();
 
         assertEquals(1, responseCloseCount.get());
     }
