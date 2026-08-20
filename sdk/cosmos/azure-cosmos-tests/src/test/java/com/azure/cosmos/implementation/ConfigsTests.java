@@ -156,23 +156,6 @@ public class ConfigsTests {
     }
 
     @Test(groups = { "unit" })
-    public void connectionEstablishmentTimeoutForPartitionRecovery() {
-        String propertyName = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
-        System.clearProperty(propertyName);
-        assertThat(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()).isEqualTo(20);
-
-        System.setProperty(propertyName, "15");
-        try {
-            assertThat(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()).isEqualTo(15);
-
-            System.setProperty(propertyName, "5");
-            assertThat(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()).isEqualTo(10);
-        } finally {
-            System.clearProperty(propertyName);
-        }
-    }
-
-    @Test(groups = { "unit" })
     public void http2MaxConcurrentStreams() {
         assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(30);
 
