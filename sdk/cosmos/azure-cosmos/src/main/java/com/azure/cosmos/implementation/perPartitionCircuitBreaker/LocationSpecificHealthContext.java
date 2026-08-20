@@ -148,7 +148,7 @@ public class LocationSpecificHealthContext implements Serializable {
             gen.writeNumberField("wErr", value.exceptionCountForWriteForCircuitBreaking);
             gen.writeNumberField("rOk", value.successCountForReadForRecovery);
             gen.writeNumberField("wOk", value.successCountForWriteForRecovery);
-            gen.writeStringField("since", toInstantString(value.unavailableSince));
+            gen.writeStringField("unavailableSince", toInstantString(value.unavailableSince));
 
             gen.writeEndObject();
         }
