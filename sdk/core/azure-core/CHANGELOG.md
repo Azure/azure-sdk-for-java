@@ -19,6 +19,7 @@
 
 ### Bugs Fixed
 
+- Fixed synchronous streaming of non-replayable `BinaryData` response bodies.
 - Fixed a bug where retrying requests with bodies created from a mark/reset-capable `InputStream` could fail because the stream was closed between retry attempts. ([#49650](https://github.com/Azure/azure-sdk-for-java/pull/49650))
 - Fixed GraalVM native-image compilation with SLF4J 2 by no longer forcing Azure Core logging and logging provider
   classes to initialize at image build time. ([#49844](https://github.com/Azure/azure-sdk-for-java/issues/49844))

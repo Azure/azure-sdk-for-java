@@ -141,6 +141,12 @@ public class FluxInputStream extends InputStream {
         }
     }
 
+    /**
+     * Closes the stream and cancels its Flux subscription. If the stream has not been read, closing subscribes and
+     * immediately cancels without requesting data so publisher cleanup can run.
+     *
+     * @throws IOException if the stream cannot be closed.
+     */
     @Override
     public void close() throws IOException {
         closed = true;

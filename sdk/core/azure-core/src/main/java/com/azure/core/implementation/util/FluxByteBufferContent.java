@@ -101,6 +101,12 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         return serializer.deserializeFromBytes(toBytes(), typeReference);
     }
 
+    /**
+     * Returns an in-memory stream for cached or replayable content. Uncached non-replayable content is streamed
+     * incrementally without buffering the full Flux.
+     *
+     * @return A stream over this content.
+     */
     @Override
     public InputStream toStream() {
         byte[] cachedBytes = BYTES_UPDATER.get(this);
