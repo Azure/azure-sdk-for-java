@@ -14,12 +14,12 @@ public final class MabJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"rrueqthwmg\",\"startTime\":\"2021-01-09T20:20:26Z\",\"endTime\":\"2021-07-17T15:53:32Z\",\"duration\":\"PT184H20M35S\",\"status\":\"igdhxiidlo\"}")
+            "{\"taskId\":\"fykhvuhxepmru\",\"startTime\":\"2021-01-01T13:09:47Z\",\"endTime\":\"2021-01-21T20:15:20Z\",\"duration\":\"PT137H3M36S\",\"status\":\"nslujd\"}")
             .toObject(MabJobTaskDetails.class);
-        Assertions.assertEquals("rrueqthwmg", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T20:20:26Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T15:53:32Z"), model.endTime());
-        Assertions.assertEquals(Duration.parse("PT184H20M35S"), model.duration());
-        Assertions.assertEquals("igdhxiidlo", model.status());
+        Assertions.assertEquals("fykhvuhxepmru", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T13:09:47Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T20:15:20Z"), model.endTime());
+        Assertions.assertEquals(Duration.parse("PT137H3M36S"), model.duration());
+        Assertions.assertEquals("nslujd", model.status());
     }
 }

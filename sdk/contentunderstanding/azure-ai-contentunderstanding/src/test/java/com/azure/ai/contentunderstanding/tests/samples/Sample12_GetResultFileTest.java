@@ -7,8 +7,8 @@ package com.azure.ai.contentunderstanding.tests.samples;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
-import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -56,6 +57,7 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
         System.out.println("Started analysis operation");
 
         // Wait for completion
+        LongRunningOperationStatus status = poller.waitForCompletion().getStatus();
         AnalysisResult result = poller.getFinalResult();
         System.out.println("Analysis completed successfully!");
 
@@ -70,6 +72,9 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
         // Verify operation started and completed
         assertNotNull(videoUrl, "Video URL should not be null");
         System.out.println("Video URL: " + videoUrl);
+
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, status,
+            "Video analysis should complete successfully");
 
         assertNotNull(operationId, "Operation ID should not be null");
         assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
@@ -108,29 +113,7 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
             String framePath = "keyframes/" + firstFrameTimeMs;
             System.out.println("Getting result file: " + framePath);
 
-            // Retrieve the keyframe image using convenience method with retry logic
-            // Result files may not be immediately available after analysis completion
-            BinaryData fileData = null;
-            int maxRetries = 12;
-            int retryDelayMs = 10000;
-            for (int attempt = 1; attempt <= maxRetries; attempt++) {
-                try {
-                    fileData = contentUnderstandingClient.getResultFile(operationId, framePath);
-                    break; // Success, exit retry loop
-                } catch (Exception e) {
-                    if (attempt == maxRetries) {
-                        throw e; // Re-throw on final attempt
-                    }
-                    System.out.println("Attempt " + attempt + " failed: " + e.getMessage());
-                    System.out.println("Waiting " + (retryDelayMs / 1000) + " seconds before retry...");
-                    try {
-                        Thread.sleep(retryDelayMs);
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException("Interrupted while waiting for retry", ie);
-                    }
-                }
-            }
+            BinaryData fileData = contentUnderstandingClient.getResultFile(operationId, framePath);
             byte[] imageBytes = fileData.toBytes();
             System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
 
@@ -203,6 +186,7 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
             // Verify file can be read back
             byte[] readBackBytes = Files.readAllBytes(outputPath);
             assertEquals(imageBytes.length, readBackBytes.length, "Read back file size should match original");
+            assertArrayEquals(imageBytes, readBackBytes, "Read back file content should match original");
             System.out.println("File content verified (read back matches original)");
 
             // Test additional keyframes if available
@@ -230,30 +214,9 @@ public class Sample12_GetResultFileTest extends ContentUnderstandingClientTestBa
             System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
             System.out.println("  Saved to: " + outputPath.toAbsolutePath());
             System.out.println("  File verified: Yes");
+            Files.deleteIfExists(outputPath);
         } else {
-            // No video content (expected for document analysis)
-            System.out.println("\n📚 GetResultFile API Usage Example:");
-            System.out.println("   For video analysis with keyframes:");
-            System.out.println("   1. Analyze video with prebuilt-videoSearch");
-            System.out.println("   2. Get keyframe times from AudioVisualContent.getKeyFrameTimes()");
-            System.out.println("   3. Retrieve keyframes using getResultFile():");
-            System.out.println("      BinaryData fileData = contentUnderstandingClient.getResultFile(\"" + operationId
-                + "\", \"keyframes/1000\");");
-            System.out.println("   4. Save or process the keyframe image");
-
-            // Verify content type
-            if (result.getContents().get(0) instanceof DocumentContent) {
-                DocumentContent docContent = (DocumentContent) result.getContents().get(0);
-                System.out.println("\nContent type: DocumentContent (as expected)");
-                System.out.println("  MIME type: "
-                    + (docContent.getMimeType() != null ? docContent.getMimeType() : "(not specified)"));
-                System.out
-                    .println("  Pages: " + docContent.getStartPageNumber() + " - " + docContent.getEndPageNumber());
-            }
-
-            assertNotNull(operationId, "Operation ID should be available for GetResultFile API");
-            assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
-            System.out.println("Operation ID available for GetResultFile API: " + operationId);
+            throw new AssertionError("Video analysis must return AudioVisualContent with keyframes.");
         }
     }
 

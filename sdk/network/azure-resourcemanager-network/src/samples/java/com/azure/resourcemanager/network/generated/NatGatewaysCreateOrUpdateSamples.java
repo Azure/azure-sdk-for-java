@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class NatGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayCreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/NatGatewayCreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway.
@@ -36,7 +36,7 @@ public final class NatGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayWithServiceGatewayCreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/NatGatewayWithServiceGatewayCreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway with service gateway.
@@ -58,7 +58,7 @@ public final class NatGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayCreateOrUpdateStandardV2Sku.json
+     * x-ms-original-file: 2025-09-01/NatGatewayCreateOrUpdateStandardV2Sku.json
      */
     /**
      * Sample code: Create nat gateway with StandardV2 Sku.
@@ -78,7 +78,7 @@ public final class NatGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/NatGatewayWithNat64CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/NatGatewayWithNat64CreateOrUpdate.json
      */
     /**
      * Sample code: Create nat gateway with nat64.

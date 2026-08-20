@@ -6,3 +6,6 @@ overrides:
     - DCOUNT
     - dedupe
     - colls
+    - DACCOUNT
+    - Dcodesnippet
+    - DCOSMOS

@@ -4,19 +4,19 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
+import com.azure.resourcemanager.hybridcompute.models.Identity;
 import com.azure.resourcemanager.hybridcompute.models.IdentityKeyStore;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.hybridcompute.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
+import com.azure.resourcemanager.hybridcompute.models.ResourceIdentityType;
 
 /**
  * Samples for Machines CreateOrUpdate.
  */
 public final class MachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-16-preview/machine/Machines_CreateOrUpdate.json
+     * x-ms-original-file: 2026-07-15/machine/Machines_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Machine.
@@ -28,7 +28,7 @@ public final class MachinesCreateOrUpdateSamples {
             .define("myMachine")
             .withRegion("eastus2euap")
             .withExistingResourceGroup("myResourceGroup")
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withLocationData(new LocationData().withName("Redmond"))
             .withOsProfile(new OSProfile()
                 .withWindowsConfiguration(new OSProfileWindowsConfiguration().withEnableHotpatching(true)))

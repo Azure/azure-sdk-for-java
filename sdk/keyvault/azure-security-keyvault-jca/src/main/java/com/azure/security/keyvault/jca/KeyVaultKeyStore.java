@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.logging.Level.FINE;
@@ -55,6 +58,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * Stores the logger.
      */
     private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStore.class.getName());
+
+    static final String CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY
+        = "azure.keyvault.jca.certificate-alias-filter-pattern";
 
     /**
      * Stores the Jre key store certificates.
@@ -146,9 +152,10 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
-        keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
-            managedIdentity, accessToken, disableChallengeResourceVerification);
-        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
+        keyVaultCertificates
+            = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+                accessToken, disableChallengeResourceVerification, getKeyVaultCertificateAliasFilterPatterns());
+        LOGGER.log(FINE, () -> String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
@@ -166,6 +173,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             .map(Long::valueOf)
             .findFirst()
             .orElse(0L);
+    }
+
+    Set<String> getKeyVaultCertificateAliasFilterPatterns() {
+        // Each pattern gets its own property because any delimiter character can be part of a regex.
+        Properties properties = System.getProperties();
+        String suffixedPropertyPrefix = CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY + ".";
+
+        return properties.stringPropertyNames()
+            .stream()
+            .filter(name -> name.equals(CERTIFICATE_ALIAS_FILTER_PATTERN_PROPERTY)
+                || name.startsWith(suffixedPropertyPrefix))
+            .map(properties::getProperty)
+            .filter(Objects::nonNull)
+            .map(String::trim)
+            .filter(pattern -> !pattern.isEmpty())
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -254,16 +277,22 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate engineGetCertificate(String alias) {
-        Certificate certificate = allCertificates.stream()
-            .map(AzureCertificates::getCertificates)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificates -> certificates.get(alias))
-            .orElse(null);
+        Certificate certificate = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificate = ((KeyVaultCertificates) certificatesSource).getCertificate(alias);
+            } else {
+                certificate = certificatesSource.getCertificates().get(alias);
+            }
+
+            if (certificate != null) {
+                break;
+            }
+        }
 
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificate == null) {
             keyVaultCertificates.refreshCertificates();
-            certificate = keyVaultCertificates.getCertificates().get(alias);
+            certificate = keyVaultCertificates.getCertificate(alias);
         }
 
         return certificate;
@@ -283,7 +312,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             List<String> aliasList = getAllAliases();
             for (String candidateAlias : aliasList) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
-                if (certificate.equals(cert)) {
+                if (certificate != null && certificate.equals(cert)) {
                     alias = candidateAlias;
                     break;
                 }
@@ -307,16 +336,23 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        Certificate[] certificates = allCertificates.stream()
-            .map(AzureCertificates::getCertificateChains)
-            .filter(Objects::nonNull)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(m -> m.get(alias))
-            .orElse(null);
+        Certificate[] certificates = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                certificates = ((KeyVaultCertificates) certificatesSource).getCertificateChain(alias);
+            } else {
+                Certificate[] certificateChain = certificatesSource.getCertificateChains().get(alias);
+                certificates = certificateChain == null ? null : certificateChain.clone();
+            }
+
+            if (certificates != null) {
+                break;
+            }
+        }
+
         if (refreshCertificatesWhenHaveUnTrustCertificate && certificates == null) {
             keyVaultCertificates.refreshCertificates();
-            return keyVaultCertificates.getCertificateChains().get(alias);
+            return keyVaultCertificates.getCertificateChain(alias);
         }
         return certificates;
     }
@@ -358,12 +394,20 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      */
     @Override
     public Key engineGetKey(String alias, char[] password) {
-        return allCertificates.stream()
-            .map(AzureCertificates::getCertificateKeys)
-            .filter(a -> a.containsKey(alias))
-            .findFirst()
-            .map(certificateKeys -> certificateKeys.get(alias))
-            .orElse(null);
+        Key key = null;
+        for (AzureCertificates certificatesSource : allCertificates) {
+            if (certificatesSource instanceof KeyVaultCertificates) {
+                key = ((KeyVaultCertificates) certificatesSource).getCertificateKey(alias);
+            } else {
+                key = certificatesSource.getCertificateKeys().get(alias);
+            }
+
+            if (key != null) {
+                break;
+            }
+        }
+
+        return key;
     }
 
     /**
