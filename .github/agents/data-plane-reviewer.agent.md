@@ -76,13 +76,15 @@ workflow.
    is introduced by the PR, apply all exceptions, and drop weak candidates.
 9. **Critic.** Dispatch the Data-Plane Review Critic exactly once using
    [`protocols/data-plane-review-critic.protocol.md`](protocols/data-plane-review-critic.protocol.md).
-   `FAIL` drops a finding. `DOWNGRADE` lowers it as directed. There is no
-   unattended override.
+   Accept only the protocol's exact heading, metadata, row count, columns,
+   reason codes, and `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms
+   such as `Confirmed`. `FAIL` drops a finding and `DOWNGRADE` lowers it as
+   directed. A malformed critique produces `noop`; there is no unattended
+   override.
 10. **Report.** Emit one complete report or the no-findings form from the
     skill. Do not post it.
 
 ## Failure behavior
 
 If required PR data or the pinned SHA cannot be read, use `noop`. If critic
-dispatch fails or its response is malformed, drop all Blocking findings to
-Warning and state that independent verification was unavailable.
+dispatch fails or its response is malformed, use `noop`.

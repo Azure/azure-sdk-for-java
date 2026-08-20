@@ -61,5 +61,8 @@ on a `YOU SHOULD` or `YOU SHOULD NOT` statement cannot be Blocking.
 
 ## Failure handling
 
-If dispatch fails or the critique cannot be parsed, the reviewer drops every
-Blocking finding to Warning. Extra findings from the critic are ignored.
+The output is malformed unless it has the exact heading and metadata fields,
+one row per supplied finding, the declared columns, a valid reason code, and a
+verdict spelled exactly `PASS`, `DOWNGRADE`, or `FAIL`. Synonyms such as
+`Confirmed` are invalid. If dispatch fails or the critique is malformed, the
+reviewer uses `noop`.

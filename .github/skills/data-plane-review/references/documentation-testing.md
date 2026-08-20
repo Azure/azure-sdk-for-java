@@ -70,6 +70,10 @@ when the changed behavior lacks applicable existing coverage.
 Exclude files under `src/test/**/generated/`; they are emitter-generated
 examples and do not count as tests.
 
+For a `new-module`, emit `DP-TEST-01` when no test files remain after excluding
+`src/test/**/generated/`. This trigger is mandatory and does not depend on
+whether test files appear in the PR diff.
+
 **Correct form:** add applicable tests outside `generated`, parameterize them
 for supported HTTP clients and service versions, and use the repository's
 normal PR subset plus the full transport/version matrix for live validation.

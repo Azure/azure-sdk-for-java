@@ -66,9 +66,9 @@ timeout-minutes: 20
 
 Review pull request
 `${{ github.event.pull_request.number || inputs.item_number }}` in
-`${{ github.repository }}`. This is an advisory, read-only review. APIView, CI,
-other automated checks, and human reviewers remain responsible for the final
-decision.
+the repository identified by the workflow's GitHub context. This is an
+advisory, read-only review. APIView, CI, other automated checks, and human
+reviewers remain responsible for the final decision.
 
 The following trusted-base imports define the reviewer, scope, rules,
 verification requirements, critic contract, and report format. Follow them
@@ -108,7 +108,9 @@ exactly.
    not invent rules or severities.
 5. If no candidate survives self-verification, use `noop`. Otherwise dispatch
    the **Data-Plane Review Critic** using the imported protocol before
-   producing the report. Drop every `FAIL` and apply every `DOWNGRADE`.
+   producing the report. Accept only the protocol's exact output shape and
+   verdict names; do not normalize synonyms. Drop every `FAIL`, apply every
+   `DOWNGRADE`, and use `noop` for a malformed critique.
 6. Produce at most one replacement comment through `safe-outputs`. Never post,
    approve, request changes, label, modify code, or merge directly.
 7. Silence is success. If no finding or question needs a state update, use
@@ -122,8 +124,6 @@ model: gpt-5.6-terra
 
 {{#runtime-import .github/agents/data-plane-review-critic.agent.md}}
 
-{{#runtime-import .github/agents/protocols/data-plane-review-critic.protocol.md}}
-
 {{#runtime-import .github/skills/data-plane-review/references/rule-summary.md}}
 
 {{#runtime-import .github/skills/data-plane-review/references/client-api.md}}
@@ -135,3 +135,5 @@ model: gpt-5.6-terra
 {{#runtime-import .github/skills/data-plane-review/references/versioning-build-generation.md}}
 
 {{#runtime-import .github/skills/data-plane-review/references/documentation-testing.md}}
+
+{{#runtime-import .github/agents/protocols/data-plane-review-critic.protocol.md}}
