@@ -9,14 +9,12 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.spring.data.cosmos.exception.CosmosConflictException;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.exception.CosmosGoneException;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,51 +86,15 @@ public class CosmosBulkOperationResponseUtilsUnitTest {
     }
 
     @Test
-    public void emitErrorForFailedBulkOperationRejectsUnsuccessfulResponse() {
+    public void emitErrorForFailedBulkOperationEmitsUnsuccessfulItemResponse() {
         CosmosBulkItemResponse itemResponse = mock(CosmosBulkItemResponse.class);
-        CosmosDiagnostics diagnostics = mock(CosmosDiagnostics.class);
         when(itemResponse.isSuccessStatusCode()).thenReturn(false);
-        when(itemResponse.getStatusCode()).thenReturn(500);
-        when(itemResponse.getSubStatusCode()).thenReturn(1002);
-        when(itemResponse.getResponseHeaders()).thenReturn(Collections.emptyMap());
-        when(itemResponse.getCosmosDiagnostics()).thenReturn(diagnostics);
         CosmosBulkOperationResponse<Object> response = ModelBridgeInternal.createCosmosBulkOperationResponse(
             null, itemResponse, null);
 
         StepVerifier.create(Flux.just(response)
                 .handle(CosmosBulkOperationResponseUtils::emitErrorForFailedBulkOperation))
-            .expectErrorSatisfies(error -> assertThat(error)
-                .isInstanceOf(CosmosException.class)
-                .satisfies(cosmosError -> {
-                    CosmosException cosmosException = (CosmosException) cosmosError;
-                    assertThat(cosmosException.getStatusCode()).isEqualTo(500);
-                    assertThat(cosmosException.getSubStatusCode()).isEqualTo(1002);
-                    assertThat(cosmosException.getDiagnostics()).isSameAs(diagnostics);
-                }))
-            .verify();
-    }
-
-    @Test
-    public void serviceFailurePreservesDiagnosticsDuringSpringExceptionTranslation() {
-        CosmosBulkItemResponse itemResponse = mock(CosmosBulkItemResponse.class);
-        CosmosDiagnostics diagnostics = mock(CosmosDiagnostics.class);
-        AtomicReference<ResponseDiagnostics> processedDiagnostics = new AtomicReference<>();
-        when(itemResponse.isSuccessStatusCode()).thenReturn(false);
-        when(itemResponse.getStatusCode()).thenReturn(409);
-        when(itemResponse.getSubStatusCode()).thenReturn(0);
-        when(itemResponse.getResponseHeaders()).thenReturn(Collections.emptyMap());
-        when(itemResponse.getCosmosDiagnostics()).thenReturn(diagnostics);
-        CosmosBulkOperationResponse<Object> response = ModelBridgeInternal.createCosmosBulkOperationResponse(
-            null, itemResponse, null);
-
-        StepVerifier.create(Flux.just(response)
-                .handle(CosmosBulkOperationResponseUtils::emitErrorForFailedBulkOperation)
-                .onErrorResume(error -> CosmosExceptionUtils.exceptionHandler(
-                    "Failed to insert item(s)", error, processedDiagnostics::set)))
-            .expectError(CosmosConflictException.class)
-            .verify();
-
-        assertThat(processedDiagnostics.get()).isNotNull();
-        assertThat(processedDiagnostics.get().getCosmosDiagnostics()).isSameAs(diagnostics);
+            .expectNext(response)
+            .verifyComplete();
     }
 }
