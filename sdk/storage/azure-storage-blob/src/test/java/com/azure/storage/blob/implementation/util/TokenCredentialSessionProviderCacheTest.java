@@ -13,7 +13,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionRequestContext;
-import com.azure.storage.common.test.shared.http.ScriptedHttpClient;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -27,9 +27,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * behavior.
  * <p>
  * These tests drive {@link TokenCredentialSessionProvider} with an injectable {@link Clock} and a fake HTTP transport
- * ({@link ScriptedHttpClient}) so the expiry, proactive-refresh, and per-container independence logic
+ * ({@link CreateSessionTransport}) so the expiry, proactive-refresh, and per-container independence logic
  * can be exercised without sleeping or hitting the service. Unlike {@code SessionProviderSeamTest} (which
  * verifies the container name is placed correctly on the wire), these tests focus on cache timing: which
  * token is returned when, and how many CreateSession calls are made. Account-level acquisition cooldown is
@@ -57,6 +61,21 @@ public class TokenCredentialSessionProviderCacheTest {
 
     // A session's usable lifetime in these tests (the service issues ~5 minute sessions).
     private static final Duration SESSION_LIFETIME = Duration.ofMinutes(5);
+    private static final Instant TEST_START = Instant.parse("2026-06-19T00:00:00Z");
+
+    private MutableClock clock;
+    private CreateSessionTransport httpClient;
+    private TokenCredentialSessionProvider provider;
+
+    @BeforeEach
+    public void setup() {
+        clock = new MutableClock(TEST_START);
+        httpClient = new CreateSessionTransport();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
+        provider = new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
+            BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
+    }
 
     /**
      * A request returns a good (valid) token. The clock then advances past the token's expiration. The next
@@ -65,12 +84,8 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void expiredByTimeOnSecondRequestCreatesNewSession() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
-            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
 
         // First request: cold cache mints a good token and uses it.
         SessionCredential firstRequest = provider.getSession(contextFor(CONTAINER_A));
@@ -93,12 +108,8 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void automaticBackgroundRefreshFiresWithoutServiceHint() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
-            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
 
         // First request: cold cache mints the initial token.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -125,12 +136,8 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void invalidateSessionEvictsTheLiveCredential() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
-            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
         SessionRequestContext context = contextFor(CONTAINER_A);
 
         SessionCredential credential = provider.getSession(context);
@@ -146,12 +153,8 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void invalidateSessionIgnoresACredentialAlreadyReplacedByRefresh() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN,
-            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME.multipliedBy(2)));
         SessionRequestContext context = contextFor(CONTAINER_A);
 
         SessionCredential firstCredential = provider.getSession(context);
@@ -176,13 +179,9 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void independentContainersRefreshIndependently() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, "refreshed-a",
-            now(clock).plus(SESSION_LIFETIME.multipliedBy(2)));
-        enqueueSessionResponse(httpClient, CONTAINER_B, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, "refreshed-a", now().plus(SESSION_LIFETIME.multipliedBy(2)));
+        enqueueSessionResponse(CONTAINER_B, SECOND_TOKEN, now().plus(SESSION_LIFETIME));
 
         // Mint an initial session for each container.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -196,7 +195,7 @@ public class TokenCredentialSessionProviderCacheTest {
         // Touching container A triggers its background refresh. The refresh runs on a background
         // subscription, so poll briefly rather than asserting the call count immediately.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
-        waitForCallCount(httpClient);
+        waitForRequestCount(CONTAINER_A, 2);
         assertEquals(2, httpClient.getRequestCount(CONTAINER_A));
 
         // Container B has not been touched since the clock advanced, so it must not have refreshed - proving
@@ -211,10 +210,7 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void noRefreshBeforeJitterWindowWithoutServiceHint() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
 
         // First request mints the token.
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
@@ -236,10 +232,7 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void coldCacheCreatesValueAsync() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
@@ -254,10 +247,7 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void cachedValueIsReusedOnLaterAsyncRequests() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A)))
             .assertNext(credential -> assertEquals(FIRST_TOKEN, credential.getSessionToken()))
@@ -279,11 +269,8 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void creationFailurePropagatesAndAllowsRetryAsync() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueFailure(httpClient, CONTAINER_A);
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueFailure(CONTAINER_A);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
 
         StepVerifier.create(provider.getSessionAsync(contextFor(CONTAINER_A))).verifyError();
 
@@ -301,10 +288,7 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void containerNameLookupIsCaseInsensitive() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
 
         assertEquals(FIRST_TOKEN, provider.getSession(contextFor(CONTAINER_A)).getSessionToken());
         assertEquals(FIRST_TOKEN,
@@ -315,12 +299,9 @@ public class TokenCredentialSessionProviderCacheTest {
 
     @Test
     public void refreshAndInvalidationAreOwnedByProvider() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        enqueueSessionResponse(httpClient, CONTAINER_A, FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, SECOND_TOKEN, now(clock).plus(SESSION_LIFETIME));
-        enqueueSessionResponse(httpClient, CONTAINER_A, "third-session-token", now(clock).plus(SESSION_LIFETIME));
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        enqueueSessionResponse(CONTAINER_A, FIRST_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, SECOND_TOKEN, now().plus(SESSION_LIFETIME));
+        enqueueSessionResponse(CONTAINER_A, "third-session-token", now().plus(SESSION_LIFETIME));
         SessionRequestContext context = contextFor(CONTAINER_A);
 
         SessionCredential first = provider.getSession(context);
@@ -339,11 +320,13 @@ public class TokenCredentialSessionProviderCacheTest {
      */
     @Test
     public void concurrentAsyncRequestsShareASingleInFlightCreation() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        ScriptedHttpClient httpClient = createHttpClient();
-        // A pending response models a CreateSession call that is still outstanding.
-        Sinks.One<HttpResponse> pendingResponse = httpClient.enqueuePendingResponse(CONTAINER_A);
-        TokenCredentialSessionProvider provider = createProvider(httpClient, clock);
+        // A response that is never completed inline models a CreateSession call that is still outstanding.
+        Sinks.One<HttpResponse> pendingResponse = Sinks.one();
+        AtomicReference<HttpRequest> pendingRequest = new AtomicReference<>();
+        httpClient.enqueueResponse(CONTAINER_A, request -> {
+            pendingRequest.set(request);
+            return pendingResponse.asMono();
+        });
 
         Mono<SessionCredential> first = provider.getSessionAsync(contextFor(CONTAINER_A));
         Mono<SessionCredential> second = provider.getSessionAsync(contextFor(CONTAINER_A));
@@ -364,8 +347,7 @@ public class TokenCredentialSessionProviderCacheTest {
         // Only one CreateSession call was made even though two callers subscribed.
         assertEquals(1, httpClient.getRequestCount(CONTAINER_A));
 
-        pendingResponse.tryEmitValue(
-            buildResponse(httpClient.getLastRequest(CONTAINER_A), FIRST_TOKEN, now(clock).plus(SESSION_LIFETIME)));
+        pendingResponse.tryEmitValue(buildResponse(pendingRequest.get(), FIRST_TOKEN, now().plus(SESSION_LIFETIME)));
 
         awaitLatch(firstLatch);
         awaitLatch(secondLatch);
@@ -395,7 +377,7 @@ public class TokenCredentialSessionProviderCacheTest {
         SessionCredential last;
         do {
             last = supplier.get();
-            if (TokenCredentialSessionProviderCacheTest.SECOND_TOKEN.equals(last.getSessionToken())) {
+            if (SECOND_TOKEN.equals(last.getSessionToken())) {
                 return last;
             }
             sleepBriefly();
@@ -403,10 +385,9 @@ public class TokenCredentialSessionProviderCacheTest {
         return last;
     }
 
-    private static void waitForCallCount(ScriptedHttpClient httpClient) {
+    private void waitForRequestCount(String container, int expectedCount) {
         long deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos();
-        while (httpClient.getRequestCount(TokenCredentialSessionProviderCacheTest.CONTAINER_A) < 2
-            && System.nanoTime() < deadline) {
+        while (httpClient.getRequestCount(container) < expectedCount && System.nanoTime() < deadline) {
             sleepBriefly();
         }
     }
@@ -420,34 +401,21 @@ public class TokenCredentialSessionProviderCacheTest {
         }
     }
 
-    private static TokenCredentialSessionProvider createProvider(HttpClient httpClient, Clock clock) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
-        return new TokenCredentialSessionProvider(pipeline, "https://" + ACCOUNT_NAME + ".blob.core.windows.net",
-            BlobServiceVersion.getLatest(), ACCOUNT_NAME, clock);
-    }
-
     private static SessionRequestContext contextFor(String containerName) {
         return new SessionRequestContext().setContainerName(containerName).setAccountName(ACCOUNT_NAME);
     }
 
-    private static OffsetDateTime now(Clock clock) {
+    private OffsetDateTime now() {
         return OffsetDateTime.now(clock);
     }
 
-    /**
-     * Creates a request-keyed scripted client that parses the container name out of the CreateSession path.
-     */
-    private static ScriptedHttpClient createHttpClient() {
-        return new ScriptedHttpClient(TokenCredentialSessionProviderCacheTest::containerFromPath);
+    private void enqueueSessionResponse(String container, String token, OffsetDateTime expiresAt) {
+        httpClient.enqueueResponse(container, request -> Mono.just(buildResponse(request, token, expiresAt)));
     }
 
-    private static void enqueueSessionResponse(ScriptedHttpClient httpClient, String container, String token,
-        OffsetDateTime expiresAt) {
-        httpClient.enqueueResponse(container, request -> buildResponse(request, token, expiresAt));
-    }
-
-    private static void enqueueFailure(ScriptedHttpClient httpClient, String container) {
-        httpClient.enqueueFailure(container, new IllegalStateException("CreateSession failed."));
+    private void enqueueFailure(String container) {
+        httpClient.enqueueResponse(container,
+            request -> Mono.error(new IllegalStateException("CreateSession failed.")));
     }
 
     private static String containerFromPath(HttpRequest request) {
@@ -465,6 +433,38 @@ public class TokenCredentialSessionProviderCacheTest {
 
         return new MockHttpResponse(request, 201, body.getBytes(StandardCharsets.UTF_8)).addHeader("Content-Type",
             "application/xml");
+    }
+
+    /**
+     * Serves a per-container FIFO queue of CreateSession responses, keyed off the container name in the request
+     * path, and counts the requests each container received.
+     */
+    private static final class CreateSessionTransport implements HttpClient {
+        private final ConcurrentHashMap<String, ConcurrentLinkedQueue<Function<HttpRequest, Mono<HttpResponse>>>> responsesByContainer
+            = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<String, AtomicInteger> requestCountsByContainer = new ConcurrentHashMap<>();
+
+        void enqueueResponse(String container, Function<HttpRequest, Mono<HttpResponse>> response) {
+            responsesByContainer.computeIfAbsent(container, ignored -> new ConcurrentLinkedQueue<>()).add(response);
+        }
+
+        int getRequestCount(String container) {
+            AtomicInteger count = requestCountsByContainer.get(container);
+            return count == null ? 0 : count.get();
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            String container = containerFromPath(request);
+            requestCountsByContainer.computeIfAbsent(container, ignored -> new AtomicInteger()).incrementAndGet();
+
+            ConcurrentLinkedQueue<Function<HttpRequest, Mono<HttpResponse>>> responses
+                = responsesByContainer.get(container);
+            Function<HttpRequest, Mono<HttpResponse>> response = responses == null ? null : responses.poll();
+            return response == null
+                ? Mono.error(new IllegalStateException("No CreateSession response for " + container))
+                : response.apply(request);
+        }
     }
 
     /**
