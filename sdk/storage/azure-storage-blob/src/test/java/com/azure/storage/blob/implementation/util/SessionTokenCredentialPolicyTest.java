@@ -4,6 +4,7 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -20,7 +21,7 @@ import com.azure.storage.blob.models.SessionCredential;
 import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.blob.models.SessionProvider;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
-import com.azure.storage.common.test.shared.http.ScriptedHttpClient;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -35,6 +36,7 @@ import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -81,8 +83,7 @@ public class SessionTokenCredentialPolicyTest {
             = new BlobStorageException("CreateSession failed.", new MockHttpResponse(null, 500), null);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure));
 
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200)  // first request: acquisition fails, bearer fallback
-            .enqueueResponse(200); // second request: cooldown active, bearer fallback
+        HttpClient transport = successTransport();
         HttpPipeline pipeline = buildPipeline(transport);
 
         StepVerifier.create(pipeline.send(blobGetRequest()))
@@ -106,8 +107,7 @@ public class SessionTokenCredentialPolicyTest {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.error(serverFailure))       // first call: acquisition fails
             .thenReturn(Mono.just(credentialWithToken())); // third call: cooldown expired
 
-        ScriptedHttpClient transport
-            = new ScriptedHttpClient().enqueueResponse(200).enqueueResponse(200).enqueueResponse(200);
+        HttpClient transport = successTransport();
         HttpPipeline pipeline = buildPipeline(transport);
 
         StepVerifier.create(pipeline.send(blobGetRequest()))
@@ -129,7 +129,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policySignsRequestWithSessionCredential() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
+        HttpClient transport = successTransport();
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -148,8 +148,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyInvalidatesSessionAndFallsBackToBearerAsync() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)  // session auth returns 401
-            .enqueueResponse(200); // bearer retry succeeds
+        WireTapHttpClient transport = bearerFallbackTransport(401);
 
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
@@ -174,13 +173,7 @@ public class SessionTokenCredentialPolicyTest {
     public void repeatedSessionRejectionStartsAccountCooldown() {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(200); // fourth request: cooldown active, bearer only
+        WireTapHttpClient transport = bearerFallbackTransport(401);
         HttpPipeline pipeline = buildPipeline(transport);
 
         for (int i = 0; i < 4; i++) {
@@ -198,14 +191,7 @@ public class SessionTokenCredentialPolicyTest {
     public void acceptedSessionResetsRejectionCount() {
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(200) // session accepted, clearing the count
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(200); // fifth request still attempts a session
+        WireTapHttpClient transport = sessionRejectionTransportWithAcceptedSecondRequest();
         HttpPipeline pipeline = buildPipeline(transport);
 
         for (int i = 0; i < 5; i++) {
@@ -224,14 +210,7 @@ public class SessionTokenCredentialPolicyTest {
         policy = createPolicy(clock);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(401)
-            .enqueueResponse(200)
-            .enqueueResponse(200)  // fourth request: cooldown active
-            .enqueueResponse(200); // fifth request: cooldown expired, session attempted again
+        WireTapHttpClient transport = bearerFallbackTransport(401);
         HttpPipeline pipeline = buildPipeline(transport);
 
         for (int i = 0; i < 4; i++) {
@@ -253,7 +232,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyReturns403WithoutRetry() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(403);
+        WireTapHttpClient transport = new WireTapHttpClient(statusCodeTransport(403));
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -267,7 +246,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyReturnsDataRequest503WithoutBearerFallbackAsync() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(503);
+        WireTapHttpClient transport = new WireTapHttpClient(statusCodeTransport(503));
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -282,7 +261,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void policyFallsToBearerOn400Async() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(400).enqueueResponse(200);
+        WireTapHttpClient transport = bearerFallbackTransport(400);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -301,7 +280,7 @@ public class SessionTokenCredentialPolicyTest {
         HttpRequest request = blobGetRequest();
         HttpHeaders responseHeaders
             = new HttpHeaders().set(HttpHeaderName.fromString("x-ms-auth-info"), "session_expiring");
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200, responseHeaders);
+        HttpClient transport = responseTransport(200, responseHeaders);
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -320,7 +299,7 @@ public class SessionTokenCredentialPolicyTest {
     @Test
     public void noSessionExpiringHintDoesNotForceBackgroundRefresh() {
         HttpRequest request = blobGetRequest();
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
+        HttpClient transport = successTransport();
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(credentialWithToken()));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -342,7 +321,7 @@ public class SessionTokenCredentialPolicyTest {
             .set(HttpHeaderName.fromString("x-ms-client-request-id"), "11111111-2222-3333-4444-555555555555")
             .set(HttpHeaderName.RANGE, "bytes=0-1023");
 
-        ScriptedHttpClient transport = new ScriptedHttpClient().enqueueResponse(200);
+        HttpClient transport = successTransport();
         when(sessionProvider.getSessionAsync(any())).thenReturn(Mono.just(cred));
 
         StepVerifier.create(buildPipeline(transport).send(request))
@@ -469,8 +448,36 @@ public class SessionTokenCredentialPolicyTest {
 
     // Helpers
 
-    private HttpPipeline buildPipeline(ScriptedHttpClient transport) {
+    private HttpPipeline buildPipeline(HttpClient transport) {
         return new HttpPipelineBuilder().httpClient(transport).policies(policy).build();
+    }
+
+    private static HttpClient successTransport() {
+        return statusCodeTransport(200);
+    }
+
+    private static HttpClient statusCodeTransport(int statusCode) {
+        return request -> Mono.just(new MockHttpResponse(request, statusCode));
+    }
+
+    private static HttpClient responseTransport(int statusCode, HttpHeaders headers) {
+        return request -> Mono.just(new MockHttpResponse(request, statusCode, headers));
+    }
+
+    private static WireTapHttpClient bearerFallbackTransport(int sessionResponseStatusCode) {
+        return new WireTapHttpClient(request -> Mono
+            .just(new MockHttpResponse(request, isSessionAuthenticated(request) ? sessionResponseStatusCode : 200)));
+    }
+
+    private static WireTapHttpClient sessionRejectionTransportWithAcceptedSecondRequest() {
+        AtomicInteger sessionRequestCount = new AtomicInteger();
+        return new WireTapHttpClient(request -> Mono.just(new MockHttpResponse(request,
+            !isSessionAuthenticated(request) || sessionRequestCount.incrementAndGet() == 2 ? 200 : 401)));
+    }
+
+    private static boolean isSessionAuthenticated(HttpRequest request) {
+        String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        return authorization != null && authorization.startsWith("Session ");
     }
 
     private static HttpRequest blobGetRequest() {

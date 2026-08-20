@@ -9,9 +9,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class WireTapHttpClient implements HttpClient {
 
     private final HttpClient delegate;
+    private final AtomicInteger requestCount = new AtomicInteger();
     private volatile HttpRequest lastRequest;
 
     public WireTapHttpClient(HttpClient delegate) {
@@ -20,23 +23,32 @@ public class WireTapHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
-        lastRequest = request;
+        inspect(request);
         return delegate.send(request);
     }
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        lastRequest = request;
+        inspect(request);
         return delegate.send(request, context);
     }
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        lastRequest = request;
+        inspect(request);
         return delegate.sendSync(request, context);
     }
 
     public HttpRequest getLastRequest() {
         return lastRequest;
+    }
+
+    public int getRequestCount() {
+        return requestCount.get();
+    }
+
+    private void inspect(HttpRequest request) {
+        lastRequest = request;
+        requestCount.incrementAndGet();
     }
 }
