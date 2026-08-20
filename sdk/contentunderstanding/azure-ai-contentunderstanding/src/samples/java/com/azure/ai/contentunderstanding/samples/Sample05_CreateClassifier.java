@@ -37,6 +37,9 @@ import java.util.Map;
  * - Multi-document processing: Process files containing multiple document types by automatically
  *   segmenting them
  *
+ * <p>A classifier can perform classification and routed content extraction in one analysis call. This sample uses a
+ * document classifier, but classifiers can also be based on audio, video, or image analyzers.</p>
+ *
  * Classifiers use custom categories defined in ContentCategories. Each category has a Description
  * that helps the AI model understand what documents belong to that category. You can define up to
  * 200 category names and descriptions. You can include an "other" category to handle unmatched
@@ -46,10 +49,12 @@ import java.util.Map;
  * are split into segments:
  * - EnableSegment = false: Classifies the entire file as a single category (classify only)
  * - EnableSegment = true: Automatically splits the file into segments by category (classify and segment)
+ *
+ * <p>The included sample file contains an invoice on page 1, a bank statement on pages 2-3, and a loan application
+ * on page 4; segmentation should return one segment for each document type. This sample deletes its classifier for
+ * cleanup, while production applications typically create a classifier once and reuse it.</p>
  */
 public class Sample05_CreateClassifier {
-
-    private static String createdAnalyzerId;
 
     public static void main(String[] args) throws IOException {
         // BEGIN: com.azure.ai.contentunderstanding.sample05.buildClient
@@ -83,120 +88,174 @@ public class Sample05_CreateClassifier {
         // invoice fields (vendor, line items, totals, etc.) from segments classified as Invoice.
         Map<String, ContentCategoryDefinition> categories = new HashMap<>();
 
-        categories.put("Loan_Application", new ContentCategoryDefinition()
-            .setDescription("Documents submitted by individuals or businesses to request funding, "
-                + "typically including personal or business details, financial history, loan amount, "
-                + "purpose, and supporting documentation."));
+        categories.put("Loan_Application",
+            new ContentCategoryDefinition()
+                .setDescription("Documents submitted by individuals or businesses to request funding, "
+                    + "typically including personal or business details, financial history, loan amount, "
+                    + "purpose, and supporting documentation."));
 
-        categories.put("Invoice", new ContentCategoryDefinition()
-            .setDescription("Billing documents issued by sellers or service providers to request payment "
-                + "for goods or services, detailing items, prices, taxes, totals, and payment terms.")
-            .setAnalyzerId("prebuilt-invoice")); // Route Invoice segments for field extraction
+        categories.put("Invoice",
+            new ContentCategoryDefinition()
+                .setDescription("Billing documents issued by sellers or service providers to request payment "
+                    + "for goods or services, detailing items, prices, taxes, totals, and payment terms.")
+                .setAnalyzerId("prebuilt-invoice")); // Route Invoice segments for field extraction
 
-        categories.put("Bank_Statement", new ContentCategoryDefinition()
-            .setDescription("Official statements issued by banks that summarize account activity over a period, "
-                + "including deposits, withdrawals, fees, and balances."));
+        categories.put("Bank_Statement",
+            new ContentCategoryDefinition()
+                .setDescription("Official statements issued by banks that summarize account activity over a period, "
+                    + "including deposits, withdrawals, fees, and balances."));
 
         // Create analyzer configuration with content categories
-        ContentAnalyzerConfig config = new ContentAnalyzerConfig()
-            .setReturnDetails(true)
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig().setReturnDetails(true)
             .setSegmentEnabled(true) // Enable automatic segmentation by category
             .setContentCategories(categories);
 
         // Create the classifier analyzer
         // Note: models are specified using model names, not deployment names
+        String completionModel = SampleModelConfiguration.getCompletionModel();
         Map<String, String> models = new HashMap<>();
-        models.put("completion", "gpt-4.1");
+        models.put("completion", completionModel);
 
-        ContentAnalyzer classifier = new ContentAnalyzer()
-            .setBaseAnalyzerId("prebuilt-document")
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
             .setDescription("Custom classifier for financial document categorization")
             .setConfig(config)
             .setModels(models);
 
         // Create the classifier
         SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
-            = client.beginCreateAnalyzer(analyzerId, classifier, true);
+            = client.beginCreateAnalyzer(analyzerId, classifier);
 
         ContentAnalyzer result = operation.getFinalResult();
-        System.out.println("Classifier '" + analyzerId + "' created successfully!");
-
-        if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
-            System.out.println("  Description: " + result.getDescription());
-        }
-
-        if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
-            System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
-            result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
-                System.out.println("    - " + categoryName);
-                if (categoryDef.getDescription() != null) {
-                    // Truncate long descriptions for display
-                    String desc = categoryDef.getDescription();
-                    if (desc.length() > 60) {
-                        desc = desc.substring(0, 57) + "...";
-                    }
-                    System.out.println("      Description: " + desc);
-                }
-            });
-        }
-
-        if (result.getConfig() != null && result.getConfig().isSegmentEnabled() != null) {
-            System.out.println("  Segmentation enabled: " + result.getConfig().isSegmentEnabled());
-        }
         // END:ContentUnderstandingCreateClassifier
 
-        createdAnalyzerId = analyzerId; // Track for cleanup
+        try {
+            System.out.println("Classifier '" + analyzerId + "' created successfully!");
 
-        // BEGIN:ContentUnderstandingAnalyzeWithClassifier
-        // Analyze a multi-page document with the classifier
-        String filePath = "src/samples/resources/mixed_financial_docs.pdf";
-        byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
+            if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+                System.out.println("  Description: " + result.getDescription());
+            }
 
-        System.out.println("\nAnalyzing document with classifier '" + analyzerId + "'...");
+            if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
+                System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
+                result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
+                    System.out.println("    - " + categoryName);
+                    if (categoryDef.getDescription() != null) {
+                        // Truncate long descriptions for display
+                        String desc = categoryDef.getDescription();
+                        if (desc.length() > 60) {
+                            desc = desc.substring(0, 57) + "...";
+                        }
+                        System.out.println("      Description: " + desc);
+                    }
+                });
+            }
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
-            = client.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes));
-        AnalysisResult analyzeResult = analyzePoller.getFinalResult();
+            if (result.getConfig() != null && result.getConfig().isSegmentEnabled() != null) {
+                System.out.println("  Segmentation enabled: " + result.getConfig().isSegmentEnabled());
+            }
 
-        // Display classification results
-        if (analyzeResult.getContents() != null && !analyzeResult.getContents().isEmpty()) {
-            DocumentContent documentContent = (DocumentContent) analyzeResult.getContents().get(0);
-            System.out.println("Pages: " + documentContent.getStartPageNumber()
-                + "-" + documentContent.getEndPageNumber());
+            // BEGIN:ContentUnderstandingAnalyzeWithClassifier
+            // Analyze a multi-page document with the classifier
+            String filePath = "src/samples/resources/mixed_financial_docs.pdf";
+            byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
 
-            // Display segments (classification results)
-            if (documentContent.getSegments() != null && !documentContent.getSegments().isEmpty()) {
-                System.out.println("\nFound " + documentContent.getSegments().size() + " segment(s):");
-                for (DocumentContentSegment segment : documentContent.getSegments()) {
-                    System.out.println("  Category: " + (segment.getCategory() != null ? segment.getCategory() : "(unknown)"));
-                    System.out.println("  Pages: " + segment.getStartPageNumber() + "-" + segment.getEndPageNumber());
-                    System.out.println("  Segment ID: " + (segment.getSegmentId() != null ? segment.getSegmentId() : "(not available)"));
-                    System.out.println();
+            System.out.println("\nAnalyzing document with classifier '" + analyzerId + "'...");
+
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzePoller
+                = client.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes));
+            AnalysisResult analyzeResult = analyzePoller.getFinalResult();
+
+            // Display classification results
+            if (analyzeResult.getContents() != null && !analyzeResult.getContents().isEmpty()) {
+                DocumentContent documentContent = (DocumentContent) analyzeResult.getContents().get(0);
+                System.out.println(
+                    "Pages: " + documentContent.getStartPageNumber() + "-" + documentContent.getEndPageNumber());
+
+                // Display segments (classification results)
+                if (documentContent.getSegments() != null && !documentContent.getSegments().isEmpty()) {
+                    System.out.println("\nFound " + documentContent.getSegments().size() + " segment(s):");
+                    for (DocumentContentSegment segment : documentContent.getSegments()) {
+                        System.out.println(
+                            "  Category: " + (segment.getCategory() != null ? segment.getCategory() : "(unknown)"));
+                        System.out
+                            .println("  Pages: " + segment.getStartPageNumber() + "-" + segment.getEndPageNumber());
+                        System.out.println("  Segment ID: "
+                            + (segment.getSegmentId() != null ? segment.getSegmentId() : "(not available)"));
+                        System.out.println();
+                    }
+                } else {
+                    System.out.println("No segments found (document classified as a single unit).");
                 }
             } else {
-                System.out.println("No segments found (document classified as a single unit).");
+                System.out.println("No content found in the analysis result.");
             }
-        } else {
-            System.out.println("No content found in the analysis result.");
+            // END:ContentUnderstandingAnalyzeWithClassifier
+
+            // BEGIN:ContentUnderstandingClassifierToLlmInput
+            // Convert classification results to LLM-friendly text.
+            // toLlmInput automatically detects classification results: it expands the parent
+            // into per-segment blocks, each with its category label in the YAML front matter.
+            // Segments are separated by a ***** divider.
+            System.out.println("\n============================================================");
+            System.out.println("CLASSIFICATION RESULT AS LLM INPUT");
+            System.out.println("============================================================");
+
+            String llmText = LlmInputHelper.toLlmInput(analyzeResult);
+            System.out.println(llmText);
+            // END:ContentUnderstandingClassifierToLlmInput
+
+            analyzeCategory(client, fileBytes, completionModel);
+
+        } finally {
+            deleteAnalyzer(client, analyzerId);
         }
-        // END:ContentUnderstandingAnalyzeWithClassifier
+    }
 
-        // BEGIN:ContentUnderstandingClassifierToLlmInput
-        // Convert classification results to LLM-friendly text.
-        // toLlmInput automatically detects classification results: it expands the parent
-        // into per-segment blocks, each with its category label in the YAML front matter.
-        // Segments are separated by a ***** divider.
-        System.out.println("\n============================================================");
-        System.out.println("CLASSIFICATION RESULT AS LLM INPUT");
-        System.out.println("============================================================");
+    private static void analyzeCategory(ContentUnderstandingClient client, byte[] fileBytes, String completionModel) {
+        String analyzerId = "document_classifier_no_segment_" + System.currentTimeMillis();
 
-        String llmText = LlmInputHelper.toLlmInput(analyzeResult);
-        System.out.println(llmText);
-        // END:ContentUnderstandingClassifierToLlmInput
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
+        categories.put("Invoice", new ContentCategoryDefinition()
+            .setDescription("Billing documents issued by sellers or service providers to request payment for goods "
+                + "or services."));
 
-        // Cleanup - delete the created classifier analyzer
-        System.out.println("\nCleaning up: deleting classifier analyzer '" + createdAnalyzerId + "'...");
-        client.deleteAnalyzer(createdAnalyzerId);
-        System.out.println("Classifier analyzer '" + createdAnalyzerId + "' deleted successfully.");
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", completionModel);
+
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom classifier for financial document categorization without segmentation")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true)
+                .setSegmentEnabled(false)
+                .setContentCategories(categories))
+            .setModels(models);
+
+        client.beginCreateAnalyzer(analyzerId, classifier).getFinalResult();
+        try {
+            // BEGIN:ContentUnderstandingAnalyzeCategory
+            AnalysisResult result
+                = client.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes)).getFinalResult();
+            DocumentContent content = (DocumentContent) result.getContents().get(0);
+
+            System.out.println("\nClassification without segmentation:");
+            System.out.println("Pages: " + content.getStartPageNumber() + "-" + content.getEndPageNumber());
+            if (content.getSegments() != null) {
+                for (DocumentContentSegment segment : content.getSegments()) {
+                    System.out.println("  Category: " + segment.getCategory());
+                    System.out.println(
+                        "  Pages: " + segment.getStartPageNumber() + "-" + segment.getEndPageNumber());
+                }
+            }
+            // END:ContentUnderstandingAnalyzeCategory
+
+            System.out.println(LlmInputHelper.toLlmInput(result));
+        } finally {
+            deleteAnalyzer(client, analyzerId);
+        }
+    }
+
+    private static void deleteAnalyzer(ContentUnderstandingClient client, String analyzerId) {
+        System.out.println("\nCleaning up: deleting classifier analyzer '" + analyzerId + "'...");
+        client.deleteAnalyzer(analyzerId);
+        System.out.println("Classifier analyzer '" + analyzerId + "' deleted successfully.");
     }
 }

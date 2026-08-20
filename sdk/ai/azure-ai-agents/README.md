@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -118,6 +118,7 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 | Tool class | Description |
 |---|---|
+| `A2ATool` | Agent-to-agent (A2A) protocol |
 | `AzureAISearchTool` | Azure AI Search |
 | `AzureFunctionTool` | Azure Functions |
 | `BingGroundingTool` | Bing grounding |
@@ -136,7 +137,6 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 | Tool class | Description |
 |---|---|
-| `A2APreviewTool` | Agent-to-agent communication |
 | `BingCustomSearchPreviewTool` | Bing custom search |
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
@@ -576,13 +576,13 @@ See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azu
 
 ---
 
-##### **Agent-to-Agent (A2A) (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
+##### **Agent-to-Agent (A2A)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
 
 Enable agent-to-agent communication with remote A2A endpoints:
 
 ```java com.azure.ai.agents.define_agent_to_agent
-// Create agent-to-agent tool with connection ID
-A2APreviewTool a2aTool = new A2APreviewTool()
+// Create agent-to-agent tool with A2A protocol version and connection ID
+A2ATool a2aTool = new A2ATool(A2AProtocolVersion.V1_0)
     .setProjectConnectionId(a2aConnectionId);
 ```
 

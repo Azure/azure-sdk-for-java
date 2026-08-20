@@ -16,7 +16,7 @@ import java.io.IOException;
  * A manual payload used to test an invocations API routine dispatch.
  */
 @Immutable
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class InvokeAgentInvocationsApiDispatchPayload extends RoutineDispatchPayload {
 
     /*

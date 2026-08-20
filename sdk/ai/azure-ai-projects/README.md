@@ -41,7 +41,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -143,7 +143,7 @@ Build clients whose names start with `Beta` from `AIProjectClientBuilder.beta()`
 | `BetaInsightsClient` | `Insights=V1Preview` |
 | `BetaModelsClient` | `Models=V1Preview` |
 | `BetaRedTeamsClient` | `RedTeams=V1Preview` |
-| `BetaRoutinesClient` | `Routines=V1Preview` |
+| `BetaRoutinesClient` | `Routines=V2Preview` |
 | `BetaSchedulesClient` | `Schedules=V1Preview` |
 | `BetaSkillsClient` | `Skills=V1Preview` |
 
