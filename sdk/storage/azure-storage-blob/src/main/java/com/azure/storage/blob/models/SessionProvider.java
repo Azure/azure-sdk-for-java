@@ -10,8 +10,8 @@ import reactor.core.publisher.Mono;
  * <p>
  * Implement this interface to bring your own session creation and caching logic - for example, proxying
  * CreateSession calls through another service or sharing a credential cache across clients - while still
- * benefiting from this SDK's request signing and account-level cooldown handling. Set an instance via
- * {@link SessionOptions#setSessionProvider(SessionProvider)}, then pass those options to
+ * relying on the SDK to sign requests and to fall back to bearer authentication when sessions fail. Set an
+ * instance via {@link SessionOptions#setSessionProvider(SessionProvider)}, then pass those options to
  * {@link com.azure.storage.blob.BlobServiceClientBuilder#sessionOptions(SessionOptions)}, to have it used in
  * place of the default, built-in provider (which calls the storage service's CreateSession REST API directly
  * and manages its own per-container caching).
@@ -30,12 +30,23 @@ import reactor.core.publisher.Mono;
  * {@code x-ms-auth-info: session_expiring} response header) that the current session is about to stop being
  * honored, giving the implementation the opportunity to proactively refresh it in the background.</li>
  * </ol>
+ *
+ * <h2>Division of responsibility</h2>
  * <p>
- * Regardless of the provider used, the SDK always retains ownership of HMAC request signing, bearer-token
- * fallback for ineligible requests, and account-level acquisition cooldown (suppressing further session
- * acquisition attempts for an account for a period after a 400/403/5xx failure). A {@link SessionProvider}
- * implementation is only responsible for producing, invalidating, and refreshing credentials - never for
- * signing requests or deciding when to fall back to bearer authentication.
+ * A {@link SessionProvider} produces, invalidates, and refreshes credentials. Everything else stays with the
+ * SDK: signing each request with the session's HMAC key, and choosing between session and bearer
+ * authentication. The SDK authenticates a request with a bearer token rather than a session when the request
+ * is not session-eligible, when no session credential could be obtained, and when the service answers a
+ * session-signed request with HTTP 400 or 401.
+ * <p>
+ * The SDK also stops using sessions for a storage account when they repeatedly fail against it. When a call
+ * to this provider fails with an HTTP 400, 403, or 5xx error, or the service rejects three session-signed
+ * requests in a row with HTTP 401, the SDK stops requesting sessions for that account for five minutes and
+ * authenticates its requests with bearer tokens instead; {@link #getSession} and {@link #getSessionAsync} are
+ * not called at all during that window. The pause covers every container in the account, not only the
+ * container whose request failed, and a provider failure that carries no HTTP response does not start it -
+ * that request simply falls back to bearer. Each client tracks the pause on its own HTTP pipeline, so clients
+ * pause independently even when they share one {@link SessionProvider} instance.
  *
  * <h2>Thread safety</h2>
  * <p>

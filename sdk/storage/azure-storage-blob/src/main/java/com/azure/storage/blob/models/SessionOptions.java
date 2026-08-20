@@ -103,8 +103,10 @@ public final class SessionOptions {
      * Sets the custom provider used to obtain session credentials. When set, the provider is called directly
      * for each eligible request: the SDK does not layer additional caching on top of a custom provider, so
      * the provider is responsible for its own caching and refresh strategy. The SDK retains ownership of
-     * HMAC request signing, bearer-token fallback, and account-level acquisition cooldown.
-     * The same provider instance may be supplied to multiple service client builders to share its cache.
+     * HMAC request signing, of choosing between session and bearer authentication, and of pausing session use
+     * for a storage account when sessions repeatedly fail against it, as described on {@link SessionProvider}.
+     * The same provider instance may be supplied to multiple service client builders to share its cache; that
+     * pause, however, is tracked per client pipeline and is not shared by those clients.
      * When {@code null}, the built-in provider is used, which calls the storage service's CreateSession REST
      * API and manages per-container credential caching, proactive refresh, and idle eviction automatically.
      *

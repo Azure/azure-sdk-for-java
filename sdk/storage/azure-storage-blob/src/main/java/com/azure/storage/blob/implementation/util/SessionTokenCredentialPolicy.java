@@ -41,9 +41,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * the policy authenticates with a session token. For all other requests, it delegates to the
  * wrapped bearer token policy.
  * <p>
- * If session authentication cannot be used against an account, either because sessions cannot be acquired or
- * because the service repeatedly rejects them, the account is placed in a five minute cooldown during which
- * requests go straight to bearer authentication.
+ * If session authentication cannot be used against an account, either because session acquisition failed with
+ * HTTP 400, 403, or 5xx, or because the service rejected session-signed requests with HTTP 401 three times in
+ * a row, the account is placed in a five minute cooldown during which requests go straight to bearer
+ * authentication. Cooldown state is held by this policy instance, so it is scoped to a single client pipeline.
+ * Acquisition failures that do not carry one of those status codes fall back to bearer for that request only
+ * and do not start a cooldown.
  */
 public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(SessionTokenCredentialPolicy.class);
@@ -303,6 +306,11 @@ public final class SessionTokenCredentialPolicy implements HttpPipelinePolicy {
         return statusCode == 400 || statusCode == 401;
     }
 
+    /**
+     * Handles a failure to obtain a session credential. When the failure carries an HTTP 400, 403, or 5xx response
+     * the account is placed in cooldown so following requests skip session acquisition entirely. Any other failure
+     * is logged and falls back to bearer for the current request only.
+     */
     private void handleSessionAcquisitionFailure(SessionRequestContext requestContext, Throwable error) {
         Throwable current = error;
         while (current != null && !(current instanceof HttpResponseException)) {
