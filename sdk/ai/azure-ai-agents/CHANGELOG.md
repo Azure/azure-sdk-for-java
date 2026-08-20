@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.4.0 (2026-08-19)
+
+### Features Added
+
+- Agent-to-agent (A2A) tool graduated to general availability. Added `A2ATool` and `A2AToolboxTool` with `A2AProtocolVersion` (values include `V1_0`), plus `ToolType.A2A` and `ToolboxToolType.A2A` discriminator values. The preview `A2APreviewTool` / `A2APreviewToolboxTool` (`a2a_preview`) are retained alongside for backward compatibility.
+- Added `AgentDetails.getStateSource()` and the new `AgentStateSource` enum (`AGENT_INSTANCE_IDENTITY`, `AGENT_BLUEPRINT`) to expose where an agent's operational state is derived from (agent instance identity or agent blueprint).
+- Added `ContainerConfiguration.setRegistryConnectionId(...)` / `getRegistryConnectionId()` for supplying the Foundry project connection that holds the credentials for a private container registry hosting the hosted-agent image. `ContainerConfiguration` is now `@Fluent` instead of `@Immutable`.
+- Added `AgentOptimizationJob.setInputs(...)` and `AgentOptimizationJob.getWarnings()` to configure inputs directly and to read non-fatal warnings emitted during preview optimization.
+- Added `AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW` (`VoiceAgents=V1Preview`) opt-in flag.
+
+### Breaking Changes
+
+- Preview agent-optimization models were renamed to include the `Agent` prefix, and `BetaAgentsClient` / `BetaAgentsAsyncClient` methods (`getOptimizationJob`, `listOptimizationJobs`, `cancelOptimizationJob`, `beginCreateOptimizationJob`, and their async counterparts) now use the renamed types. Notable renames:
+  - `OptimizationJob` → `AgentOptimizationJob`
+  - `OptimizationJobInputs` → `AgentOptimizationJobInputs`
+  - `OptimizationJobListItem` → `AgentOptimizationJobListItem`
+  - `OptimizationJobProgress` → `AgentOptimizationJobProgress`
+  - `OptimizationJobResult` → `AgentOptimizationJobResult`
+  - `OptimizationOptions` → `AgentOptimizationOptions`
+  - `OptimizationCandidate` → `AgentOptimizationCandidate`
+  - `OptimizationDatasetInput` / `OptimizationInlineDatasetInput` / `OptimizationReferenceDatasetInput` / `OptimizationDatasetItem` / `OptimizationDatasetCriterion` / `OptimizationDatasetInputType` → their `AgentOptimization*` counterparts
+  - `OptimizationEvaluatorRef` → `AgentOptimizationEvaluatorRef`
+  - `OptimizationAgentIdentifier` → `OptimizedAgentIdentifier`
+
+### Other Changes
+
+- `WorkflowAgentDefinition` documentation was updated to note that Microsoft Foundry is retiring workflows on December 1, 2026, with a link to the workflow migration guide.
+- Regenerated client from the updated TypeSpec specification.
 
 ## 2.3.0 (2026-08-06)
 

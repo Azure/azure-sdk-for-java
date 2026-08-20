@@ -17,7 +17,13 @@ import java.io.IOException;
  */
 @Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationJobProgress implements JsonSerializable<OptimizationJobProgress> {
+public final class AgentOptimizationJobProgress implements JsonSerializable<AgentOptimizationJobProgress> {
+
+    /*
+     * Number of candidates whose evaluation has completed so far.
+     */
+    @Generated
+    private final int candidatesCompleted;
 
     /*
      * Best score observed so far across all candidates.
@@ -30,6 +36,30 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
      */
     @Generated
     private final double elapsedSeconds;
+
+    /**
+     * Creates an instance of AgentOptimizationJobProgress class.
+     *
+     * @param candidatesCompleted the candidatesCompleted value to set.
+     * @param bestScore the bestScore value to set.
+     * @param elapsedSeconds the elapsedSeconds value to set.
+     */
+    @Generated
+    private AgentOptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
+        this.candidatesCompleted = candidatesCompleted;
+        this.bestScore = bestScore;
+        this.elapsedSeconds = elapsedSeconds;
+    }
+
+    /**
+     * Get the candidatesCompleted property: Number of candidates whose evaluation has completed so far.
+     *
+     * @return the candidatesCompleted value.
+     */
+    @Generated
+    public int getCandidatesCompleted() {
+        return this.candidatesCompleted;
+    }
 
     /**
      * Get the bestScore property: Best score observed so far across all candidates.
@@ -65,16 +95,16 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
     }
 
     /**
-     * Reads an instance of OptimizationJobProgress from the JsonReader.
+     * Reads an instance of AgentOptimizationJobProgress from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationJobProgress if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of AgentOptimizationJobProgress if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationJobProgress.
+     * @throws IOException If an error occurs while reading the AgentOptimizationJobProgress.
      */
     @Generated
-    public static OptimizationJobProgress fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationJobProgress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int candidatesCompleted = 0;
             double bestScore = 0.0;
@@ -92,37 +122,7 @@ public final class OptimizationJobProgress implements JsonSerializable<Optimizat
                     reader.skipChildren();
                 }
             }
-            return new OptimizationJobProgress(candidatesCompleted, bestScore, elapsedSeconds);
+            return new AgentOptimizationJobProgress(candidatesCompleted, bestScore, elapsedSeconds);
         });
-    }
-
-    /**
-     * Creates an instance of OptimizationJobProgress class.
-     *
-     * @param candidatesCompleted the candidatesCompleted value to set.
-     * @param bestScore the bestScore value to set.
-     * @param elapsedSeconds the elapsedSeconds value to set.
-     */
-    @Generated
-    private OptimizationJobProgress(int candidatesCompleted, double bestScore, double elapsedSeconds) {
-        this.candidatesCompleted = candidatesCompleted;
-        this.bestScore = bestScore;
-        this.elapsedSeconds = elapsedSeconds;
-    }
-
-    /*
-     * Number of candidates whose evaluation has completed so far.
-     */
-    @Generated
-    private final int candidatesCompleted;
-
-    /**
-     * Get the candidatesCompleted property: Number of candidates whose evaluation has completed so far.
-     *
-     * @return the candidatesCompleted value.
-     */
-    @Generated
-    public int getCandidatesCompleted() {
-        return this.candidatesCompleted;
     }
 }

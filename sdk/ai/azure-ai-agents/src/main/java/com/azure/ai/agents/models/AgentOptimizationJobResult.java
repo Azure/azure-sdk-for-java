@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationJobResult implements JsonSerializable<OptimizationJobResult> {
+public final class AgentOptimizationJobResult implements JsonSerializable<AgentOptimizationJobResult> {
 
     /*
      * Candidate ID of the original (un-optimized) baseline evaluation.
@@ -36,13 +36,13 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
      * All evaluated candidates including baseline.
      */
     @Generated
-    private List<OptimizationCandidate> candidates;
+    private List<AgentOptimizationCandidate> candidates;
 
     /**
-     * Creates an instance of OptimizationJobResult class.
+     * Creates an instance of AgentOptimizationJobResult class.
      */
     @Generated
-    private OptimizationJobResult() {
+    private AgentOptimizationJobResult() {
     }
 
     /**
@@ -71,7 +71,7 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
      * @return the candidates value.
      */
     @Generated
-    public List<OptimizationCandidate> getCandidates() {
+    public List<AgentOptimizationCandidate> getCandidates() {
         return this.candidates;
     }
 
@@ -89,33 +89,33 @@ public final class OptimizationJobResult implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Reads an instance of OptimizationJobResult from the JsonReader.
+     * Reads an instance of AgentOptimizationJobResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationJobResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the OptimizationJobResult.
+     * @return An instance of AgentOptimizationJobResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentOptimizationJobResult.
      */
     @Generated
-    public static OptimizationJobResult fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationJobResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationJobResult deserializedOptimizationJobResult = new OptimizationJobResult();
+            AgentOptimizationJobResult deserializedAgentOptimizationJobResult = new AgentOptimizationJobResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("baseline".equals(fieldName)) {
-                    deserializedOptimizationJobResult.baseline = reader.getString();
+                    deserializedAgentOptimizationJobResult.baseline = reader.getString();
                 } else if ("best".equals(fieldName)) {
-                    deserializedOptimizationJobResult.best = reader.getString();
+                    deserializedAgentOptimizationJobResult.best = reader.getString();
                 } else if ("candidates".equals(fieldName)) {
-                    List<OptimizationCandidate> candidates
-                        = reader.readArray(reader1 -> OptimizationCandidate.fromJson(reader1));
-                    deserializedOptimizationJobResult.candidates = candidates;
+                    List<AgentOptimizationCandidate> candidates
+                        = reader.readArray(reader1 -> AgentOptimizationCandidate.fromJson(reader1));
+                    deserializedAgentOptimizationJobResult.candidates = candidates;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedOptimizationJobResult;
+            return deserializedAgentOptimizationJobResult;
         });
     }
 }

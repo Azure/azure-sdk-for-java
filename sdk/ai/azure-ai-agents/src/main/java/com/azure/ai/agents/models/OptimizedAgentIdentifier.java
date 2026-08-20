@@ -18,7 +18,7 @@ import java.io.IOException;
  */
 @Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationAgentIdentifier implements JsonSerializable<OptimizationAgentIdentifier> {
+public final class OptimizedAgentIdentifier implements JsonSerializable<OptimizedAgentIdentifier> {
 
     /*
      * Registered Foundry agent name (required).
@@ -33,12 +33,12 @@ public final class OptimizationAgentIdentifier implements JsonSerializable<Optim
     private String agentVersion;
 
     /**
-     * Creates an instance of OptimizationAgentIdentifier class.
+     * Creates an instance of OptimizedAgentIdentifier class.
      *
      * @param agentName the agentName value to set.
      */
     @Generated
-    public OptimizationAgentIdentifier(String agentName) {
+    public OptimizedAgentIdentifier(String agentName) {
         this.agentName = agentName;
     }
 
@@ -66,10 +66,10 @@ public final class OptimizationAgentIdentifier implements JsonSerializable<Optim
      * Set the agentVersion property: Pinned agent version. Defaults to latest if omitted.
      *
      * @param agentVersion the agentVersion value to set.
-     * @return the OptimizationAgentIdentifier object itself.
+     * @return the OptimizedAgentIdentifier object itself.
      */
     @Generated
-    public OptimizationAgentIdentifier setAgentVersion(String agentVersion) {
+    public OptimizedAgentIdentifier setAgentVersion(String agentVersion) {
         this.agentVersion = agentVersion;
         return this;
     }
@@ -87,16 +87,16 @@ public final class OptimizationAgentIdentifier implements JsonSerializable<Optim
     }
 
     /**
-     * Reads an instance of OptimizationAgentIdentifier from the JsonReader.
+     * Reads an instance of OptimizedAgentIdentifier from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationAgentIdentifier if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of OptimizedAgentIdentifier if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationAgentIdentifier.
+     * @throws IOException If an error occurs while reading the OptimizedAgentIdentifier.
      */
     @Generated
-    public static OptimizationAgentIdentifier fromJson(JsonReader jsonReader) throws IOException {
+    public static OptimizedAgentIdentifier fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String agentName = null;
             String agentVersion = null;
@@ -111,10 +111,9 @@ public final class OptimizationAgentIdentifier implements JsonSerializable<Optim
                     reader.skipChildren();
                 }
             }
-            OptimizationAgentIdentifier deserializedOptimizationAgentIdentifier
-                = new OptimizationAgentIdentifier(agentName);
-            deserializedOptimizationAgentIdentifier.agentVersion = agentVersion;
-            return deserializedOptimizationAgentIdentifier;
+            OptimizedAgentIdentifier deserializedOptimizedAgentIdentifier = new OptimizedAgentIdentifier(agentName);
+            deserializedOptimizedAgentIdentifier.agentVersion = agentVersion;
+            return deserializedOptimizedAgentIdentifier;
         });
     }
 }

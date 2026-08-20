@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,19 +14,33 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 /**
- * Slim job representation returned by the LIST endpoint.
+ * Agent optimization job resource — a long-running job that optimizes an agent's configuration (instructions, model,
+ * skills, tools) to maximize evaluation scores. On success, the result contains scored candidates.
  */
-@Immutable
+@Fluent
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationJobListItem implements JsonSerializable<OptimizationJobListItem> {
+public final class AgentOptimizationJob implements JsonSerializable<AgentOptimizationJob> {
 
     /*
      * Server-assigned unique identifier.
      */
     @Generated
     private String id;
+
+    /*
+     * Caller-supplied inputs.
+     */
+    @Generated
+    private AgentOptimizationJobInputs inputs;
+
+    /*
+     * Result produced on success.
+     */
+    @Generated
+    private AgentOptimizationJobResult result;
 
     /*
      * Current lifecycle status.
@@ -56,19 +70,19 @@ public final class OptimizationJobListItem implements JsonSerializable<Optimizat
      * Progress snapshot. May be present in terminal states reflecting last-known progress.
      */
     @Generated
-    private OptimizationJobProgress progress;
+    private AgentOptimizationJobProgress progress;
 
     /*
-     * The agent targeted by this optimization job.
+     * Non-fatal warnings emitted at any point during optimization.
      */
     @Generated
-    private OptimizationAgentIdentifier agent;
+    private List<String> warnings;
 
     /**
-     * Creates an instance of OptimizationJobListItem class.
+     * Creates an instance of AgentOptimizationJob class.
      */
     @Generated
-    private OptimizationJobListItem() {
+    public AgentOptimizationJob() {
     }
 
     /**
@@ -79,6 +93,38 @@ public final class OptimizationJobListItem implements JsonSerializable<Optimizat
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Get the inputs property: Caller-supplied inputs.
+     *
+     * @return the inputs value.
+     */
+    @Generated
+    public AgentOptimizationJobInputs getInputs() {
+        return this.inputs;
+    }
+
+    /**
+     * Set the inputs property: Caller-supplied inputs.
+     *
+     * @param inputs the inputs value to set.
+     * @return the AgentOptimizationJob object itself.
+     */
+    @Generated
+    public AgentOptimizationJob setInputs(AgentOptimizationJobInputs inputs) {
+        this.inputs = inputs;
+        return this;
+    }
+
+    /**
+     * Get the result property: Result produced on success.
+     *
+     * @return the result value.
+     */
+    @Generated
+    public AgentOptimizationJobResult getResult() {
+        return this.result;
     }
 
     /**
@@ -127,18 +173,18 @@ public final class OptimizationJobListItem implements JsonSerializable<Optimizat
      * @return the progress value.
      */
     @Generated
-    public OptimizationJobProgress getProgress() {
+    public AgentOptimizationJobProgress getProgress() {
         return this.progress;
     }
 
     /**
-     * Get the agent property: The agent targeted by this optimization job.
+     * Get the warnings property: Non-fatal warnings emitted at any point during optimization.
      *
-     * @return the agent value.
+     * @return the warnings value.
      */
     @Generated
-    public OptimizationAgentIdentifier getAgent() {
-        return this.agent;
+    public List<String> getWarnings() {
+        return this.warnings;
     }
 
     /**
@@ -148,44 +194,50 @@ public final class OptimizationJobListItem implements JsonSerializable<Optimizat
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("inputs", this.inputs);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of OptimizationJobListItem from the JsonReader.
+     * Reads an instance of AgentOptimizationJob from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationJobListItem if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AgentOptimizationJob if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationJobListItem.
+     * @throws IOException If an error occurs while reading the AgentOptimizationJob.
      */
     @Generated
-    public static OptimizationJobListItem fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationJobListItem deserializedOptimizationJobListItem = new OptimizationJobListItem();
+            AgentOptimizationJob deserializedAgentOptimizationJob = new AgentOptimizationJob();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.id = reader.getString();
+                    deserializedAgentOptimizationJob.id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.status = JobStatus.fromString(reader.getString());
+                    deserializedAgentOptimizationJob.status = JobStatus.fromString(reader.getString());
                 } else if ("created_at".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.createdAt = reader.getLong();
+                    deserializedAgentOptimizationJob.createdAt = reader.getLong();
                 } else if ("updated_at".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.updatedAt = reader.getLong();
+                    deserializedAgentOptimizationJob.updatedAt = reader.getLong();
+                } else if ("inputs".equals(fieldName)) {
+                    deserializedAgentOptimizationJob.inputs = AgentOptimizationJobInputs.fromJson(reader);
+                } else if ("result".equals(fieldName)) {
+                    deserializedAgentOptimizationJob.result = AgentOptimizationJobResult.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.error = ApiError.fromJson(reader);
+                    deserializedAgentOptimizationJob.error = ApiError.fromJson(reader);
                 } else if ("progress".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.progress = OptimizationJobProgress.fromJson(reader);
-                } else if ("agent".equals(fieldName)) {
-                    deserializedOptimizationJobListItem.agent = OptimizationAgentIdentifier.fromJson(reader);
+                    deserializedAgentOptimizationJob.progress = AgentOptimizationJobProgress.fromJson(reader);
+                } else if ("warnings".equals(fieldName)) {
+                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAgentOptimizationJob.warnings = warnings;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedOptimizationJobListItem;
+            return deserializedAgentOptimizationJob;
         });
     }
 }

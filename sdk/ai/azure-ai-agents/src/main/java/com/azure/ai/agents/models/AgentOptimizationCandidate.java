@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationCandidate implements JsonSerializable<OptimizationCandidate> {
+public final class AgentOptimizationCandidate implements JsonSerializable<AgentOptimizationCandidate> {
 
     /*
      * Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
@@ -38,6 +38,50 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
      */
     @Generated
     private Map<String, BinaryData> mutations;
+
+    /*
+     * Average composite score across all tasks.
+     */
+    @Generated
+    private final double averageScore;
+
+    /*
+     * Average token usage across all tasks.
+     */
+    @Generated
+    private final double averageTokens;
+
+    /*
+     * Foundry evaluation identifier used to score this candidate.
+     */
+    @Generated
+    private String evaluationId;
+
+    /*
+     * Foundry evaluation run identifier for this candidate's scoring run.
+     */
+    @Generated
+    private String evaluationRunId;
+
+    /*
+     * Promotion metadata. Null if the candidate has not been promoted.
+     */
+    @Generated
+    private PromotionInfo promotion;
+
+    /**
+     * Creates an instance of AgentOptimizationCandidate class.
+     *
+     * @param name the name value to set.
+     * @param averageScore the averageScore value to set.
+     * @param averageTokens the averageTokens value to set.
+     */
+    @Generated
+    private AgentOptimizationCandidate(String name, double averageScore, double averageTokens) {
+        this.name = name;
+        this.averageScore = averageScore;
+        this.averageTokens = averageTokens;
+    }
 
     /**
      * Get the candidateId property: Server-assigned candidate identifier. Use with GET /candidates/{id} sub-endpoints.
@@ -70,6 +114,56 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
+     * Get the averageScore property: Average composite score across all tasks.
+     *
+     * @return the averageScore value.
+     */
+    @Generated
+    public double getAverageScore() {
+        return this.averageScore;
+    }
+
+    /**
+     * Get the averageTokens property: Average token usage across all tasks.
+     *
+     * @return the averageTokens value.
+     */
+    @Generated
+    public double getAverageTokens() {
+        return this.averageTokens;
+    }
+
+    /**
+     * Get the evaluationId property: Foundry evaluation identifier used to score this candidate.
+     *
+     * @return the evaluationId value.
+     */
+    @Generated
+    public String getEvaluationId() {
+        return this.evaluationId;
+    }
+
+    /**
+     * Get the evaluationRunId property: Foundry evaluation run identifier for this candidate's scoring run.
+     *
+     * @return the evaluationRunId value.
+     */
+    @Generated
+    public String getEvaluationRunId() {
+        return this.evaluationRunId;
+    }
+
+    /**
+     * Get the promotion property: Promotion metadata. Null if the candidate has not been promoted.
+     *
+     * @return the promotion value.
+     */
+    @Generated
+    public PromotionInfo getPromotion() {
+        return this.promotion;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -94,16 +188,16 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
     }
 
     /**
-     * Reads an instance of OptimizationCandidate from the JsonReader.
+     * Reads an instance of AgentOptimizationCandidate from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationCandidate if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of AgentOptimizationCandidate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationCandidate.
+     * @throws IOException If an error occurs while reading the AgentOptimizationCandidate.
      */
     @Generated
-    public static OptimizationCandidate fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationCandidate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             double averageScore = 0.0;
@@ -137,108 +231,14 @@ public final class OptimizationCandidate implements JsonSerializable<Optimizatio
                     reader.skipChildren();
                 }
             }
-            OptimizationCandidate deserializedOptimizationCandidate
-                = new OptimizationCandidate(name, averageScore, averageTokens);
-            deserializedOptimizationCandidate.candidateId = candidateId;
-            deserializedOptimizationCandidate.mutations = mutations;
-            deserializedOptimizationCandidate.evaluationId = evaluationId;
-            deserializedOptimizationCandidate.evaluationRunId = evaluationRunId;
-            deserializedOptimizationCandidate.promotion = promotion;
-            return deserializedOptimizationCandidate;
+            AgentOptimizationCandidate deserializedAgentOptimizationCandidate
+                = new AgentOptimizationCandidate(name, averageScore, averageTokens);
+            deserializedAgentOptimizationCandidate.candidateId = candidateId;
+            deserializedAgentOptimizationCandidate.mutations = mutations;
+            deserializedAgentOptimizationCandidate.evaluationId = evaluationId;
+            deserializedAgentOptimizationCandidate.evaluationRunId = evaluationRunId;
+            deserializedAgentOptimizationCandidate.promotion = promotion;
+            return deserializedAgentOptimizationCandidate;
         });
-    }
-
-    /*
-     * Promotion metadata. Null if the candidate has not been promoted.
-     */
-    @Generated
-    private PromotionInfo promotion;
-
-    /**
-     * Get the promotion property: Promotion metadata. Null if the candidate has not been promoted.
-     *
-     * @return the promotion value.
-     */
-    @Generated
-    public PromotionInfo getPromotion() {
-        return this.promotion;
-    }
-
-    /*
-     * Average composite score across all tasks.
-     */
-    @Generated
-    private final double averageScore;
-
-    /*
-     * Average token usage across all tasks.
-     */
-    @Generated
-    private final double averageTokens;
-
-    /**
-     * Get the averageScore property: Average composite score across all tasks.
-     *
-     * @return the averageScore value.
-     */
-    @Generated
-    public double getAverageScore() {
-        return this.averageScore;
-    }
-
-    /**
-     * Get the averageTokens property: Average token usage across all tasks.
-     *
-     * @return the averageTokens value.
-     */
-    @Generated
-    public double getAverageTokens() {
-        return this.averageTokens;
-    }
-
-    /*
-     * Foundry evaluation identifier used to score this candidate.
-     */
-    @Generated
-    private String evaluationId;
-
-    /*
-     * Foundry evaluation run identifier for this candidate's scoring run.
-     */
-    @Generated
-    private String evaluationRunId;
-
-    /**
-     * Get the evaluationId property: Foundry evaluation identifier used to score this candidate.
-     *
-     * @return the evaluationId value.
-     */
-    @Generated
-    public String getEvaluationId() {
-        return this.evaluationId;
-    }
-
-    /**
-     * Get the evaluationRunId property: Foundry evaluation run identifier for this candidate's scoring run.
-     *
-     * @return the evaluationRunId value.
-     */
-    @Generated
-    public String getEvaluationRunId() {
-        return this.evaluationRunId;
-    }
-
-    /**
-     * Creates an instance of OptimizationCandidate class.
-     *
-     * @param name the name value to set.
-     * @param averageScore the averageScore value to set.
-     * @param averageTokens the averageTokens value to set.
-     */
-    @Generated
-    private OptimizationCandidate(String name, double averageScore, double averageTokens) {
-        this.name = name;
-        this.averageScore = averageScore;
-        this.averageTokens = averageTokens;
     }
 }

@@ -4,8 +4,8 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.utils.Beta;
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,33 +14,19 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 /**
- * Agent optimization job resource — a long-running job that optimizes an agent's configuration (instructions, model,
- * skills, tools) to maximize evaluation scores. On success, the result contains scored candidates.
+ * Slim job representation returned by the LIST endpoint.
  */
-@Fluent
+@Immutable
 @Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
-public final class OptimizationJob implements JsonSerializable<OptimizationJob> {
+public final class AgentOptimizationJobListItem implements JsonSerializable<AgentOptimizationJobListItem> {
 
     /*
      * Server-assigned unique identifier.
      */
     @Generated
     private String id;
-
-    /*
-     * Caller-supplied inputs.
-     */
-    @Generated
-    private OptimizationJobInputs inputs;
-
-    /*
-     * Result produced on success.
-     */
-    @Generated
-    private OptimizationJobResult result;
 
     /*
      * Current lifecycle status.
@@ -70,13 +56,19 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
      * Progress snapshot. May be present in terminal states reflecting last-known progress.
      */
     @Generated
-    private OptimizationJobProgress progress;
+    private AgentOptimizationJobProgress progress;
 
-    /**
-     * Creates an instance of OptimizationJob class.
+    /*
+     * The agent targeted by this optimization job.
      */
     @Generated
-    public OptimizationJob() {
+    private OptimizedAgentIdentifier agent;
+
+    /**
+     * Creates an instance of AgentOptimizationJobListItem class.
+     */
+    @Generated
+    private AgentOptimizationJobListItem() {
     }
 
     /**
@@ -87,26 +79,6 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the inputs property: Caller-supplied inputs.
-     *
-     * @return the inputs value.
-     */
-    @Generated
-    public OptimizationJobInputs getInputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Get the result property: Result produced on success.
-     *
-     * @return the result value.
-     */
-    @Generated
-    public OptimizationJobResult getResult() {
-        return this.result;
     }
 
     /**
@@ -155,8 +127,18 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
      * @return the progress value.
      */
     @Generated
-    public OptimizationJobProgress getProgress() {
+    public AgentOptimizationJobProgress getProgress() {
         return this.progress;
+    }
+
+    /**
+     * Get the agent property: The agent targeted by this optimization job.
+     *
+     * @return the agent value.
+     */
+    @Generated
+    public OptimizedAgentIdentifier getAgent() {
+        return this.agent;
     }
 
     /**
@@ -166,78 +148,44 @@ public final class OptimizationJob implements JsonSerializable<OptimizationJob> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("inputs", this.inputs);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of OptimizationJob from the JsonReader.
+     * Reads an instance of AgentOptimizationJobListItem from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of OptimizationJob if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of AgentOptimizationJobListItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OptimizationJob.
+     * @throws IOException If an error occurs while reading the AgentOptimizationJobListItem.
      */
     @Generated
-    public static OptimizationJob fromJson(JsonReader jsonReader) throws IOException {
+    public static AgentOptimizationJobListItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            OptimizationJob deserializedOptimizationJob = new OptimizationJob();
+            AgentOptimizationJobListItem deserializedAgentOptimizationJobListItem = new AgentOptimizationJobListItem();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
-                    deserializedOptimizationJob.id = reader.getString();
+                    deserializedAgentOptimizationJobListItem.id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedOptimizationJob.status = JobStatus.fromString(reader.getString());
+                    deserializedAgentOptimizationJobListItem.status = JobStatus.fromString(reader.getString());
                 } else if ("created_at".equals(fieldName)) {
-                    deserializedOptimizationJob.createdAt = reader.getLong();
+                    deserializedAgentOptimizationJobListItem.createdAt = reader.getLong();
                 } else if ("updated_at".equals(fieldName)) {
-                    deserializedOptimizationJob.updatedAt = reader.getLong();
-                } else if ("inputs".equals(fieldName)) {
-                    deserializedOptimizationJob.inputs = OptimizationJobInputs.fromJson(reader);
-                } else if ("result".equals(fieldName)) {
-                    deserializedOptimizationJob.result = OptimizationJobResult.fromJson(reader);
+                    deserializedAgentOptimizationJobListItem.updatedAt = reader.getLong();
                 } else if ("error".equals(fieldName)) {
-                    deserializedOptimizationJob.error = ApiError.fromJson(reader);
+                    deserializedAgentOptimizationJobListItem.error = ApiError.fromJson(reader);
                 } else if ("progress".equals(fieldName)) {
-                    deserializedOptimizationJob.progress = OptimizationJobProgress.fromJson(reader);
-                } else if ("warnings".equals(fieldName)) {
-                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
-                    deserializedOptimizationJob.warnings = warnings;
+                    deserializedAgentOptimizationJobListItem.progress = AgentOptimizationJobProgress.fromJson(reader);
+                } else if ("agent".equals(fieldName)) {
+                    deserializedAgentOptimizationJobListItem.agent = OptimizedAgentIdentifier.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedOptimizationJob;
+            return deserializedAgentOptimizationJobListItem;
         });
-    }
-
-    /*
-     * Non-fatal warnings emitted at any point during optimization.
-     */
-    @Generated
-    private List<String> warnings;
-
-    /**
-     * Set the inputs property: Caller-supplied inputs.
-     *
-     * @param inputs the inputs value to set.
-     * @return the OptimizationJob object itself.
-     */
-    @Generated
-    public OptimizationJob setInputs(OptimizationJobInputs inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
-     * Get the warnings property: Non-fatal warnings emitted at any point during optimization.
-     *
-     * @return the warnings value.
-     */
-    @Generated
-    public List<String> getWarnings() {
-        return this.warnings;
     }
 }
