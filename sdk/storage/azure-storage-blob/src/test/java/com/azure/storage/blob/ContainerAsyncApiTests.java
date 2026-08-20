@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -37,6 +38,7 @@ import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -2531,7 +2533,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             String path = req.getUrl().getPath();
             String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
@@ -2568,7 +2570,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         blobClient.upload(BinaryData.fromBytes(data), true).block();
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             String path = req.getUrl().getPath();
             String query = req.getUrl().getQuery();
@@ -2614,7 +2616,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .block();
 
         List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             String query = req.getUrl().getQuery();
             if (auth != null && query != null && query.contains("comp=list")) {
@@ -2634,11 +2636,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     private BlobContainerAsyncClient sessionEnabledContainerAsyncClient(HttpPipelinePolicy... policies) {
-        SessionOptions sessionOptions = new SessionOptions().setSessionMode(SessionMode.ENABLED)
+        return getOAuthServiceAsyncClient(sessionEnabledOptions(), policies)
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+    }
+
+    private BlobContainerAsyncClient sessionEnabledContainerAsyncClient(HttpClient httpClient) {
+        return getOAuthServiceAsyncClient(sessionEnabledOptions(), httpClient)
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
+    }
+
+    private SessionOptions sessionEnabledOptions() {
+        return new SessionOptions().setSessionMode(SessionMode.ENABLED)
             .setContainerName(ccAsync.getBlobContainerName())
             .setAccountName(ccAsync.getAccountName());
-        return getOAuthServiceAsyncClient(sessionOptions, policies)
-            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName());
     }
 
 }

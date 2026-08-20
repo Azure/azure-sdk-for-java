@@ -71,6 +71,7 @@ import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -2981,7 +2982,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         blobClient.upload(BinaryData.fromBytes(data), true).block();
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
-        RequestInspectionPolicy inspect = new RequestInspectionPolicy(req -> {
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             String path = req.getUrl().getPath();
             String query = req.getUrl().getQuery();

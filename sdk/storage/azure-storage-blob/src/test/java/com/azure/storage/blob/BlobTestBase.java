@@ -439,20 +439,11 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
-            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildClient();
+    }
 
-        instrument(builder);
-
-        if (policies != null) {
-            for (HttpPipelinePolicy policy : policies) {
-                if (policy != null) {
-                    builder.addPolicy(policy);
-                }
-            }
-        }
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
+    protected BlobServiceClient getOAuthServiceClient(SessionOptions sessionOptions, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
@@ -465,10 +456,32 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions,
         HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionOptions, null, policies).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient(SessionOptions sessionOptions, HttpClient httpClient) {
+        return getOAuthServiceClientBuilder(sessionOptions, httpClient).buildAsyncClient();
+    }
+
+    /**
+     * Builds an OAuth service client builder. When {@code httpClient} is supplied it replaces the transport that
+     * {@code instrument} installed, which lets a test observe requests as they go on the wire.
+     *
+     * @param sessionOptions The session options to configure.
+     * @param httpClient The transport to send requests with, or null to keep the instrumented one.
+     * @param policies Additional policies to add to the pipeline.
+     * @return The configured builder.
+     */
+    private BlobServiceClientBuilder getOAuthServiceClientBuilder(SessionOptions sessionOptions, HttpClient httpClient,
+        HttpPipelinePolicy... policies) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder().sessionOptions(sessionOptions)
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
 
         instrument(builder);
+
+        if (httpClient != null) {
+            builder.httpClient(httpClient);
+        }
 
         if (policies != null) {
             for (HttpPipelinePolicy policy : policies) {
@@ -478,7 +491,7 @@ public class BlobTestBase extends TestProxyTestBase {
             }
         }
 
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     /**

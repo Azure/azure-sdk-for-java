@@ -10,15 +10,29 @@ import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 public class WireTapHttpClient implements HttpClient {
 
     private final HttpClient delegate;
     private final AtomicInteger requestCount = new AtomicInteger();
+    private Consumer<HttpRequest> requestInspector;
     private volatile HttpRequest lastRequest;
 
     public WireTapHttpClient(HttpClient delegate) {
         this.delegate = delegate;
+    }
+
+    /**
+     * Creates a wire tap that hands every request to {@code requestInspector} as it goes on the wire, letting a test
+     * observe the final headers set by the pipeline's policies.
+     *
+     * @param delegate The client that actually sends the request.
+     * @param requestInspector Invoked with each request before it is sent.
+     */
+    public WireTapHttpClient(HttpClient delegate, Consumer<HttpRequest> requestInspector) {
+        this(delegate);
+        this.requestInspector = requestInspector;
     }
 
     @Override
@@ -50,5 +64,8 @@ public class WireTapHttpClient implements HttpClient {
     private void inspect(HttpRequest request) {
         lastRequest = request;
         requestCount.incrementAndGet();
+        if (requestInspector != null) {
+            requestInspector.accept(request);
+        }
     }
 }
