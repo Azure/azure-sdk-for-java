@@ -189,18 +189,20 @@ public final class BlobClientBuilder
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
             snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, null, serviceVersion);
     }
 
     /**
@@ -650,4 +652,5 @@ public final class BlobClientBuilder
         this.audience = audience;
         return this;
     }
+
 }

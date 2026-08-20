@@ -133,7 +133,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -174,18 +174,19 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(blobContainerName, serviceVersion);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null)
-            ? httpPipeline
-            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-                perRetryPolicies, configuration, audience, LOGGER);
+    private HttpPipeline constructPipeline(String containerName, BlobServiceVersion serviceVersion) {
+        if (httpPipeline != null) {
+            return httpPipeline;
+        }
+        return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, audience, LOGGER, null, serviceVersion);
     }
 
     /**
@@ -606,4 +607,5 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
         this.audience = audience;
         return this;
     }
+
 }

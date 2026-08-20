@@ -3,12 +3,18 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.SessionOptions;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -38,6 +44,7 @@ import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -51,6 +58,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -2604,5 +2612,54 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .flatMap(baz -> baz.createSubdirectory("foo")
                 .flatMap(foo2 -> foo2.createSubdirectory("bar"))
                 .then(baz.createSubdirectory("bar/foo")));
+    }
+
+    // Session credentials are bound to the network context of the CreateSession call, so any TLS-terminating
+    // intermediary (including the test proxy) causes the service to reject the session-signed reads.
+    @Test
+    @LiveOnly
+    @ResourceLock("DataLakeSessionAuth")
+    public void readFileOverSessionAuth() {
+        int fileCount = 5;
+        List<String> fileNames = new ArrayList<>();
+        for (int i = 0; i < fileCount; i++) {
+            String fileName = generatePathName();
+            dataLakeFileSystemAsyncClient.getFileAsyncClient(fileName)
+                .upload(DATA.getDefaultBinaryData(), null)
+                .block();
+            fileNames.add(fileName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        HttpPipelinePolicy inspect = (context, next) -> {
+            HttpRequest req = context.getHttpRequest();
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && req.getHttpMethod() == HttpMethod.GET && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+            return next.process();
+        };
+
+        DataLakeFileSystemAsyncClient sessionFileSystemAsyncClient = sessionEnabledFileSystemAsyncClient(inspect);
+
+        for (String fileName : fileNames) {
+            StepVerifier
+                .create(FluxUtil
+                    .collectBytesInByteBufferStream(sessionFileSystemAsyncClient.getFileAsyncClient(fileName).read()))
+                .assertNext(bytes -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), bytes))
+                .verifyComplete();
+        }
+
+        assertTrue(downloadAuthSchemes.size() >= fileCount,
+            "Expected to observe at least one download request per file; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+            "Expected all file downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    private DataLakeFileSystemAsyncClient sessionEnabledFileSystemAsyncClient(HttpPipelinePolicy... policies) {
+        return getOAuthServiceAsyncClient(new SessionOptions(), policies)
+            .getFileSystemAsyncClient(dataLakeFileSystemAsyncClient.getFileSystemName());
     }
 }
