@@ -1,6 +1,6 @@
 # Release History
 
-## 2.60.0-beta.1 (Unreleased)
+## 2.61.0-beta.1 (Unreleased)
 
 ### Features Added
 
