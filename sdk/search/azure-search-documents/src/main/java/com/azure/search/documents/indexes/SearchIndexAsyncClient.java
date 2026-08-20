@@ -1370,7 +1370,21 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SynonymMap> getSynonymMaps() {
-        return getSynonymMaps(null, null, null, null);
+        // Generated convenience method for getSynonymMaps
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = getSynonymMaps(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, SynonymMap>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -5228,9 +5242,36 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadKnowledgeSourceFileWithResponse(String contentDisposition, String name,
-        BinaryData file, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedUploadKnowledgeSourceFileWithResponse(String contentDisposition,
+        String name, BinaryData file, RequestOptions requestOptions) {
         return this.serviceClient.uploadKnowledgeSourceFileWithResponseAsync(contentDisposition, name, file,
             requestOptions);
+    }
+
+    /**
+     * Uploads a file to a File knowledge source for processing and indexing.
+     *
+     * @param contentDisposition The Content-Disposition header specifying the filename of the uploaded file.
+     * Must follow the format: `attachment; filename="&lt;filename&gt;"`.
+     * For example: `attachment; filename="installation-guide.pdf"`.
+     * @param name The name of the knowledge source.
+     * @param file The file content to upload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata for a file uploaded to a File knowledge source on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeSourceFile> uploadKnowledgeSourceFile(String contentDisposition, String name,
+        BinaryData file) {
+        // Generated convenience method for hiddenGeneratedUploadKnowledgeSourceFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedUploadKnowledgeSourceFileWithResponse(contentDisposition, name, file, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceFile.class));
     }
 }

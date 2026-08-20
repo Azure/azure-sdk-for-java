@@ -21,20 +21,13 @@ public final class KnowledgeBaseActivityRecordModel implements JsonSerializable<
      * The name of the model used for the activity.
      */
     @Generated
-    private String modelName;
+    private final String modelName;
 
     /*
      * The deployment identifier of the model used for the activity.
      */
     @Generated
     private String deploymentId;
-
-    /**
-     * Creates an instance of KnowledgeBaseActivityRecordModel class.
-     */
-    @Generated
-    private KnowledgeBaseActivityRecordModel() {
-    }
 
     /**
      * Get the modelName property: The name of the model used for the activity.
@@ -74,25 +67,39 @@ public final class KnowledgeBaseActivityRecordModel implements JsonSerializable<
      * @param jsonReader The JsonReader being read.
      * @return An instance of KnowledgeBaseActivityRecordModel if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the KnowledgeBaseActivityRecordModel.
      */
     @Generated
     public static KnowledgeBaseActivityRecordModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KnowledgeBaseActivityRecordModel deserializedKnowledgeBaseActivityRecordModel
-                = new KnowledgeBaseActivityRecordModel();
+            String modelName = null;
+            String deploymentId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("modelName".equals(fieldName)) {
-                    deserializedKnowledgeBaseActivityRecordModel.modelName = reader.getString();
+                    modelName = reader.getString();
                 } else if ("deploymentId".equals(fieldName)) {
-                    deserializedKnowledgeBaseActivityRecordModel.deploymentId = reader.getString();
+                    deploymentId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            KnowledgeBaseActivityRecordModel deserializedKnowledgeBaseActivityRecordModel
+                = new KnowledgeBaseActivityRecordModel(modelName);
+            deserializedKnowledgeBaseActivityRecordModel.deploymentId = deploymentId;
             return deserializedKnowledgeBaseActivityRecordModel;
         });
+    }
+
+    /**
+     * Creates an instance of KnowledgeBaseActivityRecordModel class.
+     *
+     * @param modelName the modelName value to set.
+     */
+    @Generated
+    private KnowledgeBaseActivityRecordModel(String modelName) {
+        this.modelName = modelName;
     }
 }

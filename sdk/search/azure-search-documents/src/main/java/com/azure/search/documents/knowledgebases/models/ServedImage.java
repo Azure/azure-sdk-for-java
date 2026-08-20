@@ -28,20 +28,13 @@ public final class ServedImage implements JsonSerializable<ServedImage> {
      * The relative path to the image within the asset store.
      */
     @Generated
-    private String imagePath;
+    private final String imagePath;
 
     /*
      * The size in bytes of this image as sent to the model.
      */
     @Generated
-    private Long sizeBytes;
-
-    /**
-     * Creates an instance of ServedImage class.
-     */
-    @Generated
-    private ServedImage() {
-    }
+    private final long sizeBytes;
 
     /**
      * Get the imageId property: The image label extracted from the source document by Content Understanding enrichment.
@@ -70,7 +63,7 @@ public final class ServedImage implements JsonSerializable<ServedImage> {
      * @return the sizeBytes value.
      */
     @Generated
-    public Long getSizeBytes() {
+    public long getSizeBytes() {
         return this.sizeBytes;
     }
 
@@ -81,9 +74,9 @@ public final class ServedImage implements JsonSerializable<ServedImage> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("imageId", this.imageId);
         jsonWriter.writeStringField("imagePath", this.imagePath);
-        jsonWriter.writeNumberField("sizeBytes", this.sizeBytes);
+        jsonWriter.writeLongField("sizeBytes", this.sizeBytes);
+        jsonWriter.writeStringField("imageId", this.imageId);
         return jsonWriter.writeEndObject();
     }
 
@@ -93,26 +86,43 @@ public final class ServedImage implements JsonSerializable<ServedImage> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServedImage if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServedImage.
      */
     @Generated
     public static ServedImage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ServedImage deserializedServedImage = new ServedImage();
+            String imagePath = null;
+            long sizeBytes = 0L;
+            String imageId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("imageId".equals(fieldName)) {
-                    deserializedServedImage.imageId = reader.getString();
-                } else if ("imagePath".equals(fieldName)) {
-                    deserializedServedImage.imagePath = reader.getString();
+                if ("imagePath".equals(fieldName)) {
+                    imagePath = reader.getString();
                 } else if ("sizeBytes".equals(fieldName)) {
-                    deserializedServedImage.sizeBytes = reader.getNullable(JsonReader::getLong);
+                    sizeBytes = reader.getLong();
+                } else if ("imageId".equals(fieldName)) {
+                    imageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            ServedImage deserializedServedImage = new ServedImage(imagePath, sizeBytes);
+            deserializedServedImage.imageId = imageId;
             return deserializedServedImage;
         });
+    }
+
+    /**
+     * Creates an instance of ServedImage class.
+     *
+     * @param imagePath the imagePath value to set.
+     * @param sizeBytes the sizeBytes value to set.
+     */
+    @Generated
+    private ServedImage(String imagePath, long sizeBytes) {
+        this.imagePath = imagePath;
+        this.sizeBytes = sizeBytes;
     }
 }
