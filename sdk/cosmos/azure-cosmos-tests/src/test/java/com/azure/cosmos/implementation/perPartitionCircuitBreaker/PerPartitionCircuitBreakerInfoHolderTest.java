@@ -28,13 +28,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.doReturn;
 
 public class PerPartitionCircuitBreakerInfoHolderTest {
 
     @Test(groups = {"unit"})
-    public void storesImmutableStateSnapshot() {
+    public void storesStateReferenceWithoutCopying() {
         LocationSpecificHealthContext healthContext = createHealthContext(LocationHealthStatus.Unavailable);
         Map<String, LocationSpecificHealthContext> currentState = new LinkedHashMap<>();
         currentState.put("eastus", healthContext);
@@ -42,15 +41,13 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
         holder.setPerPartitionCircuitBreakerInfoHolder(currentState);
         PerPartitionCircuitBreakerInfoHolder snapshot = holder.snapshot();
-        currentState.clear();
 
-        assertThat(holder.getPerPartitionCircuitBreakerInfoHolder())
-            .containsOnlyKeys("eastus")
-            .containsValue(healthContext);
+        assertThat(holder.getPerPartitionCircuitBreakerInfoHolder()).isSameAs(currentState);
         assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder())
-            .isSameAs(holder.getPerPartitionCircuitBreakerInfoHolder());
-        assertThatThrownBy(() -> holder.getPerPartitionCircuitBreakerInfoHolder().clear())
-            .isInstanceOf(UnsupportedOperationException.class);
+            .isSameAs(currentState);
+
+        currentState.clear();
+        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder()).isEmpty();
     }
 
     @Test(groups = {"unit"})

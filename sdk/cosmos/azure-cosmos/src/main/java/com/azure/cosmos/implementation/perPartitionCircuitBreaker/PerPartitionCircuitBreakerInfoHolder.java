@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
@@ -34,7 +33,7 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
         this.perPartitionCircuitBreakerInfoHolder = locationSpecificHealthContext == null
             ? Collections.emptyMap()
-            : Collections.unmodifiableMap(new LinkedHashMap<>(locationSpecificHealthContext));
+            : locationSpecificHealthContext;
     }
 
     public Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
