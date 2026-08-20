@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BlobClientBaseGetLayoutApiTests extends BlobTestBase {
+public class BlobClientBaseTests extends BlobTestBase {
     private BlobClient bc;
 
     @BeforeEach
