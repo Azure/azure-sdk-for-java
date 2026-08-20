@@ -41,12 +41,25 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
 
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
         holder.setPerPartitionCircuitBreakerInfoHolder(currentState);
+        PerPartitionCircuitBreakerInfoHolder snapshot = holder.snapshot();
         currentState.clear();
 
         assertThat(holder.getPerPartitionCircuitBreakerInfoHolder())
             .containsOnlyKeys("eastus")
             .containsValue(healthContext);
+        assertThat(snapshot.getPerPartitionCircuitBreakerInfoHolder())
+            .isSameAs(holder.getPerPartitionCircuitBreakerInfoHolder());
         assertThatThrownBy(() -> holder.getPerPartitionCircuitBreakerInfoHolder().clear())
+            .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    @Test(groups = {"unit"})
+    public void uninitializedSnapshotIsSharedAndReadOnly() {
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+
+        assertThat(holder.snapshot()).isSameAs(PerPartitionCircuitBreakerInfoHolder.EMPTY);
+        assertThatThrownBy(() -> PerPartitionCircuitBreakerInfoHolder.EMPTY
+            .setPerPartitionCircuitBreakerInfoHolder(Collections.emptyMap()))
             .isInstanceOf(UnsupportedOperationException.class);
     }
 
@@ -61,6 +74,24 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
             .isEqualTo("{\"stateByRegion\":{}}");
         assertThat(objectMapper.writeValueAsString(PerPartitionCircuitBreakerInfoHolder.EMPTY))
             .isEqualTo("null");
+    }
+
+    @Test(groups = {"unit"})
+    public void stateIsSerializedUsingCompactFieldNames() throws Exception {
+        LocationSpecificHealthContext healthContext = new LocationSpecificHealthContext.Builder()
+            .withLocationHealthStatus(LocationHealthStatus.Unavailable)
+            .withExceptionCountForReadForCircuitBreaking(1)
+            .withExceptionCountForWriteForCircuitBreaking(2)
+            .withSuccessCountForReadForRecovery(3)
+            .withSuccessCountForWriteForRecovery(4)
+            .withUnavailableSince(Instant.EPOCH)
+            .build();
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap("eastus", healthContext));
+
+        assertThat(new ObjectMapper().writeValueAsString(holder))
+            .isEqualTo("{\"stateByRegion\":{\"eastus\":{\"st\":\"Unavailable\",\"rErr\":1,\"wErr\":2,"
+                + "\"rOk\":3,\"wOk\":4,\"since\":\"1970-01-01T00:00:00Z\"}}}");
     }
 
     @Test(groups = {"unit"})

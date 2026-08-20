@@ -143,12 +143,12 @@ public class LocationSpecificHealthContext implements Serializable {
         public void serialize(LocationSpecificHealthContext value, JsonGenerator gen, SerializerProvider provider) throws IOException {
             gen.writeStartObject();
 
-            gen.writeNumberField("exceptionCountForWriteForCircuitBreaking", value.exceptionCountForWriteForCircuitBreaking);
-            gen.writeNumberField("exceptionCountForReadForCircuitBreaking", value.exceptionCountForReadForCircuitBreaking);
-            gen.writeNumberField("successCountForWriteForRecovery", value.successCountForWriteForRecovery);
-            gen.writeNumberField("successCountForReadForRecovery", value.successCountForReadForRecovery);
-            gen.writePOJOField("locationHealthStatus", value.locationHealthStatus);
-            gen.writeStringField("unavailableSince", toInstantString(value.unavailableSince));
+            gen.writePOJOField("st", value.locationHealthStatus);
+            gen.writeNumberField("rErr", value.exceptionCountForReadForCircuitBreaking);
+            gen.writeNumberField("wErr", value.exceptionCountForWriteForCircuitBreaking);
+            gen.writeNumberField("rOk", value.successCountForReadForRecovery);
+            gen.writeNumberField("wOk", value.successCountForWriteForRecovery);
+            gen.writeStringField("since", toInstantString(value.unavailableSince));
 
             gen.writeEndObject();
         }

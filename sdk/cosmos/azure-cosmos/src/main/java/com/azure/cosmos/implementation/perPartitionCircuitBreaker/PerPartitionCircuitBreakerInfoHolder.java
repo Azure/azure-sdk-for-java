@@ -17,12 +17,25 @@ import java.util.Map;
 @JsonSerialize(using = PerPartitionCircuitBreakerInfoHolder.PerPartitionCircuitBreakerInfoHolderSerializer.class)
 public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
 
-    public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder();
+    public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder(true);
 
     private final Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> perPartitionCircuitBreakerInfoHolder = new Utils.ValueHolder<Map<String, LocationSpecificHealthContext>>();
+    private final boolean readOnly;
     private boolean initialized;
 
+    public PerPartitionCircuitBreakerInfoHolder() {
+        this(false);
+    }
+
+    private PerPartitionCircuitBreakerInfoHolder(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
     public synchronized void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
+        if (this.readOnly) {
+            throw new UnsupportedOperationException("This PPCB diagnostics snapshot is read-only.");
+        }
+
         this.initialized = true;
         this.perPartitionCircuitBreakerInfoHolder.v = locationSpecificHealthContext == null
             ? Collections.emptyMap()
@@ -34,10 +47,13 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
     }
 
     public synchronized PerPartitionCircuitBreakerInfoHolder snapshot() {
-        PerPartitionCircuitBreakerInfoHolder snapshot = new PerPartitionCircuitBreakerInfoHolder();
-        if (this.initialized) {
-            snapshot.setPerPartitionCircuitBreakerInfoHolder(this.perPartitionCircuitBreakerInfoHolder.v);
+        if (!this.initialized) {
+            return EMPTY;
         }
+
+        PerPartitionCircuitBreakerInfoHolder snapshot = new PerPartitionCircuitBreakerInfoHolder(true);
+        snapshot.initialized = true;
+        snapshot.perPartitionCircuitBreakerInfoHolder.v = this.perPartitionCircuitBreakerInfoHolder.v;
         return snapshot;
     }
 
