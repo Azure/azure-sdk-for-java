@@ -2337,9 +2337,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
 
+        // First resolve the caller-provided key. Preserve whether NONE was explicitly supplied
+        // because its collection-specific representation can otherwise resemble an HPK prefix.
         PartitionKeyInternal partitionKeyInternal = null;
         PartitionKey providedPartitionKey = options != null ? options.getPartitionKey() : null;
-        if (PartitionKey.NONE.equals(providedPartitionKey)) {
+        boolean isNonePartitionKey = PartitionKey.NONE.equals(providedPartitionKey);
+        if (isNonePartitionKey) {
             partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (providedPartitionKey != null) {
             partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(providedPartitionKey);
@@ -2349,9 +2352,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
         }
 
+        // Materialize the item only when its body is needed to derive the key or the missing id.
         boolean partitionKeyNeedsExtraction = partitionKeyInternal == null;
         boolean pkNeedsId =
-            shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal);
+            !isNonePartitionKey
+                && shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal);
         boolean itemIdNeedsExtraction =
             pkNeedsId && Strings.isNullOrEmpty(itemId);
         boolean materializeDocument = partitionKeyNeedsExtraction || itemIdNeedsExtraction;
@@ -2409,8 +2414,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        partitionKeyInternal = completePkWithIdIfNeeded(
-            request, partitionKeyDefinition, partitionKeyInternal, itemId);
+        // Complete only an exact prefix after resolving the id from the request path or item body.
+        if (pkNeedsId) {
+            partitionKeyInternal = PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
+                partitionKeyDefinition, partitionKeyInternal, itemId);
+        }
 
         if (partitionKeyInternal == null) {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
@@ -2419,20 +2427,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.setPartitionKeyInternal(partitionKeyInternal);
         request.setPartitionKeyDefinition(partitionKeyDefinition);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
-    }
-
-    private static PartitionKeyInternal completePkWithIdIfNeeded(
-        RxDocumentServiceRequest request,
-        PartitionKeyDefinition partitionKeyDefinition,
-        PartitionKeyInternal partitionKeyInternal,
-        String itemId) {
-
-        if (shouldCompletePkWithId(request, partitionKeyDefinition, partitionKeyInternal)) {
-            return PartitionKeyHelper.ensureIdIsInPartitionKeyInternal(
-                partitionKeyDefinition, partitionKeyInternal, itemId);
-        }
-
-        return partitionKeyInternal;
     }
 
     private static boolean shouldCompletePkWithId(
@@ -2654,12 +2648,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
                 // Partition key is always non-null
                 partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+            }
 
-                if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
-                    throw new IllegalArgumentException(
-                        "A transactional batch requires a full partition key matching all paths in the "
-                            + "container's partition key definition.");
-                }
+            if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
+                throw new IllegalArgumentException(
+                    "A transactional batch requires a full partition key matching all paths in the "
+                        + "container's partition key definition.");
             }
 
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -4528,17 +4522,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // to the partition key so callers can pass only its prefix.
                                     CosmosItemIdentity itemIdentity =
                                         augmentItemIdentityWithIdIfNeeded(originalItemIdentity, pkDefinition);
+                                    PartitionKeyInternal itemPartitionKeyInternal =
+                                        ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey());
 
                                     //Check no partial partition keys are being used
                                     if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
-                                        ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey())
-                                                           .getComponents().size() != pkDefinition.getPaths().size()) {
+                                        !PartitionKeyHelper.isFullPartitionKey(
+                                            pkDefinition, itemPartitionKeyInternal)) {
                                         throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
                                     }
                                     String effectivePartitionKeyString = PartitionKeyInternalHelper
                                         .getEffectivePartitionKeyString(
-                                            BridgeInternal.getPartitionKeyInternal(
-                                                itemIdentity.getPartitionKey()),
+                                            itemPartitionKeyInternal,
                                             pkDefinition);
 
                                     //use routing map to find the partitionKeyRangeId of each

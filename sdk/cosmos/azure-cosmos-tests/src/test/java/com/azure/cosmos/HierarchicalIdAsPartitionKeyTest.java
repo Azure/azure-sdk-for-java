@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -176,7 +177,36 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
             Collections.singletonList(new CosmosItemIdentity(PartitionKey.NONE, id));
 
         assertThatThrownBy(() -> hpkContainer.readMany(identities, TestItem.class))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(RMResources.PartitionKeyMismatch);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkPointOperationsDoNotRewriteNonePartitionKey() {
+        String id = UUID.randomUUID().toString();
+        PartitionKey nullPrefixPartitionKey = new PartitionKeyBuilder().addNullValue().build();
+        hpkContainer.createItem(
+            new TestItem(id, null, "v1"),
+            nullPrefixPartitionKey,
+            new CosmosItemRequestOptions());
+
+        assertThatThrownBy(() -> hpkContainer.readItem(id, PartitionKey.NONE, TestItem.class))
+            .isInstanceOfSatisfying(CosmosException.class, exception ->
+                assertThat(exception.getStatusCode()).isEqualTo(400));
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create().replace("/prop", "patched");
+        assertThatThrownBy(() ->
+            hpkContainer.patchItem(id, PartitionKey.NONE, patchOperations, TestItem.class))
+            .isInstanceOfSatisfying(CosmosException.class, exception ->
+                assertThat(exception.getStatusCode()).isEqualTo(400));
+
+        assertThatThrownBy(() ->
+            hpkContainer.deleteItem(id, PartitionKey.NONE, new CosmosItemRequestOptions()))
+            .isInstanceOfSatisfying(CosmosException.class, exception ->
+                assertThat(exception.getStatusCode()).isEqualTo(400));
+
+        assertThat(hpkContainer.readItem(id, nullPrefixPartitionKey, TestItem.class).getItem().getProp())
+            .isEqualTo("v1");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -332,6 +362,16 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
 
         CosmosBatchResponse response = hpkContainer.executeCosmosBatch(batch);
         assertThat(response.isSuccessStatusCode()).isTrue();
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void hpkTransactionalBatchWithNonePartitionKeyThrows() {
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(PartitionKey.NONE);
+        batch.createItemOperation(new TestItem(UUID.randomUUID().toString(), null, "v1"));
+
+        assertThatThrownBy(() -> hpkContainer.executeCosmosBatch(batch))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("requires a full partition key");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

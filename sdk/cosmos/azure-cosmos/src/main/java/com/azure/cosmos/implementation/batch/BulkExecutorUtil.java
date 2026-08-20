@@ -156,11 +156,8 @@ final class BulkExecutorUtil {
             return null;
         }
 
-        CosmosItemSerializer serializer = effectiveItemSerializer != null
-            ? effectiveItemSerializer
-            : operation.getEffectiveItemSerializerForResult();
-
-        Map<String, Object> serializedItem = operation.getSerializedItem(serializer);
+        checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
+        Map<String, Object> serializedItem = operation.getSerializedItem(effectiveItemSerializer);
         Object idValue = serializedItem == null ? null : serializedItem.get(Constants.Properties.ID);
         return idValue == null ? null : idValue.toString();
     }
