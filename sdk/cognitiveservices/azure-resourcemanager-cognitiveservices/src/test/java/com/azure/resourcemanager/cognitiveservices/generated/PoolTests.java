@@ -13,24 +13,24 @@ public final class PoolTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Pool model = BinaryData.fromString(
-            "{\"name\":\"zvqqugdrftbcvexr\",\"vmPriority\":\"LowPriority\",\"instanceType\":\"quowtljvfwhrea\",\"nodeCount\":851669196}")
+            "{\"name\":\"l\",\"vmPriority\":\"Regular\",\"instanceType\":\"qkfrbzgowoxqmj\",\"nodeCount\":642254793}")
             .toObject(Pool.class);
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.name());
-        Assertions.assertEquals(VmPriority.LOW_PRIORITY, model.vmPriority());
-        Assertions.assertEquals("quowtljvfwhrea", model.instanceType());
-        Assertions.assertEquals(851669196, model.nodeCount());
+        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
+        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
+        Assertions.assertEquals(642254793, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Pool model = new Pool().withName("zvqqugdrftbcvexr")
-            .withVmPriority(VmPriority.LOW_PRIORITY)
-            .withInstanceType("quowtljvfwhrea")
-            .withNodeCount(851669196);
+        Pool model = new Pool().withName("l")
+            .withVmPriority(VmPriority.REGULAR)
+            .withInstanceType("qkfrbzgowoxqmj")
+            .withNodeCount(642254793);
         model = BinaryData.fromObject(model).toObject(Pool.class);
-        Assertions.assertEquals("zvqqugdrftbcvexr", model.name());
-        Assertions.assertEquals(VmPriority.LOW_PRIORITY, model.vmPriority());
-        Assertions.assertEquals("quowtljvfwhrea", model.instanceType());
-        Assertions.assertEquals(851669196, model.nodeCount());
+        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals(VmPriority.REGULAR, model.vmPriority());
+        Assertions.assertEquals("qkfrbzgowoxqmj", model.instanceType());
+        Assertions.assertEquals(642254793, model.nodeCount());
     }
 }
