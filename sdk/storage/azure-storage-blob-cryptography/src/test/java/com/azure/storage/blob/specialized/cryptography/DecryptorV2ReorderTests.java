@@ -45,8 +45,8 @@ public class DecryptorV2ReorderTests {
     private static final int REGION_DATA_LENGTH = 1024;
     private static final int REGION_TOTAL_LENGTH = NONCE_LENGTH + REGION_DATA_LENGTH + TAG_LENGTH;
     private static final int REGION_COUNT = 4;
-    // Region index at which EncryptorV2's int-truncated nonce repeats (2^32). Reorder detection no longer special-cases
-    // this boundary; the constant is kept only to exercise decryption at and around it.
+    // Region index (2^32) at which older Java-encoded content's nonce repeats. Validation fails closed at and beyond
+    // this boundary for the Java scheme, since integrity can no longer be verified there.
     private static final long NONCE_REPEAT_REGION = 1L << 32;
     private static final Random RANDOM = new Random();
 
@@ -114,10 +114,9 @@ public class DecryptorV2ReorderTests {
 
     @Test
     public void decryptsRegionsAcrossIntegerMaxValueBoundary() {
-        // EncryptorV2 truncates the region index to an int when producing the nonce, so region Integer.MAX_VALUE + 1
-        // wraps to a negative (sign-extended) nonce. The reorder detection must replicate that truncation, otherwise
-        // valid blobs whose region indices cross Integer.MAX_VALUE (reachable at ~32 GiB with the minimum 16-byte
-        // region size) would be incorrectly rejected as reordered.
+        // The region index is encoded as a full 64-bit big-endian value, so regions whose indices cross the
+        // Integer.MAX_VALUE (2^31) boundary - reachable at ~32 GiB with the minimum 16-byte region size - must still
+        // validate and decrypt. (These indices are below the 2^32 nonce-wrap fail-closed boundary.)
         byte[] cek = randomBytes(32);
         long firstRegion = Integer.MAX_VALUE;
         byte[] region0Plaintext = randomBytes(REGION_DATA_LENGTH);
@@ -149,7 +148,7 @@ public class DecryptorV2ReorderTests {
 
     @Test
     public void decryptsLastRegionBeforeNonceRepeat() {
-        // Region 2^32 - 1 is the last region before the Java encoder's int-truncated nonce repeats; it decrypts.
+        // Region 2^32 - 1 is the last region below the fail-closed boundary; it validates and decrypts.
         byte[] cek = randomBytes(32);
         long lastUniqueRegion = NONCE_REPEAT_REGION - 1;
         byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
@@ -161,11 +160,23 @@ public class DecryptorV2ReorderTests {
     }
 
     @Test
-    public void decryptsValidBlobAtNonceRepeatRegion() {
-        // At region 2^32 the Java encoder's nonce repeats (reuses region 0's nonce), but the reorder check reconstructs
-        // the Java nonce with the same int truncation, so a valid blob still matches and decrypts. Reorder detection
-        // does not special-case very large region counts (the nonce-reuse itself is an encryptor concern handled
-        // separately); it must not reject valid content here.
+    public void failsClosedAtNonceRepeatBoundary() {
+        // At region 2^32 the (older) Java encoder's nonce repeats (reuses region 0's nonce), so integrity cannot be
+        // verified. Decryption must fail closed to alert the caller that the affected blob needs data recovery.
+        byte[] cek = randomBytes(32);
+        long wrapRegion = NONCE_REPEAT_REGION;
+        byte[] ciphertext = encryptRegionAt(cek, wrapRegion, randomBytes(REGION_DATA_LENGTH));
+
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+            () -> decrypt(cek, ciphertext, wrapRegion * REGION_DATA_LENGTH));
+        assertTrue(e.getMessage().contains("nonce reuse"), e.getMessage());
+    }
+
+    @Test
+    public void recoverySwitchAllowsPastNonceRepeatBoundary() {
+        // With the data-recovery switch, the fail-closed boundary is bypassed and plaintext is recovered.
+        System.setProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY, "true");
+
         byte[] cek = randomBytes(32);
         long wrapRegion = NONCE_REPEAT_REGION;
         byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
@@ -349,7 +360,8 @@ public class DecryptorV2ReorderTests {
     // Independent implementations of each SDK's nonce scheme, serving as cross-SDK test vectors.
 
     private static byte[] javaNonce(long regionIndex) {
-        return ByteBuffer.allocate(NONCE_LENGTH).putLong((int) regionIndex).array();
+        // Full 64-bit big-endian region index (matches EncryptorV2 after the nonce-counter widening fix).
+        return ByteBuffer.allocate(NONCE_LENGTH).putLong(regionIndex).array();
     }
 
     private static byte[] pythonNonce(long regionIndex) {
