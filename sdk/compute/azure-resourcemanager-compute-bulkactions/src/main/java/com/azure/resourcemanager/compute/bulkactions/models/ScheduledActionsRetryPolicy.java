@@ -15,8 +15,7 @@ import java.io.IOException;
  * Retry policy the scheduled action can pass.
  */
 @Fluent
-public final class RecurringScheduledActionsRetryPolicy
-    implements JsonSerializable<RecurringScheduledActionsRetryPolicy> {
+public final class ScheduledActionsRetryPolicy implements JsonSerializable<ScheduledActionsRetryPolicy> {
     /*
      * Retry count for the request
      */
@@ -30,12 +29,12 @@ public final class RecurringScheduledActionsRetryPolicy
     /*
      * Action to take on failure
      */
-    private RecurringScheduledActionsResourceOperationType onFailureAction;
+    private ScheduledActionsResourceOperationType onFailureAction;
 
     /**
-     * Creates an instance of RecurringScheduledActionsRetryPolicy class.
+     * Creates an instance of ScheduledActionsRetryPolicy class.
      */
-    public RecurringScheduledActionsRetryPolicy() {
+    public ScheduledActionsRetryPolicy() {
     }
 
     /**
@@ -51,9 +50,9 @@ public final class RecurringScheduledActionsRetryPolicy
      * Set the retryCount property: Retry count for the request.
      * 
      * @param retryCount the retryCount value to set.
-     * @return the RecurringScheduledActionsRetryPolicy object itself.
+     * @return the ScheduledActionsRetryPolicy object itself.
      */
-    public RecurringScheduledActionsRetryPolicy withRetryCount(Integer retryCount) {
+    public ScheduledActionsRetryPolicy withRetryCount(Integer retryCount) {
         this.retryCount = retryCount;
         return this;
     }
@@ -71,9 +70,9 @@ public final class RecurringScheduledActionsRetryPolicy
      * Set the retryWindowInMinutes property: Retry window in minutes for the request.
      * 
      * @param retryWindowInMinutes the retryWindowInMinutes value to set.
-     * @return the RecurringScheduledActionsRetryPolicy object itself.
+     * @return the ScheduledActionsRetryPolicy object itself.
      */
-    public RecurringScheduledActionsRetryPolicy withRetryWindowInMinutes(Integer retryWindowInMinutes) {
+    public ScheduledActionsRetryPolicy withRetryWindowInMinutes(Integer retryWindowInMinutes) {
         this.retryWindowInMinutes = retryWindowInMinutes;
         return this;
     }
@@ -83,7 +82,7 @@ public final class RecurringScheduledActionsRetryPolicy
      * 
      * @return the onFailureAction value.
      */
-    public RecurringScheduledActionsResourceOperationType onFailureAction() {
+    public ScheduledActionsResourceOperationType onFailureAction() {
         return this.onFailureAction;
     }
 
@@ -91,10 +90,9 @@ public final class RecurringScheduledActionsRetryPolicy
      * Set the onFailureAction property: Action to take on failure.
      * 
      * @param onFailureAction the onFailureAction value to set.
-     * @return the RecurringScheduledActionsRetryPolicy object itself.
+     * @return the ScheduledActionsRetryPolicy object itself.
      */
-    public RecurringScheduledActionsRetryPolicy
-        withOnFailureAction(RecurringScheduledActionsResourceOperationType onFailureAction) {
+    public ScheduledActionsRetryPolicy withOnFailureAction(ScheduledActionsResourceOperationType onFailureAction) {
         this.onFailureAction = onFailureAction;
         return this;
     }
@@ -113,36 +111,34 @@ public final class RecurringScheduledActionsRetryPolicy
     }
 
     /**
-     * Reads an instance of RecurringScheduledActionsRetryPolicy from the JsonReader.
+     * Reads an instance of ScheduledActionsRetryPolicy from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RecurringScheduledActionsRetryPolicy if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RecurringScheduledActionsRetryPolicy.
+     * @return An instance of ScheduledActionsRetryPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledActionsRetryPolicy.
      */
-    public static RecurringScheduledActionsRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
+    public static ScheduledActionsRetryPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RecurringScheduledActionsRetryPolicy deserializedRecurringScheduledActionsRetryPolicy
-                = new RecurringScheduledActionsRetryPolicy();
+            ScheduledActionsRetryPolicy deserializedScheduledActionsRetryPolicy = new ScheduledActionsRetryPolicy();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("retryCount".equals(fieldName)) {
-                    deserializedRecurringScheduledActionsRetryPolicy.retryCount
-                        = reader.getNullable(JsonReader::getInt);
+                    deserializedScheduledActionsRetryPolicy.retryCount = reader.getNullable(JsonReader::getInt);
                 } else if ("retryWindowInMinutes".equals(fieldName)) {
-                    deserializedRecurringScheduledActionsRetryPolicy.retryWindowInMinutes
+                    deserializedScheduledActionsRetryPolicy.retryWindowInMinutes
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("onFailureAction".equals(fieldName)) {
-                    deserializedRecurringScheduledActionsRetryPolicy.onFailureAction
-                        = RecurringScheduledActionsResourceOperationType.fromString(reader.getString());
+                    deserializedScheduledActionsRetryPolicy.onFailureAction
+                        = ScheduledActionsResourceOperationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedRecurringScheduledActionsRetryPolicy;
+            return deserializedScheduledActionsRetryPolicy;
         });
     }
 }

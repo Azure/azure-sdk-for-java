@@ -1,14 +1,125 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2026-08-21)
 
-### Features Added
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-08-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RecurringScheduledActionsExecutionParameters` was removed
 
-### Other Changes
+#### `models.RecurringScheduledActionsProvisioningState` was removed
+
+#### `models.RecurringScheduledActionsDeadlineType` was removed
+
+#### `models.RecurringScheduledActionsRetryPolicy` was removed
+
+#### `models.ResourceProvisioningState` was removed
+
+#### `models.RecurringScheduledActionsResourceOperationType` was removed
+
+#### `models.OccurrenceResource` was modified
+
+* `models.ResourceProvisioningState provisioningState()` -> `models.OccurrenceResourceProvisioningState provisioningState()`
+
+#### `models.OccurrenceExtensionProperties` was modified
+
+* `models.ResourceProvisioningState provisioningState()` -> `models.OccurrenceResourceProvisioningState provisioningState()`
+
+#### `models.ScheduledActionProperties` was modified
+
+* `models.RecurringScheduledActionsProvisioningState provisioningState()` -> `models.ScheduledActionsProvisioningState provisioningState()`
+
+#### `models.ScheduledActionsScheduleUpdate` was modified
+
+* `withExecutionParameters(models.RecurringScheduledActionsExecutionParameters)` was removed
+* `models.RecurringScheduledActionsDeadlineType deadlineType()` -> `models.ScheduledActionsDeadlineType deadlineType()`
+* `models.RecurringScheduledActionsExecutionParameters executionParameters()` -> `models.ScheduledActionsExecutionParameters executionParameters()`
+* `withDeadlineType(models.RecurringScheduledActionsDeadlineType)` was removed
+
+#### `models.ScheduledActionsSchedule` was modified
+
+* `models.RecurringScheduledActionsExecutionParameters executionParameters()` -> `models.ScheduledActionsExecutionParameters executionParameters()`
+* `withDeadlineType(models.RecurringScheduledActionsDeadlineType)` was removed
+* `models.RecurringScheduledActionsDeadlineType deadlineType()` -> `models.ScheduledActionsDeadlineType deadlineType()`
+* `withExecutionParameters(models.RecurringScheduledActionsExecutionParameters)` was removed
+
+#### `models.ScheduledActionsExtensionProperties` was modified
+
+* `models.RecurringScheduledActionsProvisioningState provisioningState()` -> `models.ScheduledActionsProvisioningState provisioningState()`
+
+### Features Added
+
+* `models.ScheduledActionsResourceOperationType` was added
+
+* `models.ScheduledActionsDeadlineType` was added
+
+* `models.ScheduledActionsExecutionParameters` was added
+
+* `models.CapacityRecommendationDetails` was added
+
+* `models.BulkCreateCustomVirtualMachineInfo` was added
+
+* `models.CapacityRecommendationStatus` was added
+
+* `models.CapacityRecommendation` was added
+
+* `models.PartialFulfillmentReason` was added
+
+* `models.CapacityRecommendationParameters` was added
+
+* `models.ScheduledActionsRetryPolicy` was added
+
+* `models.CapacityRecommendationPlacementScore` was added
+
+* `models.OccurrenceResourceProvisioningState` was added
+
+* `models.BulkCreateCustomResource` was added
+
+* `models.CapacityRecommendationSize` was added
+
+* `models.PartialFulfillmentPolicy` was added
+
+* `models.PartialFulfillmentMode` was added
+
+* `models.ScheduledActionsProvisioningState` was added
+
+#### `models.BulkCreateCustoms` was modified
+
+* `virtualMachinesGetOperationStatus(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `virtualMachinesGetOperationStatus(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.LocationBasedBulkCreateCustom` was modified
+
+* `virtualMachinesGetOperationStatus(com.azure.core.util.Context)` was added
+* `virtualMachinesGetOperationStatus()` was added
+
+#### `models.ResourceOperationDetails` was modified
+
+* `capacityRecommendation()` was added
+
+#### `models.ExecutionParameters` was modified
+
+* `capacityRecommendationParameters()` was added
+* `withCapacityRecommendationParameters(models.CapacityRecommendationParameters)` was added
+
+#### `models.BulkCreateCustomProperties` was modified
+
+* `withPartialFulfillmentPolicy(models.PartialFulfillmentPolicy)` was added
+* `minCapacity()` was added
+* `withMinCapacity(java.lang.Integer)` was added
+* `resources()` was added
+* `partialFulfillmentPolicy()` was added
+
+#### `models.ScheduledActionsScheduleUpdate` was modified
+
+* `withExecutionParameters(models.ScheduledActionsExecutionParameters)` was added
+* `withDeadlineType(models.ScheduledActionsDeadlineType)` was added
+
+#### `models.ScheduledActionsSchedule` was modified
+
+* `withDeadlineType(models.ScheduledActionsDeadlineType)` was added
+* `withExecutionParameters(models.ScheduledActionsExecutionParameters)` was added
 
 ## 1.0.0-beta.2 (2026-07-22)
 
