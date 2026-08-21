@@ -3,25 +3,26 @@
 
 package com.azure.ai.projects;
 
-import com.azure.ai.projects.models.CustomRoutineTrigger;
 import com.azure.ai.projects.models.InvokeAgentResponsesApiDispatchPayload;
 import com.azure.ai.projects.models.RoutineAction;
 import com.azure.ai.projects.models.RoutineTrigger;
+import com.azure.ai.projects.models.TimerRoutineTrigger;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Collections;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Sample demonstrating manual dispatch of a routine using the asynchronous {@link BetaRoutinesAsyncClient}.
  *
- * <p>The routine is created with a manual {@link CustomRoutineTrigger}, dispatched on demand with an input
- * payload, and the resulting run is polled until completion. Routines are a preview feature. Before running, set:</p>
+ * <p>The routine is created with a timer trigger scheduled in the future, dispatched early with an input payload,
+ * and the resulting run is polled until completion. Routines are a preview feature. Before running, set:</p>
  * <ul>
  *   <li>{@code FOUNDRY_PROJECT_ENDPOINT} - the Azure AI Foundry project endpoint.</li>
  *   <li>{@code HOSTED_AGENT_NAME} - the name of a deployed hosted agent.</li>
@@ -43,14 +44,15 @@ public class RoutinesManualDispatchAsyncSample {
             .buildBetaRoutinesAsyncClient();
 
         RoutineAction action = RoutinesSampleUtils.agentAction(agentName);
-        CustomRoutineTrigger trigger = new CustomRoutineTrigger("manual", Collections.<String, BinaryData>emptyMap());
+        TimerRoutineTrigger trigger = new TimerRoutineTrigger()
+            .setAt(OffsetDateTime.now(ZoneOffset.UTC).plusHours(1));
         Map<String, RoutineTrigger> triggers = new HashMap<>();
-        triggers.put("manual", trigger);
+        triggers.put("once", trigger);
 
-        routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
+        Mono<Void> workflow = routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
             .onErrorResume(ignored -> Mono.empty())
             .then(routinesAsyncClient.createOrUpdateRoutine(ROUTINE_NAME,
-                "Routine used by manual dispatch sample.", true, triggers, action))
+                "Timer routine dispatched before its scheduled fire time.", true, triggers, action))
             .flatMap(created -> {
                 System.out.printf("Created routine: %s enabled=%s%n", created.getName(), created.isEnabled());
                 return routinesAsyncClient.dispatchRoutine(created.getName(),
@@ -61,11 +63,18 @@ public class RoutinesManualDispatchAsyncSample {
                         System.out.printf("Waiting up to %d minutes for the dispatched run...%n",
                             RUN_TIMEOUT.toMinutes());
                         return RoutinesSampleUtils.waitForCompletedRunAsync(routinesAsyncClient, created.getName(),
-                                RUN_TIMEOUT)
+                                dispatch.getDispatchId(), RUN_TIMEOUT)
+                            .switchIfEmpty(Mono.error(new IllegalStateException(
+                                "The dispatched routine did not complete within the timeout.")))
                             .doOnNext(completedRun -> RoutinesSampleUtils.reportRun(completedRun, RUN_TIMEOUT))
                             .then();
                     });
-            })
+            });
+
+        workflow
+            .onErrorResume(error -> routinesAsyncClient.deleteRoutine(ROUTINE_NAME)
+                .onErrorResume(ignored -> Mono.empty())
+                .then(Mono.<Void>error(error)))
             .then(routinesAsyncClient.deleteRoutine(ROUTINE_NAME))
             .doOnSuccess(unused -> System.out.println("Routine deleted"))
             .block();
