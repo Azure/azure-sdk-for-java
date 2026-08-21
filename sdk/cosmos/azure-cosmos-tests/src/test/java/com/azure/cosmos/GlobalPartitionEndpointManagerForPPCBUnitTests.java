@@ -4,9 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
@@ -15,11 +18,21 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
+import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import io.netty.channel.ConnectTimeoutException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -27,17 +40,29 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URI;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -52,6 +77,11 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
     private final static Pair<URI, String> LocationCentralUsEndpointToLocationPair = Pair.of(createUrl("https://contoso-central-us.documents.azure.com"), "centralus");
 
     private static final boolean READ_OPERATION_TRUE = true;
+    private static final String PPCB_RECOVERY_CONFIG
+        = "{\"isPartitionLevelCircuitBreakerEnabled\":true,"
+        + "\"circuitBreakerType\":\"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+        + "\"consecutiveExceptionCountToleratedForReads\":10,"
+        + "\"consecutiveExceptionCountToleratedForWrites\":5}";
 
     private GlobalEndpointManager globalEndpointManagerMock;
 
@@ -118,6 +148,15 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
             // resolvedPartitionKeyRangeForCircuitBreaker = present, but resolvedPartitionKeyRange = null AND cancellation flag irrelevant (early return, no throw)
             { true,  true,  false },
             { true,  false, false }
+        };
+    }
+
+    @DataProvider(name = "addressCacheStates")
+    public Object[][] addressCacheStates() {
+        return new Object[][] {
+            { false, false },
+            { true, false },
+            { true, true }
         };
     }
 
@@ -1004,6 +1043,227 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     setResolvedPartitionKeyRangeForCircuitBreaker +
                     ", isCancellationException=" + isCancellationException + ")")
                 .isFalse();
+        }
+    }
+
+    @Test(groups = "unit", dataProvider = "addressCacheStates")
+    @SuppressWarnings("unchecked")
+    public void scheduledRecoveryHandlesMissingAndStaleAddressCacheEntries(
+        boolean populateStaleAddress,
+        boolean refreshedProbeFails)
+        throws Exception {
+
+        String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+
+        URI failedRegionEndpoint = createUrl("https://contoso-east-us.documents.azure.com");
+        URI healthyRegionEndpoint = createUrl("https://contoso-west-us.documents.azure.com");
+        RegionalRoutingContext failedRegion = new RegionalRoutingContext(failedRegionEndpoint);
+        List<RegionalRoutingContext> applicableRegions = Arrays.asList(
+            failedRegion,
+            new RegionalRoutingContext(healthyRegionEndpoint));
+        String collectionRid = "collectionRid";
+        String partitionKeyRangeId = "0";
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.when(globalEndpointManager.getApplicableReadRegionalRoutingContexts(Mockito.anyList()))
+            .thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableRegions));
+        Mockito.when(globalEndpointManager.getRegionName(failedRegionEndpoint, OperationType.Read))
+            .thenReturn("East US");
+
+        AtomicInteger addressResolutionCount = new AtomicInteger();
+        List<Boolean> forceRefreshValues = new CopyOnWriteArrayList<>();
+        Address staleAddress = createAddress("rntbd://stale:10250/", partitionKeyRangeId);
+        Address refreshedAddress = createAddress("rntbd://refreshed:10250/", partitionKeyRangeId);
+        AtomicInteger staleConnectionAttempts = new AtomicInteger();
+        AtomicInteger refreshedConnectionAttempts = new AtomicInteger();
+
+        ProactiveOpenConnectionsProcessor openConnectionsProcessor
+            = Mockito.mock(ProactiveOpenConnectionsProcessor.class);
+        Mockito.when(openConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
+                Mockito.anyString(), Mockito.any(), Mockito.any(), Mockito.anyInt()))
+            .thenAnswer(invocation -> {
+                Uri uri = invocation.getArgument(2);
+                Throwable failure = null;
+                if (populateStaleAddress
+                    && uri.getURIAsString().equals(staleAddress.getPhyicalUri())
+                    && staleConnectionAttempts.incrementAndGet() == 2) {
+
+                    failure = new ConnectTimeoutException("Cached replica address is stale");
+                } else if (refreshedProbeFails
+                    && uri.getURIAsString().equals(refreshedAddress.getPhyicalUri())) {
+
+                    refreshedConnectionAttempts.incrementAndGet();
+                    failure = new ConnectTimeoutException("Refreshed replica is unavailable");
+                }
+
+                return completedOpenConnectionTask(collectionRid, failedRegionEndpoint, uri, failure);
+            });
+
+        GatewayAddressCache gatewayAddressCache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            failedRegionEndpoint,
+            Protocol.TCP,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            globalEndpointManager,
+            ConnectionPolicy.getDefaultPolicy(),
+            openConnectionsProcessor,
+            null,
+            null) {
+                @Override
+                public Mono<List<Address>> getServerAddressesViaGatewayAsync(
+                    RxDocumentServiceRequest request,
+                    String requestedCollectionRid,
+                    List<String> partitionKeyRangeIds,
+                    boolean forceRefresh) {
+
+                    forceRefreshValues.add(forceRefresh);
+                    addressResolutionCount.incrementAndGet();
+                    return Mono.just(Collections.singletonList(
+                        populateStaleAddress && !forceRefresh ? staleAddress : refreshedAddress));
+                }
+            };
+
+        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
+        Mockito.when(globalAddressResolver.getGatewayAddressCache(failedRegionEndpoint))
+            .thenReturn(gatewayAddressCache);
+
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager = null;
+        try {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", PPCB_RECOVERY_CONFIG);
+            ppcbManager = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(globalEndpointManager);
+            ppcbManager.setGlobalAddressResolver(globalAddressResolver);
+            assertThat(ppcbManager.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()).isTrue();
+            if (populateStaleAddress) {
+                StepVerifier.create(gatewayAddressCache.submitOpenConnectionTasks(
+                        new PartitionKeyRange(partitionKeyRangeId, "AA", "BB"),
+                        collectionRid,
+                        false))
+                    .expectNextCount(1)
+                    .verifyComplete();
+            }
+
+            RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
+                OperationType.Read,
+                ResourceType.Document,
+                collectionRid,
+                partitionKeyRangeId,
+                collectionRid,
+                "AA",
+                "BB",
+                failedRegionEndpoint);
+            PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+            for (int i = 0; i < 10; i++) {
+                ppcbManager.handleLocationExceptionForPartitionKeyRange(request, failedRegion, false);
+            }
+            assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
+                request,
+                collectionRid,
+                partitionKeyRange)).containsExactly("East US");
+            backdateUnavailableSince(ppcbManager, partitionKeyRange, collectionRid, failedRegion);
+
+            VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.getOrSet();
+            Disposable recoverySubscription = invokeRecoveryPublisher(ppcbManager).subscribe();
+            try {
+                virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(61));
+            } finally {
+                recoverySubscription.dispose();
+                VirtualTimeScheduler.reset();
+            }
+
+            if (refreshedProbeFails) {
+                assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
+                    request,
+                    collectionRid,
+                    partitionKeyRange)).containsExactly("East US");
+                assertThat(refreshedConnectionAttempts).hasValue(1);
+            } else {
+                assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
+                    request,
+                    collectionRid,
+                    partitionKeyRange)).isEmpty();
+            }
+
+            if (populateStaleAddress) {
+                assertThat(forceRefreshValues).containsExactly(false, true);
+                assertThat(addressResolutionCount).hasValue(2);
+                assertThat(staleConnectionAttempts).hasValue(2);
+            } else {
+                assertThat(forceRefreshValues).containsExactly(false);
+                assertThat(addressResolutionCount).hasValue(1);
+            }
+        } finally {
+            if (ppcbManager != null) {
+                ppcbManager.close();
+            }
+            if (originalPpcbConfig == null) {
+                System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            } else {
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", originalPpcbConfig);
+            }
+        }
+    }
+
+    private static Address createAddress(String physicalUri, String partitionKeyRangeId) {
+        return new Address(
+            "{\"isPrimary\":true,"
+                + "\"protocol\":\"rntbd\","
+                + "\"physcialUri\":\"" + physicalUri + "\","
+                + "\"partitionKeyRangeId\":\"" + partitionKeyRangeId + "\"}");
+    }
+
+    private static OpenConnectionTask completedOpenConnectionTask(
+        String collectionRid,
+        URI serviceEndpoint,
+        Uri uri,
+        Throwable failure) {
+
+        OpenConnectionTask task = new OpenConnectionTask(collectionRid, serviceEndpoint, uri, 1);
+        task.complete(new OpenConnectionResponse(uri, failure == null, failure, failure == null ? 1 : 0));
+        return task;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void backdateUnavailableSince(
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager,
+        PartitionKeyRange partitionKeyRange,
+        String collectionRid,
+        RegionalRoutingContext failedRegion) throws Exception {
+
+        Field partitionMapField = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class
+            .getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionMapField.setAccessible(true);
+        Map<PartitionKeyRangeWrapper, Object> partitionMap
+            = (Map<PartitionKeyRangeWrapper, Object>) partitionMapField.get(ppcbManager);
+        Object partitionInfo = partitionMap.get(new PartitionKeyRangeWrapper(partitionKeyRange, collectionRid));
+
+        Field locationMapField = partitionInfo.getClass()
+            .getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationMapField.setAccessible(true);
+        Map<RegionalRoutingContext, LocationSpecificHealthContext> locationMap
+            = (Map<RegionalRoutingContext, LocationSpecificHealthContext>) locationMapField.get(partitionInfo);
+
+        Field unavailableSinceField = LocationSpecificHealthContext.class.getDeclaredField("unavailableSince");
+        unavailableSinceField.setAccessible(true);
+        LocationSpecificHealthContext context = locationMap.get(failedRegion);
+        // Virtual time advances the recovery scheduler but not the Instant-based unavailability duration.
+        Instant backdatedUnavailableSince = Instant.now().minus(Duration.ofMinutes(2));
+        unavailableSinceField.set(context, backdatedUnavailableSince);
+        assertThat(context.getUnavailableSince()).isEqualTo(backdatedUnavailableSince);
+    }
+
+    private static Flux<?> invokeRecoveryPublisher(
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager) {
+
+        try {
+            Method updateStaleLocationInfo = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class
+                .getDeclaredMethod("updateStaleLocationInfo");
+            updateStaleLocationInfo.setAccessible(true);
+            return (Flux<?>) updateStaleLocationInfo.invoke(ppcbManager);
+        } catch (ReflectiveOperationException exception) {
+            return Flux.error(exception);
         }
     }
 

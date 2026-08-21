@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -340,8 +342,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                             if (gatewayAddressCache != null) {
 
                                 return gatewayAddressCache
-                                    .submitOpenConnectionTasks(partitionKeyRangeWrapper.getPartitionKeyRange(), partitionKeyRangeWrapper.getCollectionResourceId())
-                                    .timeout(Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds()))
+                                    .submitOpenConnectionTasks(
+                                        partitionKeyRangeWrapper.getPartitionKeyRange(),
+                                        partitionKeyRangeWrapper.getCollectionResourceId(),
+                                        false)
+                                    .timeout(this.getPartitionRecoveryAttemptTimeout())
+                                    .onErrorResume(throwable -> this.shouldForceRefreshAddresses(throwable)
+                                        ? gatewayAddressCache
+                                            .submitOpenConnectionTasks(
+                                                partitionKeyRangeWrapper.getPartitionKeyRange(),
+                                                partitionKeyRangeWrapper.getCollectionResourceId(),
+                                                true)
+                                            .timeout(this.getPartitionRecoveryAttemptTimeout())
+                                        : Flux.error(throwable))
                                     .doOnComplete(() -> {
 
                                         logger.debug("Partition health recovery query for partitionKeyRange : " +
@@ -361,6 +374,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                                                     false,
                                                     true);
                                             }
+
                                             return locationSpecificContextAsVal;
                                         });
                                     })
@@ -396,6 +410,16 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 logger.warn("An exception : was thrown trying to recover an Unavailable partitionKeyRange!, fail-back flow won't be executed!", throwable);
                 return Flux.empty();
             });
+    }
+
+    private Duration getPartitionRecoveryAttemptTimeout() {
+        return Duration.ofSeconds(Configs.getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds());
+    }
+
+    private boolean shouldForceRefreshAddresses(Throwable throwable) {
+        return throwable instanceof TimeoutException
+            || throwable instanceof Exception
+            && WebExceptionUtility.isNetworkFailure((Exception) throwable);
     }
 
     public boolean isPerPartitionLevelCircuitBreakingApplicable(RxDocumentServiceRequest request) {
