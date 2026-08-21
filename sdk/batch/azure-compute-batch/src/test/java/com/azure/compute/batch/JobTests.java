@@ -48,7 +48,7 @@ public class JobTests extends BatchClientTestBase {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(poolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
@@ -91,7 +91,7 @@ public class JobTests extends BatchClientTestBase {
         sleepIfRunningAgainstService(1000);
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -126,7 +126,7 @@ public class JobTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
+        BatchPoolDetails poolInfo = new BatchPoolDetails().setPoolId(poolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
         // CREATE
@@ -144,7 +144,7 @@ public class JobTests extends BatchClientTestBase {
         BatchJob replacementJob = job;
         replacementJob.setPriority(priority);
         replacementJob.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-        replacementJob.getPoolInfo().setPoolId(poolId);
+        replacementJob.getPoolDetails().setPoolId(poolId);
 
         SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, replacementJob),
             () -> batchAsyncClient.replaceJob(jobId, replacementJob));
@@ -231,7 +231,7 @@ public class JobTests extends BatchClientTestBase {
 
         // DELETE
         try {
-            SyncPoller<BatchJob, Void> deletePoller
+            SyncPoller<BatchJob, BatchJob> deletePoller
                 = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                     () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -256,7 +256,7 @@ public class JobTests extends BatchClientTestBase {
         BatchPoolSpecification poolSpec
             = new BatchPoolSpecification("STANDARD_D1_V2").setVirtualMachineConfiguration(configuration);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo()
+        BatchPoolDetails poolInfo = new BatchPoolDetails()
             .setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
 
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
@@ -272,7 +272,7 @@ public class JobTests extends BatchClientTestBase {
         Assertions.assertEquals(jobId, job.getId());
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
