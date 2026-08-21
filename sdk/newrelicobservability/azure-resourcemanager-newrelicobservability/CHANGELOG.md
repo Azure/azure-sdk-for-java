@@ -1,14 +1,217 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.3.0 (2026-08-11)
 
-### Features Added
+- Azure Resource Manager NewRelic Observability client library for Java. This package contains Microsoft Azure SDK for NewRelic Observability Management SDK.  Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AppServicesListResponse` was removed
 
-### Other Changes
+#### `models.MonitoredResourceListResponse` was removed
+
+#### `models.OrganizationsListResponse` was removed
+
+#### `models.MonitoredSubscriptionPropertiesList` was removed
+
+#### `models.VMHostsListResponse` was removed
+
+#### `models.AccountsListResponse` was removed
+
+#### `models.ConnectedPartnerResourcesListResponse` was removed
+
+#### `models.TagRuleListResult` was removed
+
+#### `models.BillingCycle` was removed
+
+#### `models.PlanDataListResponse` was removed
+
+#### `models.NewRelicMonitorResourceListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.LinkedResourceListResponse` was removed
+
+#### `models.PlanData` was modified
+
+* `withBillingCycle(models.BillingCycle)` was removed
+* `validate()` was removed
+* `models.BillingCycle billingCycle()` -> `java.lang.String billingCycle()`
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.AppServicesGetRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UserInfo` was modified
+
+* `validate()` was removed
+
+#### `models.MarketplaceSaaSInfo` was modified
+
+* `MarketplaceSaaSInfo()` was changed to private access
+* `withMarketplaceResourceId(java.lang.String)` was removed
+* `withBilledAzureSubscriptionId(java.lang.String)` was removed
+* `withMarketplaceSubscriptionId(java.lang.String)` was removed
+* `withMarketplaceSubscriptionName(java.lang.String)` was removed
+* `withMarketplaceStatus(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.MetricsRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AccountInfo` was modified
+
+* `validate()` was removed
+
+#### `models.OrganizationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.NewRelicAccountProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LogRules` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionList` was modified
+
+* `validate()` was removed
+
+#### `models.MetricsStatusRequest` was modified
+
+* `validate()` was removed
+
+#### `models.FilteringTag` was modified
+
+* `validate()` was removed
+
+#### `models.NewRelicMonitorResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorsSwitchBillingHeaders` was modified
+
+* `validate()` was removed
+* `withRetryAfter(java.lang.Integer)` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.NewRelicSingleSignOnProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectedPartnerResourceProperties` was modified
+
+* `ConnectedPartnerResourceProperties()` was changed to private access
+* `withAzureResourceId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `withAccountName(java.lang.String)` was removed
+* `withAccountId(java.lang.String)` was removed
+
+#### `models.HostsGetRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerBillingEntity` was modified
+
+* `PartnerBillingEntity()` was changed to private access
+* `validate()` was removed
+* `withOrganizationId(java.lang.String)` was removed
+* `withOrganizationName(java.lang.String)` was removed
+
+#### `NewRelicObservabilityManager` was modified
+
+* `fluent.NewRelicObservability serviceClient()` -> `fluent.NewRelicObservabilityManagementClient serviceClient()`
+
+#### `models.SwitchBillingRequest` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.SaaS` was added
+
+* `models.LatestLinkedSaaSResponse` was added
+
+* `models.ActivateSaaSParameterRequest` was added
+
+* `models.ResubscribeProperties` was added
+
+* `models.SaaSData` was added
+
+* `models.SaaSResourceDetailsResponse` was added
+
+#### `models.PlanData` was modified
+
+* `withBillingCycle(java.lang.String)` was added
+
+#### `models.MarketplaceSaaSInfo` was modified
+
+* `offerId()` was added
+* `publisherId()` was added
+
+#### `models.NewRelicMonitorResource$Update` was modified
+
+* `withSaaSData(models.SaaSData)` was added
+
+#### `models.NewRelicMonitorResource` was modified
+
+* `latestLinkedSaaS()` was added
+* `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
+* `resubscribe(models.ResubscribeProperties,com.azure.core.util.Context)` was added
+* `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
+* `saaSData()` was added
+* `resubscribe()` was added
+* `refreshIngestionKey()` was added
+* `refreshIngestionKeyWithResponse(com.azure.core.util.Context)` was added
+* `linkSaaS(models.SaaSData)` was added
+
+#### `models.NewRelicMonitorResource$Definition` was modified
+
+* `withSaaSData(models.SaaSData)` was added
+
+#### `models.NewRelicMonitorResourceUpdate` was modified
+
+* `withSaaSData(models.SaaSData)` was added
+* `saaSData()` was added
+
+#### `models.MonitoredSubscriptionProperties` was modified
+
+* `systemData()` was added
+
+#### `models.Monitors` was modified
+
+* `refreshIngestionKeyWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `refreshIngestionKey(java.lang.String,java.lang.String)` was added
+* `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
+* `latestLinkedSaaSWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resubscribe(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
+* `resubscribe(java.lang.String,java.lang.String,models.ResubscribeProperties,com.azure.core.util.Context)` was added
+
+#### `NewRelicObservabilityManager` was modified
+
+* `saaS()` was added
 
 ## 1.3.0-beta.2 (2026-03-03)
 

@@ -803,7 +803,9 @@ public interface NewRelicMonitorResource {
     NewRelicMonitorResource linkSaaS(SaaSData body, Context context);
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * 
+     * A long-running resource action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -812,7 +814,9 @@ public interface NewRelicMonitorResource {
     NewRelicMonitorResource resubscribe();
 
     /**
-     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace.
+     * Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
+     * 
+     * A long-running resource action.
      * 
      * @param body Resubscribe Properties.
      * @param context The context to associate with this operation.
