@@ -7,6 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedEvent;

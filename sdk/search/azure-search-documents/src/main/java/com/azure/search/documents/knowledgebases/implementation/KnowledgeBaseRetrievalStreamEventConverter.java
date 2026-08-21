@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.knowledgebases;
+package com.azure.search.documents.knowledgebases.implementation;
 
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -17,11 +17,21 @@ import com.azure.search.documents.knowledgebases.models.UnknownKnowledgeBaseRetr
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-final class KnowledgeBaseRetrievalStreamEventConverter {
+/**
+ * Converts knowledge base retrieval stream event payloads to typed event models.
+ */
+public final class KnowledgeBaseRetrievalStreamEventConverter {
     private KnowledgeBaseRetrievalStreamEventConverter() {
     }
 
-    static KnowledgeBaseRetrievalStreamEvent convert(String eventName, String data) {
+    /**
+     * Converts a stream event payload.
+     *
+     * @param eventName The stream event name.
+     * @param data The stream event data.
+     * @return The typed stream event.
+     */
+    public static KnowledgeBaseRetrievalStreamEvent convert(String eventName, String data) {
         switch (eventName) {
             case "retrieval.started":
                 return read(eventName, data, KnowledgeBaseRetrievalStartedStreamEvent::fromJson);

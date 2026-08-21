@@ -101,6 +101,8 @@ public class SearchCustomizations extends Customization {
     private static final String MODELS_PATH = "src/main/java/com/azure/search/documents/knowledgebases/models/";
     private static final String SSE_PATH = "src/main/java/com/azure/search/documents/models/implementation/sse/";
     private static final String CLIENT_PATH = "src/main/java/com/azure/search/documents/knowledgebases/";
+    private static final String CLIENT_IMPLEMENTATION_PATH
+        = "src/main/java/com/azure/search/documents/knowledgebases/implementation/";
 
     private static void customizeKnowledgeBaseRetrievalStream(LibraryCustomization libraryCustomization,
         Logger logger) {
@@ -152,13 +154,16 @@ public class SearchCustomizations extends Customization {
             .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
                 wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
                     "response.completed", true, false));
+        customization.getRawEditor().removeFile(CLIENT_PATH + "KnowledgeBaseRetrievalStreamEventConverter.java");
         customization.getRawEditor()
-            .addFile(CLIENT_PATH + "KnowledgeBaseRetrievalStreamEventConverter.java", converterSource());
+            .addFile(CLIENT_IMPLEMENTATION_PATH + "KnowledgeBaseRetrievalStreamEventConverter.java", converterSource());
     }
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEvent")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
+            .addImport(
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
             .addImport("com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent")
             .addImport("reactor.core.publisher.Flux")
             .getClassByName(customization.getClassName())
@@ -192,6 +197,8 @@ public class SearchCustomizations extends Customization {
     private static void addSyncRetrieveStream(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEventListener")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
+            .addImport(
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
             .addImport("com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent")
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> {
@@ -693,7 +700,7 @@ public class SearchCustomizations extends Customization {
     }
 
     private static String converterSource() {
-        return header("com.azure.search.documents.knowledgebases")
+        return header("com.azure.search.documents.knowledgebases.implementation")
             + "import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;\n"
             + "import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;\n"
             + "import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;\n"
@@ -705,9 +712,13 @@ public class SearchCustomizations extends Customization {
             + "import com.azure.search.documents.knowledgebases.models.UnknownKnowledgeBaseRetrievalStreamEvent;\n"
             + "import com.azure.json.JsonProviders;\n" + "import com.azure.json.JsonReader;\n\n"
             + "import java.io.IOException;\n" + "import java.io.UncheckedIOException;\n\n"
-            + "final class KnowledgeBaseRetrievalStreamEventConverter {\n"
+            + "/**\n" + " * Converts knowledge base retrieval stream event payloads to typed event models.\n" + " */\n"
+            + "public final class KnowledgeBaseRetrievalStreamEventConverter {\n"
             + "    private KnowledgeBaseRetrievalStreamEventConverter() {\n" + "    }\n\n"
-            + "    static KnowledgeBaseRetrievalStreamEvent convert(String eventName, String data) {\n"
+            + "    /**\n" + "     * Converts a stream event payload.\n" + "     *\n"
+            + "     * @param eventName The stream event name.\n" + "     * @param data The stream event data.\n"
+            + "     * @return The typed stream event.\n" + "     */\n"
+            + "    public static KnowledgeBaseRetrievalStreamEvent convert(String eventName, String data) {\n"
             + "        switch (eventName) {\n" + "            case \"retrieval.started\":\n"
             + "                return read(eventName, data, KnowledgeBaseRetrievalStartedStreamEvent::fromJson);\n"
             + "            case \"activity.started\":\n"
