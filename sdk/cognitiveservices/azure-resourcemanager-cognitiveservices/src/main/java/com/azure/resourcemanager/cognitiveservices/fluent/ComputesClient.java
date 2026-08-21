@@ -57,10 +57,10 @@ public interface ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services compute resource.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName, String accountName,
+    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String accountName,
         String computeName, ComputeInner resource);
 
     /**
@@ -74,10 +74,10 @@ public interface ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services compute resource.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName, String accountName,
+    SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String accountName,
         String computeName, ComputeInner resource, Context context);
 
     /**
@@ -90,11 +90,9 @@ public interface ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services compute resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName,
-        ComputeInner resource);
+    void createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource);
 
     /**
      * Creates or updates a compute associated with the Cognitive Services account.
@@ -107,75 +105,9 @@ public interface ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services compute resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource,
-        Context context);
-
-    /**
-     * Updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param properties The compute properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services compute resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ComputeInner>, ComputeInner> beginUpdate(String resourceGroupName, String accountName,
-        String computeName, ComputeInner properties);
-
-    /**
-     * Updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param properties The compute properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cognitive Services compute resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ComputeInner>, ComputeInner> beginUpdate(String resourceGroupName, String accountName,
-        String computeName, ComputeInner properties, Context context);
-
-    /**
-     * Updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param properties The compute properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services compute resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeInner update(String resourceGroupName, String accountName, String computeName, ComputeInner properties);
-
-    /**
-     * Updates a compute associated with the Cognitive Services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param computeName The name of the compute associated with the Cognitive Services Account.
-     * @param properties The compute properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services compute resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ComputeInner update(String resourceGroupName, String accountName, String computeName, ComputeInner properties,
+    void createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource,
         Context context);
 
     /**

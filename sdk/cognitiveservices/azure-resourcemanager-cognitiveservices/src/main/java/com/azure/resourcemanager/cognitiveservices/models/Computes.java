@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 
 /**
  * Resource collection API of Computes.
@@ -39,6 +40,34 @@ public interface Computes {
      * @return the specified compute associated with the Cognitive Services account.
      */
     Compute get(String resourceGroupName, String accountName, String computeName);
+
+    /**
+     * Creates or updates a compute associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param computeName The name of the compute associated with the Cognitive Services Account.
+     * @param resource The compute properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource);
+
+    /**
+     * Creates or updates a compute associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param computeName The name of the compute associated with the Cognitive Services Account.
+     * @param resource The compute properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource,
+        Context context);
 
     /**
      * Deletes the specified compute associated with the Cognitive Services account.
@@ -178,56 +207,4 @@ public interface Computes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void restart(String resourceGroupName, String accountName, String computeName, Context context);
-
-    /**
-     * Gets the specified compute associated with the Cognitive Services account.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified compute associated with the Cognitive Services account along with {@link Response}.
-     */
-    Compute getById(String id);
-
-    /**
-     * Gets the specified compute associated with the Cognitive Services account.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified compute associated with the Cognitive Services account along with {@link Response}.
-     */
-    Response<Compute> getByIdWithResponse(String id, Context context);
-
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param id the resource ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteById(String id);
-
-    /**
-     * Deletes the specified compute associated with the Cognitive Services account.
-     * 
-     * @param id the resource ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deleteByIdWithResponse(String id, Context context);
-
-    /**
-     * Begins definition for a new Compute resource.
-     * 
-     * @param name resource name.
-     * @return the first stage of the new Compute definition.
-     */
-    Compute.DefinitionStages.Blank define(String name);
 }
