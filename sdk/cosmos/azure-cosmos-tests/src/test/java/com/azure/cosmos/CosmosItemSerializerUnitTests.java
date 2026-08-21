@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -196,5 +197,45 @@ public class CosmosItemSerializerUnitTests {
         public int defaultValueProperty = 0;
         public String nullValueProperty = null;
         public String emptyValueProperty = "";
+    }
+
+    @Test(groups = { "unit" })
+    public void defaultSerializerWritesInstantAsIso8601String() {
+        ObjectMapper mapper = Utils.getDocumentObjectMapper(Configs.getItemSerializationInclusionMode());
+        CosmosItemSerializer serializer = new DefaultCosmosItemSerializer(mapper);
+
+        Instant createdAt = Instant.parse("2023-07-22T09:46:40.123456789Z");
+        PojoItemWithInstant item = new PojoItemWithInstant();
+        item.createdAt = createdAt;
+
+        Map<String, Object> jsonMap = serializer.serialize(item);
+        ByteBuffer buffer = Utils.serializeJsonToByteBuffer(serializer, jsonMap, null, false);
+        String json = new String(buffer.array(), 0, buffer.limit(), StandardCharsets.UTF_8);
+
+        logger.info("Actual: {}", json);
+        assertThat(json).isEqualTo(
+            "{\"id\":\"SomeId\",\"createdAt\":\"" + createdAt + "\"}");
+    }
+
+    @Test(groups = { "unit" })
+    public void defaultSerializerRoundTripsInstant() {
+        ObjectMapper mapper = Utils.getDocumentObjectMapper(Configs.getItemSerializationInclusionMode());
+        CosmosItemSerializer serializer = new DefaultCosmosItemSerializer(mapper);
+
+        Instant createdAt = Instant.parse("2023-07-22T09:46:40.123456789Z");
+        PojoItemWithInstant item = new PojoItemWithInstant();
+        item.createdAt = createdAt;
+
+        Map<String, Object> jsonMap = serializer.serialize(item);
+        PojoItemWithInstant deserialized = serializer.deserialize(jsonMap, PojoItemWithInstant.class);
+
+        assertThat(deserialized.id).isEqualTo(item.id);
+        assertThat(deserialized.createdAt).isEqualTo(createdAt);
+    }
+
+    private static class PojoItemWithInstant
+    {
+        public String id = "SomeId";
+        public Instant createdAt;
     }
 }

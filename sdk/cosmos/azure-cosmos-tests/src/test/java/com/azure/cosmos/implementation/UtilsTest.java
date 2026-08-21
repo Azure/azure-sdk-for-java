@@ -9,9 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.testng.annotations.Test;
@@ -164,5 +166,38 @@ public class UtilsTest {
                 .getDefaultPropertyInclusion())
             .isEqualTo(
                 JsonInclude.Value.construct(JsonInclude.Include.NON_DEFAULT, JsonInclude.Include.NON_DEFAULT));
+    }
+    
+    @Test(groups = { "unit" })
+    public void documentObjectMapperDoesNotWriteDatesAsTimestamps() {
+        assertThat(
+            Utils.getSimpleObjectMapper()
+                .getSerializationConfig()
+                .isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS))
+            .isFalse();
+
+        assertThat(
+            Utils.getDocumentObjectMapper(null)
+                .getSerializationConfig()
+                .isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS))
+            .isFalse();
+
+        assertThat(
+            Utils.getDocumentObjectMapper("Always")
+                .getSerializationConfig()
+                .isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS))
+            .isFalse();
+    }
+
+    @Test(groups = { "unit" })
+    public void instantSerializesAsIso8601String() throws Exception {
+        Instant instant = Instant.parse("2023-07-22T09:46:40.123456789Z");
+
+        String json = Utils.getSimpleObjectMapper().writeValueAsString(instant);
+
+        assertThat(json).isEqualTo("\"" + instant.toString() + "\"");
+
+        Instant roundTripped = Utils.getSimpleObjectMapper().readValue(json, Instant.class);
+        assertThat(roundTripped).isEqualTo(instant);
     }
 }

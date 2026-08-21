@@ -7,6 +7,7 @@
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
 #### Breaking Changes
+* Fixed `java.time.Instant` (and other `java.time` types handled by `JavaTimeModule`) serializing as a numeric epoch timestamp instead of an ISO-8601 string when using the default `CosmosItemSerializer`. Items previously written with epoch-numeric date fields will now be written with ISO-8601 string values going forward; reading previously-stored epoch-numeric values back into `Instant` fields continues to work unaffected. - See PR [49720](https://github.com/Azure/azure-sdk-for-java/pull/49720).
 
 #### Bugs Fixed
 * Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
