@@ -43,6 +43,11 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
     private List<String> allowedValues;
 
     /*
+     * The supported host types for the current solution setting
+     */
+    private List<HostType> hostTypes;
+
+    /*
      * Default value for this solution settings property.
      */
     private String defaultValue;
@@ -99,6 +104,15 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
     }
 
     /**
+     * Get the hostTypes property: The supported host types for the current solution setting.
+     * 
+     * @return the hostTypes value.
+     */
+    public List<HostType> hostTypes() {
+        return this.hostTypes;
+    }
+
+    /**
      * Get the defaultValue property: Default value for this solution settings property.
      * 
      * @return the defaultValue value.
@@ -119,6 +133,8 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("allowedValues", this.allowedValues,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hostTypes", this.hostTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("defaultValue", this.defaultValue);
         return jsonWriter.writeEndObject();
     }
@@ -151,6 +167,9 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
                 } else if ("allowedValues".equals(fieldName)) {
                     List<String> allowedValues = reader.readArray(reader1 -> reader1.getString());
                     deserializedSolutionTypeSettingsProperties.allowedValues = allowedValues;
+                } else if ("hostTypes".equals(fieldName)) {
+                    List<HostType> hostTypes = reader.readArray(reader1 -> HostType.fromString(reader1.getString()));
+                    deserializedSolutionTypeSettingsProperties.hostTypes = hostTypes;
                 } else if ("defaultValue".equals(fieldName)) {
                     deserializedSolutionTypeSettingsProperties.defaultValue = reader.getString();
                 } else {

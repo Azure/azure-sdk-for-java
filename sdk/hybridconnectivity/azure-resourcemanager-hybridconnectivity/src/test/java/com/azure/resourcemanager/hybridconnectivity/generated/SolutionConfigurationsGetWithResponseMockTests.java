@@ -21,7 +21,7 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"solutionType\":\"xnevfdnwn\",\"solutionSettings\":{\"bjudpfrxtrthzv\":\"zsyyceuzso\",\"qbrqubpaxhexiili\":\"ytdw\",\"q\":\"pdtii\"},\"status\":\"Completed\",\"statusDetails\":\"axoruzfgsquy\",\"lastSyncTime\":\"2021-03-18T06:01:03Z\"},\"id\":\"xleptramx\",\"name\":\"ezw\",\"type\":\"wnwxuqlcvyd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"owepbqpcrfkb\",\"solutionSettings\":{\"dw\":\"njv\",\"nkhtjsyingw\":\"lpqekf\",\"gikdgsz\":\"qatmtdhtmdvy\",\"birryuzhl\":\"w\"},\"status\":\"Completed\",\"statusDetails\":\"qrvqq\",\"lastSyncTime\":\"2021-10-29T20:59:14Z\"},\"id\":\"inrvgoupmfi\",\"name\":\"bfggjioolvr\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,11 +30,11 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SolutionConfiguration response = manager.solutionConfigurations()
-            .getWithResponse("ayffim", "zrtuzq", com.azure.core.util.Context.NONE)
-            .getValue();
+        SolutionConfiguration response
+            = manager.solutionConfigurations().getWithResponse("ob", "pg", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("xnevfdnwn", response.properties().solutionType());
-        Assertions.assertEquals("pdtii", response.properties().solutionSettings().additionalProperties().get("q"));
+        Assertions.assertEquals("owepbqpcrfkb", response.properties().solutionType());
+        Assertions.assertEquals("qatmtdhtmdvy",
+            response.properties().solutionSettings().additionalProperties().get("gikdgsz"));
     }
 }
