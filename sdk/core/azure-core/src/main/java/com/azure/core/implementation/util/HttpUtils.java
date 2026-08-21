@@ -3,7 +3,6 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -49,12 +48,6 @@ public final class HttpUtils {
     public static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
 
     /**
-     * Context key that instructs REST proxy response ownership and decoding to preserve the response body as a live
-     * stream. HTTP client implementations do not consume this key.
-     */
-    public static final String AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM = "azure-preserve-response-body-as-stream";
-
-    /**
      * Context key used to indicate to an HttpClient implementation if the response body should be ignored and eagerly
      * drained from the network.
      */
@@ -70,36 +63,6 @@ public final class HttpUtils {
      * Azure Core HttpHeaders.
      */
     public static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
-
-    /**
-     * Determines whether the response body must be preserved as a live stream.
-     *
-     * @param context Contextual information about the request.
-     * @return Whether the response body must be preserved as a live stream.
-     */
-    public static boolean shouldPreserveResponseBodyAsStream(Context context) {
-        return Boolean.TRUE.equals(context.getData(AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM).orElse(false));
-    }
-
-    /**
-     * Determines whether an Accept header contains a {@code text/event-stream} media range.
-     *
-     * @param headerValue The header value.
-     * @return Whether the header contains a {@code text/event-stream} media range.
-     */
-    public static boolean acceptsTextEventStream(String headerValue) {
-        if (headerValue == null) {
-            return false;
-        }
-
-        for (String value : splitHeaderValue(headerValue, ',')) {
-            if (isTextEventStreamContentType(value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Determines whether a Content-Type header identifies exactly one {@code text/event-stream} representation.

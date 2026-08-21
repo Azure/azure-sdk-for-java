@@ -10,14 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HttpUtilsTests {
     @Test
-    public void acceptsTextEventStreamIgnoresParameters() {
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream;q=0"));
-        assertTrue(HttpUtils.acceptsTextEventStream("application/json, text/event-stream;q=invalid"));
-        assertFalse(HttpUtils.acceptsTextEventStream("application/json; note=\"text/event-stream, q=1\""));
-        assertTrue(HttpUtils.acceptsTextEventStream("text/event-stream; note=\"x,y;q=0.5\""));
-    }
-
-    @Test
     public void textEventStreamContentTypeRequiresSingleMediaType() {
         assertTrue(HttpUtils.isTextEventStreamContentType("Text/Event-Stream; charset=utf-8"));
         assertTrue(HttpUtils.isTextEventStreamContentType("text/event-stream; charset=\"UTF-8\""));

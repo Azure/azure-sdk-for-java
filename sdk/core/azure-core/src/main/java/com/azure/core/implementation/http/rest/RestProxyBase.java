@@ -153,14 +153,6 @@ public abstract class RestProxyBase {
         EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
         HttpRequest request, Context context);
 
-    final Context updateRequestContext(HttpRequest request, Context context) {
-        if (HttpUtils.acceptsTextEventStream(request.getHeaders().getValue(HttpHeaderName.ACCEPT))) {
-            return context.addData(HttpUtils.AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM, true);
-        }
-
-        return context;
-    }
-
     /**
      * Update the request with the provided configuration.
      *

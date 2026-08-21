@@ -16,7 +16,6 @@ import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper;
 import com.azure.core.implementation.logging.DefaultLogger;
-import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -275,8 +274,8 @@ public class HttpLoggingPolicyTests {
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("responseLoggingSupplier")
-    public void responseLoggingUsesActualContentType(String contentType, boolean useStreamingContext,
-        int expectedBufferCount, boolean expectBodyLogged) {
+    public void responseLoggingUsesActualContentType(String contentType, int expectedBufferCount,
+        boolean expectBodyLogged) {
         byte[] data = "streaming response".getBytes(StandardCharsets.UTF_8);
         AtomicInteger bufferCount = new AtomicInteger();
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com/responseLoggingUsesActualContentType");
@@ -290,9 +289,6 @@ public class HttpLoggingPolicyTests {
             .build();
 
         Context context = getCallerMethodContext("streamingResponsesAreNotBuffered", LogLevel.INFORMATIONAL);
-        if (useStreamingContext) {
-            context = context.addData(HttpUtils.AZURE_PRESERVE_RESPONSE_BODY_AS_STREAM, true);
-        }
 
         try (HttpResponse response = pipeline.send(request, context).block()) {
             assertNotNull(response);
@@ -309,8 +305,8 @@ public class HttpLoggingPolicyTests {
     }
 
     private static Stream<Arguments> responseLoggingSupplier() {
-        return Stream.of(Arguments.of("Text/Event-Stream; charset=utf-8", false, 0, false),
-            Arguments.of(ContentType.APPLICATION_JSON, true, 2, true));
+        return Stream.of(Arguments.of("Text/Event-Stream; charset=utf-8", 0, false),
+            Arguments.of(ContentType.APPLICATION_JSON, 2, true));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplierSync() {

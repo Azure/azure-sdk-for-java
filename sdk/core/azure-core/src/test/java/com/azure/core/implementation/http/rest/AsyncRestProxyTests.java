@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -210,7 +209,8 @@ public class AsyncRestProxyTests {
 
     @ParameterizedTest
     @MethodSource("streamingResponseOwnershipSupplier")
-    public void streamingResponseIsUnbufferedAndClosedOnConsumption(String accept, String contentType) {
+    public void streamingResponseUsesResponseContentType(String accept, String contentType, boolean replayable,
+        int expectedCloseCount) {
         byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         AtomicInteger responseCloseCount = new AtomicInteger();
         HttpClient client = request -> Mono.just(new MockHttpResponse(request, 200,
@@ -229,9 +229,9 @@ public class AsyncRestProxyTests {
 
         Response<BinaryData> response = service.getStreamingResponse(options, Context.NONE).block();
 
-        assertFalse(response.getValue().isReplayable());
+        assertEquals(replayable, response.getValue().isReplayable());
         assertArraysEqual(expectedBytes, response.getValue().toBytes());
-        assertEquals(1, responseCloseCount.get());
+        assertEquals(expectedCloseCount, responseCloseCount.get());
     }
 
     @Test
@@ -264,7 +264,7 @@ public class AsyncRestProxyTests {
     }
 
     private static Stream<Arguments> streamingResponseOwnershipSupplier() {
-        return Stream.of(Arguments.of("text/event-stream", ContentType.APPLICATION_JSON),
-            Arguments.of(null, "text/event-stream; charset=utf-8"));
+        return Stream.of(Arguments.of("text/event-stream", ContentType.APPLICATION_JSON, true, 0),
+            Arguments.of(null, "text/event-stream; charset=utf-8", false, 1));
     }
 }

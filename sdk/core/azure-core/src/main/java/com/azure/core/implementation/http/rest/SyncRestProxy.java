@@ -78,8 +78,6 @@ public class SyncRestProxy extends RestProxyBase {
                 requestCallback.accept(request);
             }
 
-            context = updateRequestContext(request, context);
-
             if (request.getBodyAsBinaryData() != null) {
                 request.setBody(RestProxyUtils.validateLengthSync(request));
             }

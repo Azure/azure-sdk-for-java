@@ -82,8 +82,6 @@ public class AsyncRestProxy extends RestProxyBase {
             requestCallback.accept(request);
         }
 
-        context = updateRequestContext(request, context);
-
         final Context finalContext = context;
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request).flatMap(r -> {
             // correlates logs
@@ -143,12 +141,11 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     private Mono<?> handleRestResponseReturnType(final HttpResponseDecoder.HttpDecodedResponse response,
-        final SwaggerMethodParser methodParser, final Type entityType, boolean preserveResponseBodyAsStream) {
-        final boolean shouldPreserveResponseBodyAsStream = preserveResponseBodyAsStream
-            || HttpUtils.isTextEventStreamContentType(
-                response.getSourceResponse().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        final SwaggerMethodParser methodParser, final Type entityType) {
+        final boolean isTextEventStream = HttpUtils.isTextEventStreamContentType(
+            response.getSourceResponse().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
         final ResponseBodyOwner responseBodyOwner
-            = shouldPreserveResponseBodyAsStream ? new ResponseBodyOwner(response.getSourceResponse()) : null;
+            = isTextEventStream ? new ResponseBodyOwner(response.getSourceResponse()) : null;
         if (methodParser.isStreamResponse()) {
             return Mono.fromSupplier(() -> new StreamResponse(response.getSourceResponse()));
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
@@ -221,8 +218,8 @@ public class AsyncRestProxy extends RestProxyBase {
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
             if (responseBodyOwner != null) {
-                // If the request or response content type identifies a stream, create a BinaryData instance with
-                // bufferContent set to false.
+                // If the response content type identifies a stream, create a BinaryData instance with bufferContent
+                // set to false.
                 asyncResult = BinaryData.fromFlux(responseBody, null, false);
             } else {
                 asyncResult = BinaryData.fromFlux(responseBody);
@@ -256,8 +253,6 @@ public class AsyncRestProxy extends RestProxyBase {
         EnumSet<ErrorOptions> errorOptionsSet) {
         final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse = endSpanWhenDone(
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet), context);
-        final boolean preserveResponseBodyAsStream = HttpUtils.shouldPreserveResponseBodyAsStream(context);
-
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);
@@ -266,8 +261,8 @@ public class AsyncRestProxy extends RestProxyBase {
                 result = asyncExpectedResponse.doOnNext(HttpResponseDecoder.HttpDecodedResponse::close).then();
             } else {
                 // ProxyMethod ReturnType: Mono<? extends ResponseBase<?, ?>>
-                result = asyncExpectedResponse.flatMap(response -> handleRestResponseReturnType(response, methodParser,
-                    monoTypeParam, preserveResponseBodyAsStream));
+                result = asyncExpectedResponse
+                    .flatMap(response -> handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }
         } else if (FluxUtil.isFluxByteBuffer(returnType)) {
             // ProxyMethod ReturnType: Flux<ByteBuffer>
@@ -280,8 +275,9 @@ public class AsyncRestProxy extends RestProxyBase {
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
             // Block the deserialization until a value T is received
-            result = asyncExpectedResponse.flatMap(httpResponse -> handleRestResponseReturnType(httpResponse,
-                methodParser, returnType, preserveResponseBodyAsStream)).block();
+            result = asyncExpectedResponse
+                .flatMap(httpResponse -> handleRestResponseReturnType(httpResponse, methodParser, returnType))
+                .block();
         }
         return result;
     }
