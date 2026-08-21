@@ -14,17 +14,17 @@ public final class PublicIPAddressSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PublicIPAddressSku model
-            = BinaryData.fromString("{\"name\":\"Basic\",\"tier\":\"Global\"}").toObject(PublicIPAddressSku.class);
-        Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.name());
-        Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.tier());
+            = BinaryData.fromString("{\"name\":\"Standard\",\"tier\":\"Regional\"}").toObject(PublicIPAddressSku.class);
+        Assertions.assertEquals(PublicIPAddressSkuName.STANDARD, model.name());
+        Assertions.assertEquals(PublicIPAddressSkuTier.REGIONAL, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicIPAddressSku model
-            = new PublicIPAddressSku().withName(PublicIPAddressSkuName.BASIC).withTier(PublicIPAddressSkuTier.GLOBAL);
+        PublicIPAddressSku model = new PublicIPAddressSku().withName(PublicIPAddressSkuName.STANDARD)
+            .withTier(PublicIPAddressSkuTier.REGIONAL);
         model = BinaryData.fromObject(model).toObject(PublicIPAddressSku.class);
-        Assertions.assertEquals(PublicIPAddressSkuName.BASIC, model.name());
-        Assertions.assertEquals(PublicIPAddressSkuTier.GLOBAL, model.tier());
+        Assertions.assertEquals(PublicIPAddressSkuName.STANDARD, model.name());
+        Assertions.assertEquals(PublicIPAddressSkuTier.REGIONAL, model.tier());
     }
 }

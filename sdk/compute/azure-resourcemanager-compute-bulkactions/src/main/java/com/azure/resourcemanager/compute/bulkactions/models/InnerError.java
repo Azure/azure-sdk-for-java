@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,65 +12,42 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An object containing more specific information about the error. As per Azure REST API guidelines -
- * https://aka.ms/AzureRestApiGuidelines#handling-errors.
+ * Inner error details.
  */
-@Fluent
+@Immutable
 public final class InnerError implements JsonSerializable<InnerError> {
     /*
-     * One of a server-defined set of error codes.
+     * The exception type.
      */
-    private String code;
+    private String exceptionType;
 
     /*
-     * Inner error.
+     * The internal error message or exception dump.
      */
-    private InnerError innererror;
+    private String errorDetail;
 
     /**
      * Creates an instance of InnerError class.
      */
-    public InnerError() {
+    private InnerError() {
     }
 
     /**
-     * Get the code property: One of a server-defined set of error codes.
+     * Get the exceptionType property: The exception type.
      * 
-     * @return the code value.
+     * @return the exceptionType value.
      */
-    public String code() {
-        return this.code;
+    public String exceptionType() {
+        return this.exceptionType;
     }
 
     /**
-     * Set the code property: One of a server-defined set of error codes.
+     * Get the errorDetail property: The internal error message or exception dump.
      * 
-     * @param code the code value to set.
-     * @return the InnerError object itself.
+     * @return the errorDetail value.
      */
-    public InnerError withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the innererror property: Inner error.
-     * 
-     * @return the innererror value.
-     */
-    public InnerError innererror() {
-        return this.innererror;
-    }
-
-    /**
-     * Set the innererror property: Inner error.
-     * 
-     * @param innererror the innererror value to set.
-     * @return the InnerError object itself.
-     */
-    public InnerError withInnererror(InnerError innererror) {
-        this.innererror = innererror;
-        return this;
+    public String errorDetail() {
+        return this.errorDetail;
     }
 
     /**
@@ -79,8 +56,8 @@ public final class InnerError implements JsonSerializable<InnerError> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeJsonField("innererror", this.innererror);
+        jsonWriter.writeStringField("exceptionType", this.exceptionType);
+        jsonWriter.writeStringField("errorDetail", this.errorDetail);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,10 +76,10 @@ public final class InnerError implements JsonSerializable<InnerError> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("code".equals(fieldName)) {
-                    deserializedInnerError.code = reader.getString();
-                } else if ("innererror".equals(fieldName)) {
-                    deserializedInnerError.innererror = InnerError.fromJson(reader);
+                if ("exceptionType".equals(fieldName)) {
+                    deserializedInnerError.exceptionType = reader.getString();
+                } else if ("errorDetail".equals(fieldName)) {
+                    deserializedInnerError.errorDetail = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

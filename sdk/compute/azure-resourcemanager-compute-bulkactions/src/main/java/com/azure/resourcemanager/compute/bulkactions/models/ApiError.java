@@ -40,7 +40,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
     /*
      * The API inner error
      */
-    private BulkInstancesInnerError innererror;
+    private InnerError innererror;
 
     /**
      * Creates an instance of ApiError class.
@@ -89,7 +89,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
      * 
      * @return the innererror value.
      */
-    public BulkInstancesInnerError innererror() {
+    public InnerError innererror() {
         return this.innererror;
     }
 
@@ -132,7 +132,7 @@ public final class ApiError implements JsonSerializable<ApiError> {
                     List<ApiErrorBase> details = reader.readArray(reader1 -> ApiErrorBase.fromJson(reader1));
                     deserializedApiError.details = details;
                 } else if ("innererror".equals(fieldName)) {
-                    deserializedApiError.innererror = BulkInstancesInnerError.fromJson(reader);
+                    deserializedApiError.innererror = InnerError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteCreateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceProvisionPayload;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
@@ -21,15 +20,13 @@ public final class ExecuteCreateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteCreateContent model = BinaryData.fromString(
-            "{\"resourceConfigParameters\":{\"baseProfile\":{\"geablgphuticndvk\":\"\\\"dataoc\\\"\",\"ftyxolniw\":\"\\\"dataozwyiftyhxhuro\\\"\"},\"resourceOverrides\":[{\"awxklr\":\"\\\"datakjfkg\\\"\",\"ypnddhsgcb\":\"\\\"dataplwckbas\\\"\",\"jkot\":\"\\\"datacph\\\"\",\"wyqkgfgibm\":\"\\\"datanqgoulzndli\\\"\"},{\"yb\":\"\\\"datagakeqsr\\\"\"}],\"resourceCount\":1518868702,\"resourcePrefix\":\"e\"},\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1475447223,\"retryWindowInMinutes\":834029576,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":false}}")
+            "{\"resourceConfigParameters\":{\"baseProfile\":{\"snhu\":\"\\\"datadkvwrwjfe\\\"\",\"tmrldhugjzzdatq\":\"\\\"dataje\\\"\",\"gphuticndvka\":\"\\\"datahocdgeab\\\"\"},\"resourceOverrides\":[{\"tyhxhurokft\":\"\\\"datai\\\"\",\"iawxklry\":\"\\\"dataxolniwpwcukjfk\\\"\",\"cbacphejkotynqg\":\"\\\"datalwckbasyypnddhs\\\"\"},{\"ndlik\":\"\\\"datal\\\"\",\"bmadgak\":\"\\\"datayqkgfg\\\"\",\"ytb\":\"\\\"dataqsrxybzqqed\\\"\"},{\"lmmnkzsmodmglo\":\"\\\"dataqfou\\\"\",\"uqktap\":\"\\\"datagpbkwtmut\\\"\",\"kdosvqw\":\"\\\"datapwgcuertu\\\"\"}],\"resourceCount\":958772842,\"resourcePrefix\":\"dgbb\"},\"executionParameters\":{\"retryPolicy\":{\"retryCount\":914724830,\"retryWindowInMinutes\":298107669,\"onFailureAction\":\"GetInstanceView\"},\"verifyVmAgentHealth\":false}}")
             .toObject(ExecuteCreateContent.class);
-        Assertions.assertEquals(1518868702, model.resourceConfigParameters().resourceCount());
-        Assertions.assertEquals("e", model.resourceConfigParameters().resourcePrefix());
-        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1475447223, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(834029576, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
+        Assertions.assertEquals(958772842, model.resourceConfigParameters().resourceCount());
+        Assertions.assertEquals("dgbb", model.resourceConfigParameters().resourcePrefix());
+        Assertions.assertEquals(914724830, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(298107669, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
     }
@@ -39,30 +36,32 @@ public final class ExecuteCreateContentTests {
         ExecuteCreateContent model = new ExecuteCreateContent()
             .withResourceConfigParameters(new ResourceProvisionPayload()
                 .withBaseProfile(
-                    mapOf("geablgphuticndvk", BinaryData.fromBytes("\"dataoc\"".getBytes(StandardCharsets.UTF_8)),
-                        "ftyxolniw", BinaryData.fromBytes("\"dataozwyiftyhxhuro\"".getBytes(StandardCharsets.UTF_8))))
+                    mapOf("snhu", BinaryData.fromBytes("\"datadkvwrwjfe\"".getBytes(StandardCharsets.UTF_8)),
+                        "tmrldhugjzzdatq", BinaryData.fromBytes("\"dataje\"".getBytes(StandardCharsets.UTF_8)),
+                        "gphuticndvka", BinaryData.fromBytes("\"datahocdgeab\"".getBytes(StandardCharsets.UTF_8))))
                 .withResourceOverrides(Arrays.asList(
-                    mapOf("awxklr", BinaryData.fromBytes("\"datakjfkg\"".getBytes(StandardCharsets.UTF_8)),
-                        "ypnddhsgcb", BinaryData.fromBytes("\"dataplwckbas\"".getBytes(StandardCharsets.UTF_8)), "jkot",
-                        BinaryData.fromBytes("\"datacph\"".getBytes(StandardCharsets.UTF_8)), "wyqkgfgibm",
-                        BinaryData.fromBytes("\"datanqgoulzndli\"".getBytes(StandardCharsets.UTF_8))),
-                    mapOf("yb", BinaryData.fromBytes("\"datagakeqsr\"".getBytes(StandardCharsets.UTF_8)))))
-                .withResourceCount(1518868702)
-                .withResourcePrefix("e"))
+                    mapOf("tyhxhurokft", BinaryData.fromBytes("\"datai\"".getBytes(StandardCharsets.UTF_8)), "iawxklry",
+                        BinaryData.fromBytes("\"dataxolniwpwcukjfk\"".getBytes(StandardCharsets.UTF_8)),
+                        "cbacphejkotynqg",
+                        BinaryData.fromBytes("\"datalwckbasyypnddhs\"".getBytes(StandardCharsets.UTF_8))),
+                    mapOf("ndlik", BinaryData.fromBytes("\"datal\"".getBytes(StandardCharsets.UTF_8)), "bmadgak",
+                        BinaryData.fromBytes("\"datayqkgfg\"".getBytes(StandardCharsets.UTF_8)), "ytb",
+                        BinaryData.fromBytes("\"dataqsrxybzqqed\"".getBytes(StandardCharsets.UTF_8))),
+                    mapOf("lmmnkzsmodmglo", BinaryData.fromBytes("\"dataqfou\"".getBytes(StandardCharsets.UTF_8)),
+                        "uqktap", BinaryData.fromBytes("\"datagpbkwtmut\"".getBytes(StandardCharsets.UTF_8)), "kdosvqw",
+                        BinaryData.fromBytes("\"datapwgcuertu\"".getBytes(StandardCharsets.UTF_8)))))
+                .withResourceCount(958772842)
+                .withResourcePrefix("dgbb"))
             .withExecutionParameters(
-                new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(1475447223)
-                        .withRetryWindowInMinutes(834029576)
-                        .withOnFailureAction(ResourceOperationType.DEALLOCATE))
-                    .withVerifyVmAgentHealth(false));
+                new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(914724830)
+                    .withRetryWindowInMinutes(298107669)
+                    .withOnFailureAction(ResourceOperationType.GET_INSTANCE_VIEW)).withVerifyVmAgentHealth(false));
         model = BinaryData.fromObject(model).toObject(ExecuteCreateContent.class);
-        Assertions.assertEquals(1518868702, model.resourceConfigParameters().resourceCount());
-        Assertions.assertEquals("e", model.resourceConfigParameters().resourcePrefix());
-        Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
-            model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(1475447223, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(834029576, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
+        Assertions.assertEquals(958772842, model.resourceConfigParameters().resourceCount());
+        Assertions.assertEquals("dgbb", model.resourceConfigParameters().resourcePrefix());
+        Assertions.assertEquals(914724830, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(298107669, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
     }

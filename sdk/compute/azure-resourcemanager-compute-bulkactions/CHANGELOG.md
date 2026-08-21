@@ -1,14 +1,181 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2026-08-14)
 
-### Features Added
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-07-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RecurringScheduledActionsExecutionParameters` was removed
 
-### Other Changes
+#### `models.ScheduledActionResources` was removed
+
+#### `models.ResourceIdentityType` was removed
+
+#### `models.RecurringScheduledActionsProvisioningState` was removed
+
+#### `models.ScheduledActionExtensions` was removed
+
+#### `models.ScheduledActionOperationStatus` was removed
+
+#### `models.ScheduledAction$DefinitionStages` was removed
+
+#### `models.ScheduledAction$UpdateStages` was removed
+
+#### `models.OccurrenceResource` was removed
+
+#### `models.RecurringScheduledActionsDeadlineType` was removed
+
+#### `models.BulkInstancesInnerError` was removed
+
+#### `models.OccurrenceProperties` was removed
+
+#### `models.VirtualMachineIdentity` was removed
+
+#### `models.LocationBasedBulkCreateCustom$Definition` was removed
+
+#### `models.BulkCreateCustomPriorityProfile` was removed
+
+#### `models.OccurrenceState` was removed
+
+#### `models.ScheduledAction$Definition` was removed
+
+#### `models.BulkCreateCustoms` was removed
+
+#### `models.OccurrenceResultSummary` was removed
+
+#### `models.ResourceOperationResponse` was removed
+
+#### `models.LocationBasedBulkCreateCustom$DefinitionStages` was removed
+
+#### `models.BulkCreateCustomOverrideBase` was removed
+
+#### `models.LocationBasedBulkCreateCustom` was removed
+
+#### `models.ResourcePatchRequest` was removed
+
+#### `models.ResourceAttachRequest` was removed
+
+#### `models.UserAssignedIdentitiesValue` was removed
+
+#### `models.OccurrenceExtensions` was removed
+
+#### `models.ResourceStatus` was removed
+
+#### `models.Language` was removed
+
+#### `models.OccurrenceExtensionProperties` was removed
+
+#### `models.NotificationType` was removed
+
+#### `models.ScheduledActionProperties` was removed
+
+#### `models.ScheduledAction` was removed
+
+#### `models.DelayRequest` was removed
+
+#### `models.ScheduledActionResourceInput` was removed
+
+#### `models.BulkCreateCustomOverridesProfile` was removed
+
+#### `models.BulkCreateCustomDistributionStrategy` was removed
+
+#### `models.RecurringScheduledActionsRetryPolicy` was removed
+
+#### `models.OptimizationPreference` was removed
+
+#### `models.ResourceProvisioningState` was removed
+
+#### `models.NotificationProperties` was removed
+
+#### `models.CancelOccurrenceRequest` was removed
+
+#### `models.ScheduledActionUpdateProperties` was removed
+
+#### `models.BulkCreateCustomOverride` was removed
+
+#### `models.ScheduledAction$Update` was removed
+
+#### `models.ResourceOperationStatus` was removed
+
+#### `models.ResourceResultSummary` was removed
+
+#### `models.WeekDay` was removed
+
+#### `models.LocationBasedBulkCreateCustom$Update` was removed
+
+#### `models.Error` was removed
+
+#### `models.BulkCreateCustomProperties` was removed
+
+#### `models.ScheduledActionsScheduleUpdate` was removed
+
+#### `models.BulkCreateCustomAllocationStrategy` was removed
+
+#### `models.ScheduledActionType` was removed
+
+#### `models.ResourceType` was removed
+
+#### `models.Occurrence` was removed
+
+#### `models.LocationBasedBulkCreateCustom$UpdateStages` was removed
+
+#### `models.BulkCreateCustomZoneAllocationPolicy` was removed
+
+#### `models.RecurringScheduledActionsResourceOperationType` was removed
+
+#### `models.ScheduledActionUpdate` was removed
+
+#### `models.Month` was removed
+
+#### `models.ScheduledActionResource` was removed
+
+#### `models.ResourceDetachRequest` was removed
+
+#### `models.ScheduledActions` was removed
+
+#### `models.ScheduledActionsSchedule` was removed
+
+#### `models.OccurrenceExtensionResource` was removed
+
+#### `models.Occurrences` was removed
+
+#### `models.ScheduledActionsExtensionProperties` was removed
+
+#### `models.BulkCreateCustomVmSizeProfile` was removed
+
+#### `models.ApiError` was modified
+
+* `models.BulkInstancesInnerError innererror()` -> `models.InnerError innererror()`
+
+#### `models.ExecutionParameters` was modified
+
+* `optimizationPreference()` was removed
+* `withOptimizationPreference(models.OptimizationPreference)` was removed
+
+#### `models.InnerError` was modified
+
+* `InnerError()` was changed to private access
+* `innererror()` was removed
+* `withCode(java.lang.String)` was removed
+* `code()` was removed
+* `withInnererror(models.InnerError)` was removed
+
+#### `ComputeBulkActionsManager` was modified
+
+* `bulkCreateCustoms()` was removed
+* `scheduledActions()` was removed
+* `scheduledActionExtensions()` was removed
+* `occurrences()` was removed
+* `occurrenceExtensions()` was removed
+* `scheduledActionOperationStatus()` was removed
+
+### Features Added
+
+#### `models.InnerError` was modified
+
+* `errorDetail()` was added
+* `exceptionType()` was added
 
 ## 1.0.0-beta.2 (2026-07-22)
 

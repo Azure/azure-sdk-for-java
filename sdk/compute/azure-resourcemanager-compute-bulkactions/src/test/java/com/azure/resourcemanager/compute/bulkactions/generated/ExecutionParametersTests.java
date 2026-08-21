@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
-import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import org.junit.jupiter.api.Assertions;
@@ -15,28 +14,24 @@ public final class ExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionParameters model = BinaryData.fromString(
-            "{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":196107786,\"retryWindowInMinutes\":219984358,\"onFailureAction\":\"Hibernate\"},\"verifyVmAgentHealth\":false}")
+            "{\"retryPolicy\":{\"retryCount\":1384277756,\"retryWindowInMinutes\":196107786,\"onFailureAction\":\"Create\"},\"verifyVmAgentHealth\":true}")
             .toObject(ExecutionParameters.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED, model.optimizationPreference());
-        Assertions.assertEquals(196107786, model.retryPolicy().retryCount());
-        Assertions.assertEquals(219984358, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.HIBERNATE, model.retryPolicy().onFailureAction());
-        Assertions.assertFalse(model.verifyVmAgentHealth());
+        Assertions.assertEquals(1384277756, model.retryPolicy().retryCount());
+        Assertions.assertEquals(196107786, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionParameters model
-            = new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                .withRetryPolicy(new RetryPolicy().withRetryCount(196107786)
-                    .withRetryWindowInMinutes(219984358)
-                    .withOnFailureAction(ResourceOperationType.HIBERNATE))
-                .withVerifyVmAgentHealth(false);
+            = new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryCount(1384277756)
+                .withRetryWindowInMinutes(196107786)
+                .withOnFailureAction(ResourceOperationType.CREATE)).withVerifyVmAgentHealth(true);
         model = BinaryData.fromObject(model).toObject(ExecutionParameters.class);
-        Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED, model.optimizationPreference());
-        Assertions.assertEquals(196107786, model.retryPolicy().retryCount());
-        Assertions.assertEquals(219984358, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.HIBERNATE, model.retryPolicy().onFailureAction());
-        Assertions.assertFalse(model.verifyVmAgentHealth());
+        Assertions.assertEquals(1384277756, model.retryPolicy().retryCount());
+        Assertions.assertEquals(196107786, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.CREATE, model.retryPolicy().onFailureAction());
+        Assertions.assertTrue(model.verifyVmAgentHealth());
     }
 }
