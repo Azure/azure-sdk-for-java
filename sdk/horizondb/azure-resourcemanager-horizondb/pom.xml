@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for HorizonDb Management</name>
-  <description>This package contains Microsoft Azure SDK for HorizonDb Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Resource Provider API for managing HorizonDb clusters, pools, replicas, and firewall rules. Package api-version 2026-01-20-preview.</description>
+  <description>This package contains Microsoft Azure SDK for HorizonDb Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Resource Provider API for managing HorizonDB clusters, pools, replicas, and firewall rules. Package api-version 2026-05-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

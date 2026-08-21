@@ -10,18 +10,18 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionProperties;
+import com.azure.resourcemanager.horizondb.models.HorizonDbAdministratorProperties;
 import java.io.IOException;
 
 /**
- * The private endpoint connection resource.
+ * Represents an Entra ID administrator configured on a HorizonDB cluster.
  */
 @Immutable
-public final class PrivateEndpointConnectionInner extends ProxyResource {
+public final class HorizonDbAdministratorInner extends ProxyResource {
     /*
-     * The private endpoint connection properties
+     * The resource-specific properties for this resource.
      */
-    private PrivateEndpointConnectionProperties properties;
+    private HorizonDbAdministratorProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -44,17 +44,17 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of PrivateEndpointConnectionInner class.
+     * Creates an instance of HorizonDbAdministratorInner class.
      */
-    private PrivateEndpointConnectionInner() {
+    private HorizonDbAdministratorInner() {
     }
 
     /**
-     * Get the properties property: The private endpoint connection properties.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
-    public PrivateEndpointConnectionProperties properties() {
+    public HorizonDbAdministratorProperties properties() {
         return this.properties;
     }
 
@@ -108,39 +108,38 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Reads an instance of PrivateEndpointConnectionInner from the JsonReader.
+     * Reads an instance of HorizonDbAdministratorInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateEndpointConnectionInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of HorizonDbAdministratorInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionInner.
+     * @throws IOException If an error occurs while reading the HorizonDbAdministratorInner.
      */
-    public static PrivateEndpointConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+    public static HorizonDbAdministratorInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrivateEndpointConnectionInner deserializedPrivateEndpointConnectionInner
-                = new PrivateEndpointConnectionInner();
+            HorizonDbAdministratorInner deserializedHorizonDbAdministratorInner = new HorizonDbAdministratorInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.id = reader.getString();
+                    deserializedHorizonDbAdministratorInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.name = reader.getString();
+                    deserializedHorizonDbAdministratorInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.type = reader.getString();
+                    deserializedHorizonDbAdministratorInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.properties
-                        = PrivateEndpointConnectionProperties.fromJson(reader);
+                    deserializedHorizonDbAdministratorInner.properties
+                        = HorizonDbAdministratorProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedPrivateEndpointConnectionInner.systemData = SystemData.fromJson(reader);
+                    deserializedHorizonDbAdministratorInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrivateEndpointConnectionInner;
+            return deserializedHorizonDbAdministratorInner;
         });
     }
 }

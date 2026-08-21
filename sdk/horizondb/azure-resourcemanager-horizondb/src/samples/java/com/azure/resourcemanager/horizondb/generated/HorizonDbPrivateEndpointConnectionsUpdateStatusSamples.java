@@ -4,17 +4,17 @@
 
 package com.azure.resourcemanager.horizondb.generated;
 
-import com.azure.resourcemanager.horizondb.models.OptionalPropertiesUpdateableProperties;
-import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionUpdate;
+import com.azure.resourcemanager.horizondb.fluent.models.PrivateEndpointConnectionResourceInner;
+import com.azure.resourcemanager.horizondb.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.horizondb.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.horizondb.models.PrivateLinkServiceConnectionState;
 
 /**
- * Samples for HorizonDbPrivateEndpointConnections Update.
+ * Samples for HorizonDbPrivateEndpointConnections UpdateStatus.
  */
-public final class HorizonDbPrivateEndpointConnectionsUpdateSamples {
+public final class HorizonDbPrivateEndpointConnectionsUpdateStatusSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: 2026-05-01-preview/PrivateEndpointConnections_UpdateStatus.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection.
@@ -24,8 +24,9 @@ public final class HorizonDbPrivateEndpointConnectionsUpdateSamples {
     public static void
         approveOrRejectAPrivateEndpointConnection(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbPrivateEndpointConnections()
-            .update("exampleresourcegroup", "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
-                new PrivateEndpointConnectionUpdate().withProperties(new OptionalPropertiesUpdateableProperties()
+            .updateStatusWithResponse("exampleresourcegroup", "examplecluster",
+                "exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                new PrivateEndpointConnectionResourceInner().withProperties(new PrivateEndpointConnectionProperties()
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                         .withDescription("Approved by johndoe@contoso.com"))),

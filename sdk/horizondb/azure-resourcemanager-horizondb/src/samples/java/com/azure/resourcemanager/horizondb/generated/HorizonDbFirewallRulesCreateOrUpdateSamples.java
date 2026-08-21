@@ -11,15 +11,15 @@ import com.azure.resourcemanager.horizondb.models.HorizonDbFirewallRulePropertie
  */
 public final class HorizonDbFirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/FirewallRules_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/FirewallRules_CreateOrUpdate.json
      */
     /**
-     * Sample code: Create or update a HorizonDb firewall rule.
+     * Sample code: Create or update a HorizonDB firewall rule.
      * 
      * @param manager Entry point to HorizonDbManager.
      */
     public static void
-        createOrUpdateAHorizonDbFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
+        createOrUpdateAHorizonDBFirewallRule(com.azure.resourcemanager.horizondb.HorizonDbManager manager) {
         manager.horizonDbFirewallRules()
             .define("examplefirewallrule")
             .withExistingPool("exampleresourcegroup", "examplecluster", "examplepool")
