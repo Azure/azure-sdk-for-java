@@ -13,15 +13,15 @@ public final class AutoExportJobUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoExportJobUpdateProperties model
-            = BinaryData.fromString("{\"adminStatus\":\"Disable\"}").toObject(AutoExportJobUpdateProperties.class);
-        Assertions.assertEquals(AutoExportJobAdminStatus.DISABLE, model.adminStatus());
+            = BinaryData.fromString("{\"adminStatus\":\"Enable\"}").toObject(AutoExportJobUpdateProperties.class);
+        Assertions.assertEquals(AutoExportJobAdminStatus.ENABLE, model.adminStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoExportJobUpdateProperties model
-            = new AutoExportJobUpdateProperties().withAdminStatus(AutoExportJobAdminStatus.DISABLE);
+            = new AutoExportJobUpdateProperties().withAdminStatus(AutoExportJobAdminStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(AutoExportJobUpdateProperties.class);
-        Assertions.assertEquals(AutoExportJobAdminStatus.DISABLE, model.adminStatus());
+        Assertions.assertEquals(AutoExportJobAdminStatus.ENABLE, model.adminStatus());
     }
 }

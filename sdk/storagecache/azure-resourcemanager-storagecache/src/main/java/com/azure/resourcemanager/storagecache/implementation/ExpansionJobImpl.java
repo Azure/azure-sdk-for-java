@@ -58,6 +58,14 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
         return this.innerModel().newStorageCapacityTiB();
     }
 
+    public Boolean runRebalanceJob() {
+        return this.innerModel().runRebalanceJob();
+    }
+
+    public String rebalanceJobId() {
+        return this.innerModel().rebalanceJobId();
+    }
+
     public ExpansionJobStatusType state() {
         return this.innerModel().state();
     }
@@ -202,6 +210,11 @@ public final class ExpansionJobImpl implements ExpansionJob, ExpansionJob.Defini
 
     public ExpansionJobImpl withNewStorageCapacityTiB(Float newStorageCapacityTiB) {
         this.innerModel().withNewStorageCapacityTiB(newStorageCapacityTiB);
+        return this;
+    }
+
+    public ExpansionJobImpl withRunRebalanceJob(Boolean runRebalanceJob) {
+        this.innerModel().withRunRebalanceJob(runRebalanceJob);
         return this;
     }
 

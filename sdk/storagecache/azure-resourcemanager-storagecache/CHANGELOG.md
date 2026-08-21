@@ -1,14 +1,41 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2026-08-17)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package api-version 2026-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.RebalanceJob` was added
 
-### Bugs Fixed
+* `models.RebalanceJobs` was added
 
-### Other Changes
+* `models.RebalanceJobPropertiesStatus` was added
+
+* `models.RebalanceJobUpdate` was added
+
+* `models.RebalanceJobProperties` was added
+
+* `models.RebalanceJobUpdateProperties` was added
+
+* `models.RebalanceJobPropertiesProvisioningState` was added
+
+* `models.RebalanceJobAdminStatus` was added
+
+* `models.RebalanceJobStatusType` was added
+
+#### `models.ExpansionJob$Definition` was modified
+
+* `withRunRebalanceJob(java.lang.Boolean)` was added
+
+#### `StorageCacheManager` was modified
+
+* `rebalanceJobs()` was added
+
+#### `models.ExpansionJob` was modified
+
+* `rebalanceJobId()` was added
+* `runRebalanceJob()` was added
 
 ## 1.2.0 (2026-04-30)
 
