@@ -18,15 +18,27 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
     public static final PerPartitionCircuitBreakerInfoHolder EMPTY = new PerPartitionCircuitBreakerInfoHolder();
 
     private volatile Map<String, LocationSpecificHealthContext> perPartitionCircuitBreakerInfoHolder;
+    private volatile Map<String, String> latestFailbackMessageByRegion = Collections.emptyMap();
 
     public PerPartitionCircuitBreakerInfoHolder() {
     }
 
-    private PerPartitionCircuitBreakerInfoHolder(Map<String, LocationSpecificHealthContext> perPartitionCircuitBreakerInfoHolder) {
+    private PerPartitionCircuitBreakerInfoHolder(
+        Map<String, LocationSpecificHealthContext> perPartitionCircuitBreakerInfoHolder,
+        Map<String, String> latestFailbackMessageByRegion) {
+
         this.perPartitionCircuitBreakerInfoHolder = perPartitionCircuitBreakerInfoHolder;
+        this.latestFailbackMessageByRegion = latestFailbackMessageByRegion;
     }
 
     public void setPerPartitionCircuitBreakerInfoHolder(final Map<String, LocationSpecificHealthContext> locationSpecificHealthContext) {
+        this.setPerPartitionCircuitBreakerInfoHolder(locationSpecificHealthContext, this.latestFailbackMessageByRegion);
+    }
+
+    void setPerPartitionCircuitBreakerInfoHolder(
+        Map<String, LocationSpecificHealthContext> locationSpecificHealthContext,
+        Map<String, String> latestFailbackMessageByRegion) {
+
         if (this == EMPTY) {
             return;
         }
@@ -34,6 +46,9 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
         this.perPartitionCircuitBreakerInfoHolder = locationSpecificHealthContext == null
             ? Collections.emptyMap()
             : locationSpecificHealthContext;
+        this.latestFailbackMessageByRegion = latestFailbackMessageByRegion == null
+            ? Collections.emptyMap()
+            : latestFailbackMessageByRegion;
     }
 
     public Map<String, LocationSpecificHealthContext> getPerPartitionCircuitBreakerInfoHolder() {
@@ -43,7 +58,9 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
     public PerPartitionCircuitBreakerInfoHolder snapshot() {
         Map<String, LocationSpecificHealthContext> snapshot = this.perPartitionCircuitBreakerInfoHolder;
 
-        return snapshot == null ? EMPTY : new PerPartitionCircuitBreakerInfoHolder(snapshot);
+        return snapshot == null
+            ? EMPTY
+            : new PerPartitionCircuitBreakerInfoHolder(snapshot, this.latestFailbackMessageByRegion);
     }
 
     public static class PerPartitionCircuitBreakerInfoHolderSerializer extends com.fasterxml.jackson.databind.JsonSerializer<PerPartitionCircuitBreakerInfoHolder> {
@@ -57,6 +74,10 @@ public class PerPartitionCircuitBreakerInfoHolder implements Serializable {
                 gen.writeStartObject();
 
                 gen.writePOJOField("stateByRegion", locationToLocationSpecificHealthContext);
+
+                if (!value.latestFailbackMessageByRegion.isEmpty()) {
+                    gen.writePOJOField("latestFailbackMessageByRegion", value.latestFailbackMessageByRegion);
+                }
 
                 gen.writeEndObject();
             } else {

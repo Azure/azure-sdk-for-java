@@ -1181,12 +1181,14 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     collectionRid,
                     partitionKeyRange)).containsExactly("East US");
                 assertThat(refreshedConnectionAttempts).hasValue(1);
-                assertThat(new ObjectMapper().writeValueAsString(
-                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                String diagnostics = new ObjectMapper().writeValueAsString(
+                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder());
+                assertThat(diagnostics)
                     .contains("\"outcome\":\"Failed\"")
                     .contains("\"stage\":\"OPEN_CONNECTION_TASK\"")
                     .contains("\"type\":\"io.netty.channel.ConnectTimeoutException\"")
-                    .contains("\"message\":\"Refreshed replica is unavailable\"");
+                    .contains("\"latestFailbackMessageByRegion\":{")
+                    .contains("\"East US\":\"Refreshed replica is unavailable\"");
             } else {
                 assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
                     request,
@@ -1199,7 +1201,7 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                 assertThat(new ObjectMapper().writeValueAsString(
                     request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
                     .contains("\"outcome\":\"Succeeded\"")
-                    .doesNotContain("\"failure\"");
+                    .doesNotContain("\"failure\"", "\"latestFailbackMessageByRegion\"");
             }
 
             assertThat(new ObjectMapper().writeValueAsString(

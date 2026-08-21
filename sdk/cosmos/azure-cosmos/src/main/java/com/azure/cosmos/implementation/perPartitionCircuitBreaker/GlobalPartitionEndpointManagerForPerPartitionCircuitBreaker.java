@@ -34,6 +34,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -60,6 +61,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private final AtomicBoolean isPartitionRecoveryTaskRunning = new AtomicBoolean(false);
     private final AtomicReference<Disposable> partitionRecoveryDisposable = new AtomicReference<>();
     private final Logger failbackLogger;
+    private final Object latestFailbackMessageByRegionLock = new Object();
+    private volatile Map<String, String> latestFailbackMessageByRegion = Collections.emptyMap();
 
     public GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this(globalEndpointManager, logger);
@@ -294,14 +297,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         RxDocumentServiceRequest request,
         PartitionLevelLocationUnavailabilityInfo info) {
 
-        request.requestContext.setPerPartitionCircuitBreakerInfoHolder(
-            info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext);
+        request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+            .setPerPartitionCircuitBreakerInfoHolder(
+                info == null ? Collections.emptyMap() : info.regionToLocationSpecificHealthContext,
+                this.latestFailbackMessageByRegion);
     }
 
     private Flux<?> updateStaleLocationInfo() {
         return Mono.just(1)
             .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat(() -> !this.isClosed.get())
+            .doOnNext(ignore -> this.clearLatestFailbackMessagesIfNoBacklog())
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.entrySet()), 1, 1)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
@@ -484,12 +490,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         String exceptionMessage = throwable == null || throwable.getMessage() == null
             ? StringUtils.EMPTY
             : throwable.getMessage();
+        String region = this.resolveRegionName(regionalRoutingContext);
         String message = "PPCB failback failed: collectionResourceId="
             + collectionResourceId
             + ", partitionKeyRangeId="
             + partitionKeyRangeId
             + ", region="
-            + this.resolveRegionName(regionalRoutingContext)
+            + region
             + ", stage="
             + stage
             + ", exceptionType="
@@ -497,7 +504,43 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             + ", exceptionMessage="
             + exceptionMessage;
 
+        if (!StringUtils.isEmpty(region)) {
+            this.recordLatestFailbackMessage(region, exceptionMessage);
+        }
         this.failbackLogger.warn(message, throwable);
+    }
+
+    private void recordLatestFailbackMessage(
+        String region,
+        String failureMessage) {
+
+        synchronized (this.latestFailbackMessageByRegionLock) {
+            Map<String, String> updatedMessages = new LinkedHashMap<>(this.latestFailbackMessageByRegion);
+            updatedMessages.put(region, failureMessage);
+            this.latestFailbackMessageByRegion = Collections.unmodifiableMap(updatedMessages);
+        }
+    }
+
+    private void clearLatestFailbackMessagesIfNoBacklog() {
+        synchronized (this.latestFailbackMessageByRegionLock) {
+            for (PartitionLevelLocationUnavailabilityInfo info
+                : this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.values()) {
+
+                for (LocationSpecificHealthContext healthContext
+                    : info.locationEndpointToLocationSpecificContextForPartition.values()) {
+
+                    if (!healthContext.isRegionAvailableToProcessRequests()) {
+                        return;
+                    }
+                }
+            }
+
+            this.latestFailbackMessageByRegion = Collections.emptyMap();
+        }
+    }
+
+    Map<String, String> getLatestFailbackMessageByRegion() {
+        return this.latestFailbackMessageByRegion;
     }
 
     private String resolveRegionName(RegionalRoutingContext regionalRoutingContext) {
@@ -713,6 +756,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                     this.updateRegionDiagnostics(routingContext, updatedContext);
                     return updatedContext;
                 });
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.this
+                .clearLatestFailbackMessagesIfNoBacklog();
         }
 
         private void recordFailbackFailure(

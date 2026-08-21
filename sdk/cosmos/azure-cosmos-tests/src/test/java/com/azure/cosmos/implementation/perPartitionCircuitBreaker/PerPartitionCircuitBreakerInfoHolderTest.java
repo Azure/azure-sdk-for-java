@@ -106,7 +106,24 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
         assertThat(new ObjectMapper().writeValueAsString(holder))
             .contains("\"failback\":{\"lastAttemptedAt\":\"1970-01-01T00:00:00Z\",\"outcome\":\"Failed\","
                 + "\"failure\":{\"stage\":\"OPEN_CONNECTION_TASK\","
-                + "\"type\":\"java.lang.IllegalStateException\",\"message\":\"connection failed\"}}");
+                + "\"type\":\"java.lang.IllegalStateException\"}}")
+            .doesNotContain("connection failed");
+    }
+
+    @Test(groups = {"unit"})
+    public void latestFailbackMessageIsSerializedByRegion() throws Exception {
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+        Map<String, String> latestMessageByRegion = new LinkedHashMap<>();
+        latestMessageByRegion.put("eastus", "first failure");
+        latestMessageByRegion.put("westus", "second failure");
+        holder.setPerPartitionCircuitBreakerInfoHolder(
+            Collections.emptyMap(),
+            latestMessageByRegion);
+
+        assertThat(new ObjectMapper().writeValueAsString(holder))
+            .contains("\"latestFailbackMessageByRegion\":{")
+            .contains("\"eastus\":\"first failure\"")
+            .contains("\"westus\":\"second failure\"");
     }
 
     @Test(groups = {"unit"})

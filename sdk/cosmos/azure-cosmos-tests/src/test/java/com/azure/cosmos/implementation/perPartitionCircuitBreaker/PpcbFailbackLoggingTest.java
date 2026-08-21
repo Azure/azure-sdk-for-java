@@ -18,6 +18,8 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.time.Duration;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.doReturn;
@@ -31,6 +33,8 @@ public class PpcbFailbackLoggingTest {
         "collectionRid");
     private static final RegionalRoutingContext REGION = new RegionalRoutingContext(
         URI.create("https://contoso-east-us.documents.azure.com"));
+    private static final RegionalRoutingContext SECOND_REGION = new RegionalRoutingContext(
+        URI.create("https://contoso-west-us.documents.azure.com"));
 
     private GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker manager;
     private Logger logger;
@@ -40,6 +44,9 @@ public class PpcbFailbackLoggingTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         doReturn("eastus").when(globalEndpointManager).getRegionName(
             REGION.getGatewayRegionalEndpoint(),
+            OperationType.Read);
+        doReturn("westus").when(globalEndpointManager).getRegionName(
+            SECOND_REGION.getGatewayRegionalEndpoint(),
             OperationType.Read);
         this.logger = Mockito.mock(Logger.class);
         this.manager = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(
@@ -59,6 +66,8 @@ public class PpcbFailbackLoggingTest {
             + "partitionKeyRangeId=0, region=eastus, stage=OPEN_CONNECTION_TASK, "
             + "exceptionType=java.lang.RuntimeException, exceptionMessage=connection failed";
         verify(this.logger, times(10)).warn(contains(expectedFields), same(failure));
+        assertThat(this.manager.getLatestFailbackMessageByRegion())
+            .containsOnly(entry("eastus", "connection failed"));
     }
 
     @Test(groups = {"unit"})
@@ -73,6 +82,30 @@ public class PpcbFailbackLoggingTest {
         verify(this.logger).warn(
             contains("exceptionType=java.lang.IllegalStateException, exceptionMessage=changed"),
             same(changedFailure));
+    }
+
+    @Test(groups = {"unit"})
+    public void latestMessageIsRetainedPerRegion() {
+        this.manager.logFailbackFailure(
+            PARTITION,
+            REGION,
+            "OPEN_CONNECTION_TASK",
+            new RuntimeException("east-first"));
+        this.manager.logFailbackFailure(
+            PARTITION,
+            SECOND_REGION,
+            "RECOVERY_PIPELINE",
+            new RuntimeException("west-latest"));
+        this.manager.logFailbackFailure(
+            PARTITION,
+            REGION,
+            "OPEN_CONNECTION_TASK",
+            new RuntimeException("east-latest"));
+
+        assertThat(this.manager.getLatestFailbackMessageByRegion())
+            .containsOnly(
+                entry("eastus", "east-latest"),
+                entry("westus", "west-latest"));
     }
 
     @Test(groups = {"unit"})
@@ -95,13 +128,13 @@ public class PpcbFailbackLoggingTest {
         verify(this.logger).warn(
             contains("collectionResourceId=, partitionKeyRangeId=, region=, stage=RECOVERY_STREAM"),
             same(failure));
+        assertThat(this.manager.getLatestFailbackMessageByRegion()).isEmpty();
     }
 
     @Test(groups = {"unit"})
     public void failuresForManyPartitionsAreWarned() {
-        RuntimeException failure = new RuntimeException("failure");
-
         for (int rangeId = 0; rangeId < 100; rangeId++) {
+            RuntimeException failure = new RuntimeException("failure-" + rangeId);
             this.manager.logFailbackFailure(
                 new PartitionKeyRangeWrapper(
                     new PartitionKeyRange(String.valueOf(rangeId), "AA", "BB"),
@@ -111,7 +144,11 @@ public class PpcbFailbackLoggingTest {
                 failure);
         }
 
-        verify(this.logger, times(100)).warn(contains("exceptionMessage=failure"), same(failure));
+        verify(this.logger, times(100)).warn(
+            contains("exceptionMessage=failure-"),
+            Mockito.any(RuntimeException.class));
+        assertThat(this.manager.getLatestFailbackMessageByRegion())
+            .containsOnly(entry("eastus", "failure-99"));
     }
 
     @Test(groups = {"unit"})

@@ -100,8 +100,7 @@ public class LocationSpecificHealthContext implements Serializable {
                 attemptTime,
                 outcome,
                 failed ? failureStage : null,
-                failed && failure != null ? failure.getClass().getName() : null,
-                failed && failure != null ? failure.getMessage() : null))
+                failed && failure != null ? failure.getClass().getName() : null))
             .build();
     }
 
@@ -116,20 +115,17 @@ public class LocationSpecificHealthContext implements Serializable {
         private final FailbackOutcome outcome;
         private final String failureStage;
         private final String failureType;
-        private final String failureMessage;
 
         private FailbackDiagnostics(
             Instant lastAttemptedAt,
             FailbackOutcome outcome,
             String failureStage,
-            String failureType,
-            String failureMessage) {
+            String failureType) {
 
             this.lastAttemptedAt = lastAttemptedAt;
             this.outcome = outcome;
             this.failureStage = failureStage;
             this.failureType = failureType;
-            this.failureMessage = failureMessage;
         }
     }
 
@@ -232,7 +228,6 @@ public class LocationSpecificHealthContext implements Serializable {
                     gen.writeObjectFieldStart("failure");
                     gen.writeStringField("stage", value.failbackDiagnostics.failureStage);
                     gen.writeStringField("type", value.failbackDiagnostics.failureType);
-                    gen.writeStringField("message", value.failbackDiagnostics.failureMessage);
                     gen.writeEndObject();
                 }
                 gen.writeEndObject();
