@@ -13,28 +13,32 @@ import com.azure.ai.voicelive.models.OpenAIVoice;
 import com.azure.ai.voicelive.models.OpenAIVoiceName;
 import com.azure.ai.voicelive.models.OutputAudioFormat;
 import com.azure.ai.voicelive.models.ServerEventType;
+import com.azure.ai.voicelive.models.SessionResponse;
+import com.azure.ai.voicelive.models.SessionResponseStatus;
 import com.azure.ai.voicelive.models.SessionServerEvent;
 import com.azure.ai.voicelive.models.SessionUpdateError;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDone;
+import com.azure.ai.voicelive.models.SessionUpdateResponseDone;
 import com.azure.ai.voicelive.models.UserMessageItem;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -90,6 +94,7 @@ public final class AudioPlaybackSample {
     private static final int CHANNELS = 1;            // Mono
     private static final int SAMPLE_SIZE_BITS = 16;   // 16-bit PCM
     private static final int CHUNK_SIZE = 1200;       // 50ms chunks
+    private static final int AUDIO_QUEUE_CAPACITY = 1000;
     private static final long COMPLETION_TIMEOUT_SECONDS = 60;
 
     /**
@@ -98,7 +103,6 @@ public final class AudioPlaybackSample {
      * @param args Unused command line arguments
      */
     public static void main(String[] args) {
-        // Get endpoint from environment variable
         String endpoint = System.getenv("AZURE_VOICELIVE_ENDPOINT");
 
         if (endpoint == null) {
@@ -106,13 +110,11 @@ public final class AudioPlaybackSample {
             return;
         }
 
-        // Check if speaker is available
         if (!checkSpeakerAvailable()) {
             System.err.println("No compatible speaker found");
             return;
         }
 
-        // Create the VoiceLive client using DefaultAzureCredential (Entra ID).
         VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -120,86 +122,62 @@ public final class AudioPlaybackSample {
 
         System.out.println("Starting audio playback sample...");
 
-        // Configure session options
+        PlaybackController playback;
+        try {
+            playback = startPlayback();
+        } catch (LineUnavailableException e) {
+            System.err.println("Failed to start speaker: " + e.getMessage());
+            return;
+        }
+
+        Mono<Void> sample = Mono.usingWhen(
+            client.startSession("gpt-realtime", null),
+            session -> {
+                Mono<Void> responseCompletion = configureSession(session)
+                    .then(sendPrompt(session))
+                    .thenMany(session.receiveEvents().concatMap(event -> handleEvent(event, playback)))
+                    .filter(Boolean::booleanValue)
+                    .next()
+                    .switchIfEmpty(Mono.error(new IllegalStateException(
+                        "Event stream completed before a successful response.done event")))
+                    .then();
+                Mono<Void> playbackFailure = playback.completion().then(Mono.<Void>never());
+                return Mono.firstWithSignal(responseCompletion, playbackFailure);
+            },
+            VoiceLiveSessionAsyncClient::closeAsync)
+            .timeout(Duration.ofSeconds(COMPLETION_TIMEOUT_SECONDS))
+            .doOnError(playback::abort)
+            .doFinally(signalType -> playback.close());
+
+        try {
+            sample.block();
+            System.out.println("\nSample completed - all queued audio was played and drained");
+        } catch (Exception error) {
+            System.err.println("Audio playback sample failed: " + rootMessage(error));
+        }
+    }
+
+    private static Mono<Void> configureSession(VoiceLiveSessionAsyncClient session) {
         VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
             .setInstructions("You are a helpful assistant. Respond to user messages with clear, friendly audio.")
-            // Voice options:
-            // - OpenAI: new OpenAIVoice(OpenAIVoiceName.ALLOY) - use OpenAIVoiceName enum
-            // - Azure: AzureStandardVoice, AzureCustomVoice, AzurePersonalVoice (all extend AzureVoice)
             .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)))
             .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
             .setInputAudioFormat(InputAudioFormat.PCM16)
             .setOutputAudioFormat(OutputAudioFormat.PCM16)
             .setInputAudioSamplingRate(SAMPLE_RATE);
 
-        // Audio playback components
-        final BlockingQueue<byte[]> audioQueue = new LinkedBlockingQueue<>(1000);
-        final AtomicBoolean isPlaying = new AtomicBoolean(false);
-        final AtomicReference<SourceDataLine> speakerRef = new AtomicReference<>();
-        final AtomicReference<Thread> playbackThreadRef = new AtomicReference<>();
-
-        // Latch keeps main alive until the response completes (or an error occurs).
-        final CountDownLatch completionLatch = new CountDownLatch(1);
-
-        // Open a WebSocket session against the realtime model.
-        client.startSession("gpt-realtime", null)
-            // Configure the session (voice, modalities, audio formats, instructions).
-            .flatMap(session -> {
-                ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-                return session.sendEvent(updateEvent).thenReturn(session);
-            })
-            // Open the speaker line and start the playback worker thread before
-            // any audio deltas arrive, so chunks can be played as soon as they stream in.
-            .flatMap(session -> {
-                startPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
-                return Mono.just(session);
-            })
-            // Send a user message that prompts the model to produce a spoken reply.
-            .flatMap(session -> {
-                InputTextContentPart textContent = new InputTextContentPart(
-                    "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
-                UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
-                ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate()
-                    .setItem(messageItem);
-                return session.sendEvent(createEvent).thenReturn(session);
-            })
-            // Ask the model to start generating a response for the queued message.
-            .flatMap(session -> {
-                ClientEventResponseCreate responseEvent = new ClientEventResponseCreate();
-                return session.sendEvent(responseEvent).thenReturn(session);
-            })
-            // Subscribe to the server event stream (session.created, audio deltas, etc.).
-            .flatMapMany(session -> session.receiveEvents())
-            .subscribe(
-                // onNext: route each server event (audio chunks go to the playback queue).
-                event -> handleEvent(event, audioQueue, completionLatch),
-                // onError: log and release main so it can clean up and exit.
-                error -> {
-                    System.err.println("Error: " + error.getMessage());
-                    completionLatch.countDown();
-                },
-                // onComplete: stream ended cleanly; release main.
-                completionLatch::countDown
-            );
-
-        try {
-            if (!completionLatch.await(COMPLETION_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                System.err.println("Timed out waiting for audio response to complete.");
-            } else {
-                System.out.println("\n✓ Sample completed - audio playback demonstrated");
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        } finally {
-            stopPlayback(audioQueue, isPlaying, speakerRef, playbackThreadRef);
-        }
+        return session.sendEvent(new ClientEventSessionUpdate(sessionOptions));
     }
 
-    /**
-     * Check if a compatible speaker is available.
-     *
-     * @return true if speaker is available, false otherwise
-     */
+    private static Mono<Void> sendPrompt(VoiceLiveSessionAsyncClient session) {
+        InputTextContentPart textContent = new InputTextContentPart(
+            "Please say 'Hello! This is a test of the audio playback system.' in a friendly voice.");
+        UserMessageItem messageItem = new UserMessageItem(Collections.singletonList(textContent));
+        ClientEventConversationItemCreate createEvent = new ClientEventConversationItemCreate().setItem(messageItem);
+
+        return session.sendEvent(createEvent).then(session.sendEvent(new ClientEventResponseCreate()));
+    }
+
     private static boolean checkSpeakerAvailable() {
         try {
             AudioFormat format = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_BITS, CHANNELS, true, false);
@@ -210,143 +188,329 @@ public final class AudioPlaybackSample {
         }
     }
 
-    /**
-     * Start audio playback system.
-     *
-     * @param audioQueue Queue containing audio data to play
-     * @param isPlaying Flag to control playback loop
-     * @param speakerRef Reference to store the speaker line
-     * @param playbackThreadRef Reference to store the playback thread
-     */
-    private static void startPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
-        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
-        try {
-            AudioFormat format = new AudioFormat(
-                AudioFormat.Encoding.PCM_SIGNED,
-                SAMPLE_RATE,
-                SAMPLE_SIZE_BITS,
-                CHANNELS,
-                CHANNELS * SAMPLE_SIZE_BITS / 8,
-                SAMPLE_RATE,
-                false
-            );
+    private static PlaybackController startPlayback() throws LineUnavailableException {
+        AudioFormat format = new AudioFormat(
+            AudioFormat.Encoding.PCM_SIGNED,
+            SAMPLE_RATE,
+            SAMPLE_SIZE_BITS,
+            CHANNELS,
+            CHANNELS * SAMPLE_SIZE_BITS / 8,
+            SAMPLE_RATE,
+            false);
 
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-            SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(info);
-            speaker.open(format, CHUNK_SIZE * 4);
-            speaker.start();
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+        SourceDataLine speaker = (SourceDataLine) AudioSystem.getLine(info);
+        speaker.open(format, CHUNK_SIZE * 4);
+        speaker.start();
 
-            speakerRef.set(speaker);
-            isPlaying.set(true);
-
-            System.out.println("🔊 Audio playback started");
-
-            // Start playback thread
-            Thread playbackThread = new Thread(() -> {
-                while (isPlaying.get()) {
-                    try {
-                        byte[] audioData = audioQueue.take(); // Blocking wait
-
-                        if (audioData.length == 0) {
-                            // Shutdown signal
-                            break;
-                        }
-
-                        // Play the audio
-                        if (speaker.isOpen()) {
-                            speaker.write(audioData, 0, audioData.length);
-                        }
-
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        break;
-                    } catch (Exception e) {
-                        System.err.println("Error in audio playback: " + e.getMessage());
-                    }
-                }
-            }, "AudioPlayback");
-            playbackThread.setDaemon(true);
-            playbackThreadRef.set(playbackThread);
-            playbackThread.start();
-
-        } catch (LineUnavailableException e) {
-            System.err.println("Failed to start speaker: " + e.getMessage());
-        }
+        PlaybackController playback = new PlaybackController(new SourceDataLineOutput(speaker), AUDIO_QUEUE_CAPACITY);
+        playback.start();
+        System.out.println("Audio playback started");
+        return playback;
     }
 
     /**
-     * Stop audio playback.
-     *
-     * @param audioQueue Queue containing audio data
-     * @param isPlaying Flag to control playback loop
-     * @param speakerRef Reference to the speaker line to close
-     * @param playbackThreadRef Reference to the playback thread
+     * Handles one server event and reports whether the successful terminal response was reached.
      */
-    private static void stopPlayback(BlockingQueue<byte[]> audioQueue, AtomicBoolean isPlaying,
-        AtomicReference<SourceDataLine> speakerRef, AtomicReference<Thread> playbackThreadRef) {
-        isPlaying.set(false);
-        audioQueue.offer(new byte[0]); // Shutdown signal
-
-        Thread playbackThread = playbackThreadRef.getAndSet(null);
-        if (playbackThread != null) {
-            playbackThread.interrupt();
-            try {
-                playbackThread.join(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-
-        SourceDataLine speaker = speakerRef.getAndSet(null);
-        if (speaker != null) {
-            speaker.stop();
-            speaker.close();
-        }
-        System.out.println("🔊 Audio playback stopped");
-    }
-
-    /**
-     * Handle incoming server events. Queues audio chunks for playback and signals completion
-     * when the response is finished or an error is reported.
-     *
-     * @param event The server event
-     * @param audioQueue Queue to receive audio data
-     * @param completionLatch Latch to release when the response is complete or fails
-     */
-    private static void handleEvent(SessionServerEvent event, BlockingQueue<byte[]> audioQueue,
-        CountDownLatch completionLatch) {
+    static Mono<Boolean> handleEvent(SessionServerEvent event, PlaybackController playback) {
         ServerEventType eventType = event.getType();
 
         if (eventType == ServerEventType.SESSION_CREATED) {
-            System.out.println("✓ Session created");
+            System.out.println("Session created");
         } else if (eventType == ServerEventType.SESSION_UPDATED) {
-            System.out.println("✓ Session updated - ready to receive audio");
-        } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-            // Receive audio response and queue for playback
-            if (event instanceof SessionUpdateResponseAudioDelta) {
-                SessionUpdateResponseAudioDelta audioEvent = (SessionUpdateResponseAudioDelta) event;
-                byte[] audioData = audioEvent.getDelta();
-                if (audioData != null && audioData.length > 0) {
-                    if (!audioQueue.offer(audioData)) {
-                        System.err.println("Warning: audio queue full, dropping chunk of " + audioData.length + " bytes");
-                    } else {
-                        System.out.println("🔊 Received audio chunk: " + audioData.length + " bytes");
-                    }
-                }
+            System.out.println("Session updated - ready to receive audio");
+        } else if (event instanceof SessionUpdateResponseAudioDelta) {
+            byte[] audioData = ((SessionUpdateResponseAudioDelta) event).getDelta();
+            if (audioData != null && audioData.length > 0 && !playback.queueAudio(audioData)) {
+                System.err.println("Warning: audio queue full, dropping chunk of " + audioData.length + " bytes");
             }
-        } else if (eventType == ServerEventType.RESPONSE_AUDIO_DONE) {
-            System.out.println("✓ Audio response complete");
-        } else if (eventType == ServerEventType.RESPONSE_DONE) {
-            System.out.println("✓ Response complete");
-            completionLatch.countDown();
-        } else if (eventType == ServerEventType.ERROR) {
-            System.err.println("❌ Error occurred in session "
-                + ((SessionUpdateError) event).getError().getMessage());
-            completionLatch.countDown();
+        } else if (event instanceof SessionUpdateResponseAudioDone) {
+            SessionUpdateResponseAudioDone audioDone = (SessionUpdateResponseAudioDone) event;
+            System.out.println("Audio response complete: responseId=" + audioDone.getResponseId()
+                + ", itemId=" + audioDone.getItemId()
+                + ", outputIndex=" + audioDone.getOutputIndex()
+                + ", contentIndex=" + audioDone.getContentIndex()
+                + ", acceptedBytes=" + playback.getAcceptedAudioBytes()
+                + ", droppedChunks=" + playback.getDroppedAudioChunks());
+        } else if (event instanceof SessionUpdateResponseDone) {
+            SessionResponse response = ((SessionUpdateResponseDone) event).getResponse();
+            String responseId = response == null ? null : response.getId();
+            SessionResponseStatus status = response == null ? null : response.getStatus();
+            System.out.println("Response complete: responseId=" + responseId + ", status=" + status);
+
+            try {
+                validateCompletedResponse(responseId, status, playback.getAcceptedAudioBytes());
+            } catch (IllegalStateException error) {
+                return Mono.error(error);
+            }
+
+            return playback.finishGracefully().thenReturn(true);
+        } else if (event instanceof SessionUpdateError) {
+            SessionUpdateError errorEvent = (SessionUpdateError) event;
+            String message = errorEvent.getError() == null ? "Unknown VoiceLive error" : errorEvent.getError().getMessage();
+            return Mono.error(new IllegalStateException(message));
+        }
+
+        return Mono.just(false);
+    }
+
+    static void validateCompletedResponse(String responseId, SessionResponseStatus status, long acceptedAudioBytes) {
+        if (!SessionResponseStatus.COMPLETED.equals(status)) {
+            throw new IllegalStateException(
+                "Response " + responseId + " ended with status " + status + " instead of completed");
+        }
+        if (acceptedAudioBytes == 0) {
+            throw new IllegalStateException("Response " + responseId + " completed without any playable audio");
         }
     }
 
-    // Private constructor to prevent instantiation
+    private static String rootMessage(Throwable error) {
+        Throwable current = error;
+        while (current.getCause() != null) {
+            current = current.getCause();
+        }
+        return current.getMessage() == null ? current.getClass().getSimpleName() : current.getMessage();
+    }
+
+    interface AudioOutput {
+        boolean isOpen();
+
+        int write(byte[] audioData, int offset, int length);
+
+        void drain();
+
+        void stop();
+
+        void flush();
+
+        void close();
+    }
+
+    private static final class SourceDataLineOutput implements AudioOutput {
+        private final SourceDataLine speaker;
+
+        private SourceDataLineOutput(SourceDataLine speaker) {
+            this.speaker = speaker;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return speaker.isOpen();
+        }
+
+        @Override
+        public int write(byte[] audioData, int offset, int length) {
+            return speaker.write(audioData, offset, length);
+        }
+
+        @Override
+        public void drain() {
+            speaker.drain();
+        }
+
+        @Override
+        public void stop() {
+            speaker.stop();
+        }
+
+        @Override
+        public void flush() {
+            speaker.flush();
+        }
+
+        @Override
+        public void close() {
+            speaker.close();
+        }
+    }
+
+    enum PlaybackState {
+        RUNNING,
+        DRAIN_REQUESTED,
+        COMPLETED,
+        ABORTED
+    }
+
+    private static final byte[] DRAIN_MARKER = new byte[0];
+    private static final byte[] ABORT_MARKER = new byte[0];
+
+    /**
+     * Owns the playback worker and signals completion only after every queued packet is written and drained.
+     */
+    static final class PlaybackController implements AutoCloseable {
+        private final AudioOutput output;
+        private final Object lifecycleLock = new Object();
+        private final BlockingQueue<byte[]> queue;
+        private final Semaphore audioQueueSlots;
+        private final CompletableFuture<Void> completion = new CompletableFuture<>();
+        private final AtomicReference<PlaybackState> state = new AtomicReference<>(PlaybackState.RUNNING);
+        private final AtomicLong acceptedAudioBytes = new AtomicLong();
+        private final AtomicLong droppedAudioChunks = new AtomicLong();
+        private final Thread playbackThread;
+
+        PlaybackController(AudioOutput output, int audioQueueCapacity) {
+            if (audioQueueCapacity <= 0) {
+                throw new IllegalArgumentException("audioQueueCapacity must be positive");
+            }
+            this.output = output;
+            // The semaphore bounds audio packets while the command queue always accepts terminal markers.
+            this.queue = new LinkedBlockingQueue<>();
+            this.audioQueueSlots = new Semaphore(audioQueueCapacity);
+            this.playbackThread = new Thread(this::playbackLoop, "AudioPlayback");
+            this.playbackThread.setDaemon(true);
+        }
+
+        void start() {
+            playbackThread.start();
+        }
+
+        boolean queueAudio(byte[] audioData) {
+            if (audioData == null || audioData.length == 0) {
+                return false;
+            }
+            synchronized (lifecycleLock) {
+                if (state.get() != PlaybackState.RUNNING) {
+                    return false;
+                }
+                if (!audioQueueSlots.tryAcquire()) {
+                    droppedAudioChunks.incrementAndGet();
+                    return false;
+                }
+
+                queue.offer(audioData);
+                acceptedAudioBytes.addAndGet(audioData.length);
+                return true;
+            }
+        }
+
+        Mono<Void> finishGracefully() {
+            synchronized (lifecycleLock) {
+                if (state.compareAndSet(PlaybackState.RUNNING, PlaybackState.DRAIN_REQUESTED)) {
+                    queue.offer(DRAIN_MARKER);
+                }
+                if (state.get() == PlaybackState.ABORTED) {
+                    return Mono.error(new IllegalStateException("Playback was aborted"));
+                }
+            }
+            return Mono.fromFuture(completion);
+        }
+
+        void abort(Throwable cause) {
+            synchronized (lifecycleLock) {
+                PlaybackState current = state.get();
+                if (current == PlaybackState.COMPLETED || current == PlaybackState.ABORTED) {
+                    return;
+                }
+                state.set(PlaybackState.ABORTED);
+                queue.clear();
+                queue.offer(ABORT_MARKER);
+            }
+
+            shutdownOutput(true);
+            playbackThread.interrupt();
+            completion.completeExceptionally(cause == null
+                ? new IllegalStateException("Playback aborted")
+                : cause);
+        }
+
+        long getAcceptedAudioBytes() {
+            return acceptedAudioBytes.get();
+        }
+
+        long getDroppedAudioChunks() {
+            return droppedAudioChunks.get();
+        }
+
+        PlaybackState getState() {
+            return state.get();
+        }
+
+        Mono<Void> completion() {
+            return Mono.fromFuture(completion);
+        }
+
+        private void playbackLoop() {
+            Throwable failure = null;
+            try {
+                while (true) {
+                    byte[] audioData = queue.take();
+                    if (audioData == DRAIN_MARKER) {
+                        output.drain();
+                        synchronized (lifecycleLock) {
+                            state.compareAndSet(PlaybackState.DRAIN_REQUESTED, PlaybackState.COMPLETED);
+                        }
+                        break;
+                    }
+                    if (audioData == ABORT_MARKER) {
+                        break;
+                    }
+
+                    audioQueueSlots.release();
+                    if (state.get() != PlaybackState.ABORTED) {
+                        writeFully(audioData);
+                    }
+                }
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+                if (state.get() != PlaybackState.ABORTED) {
+                    failure = error;
+                    state.set(PlaybackState.ABORTED);
+                }
+            } catch (Throwable error) {
+                failure = error;
+                state.set(PlaybackState.ABORTED);
+            } finally {
+                shutdownOutput(state.get() == PlaybackState.ABORTED);
+                if (state.get() == PlaybackState.COMPLETED) {
+                    completion.complete(null);
+                } else if (!completion.isDone()) {
+                    completion.completeExceptionally(failure == null
+                        ? new IllegalStateException("Playback aborted before drain completed")
+                        : failure);
+                }
+            }
+        }
+
+        private void writeFully(byte[] audioData) {
+            if (!output.isOpen()) {
+                throw new IllegalStateException("Speaker closed before queued audio was written");
+            }
+            int bytesWritten = output.write(audioData, 0, audioData.length);
+            if (bytesWritten != audioData.length) {
+                throw new IllegalStateException(
+                    "Speaker wrote " + bytesWritten + " of " + audioData.length + " queued bytes");
+            }
+        }
+
+        private void shutdownOutput(boolean flush) {
+            if (flush) {
+                try {
+                    output.flush();
+                } catch (Exception ignored) {
+                    // Best-effort abort cleanup.
+                }
+            }
+            try {
+                output.stop();
+            } catch (Exception ignored) {
+                // Best-effort cleanup.
+            }
+            try {
+                output.close();
+            } catch (Exception ignored) {
+                // Best-effort cleanup.
+            }
+        }
+
+        @Override
+        public void close() {
+            PlaybackState currentState = state.get();
+            if (currentState != PlaybackState.COMPLETED && currentState != PlaybackState.ABORTED) {
+                abort(new IllegalStateException("Playback closed before graceful completion"));
+            }
+        }
+    }
+
     private AudioPlaybackSample() {
     }
 }
