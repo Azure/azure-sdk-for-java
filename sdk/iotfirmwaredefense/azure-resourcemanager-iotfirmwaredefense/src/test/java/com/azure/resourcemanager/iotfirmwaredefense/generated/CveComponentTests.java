@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Assertions;
 public final class CveComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CveComponent model
-            = BinaryData.fromString("{\"componentId\":\"tyq\",\"name\":\"lbbovplw\",\"version\":\"hvgyuguosvmk\"}")
-                .toObject(CveComponent.class);
-        Assertions.assertEquals("tyq", model.componentId());
-        Assertions.assertEquals("lbbovplw", model.name());
-        Assertions.assertEquals("hvgyuguosvmk", model.version());
+        CveComponent model = BinaryData
+            .fromString("{\"componentId\":\"vkr\",\"name\":\"wbxqzvszjfau\",\"version\":\"fdxxivetvtcqaqtd\"}")
+            .toObject(CveComponent.class);
+        Assertions.assertEquals("vkr", model.componentId());
+        Assertions.assertEquals("wbxqzvszjfau", model.name());
+        Assertions.assertEquals("fdxxivetvtcqaqtd", model.version());
     }
 }

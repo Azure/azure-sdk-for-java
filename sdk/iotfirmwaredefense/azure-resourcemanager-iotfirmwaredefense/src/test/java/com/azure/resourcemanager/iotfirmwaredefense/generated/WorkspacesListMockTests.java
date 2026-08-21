@@ -23,7 +23,7 @@ public final class WorkspacesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"mygtdssls\",\"tier\":\"Standard\",\"size\":\"eriofzpyqs\",\"family\":\"wab\",\"capacity\":334511461},\"location\":\"hhszh\",\"tags\":{\"nkww\":\"lvwiwubmwmbesl\",\"flcxoga\":\"pp\",\"mkqzeqqkdltfzxmh\":\"konzmnsik\",\"gureodkwobdag\":\"v\"},\"id\":\"tibqdxbxwakb\",\"name\":\"gqxndlkzgxhuripl\",\"type\":\"podxunkb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Analyzing\"},\"sku\":{\"name\":\"hxx\",\"tier\":\"Free\",\"size\":\"a\",\"family\":\"feqztppriol\",\"capacity\":621148688},\"location\":\"altol\",\"tags\":{\"dcfhucqdpf\":\"wsobqwcsdbn\",\"vxb\":\"vglsbjjca\",\"udutnco\":\"t\"},\"id\":\"mr\",\"name\":\"xqtvcofu\",\"type\":\"f\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class WorkspacesListMockTests {
 
         PagedIterable<Workspace> response = manager.workspaces().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hhszh", response.iterator().next().location());
-        Assertions.assertEquals("lvwiwubmwmbesl", response.iterator().next().tags().get("nkww"));
-        Assertions.assertEquals("mygtdssls", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
-        Assertions.assertEquals("eriofzpyqs", response.iterator().next().sku().size());
-        Assertions.assertEquals("wab", response.iterator().next().sku().family());
-        Assertions.assertEquals(334511461, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("altol", response.iterator().next().location());
+        Assertions.assertEquals("wsobqwcsdbn", response.iterator().next().tags().get("dcfhucqdpf"));
+        Assertions.assertEquals("hxx", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
+        Assertions.assertEquals("a", response.iterator().next().sku().size());
+        Assertions.assertEquals("feqztppriol", response.iterator().next().sku().family());
+        Assertions.assertEquals(621148688, response.iterator().next().sku().capacity());
     }
 }
