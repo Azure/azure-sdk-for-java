@@ -14,6 +14,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -27,6 +28,20 @@ public class StorageImplUtilsTests {
 
         assertNotNull(e.getCause());
         assertInstanceOf(expectedCauseType, e.getCause());
+    }
+
+    @ParameterizedTest
+    @MethodSource("etagValues")
+    void toETagHeaderValueConvertsExpectedValues(String input, String expected) {
+        assertEquals(expected, StorageImplUtils.toETagHeaderValue(input));
+    }
+
+    @ParameterizedTest
+    @MethodSource("etagValues")
+    void toETagHeaderValueIsIdempotent(String input, String expected) {
+        String firstPass = StorageImplUtils.toETagHeaderValue(input);
+        assertEquals(expected, firstPass);
+        assertEquals(firstPass, StorageImplUtils.toETagHeaderValue(firstPass));
     }
 
     private static Stream<Arguments> exceptionCallables() {
@@ -50,5 +65,11 @@ public class StorageImplUtilsTests {
             Arguments.of(runtimeCallable, RuntimeException.class),
             Arguments.of(executionCallable, ExecutionException.class),
             Arguments.of(interruptedCallable, InterruptedException.class));
+    }
+
+    private static Stream<Arguments> etagValues() {
+        return Stream.of(Arguments.of(null, null), Arguments.of("", ""), Arguments.of("*", "*"),
+            Arguments.of("0x8DABC", "\"0x8DABC\""), Arguments.of("\"0x8DABC\"", "\"0x8DABC\""),
+            Arguments.of("W/\"0x8DABC\"", "W/\"0x8DABC\""), Arguments.of("\"", "\"\"\""));
     }
 }

@@ -16,7 +16,7 @@ autorest
 ### Code generation settings
 ``` yaml
 use: '@autorest/java@4.1.63'
-input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/f85584d452061985a5fc21a67b8fc0b46b75188a/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json
+input-file: https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/5c678e444fe0e80a81808bc647d80135f9f6650d/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-10-06/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -44,7 +44,6 @@ directive:
     $.get.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
     $.get.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
 ```
-
 
 ### /{containerName}/{blob}?comp=appendblock
 ``` yaml
@@ -587,24 +586,6 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
-### Delete Container_ListBlobFlatSegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat&arrow"].get
-  transform: >
-    delete $["x-ms-pageable"];
-```
-
-### Delete Container_ListBlobHierarchySegment_ApacheArrow x-ms-pageable as response is raw Arrow stream
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"].get
   transform: >
     delete $["x-ms-pageable"];
 ```

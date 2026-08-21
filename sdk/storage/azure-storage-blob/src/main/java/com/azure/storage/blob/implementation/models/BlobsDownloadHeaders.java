@@ -296,6 +296,12 @@ public final class BlobsDownloadHeaders {
     private Long xMsStructuredContentLength;
 
     /*
+     * The x-ms-download-hint property.
+     */
+    @Generated
+    private DownloadHint xMsDownloadHint;
+
+    /*
      * The x-ms-content-crc64 property.
      */
     @Generated
@@ -366,6 +372,8 @@ public final class BlobsDownloadHeaders {
 
     private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
         = HttpHeaderName.fromString("x-ms-structured-content-length");
+
+    private static final HttpHeaderName X_MS_DOWNLOAD_HINT = HttpHeaderName.fromString("x-ms-download-hint");
 
     private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
 
@@ -528,6 +536,12 @@ public final class BlobsDownloadHeaders {
             this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
         } else {
             this.xMsStructuredContentLength = null;
+        }
+        String xMsDownloadHint = rawHeaders.getValue(X_MS_DOWNLOAD_HINT);
+        if (xMsDownloadHint != null) {
+            this.xMsDownloadHint = DownloadHint.fromString(xMsDownloadHint);
+        } else {
+            this.xMsDownloadHint = null;
         }
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
@@ -1581,6 +1595,28 @@ public final class BlobsDownloadHeaders {
     @Generated
     public BlobsDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
         this.xMsStructuredContentLength = xMsStructuredContentLength;
+        return this;
+    }
+
+    /**
+     * Get the xMsDownloadHint property: The x-ms-download-hint property.
+     *
+     * @return the xMsDownloadHint value.
+     */
+    @Generated
+    public DownloadHint getXMsDownloadHint() {
+        return this.xMsDownloadHint;
+    }
+
+    /**
+     * Set the xMsDownloadHint property: The x-ms-download-hint property.
+     *
+     * @param xMsDownloadHint the xMsDownloadHint value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    @Generated
+    public BlobsDownloadHeaders setXMsDownloadHint(DownloadHint xMsDownloadHint) {
+        this.xMsDownloadHint = xMsDownloadHint;
         return this;
     }
 

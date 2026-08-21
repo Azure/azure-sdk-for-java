@@ -9,6 +9,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -21,6 +24,8 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutAccessor;
+import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -39,6 +44,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -51,6 +57,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
@@ -76,6 +83,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -116,7 +124,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param accountName The storage account name.
      * @param fileSystemName The file system name.
      * @param fileName The file name.
-     * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
+     * @param blockBlobAsyncClient The underlying {@link BlockBlobAsyncClient}
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
@@ -158,6 +166,41 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Returns the file's layout.
+     * <p>
+     * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
+     * through the wrapped {@link BlockBlobAsyncClient} because Data Lake does not yet have its own generated layout REST
+     * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
+     *
+     * @param options {@link DataLakeFileGetLayoutOptions}
+     * @return A reactive response emitting all file layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
+        PagedFlux<BlobLayoutInfo> inputPagedFlux
+            = BlobLayoutAccessor.getLayout(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
+
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BlobLayoutInfo>> flux;
+            if (continuationToken != null && pageSize != null) {
+                flux = inputPagedFlux.byPage(continuationToken, pageSize);
+            } else if (continuationToken != null) {
+                flux = inputPagedFlux.byPage(continuationToken);
+            } else if (pageSize != null) {
+                flux = inputPagedFlux.byPage(pageSize);
+            } else {
+                flux = inputPagedFlux.byPage();
+            }
+
+            return flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutInfo>(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(),
+                    response.getValue().stream().map(Transforms::toDataLakeFileLayoutInfo).collect(Collectors.toList()),
+                    response.getContinuationToken(), null));
+        });
     }
 
     /**
@@ -1615,7 +1658,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathProperties>> readToFileWithResponse(ReadToFileOptions options) {
         Context context
             = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
+        context
+            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
 
+        assert options != null;
         return blockBlobAsyncClient
             .downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
                 .setRange(Transforms.toBlobRange(options.getRange()))

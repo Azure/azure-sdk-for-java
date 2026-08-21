@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -39,6 +40,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -52,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
@@ -148,6 +151,21 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public String getFileName() {
         return getObjectName();
+    }
+
+    /**
+     * Returns the file's layout.
+     * <p>
+     * <strong>Implementation Note:</strong> This method currently proxies the Blob service {@code getLayout} API
+     * through the wrapped {@link BlockBlobClient} because Data Lake does not yet have its own generated layout REST
+     * client. This should be revisited if a Data Lake-native {@code getLayout} operation is added.
+     *
+     * @param options {@link DataLakeFileGetLayoutOptions}
+     * @return A response emitting all file layout information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
+        return new PagedIterable<>(dataLakeFileAsyncClient.getLayout(options));
     }
 
     /**
@@ -1153,6 +1171,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
+        context
+            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
 
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
@@ -1387,6 +1407,8 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout,
         Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
+        context
+            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
         Context finalContext = context;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {

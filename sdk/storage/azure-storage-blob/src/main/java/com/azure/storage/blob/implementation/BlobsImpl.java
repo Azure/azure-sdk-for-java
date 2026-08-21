@@ -29,6 +29,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
+import com.azure.storage.blob.implementation.models.BlobLayout;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLHeaders;
@@ -41,6 +42,7 @@ import com.azure.storage.blob.implementation.models.BlobsDeleteHeaders;
 import com.azure.storage.blob.implementation.models.BlobsDeleteImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
@@ -329,6 +331,82 @@ public final class BlobsImpl {
             @QueryParam("deletetype") BlobDeleteType blobDeleteType,
             @HeaderParam("x-ms-access-tier-if-modified-since") DateTimeRfc1123 accessTierIfModifiedSince,
             @HeaderParam("x-ms-access-tier-if-unmodified-since") DateTimeRfc1123 accessTierIfUnmodifiedSince,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayout(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @PathParam("blob") String blob,
+            @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<Response<BlobLayout>> getLayoutNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @PathParam("blob") String blob,
+            @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        ResponseBase<BlobsGetLayoutHeaders, BlobLayout> getLayoutSync(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @PathParam("blob") String blob,
+            @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{containerName}/{blob}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Response<BlobLayout> getLayoutNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @PathParam("blob") String blob,
+            @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
+            @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-if-tags") String ifTags,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -3243,6 +3321,589 @@ public final class BlobsImpl {
                 timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType,
                 accessTierIfModifiedSinceConverted, accessTierIfUnmodifiedSinceConverted, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutWithResponseAsync(String containerName,
+        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
+        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
+        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
+        return FluxUtil
+            .withContext(context -> getLayoutWithResponseAsync(containerName, blob, snapshot, versionId, marker,
+                maxresults, timeout, range, leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
+                requestId, cpkInfo, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutWithResponseAsync(String containerName,
+        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
+        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
+        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+        final String comp = "layout";
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service
+            .getLayout(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, marker, maxresults,
+                timeout, range, leaseId, ifTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
+                ifNoneMatch, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(),
+                requestId, accept, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobLayout> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
+        String marker, Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String requestId, CpkInfo cpkInfo) {
+        return getLayoutWithResponseAsync(containerName, blob, snapshot, versionId, marker, maxresults, timeout, range,
+            leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, requestId, cpkInfo)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobLayout> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
+        String marker, Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String requestId, CpkInfo cpkInfo, Context context) {
+        return getLayoutWithResponseAsync(containerName, blob, snapshot, versionId, marker, maxresults, timeout, range,
+            leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, requestId, cpkInfo, context)
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobLayout>> getLayoutNoCustomHeadersWithResponseAsync(String containerName, String blob,
+        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
+        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
+        return FluxUtil
+            .withContext(context -> getLayoutNoCustomHeadersWithResponseAsync(containerName, blob, snapshot, versionId,
+                marker, maxresults, timeout, range, leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch,
+                ifNoneMatch, requestId, cpkInfo, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlobLayout>> getLayoutNoCustomHeadersWithResponseAsync(String containerName, String blob,
+        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
+        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+        final String comp = "layout";
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service
+            .getLayoutNoCustomHeaders(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, marker,
+                maxresults, timeout, range, leaseId, ifTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(),
+                requestId, accept, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<BlobsGetLayoutHeaders, BlobLayout> getLayoutWithResponse(String containerName, String blob,
+        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
+        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+        try {
+            final String comp = "layout";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            return service.getLayoutSync(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, marker,
+                maxresults, timeout, range, leaseId, ifTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+                ifMatch, ifNoneMatch, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(),
+                requestId, accept, context);
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobLayout getLayout(String containerName, String blob, String snapshot, String versionId, String marker,
+        Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
+        OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
+        String requestId, CpkInfo cpkInfo) {
+        try {
+            return getLayoutWithResponse(containerName, blob, snapshot, versionId, marker, maxresults, timeout, range,
+                leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, requestId, cpkInfo,
+                Context.NONE).getValue();
+        } catch (BlobStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToBlobStorageException(internalException);
+        }
+    }
+
+    /**
+     * The Get Blob Layout operation returns all user-defined metadata, standard HTTP properties, and system properties
+     * for the blob. In addition, it may optionally return the layout of the blob.
+     *
+     * @param containerName The container name.
+     * @param blob The blob name.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     * snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot
+     * of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version
+     * of the blob to operate on. It's for service version 2019-10-10 and newer.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     * listing operation. The operation returns the NextMarker value within the response body if the listing operation
+     * did not return all containers remaining to be listed with the current page. The NextMarker value can be used as
+     * the value for the marker parameter in a subsequent call to request the next page of list items. The marker value
+     * is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify
+     * maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the
+     * listing operation crosses a partition boundary, then the service will return a continuation token for retrieving
+     * the remainder of the results. For this reason, it is possible that the service will return fewer results than
+     * specified by maxresults, or than the default of 5000.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range Return only the bytes of the blob in the specified range.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
+     * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobLayout> getLayoutNoCustomHeadersWithResponse(String containerName, String blob, String snapshot,
+        String versionId, String marker, Integer maxresults, Integer timeout, String range, String leaseId,
+        String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+        String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+        try {
+            final String comp = "layout";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            return service.getLayoutNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
+                versionId, marker, maxresults, timeout, range, leaseId, ifTags, ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, encryptionKey, encryptionKeySha256,
+                encryptionAlgorithm, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

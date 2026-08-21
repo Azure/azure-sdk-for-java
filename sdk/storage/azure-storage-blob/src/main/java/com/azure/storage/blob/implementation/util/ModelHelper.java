@@ -5,8 +5,10 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRange;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,6 +18,9 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersCo
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobLayout;
+import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem;
+import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
@@ -23,6 +28,7 @@ import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
@@ -31,8 +37,11 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -403,6 +412,84 @@ public final class ModelHelper {
 
     public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
         return new BlobsDownloadHeaders(headers);
+    }
+
+    /**
+     * Transforms {@link BlobLayout} into a public {@link BlobLayoutInfo}.
+     *
+     * @param response {@link ResponseBase}
+     * @return {@link BlobLayoutInfo}
+     */
+    public static BlobLayoutInfo transformBlobLayoutInfo(ResponseBase<BlobsGetLayoutHeaders, BlobLayout> response) {
+        if (response == null) {
+            return null;
+        }
+
+        BlobLayout layout = response.getValue();
+        Map<Integer, String> endpoints = new HashMap<>();
+        if (layout != null && layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
+            for (BlobLayoutEndpointsEndpointItem endpoint : layout.getEndpoints().getEndpoint()) {
+                if (endpoint != null) {
+                    endpoints.put(endpoint.getIndex(), endpoint.getValue());
+                }
+            }
+        }
+
+        List<BlobLayoutRange> ranges = new ArrayList<>();
+        if (layout != null && layout.getRanges() != null && layout.getRanges().getRange() != null) {
+            for (BlobLayoutRangesRangeItem range : layout.getRanges().getRange()) {
+                if (range != null) {
+                    ranges
+                        .add(new BlobLayoutRange(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1),
+                            endpoints.get(range.getEndpointIndex())));
+                }
+            }
+        }
+
+        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders();
+        BlobImmutabilityPolicy immutabilityPolicy = null;
+        if (headers != null) {
+            immutabilityPolicy = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
+                .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
+        }
+
+        return new BlobLayoutInfo(ranges, headers == null ? null : headers.getLastModified(),
+            headers == null ? null : headers.getXMsCreationTime(), headers == null ? null : headers.getXMsMeta(),
+            headers == null ? null : getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
+            headers == null ? null : getObjectReplicationSourcePolicies(headers.getXMsOr()),
+            headers == null ? null : headers.getXMsBlobType(),
+            headers == null ? null : headers.getXMsCopyCompletionTime(),
+            headers == null ? null : headers.getXMsCopyStatusDescription(),
+            headers == null ? null : headers.getXMsCopyId(), headers == null ? null : headers.getXMsCopyProgress(),
+            headers == null ? null : headers.getXMsCopySource(), headers == null ? null : headers.getXMsCopyStatus(),
+            headers == null ? null : headers.getXMsLeaseDuration(), headers == null ? null : headers.getXMsLeaseState(),
+            headers == null ? null : headers.getXMsLeaseStatus(), headers == null ? null : headers.getContentLength(),
+            headers == null ? null : headers.getContentType(), headers == null ? null : headers.getETag(),
+            headers == null ? null : headers.getContentMD5(), headers == null ? null : headers.getContentEncoding(),
+            headers == null ? null : headers.getContentDisposition(),
+            headers == null ? null : headers.getContentLanguage(), headers == null ? null : headers.getCacheControl(),
+            headers == null ? null : headers.getXMsBlobSequenceNumber(),
+            headers == null ? null : headers.getAcceptRanges(),
+            headers == null ? null : headers.getXMsBlobCommittedBlockCount(),
+            headers == null ? null : headers.isXMsServerEncrypted(),
+            headers == null ? null : headers.getXMsEncryptionKeySha256(),
+            headers == null ? null : headers.getXMsEncryptionScope(),
+            headers == null ? null : headers.getXMsAccessTier(),
+            headers == null ? null : headers.isXMsAccessTierInferred(),
+            headers == null ? null : headers.getXMsSmartAccessTier(),
+            headers == null ? null : headers.getXMsArchiveStatus(),
+            headers == null ? null : headers.getXMsAccessTierChangeTime(),
+            headers == null ? null : headers.getXMsVersionId(),
+            headers == null ? null : headers.isXMsIsCurrentVersion(), headers == null ? null : headers.getXMsTagCount(),
+            headers == null ? null : headers.getXMsExpiryTime(), headers == null ? null : headers.isXMsBlobSealed(),
+            headers == null ? null : headers.getXMsRehydratePriority(),
+            headers == null ? null : headers.getXMsLastAccessTime(), immutabilityPolicy,
+            headers == null ? null : headers.isXMsLegalHold(),
+            headers == null ? null : headers.getXMsBlobContentLength(),
+            headers == null ? null : headers.getXMsBlobContentType(),
+            headers == null ? null : headers.getXMsBlobContentEncoding(),
+            headers == null ? null : headers.getXMsBlobContentMd5(),
+            headers == null ? null : headers.getXMsBlobCreationTime());
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {

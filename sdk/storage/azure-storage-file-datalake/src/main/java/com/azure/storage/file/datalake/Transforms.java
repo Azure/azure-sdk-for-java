@@ -5,6 +5,8 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
@@ -19,6 +21,8 @@ import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
@@ -42,11 +46,13 @@ import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
 import com.azure.storage.file.datalake.implementation.models.Path;
@@ -58,6 +64,8 @@ import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeCorsRule;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutInfo;
+import com.azure.storage.file.datalake.models.DataLakeFileLayoutRange;
 import com.azure.storage.file.datalake.models.DataLakeMetrics;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
@@ -96,6 +104,7 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeFileGetLayoutOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
@@ -130,6 +139,15 @@ class Transforms {
     static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
     static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
     static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
+
+    static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
+        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+            return context;
+        }
+
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
+    }
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -290,6 +308,15 @@ class Transforms {
             .setConsistentReadControl(toBlobConsistentReadControl(options.getConsistentReadControl()));
     }
 
+    static BlobGetLayoutOptions toBlobGetLayoutOptions(DataLakeFileGetLayoutOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlobGetLayoutOptions().setRange(toBlobRange(options.getRange()))
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
+            .setMaxResultsPerPage(options.getMaxResultsPerPage());
+    }
+
     static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(
         com.azure.storage.file.datalake.models.ConsistentReadControl datalakeConsistentReadControl) {
         if (datalakeConsistentReadControl == null) {
@@ -361,6 +388,46 @@ class Transforms {
                         permissions, acl, accessTierInferred, smartAccessTier);
             }
         }
+    }
+
+    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayoutInfo blobLayoutInfo) {
+        if (blobLayoutInfo == null) {
+            return null;
+        }
+
+        Long fileSize = blobLayoutInfo.getBlobContentLength();
+        List<DataLakeFileLayoutRange> ranges = blobLayoutInfo.getRanges() == null
+            ? new ArrayList<>()
+            : blobLayoutInfo.getRanges()
+                .stream()
+                .map(Transforms::toDataLakeFileLayoutRange)
+                .collect(Collectors.toList());
+
+        return new DataLakeFileLayoutInfo(ranges, blobLayoutInfo.getBlobCreatedOn(), blobLayoutInfo.getLastModified(),
+            blobLayoutInfo.getETag(), fileSize == null ? 0 : fileSize, blobLayoutInfo.getBlobContentType(),
+            blobLayoutInfo.getBlobContentMd5(), blobLayoutInfo.getBlobContentEncoding(),
+            blobLayoutInfo.getContentDisposition(), blobLayoutInfo.getContentLanguage(),
+            blobLayoutInfo.getCacheControl(), Transforms.toDataLakeLeaseStatusType(blobLayoutInfo.getLeaseStatus()),
+            Transforms.toDataLakeLeaseStateType(blobLayoutInfo.getLeaseState()),
+            Transforms.toDataLakeLeaseDurationType(blobLayoutInfo.getLeaseDuration()), blobLayoutInfo.getCopyId(),
+            Transforms.toDataLakeCopyStatusType(blobLayoutInfo.getCopyStatus()), blobLayoutInfo.getCopySource(),
+            blobLayoutInfo.getCopyProgress(), blobLayoutInfo.getCopyCompletionTime(),
+            blobLayoutInfo.getCopyStatusDescription(), blobLayoutInfo.isServerEncrypted(),
+            Transforms.toDataLakeAccessTier(blobLayoutInfo.getAccessTier() == null
+                ? null
+                : com.azure.storage.blob.models.AccessTier.fromString(blobLayoutInfo.getAccessTier())),
+            Transforms.toDataLakeArchiveStatus(blobLayoutInfo.getArchiveStatus() == null
+                ? null
+                : com.azure.storage.blob.models.ArchiveStatus.fromString(blobLayoutInfo.getArchiveStatus())),
+            blobLayoutInfo.getEncryptionKeySha256(), blobLayoutInfo.getAccessTierChangeTime(),
+            blobLayoutInfo.getMetadata(), blobLayoutInfo.getExpiresOn());
+    }
+
+    private static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {
+        if (blobLayoutRange == null) {
+            return null;
+        }
+        return new DataLakeFileLayoutRange(blobLayoutRange.getRange(), blobLayoutRange.getEndpoint());
     }
 
     static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {

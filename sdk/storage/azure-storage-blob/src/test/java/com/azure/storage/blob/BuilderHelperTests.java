@@ -680,4 +680,50 @@ public class BuilderHelperTests {
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }
+
+    /**
+     * Helper to build a pipeline with bearer token auth.
+     */
+    private static HttpPipeline buildBearerPipeline() {
+        return BuilderHelper.buildPipeline(null, new MockTokenCredential(), null, null, ENDPOINT,
+            new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+            new NoOpHttpClient(), new ArrayList<>(), new ArrayList<>(), null, null,
+            new ClientLogger(BuilderHelperTests.class));
+    }
+
+    /**
+     * Helper to build a pipeline without bearer token auth (shared key only).
+     */
+    private static HttpPipeline buildSharedKeyPipeline() {
+        return BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, ENDPOINT, new RequestRetryOptions(), null,
+            BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(), new NoOpHttpClient(), new ArrayList<>(),
+            new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
+    }
+
+    /**
+     * Checks whether the pipeline contains a policy whose simple class name matches the given name.
+     */
+    private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the index of the first policy whose simple class name matches, or -1 if not found.
+     */
+    private static int indexOfPolicy(HttpPipeline pipeline, String simpleClassName) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // endregion
+
 }
