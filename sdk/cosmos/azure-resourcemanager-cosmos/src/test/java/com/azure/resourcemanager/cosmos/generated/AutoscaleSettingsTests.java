@@ -12,14 +12,14 @@ public final class AutoscaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutoscaleSettings model
-            = BinaryData.fromString("{\"maxThroughput\":1249324480}").toObject(AutoscaleSettings.class);
-        Assertions.assertEquals(1249324480, model.maxThroughput());
+            = BinaryData.fromString("{\"maxThroughput\":1248397235}").toObject(AutoscaleSettings.class);
+        Assertions.assertEquals(1248397235, model.maxThroughput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleSettings model = new AutoscaleSettings().withMaxThroughput(1249324480);
+        AutoscaleSettings model = new AutoscaleSettings().withMaxThroughput(1248397235);
         model = BinaryData.fromObject(model).toObject(AutoscaleSettings.class);
-        Assertions.assertEquals(1249324480, model.maxThroughput());
+        Assertions.assertEquals(1248397235, model.maxThroughput());
     }
 }

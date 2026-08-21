@@ -1,14 +1,278 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.56.0-beta.1 (2026-08-20)
+
+- Package api-version 2026-04-01-preview.
 
 ### Features Added
 
-### Breaking Changes
+* `models.ThroughputPoolUpdate` was added
 
-### Bugs Fixed
+* `models.CassandraRUToCassandraRUCopyJobTask` was added
 
-### Other Changes
+* `models.SoftDeletedSqlContainerProperties` was added
+
+* `models.GarnetCacheProvisioningState` was added
+
+* `models.SoftDeletedDatabaseAccountResource` was added
+
+* `models.CosmosDBMongoCollection` was added
+
+* `models.CassandraViewCreateUpdateParameters` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.GraphResourceGetPropertiesOptions` was added
+
+* `models.CosmosMongoDataTransferDataSourceSink` was added
+
+* `models.DataTransferDataSourceSink` was added
+
+* `models.NoSqlRUToNoSqlRUCopyJobTask` was added
+
+* `models.CosmosCassandraDataTransferDataSourceSink` was added
+
+* `models.CosmosSqlDataTransferDataSourceSink` was added
+
+* `models.CapacityModeTransitionStatus` was added
+
+* `models.SoftDeletedDatabaseAccountProperties` was added
+
+* `models.GarnetClusterResourcePatch` was added
+
+* `models.PhysicalPartitionStorageInfo` was added
+
+* `models.GarnetClusterResourcePatchProperties` was added
+
+* `models.BlobToCassandraRUCopyJobTask` was added
+
+* `models.CosmosDBMongoVCoreCollection` was added
+
+* `models.CapacityMode` was added
+
+* `models.CopyJobStatus` was added
+
+* `models.MergeParameters` was added
+
+* `models.MongoRUToMongoRUCopyJobTask` was added
+
+* `models.SoftDeleteConfiguration` was added
+
+* `models.CassandraViewResource` was added
+
+* `models.GarnetAuthenticationType` was added
+
+* `models.GraphResource` was added
+
+* `models.SoftDeletionMetadata` was added
+
+* `models.CassandraRUToBlobCopyJobTask` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.IssueType` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.EnableFullTextQuery` was added
+
+* `models.DataMaskingPolicyIncludedPathsItem` was added
+
+* `models.CassandraRUToBlobCopyJobProperties` was added
+
+* `models.DiagnosticLogSettings` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.CosmosDBCassandraTable` was added
+
+* `models.CommandAsyncPostBody` was added
+
+* `models.SoftDeletedSqlDatabaseResource` was added
+
+* `models.BaseCopyJobTask` was added
+
+* `models.BackupState` was added
+
+* `models.BlobToCassandraRUCopyJobProperties` was added
+
+* `models.RetrieveThroughputPropertiesResource` was added
+
+* `models.MongoRUToMongoRUCopyJobProperties` was added
+
+* `models.RetrieveThroughputParameters` was added
+
+* `models.AzureBlobDataTransferDataSourceSink` was added
+
+* `models.CosmosDBSourceSinkDetails` was added
+
+* `models.DataMaskingPolicy` was added
+
+* `models.PhysicalPartitionThroughputInfoResultPropertiesResource` was added
+
+* `models.MongoRUToMongoVCoreCopyJobTask` was added
+
+* `models.AzureBlobContainer` was added
+
+* `models.DataMaskingPolicyExcludedPathsItem` was added
+
+* `models.SupportedActions` was added
+
+* `models.CommandStatus` was added
+
+* `models.DataTransferJobMode` was added
+
+* `models.PhysicalPartitionThroughputInfoResource` was added
+
+* `models.MaterializedViewDetails` was added
+
+* `models.NetworkSecurityProfile` was added
+
+* `models.CosmosMongoVCoreDataTransferDataSourceSink` was added
+
+* `models.Severity` was added
+
+* `models.PhysicalPartitionId` was added
+
+* `models.BaseCosmosDataTransferDataSourceSink` was added
+
+* `models.AzureBlobSourceSinkDetails` was added
+
+* `models.NoSqlRUToNoSqlRUCopyJobProperties` was added
+
+* `models.MaterializedViewDefinition` was added
+
+* `models.MongoRUToMongoVCoreCopyJobProperties` was added
+
+* `models.DataTransferComponent` was added
+
+* `models.PhysicalPartitionThroughputInfoProperties` was added
+
+* `models.RedistributeThroughputPropertiesResource` was added
+
+* `models.ThroughputBucketResource` was added
+
+* `models.RedistributeThroughputParameters` was added
+
+* `models.BaseCopyJobProperties` was added
+
+* `models.CosmosDBNoSqlContainer` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.CapacityModeChangeTransitionState` was added
+
+* `models.GraphResourceGetPropertiesResource` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.CopyJobMode` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.GarnetClusterResourceProperties` was added
+
+* `models.SoftDeletedSqlDatabaseProperties` was added
+
+* `models.CassandraViewGetPropertiesResource` was added
+
+* `models.CassandraRUToCassandraRUCopyJobProperties` was added
+
+* `models.MaterializedViewsProperties` was added
+
+* `models.AccessRule` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.CreateJobRequest` was added
+
+* `models.ClusterType` was added
+
+* `models.MongoVCoreSourceSinkDetails` was added
+
+* `models.CopyJobProperties` was added
+
+* `models.GarnetClusterResourcePropertiesEndPointsItem` was added
+
+* `models.CassandraViewGetPropertiesOptions` was added
+
+* `models.AccessRuleProperties` was added
+
+* `models.CopyJobType` was added
+
+* `models.SoftDeletedSqlContainerResource` was added
+
+* `models.ThroughputPolicyType` was added
+
+* `models.AllocationState` was added
+
+* `models.SoftDeleteActionKind` was added
+
+* `models.GraphResourceCreateUpdateParameters` was added
+
+* `models.FleetAnalyticsPropertiesStorageLocationType` was added
+
+* `models.ProvisioningIssue` was added
+
+#### `models.DatabaseAccountUpdateParameters` was modified
+
+* `enableAllVersionsAndDeletesChangeFeed()` was added
+* `capacityMode()` was added
+* `withCapacityMode(models.CapacityMode)` was added
+* `enableMaterializedViews()` was added
+* `softDeleteConfiguration()` was added
+* `withEnableMaterializedViews(java.lang.Boolean)` was added
+* `withSoftDeleteConfiguration(models.SoftDeleteConfiguration)` was added
+* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
+* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
+* `diagnosticLogSettings()` was added
+
+#### `models.AccountKeyMetadata` was modified
+
+* `approximateLastUsageTime()` was added
+
+#### `models.DatabaseAccountCreateUpdateParameters` was modified
+
+* `withSoftDeleteConfiguration(models.SoftDeleteConfiguration)` was added
+* `withCapacityMode(models.CapacityMode)` was added
+* `enableAllVersionsAndDeletesChangeFeed()` was added
+* `withDiagnosticLogSettings(models.DiagnosticLogSettings)` was added
+* `softDeleteConfiguration()` was added
+* `diagnosticLogSettings()` was added
+* `withEnableAllVersionsAndDeletesChangeFeed(java.lang.Boolean)` was added
+* `withEnableMaterializedViews(java.lang.Boolean)` was added
+* `enableMaterializedViews()` was added
+* `capacityMode()` was added
+
+#### `models.ClusterResourceProperties` was modified
+
+* `withClusterType(models.ClusterType)` was added
+* `clusterType()` was added
+
+#### `models.DatabaseAccountRegenerateKeyParameters` was modified
+
+* `withSkipAccountKeysLastUsageCheck(java.lang.Boolean)` was added
+* `skipAccountKeysLastUsageCheck()` was added
+
+#### `models.SqlContainerResource` was modified
+
+* `materializedViewsProperties()` was added
+* `materializedViews()` was added
+* `withMaterializedViewDefinition(models.MaterializedViewDefinition)` was added
+* `withDataMaskingPolicy(models.DataMaskingPolicy)` was added
+* `withMaterializedViews(java.util.List)` was added
+* `withMaterializedViewsProperties(models.MaterializedViewsProperties)` was added
+* `dataMaskingPolicy()` was added
+* `materializedViewDefinition()` was added
+
+#### `models.ThroughputSettingsResource` was modified
+
+* `withThroughputBuckets(java.util.List)` was added
+* `throughputBuckets()` was added
+
+#### `models.ContinuousTier` was modified
+
+* `CONTINUOUS35DAYS` was added
 
 ## 2.55.0 (2026-07-01)
 

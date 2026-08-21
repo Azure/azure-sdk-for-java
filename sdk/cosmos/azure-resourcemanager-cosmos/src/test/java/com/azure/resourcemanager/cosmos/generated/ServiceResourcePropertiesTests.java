@@ -13,9 +13,9 @@ public final class ServiceResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceProperties model = BinaryData.fromString(
-            "{\"serviceType\":\"ServiceResourceProperties\",\"creationTime\":\"2021-03-07T23:57:29Z\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":1497307217,\"status\":\"Running\",\"oqjum\":\"\\\"datan\\\"\",\"vzopaxmfmvsm\":\"\\\"datavsfbp\\\"\"}")
+            "{\"serviceType\":\"ServiceResourceProperties\",\"creationTime\":\"2021-03-23T23:39:22Z\",\"instanceSize\":\"Cosmos.D4s\",\"instanceCount\":440295795,\"status\":\"Running\",\"j\":\"\\\"dataxxpqhmlqibtblmcv\\\"\",\"fqvpbqsdqkpsbqsb\":\"\\\"dataznotd\\\"\",\"taftazgcx\":\"\\\"datam\\\"\"}")
             .toObject(ServiceResourceProperties.class);
         Assertions.assertEquals(ServiceSize.COSMOS_D4S, model.instanceSize());
-        Assertions.assertEquals(1497307217, model.instanceCount());
+        Assertions.assertEquals(440295795, model.instanceCount());
     }
 }

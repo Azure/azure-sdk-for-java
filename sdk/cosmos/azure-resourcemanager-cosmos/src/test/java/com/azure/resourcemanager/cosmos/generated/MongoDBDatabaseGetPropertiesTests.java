@@ -14,15 +14,15 @@ public final class MongoDBDatabaseGetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBDatabaseGetProperties model = BinaryData.fromString(
-            "{\"resource\":{\"_rid\":\"elyetndnbf\",\"_ts\":39.570755,\"_etag\":\"agfl\",\"id\":\"lgmtrwahzjmucf\",\"restoreParameters\":{\"restoreSource\":\"r\",\"restoreTimestampInUtc\":\"2021-04-22T08:33:43Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"},\"options\":{\"throughput\":44892577,\"autoscaleSettings\":{\"maxThroughput\":1486534232}}}")
+            "{\"resource\":{\"_rid\":\"eakxcptsoqfyi\",\"_ts\":5.842119,\"_etag\":\"chkrttzr\",\"id\":\"zisgykiuemvanb\",\"restoreParameters\":{\"restoreSource\":\"hmnr\",\"restoreTimestampInUtc\":\"2021-03-27T04:52:59Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"},\"options\":{\"throughput\":1069752468,\"autoscaleSettings\":{\"maxThroughput\":233230140}}}")
             .toObject(MongoDBDatabaseGetProperties.class);
-        Assertions.assertEquals("lgmtrwahzjmucf", model.resource().id());
-        Assertions.assertEquals("r", model.resource().restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-22T08:33:43Z"),
+        Assertions.assertEquals("zisgykiuemvanb", model.resource().id());
+        Assertions.assertEquals("hmnr", model.resource().restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T04:52:59Z"),
             model.resource().restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.resource().restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.resource().restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.resource().createMode());
-        Assertions.assertEquals(44892577, model.options().throughput());
-        Assertions.assertEquals(1486534232, model.options().autoscaleSettings().maxThroughput());
+        Assertions.assertEquals(1069752468, model.options().throughput());
+        Assertions.assertEquals(233230140, model.options().autoscaleSettings().maxThroughput());
     }
 }

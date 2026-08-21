@@ -14,13 +14,13 @@ public final class MongoDBDatabaseGetPropertiesResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDBDatabaseGetPropertiesResource model = BinaryData.fromString(
-            "{\"_rid\":\"ckzmkwklsnox\",\"_ts\":22.2983,\"_etag\":\"e\",\"id\":\"alhhjnhgwydyynfs\",\"restoreParameters\":{\"restoreSource\":\"gbv\",\"restoreTimestampInUtc\":\"2021-09-12T06:08:07Z\",\"restoreWithTtlDisabled\":true},\"createMode\":\"Restore\"}")
+            "{\"_rid\":\"tysprqsgnzxojpsl\",\"_ts\":39.574043,\"_etag\":\"pli\",\"id\":\"fiqwoy\",\"restoreParameters\":{\"restoreSource\":\"apcohhouc\",\"restoreTimestampInUtc\":\"2021-09-24T18:50:09Z\",\"restoreWithTtlDisabled\":false},\"createMode\":\"Restore\"}")
             .toObject(MongoDBDatabaseGetPropertiesResource.class);
-        Assertions.assertEquals("alhhjnhgwydyynfs", model.id());
-        Assertions.assertEquals("gbv", model.restoreParameters().restoreSource());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-12T06:08:07Z"),
+        Assertions.assertEquals("fiqwoy", model.id());
+        Assertions.assertEquals("apcohhouc", model.restoreParameters().restoreSource());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-24T18:50:09Z"),
             model.restoreParameters().restoreTimestampInUtc());
-        Assertions.assertTrue(model.restoreParameters().restoreWithTtlDisabled());
+        Assertions.assertFalse(model.restoreParameters().restoreWithTtlDisabled());
         Assertions.assertEquals(CreateMode.RESTORE, model.createMode());
     }
 }

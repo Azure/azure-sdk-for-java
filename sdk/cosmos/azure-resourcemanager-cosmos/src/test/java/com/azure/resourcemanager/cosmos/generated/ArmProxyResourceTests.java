@@ -10,8 +10,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 public final class ArmProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmProxyResource model = BinaryData.fromString("{\"id\":\"xpc\",\"name\":\"dnyeita\",\"type\":\"qady\"}")
-            .toObject(ArmProxyResource.class);
+        ArmProxyResource model
+            = BinaryData.fromString("{\"id\":\"oxsazuxejgwe\",\"name\":\"wnf\",\"type\":\"zzaczsinqbdn\"}")
+                .toObject(ArmProxyResource.class);
     }
 
     @org.junit.jupiter.api.Test

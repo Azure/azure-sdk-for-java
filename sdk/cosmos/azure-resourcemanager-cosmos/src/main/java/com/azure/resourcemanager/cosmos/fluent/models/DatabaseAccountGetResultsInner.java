@@ -14,6 +14,8 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
+import com.azure.resourcemanager.cosmos.models.CapacityModeChangeTransitionState;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
@@ -22,6 +24,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
 import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -30,6 +33,7 @@ import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
 import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.RestoreParameters;
+import com.azure.resourcemanager.cosmos.models.SoftDeleteConfiguration;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import java.io.IOException;
 import java.util.List;
@@ -862,6 +866,31 @@ public final class DatabaseAccountGetResultsInner extends Resource {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      *
@@ -908,6 +937,80 @@ public final class DatabaseAccountGetResultsInner extends Resource {
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withCapacity(capacity);
+        return this;
+    }
+
+    /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     *
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityMode();
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     *
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCapacityMode(CapacityMode capacityMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapacityMode(capacityMode);
+        return this;
+    }
+
+    /**
+     * Get the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     *
+     * @return the capacityModeChangeTransitionState value.
+     */
+    public CapacityModeChangeTransitionState capacityModeChangeTransitionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityModeChangeTransitionState();
+    }
+
+    /**
+     * Set the capacityModeChangeTransitionState property: The object that represents the migration state for the
+     * CapacityMode of the Cosmos DB account.
+     *
+     * @param capacityModeChangeTransitionState the capacityModeChangeTransitionState value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withCapacityModeChangeTransitionState(CapacityModeChangeTransitionState capacityModeChangeTransitionState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapacityModeChangeTransitionState(capacityModeChangeTransitionState);
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
         return this;
     }
 
@@ -1104,6 +1207,111 @@ public final class DatabaseAccountGetResultsInner extends Resource {
             this.innerProperties = new DatabaseAccountGetProperties();
         }
         this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
+     * Get the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     *
+     * @return the enableAllVersionsAndDeletesChangeFeed value.
+     */
+    public Boolean enableAllVersionsAndDeletesChangeFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAllVersionsAndDeletesChangeFeed();
+    }
+
+    /**
+     * Set the enableAllVersionsAndDeletesChangeFeed property: Flag to indicate if All Versions and Deletes Change feed
+     * feature is enabled on the account.
+     *
+     * @param enableAllVersionsAndDeletesChangeFeed the enableAllVersionsAndDeletesChangeFeed value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnableAllVersionsAndDeletesChangeFeed(Boolean enableAllVersionsAndDeletesChangeFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableAllVersionsAndDeletesChangeFeed(enableAllVersionsAndDeletesChangeFeed);
+        return this;
+    }
+
+    /**
+     * Get the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     *
+     * @return the softDeleteConfiguration value.
+     */
+    public SoftDeleteConfiguration softDeleteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeleteConfiguration();
+    }
+
+    /**
+     * Set the softDeleteConfiguration property: The configuration for soft delete on the Cosmos DB account.
+     *
+     * @param softDeleteConfiguration the softDeleteConfiguration value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withSoftDeleteConfiguration(SoftDeleteConfiguration softDeleteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withSoftDeleteConfiguration(softDeleteConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     *
+     * @return the throughputPoolDedicatedRUs value.
+     */
+    public Long throughputPoolDedicatedRUs() {
+        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolDedicatedRUs();
+    }
+
+    /**
+     * Set the throughputPoolDedicatedRUs property: Total dedicated throughput (RU/s) for database account. Represents
+     * the sum of all manual provisioned throughput and all autoscale max RU/s across all shared throughput databases
+     * and dedicated throughput containers in the account for 1 region. READ ONLY.
+     *
+     * @param throughputPoolDedicatedRUs the throughputPoolDedicatedRUs value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withThroughputPoolDedicatedRUs(Long throughputPoolDedicatedRUs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withThroughputPoolDedicatedRUs(throughputPoolDedicatedRUs);
+        return this;
+    }
+
+    /**
+     * Get the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     *
+     * @return the throughputPoolMaxConsumableRUs value.
+     */
+    public Long throughputPoolMaxConsumableRUs() {
+        return this.innerProperties() == null ? null : this.innerProperties().throughputPoolMaxConsumableRUs();
+    }
+
+    /**
+     * Set the throughputPoolMaxConsumableRUs property: When this account is part of a fleetspace with throughput
+     * pooling enabled, this is the maximum additional throughput (RU/s) that can be consumed from the pool, summed
+     * across all shared throughput databases and dedicated throughput containers in the account for 1 region. READ
+     * ONLY.
+     *
+     * @param throughputPoolMaxConsumableRUs the throughputPoolMaxConsumableRUs value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withThroughputPoolMaxConsumableRUs(Long throughputPoolMaxConsumableRUs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withThroughputPoolMaxConsumableRUs(throughputPoolMaxConsumableRUs);
         return this;
     }
 
