@@ -4,6 +4,7 @@
 
 #### Bugs Fixed
 * Fixed `partitionLevelCircuitBreakerCfg` missing from the `clientCfgs` section of `CosmosDiagnostics` when Per-Partition Circuit Breaker is explicitly enabled. - See PR [49734](https://github.com/Azure/azure-sdk-for-java/pull/49734).
+* Fixed PPCB failback when gateway address refresh returns missing or stale addresses. - See PR [50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
 
 ### 4.81.0 (2026-06-08)
 
