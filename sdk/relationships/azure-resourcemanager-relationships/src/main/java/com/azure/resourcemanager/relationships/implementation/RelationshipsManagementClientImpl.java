@@ -26,6 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.relationships.fluent.ContainsRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.DependencyOfRelationshipsClient;
 import com.azure.resourcemanager.relationships.fluent.OperationsClient;
 import com.azure.resourcemanager.relationships.fluent.RelationshipsManagementClient;
@@ -70,6 +71,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
      */
     public String getApiVersion() {
         return this.apiVersion;
+    }
+
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
     }
 
     /**
@@ -157,6 +172,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
     }
 
     /**
+     * The ContainsRelationshipsClient object to access its operations.
+     */
+    private final ContainsRelationshipsClient containsRelationships;
+
+    /**
+     * Gets the ContainsRelationshipsClient object to access its operations.
+     * 
+     * @return the ContainsRelationshipsClient object.
+     */
+    public ContainsRelationshipsClient getContainsRelationships() {
+        return this.containsRelationships;
+    }
+
+    /**
      * Initializes an instance of RelationshipsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -164,17 +193,20 @@ public final class RelationshipsManagementClientImpl implements RelationshipsMan
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint Service host.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     RelationshipsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01-preview";
+        this.subscriptionId = subscriptionId;
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.dependencyOfRelationships = new DependencyOfRelationshipsClientImpl(this);
         this.serviceGroupMemberRelationships = new ServiceGroupMemberRelationshipsClientImpl(this);
+        this.containsRelationships = new ContainsRelationshipsClientImpl(this);
     }
 
     /**

@@ -6,23 +6,23 @@ package com.azure.resourcemanager.relationships.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.relationships.RelationshipsManager;
-import com.azure.resourcemanager.relationships.models.DependencyOfRelationship;
-import com.azure.resourcemanager.relationships.models.DependencyOfRelationshipProperties;
+import com.azure.resourcemanager.relationships.models.ServiceGroupMemberRelationship;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class DependencyOfRelationshipsCreateOrUpdateMockTests {
+public final class ServiceGroupMemberRelationshipsListByParentMockTests {
     @Test
-    public void testCreateOrUpdate() throws Exception {
+    public void testListByParent() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sourceId\":\"jbavorxzdm\",\"targetId\":\"hctbqvudwxdn\",\"targetTenant\":\"vo\",\"originInformation\":{\"relationshipOriginType\":\"UserExplicitlyCreated\",\"discoveryEngine\":\"jugwdkcglhsl\"},\"metadata\":{\"sourceType\":\"jdyggdtji\",\"targetType\":\"hbkuofqwey\"},\"provisioningState\":\"Succeeded\"},\"id\":\"n\",\"name\":\"vfyexfw\",\"type\":\"ybcibvyvdcsit\"}";
+            = "{\"value\":[{\"properties\":{\"sourceId\":\"aodsfcpkv\",\"targetId\":\"dpuozmyz\",\"sourceTenant\":\"agfuaxbezyiu\",\"originInformation\":{\"relationshipOriginType\":\"ServiceExplicitlyCreated\",\"discoveryEngine\":\"whrdxwzywqsmbsu\"},\"metadata\":{\"sourceType\":\"xim\",\"targetType\":\"ryocfsfksymdd\"},\"provisioningState\":\"Accepted\"},\"id\":\"i\",\"name\":\"uxh\",\"type\":\"yudxorrqnbp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,10 @@ public final class DependencyOfRelationshipsCreateOrUpdateMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        DependencyOfRelationship response = manager.dependencyOfRelationships()
-            .define("chcbonqvpkvlrxnj")
-            .withExistingResourceUri("zscxaqwo")
-            .withProperties(
-                new DependencyOfRelationshipProperties().withTargetId("enjbdlwtgrhp").withTargetTenant("pj"))
-            .create();
+        PagedIterable<ServiceGroupMemberRelationship> response
+            = manager.serviceGroupMemberRelationships().listByParent("jmcmatuokthfu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hctbqvudwxdn", response.properties().targetId());
-        Assertions.assertEquals("vo", response.properties().targetTenant());
+        Assertions.assertEquals("aodsfcpkv", response.iterator().next().properties().sourceId());
+        Assertions.assertEquals("agfuaxbezyiu", response.iterator().next().properties().sourceTenant());
     }
 }

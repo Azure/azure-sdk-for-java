@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.relationships.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -48,6 +49,19 @@ public final class ServiceGroupMemberRelationshipsImpl implements ServiceGroupMe
 
     public void delete(String resourceUri, String name, Context context) {
         this.serviceClient().delete(resourceUri, name, context);
+    }
+
+    public PagedIterable<ServiceGroupMemberRelationship> listByParent(String resourceUri) {
+        PagedIterable<ServiceGroupMemberRelationshipInner> inner = this.serviceClient().listByParent(resourceUri);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ServiceGroupMemberRelationshipImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ServiceGroupMemberRelationship> listByParent(String resourceUri, Context context) {
+        PagedIterable<ServiceGroupMemberRelationshipInner> inner
+            = this.serviceClient().listByParent(resourceUri, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ServiceGroupMemberRelationshipImpl(inner1, this.manager()));
     }
 
     public ServiceGroupMemberRelationship getById(String id) {
