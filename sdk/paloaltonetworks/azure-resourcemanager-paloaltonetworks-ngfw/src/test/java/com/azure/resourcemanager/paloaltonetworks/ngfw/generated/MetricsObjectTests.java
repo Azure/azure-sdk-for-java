@@ -12,21 +12,21 @@ public final class MetricsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsObject model = BinaryData.fromString(
-            "{\"applicationInsightsResourceId\":\"ojbmxv\",\"applicationInsightsConnectionString\":\"vrefdeesv\",\"panEtag\":\"uij\",\"provisioningState\":\"Failed\"}")
+            "{\"applicationInsightsResourceId\":\"zaum\",\"applicationInsightsConnectionString\":\"eoohguufuzboyj\",\"panEtag\":\"hwtzolb\",\"provisioningState\":\"Deleting\"}")
             .toObject(MetricsObject.class);
-        Assertions.assertEquals("ojbmxv", model.applicationInsightsResourceId());
-        Assertions.assertEquals("vrefdeesv", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("uij", model.panEtag());
+        Assertions.assertEquals("zaum", model.applicationInsightsResourceId());
+        Assertions.assertEquals("eoohguufuzboyj", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("hwtzolb", model.panEtag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsObject model = new MetricsObject().withApplicationInsightsResourceId("ojbmxv")
-            .withApplicationInsightsConnectionString("vrefdeesv")
-            .withPanEtag("uij");
+        MetricsObject model = new MetricsObject().withApplicationInsightsResourceId("zaum")
+            .withApplicationInsightsConnectionString("eoohguufuzboyj")
+            .withPanEtag("hwtzolb");
         model = BinaryData.fromObject(model).toObject(MetricsObject.class);
-        Assertions.assertEquals("ojbmxv", model.applicationInsightsResourceId());
-        Assertions.assertEquals("vrefdeesv", model.applicationInsightsConnectionString());
-        Assertions.assertEquals("uij", model.panEtag());
+        Assertions.assertEquals("zaum", model.applicationInsightsResourceId());
+        Assertions.assertEquals("eoohguufuzboyj", model.applicationInsightsConnectionString());
+        Assertions.assertEquals("hwtzolb", model.panEtag());
     }
 }

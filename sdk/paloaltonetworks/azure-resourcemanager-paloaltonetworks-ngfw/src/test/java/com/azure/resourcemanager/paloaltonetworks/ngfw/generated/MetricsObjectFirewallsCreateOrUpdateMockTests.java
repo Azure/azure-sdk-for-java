@@ -22,7 +22,7 @@ public final class MetricsObjectFirewallsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"applicationInsightsResourceId\":\"cgxvrpj\",\"applicationInsightsConnectionString\":\"vczuodacpune\",\"panEtag\":\"epdjxqeskoyn\",\"provisioningState\":\"Succeeded\"},\"id\":\"pckaewse\",\"name\":\"vesk\",\"type\":\"xegqphr\"}";
+            = "{\"properties\":{\"applicationInsightsResourceId\":\"aqotwfhipxwgsabv\",\"applicationInsightsConnectionString\":\"ipowza\",\"panEtag\":\"zuu\",\"provisioningState\":\"Succeeded\"},\"id\":\"irvpefycdve\",\"name\":\"ti\",\"type\":\"jnsxzajlnsjhwjuy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class MetricsObjectFirewallsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MetricsObjectFirewallResource response = manager.metricsObjectFirewalls()
-            .createOrUpdate("ajxeiygle", "rwvaexhdc",
-                new MetricsObjectFirewallResourceInner().withApplicationInsightsResourceId("rceqnkbrupob")
-                    .withApplicationInsightsConnectionString("hdmljz")
-                    .withPanEtag("vume"),
+            .createOrUpdate("pjvlywltmfwo", "bjwhlwyjfnqzocr",
+                new MetricsObjectFirewallResourceInner().withApplicationInsightsResourceId("zgczeu")
+                    .withApplicationInsightsConnectionString("tgxdncaqt")
+                    .withPanEtag("ekoifuvnyttzgi"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cgxvrpj", response.applicationInsightsResourceId());
-        Assertions.assertEquals("vczuodacpune", response.applicationInsightsConnectionString());
-        Assertions.assertEquals("epdjxqeskoyn", response.panEtag());
+        Assertions.assertEquals("aqotwfhipxwgsabv", response.applicationInsightsResourceId());
+        Assertions.assertEquals("ipowza", response.applicationInsightsConnectionString());
+        Assertions.assertEquals("zuu", response.panEtag());
     }
 }

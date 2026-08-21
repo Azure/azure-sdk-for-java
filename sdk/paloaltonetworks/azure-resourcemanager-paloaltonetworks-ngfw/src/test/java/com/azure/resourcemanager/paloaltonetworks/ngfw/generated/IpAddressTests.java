@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAddress model = BinaryData.fromString("{\"resourceId\":\"pqjlihhyusps\",\"address\":\"sdvlmfwdgzxulucv\"}")
+        IpAddress model = BinaryData.fromString("{\"resourceId\":\"uyqncygupkvipmd\",\"address\":\"wx\"}")
             .toObject(IpAddress.class);
-        Assertions.assertEquals("pqjlihhyusps", model.resourceId());
-        Assertions.assertEquals("sdvlmfwdgzxulucv", model.address());
+        Assertions.assertEquals("uyqncygupkvipmd", model.resourceId());
+        Assertions.assertEquals("wx", model.address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAddress model = new IpAddress().withResourceId("pqjlihhyusps").withAddress("sdvlmfwdgzxulucv");
+        IpAddress model = new IpAddress().withResourceId("uyqncygupkvipmd").withAddress("wx");
         model = BinaryData.fromObject(model).toObject(IpAddress.class);
-        Assertions.assertEquals("pqjlihhyusps", model.resourceId());
-        Assertions.assertEquals("sdvlmfwdgzxulucv", model.address());
+        Assertions.assertEquals("uyqncygupkvipmd", model.resourceId());
+        Assertions.assertEquals("wx", model.address());
     }
 }

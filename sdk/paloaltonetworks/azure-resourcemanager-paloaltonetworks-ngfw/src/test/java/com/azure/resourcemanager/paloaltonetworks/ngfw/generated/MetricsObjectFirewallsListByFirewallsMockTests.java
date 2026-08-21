@@ -22,7 +22,7 @@ public final class MetricsObjectFirewallsListByFirewallsMockTests {
     @Test
     public void testListByFirewalls() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"bcbcpz\",\"applicationInsightsConnectionString\":\"rpzeqac\",\"panEtag\":\"dtzmpype\",\"provisioningState\":\"Deleted\"},\"id\":\"zshnuqndaizup\",\"name\":\"kh\",\"type\":\"ytus\"}]}";
+            = "{\"value\":[{\"properties\":{\"applicationInsightsResourceId\":\"bwpntghy\",\"applicationInsightsConnectionString\":\"sa\",\"panEtag\":\"drnxsluvlzla\",\"provisioningState\":\"Deleted\"},\"id\":\"kpbqhvfdqqjw\",\"name\":\"rhwzdanojisg\",\"type\":\"lmvokat\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class MetricsObjectFirewallsListByFirewallsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<MetricsObjectFirewallResource> response
-            = manager.metricsObjectFirewalls().listByFirewalls("fn", "hctmjtsgh", com.azure.core.util.Context.NONE);
+        PagedIterable<MetricsObjectFirewallResource> response = manager.metricsObjectFirewalls()
+            .listByFirewalls("xbxq", "mvuaytuadxkxe", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bcbcpz", response.iterator().next().applicationInsightsResourceId());
-        Assertions.assertEquals("rpzeqac", response.iterator().next().applicationInsightsConnectionString());
-        Assertions.assertEquals("dtzmpype", response.iterator().next().panEtag());
+        Assertions.assertEquals("bwpntghy", response.iterator().next().applicationInsightsResourceId());
+        Assertions.assertEquals("sa", response.iterator().next().applicationInsightsConnectionString());
+        Assertions.assertEquals("drnxsluvlzla", response.iterator().next().panEtag());
     }
 }

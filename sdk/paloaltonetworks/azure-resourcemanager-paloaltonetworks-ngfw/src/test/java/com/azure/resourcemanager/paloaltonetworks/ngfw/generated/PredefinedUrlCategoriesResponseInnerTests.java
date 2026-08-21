@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Assertions;
 public final class PredefinedUrlCategoriesResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PredefinedUrlCategoriesResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"action\":\"zf\",\"name\":\"beypewrmjmw\"},{\"action\":\"vjektcxsenh\",\"name\":\"lrsf\"}],\"nextLink\":\"zpwv\"}")
+        PredefinedUrlCategoriesResponseInner model = BinaryData
+            .fromString(
+                "{\"value\":[{\"action\":\"eyueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\"}],\"nextLink\":\"jancu\"}")
             .toObject(PredefinedUrlCategoriesResponseInner.class);
-        Assertions.assertEquals("zf", model.value().get(0).action());
-        Assertions.assertEquals("beypewrmjmw", model.value().get(0).name());
-        Assertions.assertEquals("zpwv", model.nextLink());
+        Assertions.assertEquals("eyueaxibxujwb", model.value().get(0).action());
+        Assertions.assertEquals("qwalmuzyoxaepd", model.value().get(0).name());
+        Assertions.assertEquals("jancu", model.nextLink());
     }
 }

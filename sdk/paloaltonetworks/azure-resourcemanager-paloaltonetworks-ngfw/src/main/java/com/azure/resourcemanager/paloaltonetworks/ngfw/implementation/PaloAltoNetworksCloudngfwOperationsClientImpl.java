@@ -127,7 +127,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,7 +144,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,7 +156,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +172,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The createProductSerialNumber operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -184,7 +184,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -200,7 +200,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -212,7 +212,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +228,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listCloudManagerTenants operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,7 +240,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,7 +257,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,7 +269,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +285,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listProductSerialNumberStatus operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,7 +297,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,7 +313,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,7 +325,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +341,7 @@ public final class PaloAltoNetworksCloudngfwOperationsClientImpl implements Palo
     }
 
     /**
-     * The listSupportInfo operation.
+     * A long-running provider action.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

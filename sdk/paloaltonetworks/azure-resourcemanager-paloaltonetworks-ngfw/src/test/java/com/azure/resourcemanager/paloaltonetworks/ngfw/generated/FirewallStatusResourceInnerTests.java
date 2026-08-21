@@ -12,9 +12,9 @@ public final class FirewallStatusResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallStatusResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"isPanoramaManaged\":\"TRUE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"db\",\"panoramaStatus\":{\"panoramaServerStatus\":\"UP\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Succeeded\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"hzmme\",\"hubUrl\":\"kdlpa\"}},\"id\":\"rcxfailcfxwmdb\",\"name\":\"xdfgsftufqobr\",\"type\":\"lnacgcc\"}")
+            "{\"properties\":{\"isPanoramaManaged\":\"FALSE\",\"healthStatus\":\"GREEN\",\"healthReason\":\"mudqmeq\",\"panoramaStatus\":{\"panoramaServerStatus\":\"DOWN\",\"panoramaServer2Status\":\"UP\"},\"provisioningState\":\"Failed\",\"isStrataCloudManaged\":\"FALSE\",\"strataCloudManagerInfo\":{\"folderName\":\"eb\",\"hubUrl\":\"bpmzzn\"}},\"id\":\"ff\",\"name\":\"aqi\",\"type\":\"mhh\"}")
             .toObject(FirewallStatusResourceInner.class);
-        Assertions.assertEquals("hzmme", model.strataCloudManagerInfo().folderName());
-        Assertions.assertEquals("kdlpa", model.strataCloudManagerInfo().hubUrl());
+        Assertions.assertEquals("eb", model.strataCloudManagerInfo().folderName());
+        Assertions.assertEquals("bpmzzn", model.strataCloudManagerInfo().hubUrl());
     }
 }
