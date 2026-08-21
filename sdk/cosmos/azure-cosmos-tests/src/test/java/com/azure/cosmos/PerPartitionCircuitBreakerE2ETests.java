@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -3548,6 +3549,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 boolean hasReachedCircuitBreakingThreshold = false;
                 int executionCountAfterCircuitBreakingThresholdBreached = 0;
+                boolean failbackExpected = false;
+                Set<PpcbDiagnosticsPhase> loggedPpcbDiagnosticsPhases = new HashSet<>();
 
                 List<TestObject> testObjects = operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith;
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper
@@ -3561,7 +3564,12 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateNonEmptyList(operationInvocationParamsWrapper.itemIdentitiesForReadManyOperation);
                     }
 
-                    ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    ResponseWrapper<?> response = executeDataPlaneOperationWithTransient4041002Retry(
+                        testId,
+                        executeDataPlaneOperation,
+                        operationInvocationParamsWrapper);
+                    assertPpcbSnapshotsPopulated(response, PpcbDiagnosticsPhase.FAILURE, false);
+                    logPpcbDiagnosticsOnce(response, PpcbDiagnosticsPhase.FAILURE, loggedPpcbDiagnosticsPhases);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3587,6 +3595,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
+                        failbackExpected |= assertPpcbSnapshotsPopulated(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            false);
+                        logPpcbDiagnosticsOnce(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            loggedPpcbDiagnosticsPhases);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3638,6 +3654,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
+                    assertPpcbSnapshotsPopulated(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        failbackExpected);
+                    logPpcbDiagnosticsOnce(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        loggedPpcbDiagnosticsPhases);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3673,6 +3697,334 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             safeClose(client);
         }
+    }
+
+    private static CosmosDiagnosticsContext getDiagnosticsContext(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics().getDiagnosticsContext();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics().getDiagnosticsContext();
+        }
+        return null;
+    }
+
+    private static void logPpcbDiagnosticsOnce(
+        ResponseWrapper<?> response,
+        PpcbDiagnosticsPhase phase,
+        Set<PpcbDiagnosticsPhase> loggedPhases) {
+
+        if (loggedPhases.add(phase)) {
+            CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+            if (diagnosticsContext != null) {
+                logger.info("PPCB CosmosDiagnostics [{}]: {}", phase.label, diagnosticsContext.toJson());
+            }
+        }
+    }
+
+    private static boolean assertPpcbSnapshotsPopulated(
+        ResponseWrapper<?> response,
+        PpcbDiagnosticsPhase phase,
+        boolean failbackExpected) {
+
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        assertThat(diagnosticsContext)
+            .as("Expected CosmosDiagnostics for %s", phase.label)
+            .isNotNull();
+        assertThat(diagnosticsContext.getDiagnostics())
+            .as("Expected diagnostics entries for %s", phase.label)
+            .isNotNull();
+
+        int applicableStatisticCount = 0;
+        List<LocationSpecificHealthContext> healthContexts = new ArrayList<>();
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        storeStatistics.getRequestResourceType(),
+                        storeStatistics.getRequestOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected direct PPCB holder for %s", phase.label)
+                            .isNotNull();
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = storeStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated direct PPCB snapshot for %s", phase.label)
+                            .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
+                    }
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (isPpcbApplicableDataPlaneStatistic(
+                        gatewayStatistics.getResourceType(),
+                        gatewayStatistics.getOperationType())) {
+
+                        applicableStatisticCount++;
+                        assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder())
+                            .as("Expected gateway PPCB holder for %s", phase.label)
+                            .isNotNull();
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated gateway PPCB snapshot for %s", phase.label)
+                            .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
+                    }
+                }
+            }
+        }
+
+        if (applicableStatisticCount == 0) {
+            assertThat(hasOnlyQueryPlanStatistics(diagnosticsContext))
+                .as("Expected PPCB-applicable data-plane statistics or QueryPlan-only diagnostics for %s", phase.label)
+                .isTrue();
+        }
+
+        boolean unavailableRegionFound = false;
+        boolean successfulFailbackFound = false;
+        for (LocationSpecificHealthContext healthContext : healthContexts) {
+            if (healthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                unavailableRegionFound = true;
+                if (phase == PpcbDiagnosticsPhase.POST_FAILOVER) {
+                    assertThat(healthContext.getLastFailbackOutcome())
+                        .as("Failback must not have succeeded while the region remains unavailable")
+                        .isNotEqualTo(LocationSpecificHealthContext.FailbackOutcome.Succeeded);
+                }
+            }
+
+            if (healthContext.getLastFailbackOutcome()
+                == LocationSpecificHealthContext.FailbackOutcome.Succeeded) {
+
+                successfulFailbackFound = true;
+                assertThat(healthContext.getLastFailbackAttemptTime())
+                    .as("Expected failback attempt timestamp after successful failback")
+                    .isNotNull();
+                assertThat(healthContext.getLocationHealthStatus())
+                    .as("Expected recovered region after successful failback")
+                    .isIn(LocationHealthStatus.HealthyTentative, LocationHealthStatus.Healthy);
+            }
+        }
+
+        if (phase == PpcbDiagnosticsPhase.POST_FAILBACK && failbackExpected) {
+            assertThat(successfulFailbackFound)
+                .as("Expected a successful failback outcome for a previously unavailable region")
+                .isTrue();
+        }
+
+        return unavailableRegionFound;
+    }
+
+    private static boolean isPpcbApplicableDataPlaneStatistic(
+        ResourceType resourceType,
+        OperationType operationType) {
+
+        return resourceType == ResourceType.Document && operationType != OperationType.QueryPlan;
+    }
+
+    private static boolean hasOnlyQueryPlanStatistics(CosmosDiagnosticsContext diagnosticsContext) {
+        boolean queryPlanStatisticFound = false;
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> statisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (statisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics statistics : statisticsCollection) {
+                if (statistics == null) {
+                    continue;
+                }
+
+                for (ClientSideRequestStatistics.StoreResponseStatistics storeStatistics
+                    : statistics.getResponseStatisticsList()) {
+
+                    if (storeStatistics.getRequestResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (storeStatistics.getRequestOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
+                }
+
+                for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics
+                    : statistics.getGatewayStatisticsList()) {
+
+                    if (gatewayStatistics.getResourceType() != ResourceType.Document) {
+                        continue;
+                    }
+                    if (gatewayStatistics.getOperationType() != OperationType.QueryPlan) {
+                        return false;
+                    }
+                    queryPlanStatisticFound = true;
+                }
+            }
+        }
+
+        return queryPlanStatisticFound;
+    }
+
+    private ResponseWrapper<?> executeDataPlaneOperationWithTransient4041002Retry(
+        String testId,
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        OperationInvocationParamsWrapper operationInvocationParamsWrapper) throws InterruptedException {
+
+        long retryStartNanos = System.nanoTime();
+        int retryAttempt = 0;
+        ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+        while (hasNonFaultInjected404RetryableResponse(response)) {
+            Duration elapsed = Duration.ofNanos(System.nanoTime() - retryStartNanos);
+            if (elapsed.compareTo(TRANSIENT_404_1002_MAX_RETRY_DURATION) >= 0) {
+                logger.warn(
+                    "Detected non-fault-injected retryable 404 in diagnostics for test {} for {}. "
+                        + "Continuing with latest response so normal assertions can report diagnostics.",
+                    testId,
+                    elapsed);
+                return response;
+            }
+
+            retryAttempt++;
+            logger.warn(
+                "Detected non-fault-injected retryable 404 in diagnostics for test {}. "
+                    + "Waiting {} before retry attempt {}.",
+                testId,
+                TRANSIENT_404_1002_RETRY_DELAY,
+                retryAttempt);
+            Thread.sleep(TRANSIENT_404_1002_RETRY_DELAY.toMillis());
+            response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
+        }
+
+        return response;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableResponse(ResponseWrapper<?> response) {
+        if (!hasRetryableTerminal404(response)) {
+            return false;
+        }
+
+        CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+        if (diagnosticsContext == null || diagnosticsContext.getDiagnostics() == null) {
+            return false;
+        }
+
+        for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
+            Collection<ClientSideRequestStatistics> clientSideRequestStatisticsCollection =
+                cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+            if (clientSideRequestStatisticsCollection == null) {
+                continue;
+            }
+
+            for (ClientSideRequestStatistics clientSideRequestStatistics : clientSideRequestStatisticsCollection) {
+                if (clientSideRequestStatistics == null) {
+                    continue;
+                }
+
+                if (hasNonFaultInjected404RetryableGatewayResponse(clientSideRequestStatistics.getGatewayStatisticsList())) {
+                    return true;
+                }
+
+                if (hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getResponseStatisticsList())
+                    || hasNonFaultInjected404RetryableStoreResponse(clientSideRequestStatistics.getSupplementalResponseStatisticsList())) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasRetryableTerminal404(ResponseWrapper<?> response) {
+        if (response == null) {
+            return false;
+        }
+
+        if (response.cosmosException != null) {
+            return isRetryable404(
+                response.cosmosException.getStatusCode(),
+                response.cosmosException.getSubStatusCode());
+        }
+
+        return response.batchResponse != null
+            && isRetryable404(
+                response.batchResponse.getStatusCode(),
+                response.batchResponse.getSubStatusCode());
+    }
+
+    private static boolean hasNonFaultInjected404RetryableGatewayResponse(
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+
+        if (gatewayStatisticsList == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStatistics : gatewayStatisticsList) {
+            if (gatewayStatistics != null
+                && isRetryable404(gatewayStatistics.getStatusCode(), gatewayStatistics.getSubStatusCode())
+                && isNullOrEmpty(gatewayStatistics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasNonFaultInjected404RetryableStoreResponse(
+        Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatisticsCollection) {
+
+        if (storeResponseStatisticsCollection == null) {
+            return false;
+        }
+
+        for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : storeResponseStatisticsCollection) {
+            StoreResultDiagnostics storeResultDiagnostics =
+                storeResponseStatistics == null ? null : storeResponseStatistics.getStoreResult();
+            StoreResponseDiagnostics storeResponseDiagnostics =
+                storeResultDiagnostics == null ? null : storeResultDiagnostics.getStoreResponseDiagnostics();
+
+            if (storeResponseDiagnostics != null
+                && isRetryable404(storeResponseDiagnostics.getStatusCode(), storeResponseDiagnostics.getSubStatusCode())
+                && isNullOrEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isRetryable404(int statusCode, int subStatusCode) {
+        return statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && (subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN
+            || subStatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+    }
+
+    private static boolean isNullOrEmpty(String value) {
+        return value == null || value.isEmpty();
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
@@ -5196,6 +5548,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private enum QueryType {
         READ_MANY, READ_ALL
+    }
+
+    private enum PpcbDiagnosticsPhase {
+        FAILURE("failed operation"),
+        POST_FAILOVER("post-failover operation"),
+        POST_FAILBACK("post-failback operation");
+
+        private final String label;
+
+        PpcbDiagnosticsPhase(String label) {
+            this.label = label;
+        }
     }
 
     private static class AccountLevelLocationContext {

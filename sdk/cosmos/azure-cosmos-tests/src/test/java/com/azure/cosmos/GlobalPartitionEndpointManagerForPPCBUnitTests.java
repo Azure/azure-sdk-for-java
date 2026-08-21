@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationHealth
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ConnectTimeoutException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -1179,12 +1180,32 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     collectionRid,
                     partitionKeyRange)).containsExactly("East US");
                 assertThat(refreshedConnectionAttempts).hasValue(1);
+                String diagnostics = new ObjectMapper().writeValueAsString(
+                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder());
+                assertThat(diagnostics)
+                    .contains("\"outcome\":\"Failed\"")
+                    .contains("\"stage\":\"OPEN_CONNECTION_TASK\"")
+                    .contains("\"type\":\"io.netty.channel.ConnectTimeoutException\"")
+                    .contains("\"latestFailbackMessageByRegion\":{")
+                    .contains("\"East US\":\"Refreshed replica is unavailable\"");
             } else {
                 assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
                     request,
                     collectionRid,
                     partitionKeyRange)).isEmpty();
+                assertThat(request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+                    .getPerPartitionCircuitBreakerInfoHolder()
+                    .get("East US")
+                    .getUnavailableSince()).isEqualTo(Instant.MAX);
+                assertThat(new ObjectMapper().writeValueAsString(
+                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                    .contains("\"outcome\":\"Succeeded\"")
+                    .doesNotContain("\"failure\"", "\"latestFailbackMessageByRegion\"");
             }
+
+            assertThat(new ObjectMapper().writeValueAsString(
+                request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                .contains("\"lastAttemptedAt\":");
 
             if (populateStaleAddress) {
                 assertThat(forceRefreshValues).containsExactly(false, true);
