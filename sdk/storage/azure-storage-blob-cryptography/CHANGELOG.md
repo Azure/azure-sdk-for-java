@@ -7,8 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed an issue where the client-side encryption (v2) region nonce counter was truncated to 32 bits, which could
+  cause GCM nonce reuse for blobs exceeding 2^32 authenticated regions. The full 64-bit region index is now used so
+  every region receives a unique nonce. Blobs with at most 2^31 authenticated regions remain byte-for-byte compatible;
+  subsequent regions now use the corrected 64-bit encoding.
 
 ## 12.35.0-beta.1 (2026-07-28)
 
