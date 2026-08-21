@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ConfigurationPatchSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Clusters/ClusterQuotaConfigurationPatch.json
+     * x-ms-original-file: 2026-07-01-preview/Clusters/ClusterQuotaConfigurationPatch.json
      */
     /**
      * Sample code: ClustersQuotasConfigurationPatch.

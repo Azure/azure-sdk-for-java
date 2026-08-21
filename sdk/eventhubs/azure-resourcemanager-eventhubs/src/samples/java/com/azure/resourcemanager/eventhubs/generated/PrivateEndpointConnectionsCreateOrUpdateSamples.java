@@ -15,7 +15,7 @@ import com.azure.resourcemanager.eventhubs.models.PrivateLinkConnectionStatus;
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/NameSpaces/PrivateEndPointConnectionCreate.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/PrivateEndPointConnectionCreate.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionCreate.
