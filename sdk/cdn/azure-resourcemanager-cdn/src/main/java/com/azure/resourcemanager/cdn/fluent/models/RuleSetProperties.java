@@ -4,24 +4,42 @@
 
 package com.azure.resourcemanager.cdn.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
+import com.azure.resourcemanager.cdn.models.BatchRuleProperties;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The JSON object that contains the properties of the Rule Set to create.
  */
-@Immutable
+@Fluent
 public final class RuleSetProperties extends AfdStateProperties {
     /*
      * The name of the profile which holds the rule set.
      */
     private String profileName;
+
+    /*
+     * Indicates whether rule set is in batch mode. When batch mode is enabled, rules will be processed in a batch along
+     * with the rule set.
+     * When batch mode is disabled, rules would need to be processed independently.
+     * This property can only be set during rule set creation and cannot be updated later.
+     * For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to
+     * the new rule set.
+     */
+    private Boolean batchMode;
+
+    /*
+     * A list of rules that are part of this rule set provided the rule set is in batch mode.
+     * This property will be ignored if the rule set is not in batch mode.
+     */
+    private List<BatchRuleProperties> rules;
 
     /*
      * The deploymentStatus property.
@@ -36,7 +54,7 @@ public final class RuleSetProperties extends AfdStateProperties {
     /**
      * Creates an instance of RuleSetProperties class.
      */
-    private RuleSetProperties() {
+    public RuleSetProperties() {
     }
 
     /**
@@ -46,6 +64,58 @@ public final class RuleSetProperties extends AfdStateProperties {
      */
     public String profileName() {
         return this.profileName;
+    }
+
+    /**
+     * Get the batchMode property: Indicates whether rule set is in batch mode. When batch mode is enabled, rules will
+     * be processed in a batch along with the rule set.
+     * When batch mode is disabled, rules would need to be processed independently.
+     * This property can only be set during rule set creation and cannot be updated later.
+     * For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to
+     * the new rule set.
+     * 
+     * @return the batchMode value.
+     */
+    public Boolean batchMode() {
+        return this.batchMode;
+    }
+
+    /**
+     * Set the batchMode property: Indicates whether rule set is in batch mode. When batch mode is enabled, rules will
+     * be processed in a batch along with the rule set.
+     * When batch mode is disabled, rules would need to be processed independently.
+     * This property can only be set during rule set creation and cannot be updated later.
+     * For switching modes, a new rule set needs to be created with the desired mode and rules need to be migrated to
+     * the new rule set.
+     * 
+     * @param batchMode the batchMode value to set.
+     * @return the RuleSetProperties object itself.
+     */
+    public RuleSetProperties withBatchMode(Boolean batchMode) {
+        this.batchMode = batchMode;
+        return this;
+    }
+
+    /**
+     * Get the rules property: A list of rules that are part of this rule set provided the rule set is in batch mode.
+     * This property will be ignored if the rule set is not in batch mode.
+     * 
+     * @return the rules value.
+     */
+    public List<BatchRuleProperties> rules() {
+        return this.rules;
+    }
+
+    /**
+     * Set the rules property: A list of rules that are part of this rule set provided the rule set is in batch mode.
+     * This property will be ignored if the rule set is not in batch mode.
+     * 
+     * @param rules the rules value to set.
+     * @return the RuleSetProperties object itself.
+     */
+    public RuleSetProperties withRules(List<BatchRuleProperties> rules) {
+        this.rules = rules;
+        return this;
     }
 
     /**
@@ -75,6 +145,9 @@ public final class RuleSetProperties extends AfdStateProperties {
      */
     @Override
     public void validate() {
+        if (rules() != null) {
+            rules().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -83,6 +156,8 @@ public final class RuleSetProperties extends AfdStateProperties {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("batchMode", this.batchMode);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -108,6 +183,12 @@ public final class RuleSetProperties extends AfdStateProperties {
                     deserializedRuleSetProperties.deploymentStatus = DeploymentStatus.fromString(reader.getString());
                 } else if ("profileName".equals(fieldName)) {
                     deserializedRuleSetProperties.profileName = reader.getString();
+                } else if ("batchMode".equals(fieldName)) {
+                    deserializedRuleSetProperties.batchMode = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rules".equals(fieldName)) {
+                    List<BatchRuleProperties> rules
+                        = reader.readArray(reader1 -> BatchRuleProperties.fromJson(reader1));
+                    deserializedRuleSetProperties.rules = rules;
                 } else {
                     reader.skipChildren();
                 }

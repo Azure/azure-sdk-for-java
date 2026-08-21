@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ManagedRuleSetsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/WafListManagedRuleSets.json
+     * x-ms-original-file: 2026-07-01/WafListManagedRuleSets.json
      */
     /**
      * Sample code: List Policies in a Resource Group.

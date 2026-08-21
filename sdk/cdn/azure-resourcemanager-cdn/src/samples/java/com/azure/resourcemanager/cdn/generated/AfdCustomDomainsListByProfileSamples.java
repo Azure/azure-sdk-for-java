@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class AfdCustomDomainsListByProfileSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/AFDCustomDomains_ListByProfile.json
+     * x-ms-original-file: 2026-07-01/AFDCustomDomains_ListByProfile.json
      */
     /**
      * Sample code: AFDCustomDomains_ListByProfile.

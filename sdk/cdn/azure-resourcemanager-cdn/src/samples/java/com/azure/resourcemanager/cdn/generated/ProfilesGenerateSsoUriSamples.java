@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class ProfilesGenerateSsoUriSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Profiles_GenerateSsoUri.json
+     * x-ms-original-file: 2026-07-01/Profiles_GenerateSsoUri.json
      */
     /**
      * Sample code: Profiles_GenerateSsoUri.

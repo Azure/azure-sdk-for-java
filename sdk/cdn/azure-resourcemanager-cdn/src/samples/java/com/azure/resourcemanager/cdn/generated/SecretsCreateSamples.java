@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.resourcemanager.cdn.fluent.models.SecretInner;
-import com.azure.resourcemanager.cdn.models.AfdSecretMtlsCertificateChain;
 import com.azure.resourcemanager.cdn.models.CustomerCertificateParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKeyParameters;
@@ -15,7 +14,7 @@ import com.azure.resourcemanager.cdn.models.UrlSigningKeyParameters;
  */
 public final class SecretsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Secrets_CreateUrlSigningKeyType.json
+     * x-ms-original-file: 2026-07-01/Secrets_CreateUrlSigningKeyType.json
      */
     /**
      * Sample code: Secrets_CreateUrlSigningKeyType.
@@ -33,7 +32,25 @@ public final class SecretsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01-preview/Secrets_CreateCustomerCertificateType.json
+     * x-ms-original-file: 2026-07-01/Secrets_Create.json
+     */
+    /**
+     * Sample code: Secrets_Create.
+     * 
+     * @param manager Entry point to CdnManager.
+     */
+    public static void secretsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
+        manager.serviceClient()
+            .getSecrets()
+            .create("RG", "profile1", "secret1", new SecretInner().withParameters(new CustomerCertificateParameters()
+                .withSecretSource(new ResourceReference().withId(
+                    "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/certificatename"))
+                .withSecretVersion("fakeTokenPlaceholder")
+                .withUseLatestVersion(false)), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/Secrets_CreateCustomerCertificateType.json
      */
     /**
      * Sample code: Secrets_CreateCustomerCertificateType.
@@ -48,22 +65,5 @@ public final class SecretsCreateSamples {
                     "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/secrets/certificatename"))
                 .withSecretVersion("fakeTokenPlaceholder")
                 .withUseLatestVersion(false)), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01-preview/Secrets_CreateMtlsCertificateChainType.json
-     */
-    /**
-     * Sample code: Secrets_CreateMtlsCertificateChainType.
-     * 
-     * @param manager Entry point to CdnManager.
-     */
-    public static void secretsCreateMtlsCertificateChainType(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
-            .getSecrets()
-            .create("RG", "profile1", "secret1", new SecretInner().withParameters(new AfdSecretMtlsCertificateChain()
-                .withSecretSource(new ResourceReference().withId(
-                    "/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vaults/kvName/secrets/mTLSCertificateChainname"))
-                .withSecretVersion("fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
     }
 }

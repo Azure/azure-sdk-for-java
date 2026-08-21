@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ProfilesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Profiles_Update.json
+     * x-ms-original-file: 2026-07-01/Profiles_Update.json
      */
     /**
      * Sample code: Profiles_Update.

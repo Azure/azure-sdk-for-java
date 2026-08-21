@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cdn.generated;
  */
 public final class SecurityPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/SecurityPolicies_Delete.json
+     * x-ms-original-file: 2026-07-01/SecurityPolicies_Delete.json
      */
     /**
      * Sample code: SecurityPolicies_Delete.
