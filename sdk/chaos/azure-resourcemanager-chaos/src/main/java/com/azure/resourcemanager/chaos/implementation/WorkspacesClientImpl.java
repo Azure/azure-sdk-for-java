@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.WorkspacesClient;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.chaos.implementation.models.WorkspaceListResult;
+import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
 import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
 import java.nio.ByteBuffer;
@@ -186,19 +187,37 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/refreshRecommendations")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/discover")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> refreshRecommendations(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> discover(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/refreshRecommendations")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/discover")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> refreshRecommendationsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> discoverSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/evaluate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> evaluate(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/evaluate")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> evaluateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             Context context);
@@ -480,7 +499,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -504,7 +523,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -525,7 +544,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -547,7 +566,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -566,7 +585,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -585,7 +604,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -605,7 +624,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -623,7 +642,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -639,7 +658,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1052,7 +1071,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1062,17 +1081,15 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshRecommendationsWithResponseAsync(String resourceGroupName,
-        String workspaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> discoverWithResponseAsync(String resourceGroupName, String workspaceName) {
         return FluxUtil
-            .withContext(
-                context -> service.refreshRecommendations(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, workspaceName, context))
+            .withContext(context -> service.discover(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1082,13 +1099,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> refreshRecommendationsWithResponse(String resourceGroupName, String workspaceName) {
-        return service.refreshRecommendationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+    private Response<BinaryData> discoverWithResponse(String resourceGroupName, String workspaceName) {
+        return service.discoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1099,14 +1116,166 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> refreshRecommendationsWithResponse(String resourceGroupName, String workspaceName,
-        Context context) {
-        return service.refreshRecommendationsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+    private Response<BinaryData> discoverWithResponse(String resourceGroupName, String workspaceName, Context context) {
+        return service.discoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, context);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<WorkspaceDiscovery>, WorkspaceDiscovery> beginDiscoverAsync(String resourceGroupName,
+        String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = discoverWithResponseAsync(resourceGroupName, workspaceName);
+        return this.client.<WorkspaceDiscovery, WorkspaceDiscovery>getLroResult(mono, this.client.getHttpPipeline(),
+            WorkspaceDiscovery.class, WorkspaceDiscovery.class, this.client.getContext());
+    }
+
+    /**
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkspaceDiscovery>, WorkspaceDiscovery> beginDiscover(String resourceGroupName,
+        String workspaceName) {
+        Response<BinaryData> response = discoverWithResponse(resourceGroupName, workspaceName);
+        return this.client.<WorkspaceDiscovery, WorkspaceDiscovery>getLroResult(response, WorkspaceDiscovery.class,
+            WorkspaceDiscovery.class, Context.NONE);
+    }
+
+    /**
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkspaceDiscovery>, WorkspaceDiscovery> beginDiscover(String resourceGroupName,
+        String workspaceName, Context context) {
+        Response<BinaryData> response = discoverWithResponse(resourceGroupName, workspaceName, context);
+        return this.client.<WorkspaceDiscovery, WorkspaceDiscovery>getLroResult(response, WorkspaceDiscovery.class,
+            WorkspaceDiscovery.class, context);
+    }
+
+    /**
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<WorkspaceDiscovery> discoverAsync(String resourceGroupName, String workspaceName) {
+        return beginDiscoverAsync(resourceGroupName, workspaceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceDiscovery discover(String resourceGroupName, String workspaceName) {
+        return beginDiscover(resourceGroupName, workspaceName).getFinalResult();
+    }
+
+    /**
+     * Triggers resource discovery for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkspaceDiscovery discover(String resourceGroupName, String workspaceName, Context context) {
+        return beginDiscover(resourceGroupName, workspaceName, context).getFinalResult();
+    }
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> evaluateWithResponseAsync(String resourceGroupName, String workspaceName) {
+        return FluxUtil
+            .withContext(context -> service.evaluate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> evaluateWithResponse(String resourceGroupName, String workspaceName) {
+        return service.evaluateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+    }
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> evaluateWithResponse(String resourceGroupName, String workspaceName, Context context) {
+        return service.evaluateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, context);
+    }
+
+    /**
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1117,15 +1286,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendationsAsync(String resourceGroupName, String workspaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = refreshRecommendationsWithResponseAsync(resourceGroupName, workspaceName);
+        beginEvaluateAsync(String resourceGroupName, String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = evaluateWithResponseAsync(resourceGroupName, workspaceName);
         return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(mono, this.client.getHttpPipeline(),
             WorkspaceEvaluation.class, WorkspaceEvaluation.class, this.client.getContext());
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1135,15 +1303,15 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = refreshRecommendationsWithResponse(resourceGroupName, workspaceName);
+    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation> beginEvaluate(String resourceGroupName,
+        String workspaceName) {
+        Response<BinaryData> response = evaluateWithResponse(resourceGroupName, workspaceName);
         return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(response, WorkspaceEvaluation.class,
             WorkspaceEvaluation.class, Context.NONE);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1154,15 +1322,15 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName, Context context) {
-        Response<BinaryData> response = refreshRecommendationsWithResponse(resourceGroupName, workspaceName, context);
+    public SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation> beginEvaluate(String resourceGroupName,
+        String workspaceName, Context context) {
+        Response<BinaryData> response = evaluateWithResponse(resourceGroupName, workspaceName, context);
         return this.client.<WorkspaceEvaluation, WorkspaceEvaluation>getLroResult(response, WorkspaceEvaluation.class,
             WorkspaceEvaluation.class, context);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1172,13 +1340,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceEvaluation> refreshRecommendationsAsync(String resourceGroupName, String workspaceName) {
-        return beginRefreshRecommendationsAsync(resourceGroupName, workspaceName).last()
+    private Mono<WorkspaceEvaluation> evaluateAsync(String resourceGroupName, String workspaceName) {
+        return beginEvaluateAsync(resourceGroupName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1188,12 +1356,12 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName) {
-        return beginRefreshRecommendations(resourceGroupName, workspaceName).getFinalResult();
+    public WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName) {
+        return beginEvaluate(resourceGroupName, workspaceName).getFinalResult();
     }
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers scenario evaluation for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -1204,8 +1372,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName, Context context) {
-        return beginRefreshRecommendations(resourceGroupName, workspaceName, context).getFinalResult();
+    public WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName, Context context) {
+        return beginEvaluate(resourceGroupName, workspaceName, context).getFinalResult();
     }
 
     /**
