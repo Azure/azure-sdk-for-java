@@ -28,7 +28,7 @@ public final class AccountConnectionsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.accountConnections()
-            .deleteWithResponse("hrvybn", "bnvmshfuzzlapy", "xlvzcgulaebxiauq", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("pmpv", "nogehlufbort", "nukkfaxzsvb", com.azure.core.util.Context.NONE);
 
     }
 }

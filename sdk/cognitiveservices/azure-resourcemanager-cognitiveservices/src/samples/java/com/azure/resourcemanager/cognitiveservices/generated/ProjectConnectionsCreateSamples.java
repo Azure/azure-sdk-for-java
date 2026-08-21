@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
+import com.azure.resourcemanager.cognitiveservices.fluent.models.ConnectionPropertiesV2BasicResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.ConnectionCategory;
 import com.azure.resourcemanager.cognitiveservices.models.NoneAuthTypeConnectionProperties;
 import java.time.OffsetDateTime;
@@ -13,7 +14,7 @@ import java.time.OffsetDateTime;
  */
 public final class ProjectConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/ProjectConnection/create.json
+     * x-ms-original-file: 2026-07-01/ProjectConnection/create.json
      */
     /**
      * Sample code: CreateProjectConnection.
@@ -23,11 +24,11 @@ public final class ProjectConnectionsCreateSamples {
     public static void
         createProjectConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.projectConnections()
-            .define("connection-1")
-            .withExistingProject("resourceGroup-1", "account-1", "project-1")
-            .withProperties(new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
-                .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
-                .withTarget("[target url]"))
-            .create();
+            .createWithResponse("resourceGroup-1", "account-1", "project-1", "connection-1",
+                new ConnectionPropertiesV2BasicResourceInner().withProperties(
+                    new NoneAuthTypeConnectionProperties().withCategory(ConnectionCategory.CONTAINER_REGISTRY)
+                        .withExpiryTime(OffsetDateTime.parse("2024-03-15T14:30:00Z"))
+                        .withTarget("[target url]")),
+                com.azure.core.util.Context.NONE);
     }
 }

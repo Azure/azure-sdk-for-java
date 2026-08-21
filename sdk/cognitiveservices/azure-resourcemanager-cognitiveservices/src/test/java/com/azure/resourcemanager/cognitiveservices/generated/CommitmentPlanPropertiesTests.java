@@ -14,34 +14,34 @@ public final class CommitmentPlanPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Moving\",\"commitmentPlanGuid\":\"nwxuqlcvydyp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"oa\",\"current\":{\"tier\":\"niodkooeb\",\"count\":2091031438,\"quota\":{\"quantity\":919711763556230893,\"unit\":\"sbvdkcrodtjinfw\"},\"startDate\":\"fltkacjv\",\"endDate\":\"kdlfoa\"},\"autoRenew\":false,\"next\":{\"tier\":\"pagao\",\"count\":1739461107,\"quota\":{\"quantity\":2549901410987606373,\"unit\":\"ylsyxkqjnsje\"},\"startDate\":\"tiagx\",\"endDate\":\"sz\"},\"last\":{\"tier\":\"psbzkfzbeyvpn\",\"count\":2090410653,\"quota\":{\"quantity\":8477504172478535951,\"unit\":\"jjxd\"},\"startDate\":\"buukzclewyhml\",\"endDate\":\"aztz\"},\"provisioningIssues\":[\"ncckw\"]}")
+            "{\"provisioningState\":\"Succeeded\",\"commitmentPlanGuid\":\"r\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"y\",\"current\":{\"tier\":\"olpsslqlf\",\"count\":219002993,\"quota\":{\"quantity\":8429294403968263642,\"unit\":\"zpswiydmc\"},\"startDate\":\"hzdxssadbzm\",\"endDate\":\"dfznudaodv\"},\"autoRenew\":true,\"next\":{\"tier\":\"blylpstdbh\",\"count\":1133682494,\"quota\":{\"quantity\":2718310291361024894,\"unit\":\"cers\"},\"startDate\":\"ntnev\",\"endDate\":\"wjmy\"},\"last\":{\"tier\":\"sslswtmweriof\",\"count\":1861097710,\"quota\":{\"quantity\":8502248453767637112,\"unit\":\"abnetshh\"},\"startDate\":\"h\",\"endDate\":\"plvwiwubmwmbes\"},\"provisioningIssues\":[\"k\"]}")
             .toObject(CommitmentPlanProperties.class);
-        Assertions.assertEquals("nwxuqlcvydyp", model.commitmentPlanGuid());
+        Assertions.assertEquals("r", model.commitmentPlanGuid());
         Assertions.assertEquals(HostingModel.PROVISIONED_WEB, model.hostingModel());
-        Assertions.assertEquals("oa", model.planType());
-        Assertions.assertEquals("niodkooeb", model.current().tier());
-        Assertions.assertEquals(2091031438, model.current().count());
-        Assertions.assertFalse(model.autoRenew());
-        Assertions.assertEquals("pagao", model.next().tier());
-        Assertions.assertEquals(1739461107, model.next().count());
+        Assertions.assertEquals("y", model.planType());
+        Assertions.assertEquals("olpsslqlf", model.current().tier());
+        Assertions.assertEquals(219002993, model.current().count());
+        Assertions.assertTrue(model.autoRenew());
+        Assertions.assertEquals("blylpstdbh", model.next().tier());
+        Assertions.assertEquals(1133682494, model.next().count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanProperties model = new CommitmentPlanProperties().withCommitmentPlanGuid("nwxuqlcvydyp")
+        CommitmentPlanProperties model = new CommitmentPlanProperties().withCommitmentPlanGuid("r")
             .withHostingModel(HostingModel.PROVISIONED_WEB)
-            .withPlanType("oa")
-            .withCurrent(new CommitmentPeriod().withTier("niodkooeb").withCount(2091031438))
-            .withAutoRenew(false)
-            .withNext(new CommitmentPeriod().withTier("pagao").withCount(1739461107));
+            .withPlanType("y")
+            .withCurrent(new CommitmentPeriod().withTier("olpsslqlf").withCount(219002993))
+            .withAutoRenew(true)
+            .withNext(new CommitmentPeriod().withTier("blylpstdbh").withCount(1133682494));
         model = BinaryData.fromObject(model).toObject(CommitmentPlanProperties.class);
-        Assertions.assertEquals("nwxuqlcvydyp", model.commitmentPlanGuid());
+        Assertions.assertEquals("r", model.commitmentPlanGuid());
         Assertions.assertEquals(HostingModel.PROVISIONED_WEB, model.hostingModel());
-        Assertions.assertEquals("oa", model.planType());
-        Assertions.assertEquals("niodkooeb", model.current().tier());
-        Assertions.assertEquals(2091031438, model.current().count());
-        Assertions.assertFalse(model.autoRenew());
-        Assertions.assertEquals("pagao", model.next().tier());
-        Assertions.assertEquals(1739461107, model.next().count());
+        Assertions.assertEquals("y", model.planType());
+        Assertions.assertEquals("olpsslqlf", model.current().tier());
+        Assertions.assertEquals(219002993, model.current().count());
+        Assertions.assertTrue(model.autoRenew());
+        Assertions.assertEquals("blylpstdbh", model.next().tier());
+        Assertions.assertEquals(1133682494, model.next().count());
     }
 }

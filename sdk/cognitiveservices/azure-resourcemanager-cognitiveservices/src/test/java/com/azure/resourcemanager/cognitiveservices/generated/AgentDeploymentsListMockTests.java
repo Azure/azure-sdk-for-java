@@ -25,7 +25,7 @@ public final class AgentDeploymentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"od\",\"deploymentId\":\"ovnlhrwya\",\"state\":\"Updating\",\"protocols\":[{\"protocol\":\"Agent\",\"version\":\"xsvdeatjiobnirg\"},{\"protocol\":\"Responses\",\"version\":\"qdnwtgntimznupbm\"},{\"protocol\":\"Responses\",\"version\":\"tkodsqvhedaakg\"},{\"protocol\":\"Agent\",\"version\":\"mmm\"}],\"agents\":[{\"agentVersion\":\"hdgdiwmlgstmfet\",\"agentId\":\"isjmo\",\"agentName\":\"caqfkakh\"},{\"agentVersion\":\"rvty\",\"agentId\":\"vytvjejq\",\"agentName\":\"fu\"},{\"agentVersion\":\"pfzxkczbdypbbim\",\"agentId\":\"bozvo\",\"agentName\":\"tclnh\"}],\"provisioningState\":\"Creating\",\"description\":\"uzlybqs\",\"tags\":{\"awvcnviulbylmg\":\"vylkvckcafnwq\",\"bgumwhmxpuckns\":\"zrycw\",\"lpsm\":\"s\"}},\"id\":\"micttrvl\",\"name\":\"vjmxokxxamq\",\"type\":\"cjrzvlcivqx\"}]}";
+            = "{\"value\":[{\"properties\":{\"deploymentType\":\"AgentDeploymentProperties\",\"displayName\":\"hpsapzupz\",\"deploymentId\":\"ytbdjzgh\",\"state\":\"Deleting\",\"protocols\":[{\"protocol\":\"A2A\",\"version\":\"pqkjnpyriwntotcx\"},{\"protocol\":\"Responses\",\"version\":\"tsjk\"},{\"protocol\":\"Agent\",\"version\":\"xwdonbexftedau\"}],\"agents\":[{\"agentVersion\":\"gg\",\"agentId\":\"rnqtlfozuumrtgj\",\"agentName\":\"acan\"},{\"agentVersion\":\"syxzxjmkanbc\",\"agentId\":\"zofmexvtemaspm\",\"agentName\":\"ydscdkxwd\"}],\"provisioningState\":\"Canceled\",\"description\":\"bhaah\",\"tags\":{\"fixoskk\":\"felfh\"}},\"id\":\"fivsujybsr\",\"name\":\"zzmrgtxdhmfpp\",\"type\":\"nmgikesmkw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +35,21 @@ public final class AgentDeploymentsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AgentDeployment> response = manager.agentDeployments()
-            .list("cngkwxjsjqu", "ohufzdtsrpjuvgz", "crzhnsbylg", "gbhuqczou", 1382619109, "bfulvcx",
-                Arrays.asList("xoqwbztilqbzbwbg"), "zhbhfl", true, com.azure.core.util.Context.NONE);
+            .list("x", "hblivwehsudym", "mbhdo", "m", 1195480810, "gkqlgxzdu",
+                Arrays.asList("dmxexatmdmnrsenx", "irxyddmiploisj"), "zsoxznntwgk", true,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uzlybqs", response.iterator().next().properties().description());
-        Assertions.assertEquals("vylkvckcafnwq", response.iterator().next().properties().tags().get("awvcnviulbylmg"));
-        Assertions.assertEquals("od", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("ovnlhrwya", response.iterator().next().properties().deploymentId());
-        Assertions.assertEquals(AgentDeploymentState.UPDATING, response.iterator().next().properties().state());
-        Assertions.assertEquals(AgentProtocol.AGENT,
+        Assertions.assertEquals("bhaah", response.iterator().next().properties().description());
+        Assertions.assertEquals("felfh", response.iterator().next().properties().tags().get("fixoskk"));
+        Assertions.assertEquals("hpsapzupz", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("ytbdjzgh", response.iterator().next().properties().deploymentId());
+        Assertions.assertEquals(AgentDeploymentState.DELETING, response.iterator().next().properties().state());
+        Assertions.assertEquals(AgentProtocol.A2A,
             response.iterator().next().properties().protocols().get(0).protocol());
-        Assertions.assertEquals("xsvdeatjiobnirg",
+        Assertions.assertEquals("pqkjnpyriwntotcx",
             response.iterator().next().properties().protocols().get(0).version());
-        Assertions.assertEquals("isjmo", response.iterator().next().properties().agents().get(0).agentId());
-        Assertions.assertEquals("caqfkakh", response.iterator().next().properties().agents().get(0).agentName());
-        Assertions.assertEquals("hdgdiwmlgstmfet",
-            response.iterator().next().properties().agents().get(0).agentVersion());
+        Assertions.assertEquals("rnqtlfozuumrtgj", response.iterator().next().properties().agents().get(0).agentId());
+        Assertions.assertEquals("acan", response.iterator().next().properties().agents().get(0).agentName());
+        Assertions.assertEquals("gg", response.iterator().next().properties().agents().get(0).agentVersion());
     }
 }

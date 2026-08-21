@@ -27,7 +27,7 @@ public final class ProjectsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"agjhxerxlobkdbtq\",\"description\":\"mmniiqyholhjnskb\",\"endpoints\":{\"blxk\":\"cnqwlctmw\"},\"isDefault\":true},\"tags\":{\"sp\":\"xrktjcjigcw\",\"sevchefpg\":\"nbqx\",\"mmrimaabsq\":\"edyybruholaemwcg\",\"smihrijezbfsjwfc\":\"lonbzaowcahdkmb\"},\"location\":\"lkvbgukbsv\",\"etag\":\"yotygnb\",\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"clxaxw\",\"principalId\":\"faspsdzkucszghd\",\"userAssignedIdentities\":{\"u\":{\"principalId\":\"pmnxclfr\",\"clientId\":\"zrn\"}}},\"id\":\"vp\",\"name\":\"ofddtbfmek\",\"type\":\"cnginxdvm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ayqshwyqxridttbs\",\"description\":\"jmkgxqwqueuuylzt\",\"endpoints\":{\"fvezefk\":\"izevjyk\",\"zcntogffjwajnrtw\":\"kqtwqlepjjzkcasf\",\"zkn\":\"vaqkifmxawost\",\"vwfnqqwypvn\":\"rkmjqncfvdscnhe\"},\"isDefault\":true},\"tags\":{\"ggrssgwjfkain\":\"od\",\"ztscbgmusaictds\":\"muymvec\"},\"location\":\"kzzohnrddc\",\"etag\":\"eqozrehlbz\",\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"jrqvzyuexozon\",\"principalId\":\"pam\",\"userAssignedIdentities\":{\"asormrexzvdube\":{\"principalId\":\"abcreuwz\",\"clientId\":\"gyjxvc\"},\"dbakr\":{\"principalId\":\"zygba\",\"clientId\":\"vecovsdqhzr\"},\"hrkombcdta\":{\"principalId\":\"mz\",\"clientId\":\"ppkeqsifjmclngyg\"},\"wkpts\":{\"principalId\":\"opggorwjoqtrotp\",\"clientId\":\"lpofyrl\"}}},\"id\":\"xjgvh\",\"name\":\"ccbmkakm\",\"type\":\"ookbpu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,21 +37,21 @@ public final class ProjectsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Project response = manager.projects()
-            .define("bjepzwhj")
-            .withExistingAccount("yawkch", "apitskshfyftt")
-            .withRegion("tcxmmqm")
-            .withTags(mapOf("pzupzwwy", "s", "mxpqkjnpyriwn", "bdjzghximkg"))
-            .withProperties(new ProjectProperties().withDisplayName("bggcj").withDescription("hblivwehsudym"))
+            .define("mnb")
+            .withExistingAccount("tylcu", "za")
+            .withRegion("qwczsyiq")
+            .withTags(mapOf("tbdmvsbyidae", "usxxhdodpjwybl", "vekmkwjfbotloggd", "q", "ursuivuxcjk", "s"))
+            .withProperties(new ProjectProperties().withDisplayName("tdbjmbnvynfaoo").withDescription("c"))
             .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("acan", new UserAssignedIdentity(), "nydscdkx",
-                    new UserAssignedIdentity(), "fixoskk", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("umc", new UserAssignedIdentity(), "svfnkwm",
+                    new UserAssignedIdentity(), "cjdk", new UserAssignedIdentity())))
             .create();
 
-        Assertions.assertEquals("agjhxerxlobkdbtq", response.properties().displayName());
-        Assertions.assertEquals("mmniiqyholhjnskb", response.properties().description());
-        Assertions.assertEquals("xrktjcjigcw", response.tags().get("sp"));
-        Assertions.assertEquals("lkvbgukbsv", response.location());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ayqshwyqxridttbs", response.properties().displayName());
+        Assertions.assertEquals("jmkgxqwqueuuylzt", response.properties().description());
+        Assertions.assertEquals("od", response.tags().get("ggrssgwjfkain"));
+        Assertions.assertEquals("kzzohnrddc", response.location());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available

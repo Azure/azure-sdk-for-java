@@ -12,10 +12,6 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
 import com.azure.resourcemanager.cognitiveservices.models.RaiActionType;
-import com.azure.resourcemanager.cognitiveservices.models.RaiEgressDefaultAction;
-import com.azure.resourcemanager.cognitiveservices.models.RaiEgressMode;
-import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleActionType;
-import com.azure.resourcemanager.cognitiveservices.models.RaiEgressRuleType;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicy;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentSource;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyMode;
@@ -29,7 +25,7 @@ public final class SubscriptionRaiPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Default\",\"basePolicyName\":\"gfqumjdjxhzghgo\",\"contentFilters\":[{\"name\":\"rceqavfdbdfm\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"Prompt\",\"action\":\"BLOCKING\"},{\"name\":\"yqmkwlh\",\"enabled\":false,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"PreRun\",\"action\":\"ANNOTATING\"},{\"name\":\"xxr\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"PreToolCall\",\"action\":\"HITL\"},{\"name\":\"tdtkwppthuz\",\"enabled\":true,\"severityThreshold\":\"High\",\"blocking\":false,\"source\":\"Completion\",\"action\":\"RETRY\"}],\"customBlocklists\":[{\"source\":\"PostRun\",\"blocklistName\":\"emhkftbaewht\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"PreRun\",\"safetyProviderName\":\"xtllfltymqcnr\",\"blocking\":true},{\"source\":\"PostRun\",\"safetyProviderName\":\"gabqbg\",\"blocking\":true},{\"source\":\"Completion\",\"safetyProviderName\":\"irw\",\"blocking\":true}],\"egressPolicy\":{\"mode\":\"Audit\",\"defaultAction\":\"Allow\",\"description\":\"ouh\",\"rules\":[{\"name\":\"rxqwqnjxrd\",\"description\":\"dtullygtavczcxdf\",\"ruleType\":\"Fqdn\",\"match\":{},\"action\":{\"actionType\":\"Deny\"}},{\"name\":\"yf\",\"description\":\"xrljphraspi\",\"ruleType\":\"Fqdn\",\"match\":{},\"action\":{\"actionType\":\"Transform\"}},{\"name\":\"m\",\"description\":\"lmdbgic\",\"ruleType\":\"Fqdn\",\"match\":{},\"action\":{\"actionType\":\"Allow\"}}]}},\"etag\":\"mdrjuqbpxt\",\"tags\":{\"yqiprclt\":\"jmtznpaxwfqt\"},\"id\":\"gbsoljckmiigzb\",\"name\":\"uck\",\"type\":\"kdskswtiiqqc\"}";
+            = "{\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Deferred\",\"basePolicyName\":\"kscvgllixdgbyf\",\"contentFilters\":[{\"name\":\"qkjvxprwpxsoohu\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PostRun\",\"action\":\"RETRY\"},{\"name\":\"ggg\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Prompt\",\"action\":\"None\"},{\"name\":\"rtmdylperpil\",\"enabled\":false,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"PostRun\",\"action\":\"ANNOTATING\"},{\"name\":\"fbodetresrgvts\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"PreRun\",\"action\":\"RETRY\"}],\"customBlocklists\":[{\"source\":\"PreRun\",\"blocklistName\":\"gjypanhxmpdxxze\",\"blocking\":true}],\"safetyProviders\":[{\"source\":\"Prompt\",\"safetyProviderName\":\"nxlkfhglhrfoxqwe\",\"blocking\":true},{\"source\":\"PostRun\",\"safetyProviderName\":\"cselqxovppqibuk\",\"blocking\":true},{\"source\":\"PostRun\",\"safetyProviderName\":\"rmlccmet\",\"blocking\":true},{\"source\":\"PostRun\",\"safetyProviderName\":\"fqbqnasd\",\"blocking\":false}]},\"etag\":\"zsieuscplhyvd\",\"tags\":{\"ezsvkolrupjov\":\"yzkxitds\",\"razwzlpzbt\":\"ozsaye\",\"epfnoc\":\"uykykipfsd\"},\"id\":\"ezacfpztga\",\"name\":\"wyqejgaao\",\"type\":\"ctgkppgkqzkcyzmf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,33 +34,27 @@ public final class SubscriptionRaiPoliciesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        RaiPolicy response
-            = manager.subscriptionRaiPolicies().getWithResponse("d", com.azure.core.util.Context.NONE).getValue();
+        RaiPolicy response = manager.subscriptionRaiPolicies()
+            .getWithResponse("cauwazcgwdfriwg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(RaiPolicyMode.DEFAULT, response.properties().mode());
-        Assertions.assertEquals("gfqumjdjxhzghgo", response.properties().basePolicyName());
-        Assertions.assertEquals("rceqavfdbdfm", response.properties().contentFilters().get(0).name());
+        Assertions.assertEquals(RaiPolicyMode.DEFERRED, response.properties().mode());
+        Assertions.assertEquals("kscvgllixdgbyf", response.properties().basePolicyName());
+        Assertions.assertEquals("qkjvxprwpxsoohu", response.properties().contentFilters().get(0).name());
         Assertions.assertFalse(response.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.HIGH, response.properties().contentFilters().get(0).severityThreshold());
-        Assertions.assertTrue(response.properties().contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, response.properties().contentFilters().get(0).source());
-        Assertions.assertEquals(RaiActionType.BLOCKING, response.properties().contentFilters().get(0).action());
-        Assertions.assertEquals("emhkftbaewht", response.properties().customBlocklists().get(0).blocklistName());
-        Assertions.assertTrue(response.properties().customBlocklists().get(0).blocking());
+        Assertions.assertEquals(ContentLevel.MEDIUM, response.properties().contentFilters().get(0).severityThreshold());
+        Assertions.assertFalse(response.properties().contentFilters().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.POST_RUN,
-            response.properties().customBlocklists().get(0).source());
-        Assertions.assertEquals("xtllfltymqcnr", response.properties().safetyProviders().get(0).safetyProviderName());
-        Assertions.assertTrue(response.properties().safetyProviders().get(0).blocking());
+            response.properties().contentFilters().get(0).source());
+        Assertions.assertEquals(RaiActionType.RETRY, response.properties().contentFilters().get(0).action());
+        Assertions.assertEquals("gjypanhxmpdxxze", response.properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertTrue(response.properties().customBlocklists().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PRE_RUN,
-            response.properties().safetyProviders().get(0).source());
-        Assertions.assertEquals(RaiEgressMode.AUDIT, response.properties().egressPolicy().mode());
-        Assertions.assertEquals(RaiEgressDefaultAction.ALLOW, response.properties().egressPolicy().defaultAction());
-        Assertions.assertEquals("ouh", response.properties().egressPolicy().description());
-        Assertions.assertEquals("rxqwqnjxrd", response.properties().egressPolicy().rules().get(0).name());
-        Assertions.assertEquals("dtullygtavczcxdf", response.properties().egressPolicy().rules().get(0).description());
-        Assertions.assertEquals(RaiEgressRuleType.FQDN, response.properties().egressPolicy().rules().get(0).ruleType());
-        Assertions.assertEquals(RaiEgressRuleActionType.DENY,
-            response.properties().egressPolicy().rules().get(0).action().actionType());
-        Assertions.assertEquals("jmtznpaxwfqt", response.tags().get("yqiprclt"));
+            response.properties().customBlocklists().get(0).source());
+        Assertions.assertEquals("nxlkfhglhrfoxqwe",
+            response.properties().safetyProviders().get(0).safetyProviderName());
+        Assertions.assertTrue(response.properties().safetyProviders().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, response.properties().safetyProviders().get(0).source());
+        Assertions.assertEquals("yzkxitds", response.tags().get("ezsvkolrupjov"));
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class CommitmentPlansDeleteAssociationSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/DeleteSharedCommitmentPlanAssociation.json
+     * x-ms-original-file: 2026-07-01/DeleteSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.

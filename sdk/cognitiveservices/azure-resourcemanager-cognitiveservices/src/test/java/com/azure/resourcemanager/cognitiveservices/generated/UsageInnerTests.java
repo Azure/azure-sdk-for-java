@@ -15,17 +15,17 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"nbpoczvyifqrvkdv\",\"localizedValue\":\"llr\"},\"quotaPeriod\":\"vdfwatkpn\",\"limit\":64.15778922246344,\"currentValue\":70.74757992055699,\"nextResetTime\":\"zwtruwiqzbqjvsov\",\"status\":\"Blocked\",\"scopeType\":\"Global\",\"scopeId\":\"spkwlhzdobpxjm\"}")
+            "{\"unit\":\"Count\",\"name\":{\"value\":\"sfcpkvxodpuozm\",\"localizedValue\":\"ydagfuaxbe\"},\"quotaPeriod\":\"iu\",\"limit\":22.413429318671486,\"currentValue\":75.16582098477036,\"nextResetTime\":\"xw\",\"status\":\"Blocked\",\"scopeType\":\"Regional\",\"scopeId\":\"bsureximo\"}")
             .toObject(UsageInner.class);
-        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.unit());
-        Assertions.assertEquals("nbpoczvyifqrvkdv", model.name().value());
-        Assertions.assertEquals("llr", model.name().localizedValue());
-        Assertions.assertEquals("vdfwatkpn", model.quotaPeriod());
-        Assertions.assertEquals(64.15778922246344D, model.limit());
-        Assertions.assertEquals(70.74757992055699D, model.currentValue());
-        Assertions.assertEquals("zwtruwiqzbqjvsov", model.nextResetTime());
+        Assertions.assertEquals(UnitType.COUNT, model.unit());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.name().value());
+        Assertions.assertEquals("ydagfuaxbe", model.name().localizedValue());
+        Assertions.assertEquals("iu", model.quotaPeriod());
+        Assertions.assertEquals(22.413429318671486D, model.limit());
+        Assertions.assertEquals(75.16582098477036D, model.currentValue());
+        Assertions.assertEquals("xw", model.nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.status());
-        Assertions.assertEquals(QuotaScopeType.GLOBAL, model.scopeType());
-        Assertions.assertEquals("spkwlhzdobpxjm", model.scopeId());
+        Assertions.assertEquals(QuotaScopeType.REGIONAL, model.scopeType());
+        Assertions.assertEquals("bsureximo", model.scopeId());
     }
 }

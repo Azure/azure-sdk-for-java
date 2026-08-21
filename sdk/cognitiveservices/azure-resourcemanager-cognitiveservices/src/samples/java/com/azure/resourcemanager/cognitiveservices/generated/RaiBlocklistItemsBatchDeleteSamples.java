@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class RaiBlocklistItemsBatchDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-15-preview/DeleteRaiBlocklistItems.json
+     * x-ms-original-file: 2026-07-01/DeleteRaiBlocklistItems.json
      */
     /**
      * Sample code: DeleteRaiBlocklistItems.

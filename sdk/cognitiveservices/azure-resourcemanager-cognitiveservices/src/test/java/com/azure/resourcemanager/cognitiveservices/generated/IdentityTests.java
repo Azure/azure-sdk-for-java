@@ -16,19 +16,18 @@ public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Identity model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"tenantId\":\"nxqbzvddn\",\"principalId\":\"ndei\",\"userAssignedIdentities\":{\"qkwpyeicxmqc\":{\"principalId\":\"npzaoq\",\"clientId\":\"hrhcffcyddglmjth\"},\"joghmewuama\":{\"principalId\":\"q\",\"clientId\":\"khixuigdtopbo\"},\"iotkftutqxl\":{\"principalId\":\"rzayv\",\"clientId\":\"pgvdf\"},\"tthzrvqd\":{\"principalId\":\"xlefgugnxkrx\",\"clientId\":\"mi\"}}}")
+            "{\"type\":\"None\",\"tenantId\":\"exhd\",\"principalId\":\"i\",\"userAssignedIdentities\":{\"vuhrhcffcyddgl\":{\"principalId\":\"jnxqbzvddntwn\",\"clientId\":\"icbtwnpzao\"},\"wqvhkhixuigdt\":{\"principalId\":\"t\",\"clientId\":\"qkwpyeicxmqc\"},\"uhrzayvvt\":{\"principalId\":\"bob\",\"clientId\":\"ghmewuam\"}}}")
             .toObject(Identity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model = new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("qkwpyeicxmqc", new UserAssignedIdentity(), "joghmewuama", new UserAssignedIdentity(),
-                    "iotkftutqxl", new UserAssignedIdentity(), "tthzrvqd", new UserAssignedIdentity()));
+        Identity model = new Identity().withType(ResourceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("vuhrhcffcyddgl", new UserAssignedIdentity(), "wqvhkhixuigdt",
+                new UserAssignedIdentity(), "uhrzayvvt", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

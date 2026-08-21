@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomBlocklistConfig model
-            = BinaryData.fromString("{\"source\":\"PreToolCall\",\"blocklistName\":\"wqiok\",\"blocking\":false}")
-                .toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("wqiok", model.blocklistName());
+        CustomBlocklistConfig model = BinaryData
+            .fromString("{\"source\":\"Completion\",\"blocklistName\":\"ztppriolxorjalto\",\"blocking\":false}")
+            .toObject(CustomBlocklistConfig.class);
+        Assertions.assertEquals("ztppriolxorjalto", model.blocklistName());
         Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("wqiok")
+        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("ztppriolxorjalto")
             .withBlocking(false)
-            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL);
+            .withSource(RaiPolicyContentSource.COMPLETION);
         model = BinaryData.fromObject(model).toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("wqiok", model.blocklistName());
+        Assertions.assertEquals("ztppriolxorjalto", model.blocklistName());
         Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 }

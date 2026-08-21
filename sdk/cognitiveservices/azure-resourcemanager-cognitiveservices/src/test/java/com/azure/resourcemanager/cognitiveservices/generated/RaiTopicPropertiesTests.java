@@ -13,36 +13,36 @@ public final class RaiTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiTopicProperties model = BinaryData.fromString(
-            "{\"topicId\":\"seypxiutcxapz\",\"topicName\":\"rpetogebjoxsl\",\"description\":\"nhl\",\"sampleBlobUrl\":\"rqnkkzjcjbtr\",\"status\":\"ehvvib\",\"failedReason\":\"jj\",\"createdAt\":\"2021-01-18T04:33:41Z\",\"lastModifiedAt\":\"2021-02-02T14:44:22Z\"}")
+            "{\"topicId\":\"tlhflsjcdhszf\",\"topicName\":\"fbgofeljagrqmqh\",\"description\":\"vriiio\",\"sampleBlobUrl\":\"al\",\"status\":\"fk\",\"failedReason\":\"vsexsowuelu\",\"createdAt\":\"2021-01-18T04:02:59Z\",\"lastModifiedAt\":\"2021-05-16T23:42:24Z\"}")
             .toObject(RaiTopicProperties.class);
-        Assertions.assertEquals("seypxiutcxapz", model.topicId());
-        Assertions.assertEquals("rpetogebjoxsl", model.topicName());
-        Assertions.assertEquals("nhl", model.description());
-        Assertions.assertEquals("rqnkkzjcjbtr", model.sampleBlobUrl());
-        Assertions.assertEquals("ehvvib", model.status());
-        Assertions.assertEquals("jj", model.failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:33:41Z"), model.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T14:44:22Z"), model.lastModifiedAt());
+        Assertions.assertEquals("tlhflsjcdhszf", model.topicId());
+        Assertions.assertEquals("fbgofeljagrqmqh", model.topicName());
+        Assertions.assertEquals("vriiio", model.description());
+        Assertions.assertEquals("al", model.sampleBlobUrl());
+        Assertions.assertEquals("fk", model.status());
+        Assertions.assertEquals("vsexsowuelu", model.failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:02:59Z"), model.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T23:42:24Z"), model.lastModifiedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiTopicProperties model = new RaiTopicProperties().withTopicId("seypxiutcxapz")
-            .withTopicName("rpetogebjoxsl")
-            .withDescription("nhl")
-            .withSampleBlobUrl("rqnkkzjcjbtr")
-            .withStatus("ehvvib")
-            .withFailedReason("jj")
-            .withCreatedAt(OffsetDateTime.parse("2021-01-18T04:33:41Z"))
-            .withLastModifiedAt(OffsetDateTime.parse("2021-02-02T14:44:22Z"));
+        RaiTopicProperties model = new RaiTopicProperties().withTopicId("tlhflsjcdhszf")
+            .withTopicName("fbgofeljagrqmqh")
+            .withDescription("vriiio")
+            .withSampleBlobUrl("al")
+            .withStatus("fk")
+            .withFailedReason("vsexsowuelu")
+            .withCreatedAt(OffsetDateTime.parse("2021-01-18T04:02:59Z"))
+            .withLastModifiedAt(OffsetDateTime.parse("2021-05-16T23:42:24Z"));
         model = BinaryData.fromObject(model).toObject(RaiTopicProperties.class);
-        Assertions.assertEquals("seypxiutcxapz", model.topicId());
-        Assertions.assertEquals("rpetogebjoxsl", model.topicName());
-        Assertions.assertEquals("nhl", model.description());
-        Assertions.assertEquals("rqnkkzjcjbtr", model.sampleBlobUrl());
-        Assertions.assertEquals("ehvvib", model.status());
-        Assertions.assertEquals("jj", model.failedReason());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:33:41Z"), model.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T14:44:22Z"), model.lastModifiedAt());
+        Assertions.assertEquals("tlhflsjcdhszf", model.topicId());
+        Assertions.assertEquals("fbgofeljagrqmqh", model.topicName());
+        Assertions.assertEquals("vriiio", model.description());
+        Assertions.assertEquals("al", model.sampleBlobUrl());
+        Assertions.assertEquals("fk", model.status());
+        Assertions.assertEquals("vsexsowuelu", model.failedReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T04:02:59Z"), model.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T23:42:24Z"), model.lastModifiedAt());
     }
 }

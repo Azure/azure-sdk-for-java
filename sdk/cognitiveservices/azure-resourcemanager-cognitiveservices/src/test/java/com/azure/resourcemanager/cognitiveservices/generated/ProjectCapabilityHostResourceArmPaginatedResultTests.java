@@ -12,12 +12,12 @@ public final class ProjectCapabilityHostResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectCapabilityHostResourceArmPaginatedResult model = BinaryData.fromString(
-            "{\"nextLink\":\"gmnsghpxy\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"wjjkh\",\"yomacluzvxnqm\",\"rpqpd\",\"wmkoisq\"],\"vectorStoreConnections\":[\"f\",\"xuifmcsypobkdqz\"],\"storageConnections\":[\"sylollgtr\",\"zzydmxzjijpvua\",\"rkihcirld\"],\"threadStorageConnections\":[\"rdcoxnbkkj\",\"nurnnq\",\"nqbpi\"],\"provisioningState\":\"Creating\"},\"id\":\"tgrdogypx\",\"name\":\"x\",\"type\":\"bfihw\"},{\"properties\":{\"aiServicesConnections\":[\"ctafsrbxrblm\",\"iowxi\"],\"vectorStoreConnections\":[\"nxw\"],\"storageConnections\":[\"nepzwakls\",\"sbq\"],\"threadStorageConnections\":[\"gwwrxaomzis\",\"lrrcz\",\"zkhhltnjadhqo\"],\"provisioningState\":\"Canceled\"},\"id\":\"oyueayfbpcmsp\",\"name\":\"byrrueqth\",\"type\":\"mg\"}]}")
+            "{\"nextLink\":\"ztczytq\",\"value\":[{\"properties\":{\"aiServicesConnections\":[\"uunfprnjletlxsm\",\"pddouifamowaziyn\",\"nlqwzdvpiwhx\",\"szdtmaajquh\"],\"vectorStoreConnections\":[\"lrjvmtyg\"],\"storageConnections\":[\"zyos\",\"spshckfkyjp\",\"sp\"],\"threadStorageConnections\":[\"sdfppyogtie\",\"ujtv\"],\"provisioningState\":\"Creating\"},\"id\":\"n\",\"name\":\"xrx\",\"type\":\"unjdx\"}]}")
             .toObject(ProjectCapabilityHostResourceArmPaginatedResult.class);
-        Assertions.assertEquals("gmnsghpxy", model.nextLink());
-        Assertions.assertEquals("wjjkh", model.value().get(0).properties().aiServicesConnections().get(0));
-        Assertions.assertEquals("f", model.value().get(0).properties().vectorStoreConnections().get(0));
-        Assertions.assertEquals("sylollgtr", model.value().get(0).properties().storageConnections().get(0));
-        Assertions.assertEquals("rdcoxnbkkj", model.value().get(0).properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("ztczytq", model.nextLink());
+        Assertions.assertEquals("uunfprnjletlxsm", model.value().get(0).properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("lrjvmtyg", model.value().get(0).properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("zyos", model.value().get(0).properties().storageConnections().get(0));
+        Assertions.assertEquals("sdfppyogtie", model.value().get(0).properties().threadStorageConnections().get(0));
     }
 }
