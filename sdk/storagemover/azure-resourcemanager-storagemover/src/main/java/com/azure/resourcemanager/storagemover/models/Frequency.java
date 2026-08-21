@@ -37,6 +37,11 @@ public final class Frequency extends ExpandableStringEnum<Frequency> {
     public static final Frequency NONE = fromString("None");
 
     /**
+     * Static value Hourly for Frequency.
+     */
+    public static final Frequency HOURLY = fromString("Hourly");
+
+    /**
      * Creates a new instance of Frequency value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

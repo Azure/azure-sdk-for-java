@@ -7,31 +7,38 @@ package com.azure.resourcemanager.storagemover.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.AzureStorageSmbFileShareEndpointProperties;
 import com.azure.resourcemanager.storagemover.models.EndpointKind;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageSmbFileShareEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageSmbFileShareEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"mocpc\",\"fileShareName\":\"shurzafbljjgpbto\",\"description\":\"jmkljavbqidtqajz\",\"endpointKind\":\"Source\",\"provisioningState\":\"Failed\"}")
+            "{\"endpointType\":\"AzureStorageSmbFileShare\",\"storageAccountResourceId\":\"jjgpb\",\"fileShareName\":\"oq\",\"enableCrossTenantTransfer\":false,\"allowedStorageAccounts\":[\"javbqidtqajz\",\"ulpkudjkrl\"],\"description\":\"bzhfepgzgqexz\",\"endpointKind\":\"Source\",\"provisioningState\":\"Canceled\"}")
             .toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
+        Assertions.assertEquals("bzhfepgzgqexz", model.description());
         Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
-        Assertions.assertEquals("mocpc", model.storageAccountResourceId());
-        Assertions.assertEquals("shurzafbljjgpbto", model.fileShareName());
+        Assertions.assertEquals("jjgpb", model.storageAccountResourceId());
+        Assertions.assertEquals("oq", model.fileShareName());
+        Assertions.assertFalse(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("javbqidtqajz", model.allowedStorageAccounts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageSmbFileShareEndpointProperties model
-            = new AzureStorageSmbFileShareEndpointProperties().withDescription("jmkljavbqidtqajz")
+            = new AzureStorageSmbFileShareEndpointProperties().withDescription("bzhfepgzgqexz")
                 .withEndpointKind(EndpointKind.SOURCE)
-                .withStorageAccountResourceId("mocpc")
-                .withFileShareName("shurzafbljjgpbto");
+                .withStorageAccountResourceId("jjgpb")
+                .withFileShareName("oq")
+                .withEnableCrossTenantTransfer(false)
+                .withAllowedStorageAccounts(Arrays.asList("javbqidtqajz", "ulpkudjkrl"));
         model = BinaryData.fromObject(model).toObject(AzureStorageSmbFileShareEndpointProperties.class);
-        Assertions.assertEquals("jmkljavbqidtqajz", model.description());
+        Assertions.assertEquals("bzhfepgzgqexz", model.description());
         Assertions.assertEquals(EndpointKind.SOURCE, model.endpointKind());
-        Assertions.assertEquals("mocpc", model.storageAccountResourceId());
-        Assertions.assertEquals("shurzafbljjgpbto", model.fileShareName());
+        Assertions.assertEquals("jjgpb", model.storageAccountResourceId());
+        Assertions.assertEquals("oq", model.fileShareName());
+        Assertions.assertFalse(model.enableCrossTenantTransfer());
+        Assertions.assertEquals("javbqidtqajz", model.allowedStorageAccounts().get(0));
     }
 }

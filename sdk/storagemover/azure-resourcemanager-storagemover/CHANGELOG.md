@@ -1,14 +1,104 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0 (2026-07-23)
+
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.SmbMountSourceType` was added
 
-### Bugs Fixed
+* `models.NfsMountSourceType` was added
 
-### Other Changes
+#### `models.JobDefinitions` was modified
+
+* `reconcileJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `reconcileJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.SmbMountEndpointProperties` was modified
+
+* `withSourceType(models.SmbMountSourceType)` was added
+* `sourceType()` was added
+
+#### `models.NfsVersion` was modified
+
+* `NFSV4_1` was added
+
+#### `models.AzureStorageSmbFileShareEndpointProperties` was modified
+
+* `enableCrossTenantTransfer()` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `allowedStorageAccounts()` was added
+* `withAllowedStorageAccounts(java.util.List)` was added
+
+#### `models.Frequency` was modified
+
+* `HOURLY` was added
+
+#### `models.JobDefinitionUpdateParameters` was modified
+
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+* `withSyncMode(java.lang.String)` was added
+* `syncMode()` was added
+* `moverSyncedUntil()` was added
+
+#### `models.AzureStorageBlobContainerEndpointProperties` was modified
+
+* `enableCrossTenantTransfer()` was added
+* `allowedStorageAccounts()` was added
+* `withAllowedStorageAccounts(java.util.List)` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+
+#### `models.JobDefinition` was modified
+
+* `crossTenantEndpointTenantId()` was added
+* `syncMode()` was added
+* `moverSyncedUntil()` was added
+* `reconcileJobWithResponse(com.azure.core.util.Context)` was added
+* `reconcileJob()` was added
+* `isCrossTenantJob()` was added
+* `crossTenantEndpointResourceId()` was added
+
+#### `models.AzureStorageSmbFileShareEndpointUpdateProperties` was modified
+
+* `withAllowedStorageAccounts(java.util.List)` was added
+* `allowedStorageAccounts()` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `enableCrossTenantTransfer()` was added
+
+#### `models.JobDefinition$Update` was modified
+
+* `withSyncMode(java.lang.String)` was added
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+
+#### `models.ScheduleInfo` was modified
+
+* `withRepeatInterval(java.lang.String)` was added
+* `repeatInterval()` was added
+
+#### `models.JobDefinition$Definition` was modified
+
+* `withCrossTenantEndpointResourceId(java.lang.String)` was added
+* `withIsCrossTenantJob(java.lang.Boolean)` was added
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+* `withSyncMode(java.lang.String)` was added
+* `withCrossTenantEndpointTenantId(java.lang.String)` was added
+
+#### `models.AzureStorageBlobContainerEndpointUpdateProperties` was modified
+
+* `allowedStorageAccounts()` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `enableCrossTenantTransfer()` was added
+* `withAllowedStorageAccounts(java.util.List)` was added
+
+#### `models.JobType` was modified
+
+* `ON_PREM_TO_CLOUD_AGENT_LESS` was added
+
+#### `models.NfsMountEndpointProperties` was modified
+
+* `sourceType()` was added
+* `withSourceType(models.NfsMountSourceType)` was added
 
 ## 1.5.0 (2026-04-06)
 
