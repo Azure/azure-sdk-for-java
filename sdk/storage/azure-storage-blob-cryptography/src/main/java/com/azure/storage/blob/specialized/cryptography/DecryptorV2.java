@@ -35,9 +35,16 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 class DecryptorV2 extends Decryptor {
     private static final ClientLogger LOGGER = new ClientLogger(DecryptorV2.class);
 
+    /*
+     * Shared across every chunk of a single download operation so that the CSEv2 nonce scheme is enforced consistently
+     * across the whole download (see CseV2NonceOrderValidator).
+     */
+    private final CseV2NonceOrderValidator nonceValidator;
+
     protected DecryptorV2(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
-        EncryptionData encryptionData) {
+        EncryptionData encryptionData, CseV2NonceOrderValidator nonceValidator) {
         super(keyResolver, keyWrapper, encryptionData);
+        this.nonceValidator = nonceValidator != null ? nonceValidator : new CseV2NonceOrderValidator();
     }
 
     @Override
@@ -49,11 +56,28 @@ class DecryptorV2 extends Decryptor {
         BufferStagingArea stagingArea = new BufferStagingArea(authenticatedRegionDataLength + TAG_LENGTH + nonceLength,
             authenticatedRegionDataLength + TAG_LENGTH + nonceLength);
 
+        /*
+         * Each CSEv2 region is encrypted under a unique, sequential nonce derived from the region's index.
+         * Because the nonce is stored alongside the ciphertext, individual regions of otherwise
+         * untampered ciphertext can be rearranged without invalidating any single region's authentication tag,
+         * silently corrupting the decrypted plaintext. The shared nonceValidator asserts that each region's nonce
+         * matches the value expected for its sequential position, under a single cross-SDK nonce scheme enforced across
+         * the whole download operation. The download always begins on a region boundary, so the first region's index is
+         * derived from the requested range (0 for a full-blob download).
+         */
+        final long initialRegion = authenticatedRegionDataLength == 0
+            ? 0
+            : encryptedBlobRange.getOriginalRange().getOffset() / authenticatedRegionDataLength;
+
         return encryptedFlux.flatMapSequential(stagingArea::write, 1, 1)
             .concatWith(Flux.defer(stagingArea::flush))
-            .flatMapSequential(aggregator -> {
+            .index()
+            .flatMapSequential(indexedAggregator -> {
                 // Get the IV out of the beginning of the aggregator
-                byte[] gmcIv = aggregator.getFirstNBytes(nonceLength);
+                byte[] gmcIv = indexedAggregator.getT2().getFirstNBytes(nonceLength);
+
+                long expectedRegion = initialRegion + indexedAggregator.getT1();
+                nonceValidator.validateRegion(gmcIv, nonceLength, expectedRegion);
 
                 Cipher gmcCipher;
                 try {
@@ -63,8 +87,8 @@ class DecryptorV2 extends Decryptor {
                 }
 
                 ByteBuffer decryptedRegion = ByteBuffer.allocate(authenticatedRegionDataLength);
-                return aggregator.asFlux().map(buffer -> {
-                    // Write into the preallocated buffer and always return this buffer.
+                return indexedAggregator.getT2().asFlux().map(buffer -> {
+                    // Write into the pre-allocated buffer and always return this buffer.
                     try {
                         gmcCipher.update(buffer, decryptedRegion);
                     } catch (ShortBufferException e) {
