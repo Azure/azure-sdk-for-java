@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.cloudhealth.models.AggregationType;
+import com.azure.resourcemanager.cloudhealth.models.AggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.AlertConfiguration;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
 import com.azure.resourcemanager.cloudhealth.models.AzureMonitorWorkspaceSignals;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceHealthSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignals;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.DependenciesSignalGroupV2;
 import com.azure.resourcemanager.cloudhealth.models.EntityAlerts;
 import com.azure.resourcemanager.cloudhealth.models.EntityCoordinates;
@@ -26,6 +26,7 @@ import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.PrometheusMetricsSignal;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
+import com.azure.resourcemanager.cloudhealth.models.SignalAggregationGroup;
 import com.azure.resourcemanager.cloudhealth.models.SignalGroups;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
 import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
@@ -38,7 +39,7 @@ public final class EntityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EntityProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"displayName\":\"tdhxujznbmpowuwp\",\"canvasPosition\":{\"x\":76.77146967165868,\"y\":30.283586181098855},\"icon\":{\"iconName\":\"alupjm\",\"customData\":\"fxobbcsws\"},\"healthObjective\":87.88039495370906,\"impact\":\"Suppressed\",\"tags\":{\"c\":\"bpbewtghfgb\",\"gibtnm\":\"wxzvlvqhjkb\",\"j\":\"iebwwaloayqcgwrt\",\"yzm\":\"zg\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"ongmtsa\",\"azureResourceId\":\"jcbpwxqpsrknft\",\"azureResourceKind\":\"vriuhprwmdyvx\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"riwwroy\",\"metricName\":\"exrmcqibycnojvk\",\"timeGrain\":\"e\",\"aggregationType\":\"Maximum\",\"dimensionFilter\":\"zvahapjy\",\"displayName\":\"pvgqzcjrvxdjzlm\",\"refreshInterval\":\"PT15M\",\"dataUnit\":\"vu\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\"},\"unhealthyRule\":{\"operator\":\"Equal\"}},\"name\":\"vawjvzunlu\",\"signalDefinitionName\":\"nnprn\",\"status\":{\"healthState\":\"Healthy\",\"value\":64.19828273331724,\"reportedAt\":\"2021-07-12T01:35:59Z\",\"error\":\"aejxd\",\"additionalContext\":\"tskzbbtdzumveek\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"wozuhkf\",\"metricName\":\"sjyofdx\",\"timeGrain\":\"us\",\"aggregationType\":\"Minimum\",\"dimensionFilter\":\"uwaboekqvke\",\"displayName\":\"smv\",\"refreshInterval\":\"PT2H\",\"dataUnit\":\"jsflhhcaalnjix\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\"}},\"name\":\"wjo\",\"signalDefinitionName\":\"qcslyjpkiid\",\"status\":{\"healthState\":\"Unknown\",\"value\":74.82713926733436,\"reportedAt\":\"2021-03-22T16:15:27Z\",\"error\":\"hnrztfol\",\"additionalContext\":\"nxknalaulp\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"gdtpnapnyiro\",\"metricName\":\"hpigv\",\"timeGrain\":\"ylgqgitxmedjvcsl\",\"aggregationType\":\"Minimum\",\"dimensionFilter\":\"wncwzzhxgktrmg\",\"displayName\":\"napkteoellw\",\"refreshInterval\":\"PT1H\",\"dataUnit\":\"ygpfqb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\"}},\"name\":\"pzfqrhhuaoppp\",\"signalDefinitionName\":\"eqx\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":25.949784288541856,\"reportedAt\":\"2021-03-29T10:43:19Z\",\"error\":\"obgbkdmoizp\",\"additionalContext\":\"tmgrcfbun\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"fqjhhkxbpvjymj\",\"metricName\":\"xjyngudivk\",\"timeGrain\":\"swbxqz\",\"aggregationType\":\"Count\",\"dimensionFilter\":\"fauvjfdxx\",\"displayName\":\"e\",\"refreshInterval\":\"PT10M\",\"dataUnit\":\"qaqtdoqmcbxvwvxy\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\"}},\"name\":\"sfxobl\",\"signalDefinitionName\":\"k\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":43.17963103026587,\"reportedAt\":\"2021-04-28T11:36:58Z\",\"error\":\"krvrns\",\"additionalContext\":\"hqjohxcrsbfova\"}}],\"resourceHealth\":{\"enabled\":\"Disabled\",\"signalName\":\"wbhsqfsub\",\"status\":{\"healthState\":\"Deleted\",\"value\":32.114768124397884,\"reportedAt\":\"2021-09-05T10:31:13Z\",\"error\":\"bsrfbj\",\"additionalContext\":\"twss\",\"availabilityState\":\"Degraded\",\"category\":\"Planned\",\"detailedStatus\":\"jzbexilzznfq\",\"summary\":\"vwpm\",\"reasonType\":\"Unplanned\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-08-18T10:48:38Z\"}}},\"azureLogAnalytics\":{\"authenticationSetting\":\"mkcjhwqytjrybn\",\"logAnalyticsWorkspaceResourceId\":\"jewgdrjerv\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"queryText\":\"qp\",\"timeGrain\":\"indoygmifthnzd\",\"valueColumnName\":\"sl\",\"displayName\":\"ayqigynduhav\",\"refreshInterval\":\"PT1M\",\"dataUnit\":\"thuma\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"ycduier\",\"signalDefinitionName\":\"ccymvaolpsslql\",\"status\":{\"healthState\":\"Healthy\",\"value\":76.73665651224995,\"reportedAt\":\"2021-06-14T21:23:08Z\",\"error\":\"pswiydmcwyh\",\"additionalContext\":\"xssadbzmnvdf\"}}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"ud\",\"azureMonitorWorkspaceResourceId\":\"od\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"ncblylpst\",\"timeGrain\":\"hh\",\"displayName\":\"rzdzucerscdnt\",\"refreshInterval\":\"PT2H\",\"dataUnit\":\"iwjmygtdssls\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"riofzpyqse\",\"signalDefinitionName\":\"abnetshh\",\"status\":{\"healthState\":\"Unknown\",\"value\":83.1289050402311,\"reportedAt\":\"2021-10-13T23:51:57Z\",\"error\":\"wubmwmbesldn\",\"additionalContext\":\"wtppjflcxogaoko\"}}]},\"dependencies\":{\"aggregationType\":\"MinHealthy\",\"degradedThreshold\":92.21938649142393,\"unhealthyThreshold\":46.45543688403541,\"unit\":\"Percentage\",\"ignoreUnknown\":true},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\"},\"unhealthyRule\":{\"operator\":\"Dynamic\"}},\"name\":\"zxmhhvhgu\",\"signalDefinitionName\":\"odkwobd\",\"status\":{\"healthState\":\"Deleted\",\"value\":36.85828956669111,\"reportedAt\":\"2021-03-08T21:58:17Z\",\"error\":\"xwak\",\"additionalContext\":\"gqxndlkzgxhuripl\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"unkbebx\",\"signalDefinitionName\":\"byyntwlrbqt\",\"status\":{\"healthState\":\"Unknown\",\"value\":61.803901560896,\"reportedAt\":\"2021-12-03T04:31:52Z\",\"error\":\"q\",\"additionalContext\":\"ltmuwlauwzizx\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\"}},\"name\":\"jefuzmuvpbttdumo\",\"signalDefinitionName\":\"pxebmnzbt\",\"status\":{\"healthState\":\"Degraded\",\"value\":21.28773423734217,\"reportedAt\":\"2021-06-12T04:27:19Z\",\"error\":\"hdneuelfph\",\"additionalContext\":\"yhtozfikdowwqu\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"Equal\"}},\"name\":\"clvit\",\"signalDefinitionName\":\"qzonosggbhcohf\",\"status\":{\"healthState\":\"Unknown\",\"value\":10.708622124516086,\"reportedAt\":\"2021-06-21T07:46:59Z\",\"error\":\"tiiswacffg\",\"additionalContext\":\"zzewkfvhqcrai\"}}]}},\"discoveredBy\":\"pnppfuf\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev3\",\"description\":\"lxyjr\",\"actionGroupIds\":[\"gafcnihgwqapnedg\",\"bcvkcvqvpkeq\",\"cvdrhvoodsot\",\"obzdopcjwvnhdl\"]},\"degraded\":{\"severity\":\"Sev0\",\"description\":\"xcxrsl\",\"actionGroupIds\":[\"twuoegrpkhjwni\"]}}}")
+            "{\"provisioningState\":\"Deleting\",\"displayName\":\"tdhxujznbmpowuwp\",\"canvasPosition\":{\"x\":76.77146967165868,\"y\":30.283586181098855},\"icon\":{\"iconName\":\"alupjm\",\"customData\":\"fxobbcsws\"},\"healthObjective\":87.88039495370906,\"impact\":\"Suppressed\",\"tags\":{\"c\":\"bpbewtghfgb\",\"gibtnm\":\"wxzvlvqhjkb\",\"j\":\"iebwwaloayqcgwrt\",\"yzm\":\"zg\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"ongmtsa\",\"azureResourceId\":\"jcbpwxqpsrknft\",\"azureResourceKind\":\"vriuhprwmdyvx\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"riwwroy\",\"metricName\":\"exrmcqibycnojvk\",\"timeGrain\":\"e\",\"aggregationType\":\"Maximum\",\"dimensionFilter\":\"zvahapjy\",\"displayName\":\"pvgqzcjrvxdjzlm\",\"refreshInterval\":\"PT15M\",\"dataUnit\":\"vu\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThanOrEqual\"},\"unhealthyRule\":{\"operator\":\"Equal\"}},\"name\":\"vawjvzunlu\",\"signalDefinitionName\":\"nnprn\",\"status\":{\"healthState\":\"Healthy\",\"value\":64.19828273331724,\"reportedAt\":\"2021-07-12T01:35:59Z\",\"error\":\"aejxd\",\"additionalContext\":\"tskzbbtdzumveek\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"wozuhkf\",\"metricName\":\"sjyofdx\",\"timeGrain\":\"us\",\"aggregationType\":\"Minimum\",\"dimensionFilter\":\"uwaboekqvke\",\"displayName\":\"smv\",\"refreshInterval\":\"PT2H\",\"dataUnit\":\"jsflhhcaalnjix\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\"}},\"name\":\"wjo\",\"signalDefinitionName\":\"qcslyjpkiid\",\"status\":{\"healthState\":\"Unknown\",\"value\":74.82713926733436,\"reportedAt\":\"2021-03-22T16:15:27Z\",\"error\":\"hnrztfol\",\"additionalContext\":\"nxknalaulp\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"gdtpnapnyiro\",\"metricName\":\"hpigv\",\"timeGrain\":\"ylgqgitxmedjvcsl\",\"aggregationType\":\"Minimum\",\"dimensionFilter\":\"wncwzzhxgktrmg\",\"displayName\":\"napkteoellw\",\"refreshInterval\":\"PT1H\",\"dataUnit\":\"ygpfqb\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\"}},\"name\":\"pzfqrhhuaoppp\",\"signalDefinitionName\":\"eqx\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":25.949784288541856,\"reportedAt\":\"2021-03-29T10:43:19Z\",\"error\":\"obgbkdmoizp\",\"additionalContext\":\"tmgrcfbun\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"fqjhhkxbpvjymj\",\"metricName\":\"xjyngudivk\",\"timeGrain\":\"swbxqz\",\"aggregationType\":\"Count\",\"dimensionFilter\":\"fauvjfdxx\",\"displayName\":\"e\",\"refreshInterval\":\"PT10M\",\"dataUnit\":\"qaqtdoqmcbxvwvxy\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\"}},\"name\":\"sfxobl\",\"signalDefinitionName\":\"k\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":43.17963103026587,\"reportedAt\":\"2021-04-28T11:36:58Z\",\"error\":\"krvrns\",\"additionalContext\":\"hqjohxcrsbfova\"}}],\"resourceHealth\":{\"enabled\":\"Disabled\",\"signalName\":\"wbhsqfsub\",\"status\":{\"healthState\":\"Deleted\",\"value\":32.114768124397884,\"reportedAt\":\"2021-09-05T10:31:13Z\",\"error\":\"bsrfbj\",\"additionalContext\":\"twss\",\"availabilityState\":\"Degraded\",\"category\":\"Planned\",\"detailedStatus\":\"jzbexilzznfq\",\"summary\":\"vwpm\",\"reasonType\":\"Unplanned\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-08-18T10:48:38Z\"}}},\"azureLogAnalytics\":{\"authenticationSetting\":\"mkcjhwqytjrybn\",\"logAnalyticsWorkspaceResourceId\":\"jewgdrjerv\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"queryText\":\"qp\",\"timeGrain\":\"indoygmifthnzd\",\"valueColumnName\":\"sl\",\"displayName\":\"ayqigynduhav\",\"refreshInterval\":\"PT1M\",\"dataUnit\":\"thuma\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"ycduier\",\"signalDefinitionName\":\"ccymvaolpsslql\",\"status\":{\"healthState\":\"Healthy\",\"value\":76.73665651224995,\"reportedAt\":\"2021-06-14T21:23:08Z\",\"error\":\"pswiydmcwyh\",\"additionalContext\":\"xssadbzmnvdf\"}}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"ud\",\"azureMonitorWorkspaceResourceId\":\"od\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"queryText\":\"ncblylpst\",\"timeGrain\":\"hh\",\"displayName\":\"rzdzucerscdnt\",\"refreshInterval\":\"PT2H\",\"dataUnit\":\"iwjmygtdssls\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"riofzpyqse\",\"signalDefinitionName\":\"abnetshh\",\"status\":{\"healthState\":\"Unknown\",\"value\":83.1289050402311,\"reportedAt\":\"2021-10-13T23:51:57Z\",\"error\":\"wubmwmbesldn\",\"additionalContext\":\"wtppjflcxogaoko\"}}]},\"dependencies\":{\"aggregationType\":\"WorstOf\",\"degradedThreshold\":92.21938649142393,\"unhealthyThreshold\":46.45543688403541,\"unit\":\"Percentage\",\"ignoreUnknown\":true},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Equal\"},\"unhealthyRule\":{\"operator\":\"Dynamic\"}},\"name\":\"zxmhhvhgu\",\"signalDefinitionName\":\"odkwobd\",\"status\":{\"healthState\":\"Deleted\",\"value\":36.85828956669111,\"reportedAt\":\"2021-03-08T21:58:17Z\",\"error\":\"xwak\",\"additionalContext\":\"gqxndlkzgxhuripl\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\"},\"unhealthyRule\":{\"operator\":\"LessThan\"}},\"name\":\"unkbebx\",\"signalDefinitionName\":\"byyntwlrbqt\",\"status\":{\"healthState\":\"Unknown\",\"value\":61.803901560896,\"reportedAt\":\"2021-12-03T04:31:52Z\",\"error\":\"q\",\"additionalContext\":\"ltmuwlauwzizx\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"Dynamic\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\"}},\"name\":\"jefuzmuvpbttdumo\",\"signalDefinitionName\":\"pxebmnzbt\",\"status\":{\"healthState\":\"Degraded\",\"value\":21.28773423734217,\"reportedAt\":\"2021-06-12T04:27:19Z\",\"error\":\"hdneuelfph\",\"additionalContext\":\"yhtozfikdowwqu\"}},{\"signalKind\":\"External\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"NotEqual\"},\"unhealthyRule\":{\"operator\":\"Equal\"}},\"name\":\"clvit\",\"signalDefinitionName\":\"qzonosggbhcohf\",\"status\":{\"healthState\":\"Unknown\",\"value\":10.708622124516086,\"reportedAt\":\"2021-06-21T07:46:59Z\",\"error\":\"tiiswacffg\",\"additionalContext\":\"zzewkfvhqcrai\"}}]}},\"signalAggregationGroups\":[{\"name\":\"n\",\"displayName\":\"fuflrwdmhdlx\",\"aggregationType\":\"MaxNotHealthy\",\"members\":[\"sag\",\"fcnihgwq\"],\"degradedThreshold\":43.218610655640596,\"unhealthyThreshold\":46.67684749028038,\"unit\":\"Percentage\",\"ignoreUnknown\":false,\"aggregatedHealthState\":\"Deleted\",\"unresolvedMembers\":[\"pkeqdcvdrhvoo\"]},{\"name\":\"sotbob\",\"displayName\":\"opcjwvnhd\",\"aggregationType\":\"MinHealthy\",\"members\":[\"gx\",\"xrslpm\",\"twuoegrpkhjwni\"],\"degradedThreshold\":74.33615028226781,\"unhealthyThreshold\":6.015914461048011,\"unit\":\"Percentage\",\"ignoreUnknown\":false,\"aggregatedHealthState\":\"Healthy\",\"unresolvedMembers\":[\"vmbmp\",\"xmodf\",\"uefywsbpfvmwy\",\"rfouyftaakcpw\"]}],\"discoveredBy\":\"zvqtmnubexkp\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev3\",\"description\":\"jmquxvypomgk\",\"actionGroupIds\":[\"whojvp\",\"jqg\",\"ysmocmbqfqvmkcxo\"]},\"degraded\":{\"severity\":\"Sev4\",\"description\":\"helxprglya\",\"actionGroupIds\":[\"ckcb\",\"uejrjxgc\"]}}}")
             .toObject(EntityProperties.class);
         Assertions.assertEquals("tdhxujznbmpowuwp", model.displayName());
         Assertions.assertEquals(76.77146967165868, model.canvasPosition().x());
@@ -105,18 +106,26 @@ public final class EntityPropertiesTests {
             model.signalGroups().azureMonitorWorkspace().signals().get(0).evaluationRules().degradedRule().operator());
         Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.signalGroups().azureMonitorWorkspace().signals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(DependenciesAggregationType.MIN_HEALTHY,
-            model.signalGroups().dependencies().aggregationType());
+        Assertions.assertEquals(AggregationType.WORST_OF, model.signalGroups().dependencies().aggregationType());
         Assertions.assertEquals(92.21938649142393D, model.signalGroups().dependencies().degradedThreshold());
         Assertions.assertEquals(46.45543688403541D, model.signalGroups().dependencies().unhealthyThreshold());
-        Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.signalGroups().dependencies().unit());
+        Assertions.assertEquals(AggregationUnit.PERCENTAGE, model.signalGroups().dependencies().unit());
         Assertions.assertTrue(model.signalGroups().dependencies().ignoreUnknown());
+        Assertions.assertEquals("n", model.signalAggregationGroups().get(0).name());
+        Assertions.assertEquals("fuflrwdmhdlx", model.signalAggregationGroups().get(0).displayName());
+        Assertions.assertEquals(AggregationType.MAX_NOT_HEALTHY,
+            model.signalAggregationGroups().get(0).aggregationType());
+        Assertions.assertEquals("sag", model.signalAggregationGroups().get(0).members().get(0));
+        Assertions.assertEquals(43.218610655640596D, model.signalAggregationGroups().get(0).degradedThreshold());
+        Assertions.assertEquals(46.67684749028038D, model.signalAggregationGroups().get(0).unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.PERCENTAGE, model.signalAggregationGroups().get(0).unit());
+        Assertions.assertFalse(model.signalAggregationGroups().get(0).ignoreUnknown());
         Assertions.assertEquals(AlertSeverity.SEV3, model.alerts().unhealthy().severity());
-        Assertions.assertEquals("lxyjr", model.alerts().unhealthy().description());
-        Assertions.assertEquals("gafcnihgwqapnedg", model.alerts().unhealthy().actionGroupIds().get(0));
-        Assertions.assertEquals(AlertSeverity.SEV0, model.alerts().degraded().severity());
-        Assertions.assertEquals("xcxrsl", model.alerts().degraded().description());
-        Assertions.assertEquals("twuoegrpkhjwni", model.alerts().degraded().actionGroupIds().get(0));
+        Assertions.assertEquals("jmquxvypomgk", model.alerts().unhealthy().description());
+        Assertions.assertEquals("whojvp", model.alerts().unhealthy().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV4, model.alerts().degraded().severity());
+        Assertions.assertEquals("helxprglya", model.alerts().degraded().description());
+        Assertions.assertEquals("ckcb", model.alerts().degraded().actionGroupIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -221,22 +230,35 @@ public final class EntityPropertiesTests {
                                 .withEvaluationRules(new EvaluationRule()
                                     .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN))
                                     .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN))))))
-                        .withDependencies(
-                            new DependenciesSignalGroupV2().withAggregationType(DependenciesAggregationType.MIN_HEALTHY)
-                                .withDegradedThreshold(92.21938649142393D)
-                                .withUnhealthyThreshold(46.45543688403541D)
-                                .withUnit(DependenciesAggregationUnit.PERCENTAGE)
-                                .withIgnoreUnknown(true)))
-                .withAlerts(
-                    new EntityAlerts()
-                        .withUnhealthy(
-                            new AlertConfiguration().withSeverity(AlertSeverity.SEV3)
-                                .withDescription("lxyjr")
-                                .withActionGroupIds(Arrays.asList("gafcnihgwqapnedg", "bcvkcvqvpkeq", "cvdrhvoodsot",
-                                    "obzdopcjwvnhdl")))
-                        .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV0)
-                            .withDescription("xcxrsl")
-                            .withActionGroupIds(Arrays.asList("twuoegrpkhjwni"))));
+                        .withDependencies(new DependenciesSignalGroupV2().withAggregationType(AggregationType.WORST_OF)
+                            .withDegradedThreshold(92.21938649142393D)
+                            .withUnhealthyThreshold(46.45543688403541D)
+                            .withUnit(AggregationUnit.PERCENTAGE)
+                            .withIgnoreUnknown(true)))
+                .withSignalAggregationGroups(Arrays.asList(
+                    new SignalAggregationGroup().withName("n")
+                        .withDisplayName("fuflrwdmhdlx")
+                        .withAggregationType(AggregationType.MAX_NOT_HEALTHY)
+                        .withMembers(Arrays.asList("sag", "fcnihgwq"))
+                        .withDegradedThreshold(43.218610655640596D)
+                        .withUnhealthyThreshold(46.67684749028038D)
+                        .withUnit(AggregationUnit.PERCENTAGE)
+                        .withIgnoreUnknown(false),
+                    new SignalAggregationGroup().withName("sotbob")
+                        .withDisplayName("opcjwvnhd")
+                        .withAggregationType(AggregationType.MIN_HEALTHY)
+                        .withMembers(Arrays.asList("gx", "xrslpm", "twuoegrpkhjwni"))
+                        .withDegradedThreshold(74.33615028226781D)
+                        .withUnhealthyThreshold(6.015914461048011D)
+                        .withUnit(AggregationUnit.PERCENTAGE)
+                        .withIgnoreUnknown(false)))
+                .withAlerts(new EntityAlerts()
+                    .withUnhealthy(new AlertConfiguration().withSeverity(AlertSeverity.SEV3)
+                        .withDescription("jmquxvypomgk")
+                        .withActionGroupIds(Arrays.asList("whojvp", "jqg", "ysmocmbqfqvmkcxo")))
+                    .withDegraded(new AlertConfiguration().withSeverity(AlertSeverity.SEV4)
+                        .withDescription("helxprglya")
+                        .withActionGroupIds(Arrays.asList("ckcb", "uejrjxgc"))));
         model = BinaryData.fromObject(model).toObject(EntityProperties.class);
         Assertions.assertEquals("tdhxujznbmpowuwp", model.displayName());
         Assertions.assertEquals(76.77146967165868, model.canvasPosition().x());
@@ -303,18 +325,26 @@ public final class EntityPropertiesTests {
             model.signalGroups().azureMonitorWorkspace().signals().get(0).evaluationRules().degradedRule().operator());
         Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.signalGroups().azureMonitorWorkspace().signals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(DependenciesAggregationType.MIN_HEALTHY,
-            model.signalGroups().dependencies().aggregationType());
+        Assertions.assertEquals(AggregationType.WORST_OF, model.signalGroups().dependencies().aggregationType());
         Assertions.assertEquals(92.21938649142393D, model.signalGroups().dependencies().degradedThreshold());
         Assertions.assertEquals(46.45543688403541D, model.signalGroups().dependencies().unhealthyThreshold());
-        Assertions.assertEquals(DependenciesAggregationUnit.PERCENTAGE, model.signalGroups().dependencies().unit());
+        Assertions.assertEquals(AggregationUnit.PERCENTAGE, model.signalGroups().dependencies().unit());
         Assertions.assertTrue(model.signalGroups().dependencies().ignoreUnknown());
+        Assertions.assertEquals("n", model.signalAggregationGroups().get(0).name());
+        Assertions.assertEquals("fuflrwdmhdlx", model.signalAggregationGroups().get(0).displayName());
+        Assertions.assertEquals(AggregationType.MAX_NOT_HEALTHY,
+            model.signalAggregationGroups().get(0).aggregationType());
+        Assertions.assertEquals("sag", model.signalAggregationGroups().get(0).members().get(0));
+        Assertions.assertEquals(43.218610655640596D, model.signalAggregationGroups().get(0).degradedThreshold());
+        Assertions.assertEquals(46.67684749028038D, model.signalAggregationGroups().get(0).unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.PERCENTAGE, model.signalAggregationGroups().get(0).unit());
+        Assertions.assertFalse(model.signalAggregationGroups().get(0).ignoreUnknown());
         Assertions.assertEquals(AlertSeverity.SEV3, model.alerts().unhealthy().severity());
-        Assertions.assertEquals("lxyjr", model.alerts().unhealthy().description());
-        Assertions.assertEquals("gafcnihgwqapnedg", model.alerts().unhealthy().actionGroupIds().get(0));
-        Assertions.assertEquals(AlertSeverity.SEV0, model.alerts().degraded().severity());
-        Assertions.assertEquals("xcxrsl", model.alerts().degraded().description());
-        Assertions.assertEquals("twuoegrpkhjwni", model.alerts().degraded().actionGroupIds().get(0));
+        Assertions.assertEquals("jmquxvypomgk", model.alerts().unhealthy().description());
+        Assertions.assertEquals("whojvp", model.alerts().unhealthy().actionGroupIds().get(0));
+        Assertions.assertEquals(AlertSeverity.SEV4, model.alerts().degraded().severity());
+        Assertions.assertEquals("helxprglya", model.alerts().degraded().description());
+        Assertions.assertEquals("ckcb", model.alerts().degraded().actionGroupIds().get(0));
     }
 
     // Use "Map.of" if available
