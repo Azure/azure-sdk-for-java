@@ -16,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.4.6` to version `1.4.8`.
+- Upgraded `azure-communication-common` from `1.4.7` to version `1.4.8`.
 - Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 - Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
 

@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 2.60.0 (2026-08-19)
+## 2.60.0 (2026-08-12)
 
 - Package api-version Compute: 2026-04-01, ComputeDisk: 2026-03-02, ComputeGallery: 2025-12-03, ComputeSku: 2021-07-01.
 

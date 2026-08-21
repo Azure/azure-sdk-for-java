@@ -242,7 +242,7 @@
 
 #### `certificate.ConfidentialLedgerCertificateServiceVersion` was modified
 
-* `V2024_12_09_PREVIEW` was 
+* `V2024_12_09_PREVIEW` was added
 
 ## 1.0.37 (2026-08-18)
 
