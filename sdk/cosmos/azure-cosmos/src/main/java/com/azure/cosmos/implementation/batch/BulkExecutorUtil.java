@@ -9,11 +9,14 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CollectionRoutingMapNotFoundException;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -116,11 +120,10 @@ final class BulkExecutorUtil {
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
-        CosmosItemOperation operation) {
+        CosmosItemOperation operation,
+        CosmosItemSerializer effectiveItemSerializer) {
 
         checkNotNull(operation, "expected non-null operation");
-
-        AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
@@ -129,6 +132,7 @@ final class BulkExecutorUtil {
                 docClientWrapper,
                 container,
                 operation.getPartitionKeyValue(),
+                () -> resolveItemId(itemBulkOperation, effectiveItemSerializer),
                 (partitionKeyInternal -> itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson())));
 
         } else {
@@ -136,11 +140,65 @@ final class BulkExecutorUtil {
         }
     }
 
+    /**
+     * Resolves the item id used to complete a hierarchical partition key ending in "/id". For
+     * operations that carry an explicit id (read/replace/delete/patch) the id is returned directly;
+     * for create/upsert the id is read from the (serialized) item body. Returns {@code null} when the
+     * id cannot be determined.
+     */
+    static String resolveItemId(ItemBulkOperation<?, ?> operation, CosmosItemSerializer effectiveItemSerializer) {
+        if (StringUtils.isNotEmpty(operation.getId())) {
+            return operation.getId();
+        }
+
+        Object item = operation.getItemInternal();
+        if (item == null) {
+            return null;
+        }
+
+        checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
+        Map<String, Object> serializedItem = operation.serializeAndCacheItem(effectiveItemSerializer);
+        Object idValue = serializedItem == null ? null : serializedItem.get(Constants.Properties.ID);
+        return idValue == null ? null : idValue.toString();
+    }
+
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
         PartitionKey partitionKey,
+        Supplier<String> itemIdSupplier,
         Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
+
+        return resolvePartitionKeyRangeId(
+            docClientWrapper,
+            container,
+            partitionKey,
+            itemIdSupplier,
+            partitionKeyInternalConsumer,
+            false);
+    }
+
+    static Mono<String> resolvePartitionKeyRangeIdForFullPartitionKey(
+        AsyncDocumentClient docClientWrapper,
+        CosmosAsyncContainer container,
+        PartitionKey partitionKey) {
+
+        return resolvePartitionKeyRangeId(
+            docClientWrapper,
+            container,
+            partitionKey,
+            null,
+            null,
+            true);
+    }
+
+    private static Mono<String> resolvePartitionKeyRangeId(
+        AsyncDocumentClient docClientWrapper,
+        CosmosAsyncContainer container,
+        PartitionKey partitionKey,
+        Supplier<String> itemIdSupplier,
+        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer,
+        boolean requireFullPartitionKey) {
 
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
@@ -149,11 +207,33 @@ final class BulkExecutorUtil {
                            .getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
-                               final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
+                               PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
+                               if (requireFullPartitionKey
+                                   && !PartitionKeyHelper.isFullPartitionKey(definition, partitionKeyInternal)) {
+
+                                   throw new IllegalArgumentException(
+                                       "A transactional batch requires a full partition key matching all paths in "
+                                           + "the container's partition key definition.");
+                               }
+
+                               // Hierarchical partition key ending in "/id": append the item id so
+                               // callers can pass only the prefix of the partition key. The item id
+                               // (resolving which may serialize the item) is only fetched when the
+                               // provided key is omitted or is exactly the prefix ending before /id.
+                               if (!requireFullPartitionKey
+                                   && PartitionKeyHelper.canCompletePartitionKeyWithId(
+                                       definition, partitionKeyInternal)) {
+
+                                   String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();
+                                   partitionKeyInternal =
+                                       PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
+                                           definition, partitionKeyInternal, itemId);
+                               }
                                if (partitionKeyInternalConsumer != null) {
                                    partitionKeyInternalConsumer.accept(partitionKeyInternal);
                                }
 
+                               final PartitionKeyInternal effectivePartitionKeyInternal = partitionKeyInternal;
                                return docClientWrapper
                                    .getPartitionKeyRangeCache()
                                    .tryLookupAsync(null, collection.getResourceId(), null, null)
@@ -172,7 +252,7 @@ final class BulkExecutorUtil {
 
                                        return routingMap.v.getRangeByEffectivePartitionKey(
                                            getEffectivePartitionKeyString(
-                                               partitionKeyInternal,
+                                               effectivePartitionKeyInternal,
                                                definition)).getId();
                                    });
                            }))
