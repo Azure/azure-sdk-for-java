@@ -16,23 +16,23 @@ public final class AzureBackupRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRule model = BinaryData.fromString(
-            "{\"objectType\":\"AzureBackupRule\",\"backupParameters\":{\"objectType\":\"BackupParameters\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"fxrxxle\"},\"trigger\":{\"objectType\":\"TriggerContext\"},\"name\":\"tramxjez\"}")
+            "{\"objectType\":\"AzureBackupRule\",\"backupParameters\":{\"objectType\":\"BackupParameters\"},\"dataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"gymare\"},\"trigger\":{\"objectType\":\"TriggerContext\"},\"name\":\"n\"}")
             .toObject(AzureBackupRule.class);
-        Assertions.assertEquals("tramxjez", model.name());
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("fxrxxle", model.dataStore().objectType());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStore().dataStoreType());
+        Assertions.assertEquals("gymare", model.dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupRule model = new AzureBackupRule().withName("tramxjez")
+        AzureBackupRule model = new AzureBackupRule().withName("n")
             .withBackupParameters(new BackupParameters())
             .withDataStore(
-                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.ARCHIVE_STORE).withObjectType("fxrxxle"))
+                new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("gymare"))
             .withTrigger(new TriggerContext());
         model = BinaryData.fromObject(model).toObject(AzureBackupRule.class);
-        Assertions.assertEquals("tramxjez", model.name());
-        Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStore().dataStoreType());
-        Assertions.assertEquals("fxrxxle", model.dataStore().objectType());
+        Assertions.assertEquals("n", model.name());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.dataStore().dataStoreType());
+        Assertions.assertEquals("gymare", model.dataStore().objectType());
     }
 }

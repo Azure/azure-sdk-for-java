@@ -23,6 +23,11 @@ public final class BackupVault implements JsonSerializable<BackupVault> {
     private MonitoringSettings monitoringSettings;
 
     /*
+     * Cost Management Settings of the vault
+     */
+    private CostManagementSettings costManagementSettings;
+
+    /*
      * Provisioning state of the BackupVault resource
      */
     private ProvisioningState provisioningState;
@@ -100,6 +105,26 @@ public final class BackupVault implements JsonSerializable<BackupVault> {
      */
     public BackupVault withMonitoringSettings(MonitoringSettings monitoringSettings) {
         this.monitoringSettings = monitoringSettings;
+        return this;
+    }
+
+    /**
+     * Get the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @return the costManagementSettings value.
+     */
+    public CostManagementSettings costManagementSettings() {
+        return this.costManagementSettings;
+    }
+
+    /**
+     * Set the costManagementSettings property: Cost Management Settings of the vault.
+     * 
+     * @param costManagementSettings the costManagementSettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withCostManagementSettings(CostManagementSettings costManagementSettings) {
+        this.costManagementSettings = costManagementSettings;
         return this;
     }
 
@@ -266,6 +291,7 @@ public final class BackupVault implements JsonSerializable<BackupVault> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeJsonField("costManagementSettings", this.costManagementSettings);
         jsonWriter.writeJsonField("securitySettings", this.securitySettings);
         jsonWriter.writeArrayField("storageSettings", this.storageSettings,
             (writer, element) -> writer.writeJson(element));
@@ -294,6 +320,8 @@ public final class BackupVault implements JsonSerializable<BackupVault> {
 
                 if ("monitoringSettings".equals(fieldName)) {
                     deserializedBackupVault.monitoringSettings = MonitoringSettings.fromJson(reader);
+                } else if ("costManagementSettings".equals(fieldName)) {
+                    deserializedBackupVault.costManagementSettings = CostManagementSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBackupVault.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceMoveState".equals(fieldName)) {

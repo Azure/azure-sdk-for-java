@@ -14,20 +14,20 @@ public final class BackupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicy model = BinaryData.fromString(
-            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"ewzsyyceuzsoib\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"ud\"}],\"datasourceTypes\":[\"rx\",\"rthzvaytdwkqbrqu\",\"paxh\",\"xiilivpdtiirqt\"]}")
+            "{\"objectType\":\"BackupPolicy\",\"policyRules\":[{\"objectType\":\"BasePolicyRule\",\"name\":\"hdgqggeb\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"unygaeqid\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"qfatpxllrxcyjm\"},{\"objectType\":\"BasePolicyRule\",\"name\":\"a\"}],\"datasourceTypes\":[\"uvarmywdmjsjq\"]}")
             .toObject(BackupPolicy.class);
-        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
-        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
+        Assertions.assertEquals("uvarmywdmjsjq", model.datasourceTypes().get(0));
+        Assertions.assertEquals("hdgqggeb", model.policyRules().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicy model = new BackupPolicy()
-            .withDatasourceTypes(Arrays.asList("rx", "rthzvaytdwkqbrqu", "paxh", "xiilivpdtiirqt"))
+        BackupPolicy model = new BackupPolicy().withDatasourceTypes(Arrays.asList("uvarmywdmjsjq"))
             .withPolicyRules(
-                Arrays.asList(new BasePolicyRule().withName("ewzsyyceuzsoib"), new BasePolicyRule().withName("ud")));
+                Arrays.asList(new BasePolicyRule().withName("hdgqggeb"), new BasePolicyRule().withName("unygaeqid"),
+                    new BasePolicyRule().withName("qfatpxllrxcyjm"), new BasePolicyRule().withName("a")));
         model = BinaryData.fromObject(model).toObject(BackupPolicy.class);
-        Assertions.assertEquals("rx", model.datasourceTypes().get(0));
-        Assertions.assertEquals("ewzsyyceuzsoib", model.policyRules().get(0).name());
+        Assertions.assertEquals("uvarmywdmjsjq", model.datasourceTypes().get(0));
+        Assertions.assertEquals("hdgqggeb", model.policyRules().get(0).name());
     }
 }
