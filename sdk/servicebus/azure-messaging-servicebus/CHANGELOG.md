@@ -1,14 +1,12 @@
 # Release History
 
-## 7.18.0-beta.3 (Unreleased)
+## 7.18.0-beta.3 (2026-08-21)
 
 ### Features Added
 
 - Added `listSessions()` and `listSessions(OffsetDateTime sessionStateUpdatedAfter)` to `ServiceBusSessionReceiverAsyncClient` (returning `PagedFlux<String>`) and `ServiceBusSessionReceiverClient` (returning `PagedIterable<String>`). The no-arg overload returns sessions with active messages or stored session state; the `sessionStateUpdatedAfter` overload returns sessions whose session state was set or updated after the given timestamp. Implements the `com.microsoft:get-message-sessions` AMQP management operation. ([#48956](https://github.com/Azure/azure-sdk-for-java/pull/48956))
 - Added `getSqlFilterCount()` and `getCorrelationFilterCount()` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions.
 - Added `ServiceBusServiceVersion.V2024_05` and made it the latest version. The administration client now uses `api-version=2024-05` by default, which is required for the topic filter counts above.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
