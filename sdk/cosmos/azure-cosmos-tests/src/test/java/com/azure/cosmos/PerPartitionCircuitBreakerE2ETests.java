@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -5175,6 +5176,26 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         return 0d;
     }
 
+    @SuppressWarnings("unchecked")
+    private static boolean hasUnavailableLocationForPartition(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
+
+        Object partitionUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+        if (partitionUnavailabilityInfo == null) {
+            return false;
+        }
+
+        ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext> locationContexts
+            = (ConcurrentHashMap<RegionalRoutingContext, LocationSpecificHealthContext>)
+            locationEndpointToLocationSpecificContextForPartitionField.get(partitionUnavailabilityInfo);
+
+        return locationContexts.values().stream()
+            .anyMatch(context -> context.getLocationHealthStatus() == LocationHealthStatus.Unavailable);
+    }
+
     private static FaultInjectionConnectionType evaluateFaultInjectionConnectionType(ConnectionMode connectionMode) {
 
         if (connectionMode == ConnectionMode.DIRECT) {
@@ -5203,6 +5224,287 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
             this.regionNameToEndpoint = regionNameToEndpoint;
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 20 * TIMEOUT)
+    public void ppcbRecoveryResolvesAddressesAfterInitialAddressRefreshFailures() throws Exception {
+        if (this.readRegions == null || this.readRegions.size() <= 1) {
+            throw new SkipException("Test requires a multi-region account");
+        }
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(getClientBuilder());
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
+        String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+        TestObject testObject = TestObject.create();
+        PartitionKey partitionKey = new PartitionKey(testObject.getId());
+        try (CosmosAsyncClient bootstrapClient = getClientBuilder().buildAsyncClient()) {
+            bootstrapClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey)
+                .createItem(testObject, partitionKey, new CosmosItemRequestOptions())
+                .block();
+        }
+
+        CosmosAsyncClient testClient = null;
+        FaultInjectionRule addressRefreshRule = null;
+        try {
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\":true,"
+                    + "\"circuitBreakerType\":\"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\":10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\":5}");
+            testClient = getClientBuilder()
+                .preferredRegions(this.readRegions)
+                .buildAsyncClient();
+            CosmosAsyncContainer container = testClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            RxDocumentClientImpl documentClient
+                = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
+            RxCollectionCache collectionCache = ReflectionUtils.getClientCollectionCache(documentClient);
+            RxPartitionKeyRangeCache partitionKeyRangeCache = ReflectionUtils.getPartitionKeyRangeCache(documentClient);
+            DocumentCollection documentCollection = collectionCache
+                .resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                .block();
+            List<PartitionKeyRange> partitionKeyRanges = partitionKeyRangeCache
+                .tryGetOverlappingRangesAsync(
+                    null,
+                    documentCollection.getResourceId(),
+                    new FeedRangePartitionKeyImpl(BridgeInternal.getPartitionKeyInternal(partitionKey))
+                        .getEffectiveRange(documentCollection.getPartitionKey()),
+                    true,
+                    null)
+                .block()
+                .v;
+            assertThat(partitionKeyRanges).hasSize(1);
+            PartitionKeyRangeWrapper partitionKeyRangeWrapper
+                = new PartitionKeyRangeWrapper(partitionKeyRanges.get(0), documentCollection.getResourceId());
+
+            GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager
+                = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
+            assertThat(ppcbManager.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()).isTrue();
+            Class<?> partitionUnavailabilityInfoClass = getClassBySimpleName(
+                GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class.getDeclaredClasses(),
+                "PartitionLevelLocationUnavailabilityInfo");
+            assertThat(partitionUnavailabilityInfoClass).isNotNull();
+
+            Field partitionUnavailabilityMapField
+                = GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class
+                .getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            partitionUnavailabilityMapField.setAccessible(true);
+            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionUnavailabilityMap
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionUnavailabilityMapField.get(ppcbManager);
+
+            Field locationContextMapField = partitionUnavailabilityInfoClass
+                .getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+            locationContextMapField.setAccessible(true);
+
+            addressRefreshRule = new FaultInjectionRuleBuilder(
+                "ppcb-address-refresh-connection-delay-" + UUID.randomUUID())
+                .condition(new FaultInjectionConditionBuilder()
+                    .region(this.readRegions.get(0))
+                    .operationType(FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH)
+                    .build())
+                .result(FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(11))
+                    .times(3)
+                    .build())
+                .duration(Duration.ofMinutes(10))
+                // Keep recovery probes faulted until the test has observed failover.
+                .hitLimit(60)
+                .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                container,
+                Collections.singletonList(addressRefreshRule)).block();
+
+            CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+            CosmosDiagnostics lastDiagnostics = null;
+            for (int i = 0; i < 20
+                && !hasUnavailableLocationForPartition(
+                    partitionKeyRangeWrapper,
+                    partitionUnavailabilityMap,
+                    locationContextMapField); i++) {
+
+                try {
+                    CosmosItemResponse<TestObject> response = container
+                        .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                        .block();
+                    lastDiagnostics = response.getDiagnostics();
+                } catch (CosmosException exception) {
+                    lastDiagnostics = exception.getDiagnostics();
+                }
+            }
+
+            assertThat(addressRefreshRule.getHitCount()).isGreaterThanOrEqualTo(30);
+            assertThat(hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField)).isTrue();
+            assertThat(lastDiagnostics).isNotNull();
+
+            CosmosItemResponse<TestObject> failedOverResponse = container
+                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                .block();
+            assertContactedRegionsContain(
+                failedOverResponse.getDiagnostics().getDiagnosticsContext(),
+                getRegionNameForAssertion(this.readRegions.get(1)),
+                "PPCB should route the partition to the second preferred region");
+
+            addressRefreshRule.disable();
+            long recoveryDeadline = System.nanoTime() + Duration.ofSeconds(120).toNanos();
+            while (hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField) && System.nanoTime() < recoveryDeadline) {
+
+                Thread.sleep(Duration.ofSeconds(1).toMillis());
+            }
+
+            assertThat(hasUnavailableLocationForPartition(
+                partitionKeyRangeWrapper,
+                partitionUnavailabilityMap,
+                locationContextMapField)).isFalse();
+
+            CosmosItemResponse<TestObject> recoveredResponse = container
+                .readItem(testObject.getId(), partitionKey, readOptions, TestObject.class)
+                .block();
+            assertContactedRegionCount(
+                recoveredResponse.getDiagnostics().getDiagnosticsContext(),
+                1,
+                "Recovered partition should use one preferred region");
+            assertContactedRegionsContain(
+                recoveredResponse.getDiagnostics().getDiagnosticsContext(),
+                getRegionNameForAssertion(this.readRegions.get(0)),
+                "PPCB should fail back to the first preferred region after recovery");
+        } finally {
+            if (addressRefreshRule != null) {
+                addressRefreshRule.disable();
+            }
+            safeClose(testClient);
+            if (originalPpcbConfig == null) {
+                System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            } else {
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", originalPpcbConfig);
+            }
+        }
+    }
+
+    @Test(groups = {"circuit-breaker-misc-direct"}, timeOut = 4 * TIMEOUT)
+    public void nonCanonicalPreferredRegions_ppcbShouldStillRouteCorrectly() {
+
+        if (this.writeRegions == null || this.writeRegions.size() <= 1) {
+            throw new SkipException("Test requires multi-region account");
+        }
+
+        // Build non-canonical preferred regions: "West US 3" → "westus3", "East US" → "eastus"
+        List<String> nonCanonicalRegions = new ArrayList<>();
+        for (String region : this.writeRegions) {
+            nonCanonicalRegions.add(region.toLowerCase(Locale.ROOT).replace(" ", ""));
+        }
+
+        String firstRegionCanonicalLower = this.writeRegions.get(0).toLowerCase(Locale.ROOT);
+        String secondRegionCanonicalLower = this.writeRegions.get(1).toLowerCase(Locale.ROOT);
+
+        System.setProperty(
+            "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+            "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
+
+        CosmosClientBuilder clientBuilder = getClientBuilder()
+            .multipleWriteRegionsEnabled(true)
+            .preferredRegions(nonCanonicalRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Test only applicable to DIRECT mode");
+        }
+
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT mode is not supported with thin client");
+        }
+
+        CosmosAsyncClient asyncClient = null;
+
+        try {
+            asyncClient = clientBuilder.buildAsyncClient();
+
+            CosmosAsyncContainer container = asyncClient
+                .getDatabase(this.sharedAsyncDatabaseId)
+                .getContainer(this.sharedMultiPartitionAsyncContainerIdWhereIdIsPartitionKey);
+
+            // Bootstrap: create a test item
+            TestObject testObject = TestObject.create();
+            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+
+            // Step 1: Inject 503 (ServiceUnavailable) into the first preferred region for READ_ITEM
+            FaultInjectionCondition faultCondition = new FaultInjectionConditionBuilder()
+                .region(this.writeRegions.get(0))
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .build();
+
+            FaultInjectionServerErrorResult serverError = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .build();
+
+            FaultInjectionRule faultRule = new FaultInjectionRuleBuilder("ppcb-non-canonical-region-test-" + UUID.randomUUID())
+                .condition(faultCondition)
+                .result(serverError)
+                .hitLimit(15)
+                .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultRule)).block();
+
+            // Step 2: Issue reads until circuit breaker trips — expect failover to second region
+            boolean circuitBreakerTripped = false;
+
+            for (int i = 0; i < 20; i++) {
+                CosmosItemRequestOptions readOptions = new CosmosItemRequestOptions();
+                readOptions.setCosmosEndToEndOperationLatencyPolicyConfig(NO_END_TO_END_TIMEOUT);
+
+                CosmosItemResponse<TestObject> readResponse = container
+                    .readItem(testObject.getId(), new PartitionKey(testObject.getId()), readOptions, TestObject.class)
+                    .block();
+
+                assertThat(readResponse).isNotNull();
+                assertThat(readResponse.getStatusCode()).isEqualTo(200);
+
+                CosmosDiagnosticsContext ctx = readResponse.getDiagnostics().getDiagnosticsContext();
+
+                // Once we see only the second region contacted, the circuit breaker has tripped
+                if (ctx.getContactedRegionNames().contains(secondRegionCanonicalLower)
+                    && !ctx.getContactedRegionNames().contains(firstRegionCanonicalLower)) {
+                    circuitBreakerTripped = true;
+                    logger.info("Circuit breaker tripped at iteration {}, routing to second region: {}", i, secondRegionCanonicalLower);
+                    break;
+                }
+            }
+
+            assertThat(circuitBreakerTripped)
+                .as("PPCB should have tripped and routed reads to the second preferred region (%s) "
+                    + "even though preferred regions were passed in non-canonical form (%s)",
+                    secondRegionCanonicalLower, nonCanonicalRegions)
+                .isTrue();
+
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            if (asyncClient != null) {
+                asyncClient.close();
+            }
         }
     }
 }
