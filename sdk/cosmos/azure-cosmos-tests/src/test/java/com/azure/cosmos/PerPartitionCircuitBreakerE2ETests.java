@@ -3792,6 +3792,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 boolean hasReachedCircuitBreakingThreshold = false;
                 int executionCountAfterCircuitBreakingThresholdBreached = 0;
+                Set<String> loggedPpcbDiagnosticsPhases = new HashSet<>();
 
                 List<TestObject> testObjects = operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith;
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper
@@ -3810,6 +3811,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
                     assertPpcbSnapshotsPopulated(response, "failed operation");
+                    logPpcbDiagnosticsOnce(response, "failed operation", loggedPpcbDiagnosticsPhases);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3836,6 +3838,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
                         assertPpcbSnapshotsPopulated(response, "post-failover operation");
+                        logPpcbDiagnosticsOnce(response, "post-failover operation", loggedPpcbDiagnosticsPhases);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3903,6 +3906,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
                     assertPpcbSnapshotsPopulated(response, "post-failback operation");
+                    logPpcbDiagnosticsOnce(response, "post-failback operation", loggedPpcbDiagnosticsPhases);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3961,6 +3965,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             return response.batchResponse.getDiagnostics().getDiagnosticsContext();
         }
         return null;
+    }
+
+    private static void logPpcbDiagnosticsOnce(
+        ResponseWrapper<?> response,
+        String phase,
+        Set<String> loggedPhases) {
+
+        if (loggedPhases.add(phase)) {
+            CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
+            if (diagnosticsContext != null) {
+                logger.info("PPCB CosmosDiagnostics [{}]: {}", phase, diagnosticsContext.toJson());
+            }
+        }
     }
 
     private static void assertPpcbSnapshotsPopulated(ResponseWrapper<?> response, String phase) {
