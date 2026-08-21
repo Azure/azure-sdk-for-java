@@ -54,6 +54,45 @@ update `eng/versioning/version_client.txt`, then run from the repository root:
 python eng/versioning/update_versions.py --sr
 ```
 
+## `DP-VERSION-04`: keep changed changelog entries parseable and specific
+
+- **Rule ID:** `DP-VERSION-04`
+- **Severity:** Warning
+
+<!-- Sources: Azure SDK release policy "Change Logs"; repository
+docs/contributor/adding-a-module.md "Create the Module Directory";
+docs/contributor/typespec-quickstart.md "Release"; and
+eng/common/scripts/ChangeLog-Operations.ps1. -->
+
+Apply this rule whenever a package-root `CHANGELOG.md` is added or modified,
+regardless of change class. Do not require a changelog update when the PR does
+not change one.
+
+Every changed release entry uses a SemVer heading with `(Unreleased)` or a
+`(YYYY-MM-DD)` date, contains at least one applicable standard section
+(`Features Added`, `Breaking Changes`, `Bugs Fixed`, or `Other Changes`), and
+has meaningful content in every included section. Reject duplicate section
+headings, empty sections, generator placeholders, and a current-release
+version that disagrees with package metadata.
+
+**Correct form:** follow the Azure SDK
+[changelog guidance](https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#change-logs)
+and use the current package version with only applicable, non-empty sections.
+An `Initial release` entry is valid only for the first beta. Later entries
+describe the specific developer-visible changes in that release, including
+dependency updates when applicable. Replace the placeholders below with values
+from the reviewed package; do not emit placeholder text in a finding:
+
+```markdown
+# Release History
+
+## <current-package-version> (Unreleased)
+
+### <applicable-standard-section>
+
+- <specific developer-visible change>
+```
+
 ## `DP-BUILD-01`: declare only required dependencies with correct scope
 
 - **Rule ID:** `DP-BUILD-01`
