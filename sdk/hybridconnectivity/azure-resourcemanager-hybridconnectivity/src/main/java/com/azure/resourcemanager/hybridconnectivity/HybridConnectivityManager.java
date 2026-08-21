@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridconnectivity.fluent.HybridConnectivityMgmtClient;
 import com.azure.resourcemanager.hybridconnectivity.implementation.EndpointsImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.GenerateAwsTemplatesImpl;
+import com.azure.resourcemanager.hybridconnectivity.implementation.GenerateGcpTemplatesImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.HybridConnectivityMgmtClientBuilder;
 import com.azure.resourcemanager.hybridconnectivity.implementation.InventoriesImpl;
 import com.azure.resourcemanager.hybridconnectivity.implementation.OperationsImpl;
@@ -36,6 +37,7 @@ import com.azure.resourcemanager.hybridconnectivity.implementation.SolutionConfi
 import com.azure.resourcemanager.hybridconnectivity.implementation.SolutionTypesImpl;
 import com.azure.resourcemanager.hybridconnectivity.models.Endpoints;
 import com.azure.resourcemanager.hybridconnectivity.models.GenerateAwsTemplates;
+import com.azure.resourcemanager.hybridconnectivity.models.GenerateGcpTemplates;
 import com.azure.resourcemanager.hybridconnectivity.models.Inventories;
 import com.azure.resourcemanager.hybridconnectivity.models.Operations;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectors;
@@ -62,6 +64,8 @@ public final class HybridConnectivityManager {
     private ServiceConfigurations serviceConfigurations;
 
     private GenerateAwsTemplates generateAwsTemplates;
+
+    private GenerateGcpTemplates generateGcpTemplates;
 
     private PublicCloudConnectors publicCloudConnectors;
 
@@ -332,6 +336,18 @@ public final class HybridConnectivityManager {
             this.generateAwsTemplates = new GenerateAwsTemplatesImpl(clientObject.getGenerateAwsTemplates(), this);
         }
         return generateAwsTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateGcpTemplates.
+     * 
+     * @return Resource collection API of GenerateGcpTemplates.
+     */
+    public GenerateGcpTemplates generateGcpTemplates() {
+        if (this.generateGcpTemplates == null) {
+            this.generateGcpTemplates = new GenerateGcpTemplatesImpl(clientObject.getGenerateGcpTemplates(), this);
+        }
+        return generateGcpTemplates;
     }
 
     /**
