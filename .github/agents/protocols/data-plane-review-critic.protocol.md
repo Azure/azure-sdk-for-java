@@ -36,7 +36,9 @@ Prior workflow comment: <comment|none>
 ## Required response
 
 Copy the block below exactly without code fences or this heading. Change only
-each `<verdict>`, each `<reason>`, and the summary counts.
+each `<verdict>` and the summary counts. Keep `--` for `PASS`; replace `--`
+with one exact reason code for `DOWNGRADE` or `FAIL`. The first output line
+must remain `## Data-Plane Review Critique`.
 
 ## Data-Plane Review Critique
 
@@ -45,7 +47,7 @@ each `<verdict>`, each `<reason>`, and the summary counts.
 
 | # | Finding | Verdict | Reason |
 | --- | --- | --- | --- |
-| 1 | [<actual-rule-id>] `<actual-path:line>` | <verdict> | <reason> |
+| 1 | [<actual-rule-id>] `<actual-path:line>` | <verdict> | -- |
 
 **Summary:** <n> PASS, <n> DOWNGRADE, <n> FAIL
 ```
@@ -67,6 +69,9 @@ change row numbers, rule IDs, citations, headings, metadata, or columns.
 `unknown-rule-id`, `exception-applies`, `ci-owned`,
 `duplicate`, `over-escalated`, `weak-evidence`, `no-correct-form`,
 `harmful-fix`, and `out-of-scope`.
+
+`PASS` uses `--`. `DOWNGRADE` and `FAIL` use exactly one reason code from this
+list. Free-text reasons are invalid.
 
 ## Severity ceilings
 

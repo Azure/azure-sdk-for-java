@@ -33,8 +33,11 @@ harmful fix is `FAIL`.
 
 The dispatch ends with a populated `## Required response` skeleton. Copy that
 skeleton exactly, remove its `## Required response` heading, and change only
-the verdict and reason cells plus the summary counts. Do not add prose, code
-fences, or synonyms such as `CONFIRMED`.
+the verdict cells plus the summary counts. Keep `--` for every `PASS`; for
+`DOWNGRADE` or `FAIL`, replace `--` with exactly one protocol reason code.
+Never write explanatory text in a reason cell. The first output line must be
+exactly `## Data-Plane Review Critique`. Do not add prose, code fences, or
+synonyms such as `CONFIRMED`.
 
 Your entire response has this form:
 

@@ -78,12 +78,13 @@ workflow.
    [`protocols/data-plane-review-critic.protocol.md`](protocols/data-plane-review-critic.protocol.md).
    End the dispatch with a complete `## Required response` skeleton populated
    with the actual session SHA, finding count, and one rule-and-citation row per
-   candidate. Instruct the critic to copy it and change only each verdict,
-   reason, and the summary counts. Accept only the protocol's exact heading,
-   metadata, row count, columns, reason codes, and `PASS|DOWNGRADE|FAIL`
-   verdicts. Do not normalize synonyms such as `Confirmed`. `FAIL` drops a
-   finding and `DOWNGRADE` lowers it as directed. A malformed critique produces
-   `noop`; there is no unattended override.
+   candidate. Prepopulate every reason cell with `--`. Instruct the critic to
+   copy it, change each verdict and the summary counts, and replace `--` only
+   for `DOWNGRADE` or `FAIL` with one exact protocol reason code. Accept only
+   the protocol's exact heading, metadata, row count, columns, reason codes, and
+   `PASS|DOWNGRADE|FAIL` verdicts. Do not normalize synonyms such as
+   `Confirmed`. `FAIL` drops a finding and `DOWNGRADE` lowers it as directed. A
+   malformed critique produces `noop`; there is no unattended override.
 10. **Report.** Emit one complete report or the no-findings form from the
     skill. Do not post it.
 
