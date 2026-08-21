@@ -19,7 +19,7 @@ import java.util.List;
 @Immutable
 public final class OutboundEnvironmentEndpointInner implements JsonSerializable<OutboundEnvironmentEndpointInner> {
     /*
-     * The type of service accessed by the managed instance service, e.g., Azure Storage, Azure Active Directory, etc.
+     * The type of service accessed by the managed instance service, e.g., Azure Storage, Microsoft Entra ID, etc.
      */
     private String category;
 
@@ -36,7 +36,7 @@ public final class OutboundEnvironmentEndpointInner implements JsonSerializable<
 
     /**
      * Get the category property: The type of service accessed by the managed instance service, e.g., Azure Storage,
-     * Azure Active Directory, etc.
+     * Microsoft Entra ID, etc.
      * 
      * @return the category value.
      */

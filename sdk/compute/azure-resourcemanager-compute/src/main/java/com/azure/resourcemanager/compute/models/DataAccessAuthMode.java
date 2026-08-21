@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAuthMode> {
     /**
-     * When export/upload URL is used, the system checks if the user has an identity in Azure Active Directory and has
+     * When export/upload URL is used, the system checks if the user has an identity in Microsoft Entra ID and has
      * necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
      */
     public static final DataAccessAuthMode AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");

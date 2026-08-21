@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * Azure Active Directory administrator.
+ * Microsoft Entra ID administrator.
  */
 @Fluent
 public final class ServerAzureADAdministratorInner extends ProxyResource {
@@ -191,7 +191,7 @@ public final class ServerAzureADAdministratorInner extends ProxyResource {
     }
 
     /**
-     * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Get the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @return the azureADOnlyAuthentication value.
      */

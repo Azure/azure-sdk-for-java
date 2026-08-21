@@ -78,7 +78,7 @@ public class LakeHouseLinkedService extends LinkedService {
     private Object servicePrincipalCredentialType;
 
     /*
-     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * The credential of the service principal object in Microsoft Entra ID. If servicePrincipalCredentialType is
      * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.

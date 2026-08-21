@@ -11,7 +11,7 @@
  *
  * <p>
  * The library provides a unified way to obtain credentials for various Azure authentication
- * mechanisms, such as Azure Active Directory (AAD), shared access signatures, and API keys. It abstracts the
+ * mechanisms, such as Microsoft Entra ID (AAD), shared access signatures, and API keys. It abstracts the
  * complexities of authentication and provides a consistent programming model for accessing Azure services.
  * </p>
  *
@@ -26,15 +26,15 @@
  * authentication mechanisms supported by the library:
  * </p>
  * <ul>
- * <li>Azure Active Directory (AAD) Authentication</li>
+ * <li>Microsoft Entra ID (AAD) Authentication</li>
  * <li>Shared Access Signature (SAS) Authentication</li>
  * <li>Key Based Authentication</li>
  * </ul>
  *
- * <h2>Azure Active Directory (AAD) Authentication</h2>
+ * <h2>Microsoft Entra ID (AAD) Authentication</h2>
  *
  * <p>
- * This type of authentication allows you to authenticate using Azure Active Directory and obtain a token to access
+ * This type of authentication allows you to authenticate using Microsoft Entra ID and obtain a token to access
  * Azure resources. You can authenticate with AAD using client secrets, client certificates, or user credentials.
  * The library offers {@link com.azure.v2.core.credentials.TokenCredential} interface which is accepted as an argument
  * on the client builders in Azure SDKs where AAD authentication is supported.

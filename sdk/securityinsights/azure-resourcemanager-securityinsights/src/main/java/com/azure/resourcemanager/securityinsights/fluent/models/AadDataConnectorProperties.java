@@ -13,7 +13,7 @@ import com.azure.resourcemanager.securityinsights.models.AlertsDataTypeOfDataCon
 import java.io.IOException;
 
 /**
- * AAD (Azure Active Directory) data connector properties.
+ * AAD (Microsoft Entra ID) data connector properties.
  */
 @Fluent
 public final class AadDataConnectorProperties implements JsonSerializable<AadDataConnectorProperties> {

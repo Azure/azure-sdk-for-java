@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * AAD Profile specifies attributes for Azure Active Directory integration.
+ * AAD Profile specifies attributes for Microsoft Entra ID integration.
  */
 @Fluent
 public final class AadProfile implements JsonSerializable<AadProfile> {

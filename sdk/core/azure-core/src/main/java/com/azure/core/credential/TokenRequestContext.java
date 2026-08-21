@@ -18,7 +18,7 @@ import java.util.Objects;
  * <p>
  * The {@link TokenRequestContext} is typically used with authentication mechanisms that require more advanced
  * configurations or options, such as
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID (Azure AD)</a>
  * authentication.
  * </p>
  *

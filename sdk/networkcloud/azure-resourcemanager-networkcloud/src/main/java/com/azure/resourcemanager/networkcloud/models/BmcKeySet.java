@@ -77,7 +77,7 @@ public interface BmcKeySet {
     SystemData systemData();
 
     /**
-     * Gets the azureGroupId property: The object ID of Azure Active Directory group that all users in the list must be
+     * Gets the azureGroupId property: The object ID of Microsoft Entra ID group that all users in the list must be
      * in for access to be granted. Users that are not in the group will not have access.
      * 
      * @return the azureGroupId value.
@@ -243,10 +243,10 @@ public interface BmcKeySet {
          */
         interface WithAzureGroupId {
             /**
-             * Specifies the azureGroupId property: The object ID of Azure Active Directory group that all users in the
+             * Specifies the azureGroupId property: The object ID of Microsoft Entra ID group that all users in the
              * list must be in for access to be granted. Users that are not in the group will not have access..
              * 
-             * @param azureGroupId The object ID of Azure Active Directory group that all users in the list must be in
+             * @param azureGroupId The object ID of Microsoft Entra ID group that all users in the list must be in
              * for access to be granted. Users that are not in the group will not have access.
              * @return the next definition stage.
              */

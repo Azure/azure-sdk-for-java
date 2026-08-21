@@ -19,7 +19,7 @@ import java.util.List;
 public final class AuthorizationAccessPolicyContractProperties
     implements JsonSerializable<AuthorizationAccessPolicyContractProperties> {
     /*
-     * The allowed Azure Active Directory Application IDs
+     * The allowed Microsoft Entra ID Application IDs
      */
     private List<String> appIds;
 
@@ -40,7 +40,7 @@ public final class AuthorizationAccessPolicyContractProperties
     }
 
     /**
-     * Get the appIds property: The allowed Azure Active Directory Application IDs.
+     * Get the appIds property: The allowed Microsoft Entra ID Application IDs.
      * 
      * @return the appIds value.
      */
@@ -49,7 +49,7 @@ public final class AuthorizationAccessPolicyContractProperties
     }
 
     /**
-     * Set the appIds property: The allowed Azure Active Directory Application IDs.
+     * Set the appIds property: The allowed Microsoft Entra ID Application IDs.
      * 
      * @param appIds the appIds value to set.
      * @return the AuthorizationAccessPolicyContractProperties object itself.

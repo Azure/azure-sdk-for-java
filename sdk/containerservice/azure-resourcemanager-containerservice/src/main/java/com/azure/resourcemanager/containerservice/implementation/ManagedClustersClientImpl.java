@@ -2490,7 +2490,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2534,7 +2534,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2578,7 +2578,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2601,7 +2601,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2626,7 +2626,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2646,7 +2646,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2667,7 +2667,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2688,7 +2688,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2710,7 +2710,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2728,7 +2728,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     /**
      * Reset the AAD Profile of a managed cluster.
      * 
-     * **WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * **WARNING**: This API will be deprecated. Please see [AKS-managed Microsoft Entra ID
      * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

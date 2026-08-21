@@ -60,7 +60,7 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-The Azure Monitor Ingestion library supports Azure Active Directory authentication. The `LogsIngestionClientBuilder` can be configured to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more information on getting started, see the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client) of the Azure Monitor Ingestion library. For more information on the credential types supported in `azure-identity`, see the [Azure Identity library documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity).
+The Azure Monitor Ingestion library supports Microsoft Entra ID authentication. The `LogsIngestionClientBuilder` can be configured to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more information on getting started, see the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client) of the Azure Monitor Ingestion library. For more information on the credential types supported in `azure-identity`, see the [Azure Identity library documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity).
 
 #### Setting audience for Non-public clouds
 

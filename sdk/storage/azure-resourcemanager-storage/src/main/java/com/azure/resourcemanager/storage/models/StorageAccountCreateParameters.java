@@ -730,7 +730,7 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
     /**
      * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
-     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     * be authorized with Microsoft Entra ID (Azure AD). The default value is null, which is equivalent to true.
      * 
      * @return the allowSharedKeyAccess value.
      */
@@ -741,7 +741,7 @@ public final class StorageAccountCreateParameters implements JsonSerializable<St
     /**
      * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
      * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
-     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     * be authorized with Microsoft Entra ID (Azure AD). The default value is null, which is equivalent to true.
      * 
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountCreateParameters object itself.

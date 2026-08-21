@@ -36,7 +36,7 @@ Various documentation is available to help you get started
 
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Microsoft Entra ID token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.

@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure Active Directory Application.
+ * Microsoft Entra ID Application.
  */
 @Fluent
 public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActiveDirectoryApp> {
     /*
-     * Application ID of the Azure Active Directory Application
+     * Application ID of the Microsoft Entra ID Application
      */
     private String applicationId;
 
     /*
-     * Key used to authenticate to the Azure Active Directory Application
+     * Key used to authenticate to the Microsoft Entra ID Application
      */
     private String appKey;
 
@@ -43,7 +43,7 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
     }
 
     /**
-     * Get the applicationId property: Application ID of the Azure Active Directory Application.
+     * Get the applicationId property: Application ID of the Microsoft Entra ID Application.
      * 
      * @return the applicationId value.
      */
@@ -52,7 +52,7 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
     }
 
     /**
-     * Set the applicationId property: Application ID of the Azure Active Directory Application.
+     * Set the applicationId property: Application ID of the Microsoft Entra ID Application.
      * 
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApp object itself.
@@ -63,7 +63,7 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
     }
 
     /**
-     * Get the appKey property: Key used to authenticate to the Azure Active Directory Application.
+     * Get the appKey property: Key used to authenticate to the Microsoft Entra ID Application.
      * 
      * @return the appKey value.
      */
@@ -72,7 +72,7 @@ public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActi
     }
 
     /**
-     * Set the appKey property: Key used to authenticate to the Azure Active Directory Application.
+     * Set the appKey property: Key used to authenticate to the Microsoft Entra ID Application.
      * 
      * @param appKey the appKey value to set.
      * @return the AzureActiveDirectoryApp object itself.

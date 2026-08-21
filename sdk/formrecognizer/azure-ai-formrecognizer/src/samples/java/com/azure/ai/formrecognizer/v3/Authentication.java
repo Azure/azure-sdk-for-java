@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Samples for two supported methods of authentication in Form Recognizer and Form Training clients:
  * 1) Use a Form Recognizer API key with AzureKeyCredential from azure.core.credentials
- * 2) Use a token credential from azure-identity to authenticate with Azure Active Directory
+ * 2) Use a token credential from azure-identity to authenticate with Microsoft Entra ID
  */
 public class Authentication {
     /**
@@ -42,11 +42,11 @@ public class Authentication {
 
         // Form recognizer client: Key credential
         authenticationWithKeyCredentialFormRecognizerClient();
-        // Form recognizer client: Azure Active Directory
+        // Form recognizer client: Microsoft Entra ID
         authenticationWithAzureActiveDirectoryFormRecognizerClient();
         // Form training client: Key credential
         authenticationWithKeyCredentialFormTrainingClient();
-        // Form training client: Azure Active Directory
+        // Form training client: Microsoft Entra ID
         authenticationWithAzureActiveDirectoryFormTrainingClient();
     }
 

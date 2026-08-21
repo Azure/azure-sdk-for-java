@@ -25,28 +25,28 @@ public interface UploadCertificateResponse {
     String resourceId();
 
     /**
-     * Gets the aadAuthority property: Azure Active Directory tenant authority.
+     * Gets the aadAuthority property: Microsoft Entra ID tenant authority.
      * 
      * @return the aadAuthority value.
      */
     String aadAuthority();
 
     /**
-     * Gets the aadTenantId property: Azure Active Directory tenant ID.
+     * Gets the aadTenantId property: Microsoft Entra ID tenant ID.
      * 
      * @return the aadTenantId value.
      */
     String aadTenantId();
 
     /**
-     * Gets the servicePrincipalClientId property: Azure Active Directory service principal client ID.
+     * Gets the servicePrincipalClientId property: Microsoft Entra ID service principal client ID.
      * 
      * @return the servicePrincipalClientId value.
      */
     String servicePrincipalClientId();
 
     /**
-     * Gets the servicePrincipalObjectId property: Azure Active Directory service principal object ID.
+     * Gets the servicePrincipalObjectId property: Microsoft Entra ID service principal object ID.
      * 
      * @return the servicePrincipalObjectId value.
      */

@@ -17,7 +17,7 @@ public class DeleteUserSample {
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         
-        // you can retrieve your object id by going to Azure Active Directory and finding your profile
+        // you can retrieve your object id by going to Microsoft Entra ID and finding your profile
         String aadObjectId = "<YOUR AAD ID>";
         Response<Void> response = confidentialLedgerClient.deleteUserWithResponse(aadObjectId, requestOptions);
     }

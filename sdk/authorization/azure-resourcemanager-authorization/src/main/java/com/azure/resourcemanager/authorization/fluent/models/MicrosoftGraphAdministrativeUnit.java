@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents an administrative unit.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -59,7 +59,7 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
     private List<MicrosoftGraphExtension> extensions;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -200,7 +200,7 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -210,7 +210,7 @@ public final class MicrosoftGraphAdministrativeUnit extends MicrosoftGraphDirect
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

@@ -14,7 +14,7 @@ public final class ServerAzureADAdministratorsGetSamples {
      * x-ms-original-file: 2025-01-01/AdministratorGet.json
      */
     /**
-     * Sample code: Gets a Azure Active Directory administrator.
+     * Sample code: Gets a Microsoft Entra ID administrator.
      * 
      * @param manager Entry point to SqlServerManager.
      */

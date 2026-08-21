@@ -14,7 +14,7 @@ public final class ServerAzureADAdministratorsDeleteSamples {
      * x-ms-original-file: 2025-01-01/AdministratorDelete.json
      */
     /**
-     * Sample code: Delete Azure Active Directory administrator.
+     * Sample code: Delete Microsoft Entra ID administrator.
      * 
      * @param manager Entry point to SqlServerManager.
      */

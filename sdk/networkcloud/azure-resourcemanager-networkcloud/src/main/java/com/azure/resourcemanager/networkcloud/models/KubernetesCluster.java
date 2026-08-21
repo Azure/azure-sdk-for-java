@@ -76,7 +76,7 @@ public interface KubernetesCluster {
     SystemData systemData();
 
     /**
-     * Gets the aadConfiguration property: The Azure Active Directory Integration properties.
+     * Gets the aadConfiguration property: The Microsoft Entra ID Integration properties.
      * 
      * @return the aadConfiguration value.
      */
@@ -404,9 +404,9 @@ public interface KubernetesCluster {
          */
         interface WithAadConfiguration {
             /**
-             * Specifies the aadConfiguration property: The Azure Active Directory Integration properties..
+             * Specifies the aadConfiguration property: The Microsoft Entra ID Integration properties..
              * 
-             * @param aadConfiguration The Azure Active Directory Integration properties.
+             * @param aadConfiguration The Microsoft Entra ID Integration properties.
              * @return the next definition stage.
              */
             WithCreate withAadConfiguration(AadConfiguration aadConfiguration);

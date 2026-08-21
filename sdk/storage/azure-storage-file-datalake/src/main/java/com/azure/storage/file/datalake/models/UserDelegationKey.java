@@ -11,12 +11,12 @@ import java.time.OffsetDateTime;
  */
 public final class UserDelegationKey {
     /*
-     * The Azure Active Directory object ID in GUID format.
+     * The Microsoft Entra ID object ID in GUID format.
      */
     private String signedObjectId;
 
     /*
-     * The Azure Active Directory tenant ID in GUID format
+     * The Microsoft Entra ID tenant ID in GUID format
      */
     private String signedTenantId;
 
@@ -57,7 +57,7 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Get the signedObjectId property: The Microsoft Entra ID object ID in GUID format.
      *
      * @return the signedObjectId value.
      */
@@ -66,7 +66,7 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedObjectId property: The Azure Active Directory object ID in GUID format.
+     * Set the signedObjectId property: The Microsoft Entra ID object ID in GUID format.
      *
      * @param signedObjectId the signedObjectId value to set.
      * @return the UserDelegationKey object itself.
@@ -77,7 +77,7 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Get the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Get the signedTenantId property: The Microsoft Entra ID tenant ID in GUID format.
      *
      * @return the signedTenantId value.
      */
@@ -86,7 +86,7 @@ public final class UserDelegationKey {
     }
 
     /**
-     * Set the signedTenantId property: The Azure Active Directory tenant ID in GUID format.
+     * Set the signedTenantId property: The Microsoft Entra ID tenant ID in GUID format.
      *
      * @param signedTenantId the signedTenantId value to set.
      * @return the UserDelegationKey object itself.

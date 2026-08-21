@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * This example shows how to use audience-based authentication with Azure Storage fpr blobs. Audience-based
  * authentication requires AAD authentication. The audience is to be used when requesting a token from
- * Azure Active Directory (AAD). Note: This audience only has an effect when authenticating a TokenCredential.
+ * Microsoft Entra ID (AAD). Note: This audience only has an effect when authenticating a TokenCredential.
  */
 public class BlobAudienceExample {
 

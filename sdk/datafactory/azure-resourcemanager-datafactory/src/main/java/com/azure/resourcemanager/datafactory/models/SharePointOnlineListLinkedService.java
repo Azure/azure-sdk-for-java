@@ -178,7 +178,7 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Get the servicePrincipalKey property: The client secret of your application registered in Microsoft Entra ID.
      * Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalKey value.
@@ -188,7 +188,7 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalKey property: The client secret of your application registered in Azure Active Directory.
+     * Set the servicePrincipalKey property: The client secret of your application registered in Microsoft Entra ID.
      * Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
@@ -231,7 +231,7 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @return the servicePrincipalEmbeddedCert value.
      */
@@ -241,7 +241,7 @@ public final class SharePointOnlineListLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
-     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * registered in Microsoft Entra ID. Type: string (or Expression with resultType string).
      * 
      * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
      * @return the SharePointOnlineListLinkedService object itself.

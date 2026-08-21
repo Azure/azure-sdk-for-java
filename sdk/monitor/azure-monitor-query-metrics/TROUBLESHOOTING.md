@@ -66,7 +66,7 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Query Metrics supports Azure Active Directory authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
+Azure Monitor Query Metrics supports Microsoft Entra ID authentication. MetricsClientBuilder has a method to set the `credential`. To provide a valid credential, you can use
 `azure-identity` dependency. For more details on getting started, refer to
 the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query-metrics#Synchronous-clients)
 of Azure Monitor Query Metrics library. You can also refer to

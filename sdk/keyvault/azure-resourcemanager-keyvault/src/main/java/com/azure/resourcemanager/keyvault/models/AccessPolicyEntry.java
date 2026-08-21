@@ -21,12 +21,12 @@ import java.util.UUID;
 @Fluent
 public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEntry> {
     /*
-     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+     * The Microsoft Entra ID tenant ID that should be used for authenticating requests to the key vault.
      */
     private UUID tenantId;
 
     /*
-     * The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault.
+     * The object ID of a user, service principal or security group in the Microsoft Entra ID tenant for the vault.
      * The object ID must be unique for the list of access policies.
      */
     private String objectId;
@@ -48,7 +48,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
     }
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Get the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the key vault.
      * 
      * @return the tenantId value.
@@ -58,7 +58,7 @@ public final class AccessPolicyEntry implements JsonSerializable<AccessPolicyEnt
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * Set the tenantId property: The Microsoft Entra ID tenant ID that should be used for authenticating requests
      * to the key vault.
      * 
      * @param tenantId the tenantId value to set.

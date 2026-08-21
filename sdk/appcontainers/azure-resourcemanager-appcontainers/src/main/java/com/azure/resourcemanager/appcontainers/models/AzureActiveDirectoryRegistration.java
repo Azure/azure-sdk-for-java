@@ -12,13 +12,13 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The configuration settings of the Azure Active Directory app registration.
+ * The configuration settings of the Microsoft Entra ID app registration.
  */
 @Fluent
 public final class AzureActiveDirectoryRegistration implements JsonSerializable<AzureActiveDirectoryRegistration> {
     /*
      * The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
@@ -27,7 +27,7 @@ public final class AzureActiveDirectoryRegistration implements JsonSerializable<
 
     /*
      * The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
@@ -68,7 +68,7 @@ public final class AzureActiveDirectoryRegistration implements JsonSerializable<
     /**
      * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
      * tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
@@ -82,7 +82,7 @@ public final class AzureActiveDirectoryRegistration implements JsonSerializable<
     /**
      * Set the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
      * tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * When using Microsoft Entra ID, this value is the URI of the directory tenant, e.g.
      * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
@@ -97,7 +97,7 @@ public final class AzureActiveDirectoryRegistration implements JsonSerializable<
 
     /**
      * Get the clientId property: The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      * 
@@ -109,7 +109,7 @@ public final class AzureActiveDirectoryRegistration implements JsonSerializable<
 
     /**
      * Set the clientId property: The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Microsoft Entra ID or
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
      * 

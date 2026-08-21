@@ -41,7 +41,7 @@ public final class IdentityProviderDetails implements JsonSerializable<IdentityP
     private String audience;
 
     /*
-     * The base authority for Azure Active Directory authentication.
+     * The base authority for Microsoft Entra ID authentication.
      */
     private String aadAuthority;
 
@@ -140,7 +140,7 @@ public final class IdentityProviderDetails implements JsonSerializable<IdentityP
     }
 
     /**
-     * Get the aadAuthority property: The base authority for Azure Active Directory authentication.
+     * Get the aadAuthority property: The base authority for Microsoft Entra ID authentication.
      * 
      * @return the aadAuthority value.
      */
@@ -149,7 +149,7 @@ public final class IdentityProviderDetails implements JsonSerializable<IdentityP
     }
 
     /**
-     * Set the aadAuthority property: The base authority for Azure Active Directory authentication.
+     * Set the aadAuthority property: The base authority for Microsoft Entra ID authentication.
      * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityProviderDetails object itself.

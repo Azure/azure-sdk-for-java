@@ -34,12 +34,12 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     private String androidSecurityPatchLevel;
 
     /*
-     * The unique identifier for the Azure Active Directory device. Read only.
+     * The unique identifier for the Microsoft Entra ID device. Read only.
      */
     private String azureADDeviceId;
 
     /*
-     * Whether the device is Azure Active Directory registered.
+     * Whether the device is Microsoft Entra ID registered.
      */
     private Boolean azureADRegistered;
 
@@ -267,7 +267,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      * Device categories provides a way to organize your devices. Using device categories, company administrators can
      * define their own categories that make sense to their company. These categories can then be applied to a device in
      * the Intune Azure console or selected by a user during device enrollment. You can filter reports and create
-     * dynamic Azure Active Directory device groups based on device categories.
+     * dynamic Microsoft Entra ID device groups based on device categories.
      */
     private MicrosoftGraphDeviceCategory deviceCategory;
 
@@ -323,7 +323,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the azureADDeviceId property: The unique identifier for the Azure Active Directory device. Read only.
+     * Get the azureADDeviceId property: The unique identifier for the Microsoft Entra ID device. Read only.
      * 
      * @return the azureADDeviceId value.
      */
@@ -332,7 +332,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the azureADDeviceId property: The unique identifier for the Azure Active Directory device. Read only.
+     * Set the azureADDeviceId property: The unique identifier for the Microsoft Entra ID device. Read only.
      * 
      * @param azureADDeviceId the azureADDeviceId value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
@@ -343,7 +343,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the azureADRegistered property: Whether the device is Azure Active Directory registered.
+     * Get the azureADRegistered property: Whether the device is Microsoft Entra ID registered.
      * 
      * @return the azureADRegistered value.
      */
@@ -352,7 +352,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the azureADRegistered property: Whether the device is Azure Active Directory registered.
+     * Set the azureADRegistered property: Whether the device is Microsoft Entra ID registered.
      * 
      * @param azureADRegistered the azureADRegistered value to set.
      * @return the MicrosoftGraphManagedDevice object itself.
@@ -1270,7 +1270,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      * Get the deviceCategory property: Device categories provides a way to organize your devices. Using device
      * categories, company administrators can define their own categories that make sense to their company. These
      * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * enrollment. You can filter reports and create dynamic Microsoft Entra ID device groups based on device
      * categories.
      * 
      * @return the deviceCategory value.
@@ -1283,7 +1283,7 @@ public final class MicrosoftGraphManagedDevice extends MicrosoftGraphEntity {
      * Set the deviceCategory property: Device categories provides a way to organize your devices. Using device
      * categories, company administrators can define their own categories that make sense to their company. These
      * categories can then be applied to a device in the Intune Azure console or selected by a user during device
-     * enrollment. You can filter reports and create dynamic Azure Active Directory device groups based on device
+     * enrollment. You can filter reports and create dynamic Microsoft Entra ID device groups based on device
      * categories.
      * 
      * @param deviceCategory the deviceCategory value to set.

@@ -51,7 +51,7 @@ public interface Server {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: The Azure Active Directory identity of the server.
+     * Gets the identity property: The Microsoft Entra ID identity of the server.
      * 
      * @return the identity value.
      */
@@ -304,9 +304,9 @@ public interface Server {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The Azure Active Directory identity of the server..
+             * Specifies the identity property: The Microsoft Entra ID identity of the server..
              * 
-             * @param identity The Azure Active Directory identity of the server.
+             * @param identity The Microsoft Entra ID identity of the server.
              * @return the next definition stage.
              */
             WithCreate withIdentity(ResourceIdentity identity);
@@ -378,9 +378,9 @@ public interface Server {
          */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The Azure Active Directory identity of the server..
+             * Specifies the identity property: The Microsoft Entra ID identity of the server..
              * 
-             * @param identity The Azure Active Directory identity of the server.
+             * @param identity The Microsoft Entra ID identity of the server.
              * @return the next definition stage.
              */
             Update withIdentity(ResourceIdentity identity);

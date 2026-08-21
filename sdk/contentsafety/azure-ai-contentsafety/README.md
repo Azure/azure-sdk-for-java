@@ -62,7 +62,7 @@ BlocklistClient blocklistClient = new BlocklistClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 ```
-#### Create a ContentSafetyClient/BlocklistClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
+#### Create a ContentSafetyClient/BlocklistClient with Microsoft Entra ID token credential
 - Step 1: Enable Microsoft Entra ID for your resource   
 Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
   The main steps are:
@@ -325,4 +325,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [authenticate_with_microsoft_entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
 [text_severity_levels]: https://learn.microsoft.com/azure/ai-services/content-safety/concepts/harm-categories?tabs=definitions#text-content
 [image_severity_levels]: https://learn.microsoft.com/azure/ai-services/content-safety/concepts/harm-categories?tabs=definitions#image-content
-

@@ -28,7 +28,7 @@ public class IdentityProviderBaseParameters implements JsonSerializable<Identity
     private String signinTenant;
 
     /*
-     * List of Allowed Tenants when configuring Azure Active Directory login.
+     * List of Allowed Tenants when configuring Microsoft Entra ID login.
      */
     private List<String> allowedTenants;
 
@@ -109,7 +109,7 @@ public class IdentityProviderBaseParameters implements JsonSerializable<Identity
     }
 
     /**
-     * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     * Get the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID login.
      * 
      * @return the allowedTenants value.
      */
@@ -118,7 +118,7 @@ public class IdentityProviderBaseParameters implements JsonSerializable<Identity
     }
 
     /**
-     * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     * Set the allowedTenants property: List of Allowed Tenants when configuring Microsoft Entra ID login.
      * 
      * @param allowedTenants the allowedTenants value to set.
      * @return the IdentityProviderBaseParameters object itself.

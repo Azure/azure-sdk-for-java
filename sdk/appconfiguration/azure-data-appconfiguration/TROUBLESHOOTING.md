@@ -104,7 +104,7 @@ A scenario of receiving HTTP status code 429 response can be found at
 
 ### Authentication errors
 
-Azure App Configuration supports Azure Active Directory authentication. [ConfigurationClientBuilder][configuration_client_builder]
+Azure App Configuration supports Microsoft Entra ID authentication. [ConfigurationClientBuilder][configuration_client_builder]
 has method to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more 
 details on getting started, refer to the [README][how_to_create_appconfig_client] of Azure App Configuration library. 
 You can also refer to the [Azure Identity documentation][identity_doc] for more details on the various types of 

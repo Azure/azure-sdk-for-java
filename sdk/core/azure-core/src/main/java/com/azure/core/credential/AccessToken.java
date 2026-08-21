@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  *
  * <p>
  * An Access Token is a security token that is issued by an authentication source, such as
- * Azure Active Directory (AAD), and it represents the authorization to access a specific resource or service.
+ * Microsoft Entra ID (AAD), and it represents the authorization to access a specific resource or service.
  * It is typically used to authenticate and authorize requests made to Azure services.
  * </p>
  *

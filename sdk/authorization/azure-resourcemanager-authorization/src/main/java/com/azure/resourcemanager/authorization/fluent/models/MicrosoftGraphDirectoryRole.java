@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents a directory role.
  * <p>
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
@@ -52,7 +52,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     private List<MicrosoftGraphScopedRoleMembership> scopedMembers;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+     * Represents an Microsoft Entra ID object. The directoryObject type is the base type for many other directory
      * entity types.
      */
     private Map<String, Object> additionalProperties;
@@ -170,7 +170,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Get the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @return the additionalProperties value.
@@ -180,7 +180,7 @@ public final class MicrosoftGraphDirectoryRole extends MicrosoftGraphDirectoryOb
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
+     * Set the additionalProperties property: Represents an Microsoft Entra ID object. The directoryObject type is
      * the base type for many other directory entity types.
      * 
      * @param additionalProperties the additionalProperties value to set.

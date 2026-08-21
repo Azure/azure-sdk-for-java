@@ -44,7 +44,7 @@ public final class OutboundNetworkDependenciesEndpointProperties
 
     /**
      * Get the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
-     * Azure SQL Database, and Azure Active Directory.
+     * Azure SQL Database, and Microsoft Entra ID.
      * 
      * @return the category value.
      */
@@ -54,7 +54,7 @@ public final class OutboundNetworkDependenciesEndpointProperties
 
     /**
      * Set the category property: The type of service accessed by the Kusto Service Environment, e.g., Azure Storage,
-     * Azure SQL Database, and Azure Active Directory.
+     * Azure SQL Database, and Microsoft Entra ID.
      * 
      * @param category the category value to set.
      * @return the OutboundNetworkDependenciesEndpointProperties object itself.

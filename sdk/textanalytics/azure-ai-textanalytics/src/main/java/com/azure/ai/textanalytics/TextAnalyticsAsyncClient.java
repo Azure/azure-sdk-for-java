@@ -90,7 +90,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * to connect to the service.</p>
  * <ol>
  *   <li>Azure Key Credential, see {@link TextAnalyticsClientBuilder#credential(AzureKeyCredential) AzureKeyCredential}.</li>
- *   <li>Azure Active Directory, see {@link TextAnalyticsClientBuilder#credential(TokenCredential) TokenCredential}.</li>
+ *   <li>Microsoft Entra ID, see {@link TextAnalyticsClientBuilder#credential(TokenCredential) TokenCredential}.</li>
  * </ol>
  *
  * <p><strong>Sample: Construct Asynchronous Text Analytics Client with Azure Key Credential</strong></p>

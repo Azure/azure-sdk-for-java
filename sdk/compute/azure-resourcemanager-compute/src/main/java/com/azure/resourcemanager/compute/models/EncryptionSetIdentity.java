@@ -54,7 +54,7 @@ public final class EncryptionSetIdentity implements JsonSerializable<EncryptionS
     /**
      * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
      * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
-     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
+     * subscription to a new Microsoft Entra ID tenant; it will cause the encrypted resources to lose access to the
      * keys.
      * 
      * @return the type value.
@@ -66,7 +66,7 @@ public final class EncryptionSetIdentity implements JsonSerializable<EncryptionS
     /**
      * Set the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
      * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
-     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
+     * subscription to a new Microsoft Entra ID tenant; it will cause the encrypted resources to lose access to the
      * keys.
      * 
      * @param type the type value to set.

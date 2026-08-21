@@ -54,7 +54,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     private BackupMode backupMode;
 
     /*
-     * Azure Active Directory domain name in the format of 'contoso.com' for federated Azure AD or
+     * Microsoft Entra ID domain name in the format of 'contoso.com' for federated Azure AD or
      * 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected
      */
     private String aadDomainName;
@@ -214,7 +214,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     }
 
     /**
-     * Get the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Get the aadDomainName property: Microsoft Entra ID domain name in the format of 'contoso.com' for federated
      * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
      * 
      * @return the aadDomainName value.
@@ -224,7 +224,7 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     }
 
     /**
-     * Set the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Set the aadDomainName property: Microsoft Entra ID domain name in the format of 'contoso.com' for federated
      * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
      * 
      * @param aadDomainName the aadDomainName value to set.

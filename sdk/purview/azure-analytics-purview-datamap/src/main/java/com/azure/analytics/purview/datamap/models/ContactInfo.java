@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class ContactInfo implements JsonSerializable<ContactInfo> {
     /*
-     * Azure Active Directory object Id.
+     * Microsoft Entra ID object Id.
      */
     @Generated
     private String id;
@@ -37,7 +37,7 @@ public final class ContactInfo implements JsonSerializable<ContactInfo> {
     }
 
     /**
-     * Get the id property: Azure Active Directory object Id.
+     * Get the id property: Microsoft Entra ID object Id.
      * 
      * @return the id value.
      */
@@ -47,7 +47,7 @@ public final class ContactInfo implements JsonSerializable<ContactInfo> {
     }
 
     /**
-     * Set the id property: Azure Active Directory object Id.
+     * Set the id property: Microsoft Entra ID object Id.
      * 
      * @param id the id value to set.
      * @return the ContactInfo object itself.

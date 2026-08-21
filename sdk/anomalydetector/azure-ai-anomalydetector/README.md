@@ -46,9 +46,9 @@ Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the A
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 
-#### Create AnomalyDetectorClient with Azure Active Directory Credential
+#### Create AnomalyDetectorClient with Microsoft Entra ID Credential
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional
+You can authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity]. Note that regional
 endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order
 to use this type of authentication.
 

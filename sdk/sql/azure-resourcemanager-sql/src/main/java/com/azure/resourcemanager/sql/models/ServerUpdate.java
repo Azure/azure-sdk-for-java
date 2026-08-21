@@ -316,7 +316,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
     }
 
     /**
-     * Get the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * Get the administrators property: The Microsoft Entra ID administrator can be utilized during server creation
      * and for server updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 
@@ -327,7 +327,7 @@ public final class ServerUpdate implements JsonSerializable<ServerUpdate> {
     }
 
     /**
-     * Set the administrators property: The Azure Active Directory administrator can be utilized during server creation
+     * Set the administrators property: The Microsoft Entra ID administrator can be utilized during server creation
      * and for server updates, except for the azureADOnlyAuthentication property. To update the
      * azureADOnlyAuthentication property, individual API must be used.
      * 

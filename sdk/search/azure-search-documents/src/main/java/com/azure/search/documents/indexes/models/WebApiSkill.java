@@ -58,7 +58,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * Applies to custom skills that connect to external code in an Azure function or some other application that
      * provides the transformations. This value should be the application ID created for the function or app when it was
-     * registered with Azure Active Directory. When specified, the custom skill connects to the function or app using a
+     * registered with Microsoft Entra ID. When specified, the custom skill connects to the function or app using a
      * managed ID (either system or user-assigned) of the search service and the access token of the function or app,
      * using this value as the resource id for creating the scope of the access token.
      */
@@ -210,7 +210,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
      * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
+     * function or app when it was registered with Microsoft Entra ID. When specified, the custom skill connects to
      * the function or app using a managed ID (either system or user-assigned) of the search service and the access
      * token of the function or app, using this value as the resource id for creating the scope of the access token.
      *
@@ -224,7 +224,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /**
      * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
      * some other application that provides the transformations. This value should be the application ID created for the
-     * function or app when it was registered with Azure Active Directory. When specified, the custom skill connects to
+     * function or app when it was registered with Microsoft Entra ID. When specified, the custom skill connects to
      * the function or app using a managed ID (either system or user-assigned) of the search service and the access
      * token of the function or app, using this value as the resource id for creating the scope of the access token.
      *

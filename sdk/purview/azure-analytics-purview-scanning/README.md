@@ -34,7 +34,7 @@ For more information about creating the account see [here][create_azure_purview_
 
 
 ### Authenticate the client
-In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure Purview service, your client must present an Microsoft Entra ID bearer token to the service.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
@@ -43,9 +43,9 @@ Set this variable as described in the [Learn documentation][customize_defaultAzu
 You can find more ways to authenticate with [azure-identity][azure_identity].
 
 
-#### Create SystemScanRulesetsClient with Azure Active Directory Credential
+#### Create SystemScanRulesetsClient with Microsoft Entra ID Credential
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+You can authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity].
 
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 

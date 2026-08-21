@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Describes the Azure Active Directory application credentials required to access an Azure Key Vault.
+ * Describes the Microsoft Entra ID application credentials required to access an Azure Key Vault.
  */
 @Fluent
 public final class AzureActiveDirectoryApplicationCredentials

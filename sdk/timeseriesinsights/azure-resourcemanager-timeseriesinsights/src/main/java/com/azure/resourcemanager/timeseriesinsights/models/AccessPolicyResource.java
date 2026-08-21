@@ -34,7 +34,7 @@ public interface AccessPolicyResource {
     String type();
 
     /**
-     * Gets the principalObjectId property: The objectId of the principal in Azure Active Directory.
+     * Gets the principalObjectId property: The objectId of the principal in Microsoft Entra ID.
      * 
      * @return the principalObjectId value.
      */
@@ -127,9 +127,9 @@ public interface AccessPolicyResource {
          */
         interface WithPrincipalObjectId {
             /**
-             * Specifies the principalObjectId property: The objectId of the principal in Azure Active Directory..
+             * Specifies the principalObjectId property: The objectId of the principal in Microsoft Entra ID..
              * 
-             * @param principalObjectId The objectId of the principal in Azure Active Directory.
+             * @param principalObjectId The objectId of the principal in Microsoft Entra ID.
              * @return the next definition stage.
              */
             WithCreate withPrincipalObjectId(String principalObjectId);

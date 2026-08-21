@@ -254,7 +254,7 @@ public final class ClustersCreateSamples {
      * x-ms-original-file: 2023-03-02-preview/ClusterCreateWithAAD.json
      */
     /**
-     * Sample code: Create a new cluster with Azure Active Directory Authentication.
+     * Sample code: Create a new cluster with Microsoft Entra ID Authentication.
      * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */

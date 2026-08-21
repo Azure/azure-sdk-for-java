@@ -56,7 +56,7 @@
  * <ol>
  *   <li>Azure Key Credential, see {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder#credential(
  *   com.azure.core.credential.AzureKeyCredential) AzureKeyCredential}.</li>
- *   <li>Azure Active Directory, see {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder#credential(
+ *   <li>Microsoft Entra ID, see {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder#credential(
  *   com.azure.core.credential.TokenCredential) TokenCredential}.</li>
  * </ol>
  *

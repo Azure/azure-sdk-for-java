@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 /**
- * Type of Azure Active Directory Managed Identity.
+ * Type of Microsoft Entra ID Managed Identity.
  */
 public enum CaptureIdentityType {
     /**

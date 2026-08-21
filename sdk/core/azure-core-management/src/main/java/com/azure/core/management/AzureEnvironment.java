@@ -317,7 +317,7 @@ public final class AzureEnvironment {
         GALLERY("galleryEndpointUrl"),
         /** Active Directory authentication endpoint. */
         ACTIVE_DIRECTORY("activeDirectoryEndpointUrl"),
-        /** Azure Active Directory Graph APIs endpoint. */
+        /** Microsoft Entra ID Graph APIs endpoint. */
         GRAPH("activeDirectoryGraphResourceId"),
         /** Key Vault DNS suffix. */
         KEYVAULT("keyVaultDnsSuffix"),

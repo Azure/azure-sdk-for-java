@@ -44,7 +44,7 @@ public final class ServerExternalAdministrator implements JsonSerializable<Serve
     private UUID tenantId;
 
     /*
-     * Azure Active Directory only Authentication enabled.
+     * Microsoft Entra ID only Authentication enabled.
      */
     private Boolean azureADOnlyAuthentication;
 
@@ -155,7 +155,7 @@ public final class ServerExternalAdministrator implements JsonSerializable<Serve
     }
 
     /**
-     * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Get the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @return the azureADOnlyAuthentication value.
      */
@@ -164,7 +164,7 @@ public final class ServerExternalAdministrator implements JsonSerializable<Serve
     }
 
     /**
-     * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
+     * Set the azureADOnlyAuthentication property: Microsoft Entra ID only Authentication enabled.
      * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ServerExternalAdministrator object itself.

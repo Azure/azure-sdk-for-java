@@ -28,19 +28,19 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 
 ### Authenticate the client
 
-#### Using Azure Active Directory
+#### Using Microsoft Entra ID
 
-In order to interact with the Azure Confidential Ledger service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure Confidential Ledger service, your client must present a Microsoft Entra ID bearer token to the service.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Using a client certificate
 
-As an alternative to Azure Active Directory, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose. This is not the recommended approach for anyone new to the service. 
+As an alternative to Microsoft Entra ID, clients may choose to use a client certificate to authenticate via mutual TLS. `CertificateCredential` may be used for this purpose. This is not the recommended approach for anyone new to the service. 
 
-#### Create LedgerBaseClient with Azure Active Directory Credential
+#### Create LedgerBaseClient with Microsoft Entra ID Credential
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+You can authenticate with Microsoft Entra ID using the [Azure Identity library][azure_identity].
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
 We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
@@ -136,4 +136,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
 [identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
-

@@ -19,12 +19,12 @@ import java.util.UUID;
 @Immutable
 public final class AccountEntityProperties extends EntityCommonProperties {
     /*
-     * The Azure Active Directory tenant id.
+     * The Microsoft Entra ID tenant id.
      */
     private String aadTenantId;
 
     /*
-     * The Azure Active Directory user id.
+     * The Microsoft Entra ID user id.
      */
     private String aadUserId;
 
@@ -60,7 +60,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     private UUID objectGuid;
 
     /*
-     * The Azure Active Directory Passport User ID.
+     * The Microsoft Entra ID Passport User ID.
      */
     private String puid;
 
@@ -97,7 +97,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the aadTenantId property: The Azure Active Directory tenant id.
+     * Get the aadTenantId property: The Microsoft Entra ID tenant id.
      * 
      * @return the aadTenantId value.
      */
@@ -106,7 +106,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the aadUserId property: The Azure Active Directory user id.
+     * Get the aadUserId property: The Microsoft Entra ID user id.
      * 
      * @return the aadUserId value.
      */
@@ -173,7 +173,7 @@ public final class AccountEntityProperties extends EntityCommonProperties {
     }
 
     /**
-     * Get the puid property: The Azure Active Directory Passport User ID.
+     * Get the puid property: The Microsoft Entra ID Passport User ID.
      * 
      * @return the puid value.
      */
