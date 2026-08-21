@@ -1192,6 +1192,10 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     request,
                     collectionRid,
                     partitionKeyRange)).isEmpty();
+                assertThat(request.requestContext.getPerPartitionCircuitBreakerInfoHolder()
+                    .getPerPartitionCircuitBreakerInfoHolder()
+                    .get("East US")
+                    .getUnavailableSince()).isEqualTo(Instant.MAX);
                 assertThat(new ObjectMapper().writeValueAsString(
                     request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
                     .contains("\"outcome\":\"Succeeded\"")

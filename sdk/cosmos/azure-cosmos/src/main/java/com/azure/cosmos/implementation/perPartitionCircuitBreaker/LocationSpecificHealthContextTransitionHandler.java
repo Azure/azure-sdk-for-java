@@ -246,7 +246,7 @@ public class LocationSpecificHealthContextTransitionHandler {
             case HealthyTentative:
 
                 return builder
-                    .withUnavailableSince(Instant.now())
+                    .withUnavailableSince(Instant.MAX)
                     .withLocationHealthStatus(LocationHealthStatus.HealthyTentative)
                     .withExceptionThresholdBreached(false)
                     .build();
