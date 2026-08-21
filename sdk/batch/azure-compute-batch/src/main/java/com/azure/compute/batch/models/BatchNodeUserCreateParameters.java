@@ -81,18 +81,6 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     }
 
     /**
-     * Set the admin property: Whether the Account should be an administrator on the Compute Node. The default value
-     * is false.
-     *
-     * @param admin the admin value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
-     */
-    public BatchNodeUserCreateParameters setAdmin(Boolean admin) {
-        this.admin = admin;
-        return this;
-    }
-
-    /**
      * Get the expiryTime property: The time at which the Account should expire. If omitted, the default is 1 day from
      * the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
      *
@@ -234,4 +222,17 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
      */
     @Generated
     private Boolean admin;
+
+    /**
+     * Set the admin property: Whether the Account should be an administrator on the Compute Node. The default value is
+     * false.
+     *
+     * @param admin the admin value to set.
+     * @return the BatchNodeUserCreateParameters object itself.
+     */
+    @Generated
+    public BatchNodeUserCreateParameters setAdmin(Boolean admin) {
+        this.admin = admin;
+        return this;
+    }
 }

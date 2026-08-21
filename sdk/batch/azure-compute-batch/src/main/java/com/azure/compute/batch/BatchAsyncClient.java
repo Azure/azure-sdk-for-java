@@ -2300,7 +2300,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -2565,7 +2565,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -4225,7 +4225,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -4377,7 +4377,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -10739,7 +10739,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -10843,7 +10843,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>
@@ -10903,7 +10903,7 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Headers</strong></p>
      * <table border="1">
      * <caption>Response Headers</caption>

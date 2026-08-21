@@ -12,7 +12,7 @@ import com.azure.core.http.HttpHeaders;
  * Class representing the properties of a file on a Compute Node or Task in Azure Batch.
  * The properties are extracted from the HTTP response headers received from a Batch service request.
  */
-public class BatchFileProperties {
+public final class BatchFileProperties {
     private final HttpHeaders headers;
 
     private BatchFileProperties(HttpHeaders headers) {
