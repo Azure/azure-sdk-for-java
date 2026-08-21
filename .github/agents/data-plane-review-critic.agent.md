@@ -31,7 +31,12 @@ Use `DOWNGRADE` only when the concern is real but overstated. A wrong citation,
 unknown rule, pre-existing issue, unsupported assertion, duplicate check, or
 harmful fix is `FAIL`.
 
-Return only:
+The dispatch ends with a populated `## Required response` skeleton. Copy that
+skeleton exactly, remove its `## Required response` heading, and change only
+the verdict and reason cells plus the summary counts. Do not add prose, code
+fences, or synonyms such as `CONFIRMED`.
+
+Your entire response has this form:
 
 ```markdown
 ## Data-Plane Review Critique

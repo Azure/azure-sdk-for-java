@@ -108,9 +108,10 @@ exactly.
    not invent rules or severities.
 5. If no candidate survives self-verification, use `noop`. Otherwise dispatch
    the **Data-Plane Review Critic** using the imported protocol before
-   producing the report. Accept only the protocol's exact output shape and
-   verdict names; do not normalize synonyms. Drop every `FAIL`, apply every
-   `DOWNGRADE`, and use `noop` for a malformed critique.
+   producing the report. Populate and append the protocol's complete
+   `## Required response` skeleton to the dispatch. Accept only the protocol's
+   exact output shape and verdict names; do not normalize synonyms. Drop every
+   `FAIL`, apply every `DOWNGRADE`, and use `noop` for a malformed critique.
 6. Produce at most one replacement comment through `safe-outputs`. Never post,
    approve, request changes, label, modify code, or merge directly.
 7. Silence is success. If no finding or question needs a state update, use

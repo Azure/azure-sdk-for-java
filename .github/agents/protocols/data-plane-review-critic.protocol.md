@@ -13,8 +13,9 @@ the Data-Plane Review Critic.
 | Change class | `new-module`, `new-version`, or `maintenance` |
 | Prior workflow comment | Latest marker comment or `none` |
 | Findings | Verbatim candidate report under `## Findings` |
+| Required response | Populated verdict-table skeleton |
 
-Missing or malformed PR, session SHA, or findings produces one
+Missing or malformed PR, session SHA, findings, or response skeleton produces one
 `FAIL / missing-inputs` verdict.
 
 ## Dispatch template
@@ -31,7 +32,26 @@ Prior workflow comment: <comment|none>
 ## Findings
 
 <verbatim candidate report>
+
+## Required response
+
+Copy the block below exactly without code fences or this heading. Change only
+each `<verdict>`, each `<reason>`, and the summary counts.
+
+## Data-Plane Review Critique
+
+**Session SHA:** <sha>
+**Findings evaluated:** <n>
+
+| # | Finding | Verdict | Reason |
+| --- | --- | --- | --- |
+| 1 | [<actual-rule-id>] `<actual-path:line>` | <verdict> | <reason> |
+
+**Summary:** <n> PASS, <n> DOWNGRADE, <n> FAIL
 ```
+
+The reviewer adds one pre-populated row per candidate. The critic must not
+change row numbers, rule IDs, citations, headings, metadata, or columns.
 
 ## Verdicts
 
