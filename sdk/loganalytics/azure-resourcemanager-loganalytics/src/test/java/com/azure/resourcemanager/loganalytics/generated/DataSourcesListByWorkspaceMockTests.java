@@ -23,7 +23,7 @@ public final class DataSourcesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":\"\\\"datagctmgxuupbezq\\\"\",\"etag\":\"ydrtc\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"zgwldoychillcec\":\"qkkyihztgeqmg\"},\"id\":\"huwaoaguhic\",\"name\":\"llizs\",\"type\":\"ac\"}]}";
+            = "{\"value\":[{\"properties\":\"\\\"dataxu\\\"\",\"etag\":\"buew\",\"kind\":\"Office365\",\"tags\":{\"zrhwp\":\"njlx\",\"qehgpd\":\"sxjb\"},\"id\":\"zjqatucoig\",\"name\":\"bxncnwfepbnw\",\"type\":\"fmxjg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,11 @@ public final class DataSourcesListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataSource> response = manager.dataSources()
-            .listByWorkspace("mghihp", "ecmslclbl", "jxl", "bsjuscvsfx", com.azure.core.util.Context.NONE);
+            .listByWorkspace("txrdcqtjvi", "ttgepuslvyjtcv", "wkasiziesf", "ughtuqfecjxeygtu",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ydrtc", response.iterator().next().etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, response.iterator().next().kind());
-        Assertions.assertEquals("qkkyihztgeqmg", response.iterator().next().tags().get("zgwldoychillcec"));
+        Assertions.assertEquals("buew", response.iterator().next().etag());
+        Assertions.assertEquals(DataSourceKind.OFFICE365, response.iterator().next().kind());
+        Assertions.assertEquals("njlx", response.iterator().next().tags().get("zrhwp"));
     }
 }

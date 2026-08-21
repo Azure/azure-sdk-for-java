@@ -13,15 +13,15 @@ public final class ManagementGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagementGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"serverCount\":416757302,\"isGateway\":true,\"name\":\"kgdoj\",\"id\":\"xv\",\"created\":\"2021-02-28T00:16:23Z\",\"dataReceived\":\"2021-06-29T23:33:48Z\",\"version\":\"eesvecu\",\"sku\":\"pxtxsuwp\"}}")
+            "{\"properties\":{\"serverCount\":1552096962,\"isGateway\":false,\"name\":\"obaiyhddviaceg\",\"id\":\"m\",\"created\":\"2021-11-29T21:16:31Z\",\"dataReceived\":\"2021-04-14T18:02:53Z\",\"version\":\"memfnczdwvvbalxl\",\"sku\":\"chp\"}}")
             .toObject(ManagementGroupInner.class);
-        Assertions.assertEquals(416757302, model.serverCount());
-        Assertions.assertTrue(model.isGateway());
-        Assertions.assertEquals("kgdoj", model.name());
-        Assertions.assertEquals("xv", model.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T00:16:23Z"), model.created());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T23:33:48Z"), model.dataReceived());
-        Assertions.assertEquals("eesvecu", model.version());
-        Assertions.assertEquals("pxtxsuwp", model.sku());
+        Assertions.assertEquals(1552096962, model.serverCount());
+        Assertions.assertFalse(model.isGateway());
+        Assertions.assertEquals("obaiyhddviaceg", model.name());
+        Assertions.assertEquals("m", model.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-29T21:16:31Z"), model.created());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T18:02:53Z"), model.dataReceived());
+        Assertions.assertEquals("memfnczdwvvbalxl", model.version());
+        Assertions.assertEquals("chp", model.sku());
     }
 }

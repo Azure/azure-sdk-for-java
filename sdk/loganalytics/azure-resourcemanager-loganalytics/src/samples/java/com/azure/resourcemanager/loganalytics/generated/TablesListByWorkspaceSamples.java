@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class TablesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesList.json
+     * x-ms-original-file: 2026-03-01/TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.

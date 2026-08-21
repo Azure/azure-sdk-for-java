@@ -28,7 +28,7 @@ public final class DataExportsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.dataExports()
-            .deleteWithResponse("jkgd", "razftxejwabmdujt", "vcopex", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("qqvxmvwfgtayxons", "peujlzqn", "cvsql", com.azure.core.util.Context.NONE);
 
     }
 }

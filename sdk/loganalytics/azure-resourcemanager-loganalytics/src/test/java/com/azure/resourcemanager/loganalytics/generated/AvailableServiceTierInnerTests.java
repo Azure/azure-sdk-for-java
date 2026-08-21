@@ -11,7 +11,7 @@ public final class AvailableServiceTierInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableServiceTierInner model = BinaryData.fromString(
-            "{\"serviceTier\":\"Standalone\",\"enabled\":true,\"minimumRetention\":6975043128466071943,\"maximumRetention\":5954257016563149430,\"defaultRetention\":5896568716428182326,\"capacityReservationLevel\":7415544154670291452,\"lastSkuUpdate\":\"cpwpg\"}")
+            "{\"serviceTier\":\"Free\",\"enabled\":false,\"minimumRetention\":3154721021246185511,\"maximumRetention\":4481523086278308319,\"defaultRetention\":5797349190513853925,\"capacityReservationLevel\":8418181081189346422,\"lastSkuUpdate\":\"qdzfvazivjlfrqtt\"}")
             .toObject(AvailableServiceTierInner.class);
     }
 }

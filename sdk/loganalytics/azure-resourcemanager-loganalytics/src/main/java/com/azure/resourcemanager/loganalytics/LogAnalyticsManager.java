@@ -82,7 +82,6 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to LogAnalyticsManager.
- * Provides NSP operations for working with Log Analytics.
  */
 public final class LogAnalyticsManager {
     private Operations operations;

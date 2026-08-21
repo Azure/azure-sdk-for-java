@@ -11,7 +11,7 @@ import com.azure.resourcemanager.loganalytics.models.DataSourceType;
  */
 public final class LinkedStorageAccountsGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01/LinkedStorageAccountsGet.json
+     * x-ms-original-file: 2026-03-01/LinkedStorageAccountsGet.json
      */
     /**
      * Sample code: LinkedStorageAccountsGet.

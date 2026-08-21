@@ -22,7 +22,7 @@ public final class LinkedServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceId\":\"skbruffgllukkut\",\"writeAccessResourceId\":\"xhrp\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"randoypmb\":\"lcouqehbhbcdszir\",\"ormkfqlwxldyk\":\"t\",\"jpnnbmjksibjgsj\":\"lsygaol\",\"vpinbmhwbj\":\"xxahmrnadzyqegxy\"},\"id\":\"kgqxn\",\"name\":\"mbk\",\"type\":\"znj\"}";
+            = "{\"properties\":{\"resourceId\":\"serxht\",\"writeAccessResourceId\":\"oxhlw\",\"provisioningState\":\"ProvisioningAccount\"},\"tags\":{\"uuuybnchrsziz\":\"qrsxyp\",\"etndnbfqyggagf\":\"yuel\",\"ftbyrplro\":\"nlgmtrwahzjmu\"},\"id\":\"pigqfusuckzmkw\",\"name\":\"lsnoxaxmqeqalh\",\"type\":\"jnhgwydyyn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class LinkedServicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedService response = manager.linkedServices()
-            .getWithResponse("knyuxgvttxpn", "upzaamrdixtre", "ids", com.azure.core.util.Context.NONE)
+            .getWithResponse("guaucmfdjwnla", "punj", "ikczvvitacgxmf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lcouqehbhbcdszir", response.tags().get("randoypmb"));
-        Assertions.assertEquals("skbruffgllukkut", response.resourceId());
-        Assertions.assertEquals("xhrp", response.writeAccessResourceId());
+        Assertions.assertEquals("qrsxyp", response.tags().get("uuuybnchrsziz"));
+        Assertions.assertEquals("serxht", response.resourceId());
+        Assertions.assertEquals("oxhlw", response.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.PROVISIONING_ACCOUNT, response.provisioningState());
     }
 }

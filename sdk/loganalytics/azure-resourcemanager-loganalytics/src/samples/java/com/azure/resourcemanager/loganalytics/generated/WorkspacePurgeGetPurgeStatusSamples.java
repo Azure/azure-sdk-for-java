@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
-     * x-ms-original-file: 2025-07-01/WorkspacesPurgeOperation.json
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeOperation.json
      */
     /**
      * Sample code: WorkspacePurgeOperation.
@@ -20,5 +20,20 @@ public final class WorkspacePurgeGetPurgeStatusSamples {
         manager.workspacePurges()
             .getPurgeStatusWithResponse("OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74",
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/WorkspacesPurgeLakeDataOperation.json
+     */
+    /**
+     * Sample code: WorkspacePurgeLakeDataOperation.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void
+        workspacePurgeLakeDataOperation(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.workspacePurges()
+            .getPurgeStatusWithResponse("OIAutoRest5123", "aztest5048",
+                "purgelakedata-7d7cf277-9113-4ab3-8359-d0364b74d01d", com.azure.core.util.Context.NONE);
     }
 }

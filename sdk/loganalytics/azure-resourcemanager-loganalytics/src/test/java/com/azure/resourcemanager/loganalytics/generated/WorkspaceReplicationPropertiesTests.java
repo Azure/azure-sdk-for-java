@@ -12,18 +12,18 @@ public final class WorkspaceReplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspaceReplicationProperties model = BinaryData.fromString(
-            "{\"location\":\"rxzdmohctbqvudwx\",\"enabled\":false,\"provisioningState\":\"Succeeded\",\"createdDate\":\"2021-04-03T23:08:08Z\",\"lastModifiedDate\":\"2021-02-13T18:55:04Z\"}")
+            "{\"location\":\"fjpgddtocjjxhvp\",\"enabled\":false,\"provisioningState\":\"RollbackRequested\",\"createdDate\":\"2021-06-30T20:07:19Z\",\"lastModifiedDate\":\"2021-01-11T14:08:23Z\"}")
             .toObject(WorkspaceReplicationProperties.class);
-        Assertions.assertEquals("rxzdmohctbqvudwx", model.location());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.location());
         Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceReplicationProperties model
-            = new WorkspaceReplicationProperties().withLocation("rxzdmohctbqvudwx").withEnabled(false);
+            = new WorkspaceReplicationProperties().withLocation("fjpgddtocjjxhvp").withEnabled(false);
         model = BinaryData.fromObject(model).toObject(WorkspaceReplicationProperties.class);
-        Assertions.assertEquals("rxzdmohctbqvudwx", model.location());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.location());
         Assertions.assertFalse(model.enabled());
     }
 }
