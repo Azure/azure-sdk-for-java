@@ -22,7 +22,7 @@ public final class UsagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"usages\":{\"value\":1097500565,\"usagesType\":\"Combined\"},\"unit\":\"i\",\"name\":{\"value\":\"ed\",\"localizedValue\":\"wwa\"},\"resourceType\":\"kojvd\",\"quotaPeriod\":\"zfoqouicybxar\",\"isQuotaApplicable\":true,\"properties\":\"dataufoxc\"},\"id\":\"opidoamciodh\",\"name\":\"haz\",\"type\":\"khnzbonlw\"}";
+            = "{\"properties\":{\"usages\":{\"value\":1814054603,\"usagesType\":\"Combined\"},\"unit\":\"mjlxrrilozapeewc\",\"name\":{\"value\":\"lktwkuziycslev\",\"localizedValue\":\"uztcktyhjtqed\"},\"resourceType\":\"zulwmmrqzzrrj\",\"quotaPeriod\":\"gl\",\"isQuotaApplicable\":false,\"properties\":\"\\\"datakrvq\\\"\"},\"id\":\"vtoepryutnw\",\"name\":\"tpzdmovzvfvaawzq\",\"type\":\"dflgzuri\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class UsagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CurrentUsagesBase response
-            = manager.usages().getWithResponse("tpuqujmq", "gkfbtndoaong", com.azure.core.util.Context.NONE).getValue();
+            = manager.usages().getWithResponse("vuqeqvldspast", "bkkd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(1097500565, response.properties().usages().value());
+        Assertions.assertEquals(1814054603, response.properties().usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, response.properties().usages().usagesType());
-        Assertions.assertEquals("ed", response.properties().name().value());
-        Assertions.assertEquals("kojvd", response.properties().resourceType());
+        Assertions.assertEquals("lktwkuziycslev", response.properties().name().value());
+        Assertions.assertEquals("zulwmmrqzzrrj", response.properties().resourceType());
     }
 }

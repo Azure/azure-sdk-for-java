@@ -12,10 +12,10 @@ public final class QuotaLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaLimits model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"ivyhzceuojgjrwju\",\"name\":{\"value\":\"twm\",\"localizedValue\":\"ytdxwit\"},\"resourceType\":\"rjaw\",\"quotaPeriod\":\"wgxhn\",\"isQuotaApplicable\":true,\"properties\":\"datafbkp\"},\"id\":\"gklwn\",\"name\":\"nhjdauw\",\"type\":\"vylwzbtdhxuj\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"pow\",\"name\":{\"value\":\"rzqlveu\",\"localizedValue\":\"upjm\"},\"resourceType\":\"fxobbcsws\",\"quotaPeriod\":\"jriplrbpbewtghf\",\"isQuotaApplicable\":true,\"properties\":\"datagw\"},\"id\":\"vlvqhjkbegi\",\"name\":\"t\",\"type\":\"mxiebw\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"ayqcgw\",\"name\":{\"value\":\"j\",\"localizedValue\":\"gwyzm\"},\"resourceType\":\"xongmtsavjcbpwxq\",\"quotaPeriod\":\"rknftguvriuhprwm\",\"isQuotaApplicable\":true,\"properties\":\"dataqtayri\"},\"id\":\"ro\",\"name\":\"qbex\",\"type\":\"mcqibycnojv\"},{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"fqsgzvahapjy\",\"name\":{\"value\":\"vgqzcjrvxd\",\"localizedValue\":\"lmwlxkvugfhzo\"},\"resourceType\":\"wjvzunluthnn\",\"quotaPeriod\":\"nxipeil\",\"isQuotaApplicable\":false,\"properties\":\"dataaejxd\"},\"id\":\"tskzbbtdzumveek\",\"name\":\"pwo\",\"type\":\"uh\"}],\"nextLink\":\"p\"}")
+            "{\"value\":[{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"vgpiohgwxrt\",\"name\":{\"value\":\"xepxgyqagvrvmn\",\"localizedValue\":\"ukghimdblxgw\"},\"resourceType\":\"fnjhfjxwmszkkfo\",\"quotaPeriod\":\"eyfkzikfja\",\"isQuotaApplicable\":true,\"properties\":\"\\\"dataivx\\\"\"},\"id\":\"zel\",\"name\":\"c\",\"type\":\"r\"}],\"nextLink\":\"sfeaenwabfat\"}")
             .toObject(QuotaLimits.class);
-        Assertions.assertEquals("twm", model.value().get(0).properties().name().value());
-        Assertions.assertEquals("rjaw", model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("p", model.nextLink());
+        Assertions.assertEquals("xepxgyqagvrvmn", model.value().get(0).properties().name().value());
+        Assertions.assertEquals("fnjhfjxwmszkkfo", model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("sfeaenwabfat", model.nextLink());
     }
 }

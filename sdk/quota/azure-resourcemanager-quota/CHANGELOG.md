@@ -1,14 +1,185 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (2026-08-20)
 
-### Features Added
+- Azure Resource Manager Quota client library for Java. This package contains Microsoft Azure SDK for Quota Management SDK. Microsoft Azure Quota Resource Provider. Package api-version 2026-09-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.GroupQuotaRequestBase` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.SubscriptionQuotaAllocationsProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEntityBase` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEntityPatch` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEntityPatchProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEntityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaLimitProperties` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaAllocationRequestBase` was modified
+
+* `validate()` was removed
+
+#### `models.AllocatedQuotaToSubscriptionList` was modified
+
+* `validate()` was removed
+
+#### `models.QuotasGetHeaders` was modified
+
+* `validate()` was removed
+
+#### `models.SubmittedResourceRequestStatusProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaSubscriptionRequestStatusProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LimitJsonObject` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaLimitListProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UsagesGetHeaders` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionQuotaAllocationsListProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEntityBasePatch` was modified
+
+* `validate()` was removed
+
+#### `models.UsagesObject` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionQuotaDetails` was modified
+
+* `validate()` was removed
+
+#### `models.SubscriptionQuotaAllocations` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceErrorDetail` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaSubscriptionIdProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceName` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotasEnforcementStatusProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LimitObject` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaUsagesBase` was modified
+
+* `validate()` was removed
+
+#### `models.SubRequest` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaLimit` was modified
+
+* `validate()` was removed
+
+#### `models.GroupQuotaDetails` was modified
+
+* `validate()` was removed
+
+#### `models.AllocatedToSubscription` was modified
+
+* `validate()` was removed
+
+#### `models.UsagesProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.CancellationRecord` was added
+
+* `models.IncomingQuotaTransferApproveRequest` was added
+
+* `models.QuotaTransfer$UpdateStages` was added
+
+* `models.QuotaTransfer$DefinitionStages` was added
+
+* `models.TransferStatus` was added
+
+* `models.QuotaTransfers` was added
+
+* `models.QuotaTransfer$Definition` was added
+
+* `models.QuotaTransfer` was added
+
+* `models.IncomingQuotaTransfers` was added
+
+* `models.ApprovalRecord` was added
+
+* `models.TransferProvisioningState` was added
+
+* `models.IncomingQuotaTransfer` was added
+
+* `models.QuotaTransfer$Update` was added
+
+* `models.QuotaTransferCancelRequest` was added
+
+* `models.RejectionRecord` was added
+
+* `models.IncomingQuotaTransferProperties` was added
+
+* `models.IncomingQuotaTransferRejectRequest` was added
+
+* `models.QuotaTransferProperties` was added
+
+#### `QuotaManager` was modified
+
+* `quotaTransfers()` was added
+* `incomingQuotaTransfers()` was added
 
 ## 2.0.0 (2025-09-19)
 

@@ -52,6 +52,14 @@
 - [List](#groupquotas_list)
 - [Update](#groupquotas_update)
 
+## IncomingQuotaTransfers
+
+- [Approve](#incomingquotatransfers_approve)
+- [Get](#incomingquotatransfers_get)
+- [List](#incomingquotatransfers_list)
+- [ListBySubscription](#incomingquotatransfers_listbysubscription)
+- [Reject](#incomingquotatransfers_reject)
+
 ## Quota
 
 - [CreateOrUpdate](#quota_createorupdate)
@@ -59,10 +67,22 @@
 - [List](#quota_list)
 - [Update](#quota_update)
 
+## QuotaOperation
+
+- [List](#quotaoperation_list)
+
 ## QuotaRequestStatus
 
 - [Get](#quotarequeststatus_get)
 - [List](#quotarequeststatus_list)
+
+## QuotaTransfers
+
+- [Cancel](#quotatransfers_cancel)
+- [CreateOrUpdate](#quotatransfers_createorupdate)
+- [Delete](#quotatransfers_delete)
+- [Get](#quotatransfers_get)
+- [List](#quotatransfers_list)
 
 ## Usages
 
@@ -76,7 +96,7 @@
  */
 public final class GroupQuotaLimitsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaLimits/ListGroupQuotaLimits-Compute.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaLimits/ListGroupQuotaLimits-Compute.json
      */
     /**
      * Sample code: GroupQuotaLimits_Get_Request_ForCompute.
@@ -99,7 +119,7 @@ public final class GroupQuotaLimitsListSamples {
  */
 public final class GroupQuotaLimitsRequestGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_Get.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_Get.json
      */
     /**
      * Sample code: GroupQuotaLimitsRequests_Get.
@@ -122,7 +142,7 @@ public final class GroupQuotaLimitsRequestGetSamples {
  */
 public final class GroupQuotaLimitsRequestListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_List.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaLimitsRequests/GroupQuotaLimitsRequests_List.json
      */
     /**
      * Sample code: GroupQuotaLimitsRequest_List.
@@ -151,7 +171,7 @@ import java.util.Arrays;
  */
 public final class GroupQuotaLimitsRequestUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaLimitsRequests/PatchGroupQuotaLimitsRequests-Compute.json
      */
     /**
      * Sample code: GroupQuotaLimitsRequests_Update.
@@ -188,7 +208,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEnforcementStatusProper
  */
 public final class GroupQuotaLocationSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_CreateOrUpdate.
@@ -204,7 +224,7 @@ public final class GroupQuotaLocationSettingsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_CreateOrUpdate_Failed.
@@ -230,7 +250,7 @@ public final class GroupQuotaLocationSettingsCreateOrUpdateSamples {
  */
 public final class GroupQuotaLocationSettingsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotasEnforcement_Get.
@@ -257,7 +277,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEnforcementStatusProper
  */
 public final class GroupQuotaLocationSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
      */
     /**
      * Sample code: GroupQuotaLocationSettings_Patch.
@@ -282,7 +302,7 @@ public final class GroupQuotaLocationSettingsUpdateSamples {
  */
 public final class GroupQuotaSubscriptionAllocationListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SubscriptionQuotaAllocation/SubscriptionQuotaAllocation_List-Compute.json
+     * x-ms-original-file: 2026-09-01-preview/SubscriptionQuotaAllocation/SubscriptionQuotaAllocation_List-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocation_List_ForCompute.
@@ -306,7 +326,7 @@ public final class GroupQuotaSubscriptionAllocationListSamples {
 public final class GroupQuotaSubscriptionAllocationRequestGetSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-01/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
+     * 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocationRequests_Get_Request_ForCompute.
@@ -331,7 +351,7 @@ public final class GroupQuotaSubscriptionAllocationRequestGetSamples {
 public final class GroupQuotaSubscriptionAllocationRequestListSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-01/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
+     * 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocation_List_Request_ForCompute.
@@ -362,7 +382,7 @@ import java.util.Arrays;
 public final class GroupQuotaSubscriptionAllocationRequestUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-09-01/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
+     * 2026-09-01-preview/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
      */
     /**
      * Sample code: SubscriptionQuotaAllocation_Patch_Request_ForCompute.
@@ -394,7 +414,7 @@ public final class GroupQuotaSubscriptionAllocationRequestUpdateSamples {
  */
 public final class GroupQuotaSubscriptionRequestsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SubscriptionRequests/SubscriptionRequests_Get.json
+     * x-ms-original-file: 2026-09-01-preview/SubscriptionRequests/SubscriptionRequests_Get.json
      */
     /**
      * Sample code: GroupQuotaSubscriptionRequests_Get.
@@ -417,7 +437,7 @@ public final class GroupQuotaSubscriptionRequestsGetSamples {
  */
 public final class GroupQuotaSubscriptionRequestsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/SubscriptionRequests/SubscriptionRequests_List.json
+     * x-ms-original-file: 2026-09-01-preview/SubscriptionRequests/SubscriptionRequests_List.json
      */
     /**
      * Sample code: GroupQuotaSubscriptionRequests_List.
@@ -439,7 +459,7 @@ public final class GroupQuotaSubscriptionRequestsListSamples {
  */
 public final class GroupQuotaSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasSubscriptions/PutGroupQuotasSubscription.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasSubscriptions/PutGroupQuotasSubscription.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Put_Subscriptions.
@@ -461,7 +481,7 @@ public final class GroupQuotaSubscriptionsCreateOrUpdateSamples {
  */
 public final class GroupQuotaSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasSubscriptions/DeleteGroupQuotaSubscriptions.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasSubscriptions/DeleteGroupQuotaSubscriptions.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Delete_Subscriptions.
@@ -484,7 +504,7 @@ public final class GroupQuotaSubscriptionsDeleteSamples {
  */
 public final class GroupQuotaSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasSubscriptions/GetGroupQuotaSubscriptions.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasSubscriptions/GetGroupQuotaSubscriptions.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Get_Subscriptions.
@@ -506,7 +526,7 @@ public final class GroupQuotaSubscriptionsGetSamples {
  */
 public final class GroupQuotaSubscriptionsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasSubscriptions/ListGroupQuotaSubscriptions.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasSubscriptions/ListGroupQuotaSubscriptions.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_List_Subscriptions.
@@ -528,7 +548,7 @@ public final class GroupQuotaSubscriptionsListSamples {
  */
 public final class GroupQuotaSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotasSubscriptions/PatchGroupQuotasSubscription.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotasSubscriptions/PatchGroupQuotasSubscription.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Patch_Subscriptions.
@@ -550,7 +570,7 @@ public final class GroupQuotaSubscriptionsUpdateSamples {
  */
 public final class GroupQuotaUsagesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotaUsages/GetGroupQuotaUsages.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotaUsages/GetGroupQuotaUsages.json
      */
     /**
      * Sample code: GroupQuotasUsages_List.
@@ -576,7 +596,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
  */
 public final class GroupQuotasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/PutGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/PutGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Put_Request_ForCompute.
@@ -601,7 +621,7 @@ public final class GroupQuotasCreateOrUpdateSamples {
  */
 public final class GroupQuotasDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/DeleteGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/DeleteGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Delete_Request_ForCompute.
@@ -623,7 +643,7 @@ public final class GroupQuotasDeleteSamples {
  */
 public final class GroupQuotasGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/GetGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/GetGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Get_Request_ForCompute.
@@ -645,7 +665,7 @@ public final class GroupQuotasGetSamples {
  */
 public final class GroupQuotasListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/ListGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/ListGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_List_Request_ForCompute.
@@ -669,7 +689,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatchProperties;
  */
 public final class GroupQuotasUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/PatchGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/PatchGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Patch_Request_ForCompute.
@@ -681,6 +701,123 @@ public final class GroupQuotasUpdateSamples {
             .update("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1",
                 new GroupQuotasEntityPatch()
                     .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("UpdatedGroupQuota1")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IncomingQuotaTransfers_Approve
+
+```java
+import com.azure.resourcemanager.quota.models.IncomingQuotaTransferApproveRequest;
+
+/**
+ * Samples for IncomingQuotaTransfers Approve.
+ */
+public final class IncomingQuotaTransfersApproveSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_Approve.json
+     */
+    /**
+     * Sample code: IncomingQuotaTransfers_Approve.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void incomingQuotaTransfersApprove(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.incomingQuotaTransfers()
+            .approve("Microsoft.Compute", "eastus", "12345678-1234-1234-1234-1234567890ab", "abc123",
+                new IncomingQuotaTransferApproveRequest().withComment("Approved by capacity team."),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IncomingQuotaTransfers_Get
+
+```java
+/**
+ * Samples for IncomingQuotaTransfers Get.
+ */
+public final class IncomingQuotaTransfersGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_Get.json
+     */
+    /**
+     * Sample code: IncomingQuotaTransfers_Get.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void incomingQuotaTransfersGet(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.incomingQuotaTransfers()
+            .getWithResponse("Microsoft.Compute", "eastus", "12345678-1234-1234-1234-1234567890ab",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IncomingQuotaTransfers_List
+
+```java
+/**
+ * Samples for IncomingQuotaTransfers List.
+ */
+public final class IncomingQuotaTransfersListSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_List.json
+     */
+    /**
+     * Sample code: IncomingQuotaTransfers_List.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void incomingQuotaTransfersList(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.incomingQuotaTransfers().list("Microsoft.Compute", "eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IncomingQuotaTransfers_ListBySubscription
+
+```java
+/**
+ * Samples for IncomingQuotaTransfers ListBySubscription.
+ */
+public final class IncomingQuotaTransfersListBySubscriptionSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_ListBySubscription.json
+     */
+    /**
+     * Sample code: IncomingQuotaTransfers_ListBySubscription.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void incomingQuotaTransfersListBySubscription(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.incomingQuotaTransfers().listBySubscription(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IncomingQuotaTransfers_Reject
+
+```java
+import com.azure.resourcemanager.quota.models.IncomingQuotaTransferRejectRequest;
+
+/**
+ * Samples for IncomingQuotaTransfers Reject.
+ */
+public final class IncomingQuotaTransfersRejectSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_Reject.json
+     */
+    /**
+     * Sample code: IncomingQuotaTransfers_Reject.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void incomingQuotaTransfersReject(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.incomingQuotaTransfers()
+            .rejectWithResponse("Microsoft.Compute", "eastus", "12345678-1234-1234-1234-1234567890ab", "abc123",
+                new IncomingQuotaTransferRejectRequest().withReason("Recipient capacity already satisfied."),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -698,7 +835,7 @@ import com.azure.resourcemanager.quota.models.ResourceName;
  */
 public final class QuotaCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/putMachineLearningServicesQuotaRequestLowPriority.json
+     * x-ms-original-file: 2026-09-01-preview/putMachineLearningServicesQuotaRequestLowPriority.json
      */
     /**
      * Sample code: Quotas_Request_ForMachineLearningServices_LowPriorityResource.
@@ -718,7 +855,7 @@ public final class QuotaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/putComputeOneSkuQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/putComputeOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Put_Request_ForCompute.
@@ -736,7 +873,7 @@ public final class QuotaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
+     * x-ms-original-file: 2026-09-01-preview/putNetworkOneSkuQuotaRequestStandardSkuPublicIpAddresses.json
      */
     /**
      * Sample code: Quotas_PutRequest_ForNetwork_StandardSkuPublicIpAddressesResource.
@@ -756,7 +893,7 @@ public final class QuotaCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/putNetworkOneSkuQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/putNetworkOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_PutRequest_ForNetwork.
@@ -784,7 +921,7 @@ public final class QuotaCreateOrUpdateSamples {
  */
 public final class QuotaGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkOneSkuQuotaLimit.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkOneSkuQuotaLimit.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
@@ -799,7 +936,7 @@ public final class QuotaGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getComputeOneSkuQuotaLimit.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeOneSkuQuotaLimit.json
      */
     /**
      * Sample code: Quotas_Get_Request_ForCompute.
@@ -823,7 +960,7 @@ public final class QuotaGetSamples {
  */
 public final class QuotaListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getMachineLearningServicesQuotaLimits.json
+     * x-ms-original-file: 2026-09-01-preview/getMachineLearningServicesQuotaLimits.json
      */
     /**
      * Sample code: Quotas_listQuotaLimitsMachineLearningServices.
@@ -839,7 +976,7 @@ public final class QuotaListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getComputeQuotaLimits.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeQuotaLimits.json
      */
     /**
      * Sample code: Quotas_listQuotaLimitsForCompute.
@@ -853,7 +990,7 @@ public final class QuotaListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkQuotaLimits.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkQuotaLimits.json
      */
     /**
      * Sample code: Quotas_listQuotaLimitsForNetwork.
@@ -881,7 +1018,7 @@ import com.azure.resourcemanager.quota.models.ResourceName;
  */
 public final class QuotaUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/patchComputeQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/patchComputeQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForCompute.
@@ -901,7 +1038,7 @@ public final class QuotaUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/patchNetworkOneSkuQuotaRequest.json
+     * x-ms-original-file: 2026-09-01-preview/patchNetworkOneSkuQuotaRequest.json
      */
     /**
      * Sample code: Quotas_Request_PatchForNetwork.
@@ -923,6 +1060,27 @@ public final class QuotaUpdateSamples {
 }
 ```
 
+### QuotaOperation_List
+
+```java
+/**
+ * Samples for QuotaOperation List.
+ */
+public final class QuotaOperationListSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/GetOperations.json
+     */
+    /**
+     * Sample code: GetOperations.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void getOperations(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaOperations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### QuotaRequestStatus_Get
 
 ```java
@@ -931,7 +1089,7 @@ public final class QuotaUpdateSamples {
  */
 public final class QuotaRequestStatusGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusFailed.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusFailed.json
      */
     /**
      * Sample code: QuotaRequestFailed.
@@ -946,7 +1104,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusById.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusById.json
      */
     /**
      * Sample code: QuotaRequestStatus.
@@ -961,7 +1119,7 @@ public final class QuotaRequestStatusGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestStatusInProgress.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestStatusInProgress.json
      */
     /**
      * Sample code: QuotaRequestInProgress.
@@ -985,7 +1143,7 @@ public final class QuotaRequestStatusGetSamples {
  */
 public final class QuotaRequestStatusListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getQuotaRequestsHistory.json
+     * x-ms-original-file: 2026-09-01-preview/getQuotaRequestsHistory.json
      */
     /**
      * Sample code: QuotaRequestHistory.
@@ -1000,6 +1158,154 @@ public final class QuotaRequestStatusListSamples {
 }
 ```
 
+### QuotaTransfers_Cancel
+
+```java
+import com.azure.resourcemanager.quota.models.QuotaTransferCancelRequest;
+
+/**
+ * Samples for QuotaTransfers Cancel.
+ */
+public final class QuotaTransfersCancelSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_Cancel.json
+     */
+    /**
+     * Sample code: QuotaTransfers_Cancel.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void quotaTransfersCancel(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers()
+            .cancelWithResponse("Microsoft.Compute", "eastus", "compute-stdDv5-uplift-101",
+                new QuotaTransferCancelRequest().withReason("Donor changed plans before recipient acted."),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### QuotaTransfers_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.quota.models.QuotaTransferProperties;
+
+/**
+ * Samples for QuotaTransfers CreateOrUpdate.
+ */
+public final class QuotaTransfersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_CreateOrUpdate_AutoApprove.json
+     */
+    /**
+     * Sample code: QuotaTransfers_CreateOrUpdate - autoApprove same-tenant.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void
+        quotaTransfersCreateOrUpdateAutoApproveSameTenant(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers()
+            .define("compute-stdDv5-autoapprove-202")
+            .withExistingLocation("Microsoft.Compute", "eastus")
+            .withProperties(new QuotaTransferProperties().withDisplayName("Move 25 Dv5 vCPU - auto approved")
+                .withDestinationSubscriptionId("aaaaaaaa-bbbb-cccc-dddd-000000000002")
+                .withBillingAccountId("1234567890")
+                .withResourceName("standardDv5Family")
+                .withAmount(25L)
+                .withAutoApprove(true))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: QuotaTransfers_CreateOrUpdate - donor submit.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void quotaTransfersCreateOrUpdateDonorSubmit(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers()
+            .define("compute-stdDv5-uplift-101")
+            .withExistingLocation("Microsoft.Compute", "eastus")
+            .withProperties(new QuotaTransferProperties().withDisplayName("Move 50 Dv5 vCPU to recipient")
+                .withComment("Backfill for new prod fleet rollout.")
+                .withDestinationSubscriptionId("aaaaaaaa-bbbb-cccc-dddd-000000000002")
+                .withBillingAccountId("1234567890")
+                .withResourceName("standardDv5Family")
+                .withAmount(50L)
+                .withAutoApprove(false))
+            .create();
+    }
+}
+```
+
+### QuotaTransfers_Delete
+
+```java
+/**
+ * Samples for QuotaTransfers Delete.
+ */
+public final class QuotaTransfersDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_Delete.json
+     */
+    /**
+     * Sample code: QuotaTransfers_Delete.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void quotaTransfersDelete(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers()
+            .deleteWithResponse("Microsoft.Compute", "eastus", "compute-stdDv5-uplift-101",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### QuotaTransfers_Get
+
+```java
+/**
+ * Samples for QuotaTransfers Get.
+ */
+public final class QuotaTransfersGetSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_Get.json
+     */
+    /**
+     * Sample code: QuotaTransfers_Get.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void quotaTransfersGet(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers()
+            .getWithResponse("Microsoft.Compute", "eastus", "compute-stdDv5-uplift-101",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### QuotaTransfers_List
+
+```java
+/**
+ * Samples for QuotaTransfers List.
+ */
+public final class QuotaTransfersListSamples {
+    /*
+     * x-ms-original-file: 2026-09-01-preview/QuotaTransfers/QuotaTransfers_List.json
+     */
+    /**
+     * Sample code: QuotaTransfers_List.
+     * 
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void quotaTransfersList(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaTransfers().list("Microsoft.Compute", "eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Usages_Get
 
 ```java
@@ -1008,7 +1314,7 @@ public final class QuotaRequestStatusListSamples {
  */
 public final class UsagesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkOneSkuUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
@@ -1023,7 +1329,7 @@ public final class UsagesGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getComputeOneSkuUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForCompute.
@@ -1047,7 +1353,7 @@ public final class UsagesGetSamples {
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/getComputeUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getComputeUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForCompute.
@@ -1061,7 +1367,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getNetworkUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getNetworkUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesForNetwork.
@@ -1075,7 +1381,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/getMachineLearningServicesUsages.json
+     * x-ms-original-file: 2026-09-01-preview/getMachineLearningServicesUsages.json
      */
     /**
      * Sample code: Quotas_listUsagesMachineLearningServices.
