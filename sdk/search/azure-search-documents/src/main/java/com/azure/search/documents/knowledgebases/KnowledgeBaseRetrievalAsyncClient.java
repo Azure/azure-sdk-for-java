@@ -20,8 +20,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
+import com.azure.search.documents.models.ServerSentEvent;
+import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -454,5 +459,25 @@ public final class KnowledgeBaseRetrievalAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * The terminal {@code error} or {@code response.completed} event is emitted before the stream completes. Transport
+     * and decoding failures are propagated through the reactive error path. The client does not reconnect
+     * automatically.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @return A stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
+                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
     }
 }

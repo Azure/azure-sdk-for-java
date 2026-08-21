@@ -19,8 +19,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
+import com.azure.search.documents.models.ServerSentEventListener;
+import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -448,5 +452,25 @@ public final class KnowledgeBaseRetrievalClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .getValue();
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * The terminal {@code error} or {@code response.completed} event is delivered before
+     * {@link ServerSentEventListener#onClose()} is invoked. Transport and decoding failures are reported through
+     * {@link ServerSentEventListener#onError(Throwable)}. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param listener The listener that receives events and lifecycle notifications.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
+        ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
+        RequestOptions requestOptions = new RequestOptions();
+        ServerSentEventStreams.listen(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
     }
 }
