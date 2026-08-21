@@ -1467,6 +1467,12 @@
           "justification": "Output-only immutable model's constructor visibility increased."
         },
         {
+          "code": "java.method.visibilityIncreased",
+          "old" : "method void com.azure.resourcemanager.containerservice.models.MachineNetworkProperties::<init>()",
+          "new" : "method void com.azure.resourcemanager.containerservice.models.MachineNetworkProperties::<init>()",
+          "justification": "Model changed from Immutable to Fluent to support new writable properties; constructor visibility increased."
+        },
+        {
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",

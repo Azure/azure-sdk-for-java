@@ -59,6 +59,10 @@
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
 
+    <!-- Exclude vendored Apache Arrow and FlatBuffers code from linting checks. -->
+    <checkstyle.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</checkstyle.excludes>
+    <spotbugs.excludes>**/implementation/util/apachearrow/**/*.java,**/implementation/util/flatbuffers/**/*.java</spotbugs.excludes>
+
     <spotbugs.skip>false</spotbugs.skip>
   </properties>
 
