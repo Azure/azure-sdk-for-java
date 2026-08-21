@@ -49,6 +49,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
     private static final Map<String, String> EMPTY_MAP = new HashMap<>();
     private static final String BASE_EXCEPTION_MESSAGE = "FAILED IN Per-Partition Circuit Breaker: ";
+    private static final int PARTITION_RECOVERY_CONCURRENCY = Integer.MAX_VALUE;
 
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
@@ -408,7 +409,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
                 }
 
                 return Flux.empty();
-            }, 1, 1)
+            }, PARTITION_RECOVERY_CONCURRENCY, 1)
             .onErrorResume(throwable -> {
                 logger.warn("An exception : was thrown trying to recover an Unavailable partitionKeyRange!, fail-back flow won't be executed!", throwable);
                 return Flux.empty();

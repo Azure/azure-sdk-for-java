@@ -44,6 +44,7 @@ import org.testng.annotations.Test;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 import reactor.test.scheduler.VirtualTimeScheduler;
 
@@ -1194,6 +1195,124 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
             } else {
                 assertThat(forceRefreshValues).containsExactly(false);
                 assertThat(addressResolutionCount).hasValue(1);
+            }
+        } finally {
+            if (ppcbManager != null) {
+                ppcbManager.close();
+            }
+            if (originalPpcbConfig == null) {
+                System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+            } else {
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", originalPpcbConfig);
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    @SuppressWarnings("unchecked")
+    public void scheduledRecoveryProbesUnavailablePartitionsConcurrently() throws Exception {
+        String originalPpcbConfig = System.getProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+        URI failedRegionEndpoint = createUrl("https://contoso-east-us.documents.azure.com");
+        URI healthyRegionEndpoint = createUrl("https://contoso-west-us.documents.azure.com");
+        RegionalRoutingContext failedRegion = new RegionalRoutingContext(failedRegionEndpoint);
+        List<RegionalRoutingContext> applicableRegions = Arrays.asList(
+            failedRegion,
+            new RegionalRoutingContext(healthyRegionEndpoint));
+        String collectionRid = "collectionRid";
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.when(globalEndpointManager.getApplicableReadRegionalRoutingContexts(Mockito.anyList()))
+            .thenReturn((UnmodifiableList<RegionalRoutingContext>) UnmodifiableList.unmodifiableList(applicableRegions));
+        Mockito.when(globalEndpointManager.getRegionName(failedRegionEndpoint, OperationType.Read))
+            .thenReturn("East US");
+
+        AtomicInteger probesStarted = new AtomicInteger();
+        Sinks.One<OpenConnectionResponse> blockedProbe = Sinks.one();
+        Sinks.One<OpenConnectionResponse> healthyProbe = Sinks.one();
+        OpenConnectionResponse successfulResponse = new OpenConnectionResponse(
+            new Uri("rntbd://healthy:10250/"),
+            true,
+            null,
+            1);
+
+        GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
+        Mockito.when(gatewayAddressCache.submitOpenConnectionTasks(
+                Mockito.any(), Mockito.eq(collectionRid), Mockito.eq(false)))
+            .thenAnswer(invocation -> {
+                PartitionKeyRange partitionKeyRange = invocation.getArgument(0);
+                Flux<OpenConnectionResponse> probe = ("1".equals(partitionKeyRange.getId())
+                    ? healthyProbe
+                    : blockedProbe).asMono().flux();
+
+                return probe.doOnSubscribe(ignore -> {
+                    if (probesStarted.incrementAndGet() == 2) {
+                        healthyProbe.tryEmitValue(successfulResponse);
+                    }
+                });
+            });
+
+        GlobalAddressResolver globalAddressResolver = Mockito.mock(GlobalAddressResolver.class);
+        Mockito.when(globalAddressResolver.getGatewayAddressCache(failedRegionEndpoint))
+            .thenReturn(gatewayAddressCache);
+
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker ppcbManager = null;
+        try {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", PPCB_RECOVERY_CONFIG);
+            ppcbManager = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(globalEndpointManager);
+            ppcbManager.setGlobalAddressResolver(globalAddressResolver);
+
+            RxDocumentServiceRequest blockedRequest = constructRxDocumentServiceRequestInstance(
+                OperationType.Read,
+                ResourceType.Document,
+                collectionRid,
+                "0",
+                collectionRid,
+                "AA",
+                "BB",
+                failedRegionEndpoint);
+            RxDocumentServiceRequest healthyRequest = constructRxDocumentServiceRequestInstance(
+                OperationType.Read,
+                ResourceType.Document,
+                collectionRid,
+                "1",
+                collectionRid,
+                "BB",
+                "CC",
+                failedRegionEndpoint);
+
+            for (int i = 0; i < 10; i++) {
+                ppcbManager.handleLocationExceptionForPartitionKeyRange(blockedRequest, failedRegion, false);
+                ppcbManager.handleLocationExceptionForPartitionKeyRange(healthyRequest, failedRegion, false);
+            }
+
+            backdateUnavailableSince(
+                ppcbManager,
+                blockedRequest.requestContext.resolvedPartitionKeyRange,
+                collectionRid,
+                failedRegion);
+            backdateUnavailableSince(
+                ppcbManager,
+                healthyRequest.requestContext.resolvedPartitionKeyRange,
+                collectionRid,
+                failedRegion);
+
+            VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.getOrSet();
+            Disposable recoverySubscription = invokeRecoveryPublisher(ppcbManager).subscribe();
+            try {
+                virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(60));
+
+                assertThat(probesStarted).hasValue(2);
+                assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
+                    blockedRequest,
+                    collectionRid,
+                    blockedRequest.requestContext.resolvedPartitionKeyRange)).containsExactly("East US");
+                assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
+                    healthyRequest,
+                    collectionRid,
+                    healthyRequest.requestContext.resolvedPartitionKeyRange)).isEmpty();
+            } finally {
+                recoverySubscription.dispose();
+                VirtualTimeScheduler.reset();
             }
         } finally {
             if (ppcbManager != null) {
