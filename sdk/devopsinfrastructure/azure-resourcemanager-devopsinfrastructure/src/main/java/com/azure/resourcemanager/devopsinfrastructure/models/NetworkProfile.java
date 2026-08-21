@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The network profile of the machines in the pool.
@@ -20,6 +21,16 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
      * The subnet id on which to put all machines created in the pool.
      */
     private String subnetId;
+
+    /*
+     * The number of static public IP addresses for outgoing connections assigned to the pool.
+     */
+    private Integer staticIpAddressCount;
+
+    /*
+     * Read only. The list of static public IP addresses for outgoing connections assigned to the pool.
+     */
+    private List<String> ipAddresses;
 
     /**
      * Creates an instance of NetworkProfile class.
@@ -48,12 +59,45 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
     }
 
     /**
+     * Get the staticIpAddressCount property: The number of static public IP addresses for outgoing connections assigned
+     * to the pool.
+     * 
+     * @return the staticIpAddressCount value.
+     */
+    public Integer staticIpAddressCount() {
+        return this.staticIpAddressCount;
+    }
+
+    /**
+     * Set the staticIpAddressCount property: The number of static public IP addresses for outgoing connections assigned
+     * to the pool.
+     * 
+     * @param staticIpAddressCount the staticIpAddressCount value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withStaticIpAddressCount(Integer staticIpAddressCount) {
+        this.staticIpAddressCount = staticIpAddressCount;
+        return this;
+    }
+
+    /**
+     * Get the ipAddresses property: Read only. The list of static public IP addresses for outgoing connections assigned
+     * to the pool.
+     * 
+     * @return the ipAddresses value.
+     */
+    public List<String> ipAddresses() {
+        return this.ipAddresses;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeNumberField("staticIpAddressCount", this.staticIpAddressCount);
         return jsonWriter.writeEndObject();
     }
 
@@ -63,7 +107,6 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of NetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NetworkProfile.
      */
     public static NetworkProfile fromJson(JsonReader jsonReader) throws IOException {
@@ -75,6 +118,11 @@ public final class NetworkProfile implements JsonSerializable<NetworkProfile> {
 
                 if ("subnetId".equals(fieldName)) {
                     deserializedNetworkProfile.subnetId = reader.getString();
+                } else if ("staticIpAddressCount".equals(fieldName)) {
+                    deserializedNetworkProfile.staticIpAddressCount = reader.getNullable(JsonReader::getInt);
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkProfile.ipAddresses = ipAddresses;
                 } else {
                     reader.skipChildren();
                 }

@@ -37,6 +37,11 @@ public final class Organization implements JsonSerializable<Organization> {
      */
     private Boolean openAccess;
 
+    /*
+     * An alias to reference the Azure DevOps pool name.
+     */
+    private String alias;
+
     /**
      * Creates an instance of Organization class.
      */
@@ -126,6 +131,26 @@ public final class Organization implements JsonSerializable<Organization> {
     }
 
     /**
+     * Get the alias property: An alias to reference the Azure DevOps pool name.
+     * 
+     * @return the alias value.
+     */
+    public String alias() {
+        return this.alias;
+    }
+
+    /**
+     * Set the alias property: An alias to reference the Azure DevOps pool name.
+     * 
+     * @param alias the alias value to set.
+     * @return the Organization object itself.
+     */
+    public Organization withAlias(String alias) {
+        this.alias = alias;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -135,6 +160,7 @@ public final class Organization implements JsonSerializable<Organization> {
         jsonWriter.writeArrayField("projects", this.projects, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("parallelism", this.parallelism);
         jsonWriter.writeBooleanField("openAccess", this.openAccess);
+        jsonWriter.writeStringField("alias", this.alias);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,6 +189,8 @@ public final class Organization implements JsonSerializable<Organization> {
                     deserializedOrganization.parallelism = reader.getNullable(JsonReader::getInt);
                 } else if ("openAccess".equals(fieldName)) {
                     deserializedOrganization.openAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("alias".equals(fieldName)) {
+                    deserializedOrganization.alias = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

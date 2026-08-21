@@ -12,31 +12,35 @@ import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdatePropertie
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.RuntimeConfiguration;
 import org.junit.jupiter.api.Assertions;
 
 public final class PoolUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdateProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"maximumConcurrency\":1867037750,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"vdjwzrlovm\"}")
+            "{\"provisioningState\":\"Accepted\",\"maximumConcurrency\":1289591857,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"pj\",\"runtimeConfiguration\":{\"workFolder\":\"sxazjpq\"}}")
             .toObject(PoolUpdateProperties.class);
         Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
-        Assertions.assertEquals(1867037750, model.maximumConcurrency());
-        Assertions.assertEquals("vdjwzrlovm", model.devCenterProjectResourceId());
+        Assertions.assertEquals(1289591857, model.maximumConcurrency());
+        Assertions.assertEquals("pj", model.devCenterProjectResourceId());
+        Assertions.assertEquals("sxazjpq", model.runtimeConfiguration().workFolder());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolUpdateProperties model = new PoolUpdateProperties().withProvisioningState(ProvisioningState.ACCEPTED)
-            .withMaximumConcurrency(1867037750)
+            .withMaximumConcurrency(1289591857)
             .withOrganizationProfile(new OrganizationProfile())
             .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                 .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
             .withFabricProfile(new FabricProfile())
-            .withDevCenterProjectResourceId("vdjwzrlovm");
+            .withDevCenterProjectResourceId("pj")
+            .withRuntimeConfiguration(new RuntimeConfiguration().withWorkFolder("sxazjpq"));
         model = BinaryData.fromObject(model).toObject(PoolUpdateProperties.class);
         Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
-        Assertions.assertEquals(1867037750, model.maximumConcurrency());
-        Assertions.assertEquals("vdjwzrlovm", model.devCenterProjectResourceId());
+        Assertions.assertEquals(1289591857, model.maximumConcurrency());
+        Assertions.assertEquals("pj", model.devCenterProjectResourceId());
+        Assertions.assertEquals("sxazjpq", model.runtimeConfiguration().workFolder());
     }
 }
