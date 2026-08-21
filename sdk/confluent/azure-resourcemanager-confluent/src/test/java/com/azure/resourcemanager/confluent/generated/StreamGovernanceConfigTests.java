@@ -13,14 +13,14 @@ public final class StreamGovernanceConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamGovernanceConfig model
-            = BinaryData.fromString("{\"package\":\"ESSENTIALS\"}").toObject(StreamGovernanceConfig.class);
-        Assertions.assertEquals(Package.ESSENTIALS, model.packageProperty());
+            = BinaryData.fromString("{\"package\":\"ADVANCED\"}").toObject(StreamGovernanceConfig.class);
+        Assertions.assertEquals(Package.ADVANCED, model.packageProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamGovernanceConfig model = new StreamGovernanceConfig().withPackageProperty(Package.ESSENTIALS);
+        StreamGovernanceConfig model = new StreamGovernanceConfig().withPackageProperty(Package.ADVANCED);
         model = BinaryData.fromObject(model).toObject(StreamGovernanceConfig.class);
-        Assertions.assertEquals(Package.ESSENTIALS, model.packageProperty());
+        Assertions.assertEquals(Package.ADVANCED, model.packageProperty());
     }
 }

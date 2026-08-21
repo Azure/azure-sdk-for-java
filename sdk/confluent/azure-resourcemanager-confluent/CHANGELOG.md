@@ -1,14 +1,63 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (2026-07-16)
+
+- Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package api-version 2026-06-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.NetworkGatewayResources` was added
 
-### Bugs Fixed
+* `models.NetworkGatewayResource$DefinitionStages` was added
 
-### Other Changes
+* `models.AccessPointResources` was added
+
+* `models.SaaSResourceDetailsResponse` was added
+
+* `models.LatestLinkedSaaSResponse` was added
+
+* `models.SaaSData` was added
+
+* `models.ActivateSaaSParameterRequest` was added
+
+* `models.NetworkGatewayProperties` was added
+
+* `models.AccessPointResource$Definition` was added
+
+* `models.NetworkGatewayResource` was added
+
+* `models.AccessPointProperties` was added
+
+* `models.NetworkGatewayResource$Definition` was added
+
+* `models.AccessPointResource$DefinitionStages` was added
+
+* `models.AccessPointResource` was added
+
+* `models.VnetInjectionDetails` was added
+
+* `models.KeyValuePair` was added
+
+#### `ConfluentManager` was modified
+
+* `networkGatewayResources()` was added
+* `accessPointResources()` was added
+
+#### `models.Organizations` was modified
+
+* `activateResource(models.ActivateSaaSParameterRequest)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData,com.azure.core.util.Context)` was added
+* `activateResource(models.ActivateSaaSParameterRequest,com.azure.core.util.Context)` was added
+* `latestLinkedSaaSWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `latestLinkedSaaS(java.lang.String,java.lang.String)` was added
+* `linkSaaS(java.lang.String,java.lang.String,models.SaaSData)` was added
+
+#### `models.OrganizationResource` was modified
+
+* `latestLinkedSaaS()` was added
+* `linkSaaS(models.SaaSData,com.azure.core.util.Context)` was added
+* `linkSaaS(models.SaaSData)` was added
+* `latestLinkedSaaSWithResponse(com.azure.core.util.Context)` was added
 
 ## 1.3.0-beta.1 (2026-02-10)
 
