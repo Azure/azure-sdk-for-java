@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.generated;
 import com.azure.resourcemanager.sql.fluent.models.DistributedAvailabilityGroupInner;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
 import com.azure.resourcemanager.sql.models.FailoverModeType;
+import com.azure.resourcemanager.sql.models.LinkModeType;
 import com.azure.resourcemanager.sql.models.LinkRole;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import java.util.Arrays;
  */
 public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsCreateMin.json
+     * x-ms-original-file: 2025-08-01-preview/DistributedAvailabilityGroupsCreateMin.json
      */
     /**
      * Sample code: Create a distributed availability group with minimal properties.
@@ -37,7 +38,7 @@ public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsCreateMax.json
+     * x-ms-original-file: 2025-08-01-preview/DistributedAvailabilityGroupsCreateMax.json
      */
     /**
      * Sample code: Create a distributed availability group with all properties.
@@ -55,6 +56,7 @@ public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
                     .withInstanceAvailabilityGroupName("testcl")
                     .withFailoverMode(FailoverModeType.NONE)
                     .withSeedingMode(SeedingModeType.AUTOMATIC)
+                    .withLinkMode(LinkModeType.SINGLE_DATABASE)
                     .withDatabases(
                         Arrays.asList(new DistributedAvailabilityGroupDatabase().withDatabaseName("testdb"))),
                 com.azure.core.util.Context.NONE);

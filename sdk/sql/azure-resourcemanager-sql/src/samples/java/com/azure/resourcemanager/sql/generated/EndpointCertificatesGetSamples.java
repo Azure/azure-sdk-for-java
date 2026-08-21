@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class EndpointCertificatesGetSamples {
     /*
-     * x-ms-original-file: 2025-01-01/EndpointCertificatesGet.json
+     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesGet.json
      */
     /**
      * Sample code: Gets an endpoint certificate.
@@ -17,6 +17,21 @@ public final class EndpointCertificatesGetSamples {
      * @param manager Entry point to SqlServerManager.
      */
     public static void getsAnEndpointCertificate(com.azure.resourcemanager.sql.SqlServerManager manager) {
+        manager.serviceClient()
+            .getEndpointCertificates()
+            .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-08-01-preview/EndpointCertificatesGetWithTrustedRootCertificate.json
+     */
+    /**
+     * Sample code: Gets an endpoint certificate including trusted root certificates.
+     * 
+     * @param manager Entry point to SqlServerManager.
+     */
+    public static void getsAnEndpointCertificateIncludingTrustedRootCertificates(
+        com.azure.resourcemanager.sql.SqlServerManager manager) {
         manager.serviceClient()
             .getEndpointCertificates()
             .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", com.azure.core.util.Context.NONE);

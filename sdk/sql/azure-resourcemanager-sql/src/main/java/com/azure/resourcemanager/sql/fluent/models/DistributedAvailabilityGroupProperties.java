@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.DistributedAvailabilityGroupDatabase;
 import com.azure.resourcemanager.sql.models.FailoverModeType;
+import com.azure.resourcemanager.sql.models.LinkModeType;
 import com.azure.resourcemanager.sql.models.LinkRole;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
 import com.azure.resourcemanager.sql.models.SeedingModeType;
@@ -74,6 +75,11 @@ public final class DistributedAvailabilityGroupProperties
      * Database seeding mode – can be Automatic (default), or Manual for supported scenarios.
      */
     private SeedingModeType seedingMode;
+
+    /*
+     * Specifies whether the link operates in single-database or multi-database mode.
+     */
+    private LinkModeType linkMode;
 
     /*
      * Databases in the distributed availability group
@@ -260,6 +266,26 @@ public final class DistributedAvailabilityGroupProperties
     }
 
     /**
+     * Get the linkMode property: Specifies whether the link operates in single-database or multi-database mode.
+     * 
+     * @return the linkMode value.
+     */
+    public LinkModeType linkMode() {
+        return this.linkMode;
+    }
+
+    /**
+     * Set the linkMode property: Specifies whether the link operates in single-database or multi-database mode.
+     * 
+     * @param linkMode the linkMode value to set.
+     * @return the DistributedAvailabilityGroupProperties object itself.
+     */
+    public DistributedAvailabilityGroupProperties withLinkMode(LinkModeType linkMode) {
+        this.linkMode = linkMode;
+        return this;
+    }
+
+    /**
      * Get the databases property: Databases in the distributed availability group.
      * 
      * @return the databases value.
@@ -305,6 +331,7 @@ public final class DistributedAvailabilityGroupProperties
         jsonWriter.writeStringField("instanceAvailabilityGroupName", this.instanceAvailabilityGroupName);
         jsonWriter.writeStringField("failoverMode", this.failoverMode == null ? null : this.failoverMode.toString());
         jsonWriter.writeStringField("seedingMode", this.seedingMode == null ? null : this.seedingMode.toString());
+        jsonWriter.writeStringField("linkMode", this.linkMode == null ? null : this.linkMode.toString());
         jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -354,6 +381,9 @@ public final class DistributedAvailabilityGroupProperties
                 } else if ("seedingMode".equals(fieldName)) {
                     deserializedDistributedAvailabilityGroupProperties.seedingMode
                         = SeedingModeType.fromString(reader.getString());
+                } else if ("linkMode".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.linkMode
+                        = LinkModeType.fromString(reader.getString());
                 } else if ("databases".equals(fieldName)) {
                     List<DistributedAvailabilityGroupDatabase> databases
                         = reader.readArray(reader1 -> DistributedAvailabilityGroupDatabase.fromJson(reader1));

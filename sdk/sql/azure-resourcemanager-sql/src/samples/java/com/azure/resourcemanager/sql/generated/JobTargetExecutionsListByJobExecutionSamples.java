@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public final class JobTargetExecutionsListByJobExecutionSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ListJobExecutionTargetsByExecution.json
+     * x-ms-original-file: 2025-08-01-preview/ListJobExecutionTargetsByExecution.json
      */
     /**
      * Sample code: List job step target executions.

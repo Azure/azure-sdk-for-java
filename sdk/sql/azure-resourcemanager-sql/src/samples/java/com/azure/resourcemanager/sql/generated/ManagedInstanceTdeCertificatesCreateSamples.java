@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.TdeCertificate;
  */
 public final class ManagedInstanceTdeCertificatesCreateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/ManagedInstanceTdeCertificate.json
+     * x-ms-original-file: 2025-08-01-preview/ManagedInstanceTdeCertificate.json
      */
     /**
      * Sample code: Upload a TDE certificate.
