@@ -21,7 +21,7 @@ public final class CapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publisher\":\"rwd\",\"targetType\":\"zeqyjleziun\",\"description\":\"dfzantkwcegy\",\"parametersSchema\":\"lbnseqac\",\"urn\":\"vpilg\",\"provisioningState\":\"Failed\"},\"id\":\"jagmdi\",\"name\":\"gueiookjbsahrtdt\",\"type\":\"delqacslmoto\"}]}";
+            = "{\"value\":[{\"properties\":{\"publisher\":\"hotj\",\"targetType\":\"lpxuzzjgnrefq\",\"description\":\"qotoihiqakydiwfb\",\"parametersSchema\":\"wpzdqtvhcspo\",\"urn\":\"qaxsipietgbebjf\",\"provisioningState\":\"Running\"},\"id\":\"oichdlpnfpubnt\",\"name\":\"batzviqsows\",\"type\":\"aelcat\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class CapabilitiesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Capability> response = manager.capabilities()
-            .list("o", "gebx", "cnwfepbnwgfmxjg", "g", "jbgdlfgtdysnaquf", "qbctqha", com.azure.core.util.Context.NONE);
+            .list("lrocuyzlwh", "memhooclutnpq", "emc", "jk", "mykyujxsglhs", "rryejylmbkzudnig",
+                com.azure.core.util.Context.NONE);
 
     }
 }

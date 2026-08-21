@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Workspaces_List.json
+     * x-ms-original-file: 2026-08-01-preview/Workspaces_List.json
      */
     /**
      * Sample code: List all Workspaces in a resource group.
