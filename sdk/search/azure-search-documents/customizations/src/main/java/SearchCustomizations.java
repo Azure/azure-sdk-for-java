@@ -63,6 +63,7 @@ public class SearchCustomizations extends Customization {
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
         // that mirror what the sync client already has as hand-written methods.
         addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
+        removeRedundantGeneratedGetSynonymMaps(indexes.getClass("SearchIndexAsyncClient"));
 
         // SearchResourceEncryptionKey workaround: the spec marks keyVaultUri and keyVaultKeyName as required,
         // but they are not required when isServiceLevelKey is true. Add a no-arg constructor.
@@ -919,4 +920,13 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
+    // The generated zero-argument helper calls an overload removed by the new listing API. The public
+    // listSynonymMaps() method delegates to the customized four-argument helper instead.
+    private static void removeRedundantGeneratedGetSynonymMaps(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
+            .ifPresent(clazz -> clazz.getMethodsByName("getSynonymMaps")
+                .stream()
+                .filter(method -> method.isAnnotationPresent("Generated") && method.getParameters().isEmpty())
+                .forEach(MethodDeclaration::remove)));
+    }
 }
