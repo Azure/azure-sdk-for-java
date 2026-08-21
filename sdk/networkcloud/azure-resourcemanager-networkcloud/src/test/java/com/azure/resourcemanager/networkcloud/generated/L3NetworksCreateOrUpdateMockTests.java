@@ -28,7 +28,7 @@ public final class L3NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"lhupmomihzbdnpxp\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"reyxelyicghf\",\"ipv6ConnectedPrefix\":\"ufssjyghsfxr\",\"l3IsolationDomainId\":\"bh\",\"vlan\":6755343471165764305,\"associatedResourceIds\":[\"qfmefgvqcpdwj\",\"quxweyslandkd\",\"djhunhghcgawnr\"],\"clusterId\":\"quox\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"reimseob\",\"hybridAksClustersAssociatedIds\":[\"stcyilbvzmmxcjz\",\"quzexokjxebjvbz\",\"n\"],\"virtualMachinesAssociatedIds\":[\"wmvogljsv\",\"pgidnw\",\"ehaqidoyzltgio\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"pepiaeapfs\",\"extendedLocation\":{\"name\":\"rgdtpeqnacyheqw\",\"type\":\"EdgeZone\"},\"location\":\"qncjubkhjozfymcw\",\"tags\":{\"li\":\"pyvqy\",\"hddzydisnuepy\":\"iipsejbsvsiaies\",\"dpxot\":\"yjln\"},\"id\":\"diiaocqibzji\",\"name\":\"weebiphryv\",\"type\":\"jw\"}";
+            = "{\"properties\":{\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"plkys\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"j\",\"ipv6ConnectedPrefix\":\"xslwhd\",\"l3IsolationDomainId\":\"cvhtbbzjhfvh\",\"vlan\":5796452940720087552,\"associatedResourceIds\":[\"pcqzg\"],\"clusterId\":\"otjecohmxvvl\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"apbxwieexuyade\",\"hybridAksClustersAssociatedIds\":[\"fokyks\"],\"virtualMachinesAssociatedIds\":[\"yc\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"kcxzz\",\"extendedLocation\":{\"name\":\"nuif\",\"type\":\"CustomLocation\"},\"location\":\"ejeg\",\"tags\":{\"tu\":\"jguwrjmwvv\",\"wgxql\":\"kxxi\",\"qfkyfhiwvjaqu\":\"ekotjgxi\",\"nvskpaj\":\"by\"},\"id\":\"mgeu\",\"name\":\"exmj\",\"type\":\"xcbccwkqmt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,36 +38,35 @@ public final class L3NetworksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L3Network response = manager.l3Networks()
-            .define("bfokxkhu")
-            .withRegion("ctxbxmolpcqyd")
-            .withExistingResourceGroup("znlw")
-            .withExtendedLocation(new ExtendedLocation().withName("xh").withType(ExtendedLocationType.CUSTOM_LOCATION))
-            .withL3IsolationDomainId("ugekdfqn")
-            .withVlan(3321786969285103938L)
-            .withTags(
-                mapOf("rjeizik", "vskiczd", "ycqsxr", "qaboohxbms", "ewuyqa", "d", "hdaurghooxaexb", "ohpjhgejkbv"))
+            .define("mpyzgleo")
+            .withRegion("zbuiadhbatecaa")
+            .withExistingResourceGroup("esocwiqbuou")
+            .withExtendedLocation(new ExtendedLocation().withName("nxs").withType(ExtendedLocationType.EDGE_ZONE))
+            .withL3IsolationDomainId("bouguxtndopgjt")
+            .withVlan(2754151566144379086L)
+            .withTags(mapOf("zn", "o", "wiinjdllw", "ucbdaom", "g", "tlepowavvqxua", "si", "qwulynkgfcfdru"))
             .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
-            .withHybridAksPluginType(HybridAksPluginType.DPDK)
-            .withInterfaceName("g")
-            .withIpAllocationType(IpAllocationType.DUAL_STACK)
-            .withIpv4ConnectedPrefix("drmyfcemftzg")
-            .withIpv6ConnectedPrefix("kya")
-            .withIfMatch("cdgzseznux")
-            .withIfNoneMatch("euairaabmdlqjb")
+            .withHybridAksPluginType(HybridAksPluginType.SRIOV)
+            .withInterfaceName("wwzvdaj")
+            .withIpAllocationType(IpAllocationType.IPV4)
+            .withIpv4ConnectedPrefix("cf")
+            .withIpv6ConnectedPrefix("ciqgjjrlhiqlwixv")
+            .withIfMatch("yhcdjwsuoardnag")
+            .withIfNoneMatch("tpufpbpgnrholhu")
             .create();
 
-        Assertions.assertEquals("qncjubkhjozfymcw", response.location());
-        Assertions.assertEquals("pyvqy", response.tags().get("li"));
-        Assertions.assertEquals("rgdtpeqnacyheqw", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksIpamEnabled.FALSE, response.hybridAksIpamEnabled());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
-        Assertions.assertEquals("lhupmomihzbdnpxp", response.interfaceName());
+        Assertions.assertEquals("ejeg", response.location());
+        Assertions.assertEquals("jguwrjmwvv", response.tags().get("tu"));
+        Assertions.assertEquals("nuif", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksIpamEnabled.TRUE, response.hybridAksIpamEnabled());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
+        Assertions.assertEquals("plkys", response.interfaceName());
         Assertions.assertEquals(IpAllocationType.DUAL_STACK, response.ipAllocationType());
-        Assertions.assertEquals("reyxelyicghf", response.ipv4ConnectedPrefix());
-        Assertions.assertEquals("ufssjyghsfxr", response.ipv6ConnectedPrefix());
-        Assertions.assertEquals("bh", response.l3IsolationDomainId());
-        Assertions.assertEquals(6755343471165764305L, response.vlan());
+        Assertions.assertEquals("j", response.ipv4ConnectedPrefix());
+        Assertions.assertEquals("xslwhd", response.ipv6ConnectedPrefix());
+        Assertions.assertEquals("cvhtbbzjhfvh", response.l3IsolationDomainId());
+        Assertions.assertEquals(5796452940720087552L, response.vlan());
     }
 
     // Use "Map.of" if available

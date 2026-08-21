@@ -15,21 +15,21 @@ public final class OsDiskTests {
     public void testDeserialize() throws Exception {
         OsDisk model = BinaryData
             .fromString(
-                "{\"createOption\":\"Persistent\",\"deleteOption\":\"Delete\",\"diskSizeGB\":616571322617834074}")
+                "{\"createOption\":\"Persistent\",\"deleteOption\":\"Delete\",\"diskSizeGB\":4989085639302436817}")
             .toObject(OsDisk.class);
         Assertions.assertEquals(OsDiskCreateOption.PERSISTENT, model.createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.deleteOption());
-        Assertions.assertEquals(616571322617834074L, model.diskSizeGB());
+        Assertions.assertEquals(4989085639302436817L, model.diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OsDisk model = new OsDisk().withCreateOption(OsDiskCreateOption.PERSISTENT)
             .withDeleteOption(OsDiskDeleteOption.DELETE)
-            .withDiskSizeGB(616571322617834074L);
+            .withDiskSizeGB(4989085639302436817L);
         model = BinaryData.fromObject(model).toObject(OsDisk.class);
         Assertions.assertEquals(OsDiskCreateOption.PERSISTENT, model.createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.deleteOption());
-        Assertions.assertEquals(616571322617834074L, model.diskSizeGB());
+        Assertions.assertEquals(4989085639302436817L, model.diskSizeGB());
     }
 }

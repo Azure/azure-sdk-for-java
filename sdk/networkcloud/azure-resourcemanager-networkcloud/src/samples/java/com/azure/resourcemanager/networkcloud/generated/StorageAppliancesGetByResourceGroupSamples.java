@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class StorageAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StorageAppliances_Get.json
+     * x-ms-original-file: 2026-07-01/StorageAppliances_Get.json
      */
     /**
      * Sample code: Get storage appliance.

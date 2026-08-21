@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class BareMetalMachinesRunDataExtractsSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BareMetalMachines_RunDataExtracts.json
+     * x-ms-original-file: 2026-07-01/BareMetalMachines_RunDataExtracts.json
      */
     /**
      * Sample code: Run data extraction on bare metal machine.

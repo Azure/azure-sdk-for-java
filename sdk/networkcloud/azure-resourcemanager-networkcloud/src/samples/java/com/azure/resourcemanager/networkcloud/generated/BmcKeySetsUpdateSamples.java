@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class BmcKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/BmcKeySets_Patch.json
+     * x-ms-original-file: 2026-07-01/BmcKeySets_Patch.json
      */
     /**
      * Sample code: Patch baseboard management controller key set of cluster.

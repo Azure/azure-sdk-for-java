@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class ClustersDeploySamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Deploy.json
+     * x-ms-original-file: 2026-07-01/Clusters_Deploy.json
      */
     /**
      * Sample code: Deploy cluster.
@@ -26,7 +26,7 @@ public final class ClustersDeploySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_Deploy_SkipValidation.json
+     * x-ms-original-file: 2026-07-01/Clusters_Deploy_SkipValidation.json
      */
     /**
      * Sample code: Deploy cluster skipping validation.

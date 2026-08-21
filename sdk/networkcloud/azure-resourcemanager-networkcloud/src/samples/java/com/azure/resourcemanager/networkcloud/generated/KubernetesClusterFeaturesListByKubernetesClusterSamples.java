@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class KubernetesClusterFeaturesListByKubernetesClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusterFeatures_ListByKubernetesCluster.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusterFeatures_ListByKubernetesCluster.json
      */
     /**
      * Sample code: List features for the Kubernetes cluster.

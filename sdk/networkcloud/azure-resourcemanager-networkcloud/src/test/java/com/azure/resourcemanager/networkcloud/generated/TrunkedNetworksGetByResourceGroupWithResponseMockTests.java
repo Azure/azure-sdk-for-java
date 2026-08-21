@@ -23,7 +23,7 @@ public final class TrunkedNetworksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"dnzyzawatuwqko\",\"isolationDomainIds\":[\"czothymgo\",\"l\",\"msn\",\"gwi\"],\"vlans\":[1863339354491674068,4501292757426570565,6525173374380066185,888266510862921455],\"associatedResourceIds\":[\"bcyanrfvqtvk\",\"gvoogxkfna\",\"aqymhcctopuowyr\",\"skbyhquhczygx\"],\"clusterId\":\"ajpxecxqnwhscoza\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"xsm\",\"hybridAksClustersAssociatedIds\":[\"pwirfljfewxqouo\",\"ud\",\"mckaprh\"],\"virtualMachinesAssociatedIds\":[\"iijgencd\",\"moqueqihkkyow\"],\"provisioningState\":\"Failed\"},\"etag\":\"uwhldxwhieproqks\",\"extendedLocation\":{\"name\":\"fxmcvprstvk\",\"type\":\"CustomLocation\"},\"location\":\"fjtdyot\",\"tags\":{\"cqrq\":\"facqo\"},\"id\":\"wetjtdrhutf\",\"name\":\"oadtxopgehpadkmd\",\"type\":\"gssz\"}";
+            = "{\"properties\":{\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"oeajogsy\",\"isolationDomainIds\":[\"etamfddrvlkpzwb\",\"nrecchdidrm\",\"hkahmjedbiucvkh\"],\"vlans\":[3825128096310569981,1461637026276140747,8000359198217018867,6559774692407255992],\"associatedResourceIds\":[\"cqrrihufoih\",\"piybxvgnzuzpbg\",\"zc\"],\"clusterId\":\"piuzvk\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"i\",\"hybridAksClustersAssociatedIds\":[\"ktirzka\",\"gpucdocfq\",\"lwgofm\"],\"virtualMachinesAssociatedIds\":[\"rjlvzklkvbgi\",\"yjtkakvlb\"],\"provisioningState\":\"Succeeded\"},\"etag\":\"vpz\",\"extendedLocation\":{\"name\":\"ptuoska\",\"type\":\"CustomLocation\"},\"location\":\"jixwfgc\",\"tags\":{\"tmdmuqohhihr\":\"kkcxwnujvqynvav\"},\"id\":\"xquddrw\",\"name\":\"cljbrhlhpvzad\",\"type\":\"wennin\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class TrunkedNetworksGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrunkedNetwork response = manager.trunkedNetworks()
-            .getByResourceGroupWithResponse("lcaymjchtv", "n", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("dorgmynltw", "p", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fjtdyot", response.location());
-        Assertions.assertEquals("facqo", response.tags().get("cqrq"));
-        Assertions.assertEquals("fxmcvprstvk", response.extendedLocation().name());
+        Assertions.assertEquals("jixwfgc", response.location());
+        Assertions.assertEquals("kkcxwnujvqynvav", response.tags().get("tmdmuqohhihr"));
+        Assertions.assertEquals("ptuoska", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
-        Assertions.assertEquals("dnzyzawatuwqko", response.interfaceName());
-        Assertions.assertEquals("czothymgo", response.isolationDomainIds().get(0));
-        Assertions.assertEquals(1863339354491674068L, response.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
+        Assertions.assertEquals("oeajogsy", response.interfaceName());
+        Assertions.assertEquals("etamfddrvlkpzwb", response.isolationDomainIds().get(0));
+        Assertions.assertEquals(3825128096310569981L, response.vlans().get(0));
     }
 }

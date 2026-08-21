@@ -12,7 +12,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionSafegua
  */
 public final class ClustersUpdateVersionSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Clusters_UpdateVersion.json
+     * x-ms-original-file: 2026-07-01/Clusters_UpdateVersion.json
      */
     /**
      * Sample code: Update cluster version.

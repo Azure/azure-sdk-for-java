@@ -9,7 +9,7 @@ package com.azure.resourcemanager.networkcloud.generated;
  */
 public final class KubernetesClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/KubernetesClusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/KubernetesClusters_ListByResourceGroup.json
      */
     /**
      * Sample code: List Kubernetes clusters for resource group.
