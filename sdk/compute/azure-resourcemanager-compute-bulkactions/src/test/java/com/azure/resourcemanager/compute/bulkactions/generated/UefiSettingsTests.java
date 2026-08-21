@@ -12,16 +12,16 @@ public final class UefiSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UefiSettings model
-            = BinaryData.fromString("{\"secureBootEnabled\":true,\"vTpmEnabled\":true}").toObject(UefiSettings.class);
-        Assertions.assertTrue(model.secureBootEnabled());
-        Assertions.assertTrue(model.vTpmEnabled());
+            = BinaryData.fromString("{\"secureBootEnabled\":false,\"vTpmEnabled\":false}").toObject(UefiSettings.class);
+        Assertions.assertFalse(model.secureBootEnabled());
+        Assertions.assertFalse(model.vTpmEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UefiSettings model = new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true);
+        UefiSettings model = new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(false);
         model = BinaryData.fromObject(model).toObject(UefiSettings.class);
-        Assertions.assertTrue(model.secureBootEnabled());
-        Assertions.assertTrue(model.vTpmEnabled());
+        Assertions.assertFalse(model.secureBootEnabled());
+        Assertions.assertFalse(model.vTpmEnabled());
     }
 }
