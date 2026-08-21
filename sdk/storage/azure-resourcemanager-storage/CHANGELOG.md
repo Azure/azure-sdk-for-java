@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 2.57.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-msi` from `2.53.9` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.10` to version `2.53.12`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+
 ## 2.57.1 (2026-07-07)
 
 ### Other Changes
