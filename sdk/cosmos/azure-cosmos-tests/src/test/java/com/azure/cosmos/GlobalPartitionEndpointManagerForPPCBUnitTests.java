@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecif
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ConnectTimeoutException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -1180,12 +1181,26 @@ public class GlobalPartitionEndpointManagerForPPCBUnitTests {
                     collectionRid,
                     partitionKeyRange)).containsExactly("East US");
                 assertThat(refreshedConnectionAttempts).hasValue(1);
+                assertThat(new ObjectMapper().writeValueAsString(
+                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                    .contains("\"outcome\":\"Failed\"")
+                    .contains("\"stage\":\"OPEN_CONNECTION_TASK\"")
+                    .contains("\"type\":\"io.netty.channel.ConnectTimeoutException\"")
+                    .contains("\"message\":\"Refreshed replica is unavailable\"");
             } else {
                 assertThat(ppcbManager.getUnavailableRegionsForPartitionKeyRange(
                     request,
                     collectionRid,
                     partitionKeyRange)).isEmpty();
+                assertThat(new ObjectMapper().writeValueAsString(
+                    request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                    .contains("\"outcome\":\"Succeeded\"")
+                    .doesNotContain("\"failure\"");
             }
+
+            assertThat(new ObjectMapper().writeValueAsString(
+                request.requestContext.getPerPartitionCircuitBreakerInfoHolder()))
+                .contains("\"lastAttemptedAt\":");
 
             if (populateStaleAddress) {
                 assertThat(forceRefreshValues).containsExactly(false, true);

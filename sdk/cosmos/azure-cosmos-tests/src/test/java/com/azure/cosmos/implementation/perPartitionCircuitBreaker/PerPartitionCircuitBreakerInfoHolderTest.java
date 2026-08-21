@@ -93,6 +93,39 @@ public class PerPartitionCircuitBreakerInfoHolderTest {
     }
 
     @Test(groups = {"unit"})
+    public void failedFailbackAttemptIsSerialized() throws Exception {
+        LocationSpecificHealthContext healthContext = createHealthContext(LocationHealthStatus.Unavailable)
+            .withFailbackAttempt(
+                Instant.EPOCH,
+                LocationSpecificHealthContext.FailbackOutcome.Failed,
+                "OPEN_CONNECTION_TASK",
+                new IllegalStateException("connection failed"));
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap("eastus", healthContext));
+
+        assertThat(new ObjectMapper().writeValueAsString(holder))
+            .contains("\"failback\":{\"lastAttemptedAt\":\"1970-01-01T00:00:00Z\",\"outcome\":\"Failed\","
+                + "\"failure\":{\"stage\":\"OPEN_CONNECTION_TASK\","
+                + "\"type\":\"java.lang.IllegalStateException\",\"message\":\"connection failed\"}}");
+    }
+
+    @Test(groups = {"unit"})
+    public void nonFailedFailbackDoesNotRetainFailureStrings() throws Exception {
+        LocationSpecificHealthContext healthContext = createHealthContext(LocationHealthStatus.HealthyTentative)
+            .withFailbackAttempt(
+                Instant.EPOCH,
+                LocationSpecificHealthContext.FailbackOutcome.Succeeded,
+                "SHOULD_NOT_BE_RETAINED",
+                new IllegalStateException("should not be retained"));
+        PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();
+        holder.setPerPartitionCircuitBreakerInfoHolder(Collections.singletonMap("eastus", healthContext));
+
+        String serialized = new ObjectMapper().writeValueAsString(holder);
+        assertThat(serialized).contains("\"outcome\":\"Succeeded\"");
+        assertThat(serialized).doesNotContain("SHOULD_NOT_BE_RETAINED", "should not be retained", "\"failure\"");
+    }
+
+    @Test(groups = {"unit"})
     public void responseStatisticsRetainStateAtRecordTime() {
         DiagnosticsClientContext diagnosticsClientContext = Mockito.mock(DiagnosticsClientContext.class);
         PerPartitionCircuitBreakerInfoHolder holder = new PerPartitionCircuitBreakerInfoHolder();

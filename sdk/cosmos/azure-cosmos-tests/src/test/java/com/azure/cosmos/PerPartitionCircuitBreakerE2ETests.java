@@ -3792,7 +3792,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 boolean hasReachedCircuitBreakingThreshold = false;
                 int executionCountAfterCircuitBreakingThresholdBreached = 0;
-                Set<String> loggedPpcbDiagnosticsPhases = new HashSet<>();
+                boolean failbackExpected = false;
+                Set<PpcbDiagnosticsPhase> loggedPpcbDiagnosticsPhases = new HashSet<>();
 
                 List<TestObject> testObjects = operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith;
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper
@@ -3810,8 +3811,8 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         testId,
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
-                    assertPpcbSnapshotsPopulated(response, "failed operation");
-                    logPpcbDiagnosticsOnce(response, "failed operation", loggedPpcbDiagnosticsPhases);
+                    assertPpcbSnapshotsPopulated(response, PpcbDiagnosticsPhase.FAILURE, false);
+                    logPpcbDiagnosticsOnce(response, PpcbDiagnosticsPhase.FAILURE, loggedPpcbDiagnosticsPhases);
 
                     ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
                         = globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
@@ -3837,8 +3838,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                     if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
                         validateResponseInAbsenceOfFailures.accept(response);
-                        assertPpcbSnapshotsPopulated(response, "post-failover operation");
-                        logPpcbDiagnosticsOnce(response, "post-failover operation", loggedPpcbDiagnosticsPhases);
+                        failbackExpected |= assertPpcbSnapshotsPopulated(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            false);
+                        logPpcbDiagnosticsOnce(
+                            response,
+                            PpcbDiagnosticsPhase.POST_FAILOVER,
+                            loggedPpcbDiagnosticsPhases);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -3905,8 +3912,14 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         executeDataPlaneOperation,
                         operationInvocationParamsWrapper);
                     validateResponseInAbsenceOfFailures.accept(response);
-                    assertPpcbSnapshotsPopulated(response, "post-failback operation");
-                    logPpcbDiagnosticsOnce(response, "post-failback operation", loggedPpcbDiagnosticsPhases);
+                    assertPpcbSnapshotsPopulated(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        failbackExpected);
+                    logPpcbDiagnosticsOnce(
+                        response,
+                        PpcbDiagnosticsPhase.POST_FAILBACK,
+                        loggedPpcbDiagnosticsPhases);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -3969,27 +3982,32 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private static void logPpcbDiagnosticsOnce(
         ResponseWrapper<?> response,
-        String phase,
-        Set<String> loggedPhases) {
+        PpcbDiagnosticsPhase phase,
+        Set<PpcbDiagnosticsPhase> loggedPhases) {
 
         if (loggedPhases.add(phase)) {
             CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
             if (diagnosticsContext != null) {
-                logger.info("PPCB CosmosDiagnostics [{}]: {}", phase, diagnosticsContext.toJson());
+                logger.info("PPCB CosmosDiagnostics [{}]: {}", phase.label, diagnosticsContext.toJson());
             }
         }
     }
 
-    private static void assertPpcbSnapshotsPopulated(ResponseWrapper<?> response, String phase) {
+    private static boolean assertPpcbSnapshotsPopulated(
+        ResponseWrapper<?> response,
+        PpcbDiagnosticsPhase phase,
+        boolean failbackExpected) {
+
         CosmosDiagnosticsContext diagnosticsContext = getDiagnosticsContext(response);
         assertThat(diagnosticsContext)
-            .as("Expected CosmosDiagnostics for %s", phase)
+            .as("Expected CosmosDiagnostics for %s", phase.label)
             .isNotNull();
         assertThat(diagnosticsContext.getDiagnostics())
-            .as("Expected diagnostics entries for %s", phase)
+            .as("Expected diagnostics entries for %s", phase.label)
             .isNotNull();
 
         int applicableStatisticCount = 0;
+        List<LocationSpecificHealthContext> healthContexts = new ArrayList<>();
         for (CosmosDiagnostics cosmosDiagnostics : diagnosticsContext.getDiagnostics()) {
             Collection<ClientSideRequestStatistics> statisticsCollection =
                 cosmosDiagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
@@ -4011,12 +4029,15 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                         applicableStatisticCount++;
                         assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder())
-                            .as("Expected direct PPCB holder for %s", phase)
+                            .as("Expected direct PPCB holder for %s", phase.label)
                             .isNotNull();
-                        assertThat(storeStatistics.getPerPartitionCircuitBreakerInfoHolder()
-                            .getPerPartitionCircuitBreakerInfoHolder())
-                            .as("Expected populated direct PPCB snapshot for %s", phase)
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = storeStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated direct PPCB snapshot for %s", phase.label)
                             .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
                     }
                 }
 
@@ -4029,12 +4050,15 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                         applicableStatisticCount++;
                         assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder())
-                            .as("Expected gateway PPCB holder for %s", phase)
+                            .as("Expected gateway PPCB holder for %s", phase.label)
                             .isNotNull();
-                        assertThat(gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder()
-                            .getPerPartitionCircuitBreakerInfoHolder())
-                            .as("Expected populated gateway PPCB snapshot for %s", phase)
+                        Map<String, LocationSpecificHealthContext> stateByRegion
+                            = gatewayStatistics.getPerPartitionCircuitBreakerInfoHolder()
+                                .getPerPartitionCircuitBreakerInfoHolder();
+                        assertThat(stateByRegion)
+                            .as("Expected populated gateway PPCB snapshot for %s", phase.label)
                             .isNotNull();
+                        healthContexts.addAll(stateByRegion.values());
                     }
                 }
             }
@@ -4042,9 +4066,42 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         if (applicableStatisticCount == 0) {
             assertThat(hasOnlyQueryPlanStatistics(diagnosticsContext))
-                .as("Expected PPCB-applicable data-plane statistics or QueryPlan-only diagnostics for %s", phase)
+                .as("Expected PPCB-applicable data-plane statistics or QueryPlan-only diagnostics for %s", phase.label)
                 .isTrue();
         }
+
+        boolean unavailableRegionFound = false;
+        boolean successfulFailbackFound = false;
+        for (LocationSpecificHealthContext healthContext : healthContexts) {
+            if (healthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                unavailableRegionFound = true;
+                if (phase == PpcbDiagnosticsPhase.POST_FAILOVER) {
+                    assertThat(healthContext.getLastFailbackOutcome())
+                        .as("Failback must not have succeeded while the region remains unavailable")
+                        .isNotEqualTo(LocationSpecificHealthContext.FailbackOutcome.Succeeded);
+                }
+            }
+
+            if (healthContext.getLastFailbackOutcome()
+                == LocationSpecificHealthContext.FailbackOutcome.Succeeded) {
+
+                successfulFailbackFound = true;
+                assertThat(healthContext.getLastFailbackAttemptTime())
+                    .as("Expected failback attempt timestamp after successful failback")
+                    .isNotNull();
+                assertThat(healthContext.getLocationHealthStatus())
+                    .as("Expected recovered region after successful failback")
+                    .isIn(LocationHealthStatus.HealthyTentative, LocationHealthStatus.Healthy);
+            }
+        }
+
+        if (phase == PpcbDiagnosticsPhase.POST_FAILBACK && failbackExpected) {
+            assertThat(successfulFailbackFound)
+                .as("Expected a successful failback outcome for a previously unavailable region")
+                .isTrue();
+        }
+
+        return unavailableRegionFound;
     }
 
     private static boolean isPpcbApplicableDataPlaneStatistic(
@@ -5831,6 +5888,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     private enum QueryType {
         READ_MANY, READ_ALL
+    }
+
+    private enum PpcbDiagnosticsPhase {
+        FAILURE("failed operation"),
+        POST_FAILOVER("post-failover operation"),
+        POST_FAILBACK("post-failback operation");
+
+        private final String label;
+
+        PpcbDiagnosticsPhase(String label) {
+            this.label = label;
+        }
     }
 
     private static class AccountLevelLocationContext {

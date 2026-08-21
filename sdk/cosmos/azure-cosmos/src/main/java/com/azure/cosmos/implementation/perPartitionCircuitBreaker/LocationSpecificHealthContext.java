@@ -24,6 +24,7 @@ public class LocationSpecificHealthContext implements Serializable {
     private final Instant unavailableSince;
     private final LocationHealthStatus locationHealthStatus;
     private final boolean isExceptionThresholdBreached;
+    private final FailbackDiagnostics failbackDiagnostics;
 
     LocationSpecificHealthContext(
         int successCountForWriteForRecovery,
@@ -32,7 +33,8 @@ public class LocationSpecificHealthContext implements Serializable {
         int exceptionCountForReadForCircuitBreaking,
         Instant unavailableSince,
         LocationHealthStatus locationHealthStatus,
-        boolean isExceptionThresholdBreached) {
+        boolean isExceptionThresholdBreached,
+        FailbackDiagnostics failbackDiagnostics) {
 
         this.successCountForWriteForRecovery = successCountForWriteForRecovery;
         this.exceptionCountForWriteForCircuitBreaking = exceptionCountForWriteForCircuitBreaking;
@@ -41,6 +43,7 @@ public class LocationSpecificHealthContext implements Serializable {
         this.unavailableSince = unavailableSince;
         this.locationHealthStatus = locationHealthStatus;
         this.isExceptionThresholdBreached = isExceptionThresholdBreached;
+        this.failbackDiagnostics = failbackDiagnostics;
     }
 
     public boolean isExceptionThresholdBreached() {
@@ -77,6 +80,59 @@ public class LocationSpecificHealthContext implements Serializable {
         return this.locationHealthStatus;
     }
 
+    public Instant getLastFailbackAttemptTime() {
+        return this.failbackDiagnostics == null ? null : this.failbackDiagnostics.lastAttemptedAt;
+    }
+
+    public FailbackOutcome getLastFailbackOutcome() {
+        return this.failbackDiagnostics == null ? null : this.failbackDiagnostics.outcome;
+    }
+
+    LocationSpecificHealthContext withFailbackAttempt(
+        Instant attemptTime,
+        FailbackOutcome outcome,
+        String failureStage,
+        Throwable failure) {
+
+        boolean failed = outcome == FailbackOutcome.Failed;
+        return new Builder(this)
+            .withFailbackDiagnostics(new FailbackDiagnostics(
+                attemptTime,
+                outcome,
+                failed ? failureStage : null,
+                failed && failure != null ? failure.getClass().getName() : null,
+                failed && failure != null ? failure.getMessage() : null))
+            .build();
+    }
+
+    public enum FailbackOutcome {
+        Attempting,
+        Succeeded,
+        Failed
+    }
+
+    private static class FailbackDiagnostics {
+        private final Instant lastAttemptedAt;
+        private final FailbackOutcome outcome;
+        private final String failureStage;
+        private final String failureType;
+        private final String failureMessage;
+
+        private FailbackDiagnostics(
+            Instant lastAttemptedAt,
+            FailbackOutcome outcome,
+            String failureStage,
+            String failureType,
+            String failureMessage) {
+
+            this.lastAttemptedAt = lastAttemptedAt;
+            this.outcome = outcome;
+            this.failureStage = failureStage;
+            this.failureType = failureType;
+            this.failureMessage = failureMessage;
+        }
+    }
+
     static class Builder {
 
         private int exceptionCountForWriteForCircuitBreaking;
@@ -86,8 +142,20 @@ public class LocationSpecificHealthContext implements Serializable {
         private Instant unavailableSince;
         private LocationHealthStatus locationHealthStatus;
         private boolean isExceptionThresholdBreached;
+        private FailbackDiagnostics failbackDiagnostics;
 
         public Builder() {}
+
+        Builder(LocationSpecificHealthContext source) {
+            this.exceptionCountForWriteForCircuitBreaking = source.exceptionCountForWriteForCircuitBreaking;
+            this.successCountForWriteForRecovery = source.successCountForWriteForRecovery;
+            this.exceptionCountForReadForCircuitBreaking = source.exceptionCountForReadForCircuitBreaking;
+            this.successCountForReadForRecovery = source.successCountForReadForRecovery;
+            this.unavailableSince = source.unavailableSince;
+            this.locationHealthStatus = source.locationHealthStatus;
+            this.isExceptionThresholdBreached = source.isExceptionThresholdBreached;
+            this.failbackDiagnostics = source.failbackDiagnostics;
+        }
 
         public Builder withExceptionCountForWriteForCircuitBreaking(int exceptionCountForWriteForCircuitBreaking) {
             this.exceptionCountForWriteForCircuitBreaking = exceptionCountForWriteForCircuitBreaking;
@@ -124,6 +192,11 @@ public class LocationSpecificHealthContext implements Serializable {
             return this;
         }
 
+        Builder withFailbackDiagnostics(FailbackDiagnostics failbackDiagnostics) {
+            this.failbackDiagnostics = failbackDiagnostics;
+            return this;
+        }
+
         public LocationSpecificHealthContext build() {
 
             return new LocationSpecificHealthContext(
@@ -133,7 +206,8 @@ public class LocationSpecificHealthContext implements Serializable {
                 this.exceptionCountForReadForCircuitBreaking,
                 this.unavailableSince,
                 this.locationHealthStatus,
-                this.isExceptionThresholdBreached);
+                this.isExceptionThresholdBreached,
+                this.failbackDiagnostics);
         }
     }
 
@@ -149,6 +223,20 @@ public class LocationSpecificHealthContext implements Serializable {
             gen.writeNumberField("rOk", value.successCountForReadForRecovery);
             gen.writeNumberField("wOk", value.successCountForWriteForRecovery);
             gen.writeStringField("unavailableSince", toInstantString(value.unavailableSince));
+
+            if (value.failbackDiagnostics != null) {
+                gen.writeObjectFieldStart("failback");
+                gen.writeStringField("lastAttemptedAt", toInstantString(value.failbackDiagnostics.lastAttemptedAt));
+                gen.writePOJOField("outcome", value.failbackDiagnostics.outcome);
+                if (value.failbackDiagnostics.outcome == FailbackOutcome.Failed) {
+                    gen.writeObjectFieldStart("failure");
+                    gen.writeStringField("stage", value.failbackDiagnostics.failureStage);
+                    gen.writeStringField("type", value.failbackDiagnostics.failureType);
+                    gen.writeStringField("message", value.failbackDiagnostics.failureMessage);
+                    gen.writeEndObject();
+                }
+                gen.writeEndObject();
+            }
 
             gen.writeEndObject();
         }
