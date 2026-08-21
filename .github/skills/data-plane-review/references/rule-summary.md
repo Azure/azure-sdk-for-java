@@ -28,7 +28,7 @@ Canonical definitions are grouped by review area:
 | `DP-VERSION-02` | Blocking | Package stability vs. service API stability | General service-version guidelines |
 | `DP-VERSION-03` | Warning | Repository version metadata | `CONTRIBUTING.md` and contributor docs |
 | `DP-DOC-01` | Suggestion | Package README completeness | General documentation guidelines |
-| `DP-DOC-02` | Suggestion | Runnable source-backed snippets | General documentation and repository build docs |
+| `DP-DOC-02` | Suggestion | Valid source-backed sample under README `## Examples` | General documentation and repository build docs |
 | `DP-DOC-03` | Suggestion | Public JavaDoc behavior and failures | Java and general documentation guidelines |
 | `DP-BUILD-01` | Warning | Dependency scope, minimum set, and markers | Java module and repository version guidance |
 | `DP-BUILD-02` | Warning | Standard POM and module registration | Java Maven and repository module guidance |

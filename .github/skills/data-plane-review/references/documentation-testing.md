@@ -32,15 +32,24 @@ general-docs-build-snippets, general-docs-snippets-in-docstrings, and
 general-docs-operation-combinations; repository docs/contributor/building.md
 "Code Snippets in README Files". -->
 
-Examples demonstrate one customer task, include required setup, compile in CI,
-and are injected from maintained Java sample sources.
+The README's `## Examples` section must contain at least one valid sample. A
+valid sample demonstrates one customer task, includes required setup, compiles
+in CI, and is injected from maintained Java source under `src/samples/java`.
 
 Files under `src/samples/**/generated/` are emitter-generated examples and do
 not count as maintained customer samples.
 
+An absent `## Examples` section, an empty section, a snippet directive whose
+source region is empty, placeholder or prose-only content, and
+sample source under `src/samples/**/generated/` do not count as a valid sample.
+
+For a `new-module`, emit `DP-DOC-02` when no valid sample exists under
+`## Examples`. For other change classes, emit it only when the PR adds an
+invalid Examples section or removes or invalidates the last valid sample.
+
 **Correct form:** follow the
 [code-snippet guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md#code-snippets-in-readme-files):
-place the sample under `src/samples/java`, use
+add an atomic, runnable sample under `src/samples/java`, use
 `readme-sample-<descriptiveName>`, and rebuild the package to inject it.
 
 ## `DP-DOC-03`: document public behavior and failures in JavaDoc
