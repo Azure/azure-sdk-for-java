@@ -14,7 +14,7 @@ import com.azure.resourcemanager.search.models.PrivateLinkServiceConnectionStatu
  */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/UpdatePrivateEndpointConnection.json
+     * x-ms-original-file: 2026-09-01-preview/UpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnectionUpdate.
