@@ -59,6 +59,8 @@ public class SearchCustomizations extends Customization {
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
         hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
 
+        repairAsyncSynonymMapsConvenienceMethod(indexes.getClass("SearchIndexAsyncClient"));
+
         // After hiding BinaryData protocol methods, add typed public convenience wrappers on the async client
         // that mirror what the sync client already has as hand-written methods.
         addAsyncKnowledgeBaseConvenienceMethods(indexes.getClass("SearchIndexAsyncClient"));
@@ -177,6 +179,16 @@ public class SearchCustomizations extends Customization {
 
     private static boolean hasBinaryDataInType(Type type) {
         return type.toString().contains("BinaryData");
+    }
+
+    private static void repairAsyncSynonymMapsConvenienceMethod(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName()).ifPresent(clazz -> clazz
+            .getMethodsByName("getSynonymMaps")
+            .stream()
+            .filter(method -> method.getParameters().isEmpty() && method.isAnnotationPresent("Generated"))
+            .findFirst()
+            .ifPresent(method -> method.setBody(
+                StaticJavaParser.parseBlock("{ return getSynonymMaps(null, null, null, null); }")))));
     }
 
     // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.

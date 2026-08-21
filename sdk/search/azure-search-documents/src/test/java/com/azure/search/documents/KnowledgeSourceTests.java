@@ -2203,6 +2203,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     // Blob Knowledge Source with Sensitivity Labels tests
     // ---------------------------------------------------------------
 
+    @Disabled("Requires Purview roles on the Search service's system-assigned managed identity")
     @Test
     public void createBlobKnowledgeSourceWithSensitivityLabelsSync() {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -2232,6 +2233,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
             .contains(KnowledgeSourceIngestionPermissionOption.SENSITIVITY_LABELS));
     }
 
+    @Disabled("Requires Purview roles on the Search service's system-assigned managed identity")
     @Test
     public void createBlobKnowledgeSourceWithSensitivityLabelsAsync() {
         SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();

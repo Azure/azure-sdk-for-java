@@ -1370,21 +1370,7 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SynonymMap> getSynonymMaps() {
-        // Generated convenience method for getSynonymMaps
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = getSynonymMaps(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, SynonymMap>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return getSynonymMaps(null, null, null, null);
     }
 
     /**
