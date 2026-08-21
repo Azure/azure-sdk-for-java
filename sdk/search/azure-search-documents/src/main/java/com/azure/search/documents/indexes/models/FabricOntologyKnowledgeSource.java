@@ -101,6 +101,8 @@ public final class FabricOntologyKnowledgeSource extends KnowledgeSource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("resultsProcessing",
+            getResultsProcessing() == null ? null : getResultsProcessing().toString());
         jsonWriter.writeStringField("@odata.etag", getETag());
         jsonWriter.writeJsonField("encryptionKey", getEncryptionKey());
         jsonWriter.writeJsonField("fabricOntologyParameters", this.fabricOntologyParameters);
@@ -122,6 +124,7 @@ public final class FabricOntologyKnowledgeSource extends KnowledgeSource {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
+            KnowledgeSourceResultsProcessing resultsProcessing = null;
             String eTag = null;
             SearchResourceEncryptionKey encryptionKey = null;
             FabricOntologyKnowledgeSourceParameters fabricOntologyParameters = null;
@@ -133,6 +136,8 @@ public final class FabricOntologyKnowledgeSource extends KnowledgeSource {
                     name = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("resultsProcessing".equals(fieldName)) {
+                    resultsProcessing = KnowledgeSourceResultsProcessing.fromString(reader.getString());
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("encryptionKey".equals(fieldName)) {
@@ -148,10 +153,21 @@ public final class FabricOntologyKnowledgeSource extends KnowledgeSource {
             FabricOntologyKnowledgeSource deserializedFabricOntologyKnowledgeSource
                 = new FabricOntologyKnowledgeSource(name, fabricOntologyParameters);
             deserializedFabricOntologyKnowledgeSource.setDescription(description);
+            deserializedFabricOntologyKnowledgeSource.setResultsProcessing(resultsProcessing);
             deserializedFabricOntologyKnowledgeSource.setETag(eTag);
             deserializedFabricOntologyKnowledgeSource.setEncryptionKey(encryptionKey);
             deserializedFabricOntologyKnowledgeSource.kind = kind;
             return deserializedFabricOntologyKnowledgeSource;
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public FabricOntologyKnowledgeSource setResultsProcessing(KnowledgeSourceResultsProcessing resultsProcessing) {
+        super.setResultsProcessing(resultsProcessing);
+        return this;
     }
 }

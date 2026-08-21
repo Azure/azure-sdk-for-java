@@ -5,10 +5,13 @@ package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents an LLM query planning activity record.
@@ -33,12 +36,6 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
      */
     @Generated
     private Integer outputTokens;
-
-    /*
-     * The name of the model used for the LLM query planning activity.
-     */
-    @Generated
-    private String modelName;
 
     /**
      * Creates an instance of KnowledgeBaseModelQueryPlanningActivityRecord class.
@@ -82,16 +79,6 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
     }
 
     /**
-     * Get the modelName property: The name of the model used for the LLM query planning activity.
-     *
-     * @return the modelName value.
-     */
-    @Generated
-    public String getModelName() {
-        return this.modelName;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -99,13 +86,17 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("id", getId());
+        jsonWriter.writeStringField("startedAt",
+            getStartedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getStartedAt()));
+        jsonWriter.writeStringField("completedAt",
+            getCompletedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCompletedAt()));
         jsonWriter.writeNumberField("elapsedMs", getElapsedMs());
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("warning", getWarning());
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("inputTokens", this.inputTokens);
         jsonWriter.writeNumberField("outputTokens", this.outputTokens);
-        jsonWriter.writeStringField("modelName", this.modelName);
+        jsonWriter.writeJsonField("model", this.model);
         return jsonWriter.writeEndObject();
     }
 
@@ -122,18 +113,26 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
     public static KnowledgeBaseModelQueryPlanningActivityRecord fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int id = 0;
+            OffsetDateTime startedAt = null;
+            OffsetDateTime completedAt = null;
             Integer elapsedMs = null;
             KnowledgeBaseErrorDetail error = null;
             String warning = null;
             KnowledgeBaseActivityRecordType type = KnowledgeBaseActivityRecordType.MODEL_QUERY_PLANNING;
             Integer inputTokens = null;
             Integer outputTokens = null;
-            String modelName = null;
+            KnowledgeBaseActivityRecordModel model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getInt();
+                } else if ("startedAt".equals(fieldName)) {
+                    startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completedAt".equals(fieldName)) {
+                    completedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("elapsedMs".equals(fieldName)) {
                     elapsedMs = reader.getNullable(JsonReader::getInt);
                 } else if ("error".equals(fieldName)) {
@@ -146,22 +145,40 @@ public final class KnowledgeBaseModelQueryPlanningActivityRecord extends Knowled
                     inputTokens = reader.getNullable(JsonReader::getInt);
                 } else if ("outputTokens".equals(fieldName)) {
                     outputTokens = reader.getNullable(JsonReader::getInt);
-                } else if ("modelName".equals(fieldName)) {
-                    modelName = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    model = KnowledgeBaseActivityRecordModel.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             KnowledgeBaseModelQueryPlanningActivityRecord deserializedKnowledgeBaseModelQueryPlanningActivityRecord
                 = new KnowledgeBaseModelQueryPlanningActivityRecord(id);
+            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setStartedAt(startedAt);
+            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setCompletedAt(completedAt);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setElapsedMs(elapsedMs);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setError(error);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.setWarning(warning);
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.type = type;
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.inputTokens = inputTokens;
             deserializedKnowledgeBaseModelQueryPlanningActivityRecord.outputTokens = outputTokens;
-            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.modelName = modelName;
+            deserializedKnowledgeBaseModelQueryPlanningActivityRecord.model = model;
             return deserializedKnowledgeBaseModelQueryPlanningActivityRecord;
         });
+    }
+
+    /*
+     * The model used for the LLM query planning activity.
+     */
+    @Generated
+    private KnowledgeBaseActivityRecordModel model;
+
+    /**
+     * Get the model property: The model used for the LLM query planning activity.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public KnowledgeBaseActivityRecordModel getModel() {
+        return this.model;
     }
 }

@@ -4,6 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.search.documents.SearchTestBase;
@@ -18,6 +19,7 @@ import com.azure.search.documents.indexes.models.IndexingParameters;
 import com.azure.search.documents.indexes.models.IndexingParametersConfiguration;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.ListingSearchType;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -81,6 +83,8 @@ public class IndexersManagementTests extends SearchTestBase {
     private static SearchIndex sharedIndex;
 
     private final List<String> indexersToDelete = new ArrayList<>();
+    private final List<String> dataSourcesToDelete = new ArrayList<>();
+    private final List<String> skillsetsToDelete = new ArrayList<>();
 
     private SearchIndexerClient searchIndexerClient;
     private SearchIndexerAsyncClient searchIndexerAsyncClient;
@@ -170,6 +174,12 @@ public class IndexersManagementTests extends SearchTestBase {
 
         for (String indexer : indexersToDelete) {
             searchIndexerClient.deleteIndexer(indexer);
+        }
+        for (String skillset : skillsetsToDelete) {
+            searchIndexerClient.deleteSkillset(skillset);
+        }
+        for (String dataSource : dataSourcesToDelete) {
+            searchIndexerClient.deleteDataSourceConnection(dataSource);
         }
     }
 
@@ -274,7 +284,6 @@ public class IndexersManagementTests extends SearchTestBase {
         Set<String> expectedIndexers = new HashSet<>(Arrays.asList(indexer1.getName(), indexer2.getName()));
         Set<String> actualIndexers = searchIndexerClient.listIndexerNames().stream().collect(Collectors.toSet());
 
-        assertEquals(expectedIndexers.size(), actualIndexers.size());
         assertTrue(actualIndexers.containsAll(expectedIndexers));
     }
 
@@ -295,9 +304,45 @@ public class IndexersManagementTests extends SearchTestBase {
         Set<String> expectedIndexers = new HashSet<>(Arrays.asList(indexer1.getName(), indexer2.getName()));
 
         StepVerifier.create(searchIndexerAsyncClient.listIndexerNames().collect(Collectors.toSet()))
-            .assertNext(actualIndexers -> {
-                assertEquals(expectedIndexers.size(), actualIndexers.size());
-                assertTrue(actualIndexers.containsAll(expectedIndexers));
+            .assertNext(actualIndexers -> assertTrue(actualIndexers.containsAll(expectedIndexers)))
+            .verifyComplete();
+    }
+
+    @Test
+    public void canListIndexerResourcesByPrefixAcrossPagesSync() {
+        String prefix = testResourceNamer.randomName("paged-indexer-", 24);
+        List<String> expectedIndexerNames = createIndexersForPagination(prefix);
+        List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
+        List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+
+        assertPagedNames(expectedIndexerNames,
+            searchIndexerClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+            SearchIndexer::getName);
+        assertPagedNames(expectedDataSourceNames,
+            searchIndexerClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+            SearchIndexerDataSourceConnection::getName);
+        assertPagedNames(expectedSkillsetNames,
+            searchIndexerClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).iterableByPage(),
+            SearchIndexerSkillset::getName);
+    }
+
+    @Test
+    public void canListIndexerResourcesByPrefixAcrossPagesAsync() {
+        String prefix = testResourceNamer.randomName("paged-indexer-", 24);
+        List<String> expectedIndexerNames = createIndexersForPagination(prefix);
+        List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
+        List<String> expectedSkillsetNames = createSkillsetsForPagination(prefix);
+
+        StepVerifier.create(Mono.zip(
+            searchIndexerAsyncClient.getIndexers(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList(),
+            searchIndexerAsyncClient.getDataSourceConnections(null, prefix, 1, ListingSearchType.PREFIX)
+                .byPage()
+                .collectList(),
+            searchIndexerAsyncClient.getSkillsets(null, prefix, 1, ListingSearchType.PREFIX).byPage().collectList()))
+            .assertNext(pages -> {
+                assertPagedNames(expectedIndexerNames, pages.getT1(), SearchIndexer::getName);
+                assertPagedNames(expectedDataSourceNames, pages.getT2(), SearchIndexerDataSourceConnection::getName);
+                assertPagedNames(expectedSkillsetNames, pages.getT3(), SearchIndexerSkillset::getName);
             })
             .verifyComplete();
     }
@@ -1153,6 +1198,10 @@ public class IndexersManagementTests extends SearchTestBase {
      * @return the newly created skillset object
      */
     private static SearchIndexerSkillset createSkillsetObject() {
+        return createSkillsetObject("shared-ocr-skillset");
+    }
+
+    private static SearchIndexerSkillset createSkillsetObject(String name) {
         List<InputFieldMappingEntry> inputs
             = Arrays.asList(new InputFieldMappingEntry("url").setSource("/document/url"),
                 new InputFieldMappingEntry("queryString").setSource("/document/queryString"));
@@ -1165,19 +1214,66 @@ public class IndexersManagementTests extends SearchTestBase {
             .setDescription("Tested OCR skill")
             .setContext("/document");
 
-        return new SearchIndexerSkillset("shared-ocr-skillset", skill)
-            .setDescription("Skillset for testing default configuration");
+        return new SearchIndexerSkillset(name, skill).setDescription("Skillset for testing default configuration");
     }
 
     private static SearchIndexerDataSourceConnection createSharedDataSource() {
+        return createDataSource("shared-" + BLOB_DATASOURCE_NAME);
+    }
+
+    private static SearchIndexerDataSourceConnection createDataSource(String name) {
         // create the new data source object for this storage account and container
-        return new SearchIndexerDataSourceConnection("shared-" + BLOB_DATASOURCE_NAME,
-            SearchIndexerDataSourceType.AZURE_BLOB,
+        return new SearchIndexerDataSourceConnection(name, SearchIndexerDataSourceType.AZURE_BLOB,
             new DataSourceCredentials().setConnectionString(String.format(
                 "ResourceId=/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/%s;",
                 SUBSCRIPTION_ID, RESOURCE_GROUP, STORAGE_ACCOUNT_NAME)),
             new SearchIndexerDataContainer(BLOB_CONTAINER_NAME).setQuery("/")).setDescription("real live blob")
                 .setIdentity(new SearchIndexerDataUserAssignedIdentity(USER_ASSIGNED_IDENTITY));
+    }
+
+    private List<String> createIndexersForPagination(String prefix) {
+        List<String> names = Arrays.asList(prefix + "one", prefix + "two");
+        names.forEach(name -> {
+            searchIndexerClient
+                .createIndexer(createBaseTestIndexerObject(name, sharedIndex.getName(), sharedDatasource.getName()));
+            indexersToDelete.add(name);
+        });
+        return names;
+    }
+
+    private List<String> createDataSourcesForPagination(String prefix) {
+        List<String> names = Arrays.asList(prefix + "data-one", prefix + "data-two");
+        names.forEach(name -> {
+            searchIndexerClient.createDataSourceConnection(createDataSource(name));
+            dataSourcesToDelete.add(name);
+        });
+        return names;
+    }
+
+    private List<String> createSkillsetsForPagination(String prefix) {
+        List<String> names = Arrays.asList(prefix + "skill-one", prefix + "skill-two");
+        names.forEach(name -> {
+            searchIndexerClient.createSkillset(createSkillsetObject(name));
+            skillsetsToDelete.add(name);
+        });
+        return names;
+    }
+
+    private static <T> void assertPagedNames(List<String> expectedNames, Iterable<PagedResponse<T>> pages,
+        java.util.function.Function<T, String> nameMapper) {
+        List<PagedResponse<T>> pageList = new ArrayList<>();
+        pages.forEach(pageList::add);
+        assertPagedNames(expectedNames, pageList, nameMapper);
+    }
+
+    private static <T> void assertPagedNames(List<String> expectedNames, List<PagedResponse<T>> pages,
+        java.util.function.Function<T, String> nameMapper) {
+        assertEquals(expectedNames.size(), pages.size());
+        assertEquals(new HashSet<>(expectedNames),
+            pages.stream().flatMap(page -> page.getElements().stream()).map(nameMapper).collect(Collectors.toSet()));
+        pages.forEach(page -> assertEquals(1, page.getElements().stream().count()));
+        assertNotNull(pages.get(0).getContinuationToken());
+        org.junit.jupiter.api.Assertions.assertNull(pages.get(pages.size() - 1).getContinuationToken());
     }
 
     SearchIndexer createBaseTestIndexerObject(String targetIndexName, String dataSourceName) {
