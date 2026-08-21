@@ -12,8 +12,15 @@ The package README must accurately cover installation, authentication or
 client creation, key concepts, examples, troubleshooting, and current links.
 Do not flag wording preference alone.
 
-**Correct form:** describe this package and its champion scenarios rather than
-retaining generator placeholders or text copied from another service.
+**Correct form:** follow the
+[Azure SDK README template](https://github.com/Azure/azure-sdk/blob/main/docs/policies/README-TEMPLATE.md)
+to describe this package and its champion scenarios rather than retaining
+generator placeholders or text copied from another service. See the Java
+repository's
+[documentation guidance](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md#5-improve-documentation)
+and
+[code-snippet guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md#code-snippets-in-readme-files)
+for package-specific details.
 
 ## `DP-DOC-02`: keep examples atomic, runnable, and source-backed
 
@@ -31,7 +38,9 @@ and are injected from maintained Java sample sources.
 Files under `src/samples/**/generated/` are emitter-generated examples and do
 not count as maintained customer samples.
 
-**Correct form:** place the sample under `src/samples/java`, use
+**Correct form:** follow the
+[code-snippet guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/building.md#code-snippets-in-readme-files):
+place the sample under `src/samples/java`, use
 `readme-sample-<descriptiveName>`, and rebuild the package to inject it.
 
 ## `DP-DOC-03`: document public behavior and failures in JavaDoc
@@ -46,8 +55,10 @@ Public JavaDoc explains behavior, parameters, return values, and non-obvious
 failure contracts. Group repeated omissions. Do not report generated
 boilerplate merely for style.
 
-**Correct form:** include meaningful `@param`, `@return`, and applicable
-`@throws` entries, with source-backed snippets for key operations.
+**Correct form:** follow the repository's
+[JavaDoc guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/javadocs.md#2-what-to-document)
+to include meaningful `@param`, `@return`, and applicable `@throws` entries,
+with source-backed snippets for key operations.
 
 ## `DP-TEST-01`: cover supported transports and service versions
 
@@ -74,6 +85,11 @@ For a `new-module`, emit `DP-TEST-01` when no test files remain after excluding
 `src/test/**/generated/`. This trigger is mandatory and does not depend on
 whether test files appear in the PR diff.
 
-**Correct form:** add applicable tests outside `generated`, parameterize them
-for supported HTTP clients and service versions, and use the repository's
-normal PR subset plus the full transport/version matrix for live validation.
+**Correct form:** follow the repository's
+[live testing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/live-testing.md)
+to add applicable tests outside `generated`, parameterize them for supported
+HTTP clients and service versions, and use the normal PR subset plus the full
+transport/version matrix. See also the
+[Test Proxy onboarding guide](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md)
+and
+[TypeSpec test-mode commands](https://github.com/Azure/azure-sdk-for-java/blob/main/docs/contributor/typespec-quickstart.md#6-tests).
