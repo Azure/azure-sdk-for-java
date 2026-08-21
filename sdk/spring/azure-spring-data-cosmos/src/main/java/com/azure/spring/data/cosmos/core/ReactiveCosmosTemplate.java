@@ -549,6 +549,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                              .getContainer(containerName)
                              .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
                              .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                             // Abort when a bulk operation contains an exception; remaining bulk responses are not processed.
+                             .handle(CosmosBulkOperationResponseUtils::emitErrorForFailedBulkOperation)
                              .onErrorResume(throwable ->
                                  CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
                                      this.responseDiagnosticsProcessor))
@@ -785,6 +787,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .getContainer(containerName)
                    .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
                    .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                   .handle(CosmosBulkOperationResponseUtils::emitErrorForFailedBulkOperation)
                    .onErrorResume(throwable ->
                        CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                            this.responseDiagnosticsProcessor)).then();
@@ -848,6 +851,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
                 .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .handle(CosmosBulkOperationResponseUtils::emitErrorForFailedBulkOperation)
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                         this.responseDiagnosticsProcessor))
