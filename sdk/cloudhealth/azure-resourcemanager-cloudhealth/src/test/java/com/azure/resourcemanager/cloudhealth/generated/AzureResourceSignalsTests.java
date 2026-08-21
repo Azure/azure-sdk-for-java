@@ -10,7 +10,6 @@ import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignal;
 import com.azure.resourcemanager.cloudhealth.models.AzureResourceSignals;
 import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
-import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
@@ -23,117 +22,87 @@ public final class AzureResourceSignalsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceSignals model = BinaryData.fromString(
-            "{\"authenticationSetting\":\"exztvbtq\",\"azureResourceId\":\"sfraoyzko\",\"azureResourceKind\":\"tlmngu\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"aldsy\",\"metricName\":\"ximerqfobwyznk\",\"timeGrain\":\"kutwpf\",\"aggregationType\":\"Total\",\"dimensionFilter\":\"m\",\"displayName\":\"skdsnfdsdoakg\",\"refreshInterval\":\"PT10M\",\"dataUnit\":\"kkze\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":75.48527180052048,\"sensitivity\":\"Low\",\"lookBackWindow\":\"PT30M\"},\"unhealthyRule\":{\"operator\":\"Equal\",\"threshold\":66.08187407186776,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT30M\"}},\"name\":\"bejdcn\",\"signalDefinitionName\":\"qmoa\",\"status\":{\"healthState\":\"Unknown\",\"value\":60.40279131595702,\"reportedAt\":\"2021-08-21T00:33:47Z\",\"error\":\"dgrtwaenuuzkopbm\",\"additionalContext\":\"rfdwoyu\"}},{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"ziuiefozbhdm\",\"metricName\":\"l\",\"timeGrain\":\"qhoftrmaequiah\",\"aggregationType\":\"Maximum\",\"dimensionFilter\":\"lfaoqzpiyylhaln\",\"displayName\":\"hc\",\"refreshInterval\":\"PT1M\",\"dataUnit\":\"kaivwit\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThan\",\"threshold\":43.61813458088643,\"sensitivity\":\"Medium\",\"lookBackWindow\":\"PT15M\"},\"unhealthyRule\":{\"operator\":\"GreaterThanOrEqual\",\"threshold\":78.55812960925392,\"sensitivity\":\"High\",\"lookBackWindow\":\"PT1H\"}},\"name\":\"hairsbrgzdwms\",\"signalDefinitionName\":\"ypqwdxggiccc\",\"status\":{\"healthState\":\"Deleted\",\"value\":21.955632140284465,\"reportedAt\":\"2021-09-04T17:42:42Z\",\"error\":\"tlstvlzywem\",\"additionalContext\":\"rncsdtclu\"}}],\"resourceHealth\":{\"enabled\":\"Disabled\",\"signalName\":\"sfgytguslfead\",\"status\":{\"healthState\":\"Deleted\",\"value\":74.60703656129903,\"reportedAt\":\"2021-01-09T07:06:25Z\",\"error\":\"h\",\"additionalContext\":\"sx\",\"availabilityState\":\"Unavailable\",\"category\":\"Planned\",\"detailedStatus\":\"lppvksrpq\",\"summary\":\"jzraehtwdwrf\",\"reasonType\":\"UserInitiated\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-04-18T05:55:24Z\"}}}")
+            "{\"authenticationSetting\":\"ujitcjedftww\",\"azureResourceId\":\"ezkojvdcp\",\"azureResourceKind\":\"oqouicybxarzgszu\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"metricNamespace\":\"iqopidoamciod\",\"metricName\":\"haz\",\"timeGrain\":\"hnzbonl\",\"aggregationType\":\"Average\",\"dimensionFilter\":\"egokdwbwhkszzcmr\",\"displayName\":\"xztvbtqgsfraoyzk\",\"refreshInterval\":\"PT1M\",\"dataUnit\":\"lmnguxaw\",\"evaluationRules\":{\"degradedRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":97.70570168349758,\"sensitivity\":\"High\"},\"unhealthyRule\":{\"operator\":\"LessThan\",\"threshold\":20.69660596617512,\"sensitivity\":\"High\"}},\"name\":\"obwyznkb\",\"signalDefinitionName\":\"utwpfhp\",\"status\":{\"healthState\":\"Healthy\",\"value\":77.13808549685311,\"reportedAt\":\"2021-12-03T14:40:57Z\",\"error\":\"fdsd\",\"additionalContext\":\"kgtdlmkkze\"}}],\"resourceHealth\":{\"enabled\":\"Disabled\",\"signalName\":\"wpusdsttwvogv\",\"status\":{\"healthState\":\"Unhealthy\",\"value\":89.35053284729781,\"reportedAt\":\"2021-10-02T17:25:44Z\",\"error\":\"m\",\"additionalContext\":\"kufgmj\",\"availabilityState\":\"Available\",\"category\":\"Unplanned\",\"detailedStatus\":\"rtwaenuuzko\",\"summary\":\"minrfdw\",\"reasonType\":\"UserInitiated\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-07-13T07:26:05Z\"}}}")
             .toObject(AzureResourceSignals.class);
-        Assertions.assertEquals("exztvbtq", model.authenticationSetting());
-        Assertions.assertEquals("sfraoyzko", model.azureResourceId());
-        Assertions.assertEquals("tlmngu", model.azureResourceKind());
-        Assertions.assertEquals("bejdcn", model.signals().get(0).name());
-        Assertions.assertEquals("qmoa", model.signals().get(0).signalDefinitionName());
-        Assertions.assertEquals("aldsy", model.signals().get(0).metricNamespace());
-        Assertions.assertEquals("ximerqfobwyznk", model.signals().get(0).metricName());
-        Assertions.assertEquals("kutwpf", model.signals().get(0).timeGrain());
-        Assertions.assertEquals(MetricAggregationType.TOTAL, model.signals().get(0).aggregationType());
-        Assertions.assertEquals("m", model.signals().get(0).dimensionFilter());
-        Assertions.assertEquals("skdsnfdsdoakg", model.signals().get(0).displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, model.signals().get(0).refreshInterval());
-        Assertions.assertEquals("kkze", model.signals().get(0).dataUnit());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN,
+        Assertions.assertEquals("ujitcjedftww", model.authenticationSetting());
+        Assertions.assertEquals("ezkojvdcp", model.azureResourceId());
+        Assertions.assertEquals("oqouicybxarzgszu", model.azureResourceKind());
+        Assertions.assertEquals("obwyznkb", model.signals().get(0).name());
+        Assertions.assertEquals("utwpfhp", model.signals().get(0).signalDefinitionName());
+        Assertions.assertEquals("iqopidoamciod", model.signals().get(0).metricNamespace());
+        Assertions.assertEquals("haz", model.signals().get(0).metricName());
+        Assertions.assertEquals("hnzbonl", model.signals().get(0).timeGrain());
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.signals().get(0).aggregationType());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.signals().get(0).dimensionFilter());
+        Assertions.assertEquals("xztvbtqgsfraoyzk", model.signals().get(0).displayName());
+        Assertions.assertEquals(RefreshInterval.PT1M, model.signals().get(0).refreshInterval());
+        Assertions.assertEquals("lmnguxaw", model.signals().get(0).dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             model.signals().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(75.48527180052048D,
+        Assertions.assertEquals(97.70570168349758D,
             model.signals().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             model.signals().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            model.signals().get(0).evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.EQUAL,
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.signals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(66.08187407186776D,
+        Assertions.assertEquals(20.69660596617512D,
             model.signals().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             model.signals().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            model.signals().get(0).evaluationRules().unhealthyRule().lookBackWindow());
         Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.DISABLED,
             model.resourceHealth().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureResourceSignals model = new AzureResourceSignals().withAuthenticationSetting("exztvbtq")
-            .withAzureResourceId("sfraoyzko")
-            .withAzureResourceKind("tlmngu")
-            .withSignals(Arrays.asList(
-                new AzureResourceSignal().withName("bejdcn")
-                    .withSignalDefinitionName("qmoa")
-                    .withMetricNamespace("aldsy")
-                    .withMetricName("ximerqfobwyznk")
-                    .withTimeGrain("kutwpf")
-                    .withAggregationType(MetricAggregationType.TOTAL)
-                    .withDimensionFilter("m")
-                    .withDisplayName("skdsnfdsdoakg")
-                    .withRefreshInterval(RefreshInterval.PT10M)
-                    .withDataUnit("kkze")
-                    .withEvaluationRules(new EvaluationRule()
-                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
-                            .withThreshold(75.48527180052048D)
-                            .withSensitivity(DynamicThresholdSensitivity.LOW)
-                            .withLookBackWindow(LookBackWindow.PT30M))
-                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.EQUAL)
-                            .withThreshold(66.08187407186776D)
-                            .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                            .withLookBackWindow(LookBackWindow.PT30M))),
-                new AzureResourceSignal().withName("hairsbrgzdwms")
-                    .withSignalDefinitionName("ypqwdxggiccc")
-                    .withMetricNamespace("ziuiefozbhdm")
-                    .withMetricName("l")
-                    .withTimeGrain("qhoftrmaequiah")
-                    .withAggregationType(MetricAggregationType.MAXIMUM)
-                    .withDimensionFilter("lfaoqzpiyylhaln")
-                    .withDisplayName("hc")
-                    .withRefreshInterval(RefreshInterval.PT1M)
-                    .withDataUnit("kaivwit")
-                    .withEvaluationRules(new EvaluationRule()
-                        .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
-                            .withThreshold(43.61813458088643D)
-                            .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
-                            .withLookBackWindow(LookBackWindow.PT15M))
-                        .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN_OR_EQUAL)
-                            .withThreshold(78.55812960925392D)
-                            .withSensitivity(DynamicThresholdSensitivity.HIGH)
-                            .withLookBackWindow(LookBackWindow.PT1H)))))
+        AzureResourceSignals model = new AzureResourceSignals().withAuthenticationSetting("ujitcjedftww")
+            .withAzureResourceId("ezkojvdcp")
+            .withAzureResourceKind("oqouicybxarzgszu")
+            .withSignals(Arrays.asList(new AzureResourceSignal().withName("obwyznkb")
+                .withSignalDefinitionName("utwpfhp")
+                .withMetricNamespace("iqopidoamciod")
+                .withMetricName("haz")
+                .withTimeGrain("hnzbonl")
+                .withAggregationType(MetricAggregationType.AVERAGE)
+                .withDimensionFilter("egokdwbwhkszzcmr")
+                .withDisplayName("xztvbtqgsfraoyzk")
+                .withRefreshInterval(RefreshInterval.PT1M)
+                .withDataUnit("lmnguxaw")
+                .withEvaluationRules(new EvaluationRule()
+                    .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
+                        .withThreshold(97.70570168349758D)
+                        .withSensitivity(DynamicThresholdSensitivity.HIGH))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN)
+                        .withThreshold(20.69660596617512D)
+                        .withSensitivity(DynamicThresholdSensitivity.HIGH)))))
             .withResourceHealth(
                 new AzureResourceHealthSignal().withEnabled(ResourceHealthAvailabilityStateSignalBehavior.DISABLED));
         model = BinaryData.fromObject(model).toObject(AzureResourceSignals.class);
-        Assertions.assertEquals("exztvbtq", model.authenticationSetting());
-        Assertions.assertEquals("sfraoyzko", model.azureResourceId());
-        Assertions.assertEquals("tlmngu", model.azureResourceKind());
-        Assertions.assertEquals("bejdcn", model.signals().get(0).name());
-        Assertions.assertEquals("qmoa", model.signals().get(0).signalDefinitionName());
-        Assertions.assertEquals("aldsy", model.signals().get(0).metricNamespace());
-        Assertions.assertEquals("ximerqfobwyznk", model.signals().get(0).metricName());
-        Assertions.assertEquals("kutwpf", model.signals().get(0).timeGrain());
-        Assertions.assertEquals(MetricAggregationType.TOTAL, model.signals().get(0).aggregationType());
-        Assertions.assertEquals("m", model.signals().get(0).dimensionFilter());
-        Assertions.assertEquals("skdsnfdsdoakg", model.signals().get(0).displayName());
-        Assertions.assertEquals(RefreshInterval.PT10M, model.signals().get(0).refreshInterval());
-        Assertions.assertEquals("kkze", model.signals().get(0).dataUnit());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN,
+        Assertions.assertEquals("ujitcjedftww", model.authenticationSetting());
+        Assertions.assertEquals("ezkojvdcp", model.azureResourceId());
+        Assertions.assertEquals("oqouicybxarzgszu", model.azureResourceKind());
+        Assertions.assertEquals("obwyznkb", model.signals().get(0).name());
+        Assertions.assertEquals("utwpfhp", model.signals().get(0).signalDefinitionName());
+        Assertions.assertEquals("iqopidoamciod", model.signals().get(0).metricNamespace());
+        Assertions.assertEquals("haz", model.signals().get(0).metricName());
+        Assertions.assertEquals("hnzbonl", model.signals().get(0).timeGrain());
+        Assertions.assertEquals(MetricAggregationType.AVERAGE, model.signals().get(0).aggregationType());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.signals().get(0).dimensionFilter());
+        Assertions.assertEquals("xztvbtqgsfraoyzk", model.signals().get(0).displayName());
+        Assertions.assertEquals(RefreshInterval.PT1M, model.signals().get(0).refreshInterval());
+        Assertions.assertEquals("lmnguxaw", model.signals().get(0).dataUnit());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL,
             model.signals().get(0).evaluationRules().degradedRule().operator());
-        Assertions.assertEquals(75.48527180052048D,
+        Assertions.assertEquals(97.70570168349758D,
             model.signals().get(0).evaluationRules().degradedRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.LOW,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             model.signals().get(0).evaluationRules().degradedRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            model.signals().get(0).evaluationRules().degradedRule().lookBackWindow());
-        Assertions.assertEquals(SignalOperator.EQUAL,
+        Assertions.assertEquals(SignalOperator.LESS_THAN,
             model.signals().get(0).evaluationRules().unhealthyRule().operator());
-        Assertions.assertEquals(66.08187407186776D,
+        Assertions.assertEquals(20.69660596617512D,
             model.signals().get(0).evaluationRules().unhealthyRule().threshold());
-        Assertions.assertEquals(DynamicThresholdSensitivity.MEDIUM,
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH,
             model.signals().get(0).evaluationRules().unhealthyRule().sensitivity());
-        Assertions.assertEquals(LookBackWindow.PT30M,
-            model.signals().get(0).evaluationRules().unhealthyRule().lookBackWindow());
         Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.DISABLED,
             model.resourceHealth().enabled());
     }
