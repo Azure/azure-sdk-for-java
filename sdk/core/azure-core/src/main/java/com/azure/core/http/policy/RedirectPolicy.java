@@ -11,7 +11,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,6 +26,9 @@ import java.util.Set;
  * <p>This class is useful when you need to handle HTTP redirects in a pipeline. It uses a {@link RedirectStrategy} to
  * decide if a request should be redirected. By default, it uses the {@link DefaultRedirectStrategy}, which redirects
  * the request based on the HTTP status code of the response.</p>
+ *
+ * <p>When a redirect changes the request authority, credential headers added by Azure Core credential policies are
+ * removed from the redirected request.</p>
  *
  * <p><strong>Code sample:</strong></p>
  *
@@ -45,6 +51,8 @@ import java.util.Set;
  * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
+    private static final String SENSITIVE_HEADERS_CONTEXT_KEY
+        = "com.azure.core.http.policy.RedirectPolicy.sensitiveHeaders";
     private final RedirectStrategy redirectStrategy;
 
     /**
@@ -89,7 +97,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         return next.clone().process().flatMap(httpResponse -> {
             if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-                HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+                HttpRequest redirectRequestCopy = createRedirectRequest(context, httpResponse);
                 return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
             } else {
                 return Mono.just(httpResponse);
@@ -110,20 +118,57 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         HttpResponse httpResponse = next.clone().processSync();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-            HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+            HttpRequest redirectRequestCopy = createRedirectRequest(context, httpResponse);
             return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
         } else {
             return httpResponse;
         }
     }
 
-    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
-        // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
-        // causing it to leak your authorization token to.
-        redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+    private HttpRequest createRedirectRequest(HttpPipelineCallContext context, HttpResponse redirectResponse) {
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
+        removeSensitiveHeaders(context, redirectRequestCopy);
         redirectResponse.close();
 
         return redirectRequestCopy;
+    }
+
+    private static void removeSensitiveHeaders(HttpPipelineCallContext context, HttpRequest redirectRequest) {
+        // Authorization has historically been removed on every redirect.
+        redirectRequest.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+
+        String redirectAuthority = getAuthority(redirectRequest);
+        getSensitiveHeaders(context).forEach((headerName, authority) -> {
+            if (!authority.equals(redirectAuthority)) {
+                redirectRequest.getHeaders().remove(headerName);
+            }
+        });
+    }
+
+    static boolean shouldSetSensitiveHeader(HttpPipelineCallContext context, HttpHeaderName headerName) {
+        Map<HttpHeaderName, String> sensitiveHeaders = getSensitiveHeaders(context);
+        String authority = getAuthority(context.getHttpRequest());
+        String originalAuthority = sensitiveHeaders.get(headerName);
+        if (originalAuthority == null) {
+            sensitiveHeaders.put(headerName, authority);
+            context.setData(SENSITIVE_HEADERS_CONTEXT_KEY, sensitiveHeaders);
+            return true;
+        }
+
+        return originalAuthority.equals(authority);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<HttpHeaderName, String> getSensitiveHeaders(HttpPipelineCallContext context) {
+        return (Map<HttpHeaderName, String>) context.getData(SENSITIVE_HEADERS_CONTEXT_KEY).orElseGet(HashMap::new);
+    }
+
+    private static String getAuthority(HttpRequest request) {
+        int port = request.getUrl().getPort();
+        if (port == -1) {
+            port = request.getUrl().getDefaultPort();
+        }
+        return (request.getUrl().getProtocol() + "://" + request.getUrl().getHost() + ":" + port)
+            .toLowerCase(Locale.ROOT);
     }
 }
