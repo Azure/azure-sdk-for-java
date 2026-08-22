@@ -15,9 +15,9 @@ public final class DrillRunReprotectRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillRunReprotectRequest model = BinaryData.fromString(
-            "{\"reprotectProperties\":{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"wjptm\",\"gsbos\"]}}}")
+            "{\"reprotectProperties\":{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"xa\",\"guyaip\"]}}}")
             .toObject(DrillRunReprotectRequest.class);
-        Assertions.assertEquals("wjptm",
+        Assertions.assertEquals("xa",
             model.reprotectProperties().reprotectRequestProperties().selectedResourceIds().get(0));
     }
 
@@ -25,9 +25,9 @@ public final class DrillRunReprotectRequestTests {
     public void testSerialize() throws Exception {
         DrillRunReprotectRequest model = new DrillRunReprotectRequest()
             .withReprotectProperties(new ReprotectRequest().withReprotectRequestProperties(
-                new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("wjptm", "gsbos"))));
+                new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("xa", "guyaip"))));
         model = BinaryData.fromObject(model).toObject(DrillRunReprotectRequest.class);
-        Assertions.assertEquals("wjptm",
+        Assertions.assertEquals("xa",
             model.reprotectProperties().reprotectRequestProperties().selectedResourceIds().get(0));
     }
 }

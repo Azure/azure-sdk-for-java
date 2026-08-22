@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsUpdateResourcesSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_UpdateResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_UpdateResources_MaximumSet.

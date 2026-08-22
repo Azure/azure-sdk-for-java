@@ -11,7 +11,7 @@ public final class ResourceProtectionSolutionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProtectionSolutionSettings model = BinaryData.fromString(
-            "{\"protectionSolutionType\":\"CrossZoneVMRecovery\",\"protectionStatus\":\"Unknown\",\"resourceId\":\"ud\",\"activeLocation\":\"dvxzbncblylpst\",\"activeLocations\":[\"hxsrzdzucersc\"],\"activePhysicalZones\":[\"nevf\"],\"recoveryLocations\":[\"mygtdssls\",\"tmweriofzpyq\",\"emwabnet\",\"hhszh\"],\"replicationRole\":\"Replica\",\"primaryResource\":\"vwiwubmwmbesld\",\"replicaResources\":[\"wtppjflcxogaoko\",\"z\"],\"isAutoFailover\":true,\"failoverState\":\"FailedOverCommitPending\",\"testFailoverState\":\"None\"}")
+            "{\"protectionSolutionType\":\"None\",\"protectionStatus\":\"Protected\",\"resourceId\":\"kqze\",\"activeLocation\":\"kdltfzxmhhvhg\",\"activeLocations\":[\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"activePhysicalZones\":[\"iplbpodxunkbebxm\"],\"recoveryLocations\":[\"yntwlrbq\",\"koievseo\"],\"replicationRole\":\"Unknown\",\"primaryResource\":\"l\",\"replicaResources\":[\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\"],\"isAutoFailover\":true,\"failoverState\":\"FailedOver\",\"testFailoverState\":\"None\"}")
             .toObject(ResourceProtectionSolutionSettings.class);
     }
 }

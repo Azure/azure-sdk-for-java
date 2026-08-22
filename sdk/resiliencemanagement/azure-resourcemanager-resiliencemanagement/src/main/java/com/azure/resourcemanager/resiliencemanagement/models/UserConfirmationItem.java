@@ -15,8 +15,7 @@ import java.io.IOException;
  * Represents a user confirmation for a high availability solution.
  */
 @Fluent
-public final class UserConfirmationForHighAvailabilityItem
-    implements JsonSerializable<UserConfirmationForHighAvailabilityItem> {
+public final class UserConfirmationItem implements JsonSerializable<UserConfirmationItem> {
     /*
      * The solution display name of the high availability solution.
      */
@@ -33,9 +32,9 @@ public final class UserConfirmationForHighAvailabilityItem
     private ReasonForRequestingConfirmation reasonForRequestingConfirmation;
 
     /**
-     * Creates an instance of UserConfirmationForHighAvailabilityItem class.
+     * Creates an instance of UserConfirmationItem class.
      */
-    public UserConfirmationForHighAvailabilityItem() {
+    public UserConfirmationItem() {
     }
 
     /**
@@ -51,9 +50,9 @@ public final class UserConfirmationForHighAvailabilityItem
      * Set the solutionDisplayName property: The solution display name of the high availability solution.
      * 
      * @param solutionDisplayName the solutionDisplayName value to set.
-     * @return the UserConfirmationForHighAvailabilityItem object itself.
+     * @return the UserConfirmationItem object itself.
      */
-    public UserConfirmationForHighAvailabilityItem withSolutionDisplayName(SolutionDisplayName solutionDisplayName) {
+    public UserConfirmationItem withSolutionDisplayName(SolutionDisplayName solutionDisplayName) {
         this.solutionDisplayName = solutionDisplayName;
         return this;
     }
@@ -71,9 +70,9 @@ public final class UserConfirmationForHighAvailabilityItem
      * Set the confirmationStatus property: The confirmation status of the high availability solution.
      * 
      * @param confirmationStatus the confirmationStatus value to set.
-     * @return the UserConfirmationForHighAvailabilityItem object itself.
+     * @return the UserConfirmationItem object itself.
      */
-    public UserConfirmationForHighAvailabilityItem withConfirmationStatus(ConfirmationStatus confirmationStatus) {
+    public UserConfirmationItem withConfirmationStatus(ConfirmationStatus confirmationStatus) {
         this.confirmationStatus = confirmationStatus;
         return this;
     }
@@ -93,9 +92,9 @@ public final class UserConfirmationForHighAvailabilityItem
      * availability solution.
      * 
      * @param reasonForRequestingConfirmation the reasonForRequestingConfirmation value to set.
-     * @return the UserConfirmationForHighAvailabilityItem object itself.
+     * @return the UserConfirmationItem object itself.
      */
-    public UserConfirmationForHighAvailabilityItem
+    public UserConfirmationItem
         withReasonForRequestingConfirmation(ReasonForRequestingConfirmation reasonForRequestingConfirmation) {
         this.reasonForRequestingConfirmation = reasonForRequestingConfirmation;
         return this;
@@ -117,37 +116,36 @@ public final class UserConfirmationForHighAvailabilityItem
     }
 
     /**
-     * Reads an instance of UserConfirmationForHighAvailabilityItem from the JsonReader.
+     * Reads an instance of UserConfirmationItem from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of UserConfirmationForHighAvailabilityItem if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of UserConfirmationItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the UserConfirmationForHighAvailabilityItem.
+     * @throws IOException If an error occurs while reading the UserConfirmationItem.
      */
-    public static UserConfirmationForHighAvailabilityItem fromJson(JsonReader jsonReader) throws IOException {
+    public static UserConfirmationItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            UserConfirmationForHighAvailabilityItem deserializedUserConfirmationForHighAvailabilityItem
-                = new UserConfirmationForHighAvailabilityItem();
+            UserConfirmationItem deserializedUserConfirmationItem = new UserConfirmationItem();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("solutionDisplayName".equals(fieldName)) {
-                    deserializedUserConfirmationForHighAvailabilityItem.solutionDisplayName
+                    deserializedUserConfirmationItem.solutionDisplayName
                         = SolutionDisplayName.fromString(reader.getString());
                 } else if ("confirmationStatus".equals(fieldName)) {
-                    deserializedUserConfirmationForHighAvailabilityItem.confirmationStatus
+                    deserializedUserConfirmationItem.confirmationStatus
                         = ConfirmationStatus.fromString(reader.getString());
                 } else if ("reasonForRequestingConfirmation".equals(fieldName)) {
-                    deserializedUserConfirmationForHighAvailabilityItem.reasonForRequestingConfirmation
+                    deserializedUserConfirmationItem.reasonForRequestingConfirmation
                         = ReasonForRequestingConfirmation.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedUserConfirmationForHighAvailabilityItem;
+            return deserializedUserConfirmationItem;
         });
     }
 }

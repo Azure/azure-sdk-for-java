@@ -4,207 +4,161 @@
 
 package com.azure.resourcemanager.resiliencemanagement.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunPropertiesInner;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Properties of the Resiliency DrillRun.
+ * An immutable client-side representation of DrillRunProperties.
  */
-@Immutable
-public final class DrillRunProperties extends JobProperties {
-    /*
-     * The type of job.
+public interface DrillRunProperties {
+    /**
+     * Gets the status property: The current status of the job execution.
+     * 
+     * @return the status value.
      */
-    private JobType jobType = JobType.DRILL_RUN;
-
-    /*
-     * Parent Drill resource.
-     */
-    private String drillId;
-
-    /*
-     * Drill mode.
-     */
-    private DrillMode drillMode;
-
-    /*
-     * Attestation of this Drill Run.
-     */
-    private DrillAttestation attestation;
-
-    /*
-     * Notes for this Drill.
-     */
-    private List<String> notes;
-
-    /*
-     * Matrix of Actions supported on Operations.
-     */
-    private List<SupportedVerbsForStage> supportedVerbsForStage;
-
-    /*
-     * The currently active operationID on this Drill Run. There can be only one active.
-     */
-    private String currentActiveOperationId;
+    JobStatus status();
 
     /**
-     * Creates an instance of DrillRunProperties class.
+     * Gets the startTime property: The start time of the job execution.
+     * 
+     * @return the startTime value.
      */
-    private DrillRunProperties() {
-    }
+    OffsetDateTime startTime();
 
     /**
-     * Get the jobType property: The type of job.
+     * Gets the endTime property: The end time of the job execution.
+     * 
+     * @return the endTime value.
+     */
+    OffsetDateTime endTime();
+
+    /**
+     * Gets the duration property: The time elapsed during the execution of this job.
+     * 
+     * @return the duration value.
+     */
+    Duration duration();
+
+    /**
+     * Gets the errorDetails property: Details of any errors that occurred during the execution of this job.
+     * 
+     * @return the errorDetails value.
+     */
+    JobErrorInfo errorDetails();
+
+    /**
+     * Gets the resourceId property: The resource for which this job was created. This is typically the resource that
+     * the job is intended to manage or operate on.
+     * 
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
+     * Gets the operation property: The operation that this job is intended to perform.
+     * 
+     * @return the operation value.
+     */
+    String operation();
+
+    /**
+     * Gets the retryDetails property: Details of any retries that have been attempted for this job.
+     * 
+     * @return the retryDetails value.
+     */
+    List<JobRetryDetails> retryDetails();
+
+    /**
+     * Gets the jobExtendedInfo property: Additional information about the job.
+     * 
+     * @return the jobExtendedInfo value.
+     */
+    JobExtendedInfo jobExtendedInfo();
+
+    /**
+     * Gets the userComments property: User Comments.
+     * 
+     * @return the userComments value.
+     */
+    List<JobUserComment> userComments();
+
+    /**
+     * Gets the executionConfigurations property: Execution configurations for the job.
+     * 
+     * @return the executionConfigurations value.
+     */
+    ExecutionConfigurations executionConfigurations();
+
+    /**
+     * Gets the triggeredBy property: Indicates whether the job was triggered by the system or a user.
+     * 
+     * @return the triggeredBy value.
+     */
+    JobTriggeredBy triggeredBy();
+
+    /**
+     * Gets the jobType property: The type of job.
      * 
      * @return the jobType value.
      */
-    @Override
-    public JobType jobType() {
-        return this.jobType;
-    }
+    JobType jobType();
 
     /**
-     * Get the drillId property: Parent Drill resource.
+     * Gets the drillId property: Parent Drill resource.
      * 
      * @return the drillId value.
      */
-    public String drillId() {
-        return this.drillId;
-    }
+    String drillId();
 
     /**
-     * Get the drillMode property: Drill mode.
+     * Gets the drillMode property: Drill mode.
      * 
      * @return the drillMode value.
      */
-    public DrillMode drillMode() {
-        return this.drillMode;
-    }
+    DrillMode drillMode();
 
     /**
-     * Get the attestation property: Attestation of this Drill Run.
+     * Gets the attestation property: Attestation of this Drill Run.
      * 
      * @return the attestation value.
      */
-    public DrillAttestation attestation() {
-        return this.attestation;
-    }
+    DrillAttestation attestation();
 
     /**
-     * Get the notes property: Notes for this Drill.
+     * Gets the notes property: Notes for this Drill.
      * 
      * @return the notes value.
      */
-    public List<String> notes() {
-        return this.notes;
-    }
+    List<String> notes();
 
     /**
-     * Get the supportedVerbsForStage property: Matrix of Actions supported on Operations.
+     * Gets the supportedVerbsForStage property: Matrix of Actions supported on Operations.
      * 
      * @return the supportedVerbsForStage value.
      */
-    public List<SupportedVerbsForStage> supportedVerbsForStage() {
-        return this.supportedVerbsForStage;
-    }
+    List<SupportedVerbsForStage> supportedVerbsForStage();
 
     /**
-     * Get the currentActiveOperationId property: The currently active operationID on this Drill Run. There can be only
+     * Gets the currentActiveOperationId property: The currently active operationID on this Drill Run. There can be only
      * one active.
      * 
      * @return the currentActiveOperationId value.
      */
-    public String currentActiveOperationId() {
-        return this.currentActiveOperationId;
-    }
+    String currentActiveOperationId();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("errorDetails", errorDetails());
-        jsonWriter.writeArrayField("retryDetails", retryDetails(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("jobExtendedInfo", jobExtendedInfo());
-        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DrillRunProperties from the JsonReader.
+     * Gets the report property: Summary of report generation for this Drill Run.
      * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DrillRunProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DrillRunProperties.
+     * @return the report value.
      */
-    public static DrillRunProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DrillRunProperties deserializedDrillRunProperties = new DrillRunProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    DrillReportSummary report();
 
-                if ("status".equals(fieldName)) {
-                    deserializedDrillRunProperties.withStatus(JobStatus.fromString(reader.getString()));
-                } else if ("startTime".equals(fieldName)) {
-                    deserializedDrillRunProperties.withStartTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                } else if ("endTime".equals(fieldName)) {
-                    deserializedDrillRunProperties.withEndTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
-                } else if ("duration".equals(fieldName)) {
-                    deserializedDrillRunProperties
-                        .withDuration(reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
-                } else if ("errorDetails".equals(fieldName)) {
-                    deserializedDrillRunProperties.withErrorDetails(JobErrorInfo.fromJson(reader));
-                } else if ("resourceId".equals(fieldName)) {
-                    deserializedDrillRunProperties.withResourceId(reader.getString());
-                } else if ("operation".equals(fieldName)) {
-                    deserializedDrillRunProperties.withOperation(reader.getString());
-                } else if ("retryDetails".equals(fieldName)) {
-                    List<JobRetryDetails> retryDetails = reader.readArray(reader1 -> JobRetryDetails.fromJson(reader1));
-                    deserializedDrillRunProperties.withRetryDetails(retryDetails);
-                } else if ("jobExtendedInfo".equals(fieldName)) {
-                    deserializedDrillRunProperties.withJobExtendedInfo(JobExtendedInfo.fromJson(reader));
-                } else if ("userComments".equals(fieldName)) {
-                    List<JobUserComment> userComments = reader.readArray(reader1 -> JobUserComment.fromJson(reader1));
-                    deserializedDrillRunProperties.withUserComments(userComments);
-                } else if ("executionConfigurations".equals(fieldName)) {
-                    deserializedDrillRunProperties
-                        .withExecutionConfigurations(ExecutionConfigurations.fromJson(reader));
-                } else if ("triggeredBy".equals(fieldName)) {
-                    deserializedDrillRunProperties.withTriggeredBy(JobTriggeredBy.fromString(reader.getString()));
-                } else if ("jobType".equals(fieldName)) {
-                    deserializedDrillRunProperties.jobType = JobType.fromString(reader.getString());
-                } else if ("drillId".equals(fieldName)) {
-                    deserializedDrillRunProperties.drillId = reader.getString();
-                } else if ("drillMode".equals(fieldName)) {
-                    deserializedDrillRunProperties.drillMode = DrillMode.fromString(reader.getString());
-                } else if ("attestation".equals(fieldName)) {
-                    deserializedDrillRunProperties.attestation = DrillAttestation.fromString(reader.getString());
-                } else if ("notes".equals(fieldName)) {
-                    List<String> notes = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDrillRunProperties.notes = notes;
-                } else if ("supportedVerbsForStage".equals(fieldName)) {
-                    List<SupportedVerbsForStage> supportedVerbsForStage
-                        = reader.readArray(reader1 -> SupportedVerbsForStage.fromJson(reader1));
-                    deserializedDrillRunProperties.supportedVerbsForStage = supportedVerbsForStage;
-                } else if ("currentActiveOperationId".equals(fieldName)) {
-                    deserializedDrillRunProperties.currentActiveOperationId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDrillRunProperties;
-        });
-    }
+    /**
+     * Gets the inner com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunPropertiesInner object.
+     * 
+     * @return the inner object.
+     */
+    DrillRunPropertiesInner innerModel();
 }

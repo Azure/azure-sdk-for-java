@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class UnifiedResilienceItemsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/UnifiedResilienceItems_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: UnifiedResilienceItems_Get_MaximumSet.

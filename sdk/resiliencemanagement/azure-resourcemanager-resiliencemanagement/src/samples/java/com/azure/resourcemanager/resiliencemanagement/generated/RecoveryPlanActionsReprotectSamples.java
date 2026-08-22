@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPlanActionsReprotectSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-08-31-preview/RecoveryPlanActions_Reprotect_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlanActions_Reprotect_MaximumSet.
