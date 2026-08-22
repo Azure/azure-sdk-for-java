@@ -33,6 +33,12 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     private AttestationState highAvailabilityAttestationStatus;
 
     /*
+     * Zonal resiliency posture (participation, attestation, exclusion reason, and user confirmations) for the Arm
+     * resource.
+     */
+    private ResiliencyProperties zonalResiliency;
+
+    /*
      * Flag which depicts whether the Arm resource is excluded for disaster recovery recommendation.
      */
     private ExclusionState disasterRecoveryGoalParticipation;
@@ -55,7 +61,7 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     /*
      * List of user confirmations for high availability solutions.
      */
-    private List<UserConfirmationForHighAvailabilityItem> userConfirmationForHighAvailability;
+    private List<UserConfirmationItem> userConfirmationForHighAvailability;
 
     /*
      * List of service groups of which this resource is memberof.
@@ -140,6 +146,28 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
     }
 
     /**
+     * Get the zonalResiliency property: Zonal resiliency posture (participation, attestation, exclusion reason, and
+     * user confirmations) for the Arm resource.
+     * 
+     * @return the zonalResiliency value.
+     */
+    public ResiliencyProperties zonalResiliency() {
+        return this.zonalResiliency;
+    }
+
+    /**
+     * Set the zonalResiliency property: Zonal resiliency posture (participation, attestation, exclusion reason, and
+     * user confirmations) for the Arm resource.
+     * 
+     * @param zonalResiliency the zonalResiliency value to set.
+     * @return the GoalResourceProperties object itself.
+     */
+    public GoalResourceProperties withZonalResiliency(ResiliencyProperties zonalResiliency) {
+        this.zonalResiliency = zonalResiliency;
+        return this;
+    }
+
+    /**
      * Get the disasterRecoveryGoalParticipation property: Flag which depicts whether the Arm resource is excluded for
      * disaster recovery recommendation.
      * 
@@ -208,7 +236,7 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
      * 
      * @return the userConfirmationForHighAvailability value.
      */
-    public List<UserConfirmationForHighAvailabilityItem> userConfirmationForHighAvailability() {
+    public List<UserConfirmationItem> userConfirmationForHighAvailability() {
         return this.userConfirmationForHighAvailability;
     }
 
@@ -218,8 +246,8 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
      * @param userConfirmationForHighAvailability the userConfirmationForHighAvailability value to set.
      * @return the GoalResourceProperties object itself.
      */
-    public GoalResourceProperties withUserConfirmationForHighAvailability(
-        List<UserConfirmationForHighAvailabilityItem> userConfirmationForHighAvailability) {
+    public GoalResourceProperties
+        withUserConfirmationForHighAvailability(List<UserConfirmationItem> userConfirmationForHighAvailability) {
         this.userConfirmationForHighAvailability = userConfirmationForHighAvailability;
         return this;
     }
@@ -253,6 +281,7 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
             this.highAvailabilityGoalParticipation == null ? null : this.highAvailabilityGoalParticipation.toString());
         jsonWriter.writeStringField("highAvailabilityAttestationStatus",
             this.highAvailabilityAttestationStatus == null ? null : this.highAvailabilityAttestationStatus.toString());
+        jsonWriter.writeJsonField("zonalResiliency", this.zonalResiliency);
         jsonWriter.writeStringField("disasterRecoveryGoalParticipation",
             this.disasterRecoveryGoalParticipation == null ? null : this.disasterRecoveryGoalParticipation.toString());
         jsonWriter.writeStringField("disasterRecoveryAttestationStatus",
@@ -286,6 +315,8 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
                 } else if ("highAvailabilityAttestationStatus".equals(fieldName)) {
                     deserializedGoalResourceProperties.highAvailabilityAttestationStatus
                         = AttestationState.fromString(reader.getString());
+                } else if ("zonalResiliency".equals(fieldName)) {
+                    deserializedGoalResourceProperties.zonalResiliency = ResiliencyProperties.fromJson(reader);
                 } else if ("disasterRecoveryGoalParticipation".equals(fieldName)) {
                     deserializedGoalResourceProperties.disasterRecoveryGoalParticipation
                         = ExclusionState.fromString(reader.getString());
@@ -299,8 +330,8 @@ public final class GoalResourceProperties implements JsonSerializable<GoalResour
                     deserializedGoalResourceProperties.exclusionReasonForDisasterRecoveryGoals
                         = ExclusionReason.fromString(reader.getString());
                 } else if ("userConfirmationForHighAvailability".equals(fieldName)) {
-                    List<UserConfirmationForHighAvailabilityItem> userConfirmationForHighAvailability
-                        = reader.readArray(reader1 -> UserConfirmationForHighAvailabilityItem.fromJson(reader1));
+                    List<UserConfirmationItem> userConfirmationForHighAvailability
+                        = reader.readArray(reader1 -> UserConfirmationItem.fromJson(reader1));
                     deserializedGoalResourceProperties.userConfirmationForHighAvailability
                         = userConfirmationForHighAvailability;
                 } else if ("serviceGroupMemberships".equals(fieldName)) {

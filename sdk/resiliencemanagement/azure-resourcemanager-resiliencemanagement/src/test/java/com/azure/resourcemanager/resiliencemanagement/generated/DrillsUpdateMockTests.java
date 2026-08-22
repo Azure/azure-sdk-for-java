@@ -15,14 +15,19 @@ import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ChaosResourcePropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdate;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillUpdateProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.HealthModelMonitoringProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.resiliencemanagement.models.MonitoringPropertiesOfDrill;
 import com.azure.resourcemanager.resiliencemanagement.models.RBACSetupMode;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanPropertiesOfDrill;
+import com.azure.resourcemanager.resiliencemanagement.models.SliMonitoringProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.SliSelection;
+import com.azure.resourcemanager.resiliencemanagement.models.SliType;
 import com.azure.resourcemanager.resiliencemanagement.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -63,7 +68,20 @@ public final class DrillsUpdateMockTests {
                         .withRbacSetupMode(RBACSetupMode.AUTOMATED_CUSTOM_ROLE)
                         .withMonitoringProperties(new MonitoringPropertiesOfDrill().withIdentity(
                             new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentity("vrqtvbc")))),
+                                .withUserAssignedIdentity("vrqtvbc")))
+                        .withHealthModelMonitoringProperties(
+                            new HealthModelMonitoringProperties()
+                                .withIdentity(
+                                    new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentity("ngoadyedmzr"))
+                                .withDiscoveryRuleId("jfoknubnoitpkp"))
+                        .withSliMonitoringProperties(new SliMonitoringProperties()
+                            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentity("dgxvco"))
+                            .withSlis(Arrays.asList(
+                                new SliSelection().withSliId("aswugyxpqitw").withType(SliType.AVAILABILITY),
+                                new SliSelection().withSliId("alwvskbu").withType(SliType.AVAILABILITY),
+                                new SliSelection().withSliId("acaqtyltcoqcu").withType(SliType.LATENCY))))),
                 com.azure.core.util.Context.NONE);
 
     }

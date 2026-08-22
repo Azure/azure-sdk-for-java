@@ -25,7 +25,7 @@ public final class UnifiedResilienceItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"goals\":{\"templateId\":\"oqiqazugamx\",\"assignmentId\":\"krrcoiisbamnpp\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT15M\",\"regionalRecoveryPointObjectiveStatus\":\"Unhealthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT4H\",\"regionalRecoveryTimeActualInMinutes\":\"PT24H\",\"regionalRecoveryTimeObjectiveStatus\":\"Healthy\",\"requireHighAvailability\":\"Required\",\"requireDisasterRecovery\":\"NotRequired\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":9126039588141136645,\"notEnabledResourceCount\":5876962983578888234,\"notEvaluatedResourceCount\":6961454862373416327,\"evaluationDateTime\":\"2021-07-17T20:12:02Z\"}},\"lastModifiedTime\":\"2021-03-06T17:25:45Z\"},\"id\":\"pkpetiarxqiu\",\"name\":\"xdukecpxd\",\"type\":\"zvdhctmmkosz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"goals\":{\"templateId\":\"quwusq\",\"assignmentId\":\"utrpbr\",\"regionalRecoveryPointObjectiveInMinutes\":\"PT24H\",\"regionalRecoveryPointEstimatedInMinutes\":\"PT1H\",\"regionalRecoveryPointObjectiveStatus\":\"Healthy\",\"regionalRecoveryTimeObjectiveInMinutes\":\"PT15M\",\"regionalRecoveryTimeActualInMinutes\":\"PT4H\",\"regionalRecoveryTimeObjectiveStatus\":\"Unhealthy\",\"requireHighAvailability\":\"NotRequired\",\"requireDisasterRecovery\":\"Required\"},\"recommendations\":{\"highAvailability\":{\"enabledResourceCount\":198472802196573806,\"notEnabledResourceCount\":3447065718949044750,\"notEvaluatedResourceCount\":821199409904998736,\"evaluationDateTime\":\"2021-05-27T12:03:29Z\"}},\"lastModifiedTime\":\"2021-05-26T21:48:12Z\"},\"id\":\"hprzrvxhmtfho\",\"name\":\"nxzcm\",\"type\":\"hngxnoqrxtd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,35 +35,35 @@ public final class UnifiedResilienceItemsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UnifiedResilienceItem> response
-            = manager.unifiedResilienceItems().list("xiid", "scz", 2116875344, com.azure.core.util.Context.NONE);
+            = manager.unifiedResilienceItems().list("lbnld", "vcb", 689855206, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oqiqazugamx", response.iterator().next().properties().goals().templateId());
-        Assertions.assertEquals("krrcoiisbamnpp", response.iterator().next().properties().goals().assignmentId());
-        Assertions.assertEquals(IsoDuration.PT4H,
-            response.iterator().next().properties().goals().regionalRecoveryPointObjectiveInMinutes());
-        Assertions.assertEquals(IsoDuration.PT15M,
-            response.iterator().next().properties().goals().regionalRecoveryPointEstimatedInMinutes());
-        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
-            response.iterator().next().properties().goals().regionalRecoveryPointObjectiveStatus());
-        Assertions.assertEquals(IsoDuration.PT4H,
-            response.iterator().next().properties().goals().regionalRecoveryTimeObjectiveInMinutes());
+        Assertions.assertEquals("quwusq", response.iterator().next().properties().goals().templateId());
+        Assertions.assertEquals("utrpbr", response.iterator().next().properties().goals().assignmentId());
         Assertions.assertEquals(IsoDuration.PT24H,
-            response.iterator().next().properties().goals().regionalRecoveryTimeActualInMinutes());
+            response.iterator().next().properties().goals().regionalRecoveryPointObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT1H,
+            response.iterator().next().properties().goals().regionalRecoveryPointEstimatedInMinutes());
         Assertions.assertEquals(ResilienceHealthStatus.HEALTHY,
+            response.iterator().next().properties().goals().regionalRecoveryPointObjectiveStatus());
+        Assertions.assertEquals(IsoDuration.PT15M,
+            response.iterator().next().properties().goals().regionalRecoveryTimeObjectiveInMinutes());
+        Assertions.assertEquals(IsoDuration.PT4H,
+            response.iterator().next().properties().goals().regionalRecoveryTimeActualInMinutes());
+        Assertions.assertEquals(ResilienceHealthStatus.UNHEALTHY,
             response.iterator().next().properties().goals().regionalRecoveryTimeObjectiveStatus());
-        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED,
-            response.iterator().next().properties().goals().requireHighAvailability());
         Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.NOT_REQUIRED,
+            response.iterator().next().properties().goals().requireHighAvailability());
+        Assertions.assertEquals(UnifiedResilienceItemRequirementSelected.REQUIRED,
             response.iterator().next().properties().goals().requireDisasterRecovery());
-        Assertions.assertEquals(9126039588141136645L,
+        Assertions.assertEquals(198472802196573806L,
             response.iterator().next().properties().recommendations().highAvailability().enabledResourceCount());
-        Assertions.assertEquals(5876962983578888234L,
+        Assertions.assertEquals(3447065718949044750L,
             response.iterator().next().properties().recommendations().highAvailability().notEnabledResourceCount());
-        Assertions.assertEquals(6961454862373416327L,
+        Assertions.assertEquals(821199409904998736L,
             response.iterator().next().properties().recommendations().highAvailability().notEvaluatedResourceCount());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T20:12:02Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T12:03:29Z"),
             response.iterator().next().properties().recommendations().highAvailability().evaluationDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T17:25:45Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T21:48:12Z"),
             response.iterator().next().properties().lastModifiedTime());
     }
 }

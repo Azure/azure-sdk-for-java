@@ -29,6 +29,11 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     private GoalAssignmentType goalAssignmentType;
 
     /*
+     * Whether zonal resiliency is required for this goal assignment.
+     */
+    private Boolean requireZonalResiliency;
+
+    /*
      * List of service level resources.
      */
     private List<ServiceLevelResource> serviceLevelResources;
@@ -90,6 +95,26 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
     }
 
     /**
+     * Get the requireZonalResiliency property: Whether zonal resiliency is required for this goal assignment.
+     * 
+     * @return the requireZonalResiliency value.
+     */
+    public Boolean requireZonalResiliency() {
+        return this.requireZonalResiliency;
+    }
+
+    /**
+     * Set the requireZonalResiliency property: Whether zonal resiliency is required for this goal assignment.
+     * 
+     * @param requireZonalResiliency the requireZonalResiliency value to set.
+     * @return the GoalAssignmentProperties object itself.
+     */
+    public GoalAssignmentProperties withRequireZonalResiliency(Boolean requireZonalResiliency) {
+        this.requireZonalResiliency = requireZonalResiliency;
+        return this;
+    }
+
+    /**
      * Get the serviceLevelResources property: List of service level resources.
      * 
      * @return the serviceLevelResources value.
@@ -136,6 +161,7 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
         jsonWriter.writeStringField("goalTemplateId", this.goalTemplateId);
         jsonWriter.writeStringField("goalAssignmentType",
             this.goalAssignmentType == null ? null : this.goalAssignmentType.toString());
+        jsonWriter.writeBooleanField("requireZonalResiliency", this.requireZonalResiliency);
         jsonWriter.writeArrayField("serviceLevelResources", this.serviceLevelResources,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -147,7 +173,6 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
      * @param jsonReader The JsonReader being read.
      * @return An instance of GoalAssignmentProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GoalAssignmentProperties.
      */
     public static GoalAssignmentProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -162,6 +187,9 @@ public final class GoalAssignmentProperties implements JsonSerializable<GoalAssi
                 } else if ("goalAssignmentType".equals(fieldName)) {
                     deserializedGoalAssignmentProperties.goalAssignmentType
                         = GoalAssignmentType.fromString(reader.getString());
+                } else if ("requireZonalResiliency".equals(fieldName)) {
+                    deserializedGoalAssignmentProperties.requireZonalResiliency
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("serviceLevelResources".equals(fieldName)) {
                     List<ServiceLevelResource> serviceLevelResources
                         = reader.readArray(reader1 -> ServiceLevelResource.fromJson(reader1));
