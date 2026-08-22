@@ -126,6 +126,9 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     private HttpRequest createRedirectRequest(HttpPipelineCallContext context, HttpResponse redirectResponse) {
+        // Clear authorization before invoking the redirect strategy to avoid exposing it to custom strategies.
+        redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
         removeSensitiveHeaders(context, redirectRequestCopy);
         redirectResponse.close();
