@@ -57,8 +57,8 @@ and `then`.
 - **Rule ID:** `DP-VALIDATION-01`
 - **Severity:** Warning
 
-<!-- Sources: Java guidelines java-params-client-validation,
-java-params-service-validation, and java-params-test-devex; general
+<!-- Sources: Java guidelines java-params-client-validation and
+java-params-service-validation; general
 implementation general-params-client-validation, general-params-server-validation,
 and general-params-server-defaults. -->
 
