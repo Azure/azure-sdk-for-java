@@ -1,0 +1,5 @@
+sdk/contoso/azure-contoso-widgets/CHANGELOG.md
+sdk/contoso/azure-contoso-widgets/README.md
+sdk/contoso/azure-contoso-widgets/pom.xml
+sdk/contoso/azure-contoso-widgets/src/main/java/com/azure/contoso/widgets/WidgetClient.java
+sdk/contoso/azure-contoso-widgets/src/samples/java/com/azure/contoso/widgets/ReadmeSamples.java
