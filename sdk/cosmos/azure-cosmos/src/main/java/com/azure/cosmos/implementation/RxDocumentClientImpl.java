@@ -2652,9 +2652,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
-                throw new IllegalArgumentException(
-                    "A transactional batch requires a full partition key matching all paths in the "
-                        + "container's partition key definition.");
+                throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
             }
 
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -5300,16 +5298,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosItemIdentity itemIdentity,
         PartitionKeyDefinition partitionKeyDefinition) {
 
-        if (!PartitionKeyHelper.isLastPartitionKeyPathId(partitionKeyDefinition)) {
+        PartitionKey partitionKey = itemIdentity.getPartitionKey();
+        PartitionKeyInternal partitionKeyInternal = partitionKey == null
+            ? null
+            : ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
+        if (!PartitionKeyHelper.canCompletePartitionKeyWithId(partitionKeyDefinition, partitionKeyInternal)) {
             return itemIdentity;
         }
 
         PartitionKey augmentedPartitionKey = PartitionKeyHelper.completePartitionKeyWithIdIfNeeded(
-            partitionKeyDefinition, itemIdentity.getPartitionKey(), itemIdentity.getId());
-
-        if (augmentedPartitionKey == itemIdentity.getPartitionKey()) {
-            return itemIdentity;
-        }
+            partitionKeyDefinition, partitionKey, itemIdentity.getId());
 
         return new CosmosItemIdentity(augmentedPartitionKey, itemIdentity.getId());
     }

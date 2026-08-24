@@ -372,7 +372,7 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
         // A batch targets a single logical partition, so a prefix partition key is rejected.
         assertThatThrownBy(() -> hpkContainer.executeCosmosBatch(batch))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("requires a full partition key");
+            .hasMessage(RMResources.PartitionKeyMismatch);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -394,7 +394,7 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
 
         assertThatThrownBy(() -> hpkContainer.executeCosmosBatch(batch))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("requires a full partition key");
+            .hasMessage(RMResources.PartitionKeyMismatch);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

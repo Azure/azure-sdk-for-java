@@ -389,38 +389,34 @@ public final class BulkExecutor<TContext> implements Disposable {
                     })
                     .mergeWith(mainSink.asFlux())
                     .subscribeOn(this.executionScheduler)
-                    .flatMap(operation -> {
-                        logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
-                            getItemOperationDiagnostics(operation),
-                            this.operationContextText,
-                            getThreadInfo());
+                    .flatMap(
+                        operation -> {
+                            logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
+                                getItemOperationDiagnostics(operation),
+                                this.operationContextText,
+                                getThreadInfo());
 
-                        // Resolve again for operations returned to the main sink after a Gone retry.
-                        return BulkExecutorUtil
-                            .resolvePartitionKeyRangeId(
-                                this.docClientWrapper,
-                                this.container,
-                                operation,
-                                this.effectiveItemSerializer)
-                            .map(pkRangeId -> {
-                                PartitionScopeThresholds thresholds =
-                                    this.partitionScopeThresholds.computeIfAbsent(
-                                        pkRangeId,
-                                        newPkRangeId -> new PartitionScopeThresholds(
-                                            newPkRangeId,
-                                            this.cosmosBulkExecutionOptions));
+                            // resolve partition key range id again for operations which comes in main sink due to gone retry.
+                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation, this.effectiveItemSerializer)
+                                                   .map((String pkRangeId) -> {
+                                                       PartitionScopeThresholds partitionScopeThresholds =
+                                                           this.partitionScopeThresholds.computeIfAbsent(
+                                                               pkRangeId,
+                                                               (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
 
-                                logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
-                                    getItemOperationDiagnostics(operation),
-                                    pkRangeId,
-                                    this.operationContextText,
-                                    getThreadInfo());
+                                                       logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
+                                                           getItemOperationDiagnostics(operation),
+                                                           pkRangeId,
+                                                           this.operationContextText,
+                                                           getThreadInfo());
 
-                                return Pair.of(thresholds, operation);
-                            });
-                    })
+                                                       return Pair.of(partitionScopeThresholds, operation);
+                                                   });
+                        })
                     .groupBy(Pair::getKey, Pair::getValue)
-                    .flatMap(this::executePartitionedGroup, maxConcurrentCosmosPartitions)
+                    .flatMap(
+                        this::executePartitionedGroup,
+                        maxConcurrentCosmosPartitions)
                     .subscribeOn(this.executionScheduler)
                     .doOnNext(requestAndResponse -> {
 

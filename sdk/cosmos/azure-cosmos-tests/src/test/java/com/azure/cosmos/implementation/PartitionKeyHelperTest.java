@@ -18,9 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * Unit tests for {@link PartitionKeyHelper#isLastPartitionKeyPathId} and
- * {@link PartitionKeyHelper#completePartitionKeyInternalWithIdIfNeeded} that validate the behaviour of
- * appending the item id to a hierarchical partition key whose last path is "/id".
+ * Unit tests for {@link PartitionKeyHelper#canCompletePartitionKeyWithId} and partition key completion.
  */
 public class PartitionKeyHelperTest {
 
@@ -36,22 +34,25 @@ public class PartitionKeyHelperTest {
     }
 
     @Test(groups = "unit")
-    public void isLastPartitionKeyPathId_returnsTrueOnlyWhenLastPathIsId() {
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.HASH, "/id"))).isTrue();
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.MULTI_HASH, "/id"))).isTrue();
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id"))).isTrue();
+    public void canCompletePartitionKeyWithId_requiresIdAsLastPathAndExactPrefix() {
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.HASH, "/id"), null)).isTrue();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.MULTI_HASH, "/id"), null)).isTrue();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City", "/id"),
+            toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build()))).isTrue();
 
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.HASH, "/pk"))).isFalse();
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City"))).isFalse();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.HASH, "/pk"), null)).isFalse();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City"),
+            toInternal(new PartitionKeyBuilder().add("10001").build()))).isFalse();
         // "/id" must be the LAST path, not just present.
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(
-            pkDefinition(PartitionKind.MULTI_HASH, "/id", "/City"))).isFalse();
-        assertThat(PartitionKeyHelper.isLastPartitionKeyPathId(null)).isFalse();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(
+            pkDefinition(PartitionKind.MULTI_HASH, "/id", "/City"),
+            toInternal(new PartitionKey("myId")))).isFalse();
+        assertThat(PartitionKeyHelper.canCompletePartitionKeyWithId(null, null)).isFalse();
     }
 
     @Test(groups = "unit")

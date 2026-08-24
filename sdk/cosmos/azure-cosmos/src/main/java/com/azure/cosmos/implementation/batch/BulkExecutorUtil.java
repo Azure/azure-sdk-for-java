@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -175,13 +176,14 @@ final class BulkExecutorUtil {
             partitionKey,
             itemIdSupplier,
             partitionKeyInternalConsumer,
-            false);
+            null);
     }
 
-    static Mono<String> resolvePartitionKeyRangeIdForFullPartitionKey(
+    static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
-        PartitionKey partitionKey) {
+        PartitionKey partitionKey,
+        BiConsumer<PartitionKeyDefinition, PartitionKeyInternal> partitionKeyValidator) {
 
         return resolvePartitionKeyRangeId(
             docClientWrapper,
@@ -189,7 +191,7 @@ final class BulkExecutorUtil {
             partitionKey,
             null,
             null,
-            true);
+            partitionKeyValidator);
     }
 
     private static Mono<String> resolvePartitionKeyRangeId(
@@ -198,7 +200,7 @@ final class BulkExecutorUtil {
         PartitionKey partitionKey,
         Supplier<String> itemIdSupplier,
         Consumer<PartitionKeyInternal> partitionKeyInternalConsumer,
-        boolean requireFullPartitionKey) {
+        BiConsumer<PartitionKeyDefinition, PartitionKeyInternal> partitionKeyValidator) {
 
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
@@ -208,20 +210,15 @@ final class BulkExecutorUtil {
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
                                PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
-                               if (requireFullPartitionKey
-                                   && !PartitionKeyHelper.isFullPartitionKey(definition, partitionKeyInternal)) {
-
-                                   throw new IllegalArgumentException(
-                                       "A transactional batch requires a full partition key matching all paths in "
-                                           + "the container's partition key definition.");
+                               if (partitionKeyValidator != null) {
+                                   partitionKeyValidator.accept(definition, partitionKeyInternal);
                                }
 
                                // Hierarchical partition key ending in "/id": append the item id so
                                // callers can pass only the prefix of the partition key. The item id
                                // (resolving which may serialize the item) is only fetched when the
                                // provided key is omitted or is exactly the prefix ending before /id.
-                               if (!requireFullPartitionKey
-                                   && PartitionKeyHelper.canCompletePartitionKeyWithId(
+                               if (PartitionKeyHelper.canCompletePartitionKeyWithId(
                                        definition, partitionKeyInternal)) {
 
                                    String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();

@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -303,7 +304,7 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
 
         assertThatThrownBy(() -> executor.execute().collectList().block())
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("requires a full partition key");
+            .hasMessage(RMResources.PartitionKeyMismatch);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

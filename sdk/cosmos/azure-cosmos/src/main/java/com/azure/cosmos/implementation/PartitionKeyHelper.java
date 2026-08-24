@@ -29,15 +29,7 @@ public class PartitionKeyHelper {
         return ImplementationBridgeHelpers.PartitionKeyHelper.getPartitionKeyAccessor();
     }
 
-    /**
-     * Returns {@code true} when the last path of the (hierarchical) partition key definition is
-     * "/id". When this is the case a partition key value uniquely maps to a single item and the
-     * SDK can append the item id to the partition key on the caller's behalf.
-     *
-     * @param partitionKeyDefinition the partition key definition of the container (may be null).
-     * @return {@code true} if the last partition key path is "/id"; otherwise {@code false}.
-     */
-    public static boolean isLastPartitionKeyPathId(PartitionKeyDefinition partitionKeyDefinition) {
+    private static boolean isLastPartitionKeyPathId(PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition == null) {
             return false;
         }
