@@ -309,21 +309,31 @@ public class DecryptorV2ReorderTests {
         // A shared validator must intersect the candidate encodings across chunks; otherwise the encoding could change
         // at a chunk boundary and, at an encoding collision, let a relocated region pass. Mirrors the Python SDK's
         // test_nonce_validator_enforces_single_encoding_across_chunks.
+        //
+        // This is validated at the unit level (one validator instance driven across two decrypt() calls standing in for
+        // two chunks) because an end-to-end client test of this specific bypass is impractical: the smallest cross-
+        // scheme nonce collision is javaNonce(1) == dotnetNonce(16,777,215), so it only manifests at region index
+        // 16,777,215 - i.e. a blob with ~16.7M regions.
         assertArrayEquals(javaNonce(1), dotnetNonce(16_777_215));
 
         byte[] cek = randomBytes(32);
-        CseV2NonceOrderValidator shared = new CseV2NonceOrderValidator();
 
-        // First chunk: two Java-encoded regions resolve the shared encoding to Java.
+        // A region relocated to the colliding .NET index while carrying Java's region-1 nonce.
+        byte[] relocated = encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH));
+        long collidingOffset = 16_777_215L * REGION_DATA_LENGTH;
+
+        // Regression guard: a fresh per-chunk validator sees only this region, whose sole consistent encoding is .NET,
+        // so it accepts the relocation. This is exactly the bypass that sharing one validator across chunks prevents -
+        // a regression that created one validator per chunk would let this through.
+        assertDoesNotThrow(() -> decrypt(cek, relocated, collidingOffset, new CseV2NonceOrderValidator()));
+
+        // Shared validator: an earlier chunk of two Java-encoded regions resolves the shared encoding to Java...
+        CseV2NonceOrderValidator shared = new CseV2NonceOrderValidator();
         byte[] chunk1 = concat(encryptRegionWithNonce(cek, javaNonce(0), randomBytes(REGION_DATA_LENGTH)),
             encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH)));
         decrypt(cek, chunk1, 0, shared);
 
-        // Later chunk: a region relocated to the colliding .NET index carries Java's region-1 nonce. On a fresh
-        // per-chunk validator its only consistent encoding is .NET and it would pass; the shared validator (already
-        // resolved to Java) rejects it.
-        byte[] relocated = encryptRegionWithNonce(cek, javaNonce(1), randomBytes(REGION_DATA_LENGTH));
-        long collidingOffset = 16_777_215L * REGION_DATA_LENGTH;
+        // ...so the same relocated region in a later chunk is now rejected.
         assertThrows(IllegalStateException.class, () -> decrypt(cek, relocated, collidingOffset, shared));
     }
 
