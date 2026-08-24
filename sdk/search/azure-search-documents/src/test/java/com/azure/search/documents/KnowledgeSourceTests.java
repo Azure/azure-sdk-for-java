@@ -2391,7 +2391,7 @@ public class KnowledgeSourceTests extends SearchTestBase {
     @Test
     public void createFileKnowledgeSourceWithStandardExtractionAndCorsSync() {
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(new TestProxySanitizer("$..aiServices.url", null,
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..aiServices.uri", null,
                 "https://your-endpoint.cognitiveservices.azure.com", TestProxySanitizerType.BODY_KEY));
         }
 
