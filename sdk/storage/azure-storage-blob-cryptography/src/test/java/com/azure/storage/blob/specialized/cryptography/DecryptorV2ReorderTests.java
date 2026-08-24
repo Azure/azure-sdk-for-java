@@ -29,6 +29,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -93,6 +94,26 @@ public class DecryptorV2ReorderTests {
         // Reordering within the ranged content is still detected, with the region index offset by the range.
         swapRegions(ranged, 1, 2, REGION_TOTAL_LENGTH);
         assertThrows(IllegalStateException.class, () -> decrypt(cek, ranged, REGION_DATA_LENGTH));
+    }
+
+    @Test
+    public void failsClosedWhenNonceLengthIsInvalid() {
+        // CSEv2 nonces are always 12 bytes. Metadata advertising any other length makes positional validation
+        // impossible, so the validator must fail closed rather than silently skip the integrity check.
+        CseV2NonceOrderValidator validator = new CseV2NonceOrderValidator();
+        byte[] shortNonce = new byte[Long.BYTES];
+
+        assertThrows(IllegalStateException.class, () -> validator.validateRegion(shortNonce, shortNonce.length, 0));
+    }
+
+    @Test
+    public void recoverySwitchBypassesInvalidNonceLength() {
+        // The data-recovery switch disables all validation, so it short-circuits before the nonce-length check.
+        System.setProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY, "true");
+        CseV2NonceOrderValidator validator = new CseV2NonceOrderValidator();
+        byte[] shortNonce = new byte[Long.BYTES];
+
+        assertDoesNotThrow(() -> validator.validateRegion(shortNonce, shortNonce.length, 0));
     }
 
     @Test
@@ -316,9 +337,9 @@ public class DecryptorV2ReorderTests {
     }
 
     /**
-     * Encrypts a single region using the Java SDK nonce scheme (region index truncated to an int, written big-endian).
-     * Produces {@code nonce || ciphertext || tag}. Used to craft ciphertext for arbitrary (very large) region indices
-     * without materializing all preceding regions.
+     * Encrypts a single region using the Java SDK nonce scheme (region index written big-endian as a full 64-bit
+     * value). Produces {@code nonce || ciphertext || tag}. Used to craft ciphertext for arbitrary (very large) region
+     * indices without materializing all preceding regions.
      */
     private static byte[] encryptRegionAt(byte[] cek, long regionIndex, byte[] plaintext) {
         return encryptRegionWithNonce(cek, javaNonce(regionIndex), plaintext);

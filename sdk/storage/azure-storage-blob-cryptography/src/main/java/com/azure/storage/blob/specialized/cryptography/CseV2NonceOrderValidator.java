@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_ENV_VAR;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 
 /**
  * Detects rearrangement of client-side encryption v2 authenticated regions by validating each region's nonce against
@@ -64,10 +65,12 @@ final class CseV2NonceOrderValidator {
             return;
         }
 
-        // Cannot reconstruct the expected nonce if it is too short to hold the region index. This should never happen
-        // for CSEv2 (nonce length is 12), so treat it as unverifiable rather than a failure.
-        if (nonceLength < Long.BYTES || actualNonce.length < Long.BYTES) {
-            return;
+        // CSEv2 uses a fixed 12-byte nonce. If the metadata advertises any other length, positional validation is
+        // impossible, so fail closed rather than silently skipping the integrity check (leaving reorders undetected).
+        if (nonceLength != NONCE_LENGTH || actualNonce.length != nonceLength) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Cannot verify the authenticated-region order of client-side encrypted (v2) content because its nonce "
+                    + "length is invalid (expected " + NONCE_LENGTH + "). " + recoveryInstruction()));
         }
 
         // Fast path: once the scheme has collapsed to a single encoding, verify directly without mutating shared state.
@@ -110,7 +113,7 @@ final class CseV2NonceOrderValidator {
         return new IllegalStateException(
             "Encountered an out-of-order authenticated region while decrypting client-side encrypted (v2) content. "
                 + "This may indicate that the blob's authenticated regions have been rearranged or otherwise tampered "
-                + "with." + recoveryInstruction());
+                + "with. " + recoveryInstruction());
     }
 
     private static String recoveryInstruction() {
