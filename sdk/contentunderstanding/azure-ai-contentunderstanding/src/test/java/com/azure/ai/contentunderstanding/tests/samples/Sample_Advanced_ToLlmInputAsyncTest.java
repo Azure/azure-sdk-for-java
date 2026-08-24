@@ -13,8 +13,10 @@ import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.LlmInputHelper;
 import com.azure.ai.contentunderstanding.ToLlmInputOptions;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -35,10 +37,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingClientTestBase {
 
-    private AnalysisResult analyzeAsync(String analyzerId, List<AnalysisInput> inputs) {
+    private Mono<AnalysisResult> analyzeAsync(String analyzerId, List<AnalysisInput> inputs) {
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
             = contentUnderstandingAsyncClient.beginAnalyze(analyzerId, inputs);
-        return poller.last().flatMap(pollResponse -> pollResponse.getFinalResult()).block();
+        return poller.last().flatMap(response -> {
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+            return response.getFinalResult()
+                .switchIfEmpty(Mono.error(new AssertionError(analyzerId + " analysis returned no final result.")));
+        });
     }
 
     // Section 1 — output option flags and custom metadata
@@ -48,7 +54,8 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         String invoiceUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf";
 
-        AnalysisResult result = analyzeAsync("prebuilt-invoice", Arrays.asList(new AnalysisInput().setUrl(invoiceUrl)));
+        AnalysisResult result
+            = analyzeAsync("prebuilt-invoice", Arrays.asList(new AnalysisInput().setUrl(invoiceUrl))).block();
         // END:ContentUnderstandingToLlmInputAsync
 
         // BEGIN:Assertion_ContentUnderstandingToLlmInputAsync
@@ -67,9 +74,12 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         String defaultText = LlmInputHelper.toLlmInput(result);
         assertTrue(defaultText.startsWith("---"), "Default output should start with YAML front matter");
         assertTrue(defaultText.contains("\n---\n"), "Default output should close YAML front matter");
-        assertTrue(defaultText.contains("contentType: document"),
-            "Default output should declare contentType: document");
+        assertTrue(defaultText.contains("mimeType: " + doc.getMimeType()),
+            "Default output should declare the detected MIME type");
         assertTrue(defaultText.contains("fields:"), "Default output should include 'fields:' block");
+        assertTrue(defaultText.contains("VendorName:"), "Default output should include the VendorName field");
+        assertTrue(defaultText.contains("<!-- InputPageNumber: 1 -->"),
+            "Default output should include the original page marker");
         assertTrue(defaultText.contains(markdown), "Default output should include markdown body");
         System.out.println("[PASS] Default output: fields + markdown (" + defaultText.length() + " chars)");
 
@@ -77,6 +87,8 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         String fieldsOnly = LlmInputHelper.toLlmInput(result, null, new ToLlmInputOptions().setIncludeMarkdown(false));
         assertTrue(fieldsOnly.contains("fields:"), "Fields-only output should still include 'fields:' block");
         assertFalse(fieldsOnly.contains(markdown), "Fields-only output should not contain the markdown body");
+        assertFalse(fieldsOnly.contains("<!-- InputPageNumber:"), "Fields-only output should not contain page markers");
+        assertTrue(fieldsOnly.trim().endsWith("---"), "Fields-only output should end after YAML front matter");
         System.out.println("[PASS] Fields-only output validated (" + fieldsOnly.length() + " chars)");
 
         // Markdown-only
@@ -86,18 +98,22 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         System.out.println("[PASS] Markdown-only output validated (" + markdownOnly.length() + " chars)");
 
         // Custom metadata
-        Map<String, Object> metadata = new LinkedHashMap<>();
-        metadata.put("source", "invoice.pdf");
-        metadata.put("department", "finance");
-        String withMetadata = LlmInputHelper.toLlmInput(result, metadata);
-        assertTrue(withMetadata.contains("source: invoice.pdf"), "Metadata 'source' key should appear in front matter");
-        assertTrue(withMetadata.contains("department: finance"),
-            "Metadata 'department' key should appear in front matter");
-        assertTrue(withMetadata.indexOf("contentType: document") < withMetadata.indexOf("source: invoice.pdf"),
-            "Custom metadata should appear after 'contentType' in front matter");
-        assertTrue(withMetadata.indexOf("source: invoice.pdf") < withMetadata.indexOf("fields:"),
-            "Custom metadata should appear before the 'fields:' block in front matter");
-        System.out.println("[PASS] Custom metadata injected into YAML front matter");
+        Map<String, Object> customMetadata = new LinkedHashMap<>();
+        customMetadata.put("source", "invoice.pdf");
+        customMetadata.put("department", "finance");
+        String withCustomMetadata = LlmInputHelper.toLlmInput(result, customMetadata);
+        assertTrue(withCustomMetadata.contains("customMetadata:"), "Output should include customMetadata block");
+        assertTrue(withCustomMetadata.contains("source: invoice.pdf"),
+            "Custom metadata 'source' key should appear in front matter");
+        assertTrue(withCustomMetadata.contains("department: finance"),
+            "Custom metadata 'department' key should appear in front matter");
+        assertTrue(
+            withCustomMetadata.indexOf("mimeType: " + doc.getMimeType())
+                < withCustomMetadata.indexOf("customMetadata:"),
+            "Custom metadata block should appear after 'mimeType' in front matter");
+        assertTrue(withCustomMetadata.indexOf("customMetadata:") < withCustomMetadata.indexOf("fields:"),
+            "Custom metadata block should appear before the 'fields:' block in front matter");
+        System.out.println("[PASS] Custom metadata nested in YAML front matter");
         // END:Assertion_ContentUnderstandingToLlmInputAsync
     }
 
@@ -108,8 +124,9 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
         String multiPageUrl
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
-        AnalysisResult result = analyzeAsync("prebuilt-documentSearch",
-            Arrays.asList(new AnalysisInput().setUrl(multiPageUrl).setContentRange(new ContentRange("2-3,5"))));
+        AnalysisResult result
+            = analyzeAsync("prebuilt-documentSearch", Arrays.asList(new AnalysisInput().setUrl(multiPageUrl)
+                .setContentRange(ContentRange.combine(ContentRange.pages(2, 3), ContentRange.page(5))))).block();
         // END:ContentUnderstandingToLlmInputContentRangeAsync
 
         // BEGIN:Assertion_ContentUnderstandingToLlmInputContentRangeAsync
@@ -125,7 +142,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
 
         String text = LlmInputHelper.toLlmInput(result);
         assertTrue(text.startsWith("---"), "Output should start with YAML front matter");
-        assertTrue(text.contains("contentType: document"), "Output should declare contentType: document");
+        assertTrue(text.contains("mimeType: " + doc.getMimeType()), "Output should declare the detected MIME type");
         assertTrue(text.contains("pages:"), "Output should include a 'pages' key in front matter");
         assertTrue(text.contains("2-3, 5") || text.contains("'2-3, 5'"),
             "'pages' value should be '2-3, 5' (original page numbers preserved)");
@@ -155,7 +172,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
         AnalysisResult result
-            = analyzeAsync("prebuilt-videoSearch", Arrays.asList(new AnalysisInput().setUrl(videoUrl)));
+            = analyzeAsync("prebuilt-videoSearch", Arrays.asList(new AnalysisInput().setUrl(videoUrl))).block();
         // END:ContentUnderstandingToLlmInputVideoAsync
 
         // BEGIN:Assertion_ContentUnderstandingToLlmInputVideoAsync
@@ -170,7 +187,8 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
 
         String text = LlmInputHelper.toLlmInput(result);
         assertTrue(text.startsWith("---"), "Output should start with YAML front matter");
-        assertTrue(text.contains("contentType: audioVisual"), "Output should declare contentType: audioVisual");
+        assertTrue(text.contains("mimeType: " + result.getContents().get(0).getMimeType()),
+            "Output should declare the detected MIME type");
 
         if (segmentCount > 1) {
             int expectedDividers = segmentCount - 1;
@@ -197,7 +215,7 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
         AnalysisResult result = analyzeAsync("prebuilt-audioSearch",
-            Arrays.asList(new AnalysisInput().setUrl(audioUrl).setContentRange(new ContentRange("0-10000"))));
+            Arrays.asList(new AnalysisInput().setUrl(audioUrl).setContentRange(new ContentRange("0-10000")))).block();
         // END:ContentUnderstandingToLlmInputAudioAsync
 
         // BEGIN:Assertion_ContentUnderstandingToLlmInputAudioAsync
@@ -208,17 +226,20 @@ public class Sample_Advanced_ToLlmInputAsyncTest extends ContentUnderstandingCli
             "Audio analysis should return AudioVisualContent items");
         System.out.println("[PASS] Audio analyzed: " + result.getContents().size() + " segment(s)");
 
-        Map<String, Object> audioMetadata = new LinkedHashMap<>();
-        audioMetadata.put("source", "callCenterRecording.mp3");
-        String text = LlmInputHelper.toLlmInput(result, audioMetadata);
+        Map<String, Object> audioCustomMetadata = new LinkedHashMap<>();
+        audioCustomMetadata.put("source", "callCenterRecording.mp3");
+        String text = LlmInputHelper.toLlmInput(result, audioCustomMetadata);
         assertTrue(text.startsWith("---"), "Output should start with YAML front matter");
-        assertTrue(text.contains("contentType: audioVisual"), "Output should declare contentType: audioVisual");
+        assertTrue(text.contains("mimeType: " + result.getContents().get(0).getMimeType()),
+            "Output should declare the detected MIME type");
+        assertTrue(text.contains("customMetadata:"), "Output should include customMetadata block");
         assertTrue(text.contains("source: callCenterRecording.mp3"),
             "Custom metadata 'source' key should appear in front matter");
-        assertTrue(text.indexOf("contentType: audioVisual") < text.indexOf("source: callCenterRecording.mp3"),
-            "Custom metadata should appear after 'contentType' in front matter");
+        assertTrue(
+            text.indexOf("mimeType: " + result.getContents().get(0).getMimeType()) < text.indexOf("customMetadata:"),
+            "Custom metadata block should appear after 'mimeType' in front matter");
         System.out
-            .println("[PASS] toLlmInput output validated (" + text.length() + " chars, includes source metadata)");
+            .println("[PASS] toLlmInput output validated (" + text.length() + " chars, includes custom metadata)");
         // END:Assertion_ContentUnderstandingToLlmInputAudioAsync
     }
 

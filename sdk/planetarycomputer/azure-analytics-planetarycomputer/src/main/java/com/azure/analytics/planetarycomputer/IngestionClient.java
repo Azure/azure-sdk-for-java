@@ -220,6 +220,13 @@ public final class IngestionClient {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion run</td></tr>
+     * </table>
+     * 
      * @param collectionId Catalog collection id.
      * @param ingestionId Ingestion id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -385,6 +392,13 @@ public final class IngestionClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion</td></tr>
+     * </table>
      * 
      * @param collectionId Catalog collection id.
      * @param body Definition of the ingestion.
@@ -612,6 +626,13 @@ public final class IngestionClient {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
+     * 
      * @param body Definition of the ingestion source.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -651,6 +672,13 @@ public final class IngestionClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>location</td><td>String</td><td>Url of the created ingestion source</td></tr>
+     * </table>
      * 
      * @param id Ingestion source id.
      * @param body Definition of the ingestion source.

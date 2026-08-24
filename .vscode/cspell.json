@@ -1048,6 +1048,13 @@
       ]
     },
     {
+      "filename": "**/sdk/discovery/**",
+      "words": [
+        "milli",
+        "invst"
+      ]
+    },
+    {
       "filename": "**/sdk/communication/azure-communication-identity/CHANGELOG.md",
       "words": [
         "reponse"

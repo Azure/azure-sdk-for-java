@@ -21,44 +21,46 @@ public final class PrivateEndpointConnectionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"aondjrkclamgg\"},\"groupIds\":[\"AzureSiteRecovery\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"oqeykglt\",\"actionsRequired\":\"xhqf\"}},\"tags\":{\"iucijjcea\":\"ayejsxtlgflwfgz\"},\"location\":\"ijjj\",\"eTag\":\"va\",\"id\":\"a\",\"name\":\"zknxkv\",\"type\":\"cxetyvkunmignoh\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"syparybjufp\"},\"groupIds\":[\"AzureBackup\",\"AzureBackup_secondary\",\"AzureBackup_secondary\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"iyqvldaswv\",\"actionsRequired\":\"i\"}},\"tags\":{\"fsrhkhgsnxu\":\"zlgcndhzxrrf\",\"xlb\":\"wkpphefsb\",\"wpfsuqtaaz\":\"xomeikjclwzacn\",\"ezxlhdjzqdca\":\"qbxyxoyfpuqqi\"},\"location\":\"vpsozjiihjri\",\"eTag\":\"mrzoep\",\"id\":\"wdvwnjkgvfnmx\",\"name\":\"ursqf\",\"type\":\"ibtyibuyvpirfqjp\"}")
             .toObject(PrivateEndpointConnectionResourceInner.class);
-        Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
-        Assertions.assertEquals("aondjrkclamgg", model.properties().privateEndpoint().id());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.properties().groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.PENDING,
+        Assertions.assertEquals(ProvisioningState.DELETING, model.properties().provisioningState());
+        Assertions.assertEquals("syparybjufp", model.properties().privateEndpoint().id());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("oqeykglt", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xhqf", model.properties().privateLinkServiceConnectionState().actionRequired());
-        Assertions.assertEquals("ayejsxtlgflwfgz", model.tags().get("iucijjcea"));
-        Assertions.assertEquals("ijjj", model.location());
-        Assertions.assertEquals("va", model.etag());
+        Assertions.assertEquals("iyqvldaswv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("i", model.properties().privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("zlgcndhzxrrf", model.tags().get("fsrhkhgsnxu"));
+        Assertions.assertEquals("vpsozjiihjri", model.location());
+        Assertions.assertEquals("mrzoep", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionResourceInner model = new PrivateEndpointConnectionResourceInner()
-            .withProperties(new PrivateEndpointConnection().withProvisioningState(ProvisioningState.FAILED)
-                .withPrivateEndpoint(new PrivateEndpoint().withId("aondjrkclamgg"))
-                .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_SITE_RECOVERY))
+            .withProperties(new PrivateEndpointConnection().withProvisioningState(ProvisioningState.DELETING)
+                .withPrivateEndpoint(new PrivateEndpoint().withId("syparybjufp"))
+                .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP,
+                    VaultSubResourceType.AZURE_BACKUP_SECONDARY, VaultSubResourceType.AZURE_BACKUP_SECONDARY))
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.PENDING)
-                        .withDescription("oqeykglt")
-                        .withActionRequired("xhqf")))
-            .withTags(mapOf("iucijjcea", "ayejsxtlgflwfgz"))
-            .withLocation("ijjj")
-            .withEtag("va");
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.REJECTED)
+                        .withDescription("iyqvldaswv")
+                        .withActionRequired("i")))
+            .withTags(mapOf("fsrhkhgsnxu", "zlgcndhzxrrf", "xlb", "wkpphefsb", "wpfsuqtaaz", "xomeikjclwzacn",
+                "ezxlhdjzqdca", "qbxyxoyfpuqqi"))
+            .withLocation("vpsozjiihjri")
+            .withEtag("mrzoep");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionResourceInner.class);
-        Assertions.assertEquals(ProvisioningState.FAILED, model.properties().provisioningState());
-        Assertions.assertEquals("aondjrkclamgg", model.properties().privateEndpoint().id());
-        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY, model.properties().groupIds().get(0));
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.PENDING,
+        Assertions.assertEquals(ProvisioningState.DELETING, model.properties().provisioningState());
+        Assertions.assertEquals("syparybjufp", model.properties().privateEndpoint().id());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.properties().groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.REJECTED,
             model.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("oqeykglt", model.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xhqf", model.properties().privateLinkServiceConnectionState().actionRequired());
-        Assertions.assertEquals("ayejsxtlgflwfgz", model.tags().get("iucijjcea"));
-        Assertions.assertEquals("ijjj", model.location());
-        Assertions.assertEquals("va", model.etag());
+        Assertions.assertEquals("iyqvldaswv", model.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("i", model.properties().privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("zlgcndhzxrrf", model.tags().get("fsrhkhgsnxu"));
+        Assertions.assertEquals("vpsozjiihjri", model.location());
+        Assertions.assertEquals("mrzoep", model.etag());
     }
 
     // Use "Map.of" if available

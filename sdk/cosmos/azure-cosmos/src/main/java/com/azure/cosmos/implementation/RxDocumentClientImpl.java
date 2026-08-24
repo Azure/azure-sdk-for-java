@@ -9065,6 +9065,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
+        if (this.authorizationTokenType == AuthorizationTokenType.ResourceToken || this.resourceTokensMap != null) {
+            return false;
+        }
+
         // The routing decision is a pure function of these signals. The connectivity-probe verdict is
         // forwarded as a tri-state (null = no decision rendered) so a null never collapses into a
         // boolean clause here — ThinClientConnectivityConfig is the single authority that interprets

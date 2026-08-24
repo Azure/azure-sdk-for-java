@@ -17,7 +17,7 @@ import java.io.IOException;
  * provided.
  */
 @Fluent
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class InvokeAgentInvocationsApiRoutineAction extends RoutineAction {
 
     /*

@@ -75,17 +75,32 @@ public final class CertificateUtil {
         StringBuilder builder = new StringBuilder();
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        while (reader.ready()) {
-            String line = reader.readLine();
+        boolean certificateBlockOpen = false;
+        String line;
+        while ((line = reader.readLine()) != null) {
             if (line.contains(BEGIN_CERTIFICATE)) {
+                if (certificateBlockOpen) {
+                    throw new CertificateException("Certificate PEM block contains a nested BEGIN CERTIFICATE marker.");
+                }
+                certificateBlockOpen = true;
                 builder = new StringBuilder();
             }
-            builder.append(line).append('\n');
             if (line.contains(END_CERTIFICATE)) {
-                InputStream stream = new ByteArrayInputStream(builder.toString().getBytes());
+                if (!certificateBlockOpen) {
+                    throw new CertificateException(
+                        "Certificate PEM block has an END CERTIFICATE marker without a matching BEGIN CERTIFICATE marker.");
+                }
+                builder.append(line).append('\n');
+                InputStream stream = new ByteArrayInputStream(builder.toString().getBytes(StandardCharsets.UTF_8));
                 Certificate certificate = factory.generateCertificate(stream);
                 certificates.add(certificate);
+                certificateBlockOpen = false;
+            } else if (certificateBlockOpen) {
+                builder.append(line).append('\n');
             }
+        }
+        if (certificateBlockOpen) {
+            throw new CertificateException("Certificate PEM block is not terminated.");
         }
         return certificates.toArray(new Certificate[0]);
     }
