@@ -16,7 +16,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -219,13 +218,8 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         return partitionKeyJson;
     }
 
-    synchronized void setPartitionKeyJson(String value) {
-        if (Objects.equals(partitionKeyJson, value)) {
-            return;
-        }
-
+    void setPartitionKeyJson(String value) {
         partitionKeyJson = value;
-        resetSerializedOperation();
     }
 
     BulkOperationRetryPolicy getRetryPolicy() {

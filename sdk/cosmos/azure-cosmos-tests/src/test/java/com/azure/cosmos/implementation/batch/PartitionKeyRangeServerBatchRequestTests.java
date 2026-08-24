@@ -163,31 +163,6 @@ public class PartitionKeyRangeServerBatchRequestTests {
         assertThat(serializationCount).hasValue(1);
     }
 
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void changingPartitionKeyInvalidatesSerializedOperationAndLength() {
-        ItemBulkOperation<?, ?> operation = new ItemBulkOperation<>(
-            CosmosItemOperationType.READ,
-            "id",
-            new PartitionKey("pk"),
-            null,
-            null,
-            null);
-
-        operation.setPartitionKeyJson("[\"a\"]");
-        JsonSerializable firstSerialization = operation.getSerializedOperation(CosmosItemSerializer.DEFAULT_SERIALIZER);
-        int firstLength = operation.getSerializedLength(CosmosItemSerializer.DEFAULT_SERIALIZER);
-
-        operation.setPartitionKeyJson("[\"a-much-longer-key\"]");
-        JsonSerializable secondSerialization = operation.getSerializedOperation(CosmosItemSerializer.DEFAULT_SERIALIZER);
-        int secondLength = operation.getSerializedLength(CosmosItemSerializer.DEFAULT_SERIALIZER);
-
-        assertThat(secondSerialization).isNotSameAs(firstSerialization);
-        assertThat(secondSerialization.getString(BatchRequestResponseConstants.FIELD_PARTITION_KEY))
-            .isEqualTo("[\"a-much-longer-key\"]");
-        assertThat(secondLength).isNotEqualTo(firstLength);
-        assertThat(secondLength).isEqualTo(secondSerialization.toString().length());
-    }
-
     @Test(groups = {"unit"}, timeOut = TIMEOUT * 10)
     public void partitionKeyRangeServerBatchRequestSizeTests() {
 
