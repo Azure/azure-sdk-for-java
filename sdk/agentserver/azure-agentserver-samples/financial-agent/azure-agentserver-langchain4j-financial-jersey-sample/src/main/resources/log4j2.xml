@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss} %-5level %c{1.} - %msg%n"/>
+    </Console>
+
+    <File name="MAIN" fileName="/tmp/ai.log">
+      <JsonTemplateLayout/>
+    </File>
+  </Appenders>
+
+  <Loggers>
+    <!-- Silence verbose HTTP connection-pool / wire traces from Reactor Netty and the Azure SDK HTTP pipeline. -->
+    <Logger name="reactor.netty" level="warn"/>
+    <Logger name="io.netty" level="warn"/>
+    <Logger name="com.azure.core.http" level="warn"/>
+    <Logger name="com.azure.core.util.logging" level="warn"/>
+
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="MAIN"/>
+    </Root>
+  </Loggers>
+</Configuration>
