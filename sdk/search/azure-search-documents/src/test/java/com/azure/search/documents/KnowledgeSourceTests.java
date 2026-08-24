@@ -7,6 +7,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -2388,6 +2390,11 @@ public class KnowledgeSourceTests extends SearchTestBase {
 
     @Test
     public void createFileKnowledgeSourceWithStandardExtractionAndCorsSync() {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..aiServices.url", null,
+                "https://your-endpoint.cognitiveservices.azure.com", TestProxySanitizerType.BODY_KEY));
+        }
+
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeSourceIngestionParameters ingestionParameters = createFileKnowledgeSourceIngestionParameters()
             .setContentExtractionMode(KnowledgeSourceContentExtractionMode.STANDARD)

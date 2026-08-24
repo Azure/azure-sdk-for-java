@@ -7,6 +7,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.BlobIndexerDataToExtract;
@@ -310,6 +312,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesSync() {
+        addUserAssignedIdentitySanitizer();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -328,6 +331,7 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @Test
     public void canListIndexerResourcesByPrefixAcrossPagesAsync() {
+        addUserAssignedIdentitySanitizer();
         String prefix = testResourceNamer.randomName("paged-indexer-", 24);
         List<String> expectedIndexerNames = createIndexersForPagination(prefix);
         List<String> expectedDataSourceNames = createDataSourcesForPagination(prefix);
@@ -1239,6 +1243,13 @@ public class IndexersManagementTests extends SearchTestBase {
             indexersToDelete.add(name);
         });
         return names;
+    }
+
+    private void addUserAssignedIdentitySanitizer() {
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(
+                new TestProxySanitizer("$..userAssignedIdentity", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        }
     }
 
     private List<String> createDataSourcesForPagination(String prefix) {
