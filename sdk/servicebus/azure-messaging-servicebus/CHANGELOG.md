@@ -35,6 +35,16 @@
 
 - The default service version used by `ServiceBusAdministrationClientBuilder` is now `2024-05`, previously `2021-05`. Existing operations behave the same; the newer version is required to surface the new topic filter count properties. Callers that need the previous wire behavior can pin it with `serviceVersion(ServiceBusServiceVersion.V2021_05)`.
 
+## 7.17.20 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-amqp` from `2.12.0` to version `2.12.1`.
+
 ## 7.17.19 (2026-07-01)
 
 ### Other Changes
