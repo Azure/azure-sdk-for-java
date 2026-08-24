@@ -9,7 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed Per-Partition Circuit Breaker failback getting stuck when partition recovery encounters missing or stale replica addresses. - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
+* Fixed a possible delay of PPCB failback when the SDK has never received a successful address response for the affected partition before failover, which could impact tail latency in certain workloads - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
 * Fixed an intermittent `IndexOutOfBoundsException` in cross-partition hybrid search queries caused by multiple subscriptions to the coalesced component query results. - See PR [49831](https://github.com/Azure/azure-sdk-for-java/issues/49831)
 * Fixed document requests failing when Gateway V2 is enabled with resource-token or permission-feed authentication by routing those requests through Compute Gateway. - See PR [50084](https://github.com/Azure/azure-sdk-for-java/pull/50084).
 * Unified request-level consistency override behavior across transports: invalid attempts to upgrade the request consistency level above the account default are now silently ignored instead of returning `BadRequest` in some gateway paths. - See PR [49606](https://github.com/Azure/azure-sdk-for-java/pull/49606).
@@ -18,6 +18,7 @@
 * Fixed hedged requests losing request-scoped routing, timeout, authorization, throughput-control, and metadata state when cloning the original request. - See [PR 50069](https://github.com/Azure/azure-sdk-for-java/pull/50069).
 
 #### Other Changes
+* Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 * Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
 * Reduced memory footprint and redundant `/pkranges` reads when multiple `CosmosClient` / `CosmosAsyncClient` instances in the same JVM are configured with the same service endpoint. Disable with system property `COSMOS.SHARED_PARTITION_KEY_RANGE_CACHE_ENABLED=false` if needed. - See [PR 49560](https://github.com/Azure/azure-sdk-for-java/pull/49560).
