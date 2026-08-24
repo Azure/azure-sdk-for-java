@@ -149,7 +149,7 @@ public class EncryptorV2NonceTests {
             byte[] actualIv = encryptor.getCipher(index).getIV();
             assertArrayEquals(EncryptorV2.computeRegionNonce(index), actualIv,
                 "cipher IV must equal the full-long nonce for index=" + index);
-            // A truncated-int counter would sign-extend these indices; confirm we did not produce that nonce.
+            // A truncated-int counter would either sign-extend or discard high bits; confirm we did not produce that nonce.
             byte[] truncatedIv = ByteBuffer.allocate(NONCE_LENGTH).putLong((int) index).array();
             assertFalse(java.util.Arrays.equals(truncatedIv, actualIv),
                 "cipher IV must differ from the truncated-int nonce for index=" + index);
