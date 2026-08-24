@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2026-08-22)
+## 1.0.0-beta.2 (2026-08-24)
 
 - Azure Resource Manager Resilience Management client library for Java. This package contains Microsoft Azure SDK for Resilience Management Management SDK.  Package api-version 2026-08-31-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Resilience Management client library for Java. This package contains Microsoft Azure SDK for Resilience Management Management SDK.  Package api-version 2026-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -19,20 +19,20 @@
 
 #### `models.DrillRuns` was modified
 
-* `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `failOver(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunFailoverRequest)` was removed
+* `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.DrillRunProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `java.lang.String currentActiveOperationId()` -> `java.lang.String currentActiveOperationId()`
+* `java.lang.String drillId()` -> `java.lang.String drillId()`
 * `java.util.List supportedVerbsForStage()` -> `java.util.List supportedVerbsForStage()`
-* `models.DrillMode drillMode()` -> `models.DrillMode drillMode()`
 * `models.JobType jobType()` -> `models.JobType jobType()`
 * `models.DrillAttestation attestation()` -> `models.DrillAttestation attestation()`
-* `java.lang.String drillId()` -> `java.lang.String drillId()`
-* `toJson(com.azure.json.JsonWriter)` was removed
 * `java.util.List notes()` -> `java.util.List notes()`
+* `models.DrillMode drillMode()` -> `models.DrillMode drillMode()`
+* `java.lang.String currentActiveOperationId()` -> `java.lang.String currentActiveOperationId()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
 
 ### Features Added
 
@@ -87,13 +87,13 @@
 
 #### `models.AttentionReason` was modified
 
-* `drillRbacOnSli()` was added
+* `healthModelExists()` was added
 * `drillRbacOnHealthModel()` was added
 * `sliAttentionStatuses()` was added
-* `healthModelExists()` was added
-* `discoveryRuleExists()` was added
 * `monitoringSourceNotConfigured()` was added
+* `drillRbacOnSli()` was added
 * `rbacNeededForDrillOnHealthModel()` was added
+* `discoveryRuleExists()` was added
 
 #### `models.ValidateForExecutionProperties` was modified
 
@@ -106,46 +106,46 @@
 
 #### `models.DrillProperties` was modified
 
-* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 * `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
 * `healthModelMonitoringProperties()` was added
 * `sliMonitoringProperties()` was added
+* `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
 
 #### `models.DrillRuns` was modified
 
-* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 * `failOver(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
-* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listReportDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was added
-* `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunReprotectRequest,com.azure.core.util.Context)` was added
 * `listReportDownloadUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ListReportDownloadUrlRequest,com.azure.core.util.Context)` was added
+* `listReportDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was added
+* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `reprotect(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.DrillRunReprotectRequest,com.azure.core.util.Context)` was added
+* `generateReport(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
 
 #### `models.DrillUpdateProperties` was modified
 
 * `healthModelMonitoringProperties()` was added
-* `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
-* `sliMonitoringProperties()` was added
 * `withHealthModelMonitoringProperties(models.HealthModelMonitoringProperties)` was added
+* `sliMonitoringProperties()` was added
+* `withSliMonitoringProperties(models.SliMonitoringProperties)` was added
 
 #### `models.GoalAssignmentProperties` was modified
 
-* `requireZonalResiliency()` was added
 * `withRequireZonalResiliency(java.lang.Boolean)` was added
+* `requireZonalResiliency()` was added
 
 #### `models.RecoveryJobProperties` was modified
 
-* `jobExtendedInfo()` was added
-* `startTime()` was added
-* `endTime()` was added
-* `errorDetails()` was added
-* `retryDetails()` was added
-* `executionConfigurations()` was added
-* `resourceId()` was added
-* `status()` was added
-* `triggeredBy()` was added
-* `userComments()` was added
 * `duration()` was added
+* `startTime()` was added
+* `userComments()` was added
+* `endTime()` was added
+* `retryDetails()` was added
+* `triggeredBy()` was added
 * `operation()` was added
+* `status()` was added
+* `executionConfigurations()` was added
+* `jobExtendedInfo()` was added
+* `resourceId()` was added
+* `errorDetails()` was added
 
 #### `models.GoalResourceProperties` was modified
 
@@ -154,20 +154,20 @@
 
 #### `models.DrillRunProperties` was modified
 
-* `triggeredBy()` was added
-* `executionConfigurations()` was added
 * `report()` was added
-* `duration()` was added
-* `errorDetails()` was added
-* `innerModel()` was added
-* `operation()` was added
+* `userComments()` was added
+* `endTime()` was added
 * `resourceId()` was added
 * `startTime()` was added
 * `status()` was added
-* `userComments()` was added
-* `retryDetails()` was added
+* `triggeredBy()` was added
 * `jobExtendedInfo()` was added
-* `endTime()` was added
+* `innerModel()` was added
+* `duration()` was added
+* `operation()` was added
+* `executionConfigurations()` was added
+* `errorDetails()` was added
+* `retryDetails()` was added
 
 #### `models.OperationQualificationDetails` was modified
 
