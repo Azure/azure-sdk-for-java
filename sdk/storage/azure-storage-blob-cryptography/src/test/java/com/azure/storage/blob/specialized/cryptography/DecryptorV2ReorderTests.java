@@ -45,9 +45,9 @@ public class DecryptorV2ReorderTests {
     private static final int REGION_DATA_LENGTH = 1024;
     private static final int REGION_TOTAL_LENGTH = NONCE_LENGTH + REGION_DATA_LENGTH + TAG_LENGTH;
     private static final int REGION_COUNT = 4;
-    // Region index (2^32) at which older Java-encoded content's nonce repeats. Validation fails closed at and beyond
-    // this boundary for the Java scheme, since integrity can no longer be verified there.
-    private static final long NONCE_REPEAT_REGION = 1L << 32;
+    // A region index (2^32) beyond the 32-bit range, used to confirm the full 64-bit region counter validates
+    // correctly past the point where an int-based counter would have wrapped.
+    private static final long LARGE_REGION_INDEX = 1L << 32;
     private static final Random RANDOM = new Random();
 
     @AfterEach
@@ -116,7 +116,7 @@ public class DecryptorV2ReorderTests {
     public void decryptsRegionsAcrossIntegerMaxValueBoundary() {
         // The region index is encoded as a full 64-bit big-endian value, so regions whose indices cross the
         // Integer.MAX_VALUE (2^31) boundary - reachable at ~32 GiB with the minimum 16-byte region size - must still
-        // validate and decrypt. (These indices are below the 2^32 nonce-wrap fail-closed boundary.)
+        // validate and decrypt.
         byte[] cek = randomBytes(32);
         long firstRegion = Integer.MAX_VALUE;
         byte[] region0Plaintext = randomBytes(REGION_DATA_LENGTH);
@@ -147,42 +147,29 @@ public class DecryptorV2ReorderTests {
     }
 
     @Test
-    public void decryptsLastRegionBeforeNonceRepeat() {
-        // Region 2^32 - 1 is the last region below the fail-closed boundary; it validates and decrypts.
+    public void decryptsRegionJustBelowIntWrapBoundary() {
+        // Region 2^32 - 1 is the last region representable in 32 bits; with the full 64-bit counter it validates and
+        // decrypts normally.
         byte[] cek = randomBytes(32);
-        long lastUniqueRegion = NONCE_REPEAT_REGION - 1;
+        long region = LARGE_REGION_INDEX - 1;
         byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
 
-        byte[] ciphertext = encryptRegionAt(cek, lastUniqueRegion, plaintext);
-        byte[] recovered = decrypt(cek, ciphertext, lastUniqueRegion * REGION_DATA_LENGTH);
+        byte[] ciphertext = encryptRegionAt(cek, region, plaintext);
+        byte[] recovered = decrypt(cek, ciphertext, region * REGION_DATA_LENGTH);
 
         assertArrayEquals(plaintext, recovered);
     }
 
     @Test
-    public void failsClosedAtNonceRepeatBoundary() {
-        // At region 2^32 the (older) Java encoder's nonce repeats (reuses region 0's nonce), so integrity cannot be
-        // verified. Decryption must fail closed to alert the caller that the affected blob needs data recovery.
+    public void decryptsRegionAtIntWrapBoundary() {
+        // Region 2^32 is where an int-based counter would have wrapped and reused region 0's nonce. With the full
+        // 64-bit counter its nonce is distinct, so the region validates and decrypts normally.
         byte[] cek = randomBytes(32);
-        long wrapRegion = NONCE_REPEAT_REGION;
-        byte[] ciphertext = encryptRegionAt(cek, wrapRegion, randomBytes(REGION_DATA_LENGTH));
-
-        IllegalStateException e = assertThrows(IllegalStateException.class,
-            () -> decrypt(cek, ciphertext, wrapRegion * REGION_DATA_LENGTH));
-        assertTrue(e.getMessage().contains("nonce reuse"), e.getMessage());
-    }
-
-    @Test
-    public void recoverySwitchAllowsPastNonceRepeatBoundary() {
-        // With the data-recovery switch, the fail-closed boundary is bypassed and plaintext is recovered.
-        System.setProperty(CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY, "true");
-
-        byte[] cek = randomBytes(32);
-        long wrapRegion = NONCE_REPEAT_REGION;
+        long region = LARGE_REGION_INDEX;
         byte[] plaintext = randomBytes(REGION_DATA_LENGTH);
-        byte[] ciphertext = encryptRegionAt(cek, wrapRegion, plaintext);
+        byte[] ciphertext = encryptRegionAt(cek, region, plaintext);
 
-        byte[] recovered = decrypt(cek, ciphertext, wrapRegion * REGION_DATA_LENGTH);
+        byte[] recovered = decrypt(cek, ciphertext, region * REGION_DATA_LENGTH);
         assertArrayEquals(plaintext, recovered);
     }
 

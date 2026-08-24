@@ -39,17 +39,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 final class CseV2NonceOrderValidator {
     private static final ClientLogger LOGGER = new ClientLogger(CseV2NonceOrderValidator.class);
 
-    /*
-     * The Java encoder writes the region index into the nonce as an 8-byte value. Older versions of this SDK truncated
-     * that index to an int, so their nonces were unique only for the first 2^32 regions; at or beyond this index the
-     * nonce repeated, meaning two distinct regions could share a nonce and each retain a valid GCM tag. That is GCM
-     * nonce reuse and it also defeats sequential reorder detection, so Java-encoded content whose region index reaches
-     * this boundary cannot be integrity-verified. Such content is failed closed to alert the caller that the blob is
-     * affected and must be re-encrypted (recoverable via the data-recovery switch). The Python and .NET encoders use
-     * wider counters that do not repeat for any real blob size, so this boundary applies only to the Java scheme.
-     */
-    private static final long NONCE_WRAP_REGION_COUNT = 1L << 32;
-
     private final boolean validationEnabled;
     private final AtomicReference<EnumSet<NonceScheme>> candidateSchemes
         = new AtomicReference<>(EnumSet.allOf(NonceScheme.class));
@@ -60,19 +49,17 @@ final class CseV2NonceOrderValidator {
     }
 
     /**
-     * Validates that the nonce of an authenticated region is consistent with the region occupying its expected
-     * sequential position, under a single recognized cross-SDK nonce scheme enforced across the whole download. A
-     * region whose nonce matches none of the schemes for its position - or that is inconsistent with the scheme
-     * established by earlier regions - indicates a reorder or other tampering. Also fails closed once a Java-scheme
-     * region index reaches {@link #NONCE_WRAP_REGION_COUNT}, where older Java-encoded content reused the nonce and can
-     * no longer be integrity-verified.
+     * Validates that the nonce of an authenticated region is consistent with the region occupying its sequential
+     * position, under a single recognized cross-SDK nonce scheme enforced across the whole download. A region whose
+     * nonce matches none of the schemes for its position - or that is inconsistent with the scheme established by
+     * earlier regions - indicates a reorder or other tampering.
      *
      * @param actualNonce The nonce read from the downloaded region.
      * @param nonceLength The length of the nonce.
-     * @param expectedRegion The expected 0-based region index for this region's position.
+     * @param region The 0-based index of this region's position in the blob.
      * @throws RuntimeException If the region is invalid or its integrity cannot be verified.
      */
-    void validateRegion(byte[] actualNonce, int nonceLength, long expectedRegion) {
+    void validateRegion(byte[] actualNonce, int nonceLength, long region) {
         if (!validationEnabled) {
             return;
         }
@@ -83,37 +70,26 @@ final class CseV2NonceOrderValidator {
             return;
         }
 
-        // At or beyond this boundary the Java encoder's nonce repeats, so Java-encoded content there cannot be
-        // integrity-verified and is failed closed to signal that data recovery (re-encryption) is required.
-        boolean pastJavaNonceWrap = expectedRegion >= NONCE_WRAP_REGION_COUNT;
-
         // Fast path: once the scheme has collapsed to a single encoding, verify directly without mutating shared state.
         EnumSet<NonceScheme> current = candidateSchemes.get();
         if (current.size() == 1) {
             NonceScheme locked = current.iterator().next();
-            if (pastJavaNonceWrap && locked == NonceScheme.JAVA) {
-                throw LOGGER.logExceptionAsError(nonceWrapException());
-            }
-            if (!Arrays.equals(locked.expectedNonce(expectedRegion, nonceLength), actualNonce)) {
+            if (!Arrays.equals(locked.expectedNonce(region, nonceLength), actualNonce)) {
                 throw LOGGER.logExceptionAsError(reorderException());
             }
             return;
         }
 
-        // Determine which schemes are consistent with this region at its position. The Java scheme is excluded past its
-        // nonce-wrap boundary because it can no longer be verified there.
+        // Determine which schemes are consistent with this region at its position.
         EnumSet<NonceScheme> matchesHere = EnumSet.noneOf(NonceScheme.class);
         for (NonceScheme scheme : NonceScheme.values()) {
-            if (pastJavaNonceWrap && scheme == NonceScheme.JAVA) {
-                continue;
-            }
-            if (Arrays.equals(scheme.expectedNonce(expectedRegion, nonceLength), actualNonce)) {
+            if (Arrays.equals(scheme.expectedNonce(region, nonceLength), actualNonce)) {
                 matchesHere.add(scheme);
             }
         }
 
         if (matchesHere.isEmpty()) {
-            throw LOGGER.logExceptionAsError(pastJavaNonceWrap ? nonceWrapException() : reorderException());
+            throw LOGGER.logExceptionAsError(reorderException());
         }
 
         // Intersect the shared candidate set with the schemes matching this region. Atomic and order-independent, so it
@@ -135,13 +111,6 @@ final class CseV2NonceOrderValidator {
             "Encountered an out-of-order authenticated region while decrypting client-side encrypted (v2) content. "
                 + "This may indicate that the blob's authenticated regions have been rearranged or otherwise tampered "
                 + "with." + recoveryInstruction());
-    }
-
-    private static RuntimeException nonceWrapException() {
-        return new IllegalStateException("Cannot verify the integrity of client-side encrypted (v2) content at or"
-            + " beyond " + NONCE_WRAP_REGION_COUNT + " authenticated regions. Content this large that was encrypted by"
-            + " an older version of this (Java) SDK reused the encryption nonce (GCM nonce reuse), so its integrity"
-            + " cannot be verified and the affected blob must be re-encrypted." + recoveryInstruction());
     }
 
     private static String recoveryInstruction() {
@@ -180,16 +149,14 @@ final class CseV2NonceOrderValidator {
     private enum NonceScheme {
         /**
          * Java: the region index written as an 8-byte big-endian value in the first 8 bytes, remaining bytes zero.
-         * 0-based. See {@link EncryptorV2}. (Older versions truncated the index to an int; that content is failed
-         * closed past {@link #NONCE_WRAP_REGION_COUNT} rather than reconstructed here.)
+         * 0-based. See {@link EncryptorV2}.
          */
         JAVA {
             @Override
             byte[] expectedNonce(long regionIndex, int nonceLength) {
                 byte[] nonce = new byte[nonceLength];
-                long value = regionIndex;
                 for (int i = 0; i < Long.BYTES; i++) {
-                    nonce[i] = (byte) (value >>> (Long.SIZE - Byte.SIZE - Byte.SIZE * i));
+                    nonce[i] = (byte) (regionIndex >>> (Long.SIZE - Byte.SIZE - Byte.SIZE * i));
                 }
                 return nonce;
             }

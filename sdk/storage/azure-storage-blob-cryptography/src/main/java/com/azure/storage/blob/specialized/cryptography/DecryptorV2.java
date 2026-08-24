@@ -76,8 +76,8 @@ class DecryptorV2 extends Decryptor {
                 // Get the IV out of the beginning of the aggregator
                 byte[] gmcIv = indexedAggregator.getT2().getFirstNBytes(nonceLength);
 
-                long expectedRegion = initialRegion + indexedAggregator.getT1();
-                nonceValidator.validateRegion(gmcIv, nonceLength, expectedRegion);
+                long region = initialRegion + indexedAggregator.getT1();
+                nonceValidator.validateRegion(gmcIv, nonceLength, region);
 
                 Cipher gmcCipher;
                 try {
