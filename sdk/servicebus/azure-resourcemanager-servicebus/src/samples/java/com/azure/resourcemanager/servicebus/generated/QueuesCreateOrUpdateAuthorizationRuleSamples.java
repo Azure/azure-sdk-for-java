@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class QueuesCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleCreate.json
+     * x-ms-original-file: 2026-07-01-preview/Queues/SBQueueAuthorizationRuleCreate.json
      */
     /**
      * Sample code: QueueAuthorizationRuleCreate.
