@@ -17,7 +17,7 @@ import com.azure.resourcemanager.cosmos.models.SqlDedicatedGatewayServiceResourc
  */
 public final class ServiceCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
+     * x-ms-original-file: 2026-03-15/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
      */
     /**
      * Sample code: SqlDedicatedGatewayServiceCreate.
@@ -35,7 +35,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBDataTransferServiceCreate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBDataTransferServiceCreate.json
      */
     /**
      * Sample code: DataTransferServiceCreate.
@@ -53,7 +53,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceCreate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBMaterializedViewsBuilderServiceCreate.json
      */
     /**
      * Sample code: MaterializedViewsBuilderServiceCreate.
@@ -72,7 +72,7 @@ public final class ServiceCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceCreate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBGraphAPIComputeServiceCreate.json
      */
     /**
      * Sample code: GraphAPIComputeServiceCreate.

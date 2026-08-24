@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialPa
  */
 public final class RegistriesRegenerateCredentialSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/RegistryRegenerateCredential.json
+     * x-ms-original-file: 2026-03-01-preview/RegistryRegenerateCredential.json
      */
     /**
      * Sample code: RegistryRegenerateCredential.

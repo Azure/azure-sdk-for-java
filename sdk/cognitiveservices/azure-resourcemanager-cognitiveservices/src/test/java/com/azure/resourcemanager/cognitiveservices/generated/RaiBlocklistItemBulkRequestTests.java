@@ -13,21 +13,20 @@ public final class RaiBlocklistItemBulkRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemBulkRequest model = BinaryData
-            .fromString(
-                "{\"name\":\"fnhtbaxkgxyw\",\"properties\":{\"pattern\":\"pyklyhpluodpvru\",\"isRegex\":false}}")
+            .fromString("{\"name\":\"lmxhomdyn\",\"properties\":{\"pattern\":\"digumbnr\",\"isRegex\":true}}")
             .toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("fnhtbaxkgxyw", model.name());
-        Assertions.assertEquals("pyklyhpluodpvru", model.properties().pattern());
-        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("lmxhomdyn", model.name());
+        Assertions.assertEquals("digumbnr", model.properties().pattern());
+        Assertions.assertTrue(model.properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("fnhtbaxkgxyw")
-            .withProperties(new RaiBlocklistItemProperties().withPattern("pyklyhpluodpvru").withIsRegex(false));
+        RaiBlocklistItemBulkRequest model = new RaiBlocklistItemBulkRequest().withName("lmxhomdyn")
+            .withProperties(new RaiBlocklistItemProperties().withPattern("digumbnr").withIsRegex(true));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemBulkRequest.class);
-        Assertions.assertEquals("fnhtbaxkgxyw", model.name());
-        Assertions.assertEquals("pyklyhpluodpvru", model.properties().pattern());
-        Assertions.assertFalse(model.properties().isRegex());
+        Assertions.assertEquals("lmxhomdyn", model.name());
+        Assertions.assertEquals("digumbnr", model.properties().pattern());
+        Assertions.assertTrue(model.properties().isRegex());
     }
 }

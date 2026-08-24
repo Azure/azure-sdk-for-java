@@ -4,6 +4,12 @@ Develop Agents using the Azure AI Foundry platform, leveraging an extensive ecos
 
 The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
 
+> [!IMPORTANT]
+> **Preview and beta features**
+> - Build `Beta*Client` and `Beta*AsyncClient` instances through `AgentsClientBuilder.beta()`. These clients automatically opt in to their preview service area; you do not need `allowPreview(true)` for them.
+> - Use `AgentsClientBuilder.allowPreview(true)` when calling preview APIs on non-Beta clients, such as draft agent versions, hosted-agent sessions, session files, and code package operations on `AgentsClient` / `AgentsAsyncClient`.
+> - Classes and methods annotated with `@Beta` are preview API surface and may change in future releases. See [Preview operation groups and beta clients](#preview-operation-groups-and-beta-clients) for details.
+
 ## Documentation
 
 Various documentation is available to help you get started
@@ -25,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>2.1.0</version>
+    <version>2.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -57,11 +63,11 @@ AgentsAsyncClient agentsAsyncClient = new AgentsClientBuilder()
 ``` 
 
 The Agents client library has the following sub-clients which group the different operations that can be performed: 
-- `AgentsClient` / `AgentsAsyncClient`: Perform generally available operations related to agents, such as creating, retrieving, updating, and deleting agents.
-- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent operations, including hosted-agent sessions, session files, code package operations, and preview agent optimization operations.
+- `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents. When `allowPreview(true)` is configured, these clients can also use preview draft versions, hosted-agent sessions, session files, and code package operations.
+- `BetaAgentsClient` / `BetaAgentsAsyncClient` **(preview)**: Perform preview agent optimization operations.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
 - `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient` **(preview)**: Manage memory stores and individual memory items for agents.
-- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` **(preview)**: Manage toolboxes and toolbox versions.
+- `ToolboxesClient` / `ToolboxesAsyncClient`: Manage toolboxes and toolbox versions.
 
 Conversation operations are accessed through the [OpenAI Official Java SDK][openai_java_sdk]'s `ConversationService`. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 
@@ -71,7 +77,7 @@ To access each sub-client you need to use your `AgentsClientBuilder()`. The Agen
 AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .allowPreview(true); // Enables preview response types for non-Beta clients that support them.
+                .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
 // Agents sub-clients
 AgentsClient agentsClient = builder.buildAgentsClient();
@@ -85,9 +91,9 @@ ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 // Memory Stores sub-clients (preview).
 BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
 BetaMemoryStoresAsyncClient memoryStoresAsyncClient = builder.beta().buildBetaMemoryStoresAsyncClient();
-// Toolboxes sub-clients (preview).
-BetaToolboxesClient toolboxesClient = builder.beta().buildBetaToolboxesClient();
-BetaToolboxesAsyncClient toolboxesAsyncClient = builder.beta().buildBetaToolboxesAsyncClient();
+// Toolboxes sub-clients.
+ToolboxesClient toolboxesClient = builder.buildToolboxesClient();
+ToolboxesAsyncClient toolboxesAsyncClient = builder.buildToolboxesAsyncClient();
 ```
 
 The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be built directly from the `AgentsClientBuilder`. Use it to access conversation operations and other OpenAI services:
@@ -104,6 +110,16 @@ ResponseService responseService = responsesClient.getResponseService();
 ConversationService conversationService = openAIClient.conversations();
 ```
 
+### Agent version drafts
+
+Draft agent versions are preview candidates that are not promoted to the agent's latest released version. Create one with
+`CreateAgentVersionInput.setDraft(true)`, and pass `true` as the `includeDrafts` argument to
+`listAgentVersions` when you need to list draft versions. Build the non-Beta client with
+`allowPreview(true)` to opt in to the `DraftAgents=V1Preview` service feature.
+
+See the full samples in [AgentDraftSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/AgentDraftSample.java)
+and [AgentDraftAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/agents/AgentDraftAsyncSample.java).
+
 ### Agent tools
 
 The SDK supports a variety of tools that can be attached to agent definitions. Some tools are generally available, while others are in **preview** and may change in future releases.
@@ -112,29 +128,33 @@ The SDK supports a variety of tools that can be attached to agent definitions. S
 
 | Tool class | Description |
 |---|---|
+| `A2ATool` | Agent-to-agent (A2A) protocol |
 | `AzureAISearchTool` | Azure AI Search |
 | `AzureFunctionTool` | Azure Functions |
 | `BingGroundingTool` | Bing grounding |
+| `CaptureStructuredOutputsTool` | Structured output capture |
 | `CodeInterpreterTool` | Code interpreter |
 | `FileSearchTool` | File search |
 | `FunctionTool` | Custom function calling |
 | `ImageGenTool` | Image generation |
+| `McpTool` | Model Context Protocol (MCP) |
+| `NamespaceTool` | Namespaces for grouping function and custom tools |
 | `OpenApiTool` | OpenAPI spec-based tools |
+| `ToolSearchTool` | Deferred tool search |
+| `WebSearchTool` | Web search |
 
 **Preview tools:**
 
 | Tool class | Description |
 |---|---|
-| `A2APreviewTool` | Agent-to-agent communication |
 | `BingCustomSearchPreviewTool` | Bing custom search |
 | `BrowserAutomationPreviewTool` | Browser automation |
 | `ComputerUsePreviewTool` | Computer use |
 | `FabricIqPreviewTool` | Fabric IQ |
-| `McpTool` | Model Context Protocol (MCP) |
 | `MemorySearchPreviewTool` | Memory search |
 | `MicrosoftFabricPreviewTool` | Microsoft Fabric |
+| `ReminderPreviewTool` | Reminder scheduling |
 | `SharepointPreviewTool` | SharePoint grounding |
-| `ToolboxSearchPreviewTool` | Toolbox search |
 | `WebSearchPreviewTool` | Web search |
 | `WorkIqPreviewTool` | Work IQ |
 
@@ -143,6 +163,8 @@ Supported tool classes may also expose optional `name`, `description`, and `tool
 ### Preview operation groups and beta clients
 
 Several operation groups in the Agents client library expose **preview** service features. These features require the `Foundry-Features` HTTP header. The SDK populates that header for you; you do not need to set the header value manually.
+
+APIs annotated with `@Beta` are part of the SDK's preview surface, even when they appear on a non-Beta client. These APIs are subject to breaking changes in future releases and should be used with the same compatibility expectations as other preview features.
 
 Use `AgentsClientBuilder.allowPreview(true)` when building non-Beta clients that support preview service behavior. For example, `AgentsClient` and `AgentsAsyncClient` use this builder setting to allow the service to return preview response types:
 
@@ -155,19 +177,29 @@ AgentsClientBuilder builder = new AgentsClientBuilder()
 AgentsClient agentsClient = builder.buildAgentsClient();
 ```
 
-Clients whose names start with `Beta` always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
+Build clients whose names start with `Beta` from `AgentsClientBuilder.beta()`. These clients always opt in to their corresponding preview service area. Requests sent by these clients automatically include the appropriate `Foundry-Features` header, and their APIs can send or return preview/beta request and response types. You do not need to call `allowPreview(true)` to use a `Beta*Client`.
 
 | Beta sub-client | Automatically populated `Foundry-Features` value |
 |---|---|
-| `BetaAgentsClient` | `HostedAgents=V1Preview,WorkflowAgents=V1Preview,AgentEndpoints=V1Preview,CodeAgents=V1Preview,ExternalAgents=V1Preview,AgentsOptimization=V1Preview` |
+| `BetaAgentsClient` | `WorkflowAgents=V1Preview,ExternalAgents=V1Preview,DraftAgents=V1Preview,AgentsOptimization=V2Preview` |
 | `BetaMemoryStoresClient` | `MemoryStores=V1Preview` |
-| `BetaToolboxesClient` | `Toolboxes=V1Preview` |
 
 The async `Beta*AsyncClient` counterparts follow the same behavior.
 
+### Agent optimization
+
+The preview `BetaAgentsClient` and `BetaAgentsAsyncClient` can create and monitor agent optimization jobs. These jobs
+evaluate an agent against a registered dataset and evaluator, then return scored candidates for instructions, skills,
+tools, or model improvements. Agent optimization is currently in preview and requires an allow-listed Foundry project.
+See [Agent optimizer in Foundry Agent Service][agent_optimizer_overview] for the service workflow and the complete
+examples in [AgentOptimizationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationSample.java)
+and [AgentOptimizationAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/optimization/AgentOptimizationAsyncSample.java).
+
 ### Memory item management
 
-`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`.
+`BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` manage memory stores and individual memory items. In addition to store-level operations, use `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory` to manage individual memories. `ListMemoriesOptions` supports filtering by scope and `MemoryItemKind`, including `MemoryItemKind.PROCEDURAL`. See `MemoryStoreItemsSample` and `MemoryStoreItemsAsyncSample` for complete examples.
+
+For conversational memory workflows, use `beginUpdateMemories` to extract memories from conversation items, `searchMemories` to retrieve relevant memories, and `deleteScope` to remove all memories for a scope. See `MemoryStoreAdvancedSample` and `MemoryStoreAdvancedAsyncSample` for complete synchronous and asynchronous examples.
 
 ### Using OpenAI's official library
 
@@ -232,6 +264,8 @@ conversationsClient.items().create(
     ).build()
 );
 ```
+
+To scope conversation operations to a delegated end user, set `FOUNDRY_USER_IDENTITY` to an opaque application-generated value and apply it as the `x-ms-user-identity` header. The caller must have the `agents/endpoints/UserIdentityImpersonation/action` RBAC permission. See the sync [UserIdentityConversation.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversation.java) and async [UserIdentityConversationAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/conversations/UserIdentityConversationAsync.java) samples.
 
 #### Text generation with Responses
 
@@ -514,21 +548,42 @@ See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-
 
 ---
 
-##### **Fabric IQ (Preview)**
+##### **Fabric IQ (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/fabric-iq))
 
 Connect agents to Fabric IQ project connections for enterprise data grounding:
 
 ```java com.azure.ai.agents.define_fabric_iq
 
 FabricIqPreviewTool fabricIqTool = new FabricIqPreviewTool(fabricIqConnectionId)
-    .setServerLabel("fabric_iq")
-    .setRequireApproval("never")
-    .setName("fabric_iq_lookup")
-    .setDescription("Use FabricIQ to answer questions grounded in enterprise data.");
+    .setServerLabel("fabric-iq-tool")
+    .setRequireApproval("never");
 
 ```
 
-See the full sample in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java).
+The samples use `FOUNDRY_PROJECT_ENDPOINT`, `FOUNDRY_MODEL_NAME`, and the fully qualified
+`FABRIC_IQ_PROJECT_CONNECTION_ID`. `FOUNDRY_AGENT_NAME` and `FABRIC_IQ_USER_INPUT` are optional.
+The response text and any returned annotations are printed before the temporary agent version is deleted.
+
+See the full samples in [FabricIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQSync.java)
+and [FabricIQAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricIQAsync.java).
+
+---
+
+##### **Work IQ (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/work-iq))
+
+Ground agent responses in the signed-in user's Microsoft 365 work context through a Work IQ project connection:
+
+```java com.azure.ai.agents.define_work_iq
+// Create a Work IQ tool with a fully qualified project connection resource ID
+WorkIqPreviewTool workIqTool = new WorkIqPreviewTool(workIqConnectionId);
+```
+
+Set `FOUNDRY_PROJECT_ENDPOINT`, `FOUNDRY_MODEL_NAME`, and `WORK_IQ_PROJECT_CONNECTION_ID` before running the
+sample. `FOUNDRY_AGENT_NAME` and `WORK_IQ_USER_INPUT` are optional. Work IQ uses delegated authentication and
+honors the signed-in user's Microsoft 365 permissions.
+
+See the full samples in [WorkIQSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WorkIQSync.java)
+and [WorkIQAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WorkIQAsync.java).
 
 ---
 
@@ -567,13 +622,13 @@ See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azu
 
 ---
 
-##### **Agent-to-Agent (A2A) (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
+##### **Agent-to-Agent (A2A)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
 
 Enable agent-to-agent communication with remote A2A endpoints:
 
 ```java com.azure.ai.agents.define_agent_to_agent
-// Create agent-to-agent tool with connection ID
-A2APreviewTool a2aTool = new A2APreviewTool()
+// Create agent-to-agent tool with A2A protocol version and connection ID
+A2ATool a2aTool = new A2ATool(A2AProtocolVersion.V1_0)
     .setProjectConnectionId(a2aConnectionId);
 ```
 
@@ -618,35 +673,61 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 #### Toolbox Tools
 
-Toolbox tools are defined in toolbox versions and managed through `BetaToolboxesClient` / `BetaToolboxesAsyncClient`.
+Toolbox tools are defined in toolbox versions and managed through `ToolboxesClient` / `ToolboxesAsyncClient`. Toolbox versions use `ToolboxTool` subclasses rather than agent `Tool` subclasses.
 
-##### **Toolbox Search (Preview)**
+##### **Toolbox Search**
 
-Use `ToolboxSearchPreviewTool` inside a toolbox version to let an agent search the available toolbox tools at runtime:
+Toolbox Search lets an agent search the available toolbox tools at runtime. The GA implementation is `ToolSearchToolboxTool` (`toolbox_search`), and the preview implementation `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is maintained alongside it for backward compatibility.
 
 ```java com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-ToolboxSearchPreviewTool toolboxSearchTool = new ToolboxSearchPreviewTool()
+ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
     .setName("search_tools")
     .setDescription("Search over available toolbox tools at runtime.");
 
 ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
     toolboxName,
     Collections.singletonList(toolboxSearchTool),
-    "Toolbox version with a Toolbox Search preview tool.",
+    "Toolbox version with a Toolbox Search tool.",
     null,
     null,
     null);
 
 System.out.printf("Created toolbox: %s%n", version.getName());
 System.out.printf("Toolbox version: %s%n", version.getVersion());
-for (Tool tool : version.getTools()) {
+for (ToolboxTool tool : version.getTools()) {
     System.out.printf("Tool type: %s%n", tool.getType());
 }
 
 ```
 
 See the full sample in [ToolboxSearchToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ToolboxSearchToolboxSample.java).
+
+##### **Reminder (preview)**
+
+The Reminder tool lets a hosted agent schedule itself to run again at a future time. It is connectionless and is available only to hosted agents, not prompt agents.
+
+```java com.azure.ai.agents.toolboxes.ReminderPreviewToolboxSample.createReminderToolbox
+
+ReminderPreviewToolboxTool reminderTool = new ReminderPreviewToolboxTool()
+    .setName("schedule_reminder")
+    .setDescription("Schedule a reminder that re-invokes this agent at a future time.");
+
+ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
+    toolboxName,
+    Collections.<ToolboxTool>singletonList(reminderTool),
+    "Built-in reminder tool for a self-scheduling agent.",
+    null,
+    null,
+    null);
+
+System.out.printf("Created toolbox: %s%n", version.getName());
+System.out.printf("Toolbox version: %s%n", version.getVersion());
+System.out.printf("Tool type: %s%n", version.getTools().get(0).getType());
+
+```
+
+See the full samples in [ReminderPreviewToolboxSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxSample.java) and [ReminderPreviewToolboxAsyncSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/toolboxes/ReminderPreviewToolboxAsyncSample.java).
 
 ---
 
@@ -723,7 +804,7 @@ The synchronous session log method returns `IterableStream<SessionLogEvent>`, wh
 
 ```java com.azure.ai.agents.session_logs_sync
 IterableStream<SessionLogEvent> sessionLogs =
-    betaAgentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
+    agentsClient.getSessionLogStream(agentName, agentVersion, sessionId);
 
 int logsRead = 0;
 for (SessionLogEvent event : sessionLogs) {
@@ -741,7 +822,7 @@ for (SessionLogEvent event : sessionLogs) {
 The asynchronous session log method returns `Flux<SessionLogEvent>`, integrating naturally with Reactor pipelines:
 
 ```java com.azure.ai.agents.session_logs_async
-betaAgentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
+agentsAsyncClient.getSessionLogStream(agentName, agentVersion, sessionId)
     .take(100)
     .doOnNext(event -> System.out.printf("[%s] %s%n", event.getEvent(), event.getData()))
     .blockLast();
@@ -864,3 +945,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_conversations_api_docs]: https://platform.openai.com/docs/api-reference/conversations
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+[agent_optimizer_overview]: https://learn.microsoft.com/azure/foundry/agents/concepts/agent-optimizer-overview

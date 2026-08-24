@@ -12,8 +12,8 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"zmblsyjdeol\",\"value\":[{\"kind\":\"bfsyrledjcustb\",\"skuName\":\"qigdx\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"eafgfosehxlzsxe\",\"tier\":\"p\",\"maxCount\":346065093,\"quota\":{\"quantity\":1405998573013007280,\"unit\":\"yfjlpzeqto\"},\"cost\":{\"commitmentMeterId\":\"lixlajmllpque\",\"overageMeterId\":\"am\"}},{\"kind\":\"wg\",\"skuName\":\"tmk\",\"hostingModel\":\"Web\",\"planType\":\"kzwaqxofq\",\"tier\":\"chiqbplvfid\",\"maxCount\":1535267928,\"quota\":{\"quantity\":6416416246126222793,\"unit\":\"yj\"},\"cost\":{\"commitmentMeterId\":\"fepxyihpqadag\",\"overageMeterId\":\"rdi\"}},{\"kind\":\"dw\",\"skuName\":\"fowxwyovcxjsgbi\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"dveksbuhoduch\",\"tier\":\"scrdp\",\"maxCount\":1354347075,\"quota\":{\"quantity\":3527198838984593686,\"unit\":\"sspyszekbh\"},\"cost\":{\"commitmentMeterId\":\"aaggkre\",\"overageMeterId\":\"frnuybffljfi\"}}]}")
+            "{\"nextLink\":\"qotwfh\",\"value\":[{\"kind\":\"gsabvcipowzafc\",\"skuName\":\"umljcirvpef\",\"hostingModel\":\"Web\",\"planType\":\"ei\",\"tier\":\"tjnsx\",\"maxCount\":1266964296,\"quota\":{\"quantity\":213770050562741377,\"unit\":\"wjuyxx\"},\"cost\":{\"commitmentMeterId\":\"vmv\",\"overageMeterId\":\"ytuadxkxeqbwp\"}},{\"kind\":\"ghyksarcdrnxs\",\"skuName\":\"vlzladl\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"bqhvfdqqjwkr\",\"tier\":\"zdanojis\",\"maxCount\":1762220888,\"quota\":{\"quantity\":5021634765672700621,\"unit\":\"tuz\"},\"cost\":{\"commitmentMeterId\":\"tibpv\",\"overageMeterId\":\"aehxsmzygdf\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("zmblsyjdeol", model.nextLink());
+        Assertions.assertEquals("qotwfh", model.nextLink());
     }
 }

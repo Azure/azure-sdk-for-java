@@ -24,7 +24,7 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
         String responseStr
-            = "{\"desiredLocations\":[\"wrwclxxwrljd\",\"uskcqvkocrcj\",\"kwt\",\"hxbnjbiksqrg\"],\"desiredSizes\":[{\"sku\":\"inqpjwnzll\"},{\"sku\":\"mppeebvmgxs\"},{\"sku\":\"kyqduujit\"}],\"desiredCount\":1447556622,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"ndhkrw\",\"region\":\"appd\",\"availabilityZone\":\"dkvwrwjfe\",\"score\":\"nhutjeltmrldhugj\",\"isQuotaAvailable\":true},{\"sku\":\"tqxhocdgeab\",\"region\":\"phut\",\"availabilityZone\":\"ndv\",\"score\":\"ozwyiftyhxhuro\",\"isQuotaAvailable\":true}]}";
+            = "{\"desiredLocations\":[\"nwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\"],\"desiredSizes\":[{\"sku\":\"ase\"},{\"sku\":\"heoflokeyyienjbd\"}],\"desiredCount\":1289591857,\"availabilityZones\":true,\"placementScores\":[{\"sku\":\"jp\",\"region\":\"masxazjpqyegu\",\"availabilityZone\":\"hb\",\"score\":\"hejjz\",\"isQuotaAvailable\":true},{\"sku\":\"dgwdslfhot\",\"region\":\"cynpwlbjnp\",\"availabilityZone\":\"cftadeh\",\"score\":\"ltyfsop\",\"isQuotaAvailable\":false},{\"sku\":\"esnzwde\",\"region\":\"avo\",\"availabilityZone\":\"zdmohctbqvu\",\"score\":\"xdn\",\"isQuotaAvailable\":false},{\"sku\":\"w\",\"region\":\"jjugwdkcglhslaz\",\"availabilityZone\":\"yggdtjixh\",\"score\":\"uofqwe\",\"isQuotaAvailable\":true}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,21 @@ public final class SpotPlacementScoresPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SpotPlacementScoresResponse response = manager.spotPlacementScores()
-            .postWithResponse("eofjaeqjh",
-                new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("asvm"))
-                    .withDesiredSizes(Arrays.asList(new ResourceSize().withSku("ulngsntn")))
-                    .withDesiredCount(588307069)
-                    .withAvailabilityZones(false),
-                com.azure.core.util.Context.NONE)
+            .postWithResponse("lzu", new SpotPlacementScoresInput().withDesiredLocations(Arrays.asList("fwnfnb"))
+                .withDesiredSizes(
+                    Arrays.asList(new ResourceSize().withSku("onlebxetqgtzxdpn"), new ResourceSize().withSku("qqwx")))
+                .withDesiredCount(19464895)
+                .withAvailabilityZones(false), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wrwclxxwrljd", response.desiredLocations().get(0));
-        Assertions.assertEquals("inqpjwnzll", response.desiredSizes().get(0).sku());
-        Assertions.assertEquals(1447556622, response.desiredCount());
+        Assertions.assertEquals("nwsubisnj", response.desiredLocations().get(0));
+        Assertions.assertEquals("ase", response.desiredSizes().get(0).sku());
+        Assertions.assertEquals(1289591857, response.desiredCount());
         Assertions.assertTrue(response.availabilityZones());
-        Assertions.assertEquals("ndhkrw", response.placementScores().get(0).sku());
-        Assertions.assertEquals("appd", response.placementScores().get(0).region());
-        Assertions.assertEquals("dkvwrwjfe", response.placementScores().get(0).availabilityZone());
-        Assertions.assertEquals("nhutjeltmrldhugj", response.placementScores().get(0).score());
+        Assertions.assertEquals("jp", response.placementScores().get(0).sku());
+        Assertions.assertEquals("masxazjpqyegu", response.placementScores().get(0).region());
+        Assertions.assertEquals("hb", response.placementScores().get(0).availabilityZone());
+        Assertions.assertEquals("hejjz", response.placementScores().get(0).score());
         Assertions.assertTrue(response.placementScores().get(0).isQuotaAvailable());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkSecurityPerimetersDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkSecurityPerimeterDelete.json
+     * x-ms-original-file: 2025-09-01/NetworkSecurityPerimeterDelete.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterDelete.

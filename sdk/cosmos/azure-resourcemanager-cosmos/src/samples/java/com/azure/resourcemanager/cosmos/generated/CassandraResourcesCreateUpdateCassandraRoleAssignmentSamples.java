@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.CassandraRoleAssignmentRes
  */
 public final class CassandraResourcesCreateUpdateCassandraRoleAssignmentSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/cassandrarbac/CosmosDBCassandraRoleAssignmentCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/cassandrarbac/CosmosDBCassandraRoleAssignmentCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraRoleAssignmentCreateUpdate.

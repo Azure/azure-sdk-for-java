@@ -28,8 +28,8 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the asynchronous AIProjectClient type.
  */
-@Beta
 @ServiceClient(builder = AIProjectClientBuilder.class, isAsync = true)
+@Beta(warningText = "This class is in preview and may change in future releases.")
 public final class BetaRedTeamsAsyncClient {
 
     @Generated
@@ -50,7 +50,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Retrieves the specified redteam and its configuration.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -101,7 +101,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Returns the redteams available in the current project.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -148,7 +148,7 @@ public final class BetaRedTeamsAsyncClient {
      *
      * Submits a new redteam run for execution with the provided configuration.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -176,9 +176,9 @@ public final class BetaRedTeamsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

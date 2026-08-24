@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ManagedInstanceDtcsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceDtcUpdateEnableDtc.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceDtcUpdateEnableDtc.json
      */
     /**
      * Sample code: Updates managed instance DTC settings by enabling DTC.
@@ -31,7 +31,7 @@ public final class ManagedInstanceDtcsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceDtcUpdateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceDtcUpdateMax.json
      */
     /**
      * Sample code: Updates managed instance DTC settings with all optional parameters specified.

@@ -23,6 +23,7 @@ import com.azure.resourcemanager.providerhub.models.OperationsPutContentProperti
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("The test subscription is not allowlisted for synthetic provider namespaces.")
     @SuppressWarnings("rawtypes")
     public void testCreateOperation() {
         OperationsPutContent operationsContent = null;
@@ -119,6 +121,12 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
                 providerHubManager.operations().delete(spaceName);
             }
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void testListProviderRegistrations() {
+        providerHubManager.providerRegistrations().list().stream().findFirst();
     }
 
     private static String randomPadding() {

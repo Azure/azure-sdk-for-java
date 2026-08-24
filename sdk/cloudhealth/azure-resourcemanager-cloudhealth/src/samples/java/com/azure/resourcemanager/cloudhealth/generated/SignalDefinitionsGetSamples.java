@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class SignalDefinitionsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_Get.json
+     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_Get.json
      */
     /**
      * Sample code: SignalDefinitions_Get.
@@ -18,6 +18,6 @@ public final class SignalDefinitionsGetSamples {
      */
     public static void signalDefinitionsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.signalDefinitions()
-            .getWithResponse("rgopenapi", "myHealthModel", "sig1", com.azure.core.util.Context.NONE);
+            .getWithResponse("online-store-rg", "online-store", "sql-cpu-percent", com.azure.core.util.Context.NONE);
     }
 }

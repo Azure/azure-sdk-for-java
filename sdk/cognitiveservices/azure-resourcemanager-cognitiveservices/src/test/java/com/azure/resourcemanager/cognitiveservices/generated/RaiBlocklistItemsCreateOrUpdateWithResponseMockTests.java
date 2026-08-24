@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pattern\":\"i\",\"isRegex\":false},\"etag\":\"uck\",\"tags\":{\"swt\":\"s\"},\"id\":\"qqcqikclsmal\",\"name\":\"sswoykdnona\",\"type\":\"xwmgzrujlqcwnyn\"}";
+            = "{\"properties\":{\"pattern\":\"klajvcfocz\",\"isRegex\":false},\"etag\":\"jovtkwxnhwhhn\",\"tags\":{\"ee\":\"zaa\",\"jeatea\":\"pmjen\"},\"id\":\"crxoxdj\",\"name\":\"l\",\"type\":\"n\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("rxqwqnjxrd")
-            .withExistingRaiBlocklist("rrfijhgg", "bqbgamklilirwdv", "fhsdpzouhkt")
-            .withTags(mapOf("ljphraspifleimi", "mlx", "hfgsmd", "lmdbgic", "okljm", "juqbpx"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("t").withIsRegex(true))
+            .define("vwglgwzpv")
+            .withExistingRaiBlocklist("bkhxsdplaum", "dmhweqjfyxydgto", "vq")
+            .withTags(mapOf("q", "qgsoyqyxyjrc", "eaoo", "bispglqjoxtdah"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("glhpse").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("i", response.properties().pattern());
+        Assertions.assertEquals("klajvcfocz", response.properties().pattern());
         Assertions.assertFalse(response.properties().isRegex());
-        Assertions.assertEquals("s", response.tags().get("swt"));
+        Assertions.assertEquals("zaa", response.tags().get("ee"));
     }
 
     // Use "Map.of" if available

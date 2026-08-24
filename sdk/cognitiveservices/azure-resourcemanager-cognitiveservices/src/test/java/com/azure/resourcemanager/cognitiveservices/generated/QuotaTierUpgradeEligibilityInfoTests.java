@@ -14,11 +14,11 @@ public final class QuotaTierUpgradeEligibilityInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaTierUpgradeEligibilityInfo model = BinaryData.fromString(
-            "{\"nextTierName\":\"emv\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2020-12-21T13:58:30Z\",\"upgradeUnavailabilityReason\":\"hmnr\"}")
+            "{\"nextTierName\":\"sojklinhmdptys\",\"upgradeAvailabilityStatus\":\"NotAvailable\",\"upgradeApplicableDate\":\"2020-12-25T21:15:26Z\",\"upgradeUnavailabilityReason\":\"zxojpslsv\"}")
             .toObject(QuotaTierUpgradeEligibilityInfo.class);
-        Assertions.assertEquals("emv", model.nextTierName());
+        Assertions.assertEquals("sojklinhmdptys", model.nextTierName());
         Assertions.assertEquals(UpgradeAvailabilityStatus.NOT_AVAILABLE, model.upgradeAvailabilityStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T13:58:30Z"), model.upgradeApplicableDate());
-        Assertions.assertEquals("hmnr", model.upgradeUnavailabilityReason());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T21:15:26Z"), model.upgradeApplicableDate());
+        Assertions.assertEquals("zxojpslsv", model.upgradeUnavailabilityReason());
     }
 }

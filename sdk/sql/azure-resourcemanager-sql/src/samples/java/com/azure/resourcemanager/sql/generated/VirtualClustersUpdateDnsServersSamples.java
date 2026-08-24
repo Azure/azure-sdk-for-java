@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class VirtualClustersUpdateDnsServersSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/UpdateVirtualClusterDnsServers.json
+     * x-ms-original-file: 2025-01-01/UpdateVirtualClusterDnsServers.json
      */
     /**
      * Sample code: Performs update of dns servers on managed instance.

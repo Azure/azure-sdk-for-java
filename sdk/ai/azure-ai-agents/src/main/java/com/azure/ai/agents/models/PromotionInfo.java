@@ -19,7 +19,7 @@ import java.time.ZoneOffset;
  * Promotion metadata recorded when a candidate is deployed to a Foundry agent.
  */
 @Immutable
-@Beta(warningText = "Preview API. AgentsOptimization=V1Preview")
+@Beta(warningText = "Preview API. AgentsOptimization=V2Preview")
 public final class PromotionInfo implements JsonSerializable<PromotionInfo> {
 
     /*

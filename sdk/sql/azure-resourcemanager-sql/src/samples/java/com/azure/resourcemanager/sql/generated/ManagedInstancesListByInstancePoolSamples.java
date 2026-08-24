@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedInstancesListByInstancePoolSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceListByInstancePool.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceListByInstancePool.json
      */
     /**
      * Sample code: List managed instances by instance pool.
@@ -23,7 +23,7 @@ public final class ManagedInstancesListByInstancePoolSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: List managed instances by instance pool with $expand=administrators/activedirectory.

@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":false,\"reason\":\"p\",\"subdomainName\":\"xlehzlxpgfquwzp\",\"type\":\"ibelwcerwkw\",\"kind\":\"jxljtxbusq\"}";
+            = "{\"isSubdomainAvailable\":true,\"reason\":\"eoxinhgre\",\"subdomainName\":\"twhlpuzjpce\",\"type\":\"nzangprbfaxy\",\"kind\":\"lbciphmsexro\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,16 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
 
         DomainAvailability response = manager.resourceProviders()
             .checkDomainAvailabilityWithResponse(
-                new CheckDomainAvailabilityParameter().withSubdomainName("jkqxetqmmli").withType("rj").withKind("nw"),
+                new CheckDomainAvailabilityParameter().withSubdomainName("fyvrtpqpemhzcgk")
+                    .withType("epdqhqyhwq")
+                    .withKind("mvxqab"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertFalse(response.isSubdomainAvailable());
-        Assertions.assertEquals("p", response.reason());
-        Assertions.assertEquals("xlehzlxpgfquwzp", response.subdomainName());
-        Assertions.assertEquals("ibelwcerwkw", response.type());
-        Assertions.assertEquals("jxljtxbusq", response.kind());
+        Assertions.assertTrue(response.isSubdomainAvailable());
+        Assertions.assertEquals("eoxinhgre", response.reason());
+        Assertions.assertEquals("twhlpuzjpce", response.subdomainName());
+        Assertions.assertEquals("nzangprbfaxy", response.type());
+        Assertions.assertEquals("lbciphmsexro", response.kind());
     }
 }

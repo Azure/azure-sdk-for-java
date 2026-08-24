@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceLongTermRetentionPoli
  */
 public final class ManagedInstanceLongTermRetentionPoliciesGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceLongTermRetentionPolicyGet.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceLongTermRetentionPolicyGet.json
      */
     /**
      * Sample code: Get the long term retention policy for the managed database.

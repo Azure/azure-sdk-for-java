@@ -51,7 +51,7 @@
     <scalatest-flatspec.version>3.2.3</scalatest-flatspec.version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
     <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
     <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
-    <scala-jackson.version>2.18.7</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+    <scala-jackson.version>2.18.9</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
     <pinned-resourcemanager-cosmos.version>2.53.4</pinned-resourcemanager-cosmos.version> <!-- This should not exceed the latest stable version that has been deployed across all clouds - including non-public clouds -->
   </properties>
 
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.6.5</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.6.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
@@ -128,7 +128,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -139,12 +139,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.18.7</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.18.9</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.18.7</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.18.9</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -154,12 +154,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.64</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.65</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
+      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-autoconfigure;dependency} -->
     </dependency>
 
     <!-- Test -->
@@ -186,19 +186,19 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.18.11</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.7.18</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.7.19</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -311,7 +311,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.6.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -331,13 +331,13 @@
                 <include>io.projectreactor:reactor-scala-extensions_2.13:[${reactor-scala-extensions.version}]</include>
                 <include>org.scalatest:scalatest_2.12:[${scalatest.version}]</include>
                 <include>org.scalatest:scalatest_2.13:[${scalatest.version}]</include>
-                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.1.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+                <include>org.apache.maven.plugins:maven-antrun-plugin:[3.2.0]</include> <!-- {x-include-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.8.1]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.7]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.7]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.7]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.18.7]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.18.9]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.18.9]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.18.9]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.18.9]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[${scala-jackson.version}]</include>
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.13:[${scala-jackson.version}]</include>
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.15.1]</include> <!-- {x-include-update;cosmos_io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
@@ -366,7 +366,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <failOnWarning>false</failOnWarning>
             </configuration>
@@ -383,7 +383,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>attach-javadocs</id>
@@ -406,7 +406,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>01-empty-javadoc-jar-with-readme</id>
@@ -429,6 +429,9 @@
               <source>${maven.compiler.source}</source>
               <target>${maven.compiler.target}</target>
               <scalaVersion>${scala.version}</scalaVersion>
+              <!-- Per-module bridge cache. The default (~/.sbt/1.0/zinc/org.scala-sbt) is shared, and the
+                   plugin installs the bridge with no lock, so parallel builds (-T) can read a half-written jar. -->
+              <secondaryCacheDir>${project.build.directory}/scala-compiler-bridge</secondaryCacheDir>
             </configuration>
             <executions>
               <execution>
@@ -477,7 +480,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>02-shade</id>
@@ -704,7 +707,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>01-copy-readme-to-javadocTemp</id>
@@ -752,7 +755,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>xml-maven-plugin</artifactId>
-            <version>1.1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>stripDependencyReducedPom</id>
@@ -789,7 +792,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <skipMain>true</skipMain>
             </configuration>
@@ -798,7 +801,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.11.3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -807,7 +810,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
-            <version>3.4.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -827,7 +830,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-compile</id>

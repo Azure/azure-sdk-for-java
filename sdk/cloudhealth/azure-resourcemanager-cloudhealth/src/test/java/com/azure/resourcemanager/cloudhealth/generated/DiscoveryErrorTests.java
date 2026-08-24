@@ -11,6 +11,7 @@ public final class DiscoveryErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryError model
-            = BinaryData.fromString("{\"message\":\"ql\",\"context\":[\"gtczheydb\"]}").toObject(DiscoveryError.class);
+            = BinaryData.fromString("{\"message\":\"qdnfwqzdz\",\"context\":[\"la\",\"hnfhqlyvijouwi\"]}")
+                .toObject(DiscoveryError.class);
     }
 }

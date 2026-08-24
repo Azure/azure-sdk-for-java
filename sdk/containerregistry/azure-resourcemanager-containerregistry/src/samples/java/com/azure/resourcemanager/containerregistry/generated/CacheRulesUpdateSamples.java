@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerregistry.models.CacheRuleUpdateParamet
  */
 public final class CacheRulesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/CacheRuleUpdate.json
      */
     /**
      * Sample code: CacheRuleUpdate.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class GremlinResourcesMigrateGremlinDatabaseToManualThroughputSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+     * x-ms-original-file: 2026-03-15/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseMigrateToManualThroughput.

@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.Nat64State;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -58,6 +59,11 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
      * Reference to an existing service gateway.
      */
     private SubResource serviceGateway;
+
+    /*
+     * Whether Nat64 is enabled for the NAT gateway resource.
+     */
+    private Nat64State nat64;
 
     /*
      * The resource GUID property of the NAT gateway resource.
@@ -227,6 +233,26 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
     }
 
     /**
+     * Get the nat64 property: Whether Nat64 is enabled for the NAT gateway resource.
+     * 
+     * @return the nat64 value.
+     */
+    public Nat64State nat64() {
+        return this.nat64;
+    }
+
+    /**
+     * Set the nat64 property: Whether Nat64 is enabled for the NAT gateway resource.
+     * 
+     * @param nat64 the nat64 value to set.
+     * @return the NatGatewayPropertiesFormat object itself.
+     */
+    public NatGatewayPropertiesFormat withNat64(Nat64State nat64) {
+        this.nat64 = nat64;
+        return this;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
      * 
      * @return the resourceGuid value.
@@ -269,6 +295,7 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("sourceVirtualNetwork", this.sourceVirtualNetwork);
         jsonWriter.writeJsonField("serviceGateway", this.serviceGateway);
+        jsonWriter.writeStringField("nat64", this.nat64 == null ? null : this.nat64.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -309,6 +336,8 @@ public final class NatGatewayPropertiesFormat implements JsonSerializable<NatGat
                     deserializedNatGatewayPropertiesFormat.sourceVirtualNetwork = SubResource.fromJson(reader);
                 } else if ("serviceGateway".equals(fieldName)) {
                     deserializedNatGatewayPropertiesFormat.serviceGateway = SubResource.fromJson(reader);
+                } else if ("nat64".equals(fieldName)) {
+                    deserializedNatGatewayPropertiesFormat.nat64 = Nat64State.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedNatGatewayPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {

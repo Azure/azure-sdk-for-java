@@ -12,7 +12,7 @@ import com.azure.resourcemanager.sql.models.ManagedLedgerDigestUploadsName;
  */
 public final class ManagedLedgerDigestUploadsOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedLedgerDigestUploadsEnable.json
+     * x-ms-original-file: 2025-01-01/ManagedLedgerDigestUploadsEnable.json
      */
     /**
      * Sample code: Enables managed ledger digest upload configuration for a database.

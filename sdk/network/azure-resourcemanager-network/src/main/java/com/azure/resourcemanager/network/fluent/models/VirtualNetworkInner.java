@@ -485,6 +485,31 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
+     * Get the summarizedGatewayPrefixes property: A configurable list of summarized gateway prefixes advertised for the
+     * virtual network.
+     * 
+     * @return the summarizedGatewayPrefixes value.
+     */
+    public AddressSpace summarizedGatewayPrefixes() {
+        return this.innerProperties() == null ? null : this.innerProperties().summarizedGatewayPrefixes();
+    }
+
+    /**
+     * Set the summarizedGatewayPrefixes property: A configurable list of summarized gateway prefixes advertised for the
+     * virtual network.
+     * 
+     * @param summarizedGatewayPrefixes the summarizedGatewayPrefixes value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withSummarizedGatewayPrefixes(AddressSpace summarizedGatewayPrefixes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withSummarizedGatewayPrefixes(summarizedGatewayPrefixes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

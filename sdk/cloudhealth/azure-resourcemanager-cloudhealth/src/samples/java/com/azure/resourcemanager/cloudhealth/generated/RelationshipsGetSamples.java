@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class RelationshipsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/Relationships_Get.json
+     * x-ms-original-file: 2026-05-01-preview/Relationships_Get.json
      */
     /**
      * Sample code: Relationships_Get.
@@ -18,7 +18,7 @@ public final class RelationshipsGetSamples {
      */
     public static void relationshipsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.relationships()
-            .getWithResponse("rgopenapi", "myHealthModel", "Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB",
+            .getWithResponse("online-store-rg", "online-store", "web-frontend-to-orders-api",
                 com.azure.core.util.Context.NONE);
     }
 }

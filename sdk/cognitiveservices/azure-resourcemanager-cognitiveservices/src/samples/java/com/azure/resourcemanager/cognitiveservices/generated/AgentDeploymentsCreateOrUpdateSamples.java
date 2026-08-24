@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class AgentDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/AgentDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-05-15-preview/AgentDeployment/createOrUpdate.json
      */
     /**
      * Sample code: Create or Update Agent Deployment.

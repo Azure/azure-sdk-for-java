@@ -37,7 +37,13 @@ public final class NextHopType extends ExpandableStringEnum<NextHopType> {
     public static final NextHopType HYPER_NET_GATEWAY = fromString("HyperNetGateway");
 
     /**
-     * None.
+     * Routes traffic to virtual appliances using Equal-Cost Multi-Path (ECMP) routing with multiple next hop IP
+     * addresses.
+     */
+    public static final NextHopType VIRTUAL_APPLIANCE_ECMP = fromString("VirtualApplianceEcmp");
+
+    /**
+     * No next hop type.
      */
     public static final NextHopType NONE = fromString("None");
 

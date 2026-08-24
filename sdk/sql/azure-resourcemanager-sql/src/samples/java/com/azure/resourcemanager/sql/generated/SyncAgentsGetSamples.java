@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class SyncAgentsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/SyncAgentGet.json
+     * x-ms-original-file: 2025-01-01/SyncAgentGet.json
      */
     /**
      * Sample code: Get a sync agent.

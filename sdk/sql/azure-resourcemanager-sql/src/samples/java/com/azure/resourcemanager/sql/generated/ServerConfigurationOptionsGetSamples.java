@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerConfigurationOptionName;
  */
 public final class ServerConfigurationOptionsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerConfigurationOptionGet.json
+     * x-ms-original-file: 2025-01-01/ServerConfigurationOptionGet.json
      */
     /**
      * Sample code: Gets managed instance server configuration option.

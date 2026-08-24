@@ -89,16 +89,13 @@ steps:
   - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
-    # Remove preceeding "1." in the version specified by $(JavaTestVersion)
-    # e.g. 1.8 -> 8
-    # This is required to set JAVA_HOME correctly for the Java version
-    # Java versions are expected to always start with "1."
-    - pwsh: |
-        $javaTestVersion = "$(JavaTestVersion)".Substring(2)
-        $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
-        Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
-        Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
+    - task: PowerShell@2
       displayName: 'Set PowerShellJavaHome'
+      inputs:
+        pwsh: true
+        filePath: eng/pipelines/scripts/Set-PowerShellJavaHome.ps1
+        arguments: >
+          -JavaTestVersion $(JavaTestVersion)
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
@@ -254,21 +251,13 @@ steps:
 
   # The name of a test case in the results file isn't helpful in the web view.
   # Update it to include the breadcrumb namespace and the type.
-  - pwsh: |
-      echo "Current directory: $(get-location)"
-      Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
-      echo "Updating $($_.Name)"
-      [xml]$xml = Get-Content $_.FullName
-      $xml.SelectNodes("//testcase") | ForEach-Object {
-          $parts = $_.classname -split '\.'
-          $shortClassname = (($parts[0..($parts.Length -2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
-          $_.name = "$shortClassname.$($_.name)"
-          }
-          $xml.Save($_.FullName)
-      }
+  - task: PowerShell@2
     displayName: 'Update test case names for reporting'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Update-TestNamesForReporting.ps1
+      workingDirectory: $(System.DefaultWorkingDirectory)/sdk
     condition: always()
-    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
 
   - task: PublishTestResults@2
     condition: always()
@@ -283,6 +272,11 @@ steps:
         testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
+
+  - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
+    parameters:
+      TestResultsGlob: 'TEST-*.xml'
+      SearchFolder: '$(System.DefaultWorkingDirectory)/sdk'
 
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.

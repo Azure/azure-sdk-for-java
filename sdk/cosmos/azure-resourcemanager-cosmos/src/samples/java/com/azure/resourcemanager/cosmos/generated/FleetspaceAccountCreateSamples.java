@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.FleetspaceAccountPropertiesGlobal
  */
 public final class FleetspaceAccountCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/fleet/CosmosDBFleetspaceAccountCreate.json
+     * x-ms-original-file: 2026-03-15/fleet/CosmosDBFleetspaceAccountCreate.json
      */
     /**
      * Sample code: CosmosDB FleetspaceAccount Create.

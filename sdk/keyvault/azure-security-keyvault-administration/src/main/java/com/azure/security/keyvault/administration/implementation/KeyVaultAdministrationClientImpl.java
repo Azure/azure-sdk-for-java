@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -429,6 +430,130 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSettingsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEkmConnection(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/certificate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getEkmCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/ekm/certificate")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEkmCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/check")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> checkEkmConnection(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/check")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> checkEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/create")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createEkmConnection(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ekmConnection,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/ekm/create")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ekmConnection,
+            RequestOptions requestOptions, Context context);
+
+        @Patch("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> updateEkmConnection(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ekmConnection,
+            RequestOptions requestOptions, Context context);
+
+        @Patch("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> updateEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData ekmConnection,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> deleteEkmConnection(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Delete("/ekm")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteEkmConnectionSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
     }
@@ -2573,6 +2698,489 @@ public final class KeyVaultAdministrationClientImpl {
     public Response<BinaryData> getSettingsWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getSettingsSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets the EKM connection.
+     *
+     * The External Key Manager (EKM) Get operation returns EKM connection. This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the EKM connection.
+     *
+     * The External Key Manager (EKM) Get operation returns EKM connection along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getEkmConnectionWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getEkmConnection(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the EKM connection.
+     *
+     * The External Key Manager (EKM) Get operation returns EKM connection. This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the EKM connection.
+     *
+     * The External Key Manager (EKM) Get operation returns EKM connection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getEkmConnectionWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Gets the EKM proxy client certificate.
+     *
+     * The External Key Manager (EKM) Certificate Get operation returns Proxy client certificate. This operation
+     * requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     subject_common_name: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the EKM proxy client certificate.
+     *
+     * The External Key Manager (EKM) Certificate Get operation returns Proxy client certificate along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getEkmCertificateWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getEkmCertificate(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets the EKM proxy client certificate.
+     *
+     * The External Key Manager (EKM) Certificate Get operation returns Proxy client certificate. This operation
+     * requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     subject_common_name: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the EKM proxy client certificate.
+     *
+     * The External Key Manager (EKM) Certificate Get operation returns Proxy client certificate along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getEkmCertificateWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getEkmCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Checks the connectivity and authentication with the EKM proxy.
+     *
+     * The External Key Manager (EKM) Check operation checks the connectivity and authentication with the EKM proxy.
+     * This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     api_version: String (Required)
+     *     proxy_vendor: String (Required)
+     *     proxy_name: String (Required)
+     *     ekm_vendor: String (Required)
+     *     ekm_product: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return eKM proxy information along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> checkEkmConnectionWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.checkEkmConnection(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Checks the connectivity and authentication with the EKM proxy.
+     *
+     * The External Key Manager (EKM) Check operation checks the connectivity and authentication with the EKM proxy.
+     * This operation requires ekm/read permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     api_version: String (Required)
+     *     proxy_vendor: String (Required)
+     *     proxy_name: String (Required)
+     *     ekm_vendor: String (Required)
+     *     ekm_product: String (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return eKM proxy information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> checkEkmConnectionWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.checkEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates the EKM connection.
+     *
+     * The External Key Manager (EKM) sets up the EKM connection. If the EKM connection already exists, this operation
+     * fails. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param ekmConnection The ekmConnection to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createEkmConnectionWithResponseAsync(BinaryData ekmConnection,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createEkmConnection(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), contentType, accept, ekmConnection, requestOptions, context));
+    }
+
+    /**
+     * Creates the EKM connection.
+     *
+     * The External Key Manager (EKM) sets up the EKM connection. If the EKM connection already exists, this operation
+     * fails. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param ekmConnection The ekmConnection to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createEkmConnectionWithResponse(BinaryData ekmConnection,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, ekmConnection, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Updates the EKM connection.
+     *
+     * The External Key Manager (EKM) updates the existing EKM connection. If the EKM connection does not exist, this
+     * operation fails. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param ekmConnection The ekmConnection to update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateEkmConnectionWithResponseAsync(BinaryData ekmConnection,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateEkmConnection(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), contentType, accept, ekmConnection, requestOptions, context));
+    }
+
+    /**
+     * Updates the EKM connection.
+     *
+     * The External Key Manager (EKM) updates the existing EKM connection. If the EKM connection does not exist, this
+     * operation fails. This operation requires ekm/write permission.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param ekmConnection The ekmConnection to update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateEkmConnectionWithResponse(BinaryData ekmConnection,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
+            contentType, accept, ekmConnection, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Deletes the EKM connection.
+     *
+     * The External Key Manager (EKM) deletes the existing EKM connection. If the EKM connection does not already
+     * exists, this operation fails. This operation requires ekm/delete permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> deleteEkmConnectionWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.deleteEkmConnection(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Deletes the EKM connection.
+     *
+     * The External Key Manager (EKM) deletes the existing EKM connection. If the EKM connection does not already
+     * exists, this operation fails. This operation requires ekm/delete permission.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     host: String (Required)
+     *     path_prefix: String (Optional)
+     *     server_ca_certificates (Required): [
+     *         byte[] (Required)
+     *     ]
+     *     server_subject_common_name: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a EkmConnection model object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteEkmConnectionWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteEkmConnectionSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
             requestOptions, Context.NONE);
     }
 }

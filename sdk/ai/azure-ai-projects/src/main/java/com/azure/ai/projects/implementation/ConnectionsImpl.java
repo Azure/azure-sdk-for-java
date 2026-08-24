@@ -182,6 +182,14 @@ public final class ConnectionsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -223,6 +231,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -266,6 +282,14 @@ public final class ConnectionsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -308,6 +332,14 @@ public final class ConnectionsImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param name The friendly name of the connection, provided by the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -617,20 +649,26 @@ public final class ConnectionsImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

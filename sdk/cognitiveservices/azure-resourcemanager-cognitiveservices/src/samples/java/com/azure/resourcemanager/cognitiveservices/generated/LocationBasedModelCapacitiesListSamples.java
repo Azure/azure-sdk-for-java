@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class LocationBasedModelCapacitiesListSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
+     * x-ms-original-file: 2026-05-15-preview/ListLocationBasedModelCapacitiesGlobalScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities Global Scope.
@@ -22,7 +22,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
+     * x-ms-original-file: 2026-05-15-preview/ListLocationBasedModelCapacitiesClassicScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities Classic Scope.
@@ -35,7 +35,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
+     * x-ms-original-file: 2026-05-15-preview/ListLocationBasedModelCapacitiesDataZoneScope.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities DataZone Scope.
@@ -48,7 +48,7 @@ public final class LocationBasedModelCapacitiesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-15-preview/ListLocationBasedModelCapacities.json
+     * x-ms-original-file: 2026-05-15-preview/ListLocationBasedModelCapacities.json
      */
     /**
      * Sample code: ListLocationBasedModelCapacities.

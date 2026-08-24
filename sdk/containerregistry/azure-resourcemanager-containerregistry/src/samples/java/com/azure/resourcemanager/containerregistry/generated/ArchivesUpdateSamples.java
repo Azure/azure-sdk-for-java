@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerregistry.models.ArchiveUpdateParameter
  */
 public final class ArchivesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ArchiveUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/ArchiveUpdate.json
      */
     /**
      * Sample code: ArchiveUpdate.

@@ -9,7 +9,22 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class MaintenanceConfigurationsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
+     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsGet_LinkedMaintenanceWindow.json
+     */
+    /**
+     * Sample code: Get a Linked Maintenance Configuration.
+     * 
+     * @param manager Entry point to ContainerServiceManager.
+     */
+    public static void
+        getALinkedMaintenanceConfiguration(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        manager.serviceClient()
+            .getMaintenanceConfigurations()
+            .getWithResponse("rg1", "clustername1", "aksManagedAutoUpgradeSchedule", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-02-preview/MaintenanceConfigurationsGet_MaintenanceWindow.json
      */
     /**
      * Sample code: Get Maintenance Configuration Configured With Maintenance Window.

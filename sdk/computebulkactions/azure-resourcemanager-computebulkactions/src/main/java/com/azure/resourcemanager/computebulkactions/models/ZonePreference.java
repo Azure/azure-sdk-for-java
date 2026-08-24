@@ -22,7 +22,8 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     private String zone;
 
     /*
-     * The rank of the zone. This is used with 'Prioritized' ZoneDistributionStrategy.
+     * The rank of the zone. This is used with
+     * 'Prioritized' ZoneDistributionStrategy.
      * The lower the number, the higher the priority, starting with 0.
      * 0 is the highest rank. If not specified, defaults to lowest rank.
      */
@@ -55,7 +56,8 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Get the rank property: The rank of the zone. This is used with 'Prioritized' ZoneDistributionStrategy.
+     * Get the rank property: The rank of the zone. This is used with
+     * 'Prioritized' ZoneDistributionStrategy.
      * The lower the number, the higher the priority, starting with 0.
      * 0 is the highest rank. If not specified, defaults to lowest rank.
      * 
@@ -66,7 +68,8 @@ public final class ZonePreference implements JsonSerializable<ZonePreference> {
     }
 
     /**
-     * Set the rank property: The rank of the zone. This is used with 'Prioritized' ZoneDistributionStrategy.
+     * Set the rank property: The rank of the zone. This is used with
+     * 'Prioritized' ZoneDistributionStrategy.
      * The lower the number, the higher the priority, starting with 0.
      * 0 is the highest rank. If not specified, defaults to lowest rank.
      * 

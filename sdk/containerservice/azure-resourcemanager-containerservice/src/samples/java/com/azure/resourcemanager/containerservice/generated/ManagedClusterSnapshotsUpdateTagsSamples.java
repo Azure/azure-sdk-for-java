@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedClusterSnapshotsUpdateTagsSamples {
     /*
-     * x-ms-original-file: 2026-04-02-preview/ManagedClusterSnapshotsUpdateTags.json
+     * x-ms-original-file: 2026-05-02-preview/ManagedClusterSnapshotsUpdateTags.json
      */
     /**
      * Sample code: Update Managed Cluster Snapshot Tags.

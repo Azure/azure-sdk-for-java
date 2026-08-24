@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cognitiveservices.models.TierUpgradePolicy;
  */
 public final class QuotaTiersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateQuotaTier.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateQuotaTier.json
      */
     /**
      * Sample code: Update the quota tier resource for a subscription.

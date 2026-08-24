@@ -12,7 +12,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
  */
 public final class GroupQuotasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GroupQuotas/PutGroupQuotas.json
+     * x-ms-original-file: 2026-09-01-preview/GroupQuotas/PutGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Put_Request_ForCompute.

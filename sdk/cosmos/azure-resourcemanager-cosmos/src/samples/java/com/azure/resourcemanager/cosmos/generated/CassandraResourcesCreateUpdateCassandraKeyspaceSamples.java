@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBCassandraKeyspaceCreateUpdate.json
+     * x-ms-original-file: 2026-03-15/CosmosDBCassandraKeyspaceCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceCreateUpdate.

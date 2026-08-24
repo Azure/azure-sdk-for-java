@@ -13,7 +13,7 @@ import com.azure.resourcemanager.sql.models.RoleChangeType;
  */
 public final class DistributedAvailabilityGroupsSetRoleSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsSetRole.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsSetRole.json
      */
     /**
      * Sample code: Set distributed availability group primary replica to managed instance.

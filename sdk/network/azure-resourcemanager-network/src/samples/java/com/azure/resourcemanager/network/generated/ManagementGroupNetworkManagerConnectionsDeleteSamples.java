@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ManagementGroupNetworkManagerConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NetworkManagerConnectionManagementGroupDelete.json
+     * x-ms-original-file: 2025-09-01/NetworkManagerConnectionManagementGroupDelete.json
      */
     /**
      * Sample code: Delete Management Group Network Manager Connection.

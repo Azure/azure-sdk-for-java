@@ -217,7 +217,7 @@ public final class ConnectedCacheManagementClientImpl implements ConnectedCacheM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-11-30-preview";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
         this.ispCustomers = new IspCustomersClientImpl(this);
         this.ispCacheNodesOperations = new IspCacheNodesOperationsClientImpl(this);

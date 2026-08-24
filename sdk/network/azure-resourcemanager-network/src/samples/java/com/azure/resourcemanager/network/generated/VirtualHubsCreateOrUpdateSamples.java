@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class VirtualHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/VirtualHubPut.json
+     * x-ms-original-file: 2025-09-01/VirtualHubPut.json
      */
     /**
      * Sample code: VirtualHubPut.
@@ -29,7 +29,8 @@ public final class VirtualHubsCreateOrUpdateSamples {
                 .withVirtualWan(new SubResource().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"))
                 .withAddressPrefix("10.168.0.0/24")
-                .withSku("Basic"), com.azure.core.util.Context.NONE);
+                .withSku("Basic")
+                .withAddressPrefixV6("2001:db8::/56"), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

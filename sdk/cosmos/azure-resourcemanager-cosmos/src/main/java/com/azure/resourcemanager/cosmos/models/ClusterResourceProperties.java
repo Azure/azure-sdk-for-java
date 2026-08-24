@@ -131,11 +131,6 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     private Boolean cassandraAuditLoggingEnabled;
 
     /*
-     * Type of the cluster. If set to Production, some operations might not be permitted on cluster.
-     */
-    private ClusterType clusterType;
-
-    /*
      * Error related to resource provisioning.
      */
     private CassandraError provisionError;
@@ -576,28 +571,6 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
     }
 
     /**
-     * Get the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
-     * on cluster.
-     * 
-     * @return the clusterType value.
-     */
-    public ClusterType clusterType() {
-        return this.clusterType;
-    }
-
-    /**
-     * Set the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
-     * on cluster.
-     * 
-     * @param clusterType the clusterType value to set.
-     * @return the ClusterResourceProperties object itself.
-     */
-    public ClusterResourceProperties withClusterType(ClusterType clusterType) {
-        this.clusterType = clusterType;
-        return this;
-    }
-
-    /**
      * Get the provisionError property: Error related to resource provisioning.
      * 
      * @return the provisionError value.
@@ -768,7 +741,6 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
         jsonWriter.writeNumberField("hoursBetweenBackups", this.hoursBetweenBackups);
         jsonWriter.writeBooleanField("deallocated", this.deallocated);
         jsonWriter.writeBooleanField("cassandraAuditLoggingEnabled", this.cassandraAuditLoggingEnabled);
-        jsonWriter.writeStringField("clusterType", this.clusterType == null ? null : this.clusterType.toString());
         jsonWriter.writeJsonField("provisionError", this.provisionError);
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("backupSchedules", this.backupSchedules,
@@ -843,8 +815,6 @@ public final class ClusterResourceProperties implements JsonSerializable<Cluster
                 } else if ("cassandraAuditLoggingEnabled".equals(fieldName)) {
                     deserializedClusterResourceProperties.cassandraAuditLoggingEnabled
                         = reader.getNullable(JsonReader::getBoolean);
-                } else if ("clusterType".equals(fieldName)) {
-                    deserializedClusterResourceProperties.clusterType = ClusterType.fromString(reader.getString());
                 } else if ("provisionError".equals(fieldName)) {
                     deserializedClusterResourceProperties.provisionError = CassandraError.fromJson(reader);
                 } else if ("extensions".equals(fieldName)) {

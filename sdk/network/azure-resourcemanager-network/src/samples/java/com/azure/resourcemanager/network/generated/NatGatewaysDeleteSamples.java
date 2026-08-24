@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NatGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: 2025-05-01/NatGatewayDelete.json
+     * x-ms-original-file: 2025-09-01/NatGatewayDelete.json
      */
     /**
      * Sample code: Delete nat gateway.

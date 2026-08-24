@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/OperationList.json
+     * x-ms-original-file: 2025-09-01/OperationList.json
      */
     /**
      * Sample code: Get a list of operations for a resource provider.

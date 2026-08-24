@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class WorkbenchesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-15-preview/UpdateWorkbench.json
+     * x-ms-original-file: 2026-05-15-preview/UpdateWorkbench.json
      */
     /**
      * Sample code: UpdateWorkbench.

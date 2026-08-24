@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubnetsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/SubnetList.json
+     * x-ms-original-file: 2025-09-01/SubnetList.json
      */
     /**
      * Sample code: List subnets.

@@ -14,6 +14,11 @@ public enum RollingUpgradeStatusCode {
     ROLLING_FORWARD("RollingForward"),
 
     /**
+     * Enum value RollingBack.
+     */
+    ROLLING_BACK("RollingBack"),
+
+    /**
      * Enum value Cancelled.
      */
     CANCELLED("Cancelled"),

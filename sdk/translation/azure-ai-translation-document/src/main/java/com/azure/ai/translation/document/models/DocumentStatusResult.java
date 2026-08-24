@@ -82,12 +82,6 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
     @Generated
     private final String id;
 
-    /*
-     * Character charged by the API
-     */
-    @Generated
-    private Integer characterCharged;
-
     /**
      * Creates an instance of DocumentStatusResult class.
      *
@@ -208,16 +202,6 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
     }
 
     /**
-     * Get the characterCharged property: Character charged by the API.
-     *
-     * @return the characterCharged value.
-     */
-    @Generated
-    public Integer getCharacterCharged() {
-        return this.characterCharged;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -239,7 +223,12 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeJsonField("error", this.error);
-        jsonWriter.writeNumberField("characterCharged", this.characterCharged);
+        jsonWriter.writeNumberField("characterCharged", this.characterChargedCount);
+        jsonWriter.writeNumberField("totalImageScansSucceeded", this.totalImageScansSucceededCount);
+        jsonWriter.writeNumberField("totalImageScansFailed", this.totalImageScansFailedCount);
+        jsonWriter.writeNumberField("imageCharged", this.imageChargedCount);
+        jsonWriter.writeNumberField("imageCharacterDetected", this.imageCharacterDetectedCount);
+        jsonWriter.writeStringField("deploymentName", this.deploymentName);
         return jsonWriter.writeEndObject();
     }
 
@@ -264,7 +253,12 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
             String id = null;
             String path = null;
             TranslationError error = null;
-            Integer characterCharged = null;
+            Integer characterChargedCount = null;
+            Integer totalImageScansSucceededCount = null;
+            Integer totalImageScansFailedCount = null;
+            Integer imageChargedCount = null;
+            Integer imageCharacterDetectedCount = null;
+            String deploymentName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -289,7 +283,17 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
                 } else if ("error".equals(fieldName)) {
                     error = TranslationError.fromJson(reader);
                 } else if ("characterCharged".equals(fieldName)) {
-                    characterCharged = reader.getNullable(JsonReader::getInt);
+                    characterChargedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansSucceeded".equals(fieldName)) {
+                    totalImageScansSucceededCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalImageScansFailed".equals(fieldName)) {
+                    totalImageScansFailedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("imageCharged".equals(fieldName)) {
+                    imageChargedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("imageCharacterDetected".equals(fieldName)) {
+                    imageCharacterDetectedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("deploymentName".equals(fieldName)) {
+                    deploymentName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -298,8 +302,109 @@ public final class DocumentStatusResult implements JsonSerializable<DocumentStat
                 createdDateTimeUtc, lastActionDateTimeUtc, status, to, progress, id);
             deserializedDocumentStatusResult.path = path;
             deserializedDocumentStatusResult.error = error;
-            deserializedDocumentStatusResult.characterCharged = characterCharged;
+            deserializedDocumentStatusResult.characterChargedCount = characterChargedCount;
+            deserializedDocumentStatusResult.totalImageScansSucceededCount = totalImageScansSucceededCount;
+            deserializedDocumentStatusResult.totalImageScansFailedCount = totalImageScansFailedCount;
+            deserializedDocumentStatusResult.imageChargedCount = imageChargedCount;
+            deserializedDocumentStatusResult.imageCharacterDetectedCount = imageCharacterDetectedCount;
+            deserializedDocumentStatusResult.deploymentName = deploymentName;
             return deserializedDocumentStatusResult;
         });
+    }
+
+    /*
+     * Deployment name of the custom translation model used for the translation
+     */
+    @Generated
+    private String deploymentName;
+
+    /**
+     * Get the deploymentName property: Deployment name of the custom translation model used for the translation.
+     *
+     * @return the deploymentName value.
+     */
+    @Generated
+    public String getDeploymentName() {
+        return this.deploymentName;
+    }
+
+    /*
+     * Character charged by the API
+     */
+    @Generated
+    private Integer characterChargedCount;
+
+    /*
+     * Total image scans charged by the API
+     */
+    @Generated
+    private Integer totalImageScansSucceededCount;
+
+    /*
+     * Total image scans failed
+     */
+    @Generated
+    private Integer totalImageScansFailedCount;
+
+    /*
+     * Images charged by the API
+     */
+    @Generated
+    private Integer imageChargedCount;
+
+    /*
+     * Characters detected within images
+     */
+    @Generated
+    private Integer imageCharacterDetectedCount;
+
+    /**
+     * Get the characterChargedCount property: Character charged by the API.
+     *
+     * @return the characterChargedCount value.
+     */
+    @Generated
+    public Integer getCharacterChargedCount() {
+        return this.characterChargedCount;
+    }
+
+    /**
+     * Get the totalImageScansSucceededCount property: Total image scans charged by the API.
+     *
+     * @return the totalImageScansSucceededCount value.
+     */
+    @Generated
+    public Integer getTotalImageScansSucceededCount() {
+        return this.totalImageScansSucceededCount;
+    }
+
+    /**
+     * Get the totalImageScansFailedCount property: Total image scans failed.
+     *
+     * @return the totalImageScansFailedCount value.
+     */
+    @Generated
+    public Integer getTotalImageScansFailedCount() {
+        return this.totalImageScansFailedCount;
+    }
+
+    /**
+     * Get the imageChargedCount property: Images charged by the API.
+     *
+     * @return the imageChargedCount value.
+     */
+    @Generated
+    public Integer getImageChargedCount() {
+        return this.imageChargedCount;
+    }
+
+    /**
+     * Get the imageCharacterDetectedCount property: Characters detected within images.
+     *
+     * @return the imageCharacterDetectedCount value.
+     */
+    @Generated
+    public Integer getImageCharacterDetectedCount() {
+        return this.imageCharacterDetectedCount;
     }
 }

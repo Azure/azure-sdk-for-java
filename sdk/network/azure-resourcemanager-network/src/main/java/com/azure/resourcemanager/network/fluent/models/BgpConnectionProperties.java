@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
 
 /**
@@ -43,6 +44,11 @@ public final class BgpConnectionProperties implements JsonSerializable<BgpConnec
      * The current state of the VirtualHub to Peer.
      */
     private HubBgpConnectionStatus connectionState;
+
+    /*
+     * The routing configuration indicating the associated and propagated route tables for this connection.
+     */
+    private RoutingConfiguration routingConfiguration;
 
     /**
      * Creates an instance of BgpConnectionProperties class.
@@ -129,11 +135,36 @@ public final class BgpConnectionProperties implements JsonSerializable<BgpConnec
     }
 
     /**
+     * Get the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @return the routingConfiguration value.
+     */
+    public RoutingConfiguration routingConfiguration() {
+        return this.routingConfiguration;
+    }
+
+    /**
+     * Set the routingConfiguration property: The routing configuration indicating the associated and propagated route
+     * tables for this connection.
+     * 
+     * @param routingConfiguration the routingConfiguration value to set.
+     * @return the BgpConnectionProperties object itself.
+     */
+    public BgpConnectionProperties withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
+        this.routingConfiguration = routingConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (routingConfiguration() != null) {
+            routingConfiguration().validate();
+        }
     }
 
     /**
@@ -145,6 +176,7 @@ public final class BgpConnectionProperties implements JsonSerializable<BgpConnec
         jsonWriter.writeNumberField("peerAsn", this.peerAsn);
         jsonWriter.writeStringField("peerIp", this.peerIp);
         jsonWriter.writeJsonField("hubVirtualNetworkConnection", this.hubVirtualNetworkConnection);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -175,6 +207,8 @@ public final class BgpConnectionProperties implements JsonSerializable<BgpConnec
                 } else if ("connectionState".equals(fieldName)) {
                     deserializedBgpConnectionProperties.connectionState
                         = HubBgpConnectionStatus.fromString(reader.getString());
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedBgpConnectionProperties.routingConfiguration = RoutingConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

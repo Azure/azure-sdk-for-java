@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class SignalDefinitionsListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_ListByHealthModel.json
+     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_ListByHealthModel.json
      */
     /**
      * Sample code: SignalDefinitions_ListByHealthModel.
@@ -19,6 +19,6 @@ public final class SignalDefinitionsListByHealthModelSamples {
     public static void
         signalDefinitionsListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.signalDefinitions()
-            .listByHealthModel("rgopenapi", "myHealthModel", null, com.azure.core.util.Context.NONE);
+            .listByHealthModel("online-store-rg", "online-store", null, com.azure.core.util.Context.NONE);
     }
 }

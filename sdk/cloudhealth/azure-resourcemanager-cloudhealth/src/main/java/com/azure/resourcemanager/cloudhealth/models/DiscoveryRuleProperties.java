@@ -49,6 +49,14 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
     private DiscoveryRuleSpecification specification;
 
     /*
+     * Whether to automatically add a signal for the Azure resource's availability state from Azure Resource Health to
+     * the discovered entities. Defaults to `Enabled`: discovery rules updated via this API version without setting this
+     * field will begin emitting a Resource Health availability signal. Pass `Disabled` to preserve
+     * pre-`2026-05-01-preview` behavior.
+     */
+    private ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal;
+
+    /*
      * Error details if the last discovery operation failed.
      */
     private DiscoveryError error;
@@ -181,6 +189,33 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
     }
 
     /**
+     * Get the addResourceHealthSignal property: Whether to automatically add a signal for the Azure resource's
+     * availability state from Azure Resource Health to the discovered entities. Defaults to `Enabled`: discovery rules
+     * updated via this API version without setting this field will begin emitting a Resource Health availability
+     * signal. Pass `Disabled` to preserve pre-`2026-05-01-preview` behavior.
+     * 
+     * @return the addResourceHealthSignal value.
+     */
+    public ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal() {
+        return this.addResourceHealthSignal;
+    }
+
+    /**
+     * Set the addResourceHealthSignal property: Whether to automatically add a signal for the Azure resource's
+     * availability state from Azure Resource Health to the discovered entities. Defaults to `Enabled`: discovery rules
+     * updated via this API version without setting this field will begin emitting a Resource Health availability
+     * signal. Pass `Disabled` to preserve pre-`2026-05-01-preview` behavior.
+     * 
+     * @param addResourceHealthSignal the addResourceHealthSignal value to set.
+     * @return the DiscoveryRuleProperties object itself.
+     */
+    public DiscoveryRuleProperties
+        withAddResourceHealthSignal(ResourceHealthAvailabilityStateSignalBehavior addResourceHealthSignal) {
+        this.addResourceHealthSignal = addResourceHealthSignal;
+        return this;
+    }
+
+    /**
      * Get the error property: Error details if the last discovery operation failed.
      * 
      * @return the error value.
@@ -212,6 +247,8 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
             this.addRecommendedSignals == null ? null : this.addRecommendedSignals.toString());
         jsonWriter.writeJsonField("specification", this.specification);
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("addResourceHealthSignal",
+            this.addResourceHealthSignal == null ? null : this.addResourceHealthSignal.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -248,6 +285,9 @@ public final class DiscoveryRuleProperties implements JsonSerializable<Discovery
                         = HealthModelProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.displayName = reader.getString();
+                } else if ("addResourceHealthSignal".equals(fieldName)) {
+                    deserializedDiscoveryRuleProperties.addResourceHealthSignal
+                        = ResourceHealthAvailabilityStateSignalBehavior.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
                     deserializedDiscoveryRuleProperties.error = DiscoveryError.fromJson(reader);
                 } else {

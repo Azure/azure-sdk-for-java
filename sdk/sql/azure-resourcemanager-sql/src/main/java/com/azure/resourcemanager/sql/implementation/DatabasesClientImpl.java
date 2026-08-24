@@ -124,8 +124,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         Mono<Response<DatabaseListResult>> listByServer(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
-            @QueryParam("$top") Long top, @QueryParam("$skip") Long skip, @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
         @ExpectedResponses({ 200, 202 })
@@ -1103,10 +1102,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param top The number of elements to return from the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param orderby How the results should be ordered.
+     * @param skipToken The skipToken parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,7 +1110,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
-        Long top, Long skip, String filter, String orderby) {
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1133,8 +1129,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServer(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, top, skip, filter, orderby, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, serverName, skipToken, accept, context))
             .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1145,10 +1140,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param top The number of elements to return from the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param orderby How the results should be ordered.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1157,7 +1149,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName,
-        Long top, Long skip, String filter, String orderby, Context context) {
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1177,7 +1169,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
         context = this.client.mergeContext(context);
         return service
             .listByServer(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, serverName, top, skip, filter, orderby, accept, context)
+                resourceGroupName, serverName, skipToken, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1187,20 +1179,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param top The number of elements to return from the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param orderby How the results should be ordered.
+     * @param skipToken The skipToken parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, Long top, Long skip,
-        String filter, String orderby) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, top, skip, filter, orderby),
+    public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, String skipToken) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -1216,12 +1203,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
-        final Long top = null;
-        final Long skip = null;
-        final String filter = null;
-        final String orderby = null;
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, top, skip, filter, orderby),
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -1230,10 +1213,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param top The number of elements to return from the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param orderby How the results should be ordered.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1241,10 +1221,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, Long top, Long skip,
-        String filter, String orderby, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, top, skip, filter, orderby, context),
+    private PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, String skipToken,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -1260,11 +1239,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
-        final Long top = null;
-        final Long skip = null;
-        final String filter = null;
-        final String orderby = null;
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, top, skip, filter, orderby));
+        final String skipToken = null;
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skipToken));
     }
 
     /**
@@ -1272,10 +1248,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param top The number of elements to return from the collection.
-     * @param skip The number of elements in the collection to skip.
-     * @param filter An OData filter expression that filters elements in the collection.
-     * @param orderby How the results should be ordered.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1283,10 +1256,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Long top, Long skip,
-        String filter, String orderby, Context context) {
-        return new PagedIterable<>(
-            listByServerAsync(resourceGroupName, serverName, top, skip, filter, orderby, context));
+    public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, String skipToken,
+        Context context) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skipToken, context));
     }
 
     /**

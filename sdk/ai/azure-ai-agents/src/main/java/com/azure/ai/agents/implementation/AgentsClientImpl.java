@@ -95,20 +95,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The BetaToolboxesImpl object to access its operations.
-     */
-    private final BetaToolboxesImpl betaToolboxes;
-
-    /**
-     * Gets the BetaToolboxesImpl object to access its operations.
-     * 
-     * @return the BetaToolboxesImpl object.
-     */
-    public BetaToolboxesImpl getBetaToolboxes() {
-        return this.betaToolboxes;
-    }
-
-    /**
      * The BetaAgentsImpl object to access its operations.
      */
     private final BetaAgentsImpl betaAgents;
@@ -134,6 +120,20 @@ public final class AgentsClientImpl {
      */
     public AgentsImpl getAgents() {
         return this.agents;
+    }
+
+    /**
+     * The ToolboxesImpl object to access its operations.
+     */
+    private final ToolboxesImpl toolboxes;
+
+    /**
+     * Gets the ToolboxesImpl object to access its operations.
+     * 
+     * @return the ToolboxesImpl object.
+     */
+    public ToolboxesImpl getToolboxes() {
+        return this.toolboxes;
     }
 
     /**
@@ -185,8 +185,8 @@ public final class AgentsClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.betaMemoryStores = new BetaMemoryStoresImpl(this);
-        this.betaToolboxes = new BetaToolboxesImpl(this);
         this.betaAgents = new BetaAgentsImpl(this);
         this.agents = new AgentsImpl(this);
+        this.toolboxes = new ToolboxesImpl(this);
     }
 }

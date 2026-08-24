@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class TimeZonesListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceTimeZoneListByLocation.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceTimeZoneListByLocation.json
      */
     /**
      * Sample code: List managed instance time zones by location.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ManagedDatabasesReevaluateInaccessibleDatabaseStateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseReevaluateInaccessibleDatabaseState.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseReevaluateInaccessibleDatabaseState.json
      */
     /**
      * Sample code: Reevaluate the inaccessibility state of a managed database.

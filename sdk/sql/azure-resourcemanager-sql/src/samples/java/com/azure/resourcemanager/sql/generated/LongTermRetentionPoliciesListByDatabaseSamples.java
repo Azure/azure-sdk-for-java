@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class LongTermRetentionPoliciesListByDatabaseSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/LongTermRetentionPolicyListByDatabase.json
+     * x-ms-original-file: 2025-01-01/LongTermRetentionPolicyListByDatabase.json
      */
     /**
      * Sample code: Get the long term retention policy for the database.

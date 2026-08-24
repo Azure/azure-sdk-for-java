@@ -226,7 +226,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubvolumeInfoInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -274,7 +275,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubvolumeInfoInner> getAsync(String resourceGroupName, String accountName, String poolName,
@@ -295,7 +297,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubvolumeInfoInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -346,7 +349,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -367,7 +371,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
@@ -422,7 +427,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -482,7 +488,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -541,7 +548,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of subvolume Information properties.
+     * @return the {@link PollerFlux} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreateAsync(String resourceGroupName,
@@ -564,7 +572,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subvolume Information properties.
+     * @return the {@link SyncPoller} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
@@ -588,7 +597,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subvolume Information properties.
+     * @return the {@link SyncPoller} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
@@ -612,7 +622,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubvolumeInfoInner> createAsync(String resourceGroupName, String accountName, String poolName,
@@ -633,7 +644,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -654,7 +666,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -675,7 +688,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response} on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
@@ -730,7 +744,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -790,7 +805,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties along with {@link Response}.
+     * @return subvolume Information properties
+     * Deprecated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String poolName,
@@ -849,7 +865,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of subvolume Information properties.
+     * @return the {@link PollerFlux} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdateAsync(String resourceGroupName,
@@ -872,7 +889,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subvolume Information properties.
+     * @return the {@link SyncPoller} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
@@ -896,7 +914,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of subvolume Information properties.
+     * @return the {@link SyncPoller} for polling of subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
@@ -920,7 +939,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties on successful completion of {@link Mono}.
+     * @return subvolume Information properties
+     * Deprecated on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubvolumeInfoInner> updateAsync(String resourceGroupName, String accountName, String poolName,
@@ -941,7 +961,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
@@ -962,7 +983,8 @@ public final class SubvolumesClientImpl implements SubvolumesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
+     * @return subvolume Information properties
+     * Deprecated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,

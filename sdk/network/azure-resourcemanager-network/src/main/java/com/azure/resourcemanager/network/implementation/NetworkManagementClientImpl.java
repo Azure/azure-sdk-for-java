@@ -34,6 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.network.fluent.AddressPrefixSetsClient;
 import com.azure.resourcemanager.network.fluent.AdminRuleCollectionsClient;
 import com.azure.resourcemanager.network.fluent.AdminRulesClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayPrivateEndpointConnectionsClient;
@@ -51,8 +52,10 @@ import com.azure.resourcemanager.network.fluent.AzureFirewallFqdnTagsClient;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.BastionHostsClient;
 import com.azure.resourcemanager.network.fluent.BgpServiceCommunitiesClient;
+import com.azure.resourcemanager.network.fluent.CommitsClient;
 import com.azure.resourcemanager.network.fluent.ConfigurationPolicyGroupsClient;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.ConnectionPoliciesClient;
 import com.azure.resourcemanager.network.fluent.ConnectivityConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.CustomIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesClient;
@@ -67,6 +70,7 @@ import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteLagsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRouteLinksClient;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsClient;
@@ -79,13 +83,16 @@ import com.azure.resourcemanager.network.fluent.FirewallPolicyDraftsClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesFilterValuesClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesOverridesClient;
+import com.azure.resourcemanager.network.fluent.FirewallPolicyKubeSelectorGroupsClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleCollectionGroupDraftsClient;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleCollectionGroupsClient;
+import com.azure.resourcemanager.network.fluent.FirstPartyServiceTagsClient;
 import com.azure.resourcemanager.network.fluent.FlowLogsClient;
 import com.azure.resourcemanager.network.fluent.HubRouteTablesClient;
 import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.InboundNatRulesClient;
 import com.azure.resourcemanager.network.fluent.InboundSecurityRuleOperationsClient;
+import com.azure.resourcemanager.network.fluent.InterconnectGroupsClient;
 import com.azure.resourcemanager.network.fluent.IpAllocationsClient;
 import com.azure.resourcemanager.network.fluent.IpGroupsClient;
 import com.azure.resourcemanager.network.fluent.IpamPoolsClient;
@@ -160,6 +167,7 @@ import com.azure.resourcemanager.network.fluent.ServiceTagInformationsClient;
 import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
 import com.azure.resourcemanager.network.fluent.StaticCidrsClient;
 import com.azure.resourcemanager.network.fluent.StaticMembersClient;
+import com.azure.resourcemanager.network.fluent.SubgroupsClient;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.SubscriptionNetworkManagerConnectionsClient;
 import com.azure.resourcemanager.network.fluent.UsagesClient;
@@ -579,6 +587,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The ExpressRouteLagsClient object to access its operations.
+     */
+    private final ExpressRouteLagsClient expressRouteLags;
+
+    /**
+     * Gets the ExpressRouteLagsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagsClient object.
+     */
+    public ExpressRouteLagsClient getExpressRouteLags() {
+        return this.expressRouteLags;
+    }
+
+    /**
      * The FirewallPoliciesClient object to access its operations.
      */
     private final FirewallPoliciesClient firewallPolicies;
@@ -604,6 +626,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups() {
         return this.firewallPolicyRuleCollectionGroups;
+    }
+
+    /**
+     * The FirewallPolicyKubeSelectorGroupsClient object to access its operations.
+     */
+    private final FirewallPolicyKubeSelectorGroupsClient firewallPolicyKubeSelectorGroups;
+
+    /**
+     * Gets the FirewallPolicyKubeSelectorGroupsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyKubeSelectorGroupsClient object.
+     */
+    public FirewallPolicyKubeSelectorGroupsClient getFirewallPolicyKubeSelectorGroups() {
+        return this.firewallPolicyKubeSelectorGroups;
     }
 
     /**
@@ -898,6 +934,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ScopeConnectionsClient getScopeConnections() {
         return this.scopeConnections;
+    }
+
+    /**
+     * The CommitsClient object to access its operations.
+     */
+    private final CommitsClient commits;
+
+    /**
+     * Gets the CommitsClient object to access its operations.
+     * 
+     * @return the CommitsClient object.
+     */
+    public CommitsClient getCommits() {
+        return this.commits;
     }
 
     /**
@@ -1573,6 +1623,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The ConnectionPoliciesClient object to access its operations.
+     */
+    private final ConnectionPoliciesClient connectionPolicies;
+
+    /**
+     * Gets the ConnectionPoliciesClient object to access its operations.
+     * 
+     * @return the ConnectionPoliciesClient object.
+     */
+    public ConnectionPoliciesClient getConnectionPolicies() {
+        return this.connectionPolicies;
+    }
+
+    /**
      * The WebApplicationFirewallPoliciesClient object to access its operations.
      */
     private final WebApplicationFirewallPoliciesClient webApplicationFirewallPolicies;
@@ -1612,6 +1676,62 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public ServiceGatewaysClient getServiceGateways() {
         return this.serviceGateways;
+    }
+
+    /**
+     * The InterconnectGroupsClient object to access its operations.
+     */
+    private final InterconnectGroupsClient interconnectGroups;
+
+    /**
+     * Gets the InterconnectGroupsClient object to access its operations.
+     * 
+     * @return the InterconnectGroupsClient object.
+     */
+    public InterconnectGroupsClient getInterconnectGroups() {
+        return this.interconnectGroups;
+    }
+
+    /**
+     * The SubgroupsClient object to access its operations.
+     */
+    private final SubgroupsClient subgroups;
+
+    /**
+     * Gets the SubgroupsClient object to access its operations.
+     * 
+     * @return the SubgroupsClient object.
+     */
+    public SubgroupsClient getSubgroups() {
+        return this.subgroups;
+    }
+
+    /**
+     * The FirstPartyServiceTagsClient object to access its operations.
+     */
+    private final FirstPartyServiceTagsClient firstPartyServiceTags;
+
+    /**
+     * Gets the FirstPartyServiceTagsClient object to access its operations.
+     * 
+     * @return the FirstPartyServiceTagsClient object.
+     */
+    public FirstPartyServiceTagsClient getFirstPartyServiceTags() {
+        return this.firstPartyServiceTags;
+    }
+
+    /**
+     * The AddressPrefixSetsClient object to access its operations.
+     */
+    private final AddressPrefixSetsClient addressPrefixSets;
+
+    /**
+     * Gets the AddressPrefixSetsClient object to access its operations.
+     * 
+     * @return the AddressPrefixSetsClient object.
+     */
+    public AddressPrefixSetsClient getAddressPrefixSets() {
+        return this.addressPrefixSets;
     }
 
     /**
@@ -2536,8 +2656,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.expressRoutePortsLocations = new ExpressRoutePortsLocationsClientImpl(this);
         this.expressRoutePorts = new ExpressRoutePortsClientImpl(this);
         this.expressRoutePortAuthorizations = new ExpressRoutePortAuthorizationsClientImpl(this);
+        this.expressRouteLags = new ExpressRouteLagsClientImpl(this);
         this.firewallPolicies = new FirewallPoliciesClientImpl(this);
         this.firewallPolicyRuleCollectionGroups = new FirewallPolicyRuleCollectionGroupsClientImpl(this);
+        this.firewallPolicyKubeSelectorGroups = new FirewallPolicyKubeSelectorGroupsClientImpl(this);
         this.firewallPolicyIdpsSignaturesOverrides = new FirewallPolicyIdpsSignaturesOverridesClientImpl(this);
         this.firewallPolicyDrafts = new FirewallPolicyDraftsClientImpl(this);
         this.firewallPolicyRuleCollectionGroupDrafts = new FirewallPolicyRuleCollectionGroupDraftsClientImpl(this);
@@ -2559,6 +2681,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.routingRuleCollections = new RoutingRuleCollectionsClientImpl(this);
         this.routingRules = new RoutingRulesClientImpl(this);
         this.scopeConnections = new ScopeConnectionsClientImpl(this);
+        this.commits = new CommitsClientImpl(this);
         this.securityAdminConfigurations = new SecurityAdminConfigurationsClientImpl(this);
         this.adminRuleCollections = new AdminRuleCollectionsClientImpl(this);
         this.securityUserConfigurations = new SecurityUserConfigurationsClientImpl(this);
@@ -2607,9 +2730,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.p2SVpnGateways = new P2SVpnGatewaysClientImpl(this);
         this.expressRouteGateways = new ExpressRouteGatewaysClientImpl(this);
         this.hubRouteTables = new HubRouteTablesClientImpl(this);
+        this.connectionPolicies = new ConnectionPoliciesClientImpl(this);
         this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClientImpl(this);
         this.virtualNetworkAppliances = new VirtualNetworkAppliancesClientImpl(this);
         this.serviceGateways = new ServiceGatewaysClientImpl(this);
+        this.interconnectGroups = new InterconnectGroupsClientImpl(this);
+        this.subgroups = new SubgroupsClientImpl(this);
+        this.firstPartyServiceTags = new FirstPartyServiceTagsClientImpl(this);
+        this.addressPrefixSets = new AddressPrefixSetsClientImpl(this);
         this.applicationGatewayPrivateLinkResources = new ApplicationGatewayPrivateLinkResourcesClientImpl(this);
         this.applicationGatewayWafDynamicManifestsDefaults
             = new ApplicationGatewayWafDynamicManifestsDefaultsClientImpl(this);
@@ -2899,7 +3027,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono = service
@@ -2954,7 +3082,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = service
@@ -3080,7 +3208,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLink(this.getEndpoint(), apiVersion,
@@ -3124,7 +3252,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLink(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -3314,7 +3442,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLinkByToken(this.getEndpoint(), apiVersion,
@@ -3360,7 +3488,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLinkByToken(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -3552,7 +3680,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBastionShareableLink(this.getEndpoint(), apiVersion,
@@ -3599,7 +3727,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3713,7 +3841,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -3762,7 +3890,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter bastionHostName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3883,7 +4011,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectActiveSessions(this.getEndpoint(), apiVersion,
@@ -3930,7 +4058,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -4038,7 +4166,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (providerport == null) {
             return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.expressRouteProviderPort(this.getEndpoint(), apiVersion,
@@ -4070,7 +4198,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (providerport == null) {
             return Mono.error(new IllegalArgumentException("Parameter providerport is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.expressRouteProviderPort(this.getEndpoint(), apiVersion, this.getSubscriptionId(), providerport,
@@ -4160,7 +4288,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4210,7 +4338,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4317,7 +4445,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4367,7 +4495,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4474,7 +4602,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4524,7 +4652,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4636,7 +4764,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4686,7 +4814,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -4785,7 +4913,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWANName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWANName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedSecurityProviders(this.getEndpoint(), apiVersion,
@@ -4822,7 +4950,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWANName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWANName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.supportedSecurityProviders(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -4916,7 +5044,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -4965,7 +5093,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.mergeContext(context);
@@ -5173,7 +5301,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkDnsNameAvailability(this.getEndpoint(), apiVersion,
@@ -5212,7 +5340,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.checkDnsNameAvailability(this.getEndpoint(), apiVersion, this.getSubscriptionId(), location,

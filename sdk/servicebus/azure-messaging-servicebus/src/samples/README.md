@@ -51,6 +51,8 @@ connection string value can be obtained by:
 - [Process all session messages using processor][ServiceBusSessionProcessorSample]
 - [Receive messages from a specific session][ReceiveNamedSessionAsyncSample]
 - [Receive messages from the first available session][ReceiveSingleSessionAsyncSample]
+- [List session IDs synchronously][ListSessionsSample]
+- [List session IDs asynchronously][ListSessionsAsyncSample]
 
 ### Synchronous Administration Client operations
 - [Update queue properties synchronously][AdministrationClientUpdateQueueSample]
@@ -79,6 +81,8 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/README.md#next-steps
 
 [PeekMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/PeekMessageAsyncSample.java
+[ListSessionsAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ListSessionsAsyncSample.java
+[ListSessionsSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ListSessionsSample.java
 [ReceiveMessageAndSettleAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
 [ReceiveMessageAsyncSample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
 [ReceiveMessageAutoLockRenewal]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAutoLockRenewal.java

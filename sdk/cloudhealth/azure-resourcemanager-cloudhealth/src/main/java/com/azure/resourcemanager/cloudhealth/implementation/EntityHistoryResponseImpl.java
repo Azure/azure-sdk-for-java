@@ -34,6 +34,10 @@ public final class EntityHistoryResponseImpl implements EntityHistoryResponse {
         }
     }
 
+    public String nextMarker() {
+        return this.innerModel().nextMarker();
+    }
+
     public EntityHistoryResponseInner innerModel() {
         return this.innerObject;
     }

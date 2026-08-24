@@ -209,6 +209,13 @@ public interface NetworkManagementClient {
     ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations();
 
     /**
+     * Gets the ExpressRouteLagsClient object to access its operations.
+     * 
+     * @return the ExpressRouteLagsClient object.
+     */
+    ExpressRouteLagsClient getExpressRouteLags();
+
+    /**
      * Gets the FirewallPoliciesClient object to access its operations.
      * 
      * @return the FirewallPoliciesClient object.
@@ -221,6 +228,13 @@ public interface NetworkManagementClient {
      * @return the FirewallPolicyRuleCollectionGroupsClient object.
      */
     FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
+
+    /**
+     * Gets the FirewallPolicyKubeSelectorGroupsClient object to access its operations.
+     * 
+     * @return the FirewallPolicyKubeSelectorGroupsClient object.
+     */
+    FirewallPolicyKubeSelectorGroupsClient getFirewallPolicyKubeSelectorGroups();
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
@@ -368,6 +382,13 @@ public interface NetworkManagementClient {
      * @return the ScopeConnectionsClient object.
      */
     ScopeConnectionsClient getScopeConnections();
+
+    /**
+     * Gets the CommitsClient object to access its operations.
+     * 
+     * @return the CommitsClient object.
+     */
+    CommitsClient getCommits();
 
     /**
      * Gets the SecurityAdminConfigurationsClient object to access its operations.
@@ -706,6 +727,13 @@ public interface NetworkManagementClient {
     HubRouteTablesClient getHubRouteTables();
 
     /**
+     * Gets the ConnectionPoliciesClient object to access its operations.
+     * 
+     * @return the ConnectionPoliciesClient object.
+     */
+    ConnectionPoliciesClient getConnectionPolicies();
+
+    /**
      * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
      * 
      * @return the WebApplicationFirewallPoliciesClient object.
@@ -725,6 +753,34 @@ public interface NetworkManagementClient {
      * @return the ServiceGatewaysClient object.
      */
     ServiceGatewaysClient getServiceGateways();
+
+    /**
+     * Gets the InterconnectGroupsClient object to access its operations.
+     * 
+     * @return the InterconnectGroupsClient object.
+     */
+    InterconnectGroupsClient getInterconnectGroups();
+
+    /**
+     * Gets the SubgroupsClient object to access its operations.
+     * 
+     * @return the SubgroupsClient object.
+     */
+    SubgroupsClient getSubgroups();
+
+    /**
+     * Gets the FirstPartyServiceTagsClient object to access its operations.
+     * 
+     * @return the FirstPartyServiceTagsClient object.
+     */
+    FirstPartyServiceTagsClient getFirstPartyServiceTags();
+
+    /**
+     * Gets the AddressPrefixSetsClient object to access its operations.
+     * 
+     * @return the AddressPrefixSetsClient object.
+     */
+    AddressPrefixSetsClient getAddressPrefixSets();
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.

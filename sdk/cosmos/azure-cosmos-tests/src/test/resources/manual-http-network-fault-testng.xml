@@ -2,6 +2,7 @@
 <suite name="manual-http-network-fault" parallel="false" thread-count="1">
   <listeners>
     <listener class-name="com.azure.cosmos.CosmosNettyLeakDetectorFactory"/>
+    <listener class-name="com.azure.cosmos.CosmosTestResourceJanitor"/>
   </listeners>
   <test name="manual-http-network-fault" group-by-instances="true">
     <groups>

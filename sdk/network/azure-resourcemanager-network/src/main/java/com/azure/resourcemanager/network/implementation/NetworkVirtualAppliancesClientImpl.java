@@ -39,6 +39,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceIn
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdsInner;
 import com.azure.resourcemanager.network.implementation.models.NetworkVirtualApplianceListResult;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceBootDiagnosticParameters;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceCommitMigrationRequest;
+import com.azure.resourcemanager.network.models.NetworkVirtualApplianceExecuteMigrationRequest;
+import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePrepareMigrationRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -170,6 +173,48 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") NetworkVirtualApplianceBootDiagnosticParameters request, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/prepareMigration")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> prepareMigration(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") NetworkVirtualAppliancePrepareMigrationRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/executeMigration")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> executeMigration(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") NetworkVirtualApplianceExecuteMigrationRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/commitMigration")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> commitMigration(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName,
+            @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") NetworkVirtualApplianceCommitMigrationRequest body, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/abortMigration")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> abortMigration(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkVirtualApplianceName") String networkVirtualApplianceName, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -218,7 +263,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, expand, accept, context))
@@ -257,7 +302,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -354,7 +399,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -400,7 +445,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -598,7 +643,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -644,7 +689,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -735,7 +780,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, context))
@@ -772,7 +817,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(
                 new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             networkVirtualApplianceName, context);
@@ -937,7 +982,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -973,7 +1018,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1064,7 +1109,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1094,7 +1139,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1191,7 +1236,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restart(this.client.getEndpoint(), apiVersion,
@@ -1237,7 +1282,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.restart(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1500,7 +1545,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reimage(this.client.getEndpoint(), apiVersion,
@@ -1546,7 +1591,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         if (networkVirtualApplianceInstanceIds != null) {
             networkVirtualApplianceInstanceIds.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reimage(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1808,7 +1853,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1854,7 +1899,7 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
         } else {
             request.validate();
         }
-        final String apiVersion = "2025-05-01";
+        final String apiVersion = "2025-09-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -2017,6 +2062,949 @@ public final class NetworkVirtualAppliancesClientImpl implements InnerSupportsGe
     public NetworkVirtualApplianceInstanceIdInner getBootDiagnosticLogs(String resourceGroupName,
         String networkVirtualApplianceName, NetworkVirtualApplianceBootDiagnosticParameters request, Context context) {
         return getBootDiagnosticLogsAsync(resourceGroupName, networkVirtualApplianceName, request, context).block();
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> prepareMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.prepareMigration(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, contentType, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> prepareMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        context = this.client.mergeContext(context);
+        return service.prepareMigration(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkVirtualApplianceName, contentType, body, context);
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginPrepareMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = prepareMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginPrepareMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = prepareMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPrepareMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body) {
+        return this.beginPrepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).getSyncPoller();
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginPrepareMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualAppliancePrepareMigrationRequest body, Context context) {
+        return this.beginPrepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> prepareMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body) {
+        return beginPrepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> prepareMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body, Context context) {
+        return beginPrepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void prepareMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body) {
+        prepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).block();
+    }
+
+    /**
+     * Prepares the migration of the specified Network Virtual Appliance. This is the first step of a migration
+     * workflow, such as migrating to a new OS version or to the new internal load balancer architecture.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to prepare the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void prepareMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualAppliancePrepareMigrationRequest body, Context context) {
+        prepareMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).block();
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> executeMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.executeMigration(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, contentType, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> executeMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        context = this.client.mergeContext(context);
+        return service.executeMigration(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkVirtualApplianceName, contentType, body, context);
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginExecuteMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginExecuteMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body) {
+        return this.beginExecuteMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).getSyncPoller();
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginExecuteMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceExecuteMigrationRequest body, Context context) {
+        return this.beginExecuteMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> executeMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body) {
+        return beginExecuteMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> executeMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body, Context context) {
+        return beginExecuteMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body) {
+        executeMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).block();
+    }
+
+    /**
+     * Executes the migration of the specified Network Virtual Appliance. This step performs the migration workflow that
+     * was previously prepared.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to execute the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void executeMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceExecuteMigrationRequest body, Context context) {
+        executeMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).block();
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> commitMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.commitMigration(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, contentType, body,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> commitMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String apiVersion = "2025-09-01";
+        final String contentType = "application/json";
+        context = this.client.mergeContext(context);
+        return service.commitMigration(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkVirtualApplianceName, contentType, body, context);
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginCommitMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginCommitMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = commitMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, body, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCommitMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body) {
+        return this.beginCommitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).getSyncPoller();
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginCommitMigration(String resourceGroupName,
+        String networkVirtualApplianceName, NetworkVirtualApplianceCommitMigrationRequest body, Context context) {
+        return this.beginCommitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> commitMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body) {
+        return beginCommitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> commitMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body, Context context) {
+        return beginCommitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void commitMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body) {
+        commitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body).block();
+    }
+
+    /**
+     * Commits the migration of the specified Network Virtual Appliance. This finalizes a previously executed migration
+     * workflow.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param body Parameters supplied to commit the migration of the Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void commitMigration(String resourceGroupName, String networkVirtualApplianceName,
+        NetworkVirtualApplianceCommitMigrationRequest body, Context context) {
+        commitMigrationAsync(resourceGroupName, networkVirtualApplianceName, body, context).block();
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> abortMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        return FluxUtil
+            .withContext(context -> service.abortMigration(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, networkVirtualApplianceName, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> abortMigrationWithResponseAsync(String resourceGroupName,
+        String networkVirtualApplianceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkVirtualApplianceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter networkVirtualApplianceName is required and cannot be null."));
+        }
+        final String apiVersion = "2025-09-01";
+        context = this.client.mergeContext(context);
+        return service.abortMigration(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, networkVirtualApplianceName, context);
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginAbortMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = abortMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginAbortMigrationAsync(String resourceGroupName,
+        String networkVirtualApplianceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = abortMigrationWithResponseAsync(resourceGroupName, networkVirtualApplianceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortMigration(String resourceGroupName,
+        String networkVirtualApplianceName) {
+        return this.beginAbortMigrationAsync(resourceGroupName, networkVirtualApplianceName).getSyncPoller();
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginAbortMigration(String resourceGroupName,
+        String networkVirtualApplianceName, Context context) {
+        return this.beginAbortMigrationAsync(resourceGroupName, networkVirtualApplianceName, context).getSyncPoller();
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> abortMigrationAsync(String resourceGroupName, String networkVirtualApplianceName) {
+        return beginAbortMigrationAsync(resourceGroupName, networkVirtualApplianceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> abortMigrationAsync(String resourceGroupName, String networkVirtualApplianceName,
+        Context context) {
+        return beginAbortMigrationAsync(resourceGroupName, networkVirtualApplianceName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortMigration(String resourceGroupName, String networkVirtualApplianceName) {
+        abortMigrationAsync(resourceGroupName, networkVirtualApplianceName).block();
+    }
+
+    /**
+     * Aborts an in-progress migration of the specified Network Virtual Appliance and rolls back to the previous state.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkVirtualApplianceName The name of Network Virtual Appliance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void abortMigration(String resourceGroupName, String networkVirtualApplianceName, Context context) {
+        abortMigrationAsync(resourceGroupName, networkVirtualApplianceName, context).block();
     }
 
     /**

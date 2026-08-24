@@ -27,7 +27,8 @@ public final class AccountConnectionsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.accountConnections().deleteWithResponse("kwwnq", "qlq", "pwxtvc", com.azure.core.util.Context.NONE);
+        manager.accountConnections()
+            .deleteWithResponse("hrvybn", "bnvmshfuzzlapy", "xlvzcgulaebxiauq", com.azure.core.util.Context.NONE);
 
     }
 }

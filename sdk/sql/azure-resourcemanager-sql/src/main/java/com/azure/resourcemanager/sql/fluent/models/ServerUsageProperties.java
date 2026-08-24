@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 
 /**
  * Properties of a server usage.
@@ -35,6 +37,16 @@ public final class ServerUsageProperties implements JsonSerializable<ServerUsage
      * Unit of the metric.
      */
     private String unit;
+
+    /*
+     * The name of the resource.
+     */
+    private String resourceName;
+
+    /*
+     * The next reset time for the metric (ISO8601 format).
+     */
+    private OffsetDateTime nextResetTime;
 
     /**
      * Creates an instance of ServerUsageProperties class.
@@ -79,6 +91,24 @@ public final class ServerUsageProperties implements JsonSerializable<ServerUsage
     }
 
     /**
+     * Get the resourceName property: The name of the resource.
+     * 
+     * @return the resourceName value.
+     */
+    public String resourceName() {
+        return this.resourceName;
+    }
+
+    /**
+     * Get the nextResetTime property: The next reset time for the metric (ISO8601 format).
+     * 
+     * @return the nextResetTime value.
+     */
+    public OffsetDateTime nextResetTime() {
+        return this.nextResetTime;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -118,6 +148,11 @@ public final class ServerUsageProperties implements JsonSerializable<ServerUsage
                     deserializedServerUsageProperties.limit = reader.getNullable(JsonReader::getDouble);
                 } else if ("unit".equals(fieldName)) {
                     deserializedServerUsageProperties.unit = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedServerUsageProperties.resourceName = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedServerUsageProperties.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
