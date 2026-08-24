@@ -35,9 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -133,7 +132,11 @@ final class BulkExecutorUtil {
                 docClientWrapper,
                 container,
                 operation.getPartitionKeyValue(),
-                () -> resolveItemId(itemBulkOperation, effectiveItemSerializer),
+                (partitionKeyDefinition, partitionKeyInternal) ->
+                    PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeededLazy(
+                        partitionKeyDefinition,
+                        partitionKeyInternal,
+                        () -> resolveItemId(itemBulkOperation, effectiveItemSerializer)),
                 (partitionKeyInternal -> itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson())));
 
         } else {
@@ -167,41 +170,24 @@ final class BulkExecutorUtil {
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
         PartitionKey partitionKey,
-        Supplier<String> itemIdSupplier,
-        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
+        BiFunction<PartitionKeyDefinition, PartitionKeyInternal, PartitionKeyInternal> partitionKeyTransformer) {
 
         return resolvePartitionKeyRangeId(
             docClientWrapper,
             container,
             partitionKey,
-            itemIdSupplier,
-            partitionKeyInternalConsumer,
+            partitionKeyTransformer,
             null);
-    }
-
-    static Mono<String> resolvePartitionKeyRangeId(
-        AsyncDocumentClient docClientWrapper,
-        CosmosAsyncContainer container,
-        PartitionKey partitionKey,
-        BiConsumer<PartitionKeyDefinition, PartitionKeyInternal> partitionKeyValidator) {
-
-        return resolvePartitionKeyRangeId(
-            docClientWrapper,
-            container,
-            partitionKey,
-            null,
-            null,
-            partitionKeyValidator);
     }
 
     private static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
         PartitionKey partitionKey,
-        Supplier<String> itemIdSupplier,
-        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer,
-        BiConsumer<PartitionKeyDefinition, PartitionKeyInternal> partitionKeyValidator) {
+        BiFunction<PartitionKeyDefinition, PartitionKeyInternal, PartitionKeyInternal> partitionKeyTransformer,
+        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
 
+        checkNotNull(partitionKeyTransformer, "expected non-null partitionKeyTransformer");
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
 
         return Mono.defer(() ->
@@ -209,23 +195,8 @@ final class BulkExecutorUtil {
                            .getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
                            .flatMap(collection -> {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
-                               PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(partitionKey, definition);
-                               if (partitionKeyValidator != null) {
-                                   partitionKeyValidator.accept(definition, partitionKeyInternal);
-                               }
-
-                               // Hierarchical partition key ending in "/id": append the item id so
-                               // callers can pass only the prefix of the partition key. The item id
-                               // (resolving which may serialize the item) is only fetched when the
-                               // provided key is omitted or is exactly the prefix ending before /id.
-                               if (PartitionKeyHelper.canCompletePartitionKeyWithId(
-                                       definition, partitionKeyInternal)) {
-
-                                   String itemId = itemIdSupplier == null ? null : itemIdSupplier.get();
-                                   partitionKeyInternal =
-                                       PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(
-                                           definition, partitionKeyInternal, itemId);
-                               }
+                               PartitionKeyInternal partitionKeyInternal = partitionKeyTransformer.apply(
+                                   definition, getPartitionKeyInternal(partitionKey, definition));
                                if (partitionKeyInternalConsumer != null) {
                                    partitionKeyInternalConsumer.accept(partitionKeyInternal);
                                }

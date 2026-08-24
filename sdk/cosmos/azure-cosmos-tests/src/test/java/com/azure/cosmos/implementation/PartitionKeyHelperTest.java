@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -94,6 +95,17 @@ public class PartitionKeyHelperTest {
             definition,
             toInternal(new PartitionKeyBuilder().add("10001").add("Seattle").build()))).isFalse();
         assertThat(PartitionKeyHelper.isFullPartitionKey(definition, null)).isFalse();
+    }
+
+    @Test(groups = "unit")
+    public void requireFullPartitionKey_rejectsIncompleteKey() {
+        PartitionKeyDefinition definition =
+            pkDefinition(PartitionKind.MULTI_HASH, "/ZipCode", "/City");
+        PartitionKeyInternal provided = toInternal(new PartitionKey("10001"));
+
+        assertThatThrownBy(() -> PartitionKeyHelper.requireFullPartitionKey(definition, provided))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(RMResources.PartitionKeyMismatch);
     }
 
     @Test(groups = "unit")
@@ -179,6 +191,25 @@ public class PartitionKeyHelperTest {
             PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeeded(definition, provided, "myId");
 
         assertThat(result).isSameAs(provided);
+    }
+
+    @Test(groups = "unit")
+    public void ensureId_fullySpecifiedPartitionKey_doesNotResolveItemId() {
+        PartitionKeyDefinition definition = pkDefinition(PartitionKind.MULTI_HASH, "/pk", "/id");
+        PartitionKeyInternal provided =
+            toInternal(new PartitionKeyBuilder().add("pkValue").add("myId").build());
+        AtomicBoolean itemIdRequested = new AtomicBoolean();
+
+        PartitionKeyInternal result = PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeededLazy(
+            definition,
+            provided,
+            () -> {
+                itemIdRequested.set(true);
+                return "otherId";
+            });
+
+        assertThat(result).isSameAs(provided);
+        assertThat(itemIdRequested).isFalse();
     }
 
     @Test(groups = "unit")

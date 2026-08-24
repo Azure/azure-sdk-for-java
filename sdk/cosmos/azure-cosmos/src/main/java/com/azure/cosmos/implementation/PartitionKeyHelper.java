@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Utility class for partition key extraction
@@ -96,6 +97,25 @@ public class PartitionKeyHelper {
     }
 
     /**
+     * Requires a partition key with one component for every path in the container's partition key definition.
+     *
+     * @param partitionKeyDefinition the partition key definition of the container.
+     * @param providedPartitionKey the partition key provided by the caller.
+     * @return the provided partition key.
+     * @throws IllegalArgumentException if the partition key is not fully specified.
+     */
+    public static PartitionKeyInternal requireFullPartitionKey(
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal providedPartitionKey) {
+
+        if (!isFullPartitionKey(partitionKeyDefinition, providedPartitionKey)) {
+            throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+        }
+
+        return providedPartitionKey;
+    }
+
+    /**
      * When the last path of a (hierarchical) partition key definition is "/id", ensures the item's
      * id is part of the partition key so callers can address an item using only the prefix of the
      * partition key (i.e. without repeating the id). For a single-path "/id" definition, the empty
@@ -124,11 +144,41 @@ public class PartitionKeyHelper {
         PartitionKeyInternal providedPartitionKey,
         String itemId) {
 
-        // The provided partition key is already complete (or the container does not end in "/id"),
-        // so there is nothing to append and it is returned unchanged.
         if (!canCompletePartitionKeyWithId(partitionKeyDefinition, providedPartitionKey)) {
             return providedPartitionKey;
         }
+
+        return completePartitionKeyInternalWithId(
+            partitionKeyDefinition, providedPartitionKey, itemId);
+    }
+
+    /**
+     * Completes a partition key with an item id obtained lazily when completion is required.
+     *
+     * @param partitionKeyDefinition the partition key definition of the container.
+     * @param providedPartitionKey the partition key provided by the caller (may be null).
+     * @param itemIdSupplier supplies the item id only when the partition key is eligible for completion.
+     * @return the (possibly augmented) partition key internal.
+     */
+    public static PartitionKeyInternal completePartitionKeyInternalWithIdIfNeededLazy(
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal providedPartitionKey,
+        Supplier<String> itemIdSupplier) {
+
+        if (!canCompletePartitionKeyWithId(partitionKeyDefinition, providedPartitionKey)) {
+            return providedPartitionKey;
+        }
+
+        return completePartitionKeyInternalWithId(
+            partitionKeyDefinition,
+            providedPartitionKey,
+            itemIdSupplier == null ? null : itemIdSupplier.get());
+    }
+
+    private static PartitionKeyInternal completePartitionKeyInternalWithId(
+        PartitionKeyDefinition partitionKeyDefinition,
+        PartitionKeyInternal providedPartitionKey,
+        String itemId) {
 
         int pathCount = partitionKeyDefinition.getPaths().size();
         boolean hasProvidedPartitionKey =

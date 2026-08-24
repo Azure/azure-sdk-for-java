@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -834,11 +833,7 @@ public final class TransactionalBulkExecutor implements Disposable {
             docClientWrapper,
             container,
             cosmosBatchBulkOperation.getPartitionKeyValue(),
-            (partitionKeyDefinition, partitionKeyInternal) -> {
-                if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
-                    throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
-                }
-            });
+            PartitionKeyHelper::requireFullPartitionKey);
     }
 
     private CosmosBatchRequestOptions getBatchRequestOptions() {

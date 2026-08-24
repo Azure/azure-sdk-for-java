@@ -2651,9 +2651,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
             }
 
-            if (!PartitionKeyHelper.isFullPartitionKey(partitionKeyDefinition, partitionKeyInternal)) {
-                throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
-            }
+            partitionKeyInternal =
+                PartitionKeyHelper.requireFullPartitionKey(partitionKeyDefinition, partitionKeyInternal);
 
             request.setPartitionKeyInternal(partitionKeyInternal);
             request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
@@ -4525,10 +4524,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         ModelBridgeInternal.getPartitionKeyInternal(itemIdentity.getPartitionKey());
 
                                     //Check no partial partition keys are being used
-                                    if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH) &&
-                                        !PartitionKeyHelper.isFullPartitionKey(
-                                            pkDefinition, itemPartitionKeyInternal)) {
-                                        throw new IllegalArgumentException(RMResources.PartitionKeyMismatch);
+                                    if (pkDefinition.getKind().equals(PartitionKind.MULTI_HASH)) {
+                                        PartitionKeyHelper.requireFullPartitionKey(
+                                            pkDefinition, itemPartitionKeyInternal);
                                     }
                                     String effectivePartitionKeyString = PartitionKeyInternalHelper
                                         .getEffectivePartitionKeyString(
