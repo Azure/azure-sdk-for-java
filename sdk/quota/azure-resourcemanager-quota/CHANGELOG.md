@@ -178,8 +178,8 @@
 
 #### `QuotaManager` was modified
 
-* `quotaTransfers()` was added
 * `incomingQuotaTransfers()` was added
+* `quotaTransfers()` was added
 
 ## 2.0.0 (2025-09-19)
 
