@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -137,6 +138,26 @@ public class EncryptorV2NonceTests {
     }
 
     @Test
+    public void getCipherUsesFullLongNonceAtSignExtensionBoundary() throws Exception {
+        // The nonce truncation defect lived at the getCipher call site, not in computeRegionNonce. Exercise getCipher
+        // directly at the sign-extension boundaries and confirm the Cipher is initialized with the full-long nonce.
+        SecretKey key = new SecretKeySpec(randomBytes(32), CryptographyConstants.AES);
+        BlobClientSideEncryptionOptions options
+            = new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(16);
+        EncryptorV2 encryptor = new EncryptorV2(key, options, ENCRYPTION_PROTOCOL_V2);
+
+        for (long index : new long[] { 1L << 31, (1L << 32) - 1, 1L << 32, (1L << 32) + 5, 1L << 40 }) {
+            byte[] actualIv = encryptor.getCipher(index).getIV();
+            assertArrayEquals(EncryptorV2.computeRegionNonce(index), actualIv,
+                "cipher IV must equal the full-long nonce for index=" + index);
+            // A truncated-int counter would either sign-extend or discard high bits; confirm we did not produce that nonce.
+            byte[] truncatedIv = ByteBuffer.allocate(NONCE_LENGTH).putLong((int) index).array();
+            assertFalse(java.util.Arrays.equals(truncatedIv, actualIv),
+                "cipher IV must differ from the truncated-int nonce for index=" + index);
+        }
+    }
+
+    @Test
     public void encryptEmitsSequentialRegionNonces() {
         // End-to-end: encrypt a multi-region blob with a small region size and confirm each region is prefixed with the
         // nonce for its sequential index.
@@ -152,6 +173,7 @@ public class EncryptorV2NonceTests {
         byte[] plaintext = randomBytes(plaintextLength);
         List<ByteBuffer> emitted = encryptor.encrypt(Flux.just(ByteBuffer.wrap(plaintext))).collectList().block();
 
+        Assertions.assertNotNull(emitted);
         byte[] ciphertext = concat(emitted);
         int offset = 0;
         int remaining = plaintextLength;

@@ -81,7 +81,7 @@ class EncryptorV2 extends Encryptor {
         return ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
     }
 
-    private Cipher getCipher(long index) throws GeneralSecurityException {
+    Cipher getCipher(long index) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
         byte[] iv = computeRegionNonce(index);
 
