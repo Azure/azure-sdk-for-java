@@ -249,6 +249,7 @@ final class ServerSentEventStream {
 
         private List<ServerSentEventFrame> finish() {
             if (lineLength > 0) {
+                // Validate trailing bytes even though an unterminated SSE event is discarded.
                 decodeLine();
             }
             return Collections.emptyList();

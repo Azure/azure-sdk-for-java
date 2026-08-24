@@ -44,6 +44,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KnowledgeBaseRetrievalStreamTests {
+    private static final HttpHeaderName QUERY_SOURCE_AUTHORIZATION
+        = HttpHeaderName.fromString("x-ms-query-source-authorization");
+    private static final HttpHeaderName QUERY_WORK_IQ_SOURCE_AUTHORIZATION
+        = HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization");
+    private static final String QUERY_SOURCE_TOKEN = "query-source-token";
+    private static final String QUERY_WORK_IQ_SOURCE_TOKEN = "query-work-iq-source-token";
     private static final String RETRIEVAL_STARTED_JSON
         = "{\"requestId\":\"request\",\"knowledgeBaseName\":\"kb\",\"outputMode\":\"answerSynthesis\","
             + "\"reasoningEffort\":{\"kind\":\"auto\"}}";
@@ -114,11 +120,13 @@ public class KnowledgeBaseRetrievalStreamTests {
     }
 
     @Test
-    public void asyncClientEmitsTerminalEventBeforeCompletion() {
+    public void asyncClientForwardsAuthorizationHeadersAndEmitsTerminalEvent() {
         KnowledgeBaseRetrievalAsyncClient client = createBuilder(streamWithUnknownEvent()).buildAsyncClient();
 
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
-            = client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block();
+            = client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN)
+                .collectList()
+                .block();
 
         assertNotNull(events);
         assertEquals(3, events.size());
@@ -135,13 +143,13 @@ public class KnowledgeBaseRetrievalStreamTests {
     }
 
     @Test
-    public void syncClientDeliversTerminalEventBeforeClose() {
+    public void syncClientForwardsAuthorizationHeadersAndDeliversTerminalEvent() {
         KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent()).buildClient();
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
         AtomicReference<Throwable> error = new AtomicReference<>();
         AtomicBoolean closed = new AtomicBoolean();
 
-        client.retrieveStream(new KnowledgeBaseRetrievalOptions(),
+        client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN,
             new ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent>() {
                 @Override
                 public void onEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event) {
@@ -175,6 +183,9 @@ public class KnowledgeBaseRetrievalStreamTests {
             .credential(new AzureKeyCredential("key"))
             .httpClient(request -> {
                 assertEquals("text/event-stream", request.getHeaders().getValue(HttpHeaderName.ACCEPT));
+                assertEquals(QUERY_SOURCE_TOKEN, request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
+                assertEquals(QUERY_WORK_IQ_SOURCE_TOKEN,
+                    request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
                 return Mono
                     .just(new MockHttpResponse(request, 200, headers, responseBody.getBytes(StandardCharsets.UTF_8)));
             });

@@ -475,7 +475,37 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        return retrieveStream(retrievalRequest, null, null);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
+     * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
+     * propagated through the reactive error path. The client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
+     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
+     * @return A stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream(
+        KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
+        String queryWorkIQSourceAuthorization) {
         RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (queryWorkIQSourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
+                queryWorkIQSourceAuthorization);
+        }
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
                 KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));

@@ -160,7 +160,8 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEvent")
+        customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
+            .addImport("com.azure.search.documents.models.ServerSentEvent")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
                 "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
@@ -175,12 +176,8 @@ public class SearchCustomizations extends Customization {
                             + "@ServiceMethod(returns = ReturnType.COLLECTION)\n"
                             + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
                                 + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
-                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
-                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
-                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "            event -> event.getData().isTerminal()));\n" + "}\n")
+                                + "    return retrieveStream(retrievalRequest, null, null);\n"
+                                + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
@@ -192,11 +189,52 @@ public class SearchCustomizations extends Customization {
                         + "@param retrievalRequest The retrieval request to process.\n"
                         + "@return A stream of typed knowledge base retrieval events.");
                 clazz.addMember(method);
+
+                MethodDeclaration methodWithAuthorizationHeaders
+                    = StaticJavaParser
+                        .parseBodyDeclaration("@Generated\n"
+                            + "@ServiceMethod(returns = ReturnType.COLLECTION)\n"
+                            + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
+                                + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,\n"
+                                + "    String queryWorkIQSourceAuthorization) {\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    if (querySourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                                + "            querySourceAuthorization);\n"
+                                + "    }\n"
+                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
+                                + "            queryWorkIQSourceAuthorization);\n"
+                                + "    }\n"
+                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "            event -> event.getData().isTerminal()));\n" + "}\n")
+                        .asMethodDeclaration();
+                methodWithAuthorizationHeaders.setJavadocComment(
+                    "Retrieves relevant data from backing stores and streams progress and results as server-sent "
+                        + "events.\n\n"
+                        + "If received, the terminal {@code error} or {@code response.completed} event is emitted "
+                        + "before the stream completes. End-of-stream without a terminal event completes normally. "
+                        + "Transport and decoding failures are propagated through the reactive error path. The client "
+                        + "does not reconnect automatically.\n\n"
+                        + "@param retrievalRequest The retrieval request to process.\n"
+                        + "@param querySourceAuthorization Token identifying the user for which the query is being "
+                        + "executed. This token is used to enforce security restrictions on documents.\n"
+                        + "@param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app "
+                        + "registration configured on a Work IQ knowledge source. Used for on-behalf-of "
+                        + "authentication to the Work IQ API.\n"
+                        + "@return A stream of typed knowledge base retrieval events.");
+                clazz.addMember(methodWithAuthorizationHeaders);
             }));
     }
 
     private static void addSyncRetrieveStream(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEventListener")
+        customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
+            .addImport("com.azure.search.documents.models.ServerSentEventListener")
             .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
                 "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
@@ -210,11 +248,8 @@ public class SearchCustomizations extends Customization {
                             + "@ServiceMethod(returns = ReturnType.SINGLE)\n"
                             + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
                                 + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    RequestOptions requestOptions = new RequestOptions();\n"
-                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
-                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
-                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
-                                + "        event -> event.getData().isTerminal(), listener);\n" + "}\n")
+                                + "    retrieveStream(retrievalRequest, null, null, listener);\n"
+                                + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
@@ -227,6 +262,46 @@ public class SearchCustomizations extends Customization {
                         + "@param retrievalRequest The retrieval request to process.\n"
                         + "@param listener The listener that receives events and lifecycle notifications.");
                 clazz.addMember(method);
+
+                MethodDeclaration methodWithAuthorizationHeaders
+                    = StaticJavaParser
+                        .parseBodyDeclaration("@Generated\n"
+                            + "@ServiceMethod(returns = ReturnType.SINGLE)\n"
+                            + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
+                                + "    String querySourceAuthorization, String queryWorkIQSourceAuthorization,\n"
+                                + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    if (querySourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                                + "            querySourceAuthorization);\n"
+                                + "    }\n"
+                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
+                                + "            queryWorkIQSourceAuthorization);\n"
+                                + "    }\n"
+                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "        event -> event.getData().isTerminal(), listener);\n" + "}\n")
+                        .asMethodDeclaration();
+                methodWithAuthorizationHeaders.setJavadocComment(
+                    "Retrieves relevant data from backing stores and streams progress and results as server-sent "
+                        + "events.\n\n"
+                        + "If received, the terminal {@code error} or {@code response.completed} event is delivered "
+                        + "before {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a "
+                        + "terminal event closes normally. Transport and decoding failures are reported through "
+                        + "{@link ServerSentEventListener#onError(Throwable)}. The client does not reconnect "
+                        + "automatically.\n\n"
+                        + "@param retrievalRequest The retrieval request to process.\n"
+                        + "@param querySourceAuthorization Token identifying the user for which the query is being "
+                        + "executed. This token is used to enforce security restrictions on documents.\n"
+                        + "@param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app "
+                        + "registration configured on a Work IQ knowledge source. Used for on-behalf-of "
+                        + "authentication to the Work IQ API.\n"
+                        + "@param listener The listener that receives events and lifecycle notifications.");
+                clazz.addMember(methodWithAuthorizationHeaders);
             }));
     }
 
@@ -517,6 +592,7 @@ public class SearchCustomizations extends Customization {
             + "                    appendByte(value);\n" + "                }\n" + "            }\n"
             + "            return events;\n" + "        }\n\n"
             + "        private List<ServerSentEventFrame> finish() {\n" + "            if (lineLength > 0) {\n"
+            + "                // Validate trailing bytes even though an unterminated SSE event is discarded.\n"
             + "                decodeLine();\n" + "            }\n" + "            return Collections.emptyList();\n"
             + "        }\n\n" + "        private void appendByte(byte value) {\n"
             + "            if (lineLength == lineBytes.length) {\n"

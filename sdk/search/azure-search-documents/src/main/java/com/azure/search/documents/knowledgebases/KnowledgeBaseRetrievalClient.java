@@ -469,7 +469,37 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
         ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
+        retrieveStream(retrievalRequest, null, null, listener);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
+     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
+     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
+     * client does not reconnect automatically.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
+     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
+     * @param listener The listener that receives events and lifecycle notifications.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
+        String queryWorkIQSourceAuthorization, ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
         RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (queryWorkIQSourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
+                queryWorkIQSourceAuthorization);
+        }
         ServerSentEventStreams.listen(
             hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
             KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
