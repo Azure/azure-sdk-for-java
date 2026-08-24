@@ -298,41 +298,23 @@ public class HierarchicalIdAsPartitionKeyTest extends TestSuiteBase {
         List<CosmosItemOperation> operations = Collections.singletonList(
             CosmosBulkOperations.getDeleteItemOperation(id, PartitionKey.NONE));
 
-        CosmosBulkOperationResponse<Object> response =
-            hpkContainer.<Object>executeBulkOperations(operations).iterator().next();
-        assertThat(response.getException()).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> hpkContainer.executeBulkOperations(operations).iterator().hasNext())
+            .isInstanceOf(IllegalArgumentException.class);
         assertThat(hpkContainer.readItem(
             id, new PartitionKeyBuilder().addNullValue().build(), TestItem.class).getItem().getId())
             .isEqualTo(id);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void hpkBulkPartitionKeyCompletionFailureIsScopedToOperation() {
+    public void hpkBulkPartitionKeyCompletionFailureTerminatesPipeline() {
         PartitionKey prefixPartitionKey = new PartitionKeyBuilder().add("pkBulkFailure").build();
-        String validId = UUID.randomUUID().toString();
-        List<CosmosItemOperation> operations = Arrays.asList(
+        List<CosmosItemOperation> operations = Collections.singletonList(
             CosmosBulkOperations.getCreateItemOperation(
                 new TestItem(null, "pkBulkFailure", "invalid"),
-                prefixPartitionKey),
-            CosmosBulkOperations.getCreateItemOperation(
-                new TestItem(validId, "pkBulkFailure", "valid"),
                 prefixPartitionKey));
 
-        List<CosmosBulkOperationResponse<Object>> responses = new ArrayList<>();
-        hpkContainer.<Object>executeBulkOperations(operations).forEach(responses::add);
-
-        assertThat(responses).hasSize(2);
-        assertThat(responses)
-            .filteredOn(response -> response.getException() != null)
-            .singleElement()
-            .extracting(CosmosBulkOperationResponse::getException)
+        assertThatThrownBy(() -> hpkContainer.executeBulkOperations(operations).iterator().hasNext())
             .isInstanceOf(IllegalArgumentException.class);
-        assertThat(responses)
-            .filteredOn(response -> response.getException() == null)
-            .singleElement()
-            .satisfies(response -> assertThat(response.getResponse().getStatusCode()).isEqualTo(201));
-        assertThat(hpkContainer.readItem(validId, prefixPartitionKey, TestItem.class).getItem().getProp())
-            .isEqualTo("valid");
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsIm
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.UUIDs;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -349,19 +350,35 @@ public final class TransactionalBulkExecutor implements Disposable {
                         })
                         .mergeWith(mainSink.asFlux())
                         .subscribeOn(this.executionScheduler)
-                        .flatMap(this::resolvePartitionKeyRange)
-                        .publish(resolutions -> Flux.merge(
-                            resolutions
-                                .filter(resolution -> !resolution.isSuccess())
-                                .map(this::createPartitionKeyRangeResolutionFailureResponse),
-                            resolutions
-                                .filter(PartitionKeyRangeResolution::isSuccess)
-                                .groupBy(
-                                    PartitionKeyRangeResolution::getThresholds,
-                                    PartitionKeyRangeResolution::getOperation)
-                                .flatMap(
-                                    this::executePartitionedGroupTransactional,
-                                    maxConcurrentCosmosPartitions)))
+                        .flatMap(operation -> {
+                            logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
+                                operation.getPartitionKeyValue(),
+                                operation.getOperationSize(),
+                                this.operationContextText,
+                                getThreadInfo());
+
+                            return resolvePartitionKeyRangeIdForBatch(operation)
+                                .map(pkRangeId -> {
+                                    PartitionScopeThresholds thresholds =
+                                        this.partitionScopeThresholds.computeIfAbsent(
+                                            pkRangeId,
+                                            newPkRangeId -> new PartitionScopeThresholds(
+                                                newPkRangeId,
+                                                this.transactionalBulkExecutionOptionsImpl));
+
+                                    logTraceOrWarning(
+                                        "Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
+                                        pkRangeId,
+                                        operation.getPartitionKeyValue(),
+                                        operation.getOperationSize(),
+                                        this.operationContextText,
+                                        getThreadInfo());
+
+                                    return Pair.of(thresholds, operation);
+                                });
+                        })
+                        .groupBy(Pair::getKey, Pair::getValue)
+                        .flatMap(this::executePartitionedGroupTransactional, maxConcurrentCosmosPartitions)
                         .subscribeOn(this.executionScheduler)
                         .doOnNext(response -> doOnResponseOrError())
                         .doOnError(throwable -> doOnResponseOrError())
@@ -386,46 +403,6 @@ public final class TransactionalBulkExecutor implements Disposable {
                             }
                         });
                 });
-    }
-
-    private Mono<PartitionKeyRangeResolution<CosmosBatchBulkOperation>> resolvePartitionKeyRange(
-        CosmosBatchBulkOperation operation) {
-
-        logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
-            operation.getPartitionKeyValue(),
-            operation.getOperationSize(),
-            this.operationContextText,
-            getThreadInfo());
-
-        return resolvePartitionKeyRangeIdForBatch(operation)
-            .map(pkRangeId -> {
-                PartitionScopeThresholds thresholds =
-                    this.partitionScopeThresholds.computeIfAbsent(
-                        pkRangeId,
-                        newPkRangeId -> new PartitionScopeThresholds(
-                            newPkRangeId,
-                            this.transactionalBulkExecutionOptionsImpl));
-
-                logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
-                    pkRangeId,
-                    operation.getPartitionKeyValue(),
-                    operation.getOperationSize(),
-                    this.operationContextText,
-                    getThreadInfo());
-
-                return PartitionKeyRangeResolution.success(thresholds, operation);
-            })
-            .onErrorResume(
-                Exception.class,
-                exception -> Mono.just(PartitionKeyRangeResolution.failure(operation, exception)));
-    }
-
-    private CosmosBulkTransactionalBatchResponse createPartitionKeyRangeResolutionFailureResponse(
-        PartitionKeyRangeResolution<CosmosBatchBulkOperation> resolution) {
-
-        CosmosBatchBulkOperation operation = resolution.getOperation();
-        operation.getStatusTracker().recordStatusCode(-1, -1);
-        return new CosmosBulkTransactionalBatchResponse(operation, null, resolution.getException());
     }
 
     private void doOnResponseOrError() {

@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.UUIDs;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -388,17 +389,38 @@ public final class BulkExecutor<TContext> implements Disposable {
                     })
                     .mergeWith(mainSink.asFlux())
                     .subscribeOn(this.executionScheduler)
-                    .flatMap(this::resolvePartitionKeyRange)
-                    .publish(resolutions -> Flux.merge(
-                        resolutions
-                            .filter(resolution -> !resolution.isSuccess())
-                            .map(this::createPartitionKeyRangeResolutionFailureResponse),
-                        resolutions
-                            .filter(PartitionKeyRangeResolution::isSuccess)
-                            .groupBy(
-                                PartitionKeyRangeResolution::getThresholds,
-                                PartitionKeyRangeResolution::getOperation)
-                            .flatMap(this::executePartitionedGroup, maxConcurrentCosmosPartitions)))
+                    .flatMap(operation -> {
+                        logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
+                            getItemOperationDiagnostics(operation),
+                            this.operationContextText,
+                            getThreadInfo());
+
+                        // Resolve again for operations returned to the main sink after a Gone retry.
+                        return BulkExecutorUtil
+                            .resolvePartitionKeyRangeId(
+                                this.docClientWrapper,
+                                this.container,
+                                operation,
+                                this.effectiveItemSerializer)
+                            .map(pkRangeId -> {
+                                PartitionScopeThresholds thresholds =
+                                    this.partitionScopeThresholds.computeIfAbsent(
+                                        pkRangeId,
+                                        newPkRangeId -> new PartitionScopeThresholds(
+                                            newPkRangeId,
+                                            this.cosmosBulkExecutionOptions));
+
+                                logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
+                                    getItemOperationDiagnostics(operation),
+                                    pkRangeId,
+                                    this.operationContextText,
+                                    getThreadInfo());
+
+                                return Pair.of(thresholds, operation);
+                            });
+                    })
+                    .groupBy(Pair::getKey, Pair::getValue)
+                    .flatMap(this::executePartitionedGroup, maxConcurrentCosmosPartitions)
                     .subscribeOn(this.executionScheduler)
                     .doOnNext(requestAndResponse -> {
 
@@ -447,56 +469,6 @@ public final class BulkExecutor<TContext> implements Disposable {
                         }
                     });
             });
-    }
-
-    private Mono<PartitionKeyRangeResolution<CosmosItemOperation>> resolvePartitionKeyRange(
-        CosmosItemOperation operation) {
-
-        logger.trace("Before Resolve PkRangeId, {}, Context: {} {}",
-            getItemOperationDiagnostics(operation),
-            this.operationContextText,
-            getThreadInfo());
-
-        // Resolve again for operations returned to the main sink after a Gone retry.
-        return BulkExecutorUtil
-            .resolvePartitionKeyRangeId(
-                this.docClientWrapper,
-                this.container,
-                operation,
-                this.effectiveItemSerializer)
-            .map(pkRangeId -> {
-                PartitionScopeThresholds thresholds =
-                    this.partitionScopeThresholds.computeIfAbsent(
-                        pkRangeId,
-                        newPkRangeId -> new PartitionScopeThresholds(
-                            newPkRangeId,
-                            this.cosmosBulkExecutionOptions));
-
-                logger.trace("Resolved PkRangeId, {}, PKRangeId: {} Context: {} {}",
-                    getItemOperationDiagnostics(operation),
-                    pkRangeId,
-                    this.operationContextText,
-                    getThreadInfo());
-
-                return PartitionKeyRangeResolution.success(thresholds, operation);
-            })
-            .onErrorResume(
-                Exception.class,
-                exception -> Mono.just(PartitionKeyRangeResolution.failure(operation, exception)));
-    }
-
-    private CosmosBulkOperationResponse<TContext> createPartitionKeyRangeResolutionFailureResponse(
-        PartitionKeyRangeResolution<CosmosItemOperation> resolution) {
-
-        CosmosItemOperation operation = resolution.getOperation();
-        if (operation instanceof ItemBulkOperation<?, ?>) {
-            ((ItemBulkOperation<?, ?>) operation).getStatusTracker().recordStatusCode(-1, -1);
-        }
-
-        return ModelBridgeInternal.createCosmosBulkOperationResponse(
-            operation,
-            resolution.getException(),
-            this.getActualContext(operation));
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionedGroup(

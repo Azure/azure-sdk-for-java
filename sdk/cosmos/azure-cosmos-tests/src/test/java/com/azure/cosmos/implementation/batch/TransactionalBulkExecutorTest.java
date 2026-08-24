@@ -51,6 +51,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class TransactionalBulkExecutorTest extends BatchTestBase {
 
@@ -283,10 +284,9 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void incompletePartitionKeyFailureIsScopedToBatch() {
+    public void incompletePartitionKeyFailureTerminatesPipeline() {
         this.container = createHierarchicalContainer(database);
         String tenant = "tenant-" + UUID.randomUUID();
-        String validId = UUID.randomUUID().toString();
 
         Map<String, Object> invalidItem = new HashMap<>();
         invalidItem.put("id", UUID.randomUUID().toString());
@@ -295,39 +295,15 @@ public class TransactionalBulkExecutorTest extends BatchTestBase {
             new PartitionKeyBuilder().add(tenant).build());
         invalidBatch.createItemOperation(invalidItem);
 
-        Map<String, Object> validItem = new HashMap<>();
-        validItem.put("id", validId);
-        validItem.put("tenant", tenant);
-        CosmosBatch validBatch = CosmosBatch.createCosmosBatch(
-            new PartitionKeyBuilder().add(tenant).add(validId).build());
-        validBatch.createItemOperation(validItem);
-
         CosmosBatchBulkOperation invalidOperation = new CosmosBatchBulkOperation(invalidBatch);
-        CosmosBatchBulkOperation validOperation = new CosmosBatchBulkOperation(validBatch);
         TransactionalBulkExecutor executor = new TransactionalBulkExecutor(
             this.container,
-            Flux.just(invalidOperation, validOperation),
+            Flux.just(invalidOperation),
             new CosmosTransactionalBulkExecutionOptionsImpl());
 
-        List<CosmosBulkTransactionalBatchResponse> responses = executor.execute().collectList().block();
-
-        assertThat(responses).hasSize(2);
-        assertThat(responses)
-            .filteredOn(response -> response.getCosmosBatchBulkOperation() == invalidOperation)
-            .singleElement()
-            .satisfies(response -> {
-                assertThat(response.getResponse()).isNull();
-                assertThat(response.getException())
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessageContaining("requires a full partition key");
-            });
-        assertThat(responses)
-            .filteredOn(response -> response.getCosmosBatchBulkOperation() == validOperation)
-            .singleElement()
-            .satisfies(response -> {
-                assertThat(response.getException()).isNull();
-                assertThat(response.getResponse().isSuccessStatusCode()).isTrue();
-            });
+        assertThatThrownBy(() -> executor.execute().collectList().block())
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("requires a full partition key");
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
