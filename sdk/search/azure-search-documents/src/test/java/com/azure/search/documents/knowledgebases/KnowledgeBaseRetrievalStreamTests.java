@@ -121,7 +121,9 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @Test
     public void asyncClientForwardsAuthorizationHeadersAndEmitsTerminalEvent() {
-        KnowledgeBaseRetrievalAsyncClient client = createBuilder(streamWithUnknownEvent()).buildAsyncClient();
+        KnowledgeBaseRetrievalAsyncClient client
+            = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN)
+                .buildAsyncClient();
 
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
             = client.retrieveStream(new KnowledgeBaseRetrievalOptions(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN)
@@ -144,7 +146,8 @@ public class KnowledgeBaseRetrievalStreamTests {
 
     @Test
     public void syncClientForwardsAuthorizationHeadersAndDeliversTerminalEvent() {
-        KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent()).buildClient();
+        KnowledgeBaseRetrievalClient client
+            = createBuilder(streamWithUnknownEvent(), QUERY_SOURCE_TOKEN, QUERY_WORK_IQ_SOURCE_TOKEN).buildClient();
         List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
         AtomicReference<Throwable> error = new AtomicReference<>();
         AtomicBoolean closed = new AtomicBoolean();
@@ -176,16 +179,58 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertTrue(closed.get());
     }
 
-    private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody) {
+    @Test
+    public void asyncClientMinimalOverloadOmitsAuthorizationHeaders() {
+        KnowledgeBaseRetrievalAsyncClient client
+            = createBuilder(streamWithUnknownEvent(), null, null).buildAsyncClient();
+
+        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
+            = client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block();
+
+        assertNotNull(events);
+        assertEquals(3, events.size());
+    }
+
+    @Test
+    public void syncClientMinimalOverloadOmitsAuthorizationHeaders() {
+        KnowledgeBaseRetrievalClient client = createBuilder(streamWithUnknownEvent(), null, null).buildClient();
+        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
+        AtomicReference<Throwable> error = new AtomicReference<>();
+        AtomicBoolean closed = new AtomicBoolean();
+
+        client.retrieveStream(new KnowledgeBaseRetrievalOptions(),
+            new ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent>() {
+                @Override
+                public void onEvent(ServerSentEvent<KnowledgeBaseRetrievalStreamEvent> event) {
+                    events.add(event);
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    error.set(throwable);
+                }
+
+                @Override
+                public void onClose() {
+                    closed.set(true);
+                }
+            });
+
+        assertEquals(3, events.size());
+        assertNull(error.get());
+        assertTrue(closed.get());
+    }
+
+    private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody, String querySourceToken,
+        String queryWorkIQSourceToken) {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream");
         return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
             .knowledgeBaseName("kb")
             .credential(new AzureKeyCredential("key"))
             .httpClient(request -> {
                 assertEquals("text/event-stream", request.getHeaders().getValue(HttpHeaderName.ACCEPT));
-                assertEquals(QUERY_SOURCE_TOKEN, request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
-                assertEquals(QUERY_WORK_IQ_SOURCE_TOKEN,
-                    request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
+                assertEquals(querySourceToken, request.getHeaders().getValue(QUERY_SOURCE_AUTHORIZATION));
+                assertEquals(queryWorkIQSourceToken, request.getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
                 return Mono
                     .just(new MockHttpResponse(request, 200, headers, responseBody.getBytes(StandardCharsets.UTF_8)));
             });

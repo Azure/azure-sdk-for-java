@@ -176,7 +176,12 @@ public class SearchCustomizations extends Customization {
                             + "@ServiceMethod(returns = ReturnType.COLLECTION)\n"
                             + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
                                 + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
-                                + "    return retrieveStream(retrievalRequest, null, null);\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "            event -> event.getData().isTerminal()));\n"
                                 + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(
@@ -248,7 +253,11 @@ public class SearchCustomizations extends Customization {
                             + "@ServiceMethod(returns = ReturnType.SINGLE)\n"
                             + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
                                 + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    retrieveStream(retrievalRequest, null, null, listener);\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "        event -> event.getData().isTerminal(), listener);\n"
                                 + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(

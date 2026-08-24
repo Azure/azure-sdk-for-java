@@ -469,7 +469,10 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
         ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        retrieveStream(retrievalRequest, null, null, listener);
+        RequestOptions requestOptions = new RequestOptions();
+        ServerSentEventStreams.listen(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
     }
 
     /**

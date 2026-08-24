@@ -475,7 +475,10 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
         retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
-        return retrieveStream(retrievalRequest, null, null);
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
+                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
     }
 
     /**
