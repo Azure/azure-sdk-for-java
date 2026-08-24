@@ -17,11 +17,14 @@ Required. Path to the input APIView token JSON file.
 Required. Path to write the output markdown file. If a directory is given, the file will be
 named api.md inside that directory.
 
+.PARAMETER ExcludeDocumentation
+Optional. Excludes lines whose tokens are all marked as documentation.
+
 .EXAMPLE
 ./Export-APIViewMarkdown.ps1 -TokenJsonPath ./azure-core_python.json -OutputPath ./api.md
 
 .EXAMPLE
-./Export-APIViewMarkdown.ps1 -TokenJsonPath ./azure-sdk_java.json -OutputPath ./output/
+./Export-APIViewMarkdown.ps1 -TokenJsonPath ./azure-sdk_java.json -OutputPath ./output/ -ExcludeDocumentation
 #>
 
 [CmdletBinding()]
@@ -30,7 +33,9 @@ param(
     [string]$TokenJsonPath,
 
     [Parameter(Mandatory = $true)]
-    [string]$OutputPath
+    [string]$OutputPath,
+
+    [switch]$ExcludeDocumentation
 )
 
 Set-StrictMode -Version 3
@@ -43,8 +48,10 @@ function Render-Token {
     #>
     param([PSCustomObject]$Token)
 
-    $prefix = if ($Token.HasPrefixSpace -eq $true) { " " } else { "" }
-    $suffix = if ($Token.HasSuffixSpace -eq $true) { " " } else { "" }
+    $prefixSpace = $Token.PSObject.Properties.Item('HasPrefixSpace')
+    $suffixSpace = $Token.PSObject.Properties.Item('HasSuffixSpace')
+    $prefix = if ($null -ne $prefixSpace -and $prefixSpace.Value -eq $true) { " " } else { "" }
+    $suffix = if ($null -eq $suffixSpace -or $suffixSpace.Value -eq $true) { " " } else { "" }
     return "$prefix$($Token.Value)$suffix"
 }
 
@@ -63,6 +70,16 @@ function Render-ReviewLines {
 
     foreach ($line in $ReviewLines) {
         $tokens = @($line.Tokens)
+
+        if ($ExcludeDocumentation -and $tokens.Count -gt 0) {
+            $documentationTokens = @($tokens | Where-Object {
+                $documentationProperty = $_.PSObject.Properties.Item('IsDocumentation')
+                $null -ne $documentationProperty -and $documentationProperty.Value -eq $true
+            })
+            if ($documentationTokens.Count -eq $tokens.Count) {
+                continue
+            }
+        }
 
         if ($tokens.Count -eq 0) {
             # Blank line
