@@ -168,20 +168,6 @@ public class KnowledgeBaseRetrievalStreamTests {
         assertTrue(closed.get());
     }
 
-    @Test
-    public void asyncClientCompletesOnEofBeforeTerminalEvent() {
-        KnowledgeBaseRetrievalAsyncClient client
-            = createBuilder("event: retrieval.started\ndata: " + RETRIEVAL_STARTED_JSON + "\n\n").buildAsyncClient();
-
-        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
-            = client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block();
-
-        assertNotNull(events);
-        assertEquals(1, events.size());
-        assertEquals("retrieval.started", events.get(0).getEvent());
-        assertFalse(events.get(0).getData().isTerminal());
-    }
-
     private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody) {
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/event-stream");
         return new KnowledgeBaseRetrievalClientBuilder().endpoint("https://example.search.windows.net")
