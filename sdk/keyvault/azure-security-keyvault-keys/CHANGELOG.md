@@ -1,16 +1,10 @@
 # Release History
 
-## 4.12.0-beta.2 (Unreleased)
+## 4.12.0-beta.2 (2026-08-24)
 
 ### Features Added
 
 - Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 4.11.2 (2026-08-18)
 
