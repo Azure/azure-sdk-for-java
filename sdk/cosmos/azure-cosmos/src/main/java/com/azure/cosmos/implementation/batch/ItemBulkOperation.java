@@ -176,8 +176,6 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     }
 
     synchronized Map<String, Object> serializeAndCacheItem(CosmosItemSerializer effectiveItemSerializer) {
-        this.effectiveItemSerializerForResult = effectiveItemSerializer;
-
         if (this.serializedItem.get() == null) {
             Map<String, Object> serialized = ImplementationBridgeHelpers.CosmosItemSerializerHelper
                 .getCosmosItemSerializerAccessor()

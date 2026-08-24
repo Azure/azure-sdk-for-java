@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.BridgeInternal;
@@ -351,14 +350,15 @@ public final class TransactionalBulkExecutor implements Disposable {
                         })
                         .mergeWith(mainSink.asFlux())
                         .subscribeOn(this.executionScheduler)
-                        .flatMap(operation -> {
+                        .flatMap(cosmosBatchBulkOperation -> {
                             logger.trace("Before Resolve PkRangeId, PkValue: {}, OpCount: {}, Context: {} {}",
-                                operation.getPartitionKeyValue(),
-                                operation.getOperationSize(),
+                                cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                cosmosBatchBulkOperation.getOperationSize(),
                                 this.operationContextText,
                                 getThreadInfo());
 
-                            return resolvePartitionKeyRangeIdForBatch(operation)
+                            // resolve partition key range id and attach PartitionScopeThresholds
+                            return resolvePartitionKeyRangeIdForBatch(cosmosBatchBulkOperation)
                                 .map(pkRangeId -> {
                                     PartitionScopeThresholds thresholds =
                                         this.partitionScopeThresholds.computeIfAbsent(
@@ -367,15 +367,14 @@ public final class TransactionalBulkExecutor implements Disposable {
                                                 newPkRangeId,
                                                 this.transactionalBulkExecutionOptionsImpl));
 
-                                    logTraceOrWarning(
-                                        "Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
+                                    logTraceOrWarning("Resolved PkRangeId: {}, PkValue: {}, OpCount: {}, Context: {} {}",
                                         pkRangeId,
-                                        operation.getPartitionKeyValue(),
-                                        operation.getOperationSize(),
+                                        cosmosBatchBulkOperation.getPartitionKeyValue(),
+                                        cosmosBatchBulkOperation.getOperationSize(),
                                         this.operationContextText,
                                         getThreadInfo());
 
-                                    return Pair.of(thresholds, operation);
+                                    return Pair.of(thresholds, cosmosBatchBulkOperation);
                                 });
                         })
                         .groupBy(Pair::getKey, Pair::getValue)
