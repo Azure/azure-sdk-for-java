@@ -9,14 +9,11 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CollectionRoutingMapNotFoundException;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -36,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
@@ -110,82 +106,11 @@ final class BulkExecutorUtil {
         return headers;
     }
 
-    /**
-     * Resolve partition key range id of a operation and set the partition key json value in operation.
-     *
-     * TODO(rakkuma): metaDataDiagnosticContext is passed null in tryLookupAsync function. Fix it while adding
-     *  support for an operation wise Diagnostic. The value here should be merged in the individual diagnostic.
-     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
-     */
-    static Mono<String> resolvePartitionKeyRangeId(
-        AsyncDocumentClient docClientWrapper,
-        CosmosAsyncContainer container,
-        CosmosItemOperation operation,
-        CosmosItemSerializer effectiveItemSerializer) {
-
-        checkNotNull(operation, "expected non-null operation");
-
-        if (operation instanceof ItemBulkOperation<?, ?>) {
-            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
-
-            return resolvePartitionKeyRangeId(
-                docClientWrapper,
-                container,
-                operation.getPartitionKeyValue(),
-                (partitionKeyDefinition, partitionKeyInternal) ->
-                    PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeededLazy(
-                        partitionKeyDefinition,
-                        partitionKeyInternal,
-                        () -> resolveItemId(itemBulkOperation, effectiveItemSerializer)),
-                (partitionKeyInternal -> itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson())));
-
-        } else {
-            throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
-        }
-    }
-
-    /**
-     * Resolves the item id used to complete a hierarchical partition key ending in "/id". For
-     * operations that carry an explicit id (read/replace/delete/patch) the id is returned directly;
-     * for create/upsert the id is read from the (serialized) item body. Returns {@code null} when the
-     * id cannot be determined.
-     */
-    static String resolveItemId(ItemBulkOperation<?, ?> operation, CosmosItemSerializer effectiveItemSerializer) {
-        if (StringUtils.isNotEmpty(operation.getId())) {
-            return operation.getId();
-        }
-
-        Object item = operation.getItemInternal();
-        if (item == null) {
-            return null;
-        }
-
-        checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
-        Map<String, Object> serializedItem = operation.serializeAndCacheItem(effectiveItemSerializer);
-        Object idValue = serializedItem == null ? null : serializedItem.get(Constants.Properties.ID);
-        return idValue == null ? null : idValue.toString();
-    }
-
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
         PartitionKey partitionKey,
         BiFunction<PartitionKeyDefinition, PartitionKeyInternal, PartitionKeyInternal> partitionKeyTransformer) {
-
-        return resolvePartitionKeyRangeId(
-            docClientWrapper,
-            container,
-            partitionKey,
-            partitionKeyTransformer,
-            null);
-    }
-
-    private static Mono<String> resolvePartitionKeyRangeId(
-        AsyncDocumentClient docClientWrapper,
-        CosmosAsyncContainer container,
-        PartitionKey partitionKey,
-        BiFunction<PartitionKeyDefinition, PartitionKeyInternal, PartitionKeyInternal> partitionKeyTransformer,
-        Consumer<PartitionKeyInternal> partitionKeyInternalConsumer) {
 
         checkNotNull(partitionKeyTransformer, "expected non-null partitionKeyTransformer");
         AtomicReference<DocumentCollection> collectionBeforeRecreation = new AtomicReference<>(null);
@@ -197,9 +122,6 @@ final class BulkExecutorUtil {
                                final PartitionKeyDefinition definition = collection.getPartitionKey();
                                PartitionKeyInternal partitionKeyInternal = partitionKeyTransformer.apply(
                                    definition, getPartitionKeyInternal(partitionKey, definition));
-                               if (partitionKeyInternalConsumer != null) {
-                                   partitionKeyInternalConsumer.accept(partitionKeyInternal);
-                               }
 
                                final PartitionKeyInternal effectivePartitionKeyInternal = partitionKeyInternal;
                                return docClientWrapper

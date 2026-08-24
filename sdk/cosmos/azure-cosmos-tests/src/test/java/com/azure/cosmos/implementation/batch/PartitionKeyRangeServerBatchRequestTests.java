@@ -125,7 +125,7 @@ public class PartitionKeyRangeServerBatchRequestTests {
             new Object(),
             null);
 
-        String routingId = BulkExecutorUtil.resolveItemId(operation, serializer);
+        String routingId = BulkExecutor.resolveItemId(operation, serializer);
         JsonSerializable serializedOperation = operation.getSerializedOperation(serializer);
 
         assertThat(routingId).isEqualTo("id-1");
