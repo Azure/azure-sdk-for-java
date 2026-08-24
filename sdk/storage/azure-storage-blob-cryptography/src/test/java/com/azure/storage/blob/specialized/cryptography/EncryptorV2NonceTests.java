@@ -26,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * <p>
  * Each authenticated region is encrypted under a nonce derived from its sequential index. The index must be encoded
  * using the full 64-bit value; truncating it to 32 bits causes nonces to repeat every 2^32 regions, which is AES-GCM
- * nonce reuse (a security failure) and also defeats sequential reorder detection. These tests exercise the encoding
- * directly and end-to-end through {@link EncryptorV2#encrypt(Flux)}.
+ * nonce reuse (a security failure). These tests exercise the encoding directly and end-to-end through
+ * {@link EncryptorV2#encrypt(Flux)}.
  */
 public class EncryptorV2NonceTests {
     private static final SecureRandom RANDOM = new SecureRandom();
