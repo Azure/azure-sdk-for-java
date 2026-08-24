@@ -81,7 +81,7 @@ class EncryptorV2 extends Encryptor {
         return ByteBuffer.allocate(NONCE_LENGTH).putLong(index).array();
     }
 
-    private Cipher getCipher(long index) throws GeneralSecurityException {
+    Cipher getCipher(long index) throws GeneralSecurityException {
         Cipher cipher = Cipher.getInstance(AES_GCM_NO_PADDING);
         byte[] iv = computeRegionNonce(index);
 
@@ -108,8 +108,14 @@ class EncryptorV2 extends Encryptor {
                     Cipher gcmCipher;
                     try {
                         // We use the full 64-bit region index as the nonce counter so that each nonce is used only
-                        // once with a given key. Truncating the index to 32 bits would cause nonces to repeat - and
-                        // AES-GCM security to break - once a blob exceeds 2^32 authenticated regions.
+                        // once with a given key. Truncating the index to 32 bits (as computeRegionNonce widens its
+                        // argument back to a long) would break AES-GCM security in two ways once a blob grows large:
+                        //  1. Nonces would repeat every 2^32 regions, since region N and region N + 2^32 would collide
+                        //     - GCM nonce reuse under a single key.
+                        //  2. Half of the truncated indices would be negative. Every other 2^31-sized band (the ranges
+                        //     [2^31, 2^32), [3*2^31, 2^33), and so on, alternating up to 2^63) has bit 31 set, so those
+                        //     indices sign-extend when widened from 32 to 64 bits, producing nonces with a leading
+                        //     0xFFFFFFFF prefix rather than 0x00000000 in computeRegionNonce().
                         gcmCipher = getCipher(tuple.getT1());
                     } catch (GeneralSecurityException e) {
                         throw LOGGER.logExceptionAsError(Exceptions.propagate(e));

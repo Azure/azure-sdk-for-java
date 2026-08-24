@@ -38,6 +38,37 @@ public class EncryptorV2NonceTests {
     }
 
     @Test
+    public void nonceEncodesKnownBoundaryValuesAsExactBytes() {
+        // Hardcoded expected nonces (independent of the ByteBuffer.putLong the implementation uses) at the boundaries
+        // that matter for the truncation defect. Each nonce is the 8-byte big-endian index followed by four zero bytes.
+        assertNonce(0L, // all-zero nonce
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+        assertNonce(1L, // smallest non-zero; catches wrong offset or endianness immediately
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 });
+        assertNonce(2L, // confirms the counter increments by one, not by region size
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0 });
+        assertNonce(255L, // byte boundary; catches a signed-byte or nibble-order slip
+            new byte[] { 0, 0, 0, 0, 0, 0, 0, (byte) 0xFF, 0, 0, 0, 0 });
+        assertNonce((1L << 31) - 1, // last correct index under the old code
+            new byte[] { 0, 0, 0, 0, 0x7F, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 0, 0, 0, 0 });
+        assertNonce(1L << 31, // sign-extension boundary; old code emitted a leading "FFFFFFFF" here
+            new byte[] { 0, 0, 0, 0, (byte) 0x80, 0, 0, 0, 0, 0, 0, 0 });
+        assertNonce((1L << 32) - 1, // last index of the negative band, decoded as -1 by the old code
+            new byte[] { 0, 0, 0, 0, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 0, 0, 0, 0 });
+        assertNonce(1L << 32, // wraparound origin; old code collided this with region 0
+            new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 });
+        assertNonce((1L << 32) + 5, // wraparound, non-zero; old code collided this with region 5
+            new byte[] { 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 0 });
+        assertNonce(1L << 40, // sets a byte the old code could never reach; guards the high half
+            new byte[] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+    }
+
+    private static void assertNonce(long index, byte[] expected) {
+        assertEquals(NONCE_LENGTH, expected.length);
+        assertArrayEquals(expected, EncryptorV2.computeRegionNonce(index));
+    }
+
+    @Test
     public void nonceEncodesRegionIndexAsBigEndianLongWithTrailingZeros() {
         for (long index : new long[] { 1, 2, 255, 256, 1_000_000, Integer.MAX_VALUE }) {
             byte[] nonce = EncryptorV2.computeRegionNonce(index);
@@ -102,6 +133,26 @@ public class EncryptorV2NonceTests {
                         EncryptorV2.computeRegionNonce(indices[j])),
                     "nonces for " + indices[i] + " and " + indices[j] + " must differ");
             }
+        }
+    }
+
+    @Test
+    public void getCipherUsesFullLongNonceAtSignExtensionBoundary() throws Exception {
+        // The nonce truncation defect lived at the getCipher call site, not in computeRegionNonce. Exercise getCipher
+        // directly at the sign-extension boundaries and confirm the Cipher is initialized with the full-long nonce.
+        SecretKey key = new SecretKeySpec(randomBytes(32), CryptographyConstants.AES);
+        BlobClientSideEncryptionOptions options
+            = new BlobClientSideEncryptionOptions().setAuthenticatedRegionDataLengthInBytes(16);
+        EncryptorV2 encryptor = new EncryptorV2(key, options, ENCRYPTION_PROTOCOL_V2);
+
+        for (long index : new long[] { 1L << 31, (1L << 32) - 1, 1L << 32, (1L << 32) + 5, 1L << 40 }) {
+            byte[] actualIv = encryptor.getCipher(index).getIV();
+            assertArrayEquals(EncryptorV2.computeRegionNonce(index), actualIv,
+                "cipher IV must equal the full-long nonce for index=" + index);
+            // A truncated-int counter would sign-extend these indices; confirm we did not produce that nonce.
+            byte[] truncatedIv = ByteBuffer.allocate(NONCE_LENGTH).putLong((int) index).array();
+            assertFalse(java.util.Arrays.equals(truncatedIv, actualIv),
+                "cipher IV must differ from the truncated-int nonce for index=" + index);
         }
     }
 
