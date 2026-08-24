@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AzureIdentityEnvVars;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -39,7 +40,6 @@ public final class IdentityClientOptions implements Cloneable {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 6;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
-    private static final String AZURE_TOKEN_CREDENTIALS = "AZURE_TOKEN_CREDENTIALS";
 
     private String authorityHost;
     private BrowserCustomizationOptions browserCustomizationOptions;
@@ -693,7 +693,7 @@ public final class IdentityClientOptions implements Cloneable {
             = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost
             = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
-        dacEnvConfiguredCredential = configuration.get(AZURE_TOKEN_CREDENTIALS);
+        dacEnvConfiguredCredential = configuration.get(AzureIdentityEnvVars.AZURE_TOKEN_CREDENTIALS.toString());
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
