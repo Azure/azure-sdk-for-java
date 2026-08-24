@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -100,12 +100,45 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void eofBeforeTerminalEventFails() {
+    public void eofBeforeTerminalEventCompletes() {
         StepVerifier.create(toFlux(response(200, BinaryData.fromString("data: one\n\n"))))
             .expectNextCount(1)
-            .expectErrorMatches(error -> error instanceof IllegalStateException
-                && error.getMessage().contains("before a terminal event"))
-            .verify();
+            .verifyComplete();
+    }
+
+    @Test
+    public void noContentDoesNotInvokeTerminalPredicate() {
+        AtomicBoolean predicateInvoked = new AtomicBoolean();
+        AtomicReference<Throwable> reportedError = new AtomicReference<>();
+        AtomicBoolean closed = new AtomicBoolean();
+
+        StepVerifier.create(ServerSentEventStreams.toFlux(response(204, null), (event, data) -> data, event -> {
+            predicateInvoked.set(true);
+            return false;
+        })).verifyComplete();
+
+        ServerSentEventStreams.listen(response(204, null), (event, data) -> data, event -> {
+            predicateInvoked.set(true);
+            return false;
+        }, new ServerSentEventListener<String>() {
+            @Override
+            public void onEvent(ServerSentEvent<String> event) {
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                reportedError.set(error);
+            }
+
+            @Override
+            public void onClose() {
+                closed.set(true);
+            }
+        });
+
+        assertFalse(predicateInvoked.get());
+        assertNull(reportedError.get());
+        assertTrue(closed.get());
     }
 
     @Test
@@ -145,19 +178,6 @@ public class ServerSentEventStreamTests {
 
         assertThrows(IllegalStateException.class, () -> toFlux(response(200, body, "application/json")).blockLast());
         assertTrue(cancelled.get());
-    }
-
-    @Test
-    public void noContentFailsWithoutInvokingTerminalPredicate() {
-        AtomicBoolean invoked = new AtomicBoolean();
-        Flux<ServerSentEvent<String>> events
-            = ServerSentEventStreams.toFlux(response(204, null), (event, data) -> data, event -> {
-                invoked.set(true);
-                return true;
-            });
-
-        StepVerifier.create(events).expectError(IllegalStateException.class).verify();
-        assertFalse(invoked.get());
     }
 
     @Test
@@ -219,29 +239,32 @@ public class ServerSentEventStreamTests {
     }
 
     @Test
-    public void syncListenerReportsEofFailureAndClosesOnce() {
+    public void syncListenerCompletesOnEofAndClosesOnce() {
         AtomicReference<Throwable> reportedError = new AtomicReference<>();
         AtomicInteger closeCount = new AtomicInteger();
+        List<String> events = new ArrayList<>();
 
-        IllegalStateException failure = assertThrows(IllegalStateException.class,
-            () -> ServerSentEventStreams.listen(response(200, BinaryData.fromString("data: one\n\n")),
-                (event, data) -> data, event -> false, new ServerSentEventListener<String>() {
-                    @Override
-                    public void onEvent(ServerSentEvent<String> event) {
-                    }
+        ServerSentEventStreams.listen(response(200, BinaryData.fromString("data: one\n\n")), (event, data) -> data,
+            event -> false, new ServerSentEventListener<String>() {
+                @Override
+                public void onEvent(ServerSentEvent<String> event) {
+                    events.add(event.getData());
+                }
 
-                    @Override
-                    public void onError(Throwable error) {
-                        reportedError.set(error);
-                    }
+                @Override
+                public void onError(Throwable error) {
+                    reportedError.set(error);
+                }
 
-                    @Override
-                    public void onClose() {
-                        closeCount.incrementAndGet();
-                    }
-                }));
+                @Override
+                public void onClose() {
+                    closeCount.incrementAndGet();
+                }
+            });
 
-        assertSame(failure, reportedError.get());
+        assertEquals(1, events.size());
+        assertEquals("one", events.get(0));
+        assertNull(reportedError.get());
         assertEquals(1, closeCount.get());
     }
 

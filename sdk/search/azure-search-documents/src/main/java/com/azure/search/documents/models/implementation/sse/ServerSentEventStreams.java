@@ -34,9 +34,11 @@ public final class ServerSentEventStreams {
     /**
      * Decodes one response until an inclusive terminal event is emitted.
      *
+     * <p>HTTP 204 and response-body EOF complete normally without requiring a terminal event.</p>
+     *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
-     * @param terminalEvent Identifies the inclusive terminal event.
+     * @param terminalEvent Identifies an inclusive terminal event that ends processing early.
      * @param <T> The event data type.
      * @return A flux of decoded server-sent events.
      */
@@ -61,9 +63,11 @@ public final class ServerSentEventStreams {
     /**
      * Decodes one response until an inclusive terminal event is delivered to a listener.
      *
+     * <p>HTTP 204 and response-body EOF close normally without requiring a terminal event.</p>
+     *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
-     * @param terminalEvent Identifies the inclusive terminal event.
+     * @param terminalEvent Identifies an inclusive terminal event that ends processing early.
      * @param listener The listener that receives events and lifecycle notifications.
      * @param <T> The event data type.
      */

@@ -464,9 +464,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
-     * The terminal {@code error} or {@code response.completed} event is emitted before the stream completes. Transport
-     * and decoding failures are propagated through the reactive error path. The client does not reconnect
-     * automatically.
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
+     * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
+     * propagated through the reactive error path. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @return A stream of typed knowledge base retrieval events.

@@ -457,9 +457,10 @@ public final class KnowledgeBaseRetrievalClient {
     /**
      * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
      *
-     * The terminal {@code error} or {@code response.completed} event is delivered before
-     * {@link ServerSentEventListener#onClose()} is invoked. Transport and decoding failures are reported through
-     * {@link ServerSentEventListener#onError(Throwable)}. The client does not reconnect automatically.
+     * If received, the terminal {@code error} or {@code response.completed} event is delivered before
+     * {@link ServerSentEventListener#onClose()} is invoked. End-of-stream without a terminal event closes normally.
+     * Transport and decoding failures are reported through {@link ServerSentEventListener#onError(Throwable)}. The
+     * client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param listener The listener that receives events and lifecycle notifications.

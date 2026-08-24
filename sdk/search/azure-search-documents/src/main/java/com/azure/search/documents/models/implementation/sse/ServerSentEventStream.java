@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * Parses one server-sent event response.
@@ -54,7 +53,7 @@ final class ServerSentEventStream {
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
-     * @param terminalEvent Identifies the inclusive terminal event.
+     * @param terminalEvent Identifies an inclusive terminal event that ends processing early.
      * @param <T> The event data type.
      * @return A flux of decoded events.
      */
@@ -76,21 +75,13 @@ final class ServerSentEventStream {
             }
 
             ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            AtomicBoolean terminalObserved = new AtomicBoolean();
             Flux<ServerSentEvent<T>> events
                 = streamResponse.getStatusCode() == 204 ? Flux.empty() : decode(streamResponse.getBody(), converter);
 
             if (terminalEvent != null) {
-                events = events.takeUntil(event -> {
-                    boolean terminal = terminalEvent.test(event);
-                    if (terminal) {
-                        terminalObserved.set(true);
-                    }
-                    return terminal;
-                });
+                events = events.takeUntil(terminalEvent);
             }
-            return events
-                .concatWith(Mono.fromRunnable(() -> validateTerminalEvent(terminalEvent, terminalObserved.get())));
+            return events;
         });
     }
 
@@ -115,7 +106,7 @@ final class ServerSentEventStream {
      *
      * @param response The streaming response.
      * @param converter Converts an event name and data payload into the event data type.
-     * @param terminalEvent Identifies the inclusive terminal event.
+     * @param terminalEvent Identifies an inclusive terminal event that ends processing early.
      * @param listener The event listener.
      * @param <T> The event data type.
      */
@@ -132,9 +123,9 @@ final class ServerSentEventStream {
         Predicate<ServerSentEvent<T>> terminalEvent, ServerSentEventListener<T> listener) {
         try {
             ServerSentEventStreamResponse streamResponse = ServerSentEventStreamResponse.fromResponse(response);
-            boolean terminalObserved = streamResponse.getStatusCode() != 204
-                && process(streamResponse.getBody(), converter, terminalEvent, listener);
-            validateTerminalEvent(terminalEvent, terminalObserved);
+            if (streamResponse.getStatusCode() != 204) {
+                process(streamResponse.getBody(), converter, terminalEvent, listener);
+            }
         } catch (IOException exception) {
             listener.onError(exception);
             throw new UncheckedIOException(exception);
@@ -193,13 +184,6 @@ final class ServerSentEventStream {
             }
         }
         return false;
-    }
-
-    private static <T> void validateTerminalEvent(Predicate<ServerSentEvent<T>> terminalEvent,
-        boolean terminalObserved) {
-        if (terminalEvent != null && !terminalObserved) {
-            throw new IllegalStateException("The server-sent event stream ended before a terminal event.");
-        }
     }
 
     private static void checkInterrupted() {

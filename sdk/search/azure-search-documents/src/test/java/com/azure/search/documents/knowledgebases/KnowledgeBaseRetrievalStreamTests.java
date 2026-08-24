@@ -169,12 +169,17 @@ public class KnowledgeBaseRetrievalStreamTests {
     }
 
     @Test
-    public void asyncClientRejectsEofBeforeTerminalEvent() {
+    public void asyncClientCompletesOnEofBeforeTerminalEvent() {
         KnowledgeBaseRetrievalAsyncClient client
             = createBuilder("event: retrieval.started\ndata: " + RETRIEVAL_STARTED_JSON + "\n\n").buildAsyncClient();
 
-        assertThrows(RuntimeException.class,
-            () -> client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block());
+        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events
+            = client.retrieveStream(new KnowledgeBaseRetrievalOptions()).collectList().block();
+
+        assertNotNull(events);
+        assertEquals(1, events.size());
+        assertEquals("retrieval.started", events.get(0).getEvent());
+        assertFalse(events.get(0).getData().isTerminal());
     }
 
     private static KnowledgeBaseRetrievalClientBuilder createBuilder(String responseBody) {
