@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -370,6 +372,55 @@ public class DataLakePathNameEncodingTests {
 
         renamed.getProperties();
         assertEquals(renameUrl, httpClient.getUrlPath());
+    }
+
+    /**
+     * Regression test. {@code DataLakeFileClient} delegates {@code append}/{@code flush}/{@code upload} to its internal
+     * async client. That async client must be rooted at the renamed (destination) path; otherwise these operations
+     * would address the original source path even though {@code create}/{@code getProperties} address the destination.
+     */
+    @Test
+    public void fileClientReturnedByRenameDelegatesToTheRenamedPath() {
+        RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
+        DataLakeFileSystemClient fileSystemClient = fileSystemClient(httpClient);
+
+        DataLakeFileClient renamed = fileSystemClient.getFileClient("source.txt").rename(null, "my file.txt");
+        String renameUrl = httpClient.getUrlPath();
+        assertEquals("/" + FILE_SYSTEM_NAME + "/my%20file.txt", renameUrl);
+
+        // append is delegated to the internal async client - it must address the renamed path. The mock cannot return
+        // a valid append response, but the request URL is captured when the request is put on the wire, which is all
+        // this routing regression cares about.
+        byte[] data = new byte[] { 1, 2, 3 };
+        try {
+            renamed.append(new ByteArrayInputStream(data), 0, data.length);
+        } catch (RuntimeException ignored) {
+            // The offline mock does not satisfy the append response contract; only the request routing matters here.
+        }
+        assertEquals("/" + FILE_SYSTEM_NAME + "/my%20file.txt", httpClient.getUrlPath());
+    }
+
+    /**
+     * Regression test. {@code DataLakeDirectoryClient} delegates operations such as {@code setAccessControlRecursive}
+     * to its internal (base) async client. That async client must be rooted at the renamed (destination) path so that
+     * a recursive ACL update targets the renamed directory rather than the original source path.
+     */
+    @Test
+    public void directoryClientReturnedByRenameDelegatesToTheRenamedPath() {
+        RequestCapturingHttpClient httpClient = new RequestCapturingHttpClient();
+        DataLakeFileSystemClient fileSystemClient = fileSystemClient(httpClient);
+
+        DataLakeDirectoryClient renamed = fileSystemClient.getDirectoryClient("source").rename(null, "dest dir");
+
+        // setAccessControlRecursive is delegated to the internal async client - it must address the renamed path. The
+        // mock cannot return a valid response body, but the request URL is captured when the request is put on the
+        // wire, which is all this routing regression cares about.
+        try {
+            renamed.setAccessControlRecursive(PathAccessControlEntry.parseList("user::rwx"));
+        } catch (RuntimeException ignored) {
+            // The offline mock does not satisfy the response contract; only the request routing matters here.
+        }
+        assertEquals("/" + FILE_SYSTEM_NAME + "/dest%20dir", httpClient.getUrlPath());
     }
 
     /**

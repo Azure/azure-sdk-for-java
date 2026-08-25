@@ -10,6 +10,10 @@
 - Fixed a bug where the client returned by `rename`, `renameWithResponse`, and `undeletePath` URL-encoded the path
   name a second time, causing subsequent requests made through that client to target a double-encoded path when the
   name contained characters such as `%`, `#`, or a space.
+- Fixed a bug where the sync `DataLakeFileClient`/`DataLakeDirectoryClient` returned by `rename`/`renameWithResponse`
+  kept its internal async client rooted at the original source path. Operations delegated to that async client (such as
+  file `append`, `flush`, and `upload`, or directory child/ACL clients) targeted the old path instead of the renamed
+  destination.
 
 ### Other Changes
 - Corrected documentation on `DataLakeFileSystemClient`/`DataLakeFileSystemAsyncClient` path client getters and on
