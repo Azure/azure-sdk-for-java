@@ -27,7 +27,7 @@ public class TextTranslationClientBuilderTests {
     public void customEndpointUsesApiVersionQueryParameter() {
         RecordingHttpClient httpClient = new RecordingHttpClient();
         TextTranslationClient client
-            = new TextTranslationClientBuilder().endpoint("https://trsl-ats-dev-nordlb.cognitiveservices.azure.com")
+            = new TextTranslationClientBuilder().endpoint("https://fakeCustomEndpoint.cognitiveservices.azure.com")
                 .credential(new AzureKeyCredential("key"))
                 .httpClient(httpClient)
                 .buildClient();
@@ -35,7 +35,7 @@ public class TextTranslationClientBuilderTests {
         client.translate("cs", "Hello");
 
         assertEquals(
-            "https://trsl-ats-dev-nordlb.cognitiveservices.azure.com/translator/text/translate?api-version=2026-06-06",
+            "https://fakeCustomEndpoint.cognitiveservices.azure.com/translator/text/translate?api-version=2026-06-06",
             httpClient.getRequest().getUrl().toString());
     }
 
