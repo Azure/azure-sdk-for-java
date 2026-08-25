@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-discovery</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-discovery;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-discovery;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Discovery</name>
