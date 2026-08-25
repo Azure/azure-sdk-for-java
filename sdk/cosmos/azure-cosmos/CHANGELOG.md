@@ -9,6 +9,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
 * Fixed a possible delay of PPCB failback when the SDK has never received a successful address response for the affected partition before failover, which could impact tail latency in certain workloads - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
 * Fixed an intermittent `IndexOutOfBoundsException` in cross-partition hybrid search queries caused by multiple subscriptions to the coalesced component query results. - See PR [49831](https://github.com/Azure/azure-sdk-for-java/issues/49831)
 * Fixed document requests failing when Gateway V2 is enabled with resource-token or permission-feed authentication by routing those requests through Compute Gateway. - See PR [50084](https://github.com/Azure/azure-sdk-for-java/pull/50084).
