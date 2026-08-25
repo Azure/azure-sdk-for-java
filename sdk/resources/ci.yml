@@ -46,6 +46,10 @@ parameters:
     displayName: azure-resourcemanager-resources-bicep
     type: boolean
     default: false
+  - name: release_azureresourcemanagerresourcesdeployments
+    displayName: azure-resourcemanager-resources-deployments
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -64,3 +68,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerresourcesbicep
         releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesbicep }}
+      - name: azure-resourcemanager-resources-deployments
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerresourcesdeployments
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerresourcesdeployments }}
