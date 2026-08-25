@@ -9,7 +9,7 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class GalleryInVMAccessControlProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
+     * x-ms-original-file: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
      */
     /**
      * Sample code: Delete a gallery inVMAccessControlProfile.

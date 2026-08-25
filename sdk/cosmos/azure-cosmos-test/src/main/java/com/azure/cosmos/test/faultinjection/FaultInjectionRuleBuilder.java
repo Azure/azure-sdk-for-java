@@ -164,17 +164,27 @@ public final class FaultInjectionRuleBuilder {
             throw new IllegalArgumentException("STALED_ADDRESSES exception can not be injected for rule with gateway connection type");
         }
 
-        // for metadata request related rule, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error can be injected
+        // for metadata request related rule, only metadata-safe errors can be injected
         if (ImplementationBridgeHelpers
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(this.condition)) {
-            if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            if (!isSupportedMetadataServerErrorType(serverErrorResult.getServerErrorType())) {
 
                 throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
             }
         }
+    }
+
+    private boolean isSupportedMetadataServerErrorType(FaultInjectionServerErrorType serverErrorType) {
+        if (serverErrorType == FaultInjectionServerErrorType.TOO_MANY_REQUEST
+            || serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY
+            || serverErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            return true;
+        }
+
+        return this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES
+            && (serverErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+            || serverErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ);
     }
 }

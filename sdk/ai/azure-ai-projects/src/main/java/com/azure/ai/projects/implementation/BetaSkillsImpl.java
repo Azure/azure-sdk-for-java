@@ -894,7 +894,7 @@ public final class BetaSkillsImpl {
      * </pre>
      * 
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -931,7 +931,7 @@ public final class BetaSkillsImpl {
      * </pre>
      * 
      * @param name The name of the skill.
-     * @param content The content parameter.
+     * @param content The multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1419,20 +1419,26 @@ public final class BetaSkillsImpl {
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

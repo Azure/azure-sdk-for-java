@@ -1,14 +1,31 @@
 # Release History
 
-## 12.35.0-beta.1 (Unreleased)
+## 12.35.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed an issue where the client-side encryption (v2) region nonce counter was truncated to 32 bits, which could
+  cause GCM nonce reuse for blobs exceeding 2^32 authenticated regions. The full 64-bit region index is now used so
+  every region receives a unique nonce. Blobs with at most 2^31 authenticated regions remain byte-for-byte compatible;
+  subsequent regions now use the corrected 64-bit encoding.
+
+## 12.34.1 (2026-08-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.35.1`.
+
+## 12.35.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
 
 ## 12.34.0 (2026-06-11)
 

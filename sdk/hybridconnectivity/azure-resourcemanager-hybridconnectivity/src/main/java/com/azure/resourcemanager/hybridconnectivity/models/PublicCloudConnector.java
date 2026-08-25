@@ -264,7 +264,7 @@ public interface PublicCloudConnector {
     PublicCloudConnector refresh(Context context);
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,7 +273,7 @@ public interface PublicCloudConnector {
     OperationStatusResult testPermissions();
 
     /**
-     * A long-running resource action.
+     * The testPermissions operation.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

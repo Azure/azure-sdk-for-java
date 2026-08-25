@@ -59,6 +59,7 @@ import java.io.Closeable;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -880,6 +881,17 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public List<String> getPreferredRegions(CosmosAsyncClient client) {
                     return client.connectionPolicy.getPreferredRegions();
+                }
+
+                @Override
+                public List<String> getExcludedRegions(CosmosAsyncClient client) {
+                    if (client.connectionPolicy.getExcludedRegionsSupplier() == null
+                        || client.connectionPolicy.getExcludedRegionsSupplier().get() == null) {
+
+                        return Collections.emptyList();
+                    }
+
+                    return new ArrayList<>(client.connectionPolicy.getExcludedRegionsSupplier().get().getExcludedRegions());
                 }
 
                 @Override

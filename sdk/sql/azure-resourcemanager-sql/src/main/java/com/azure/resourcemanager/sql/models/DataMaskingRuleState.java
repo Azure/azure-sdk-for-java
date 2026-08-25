@@ -4,50 +4,55 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName,
  * maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be
  * created with ruleState set to enabled, regardless of the provided value of ruleState.
  */
-public final class DataMaskingRuleState extends ExpandableStringEnum<DataMaskingRuleState> {
+public enum DataMaskingRuleState {
     /**
      * Enabled.
      */
-    public static final DataMaskingRuleState ENABLED = fromString("Enabled");
+    ENABLED("Enabled"),
 
     /**
      * Disabled.
      */
-    public static final DataMaskingRuleState DISABLED = fromString("Disabled");
+    DISABLED("Disabled");
 
     /**
-     * Creates a new instance of DataMaskingRuleState value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a DataMaskingRuleState instance.
      */
-    @Deprecated
-    public DataMaskingRuleState() {
+    private final String value;
+
+    DataMaskingRuleState(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DataMaskingRuleState from its string representation.
+     * Parses a serialized value to a DataMaskingRuleState instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding DataMaskingRuleState.
+     * @param value the serialized value to parse.
+     * @return the parsed DataMaskingRuleState object, or null if unable to parse.
      */
-    public static DataMaskingRuleState fromString(String name) {
-        return fromString(name, DataMaskingRuleState.class);
+    public static DataMaskingRuleState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        DataMaskingRuleState[] items = DataMaskingRuleState.values();
+        for (DataMaskingRuleState item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known DataMaskingRuleState values.
-     * 
-     * @return known DataMaskingRuleState values.
+     * {@inheritDoc}
      */
-    public static Collection<DataMaskingRuleState> values() {
-        return values(DataMaskingRuleState.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

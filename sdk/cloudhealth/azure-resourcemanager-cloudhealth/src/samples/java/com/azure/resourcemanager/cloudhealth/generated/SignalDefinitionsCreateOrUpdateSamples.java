@@ -4,7 +4,9 @@
 
 package com.azure.resourcemanager.cloudhealth.generated;
 
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
+import com.azure.resourcemanager.cloudhealth.models.LookBackWindow;
 import com.azure.resourcemanager.cloudhealth.models.MetricAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.RefreshInterval;
 import com.azure.resourcemanager.cloudhealth.models.ResourceMetricSignalDefinitionProperties;
@@ -18,7 +20,7 @@ import java.util.Map;
  */
 public final class SignalDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/SignalDefinitions_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01-preview/SignalDefinitions_CreateOrUpdate.json
      */
     /**
      * Sample code: SignalDefinitions_CreateOrUpdate.
@@ -28,23 +30,22 @@ public final class SignalDefinitionsCreateOrUpdateSamples {
     public static void
         signalDefinitionsCreateOrUpdate(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.signalDefinitions()
-            .define("sig1")
-            .withExistingHealthmodel("rgopenapi", "myHealthModel")
-            .withProperties(new ResourceMetricSignalDefinitionProperties().withDisplayName("cpu usage")
+            .define("sql-cpu-percent")
+            .withExistingHealthmodel("online-store-rg", "online-store")
+            .withProperties(new ResourceMetricSignalDefinitionProperties().withDisplayName("SQL CPU utilization")
                 .withRefreshInterval(RefreshInterval.PT1M)
-                .withTags(mapOf("key4788", "fakeTokenPlaceholder"))
-                .withDataUnit("byte")
+                .withTags(mapOf("environment", "production", "team", "online-store"))
+                .withDataUnit("Percent")
                 .withEvaluationRules(new EvaluationRule()
                     .withDegradedRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(65.0))
-                    .withUnhealthyRule(
-                        new ThresholdRuleV2().withOperator(SignalOperator.fromString("LowerThan")).withThreshold(60.0)))
-                .withMetricNamespace("microsoft.compute/virtualMachines")
-                .withMetricName("cpuusage")
-                .withTimeGrain("PT1M")
-                .withAggregationType(MetricAggregationType.NONE)
-                .withDimension("nodename")
-                .withDimensionFilter("node1"))
+                        new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN).withThreshold(70.0D))
+                    .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.DYNAMIC)
+                        .withSensitivity(DynamicThresholdSensitivity.MEDIUM)
+                        .withLookBackWindow(LookBackWindow.PT1H)))
+                .withMetricNamespace("Microsoft.Sql/servers/databases")
+                .withMetricName("cpu_percent")
+                .withTimeGrain("PT5M")
+                .withAggregationType(MetricAggregationType.AVERAGE))
             .create();
     }
 

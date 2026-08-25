@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class RestorableDatabaseAccountsGetByLocationSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountGet.json
+     * x-ms-original-file: 2026-03-15/CosmosDBRestorableDatabaseAccountGet.json
      */
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountGet.

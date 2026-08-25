@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -61,8 +61,10 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         String containerId = "bulksplittestcontainer_" + UUID.randomUUID();
         int totalRequest = getTotalRequest();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
-        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        CosmosAsyncContainer container = createCollection(
+            createdDatabase,
+            containerProperties,
+            new CosmosContainerRequestOptions());
 
         Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux1 = Flux.range(0, totalRequest).map(i -> {
             String partitionKey = UUID.randomUUID().toString();

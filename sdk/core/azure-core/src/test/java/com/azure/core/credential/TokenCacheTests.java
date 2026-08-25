@@ -3,7 +3,6 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.implementation.AccessTokenCache;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

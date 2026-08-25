@@ -5,10 +5,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.util.List;
 
@@ -25,23 +26,31 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     private RequestTimeline queryPlanRequestTimeline;
     private HybridSearchQueryInfo hybridSearchQueryInfo;
 
-    PartitionedQueryExecutionInfo(QueryInfo queryInfo, List<Range<String>> queryRanges) {
-        this.queryInfo = queryInfo;
-        this.queryRanges = queryRanges;
-
-        this.set(
-            PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
-            Constants.PartitionedQueryExecutionInfo.VERSION_1
-        );
-    }
-
+    /**
+     * Constructs with EPK hex string format expected for queryRanges.
+     */
     public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
         super(content);
         this.queryPlanRequestTimeline = queryPlanRequestTimeline;
     }
 
-    public PartitionedQueryExecutionInfo(String jsonString) {
-        super(jsonString);
+    /**
+     * Constructs with PartitionKeyInternal array format expected for queryRanges.
+     * The {@code partitionKeyDefinition} is required for converting PartitionKeyInternal
+     * values to EPK hex strings.
+     *
+     * @param partitionKeyDefinition the container's partition key definition, must not be null.
+     */
+    PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline, PartitionKeyDefinition partitionKeyDefinition) {
+        super(content);
+        if (partitionKeyDefinition == null) {
+            throw new IllegalArgumentException("partitionKeyDefinition must not be null");
+        }
+        this.queryPlanRequestTimeline = queryPlanRequestTimeline;
+        this.queryRanges = PartitionKeyInternalHelper.convertToSortedEpkRanges(
+            PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY,
+            content,
+            partitionKeyDefinition);
     }
 
     public int getVersion() {
@@ -54,10 +63,26 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
                         PartitionedQueryExecutionInfoInternal.QUERY_INFO_PROPERTY, QueryInfo.class));
     }
 
+    /**
+     * Returns the query ranges as sorted EPK hex string ranges.
+     * <p>
+     * Two formats exist:
+     * <ul>
+     *   <li>Gateway V1: {@code min}/{@code max} are EPK hex strings and are
+     *       deserialized directly via {@code getList()}.</li>
+     *   <li>Thin client proxy: {@code min}/{@code max} are PartitionKeyInternal
+     *       JSON arrays and are converted to EPK hex by the thin-client constructor.</li>
+     * </ul>
+     */
     public List<Range<String>> getQueryRanges() {
-        return this.queryRanges != null ? this.queryRanges
-                : (this.queryRanges = super.getList(
-                        PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS));
+        if (this.queryRanges != null) {
+            return this.queryRanges;
+        }
+
+        // EPK hex string format — direct deserialization
+        this.queryRanges = super.getList(
+            PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS);
+        return this.queryRanges;
     }
 
     public RequestTimeline getQueryPlanRequestTimeline() {

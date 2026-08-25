@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class StartStopManagedInstanceSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
+     * x-ms-original-file: 2025-01-01/StartStopManagedInstanceScheduleCreateOrUpdateMin.json
      */
     /**
      * Sample code: Creates or updates the managed instance's Start/Stop schedule with no optional parameters specified.
@@ -40,7 +40,7 @@ public final class StartStopManagedInstanceSchedulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
+     * x-ms-original-file: 2025-01-01/StartStopManagedInstanceScheduleCreateOrUpdateMax.json
      */
     /**
      * Sample code: Creates or updates the managed instance's Start/Stop schedule with all optional parameters

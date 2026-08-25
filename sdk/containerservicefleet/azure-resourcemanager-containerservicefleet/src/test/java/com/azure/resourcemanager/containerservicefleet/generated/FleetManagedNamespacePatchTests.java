@@ -13,18 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FleetManagedNamespacePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetManagedNamespacePatch model
-            = BinaryData.fromString("{\"tags\":{\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\"}}")
-                .toObject(FleetManagedNamespacePatch.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.tags().get("upedeojnabckhs"));
+        FleetManagedNamespacePatch model = BinaryData.fromString("{\"tags\":{\"yxczfclh\":\"xywnytnrsynlqidy\"}}")
+            .toObject(FleetManagedNamespacePatch.class);
+        Assertions.assertEquals("xywnytnrsynlqidy", model.tags().get("yxczfclh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetManagedNamespacePatch model
-            = new FleetManagedNamespacePatch().withTags(mapOf("upedeojnabckhs", "kdwzbaiuebbaumny", "ie", "txp"));
+            = new FleetManagedNamespacePatch().withTags(mapOf("yxczfclh", "xywnytnrsynlqidy"));
         model = BinaryData.fromObject(model).toObject(FleetManagedNamespacePatch.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.tags().get("upedeojnabckhs"));
+        Assertions.assertEquals("xywnytnrsynlqidy", model.tags().get("yxczfclh"));
     }
 
     // Use "Map.of" if available

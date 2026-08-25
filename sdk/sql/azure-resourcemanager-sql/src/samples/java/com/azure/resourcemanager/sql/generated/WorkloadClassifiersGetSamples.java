@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class WorkloadClassifiersGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/GetWorkloadClassifier.json
+     * x-ms-original-file: 2025-01-01/GetWorkloadClassifier.json
      */
     /**
      * Sample code: Gets a workload classifier for a data warehouse.

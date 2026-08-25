@@ -35,7 +35,6 @@
     <module>sdk/avs</module>
     <module>sdk/azureadexternalidentities</module>
     <module>sdk/azurearcdata</module>
-    <module>sdk/azureresiliencemanagement</module>
     <module>sdk/azurestack</module>
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
@@ -68,7 +67,9 @@
     <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservice</module>
+    <module>sdk/containerserviceaimanager</module>
     <module>sdk/containerservicefleet</module>
+    <module>sdk/containerservicepreparedimgspec</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
     <module>sdk/contentunderstanding</module>
@@ -105,6 +106,7 @@
     <module>sdk/devtestlabs</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/disconnectedoperations</module>
+    <module>sdk/discovery</module>
     <module>sdk/dns</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
@@ -117,6 +119,7 @@
     <module>sdk/education</module>
     <module>sdk/elastic</module>
     <module>sdk/elasticsan</module>
+    <module>sdk/enclave</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
@@ -200,13 +203,12 @@
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
-    <module>sdk/personalizer</module>
     <module>sdk/pineconevectordb</module>
     <module>sdk/planetarycomputer</module>
     <module>sdk/playwright</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
-    <module>sdk/portalservices</module>
+    <module>sdk/portalservicescopilot</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
@@ -229,6 +231,7 @@
     <module>sdk/relationships</module>
     <module>sdk/relay</module>
     <module>sdk/reservations</module>
+    <module>sdk/resiliencemanagement</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
     <module>sdk/resourcehealth</module>
@@ -266,6 +269,7 @@
     <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
+    <module>sdk/storagesync</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
     <module>sdk/support</module>
@@ -281,7 +285,6 @@
     <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voicelive</module>

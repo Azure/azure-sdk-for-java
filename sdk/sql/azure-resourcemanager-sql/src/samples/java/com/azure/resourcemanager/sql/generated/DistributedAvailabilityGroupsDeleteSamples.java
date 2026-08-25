@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class DistributedAvailabilityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsDelete.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsDelete.json
      */
     /**
      * Sample code: Initiate a distributed availability group drop.

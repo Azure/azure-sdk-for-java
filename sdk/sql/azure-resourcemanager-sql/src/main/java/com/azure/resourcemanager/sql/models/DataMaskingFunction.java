@@ -4,68 +4,73 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * The masking function that is used for the data masking rule.
  */
-public final class DataMaskingFunction extends ExpandableStringEnum<DataMaskingFunction> {
+public enum DataMaskingFunction {
     /**
      * Default.
      */
-    public static final DataMaskingFunction DEFAULT = fromString("Default");
+    DEFAULT("Default"),
 
     /**
      * CCN.
      */
-    public static final DataMaskingFunction CCN = fromString("CCN");
+    CCN("CCN"),
 
     /**
      * Email.
      */
-    public static final DataMaskingFunction EMAIL = fromString("Email");
+    EMAIL("Email"),
 
     /**
      * Number.
      */
-    public static final DataMaskingFunction NUMBER = fromString("Number");
+    NUMBER("Number"),
 
     /**
      * SSN.
      */
-    public static final DataMaskingFunction SSN = fromString("SSN");
+    SSN("SSN"),
 
     /**
      * Text.
      */
-    public static final DataMaskingFunction TEXT = fromString("Text");
+    TEXT("Text");
 
     /**
-     * Creates a new instance of DataMaskingFunction value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a DataMaskingFunction instance.
      */
-    @Deprecated
-    public DataMaskingFunction() {
+    private final String value;
+
+    DataMaskingFunction(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DataMaskingFunction from its string representation.
+     * Parses a serialized value to a DataMaskingFunction instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding DataMaskingFunction.
+     * @param value the serialized value to parse.
+     * @return the parsed DataMaskingFunction object, or null if unable to parse.
      */
-    public static DataMaskingFunction fromString(String name) {
-        return fromString(name, DataMaskingFunction.class);
+    public static DataMaskingFunction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        DataMaskingFunction[] items = DataMaskingFunction.values();
+        for (DataMaskingFunction item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known DataMaskingFunction values.
-     * 
-     * @return known DataMaskingFunction values.
+     * {@inheritDoc}
      */
-    public static Collection<DataMaskingFunction> values() {
-        return values(DataMaskingFunction.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

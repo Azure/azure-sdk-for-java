@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class AuthenticationSettingsGetSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/AuthenticationSettings_Get.json
+     * x-ms-original-file: 2026-05-01-preview/AuthenticationSettings_Get.json
      */
     /**
      * Sample code: AuthenticationSettings_Get.
@@ -18,7 +18,6 @@ public final class AuthenticationSettingsGetSamples {
      */
     public static void authenticationSettingsGet(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.authenticationSettings()
-            .getWithResponse("my-resource-group", "my-health-model", "my-auth-setting",
-                com.azure.core.util.Context.NONE);
+            .getWithResponse("online-store-rg", "online-store", "default-auth", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,7 @@ public final class MccIssueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MccIssue model = BinaryData.fromString(
-            "{\"mccIssueType\":\"bcgjbirxbp\",\"toastString\":\"srfbjfdtwss\",\"detailString\":\"ftpvjzbexil\",\"helpLink\":\"nfqqnvwp\",\"issueStartDate\":\"2021-08-13T08:01:40Z\",\"issueEndDate\":\"2021-06-07T17:58:08Z\"}")
+            "{\"mccIssueType\":\"fbjfdtwssotftpvj\",\"toastString\":\"exilzznfqqnvwpmq\",\"detailString\":\"ruoujmk\",\"helpLink\":\"hwqytj\",\"issueStartDate\":\"2021-08-09T19:00:18Z\",\"issueEndDate\":\"2021-03-24T15:48:33Z\"}")
             .toObject(MccIssue.class);
     }
 }

@@ -22,7 +22,7 @@ public final class AuthenticationSettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"kzjcjbtrgae\"},\"id\":\"vibr\",\"name\":\"jj\",\"type\":\"toqbeitpkxztmoob\"}";
+            = "{\"properties\":{\"authenticationKind\":\"AuthenticationSettingProperties\",\"provisioningState\":\"Succeeded\",\"displayName\":\"cfhmlrqryxyn\"},\"id\":\"zrdpsovwxznptgoe\",\"name\":\"ybbabpfhvfsl\",\"type\":\"vntjlrigjk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class AuthenticationSettingsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthenticationSetting response = manager.authenticationSettings()
-            .define("lqxihhrmooiz")
-            .withExistingHealthmodel("brta", "metttwgd")
-            .withProperties(new AuthenticationSettingProperties().withDisplayName("xiutcx"))
+            .define("waz")
+            .withExistingHealthmodel("oguyaip", "dsdaultxijjumf")
+            .withProperties(new AuthenticationSettingProperties().withDisplayName("cjngzqdqxtbjwgny"))
             .create();
 
-        Assertions.assertEquals("kzjcjbtrgae", response.properties().displayName());
+        Assertions.assertEquals("cfhmlrqryxyn", response.properties().displayName());
     }
 }

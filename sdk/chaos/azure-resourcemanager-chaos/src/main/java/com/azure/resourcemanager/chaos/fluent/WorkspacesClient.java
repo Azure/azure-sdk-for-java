@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.chaos.fluent.models.WorkspaceInner;
+import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
 import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
 
@@ -109,7 +110,7 @@ public interface WorkspacesClient {
         Context context);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -124,7 +125,7 @@ public interface WorkspacesClient {
         WorkspaceUpdate properties);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -140,7 +141,7 @@ public interface WorkspacesClient {
         WorkspaceUpdate properties, Context context);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -154,7 +155,7 @@ public interface WorkspacesClient {
     WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspaceUpdate properties);
 
     /**
-     * The operation to update a Workspace.
+     * Update a Workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -271,7 +272,7 @@ public interface WorkspacesClient {
     PagedIterable<WorkspaceInner> list(String continuationToken, Context context);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -281,11 +282,11 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName);
+    SyncPoller<PollResult<WorkspaceDiscovery>, WorkspaceDiscovery> beginDiscover(String resourceGroupName,
+        String workspaceName);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -296,11 +297,11 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation>
-        beginRefreshRecommendations(String resourceGroupName, String workspaceName, Context context);
+    SyncPoller<PollResult<WorkspaceDiscovery>, WorkspaceDiscovery> beginDiscover(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -310,10 +311,10 @@ public interface WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName);
+    WorkspaceDiscovery discover(String resourceGroupName, String workspaceName);
 
     /**
-     * Refreshes recommendation status for all scenarios in a given workspace.
+     * Triggers resource discovery for the workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName String that represents a Workspace resource name.
@@ -324,5 +325,61 @@ public interface WorkspacesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceEvaluation refreshRecommendations(String resourceGroupName, String workspaceName, Context context);
+    WorkspaceDiscovery discover(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation> beginEvaluate(String resourceGroupName,
+        String workspaceName);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkspaceEvaluation>, WorkspaceEvaluation> beginEvaluate(String resourceGroupName,
+        String workspaceName, Context context);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName);
+
+    /**
+     * Triggers scenario evaluation for the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName String that represents a Workspace resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkspaceEvaluation evaluate(String resourceGroupName, String workspaceName, Context context);
 }

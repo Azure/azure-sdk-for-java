@@ -758,6 +758,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -780,6 +781,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -873,6 +875,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -895,6 +898,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1059,6 +1063,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1081,6 +1086,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1246,6 +1252,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1268,6 +1275,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1364,6 +1372,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1386,6 +1395,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1452,7 +1462,7 @@ public final class AgentsImpl {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1488,6 +1498,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1510,6 +1521,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1576,7 +1588,7 @@ public final class AgentsImpl {
      * hyphens allowed in the middle.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1629,6 +1641,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1651,6 +1664,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1768,6 +1782,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1790,6 +1805,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1888,6 +1904,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -1910,6 +1927,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -1978,7 +1996,7 @@ public final class AgentsImpl {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2013,6 +2031,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2035,6 +2054,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2103,7 +2123,7 @@ public final class AgentsImpl {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2151,6 +2171,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2173,6 +2194,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2284,6 +2306,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2306,6 +2329,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2417,6 +2441,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2439,6 +2464,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2551,6 +2577,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2573,6 +2600,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2774,6 +2802,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2796,6 +2825,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -2911,6 +2941,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -2933,6 +2964,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -3042,6 +3074,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3064,6 +3097,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -3177,6 +3211,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -3199,6 +3234,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -3325,6 +3361,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3409,6 +3446,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3487,6 +3525,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3565,6 +3604,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3626,6 +3666,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3685,6 +3726,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3856,6 +3898,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -3938,6 +3981,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -4013,6 +4057,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -4092,6 +4137,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -4184,6 +4230,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4206,6 +4253,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -4358,6 +4406,7 @@ public final class AgentsImpl {
      *     id: String (Required)
      *     name: String (Required)
      *     state: String(enabled/disabled) (Required)
+     *     state_source: String(agent_instance_identity/agent_blueprint) (Optional)
      *     versions (Required): {
      *         latest (Required): {
      *             metadata (Required): {
@@ -4380,6 +4429,7 @@ public final class AgentsImpl {
      *             instance_identity (Optional): {
      *                 principal_id: String (Required)
      *                 client_id: String (Required)
+     *                 status: String(active/disabled) (Optional)
      *             }
      *             blueprint (Optional): (recursive schema, see blueprint above)
      *             blueprint_reference (Optional): {
@@ -4497,6 +4547,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -4513,7 +4564,7 @@ public final class AgentsImpl {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4565,6 +4616,7 @@ public final class AgentsImpl {
      *     instance_identity (Optional): {
      *         principal_id: String (Required)
      *         client_id: String (Required)
+     *         status: String(active/disabled) (Optional)
      *     }
      *     blueprint (Optional): (recursive schema, see blueprint above)
      *     blueprint_reference (Optional): {
@@ -4581,7 +4633,7 @@ public final class AgentsImpl {
      * - Must not exceed 63 characters.
      * @param codeZipSha256 SHA-256 hex digest of the uploaded code zip. Used for change detection (dedup) and integrity
      * verification.
-     * @param content The content parameter.
+     * @param content The content multipart request content.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4626,6 +4678,14 @@ public final class AgentsImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-agent-version</td><td>String</td><td>The version of the agent whose code zip is returned in the
+     * response body.</td></tr>
+     * </table>
+     * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4669,6 +4729,14 @@ public final class AgentsImpl {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-agent-version</td><td>String</td><td>The version of the agent whose code zip is returned in the
+     * response body.</td></tr>
+     * </table>
      * 
      * @param agentName The name of the agent.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4772,7 +4840,7 @@ public final class AgentsImpl {
      * 
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4828,7 +4896,7 @@ public final class AgentsImpl {
      * 
      * Creates a new session for an agent endpoint.
      * The endpoint resolves the backing agent version from `version_indicator` and
-     * enforces session ownership using the provided isolation key for session-mutating operations.
+     * enforces session ownership using the provided user identity for session-mutating operations.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -6116,20 +6184,26 @@ public final class AgentsImpl {
         return new PagedIterable<>(() -> listAgentConversationsSinglePage(requestOptions));
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

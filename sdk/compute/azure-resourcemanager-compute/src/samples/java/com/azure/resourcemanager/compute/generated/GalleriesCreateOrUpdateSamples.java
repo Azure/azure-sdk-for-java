@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class GalleriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/CommunityGallery_Create.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/CommunityGallery_Create.json
      */
     /**
      * Sample code: Create a community gallery.
@@ -42,7 +42,7 @@ public final class GalleriesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
      */
     /**
      * Sample code: Create or update a simple gallery with system-assigned and user-assigned managed identities.
@@ -62,7 +62,7 @@ public final class GalleriesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Create_WithSharingProfile.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Create_WithSharingProfile.json
      */
     /**
      * Sample code: Create or update a simple gallery with sharing profile.
@@ -81,7 +81,7 @@ public final class GalleriesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Create.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery.
@@ -97,7 +97,7 @@ public final class GalleriesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
      */
     /**
      * Sample code: Create or update a simple gallery with soft deletion enabled.

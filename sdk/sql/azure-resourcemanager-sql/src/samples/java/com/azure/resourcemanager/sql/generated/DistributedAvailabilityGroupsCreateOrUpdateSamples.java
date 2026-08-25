@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsCreateMin.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsCreateMin.json
      */
     /**
      * Sample code: Create a distributed availability group with minimal properties.
@@ -37,7 +37,7 @@ public final class DistributedAvailabilityGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/DistributedAvailabilityGroupsCreateMax.json
+     * x-ms-original-file: 2025-01-01/DistributedAvailabilityGroupsCreateMax.json
      */
     /**
      * Sample code: Create a distributed availability group with all properties.

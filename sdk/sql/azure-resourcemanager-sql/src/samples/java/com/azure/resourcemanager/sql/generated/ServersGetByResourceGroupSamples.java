@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerGetWithExpandEqualsAdministrators.json
+     * x-ms-original-file: 2025-01-01/ServerGetWithExpandEqualsAdministrators.json
      */
     /**
      * Sample code: Get server with $expand=administrators/activedirectory.
@@ -25,7 +25,7 @@ public final class ServersGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerGet.json
+     * x-ms-original-file: 2025-01-01/ServerGet.json
      */
     /**
      * Sample code: Get server.

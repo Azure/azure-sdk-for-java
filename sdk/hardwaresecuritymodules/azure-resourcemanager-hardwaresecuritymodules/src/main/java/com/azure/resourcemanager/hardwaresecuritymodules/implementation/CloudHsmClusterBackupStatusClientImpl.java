@@ -82,7 +82,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -103,7 +104,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -120,7 +122,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +143,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

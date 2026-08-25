@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cloudhealth.generated;
  */
 public final class DiscoveryRulesListByHealthModelSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/DiscoveryRules_ListByHealthModel.json
+     * x-ms-original-file: 2026-05-01-preview/DiscoveryRules_ListByHealthModel.json
      */
     /**
      * Sample code: DiscoveryRules_ListByHealthModel.
@@ -19,6 +19,6 @@ public final class DiscoveryRulesListByHealthModelSamples {
     public static void
         discoveryRulesListByHealthModel(com.azure.resourcemanager.cloudhealth.CloudHealthManager manager) {
         manager.discoveryRules()
-            .listByHealthModel("my-resource-group", "my-health-model", null, com.azure.core.util.Context.NONE);
+            .listByHealthModel("online-store-rg", "online-store", null, com.azure.core.util.Context.NONE);
     }
 }

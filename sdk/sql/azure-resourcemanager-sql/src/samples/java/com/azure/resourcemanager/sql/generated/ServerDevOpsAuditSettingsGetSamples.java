@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.DevOpsAuditingSettingsName;
  */
 public final class ServerDevOpsAuditSettingsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerDevOpsAuditGet.json
+     * x-ms-original-file: 2025-01-01/ServerDevOpsAuditGet.json
      */
     /**
      * Sample code: Get a server's DevOps audit settings.

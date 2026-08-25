@@ -26,7 +26,7 @@ import java.util.UUID;
  */
 public final class ManagedInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceCreateMin.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceCreateMin.json
      */
     /**
      * Sample code: Create managed instance with minimal properties.
@@ -49,7 +49,7 @@ public final class ManagedInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedInstanceCreateMax.json
+     * x-ms-original-file: 2025-01-01/ManagedInstanceCreateMax.json
      */
     /**
      * Sample code: Create managed instance with all properties.

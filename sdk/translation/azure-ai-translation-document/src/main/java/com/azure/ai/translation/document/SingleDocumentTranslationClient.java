@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.implementation.MultipartFormDataHelper;
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
 import com.azure.ai.translation.document.models.DocumentTranslateContent;
+import com.azure.ai.translation.document.models.DocumentTranslateOptions;
 import com.azure.ai.translation.document.models.GlossaryFileDetails;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -54,9 +55,13 @@ public final class SingleDocumentTranslationClient {
      * This parameter is used to get translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.</td></tr>
+     * <tr><td>deploymentName</td><td>String</td><td>No</td><td>Deployment name of the custom translation model for the
+     * translation request.</td></tr>
      * <tr><td>allowFallback</td><td>Boolean</td><td>No</td><td>Specifies that the service is allowed to fall back to a
      * general system when a custom system doesn't exist.
      * Possible values are: true (default) or false.</td></tr>
+     * <tr><td>translateTextWithinImage</td><td>Boolean</td><td>No</td><td>Optional boolean parameter to translate text
+     * within an image in the document</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -66,6 +71,20 @@ public final class SingleDocumentTranslationClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-metered-usage</td><td>int</td><td>Specifies consumption (the number of characters for which the user
+     * will be charged) for the translation job request</td></tr>
+     * <tr><td>total-image-scans-succeeded</td><td>int</td><td>Specifies the number of successful image translations
+     * within a document translation job</td></tr>
+     * <tr><td>total-image-scans-failed</td><td>int</td><td>Specifies the number of failed image translations within a
+     * document translation job</td></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      *
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
@@ -96,6 +115,57 @@ public final class SingleDocumentTranslationClient {
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
      * @param documentTranslateContent Document Translate Request Content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent) {
+        // Generated convenience method for translateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return translateWithResponse(targetLanguage,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
+                    documentTranslateContent.getDocument().getContentType(),
+                    documentTranslateContent.getDocument().getFilename())
+                .serializeFileFields("glossary",
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getContent)
+                            .collect(Collectors.toList()),
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getContentType)
+                            .collect(Collectors.toList()),
+                    documentTranslateContent.getGlossary() == null
+                        ? null
+                        : documentTranslateContent.getGlossary()
+                            .stream()
+                            .map(GlossaryFileDetails::getFilename)
+                            .collect(Collectors.toList()))
+                .end()
+                .getRequestBody(),
+            requestOptions).getValue();
+    }
+
+    /**
+     * Submit a single document translation request to the Document Translation service
+     *
+     * Use this API to submit a single translation request to the Document Translation Service.
+     *
+     * @param targetLanguage Specifies the language of the output document.
+     * The target language must be one of the supported languages included in the translation scope.
+     * For example if you want to translate the document in German language, then use targetLanguage=de.
+     * @param documentTranslateContent Document Translate Request Content.
      * @param sourceLanguage Specifies source language of the input document.
      * If this parameter isn't specified, automatic language detection is applied to determine the source language.
      * For example if the source document is written in English, then use sourceLanguage=en.
@@ -103,9 +173,11 @@ public final class SingleDocumentTranslationClient {
      * translations
      * from a customized system built with Custom Translator. Add the Category ID from your Custom Translator
      * project details to this parameter to use your deployed customized system. Default value is: general.
+     * @param deploymentName Deployment name of the custom translation model for the translation request.
      * @param allowFallback Specifies that the service is allowed to fall back to a general system when a custom system
      * doesn't exist.
      * Possible values are: true (default) or false.
+     * @param translateTextWithinImage Optional boolean parameter to translate text within an image in the document.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -117,7 +189,8 @@ public final class SingleDocumentTranslationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
-        String sourceLanguage, String category, Boolean allowFallback) {
+        String sourceLanguage, String category, String deploymentName, Boolean allowFallback,
+        Boolean translateTextWithinImage) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (sourceLanguage != null) {
@@ -126,8 +199,14 @@ public final class SingleDocumentTranslationClient {
         if (category != null) {
             requestOptions.addQueryParam("category", category, false);
         }
+        if (deploymentName != null) {
+            requestOptions.addQueryParam("deploymentName", deploymentName, false);
+        }
         if (allowFallback != null) {
             requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
+        }
+        if (translateTextWithinImage != null) {
+            requestOptions.addQueryParam("translateTextWithinImage", String.valueOf(translateTextWithinImage), false);
         }
         return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
@@ -167,6 +246,7 @@ public final class SingleDocumentTranslationClient {
      * The target language must be one of the supported languages included in the translation scope.
      * For example if you want to translate the document in German language, then use targetLanguage=de.
      * @param documentTranslateContent Document Translate Request Content.
+     * @param options The configurable options to pass when submitting the translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -175,11 +255,27 @@ public final class SingleDocumentTranslationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent) {
-        // Generated convenience method for translateWithResponse
+    public BinaryData translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
+        DocumentTranslateOptions options) {
+        DocumentTranslateOptions translateOptions = options == null ? new DocumentTranslateOptions() : options;
         RequestOptions requestOptions = new RequestOptions();
+        if (translateOptions.getSourceLanguage() != null) {
+            requestOptions.addQueryParam("sourceLanguage", translateOptions.getSourceLanguage(), false);
+        }
+        if (translateOptions.getCategory() != null) {
+            requestOptions.addQueryParam("category", translateOptions.getCategory(), false);
+        }
+        if (translateOptions.getDeploymentName() != null) {
+            requestOptions.addQueryParam("deploymentName", translateOptions.getDeploymentName(), false);
+        }
+        if (translateOptions.isAllowFallback() != null) {
+            requestOptions.addQueryParam("allowFallback", String.valueOf(translateOptions.isAllowFallback()), false);
+        }
+        if (translateOptions.isTranslateTextWithinImage() != null) {
+            requestOptions.addQueryParam("translateTextWithinImage",
+                String.valueOf(translateOptions.isTranslateTextWithinImage()), false);
+        }
         return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),

@@ -8,7 +8,6 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.azure.resourcemanager.security.models.Setting;
 import com.azure.resourcemanager.security.models.SettingKind;
-import com.azure.resourcemanager.security.models.SettingProperties;
 
 public final class SettingImpl implements Setting {
     private SettingInner innerObject;
@@ -34,10 +33,6 @@ public final class SettingImpl implements Setting {
 
     public SettingKind kind() {
         return this.innerModel().kind();
-    }
-
-    public SettingProperties properties() {
-        return this.innerModel().properties();
     }
 
     public SystemData systemData() {

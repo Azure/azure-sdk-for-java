@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class ServerAdvancedThreatProtectionSettingsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ServerAdvancedThreatProtectionSettingsListByServer.json
+     * x-ms-original-file: 2025-01-01/ServerAdvancedThreatProtectionSettingsListByServer.json
      */
     /**
      * Sample code: List the server's Advanced Threat Protection settings.

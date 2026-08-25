@@ -9,7 +9,7 @@ package com.azure.resourcemanager.sql.generated;
  */
 public final class EncryptionProtectorsListByServerSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/EncryptionProtectorList.json
+     * x-ms-original-file: 2025-01-01/EncryptionProtectorList.json
      */
     /**
      * Sample code: List encryption protectors by server.

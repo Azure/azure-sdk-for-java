@@ -22,7 +22,7 @@ import java.util.Arrays;
  */
 public final class GalleryApplicationVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-03/galleryExamples/GalleryApplicationVersion_Create.json
+     * x-ms-original-file: 2025-12-03/galleryExamples/GalleryApplicationVersion_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery Application Version.

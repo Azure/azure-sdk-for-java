@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.SensitivityLabelSource;
  */
 public final class ManagedDatabaseSensitivityLabelsGetSamples {
     /*
-     * x-ms-original-file: 2025-02-01-preview/ManagedDatabaseColumnSensitivityLabelGet.json
+     * x-ms-original-file: 2025-01-01/ManagedDatabaseColumnSensitivityLabelGet.json
      */
     /**
      * Sample code: Gets the sensitivity label of a given column in a managed database.
