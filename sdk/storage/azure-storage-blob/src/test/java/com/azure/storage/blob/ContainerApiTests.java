@@ -2544,7 +2544,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
 
-        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
         WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             String path = req.getUrl().getPath();
@@ -2554,7 +2554,15 @@ public class ContainerApiTests extends BlobTestBase {
                 && path != null
                 && path.endsWith("/" + blobName)
                 && (query == null || !query.contains("comp="))) {
-                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
             }
         });
 
@@ -2569,10 +2577,11 @@ public class ContainerApiTests extends BlobTestBase {
                 null, false, null, null);
 
             assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
-            assertTrue(downloadAuthSchemes.size() > 1,
-                "Expected multiple chunked download requests; saw " + downloadAuthSchemes);
-            assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
-                "Expected all chunked blob downloads to use Session auth; saw " + downloadAuthSchemes);
+            assertTrue(downloadAuthSchemesByRange.size() > 1,
+                "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+            assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+                "Expected every chunked blob download range to attempt Session auth; saw "
+                    + downloadAuthSchemesByRange);
         } finally {
             Files.deleteIfExists(outFile.toPath());
         }

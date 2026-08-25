@@ -2542,12 +2542,19 @@ public class FileSystemApiTests extends DataLakeTestBase {
         }
 
         List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        List<String> dfsAuthorizationHeaders = Collections.synchronizedList(new ArrayList<>());
         HttpPipelinePolicy inspect = (context, next) -> {
             HttpRequest req = context.getHttpRequest();
             String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String host = req.getUrl().getHost();
             String path = req.getUrl().getPath();
             String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
-            if (auth != null && req.getHttpMethod() == HttpMethod.GET && trimmed != null && trimmed.contains("/")) {
+            if (auth != null && host != null && host.contains(".dfs.")) {
+                dfsAuthorizationHeaders.add(auth);
+            } else if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && trimmed != null
+                && trimmed.contains("/")) {
                 downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
             }
             return next.process();
@@ -2561,14 +2568,22 @@ public class FileSystemApiTests extends DataLakeTestBase {
             TestUtils.assertArraysEqual(DATA.getDefaultBytes(), outStream.toByteArray());
         }
 
+        // Sessions are wired only into the blob pipeline, so this DFS-routed call must stay on token auth.
+        sessionFileSystemClient.listPaths().iterator().hasNext();
+
         assertTrue(downloadAuthSchemes.size() >= fileCount,
             "Expected to observe at least one download request per file; saw " + downloadAuthSchemes);
         assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
             "Expected all file downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+        assertFalse(dfsAuthorizationHeaders.isEmpty(),
+            "Expected to observe at least one DFS endpoint request; saw none");
+        assertTrue(dfsAuthorizationHeaders.stream().allMatch(auth -> auth.startsWith("Bearer ")),
+            "Expected all DFS endpoint requests to use Bearer auth; saw " + dfsAuthorizationHeaders);
     }
 
     private DataLakeFileSystemClient sessionEnabledFileSystemClient(HttpPipelinePolicy... policies) {
         return getOAuthServiceClient(new SessionOptions(), policies)
             .getFileSystemClient(dataLakeFileSystemClient.getFileSystemName());
     }
+
 }

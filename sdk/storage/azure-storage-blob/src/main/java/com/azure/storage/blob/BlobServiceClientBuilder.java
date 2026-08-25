@@ -126,7 +126,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -153,13 +153,13 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
             encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
-    private HttpPipeline constructPipeline() {
+    private HttpPipeline constructPipeline(BlobServiceVersion serviceVersion) {
         if (httpPipeline != null) {
             return httpPipeline;
         }
         return BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
-            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, null);
+            perRetryPolicies, configuration, audience, LOGGER, sessionOptions, serviceVersion);
     }
 
     /**
@@ -183,7 +183,7 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
         }
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        HttpPipeline pipeline = constructPipeline();
+        HttpPipeline pipeline = constructPipeline(serviceVersion);
 
         boolean foundCredential = false;
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
@@ -606,7 +606,9 @@ public final class BlobServiceClientBuilder implements TokenCredentialTrait<Blob
      * <p>
      * Sessions amortize authentication and authorization cost across many requests by signing them
      * with a lightweight HMAC key instead of a full bearer token. This setting is passed to container
-     * clients created via {@link BlobServiceClient#getBlobContainerClient(String)}. If the options do not
+     * clients created via {@link BlobServiceClient#getBlobContainerClient(String)}. Session authentication is
+     * attempted only for eligible GET blob requests; all other requests continue to use bearer token authentication.
+     * If the options do not
      * specify a {@link com.azure.storage.blob.models.SessionProvider}, the SDK creates a built-in provider
      * scoped to this service client's pipeline.
      *

@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
  * CreateSession calls through another service or sharing a credential cache across clients - while still
  * relying on the SDK to sign requests and to fall back to bearer authentication when sessions fail. Set an
  * instance via {@link SessionOptions#setSessionProvider(SessionProvider)}, then pass those options to
- * {@link com.azure.storage.blob.BlobServiceClientBuilder#sessionOptions(SessionOptions)}, to have it used in
- * place of the default, built-in provider (which calls the storage service's CreateSession REST API directly
- * and manages its own per-container caching).
+ * a builder's {@code sessionOptions(SessionOptions)} method, to have it used in place of the default, built-in
+ * provider (which calls the storage service's CreateSession REST API directly and manages its own per-container
+ * caching).
  *
  * <h2>Lifecycle</h2>
  * <p>

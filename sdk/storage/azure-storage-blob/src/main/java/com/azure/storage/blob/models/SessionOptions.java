@@ -5,7 +5,9 @@ package com.azure.storage.blob.models;
 
 /**
  * Options bag that configures session-based authentication for a
- * {@link com.azure.storage.blob.BlobServiceClientBuilder}.
+ * {@link com.azure.storage.blob.BlobServiceClientBuilder}, {@link com.azure.storage.blob.BlobContainerClientBuilder},
+ * {@link com.azure.storage.blob.BlobClientBuilder}, and
+ * {@link com.azure.storage.blob.specialized.SpecializedBlobClientBuilder}.
  * <p>
  * Sessions amortize authentication and authorization cost across many requests by signing them
  * with a lightweight HMAC key instead of a full bearer token.
@@ -21,9 +23,8 @@ public final class SessionOptions {
 
     /**
      * Creates a new {@link SessionOptions} instance with default values.
-     * This only applies to clients created from a {@link com.azure.storage.blob.BlobServiceClientBuilder}
-     * configured with a TokenCredential, and to eligible GET Blob operations made by clients derived from
-     * that service client.
+     * This applies to clients configured with a {@link com.azure.core.credential.TokenCredential} and to eligible GET
+     * Blob operations.
      */
     public SessionOptions() {
     }

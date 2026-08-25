@@ -78,6 +78,19 @@ public class DataLakeServiceClientBuilderTests {
         assertTrue(hasPolicyOfType(client.blobServiceClient.getHttpPipeline(), "SessionTokenCredentialPolicy"));
     }
 
+    @Test
+    public void sessionOptionsOnlyEnableSessionsOnTheBlobPipeline() {
+        DataLakeServiceClient client = new DataLakeServiceClientBuilder().endpoint(ENDPOINT)
+            .credential(new MockTokenCredential())
+            .httpClient(new NoOpHttpClient())
+            .sessionOptions(new SessionOptions())
+            .buildClient();
+
+        assertFalse(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+        assertTrue(hasPolicyOfType(client.getHttpPipeline(), "StorageBearerTokenChallengeAuthorizationPolicy"));
+        assertTrue(hasPolicyOfType(client.blobServiceClient.getHttpPipeline(), "SessionTokenCredentialPolicy"));
+    }
+
     private static boolean hasPolicyOfType(HttpPipeline pipeline, String simpleClassName) {
         for (int i = 0; i < pipeline.getPolicyCount(); i++) {
             if (pipeline.getPolicy(i).getClass().getSimpleName().equals(simpleClassName)) {

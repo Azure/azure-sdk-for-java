@@ -725,6 +725,14 @@ public class BuilderHelperTests {
         assertTrue(hasPolicyOfType(client.getHttpPipeline(), "SessionTokenCredentialPolicy"));
     }
 
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("standaloneSessionPipelineSupplier")
+    public void standaloneBlobBuildersUseBuiltInSessionProviderByDefault(String scenario,
+        Supplier<HttpPipeline> pipelineSupplier) {
+        assertTrue(hasPolicyOfType(pipelineSupplier.get(), "SessionTokenCredentialPolicy"),
+            scenario + " should contain SessionTokenCredentialPolicy");
+    }
+
     /**
      * Session credentials are bound to the network context of the CreateSession call, so the session creation
      * pipeline must run the same post-authentication policies as the data pipeline.
@@ -825,7 +833,11 @@ public class BuilderHelperTests {
                     new SessionOptions().setSessionMode(SessionMode.DISABLED)),
                 true),
             Arguments.of("shared key credential", (Supplier<HttpPipeline>) BuilderHelperTests::buildSharedKeyPipeline,
-                false),
+                false));
+    }
+
+    private static Stream<Arguments> standaloneSessionPipelineSupplier() {
+        return Stream.of(
             Arguments.of("standalone BlobClientBuilder",
                 (Supplier<HttpPipeline>) () -> new BlobClientBuilder().endpoint(ENDPOINT)
                     .containerName("mycontainer")
@@ -833,16 +845,14 @@ public class BuilderHelperTests {
                     .credential(new MockTokenCredential())
                     .httpClient(new NoOpHttpClient())
                     .buildClient()
-                    .getHttpPipeline(),
-                true),
+                    .getHttpPipeline()),
             Arguments.of("standalone BlobContainerClientBuilder",
                 (Supplier<HttpPipeline>) () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
                     .containerName("mycontainer")
                     .credential(new MockTokenCredential())
                     .httpClient(new NoOpHttpClient())
                     .buildClient()
-                    .getHttpPipeline(),
-                true),
+                    .getHttpPipeline()),
             Arguments.of("standalone SpecializedBlobClientBuilder",
                 (Supplier<HttpPipeline>) () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
                     .containerName("mycontainer")
@@ -850,8 +860,7 @@ public class BuilderHelperTests {
                     .credential(new MockTokenCredential())
                     .httpClient(new NoOpHttpClient())
                     .buildBlockBlobClient()
-                    .getHttpPipeline(),
-                true));
+                    .getHttpPipeline()));
     }
 
     /**
