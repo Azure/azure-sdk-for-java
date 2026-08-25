@@ -15,30 +15,28 @@ public final class ResourceTypeRegistrationPropertiesLegacyPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesLegacyPolicy model = BinaryData.fromString(
-            "{\"disallowedLegacyOperations\":[\"NotSpecified\",\"AzureAsyncOperationWaiting\"],\"disallowedConditions\":[{\"disallowedLegacyOperations\":[\"ResourceCacheWaiting\",\"DeploymentCleanup\",\"EvaluateDeploymentOutput\"],\"feature\":\"fuojrngif\"},{\"disallowedLegacyOperations\":[\"Create\"],\"feature\":\"sccbiuimzd\"}]}")
+            "{\"disallowedLegacyOperations\":[\"AzureAsyncOperationWaiting\"],\"disallowedConditions\":[{\"disallowedLegacyOperations\":[\"NotSpecified\",\"NotSpecified\",\"Action\"],\"feature\":\"qnyophzfyls\"}]}")
             .toObject(ResourceTypeRegistrationPropertiesLegacyPolicy.class);
-        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals(LegacyOperation.RESOURCE_CACHE_WAITING,
+        Assertions.assertEquals(LegacyOperation.AZURE_ASYNC_OPERATION_WAITING,
+            model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED,
             model.disallowedConditions().get(0).disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("fuojrngif", model.disallowedConditions().get(0).feature());
+        Assertions.assertEquals("qnyophzfyls", model.disallowedConditions().get(0).feature());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesLegacyPolicy model = new ResourceTypeRegistrationPropertiesLegacyPolicy()
-            .withDisallowedLegacyOperations(
-                Arrays.asList(LegacyOperation.NOT_SPECIFIED, LegacyOperation.AZURE_ASYNC_OPERATION_WAITING))
-            .withDisallowedConditions(Arrays.asList(
-                new LegacyDisallowedCondition()
-                    .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.RESOURCE_CACHE_WAITING,
-                        LegacyOperation.DEPLOYMENT_CLEANUP, LegacyOperation.EVALUATE_DEPLOYMENT_OUTPUT))
-                    .withFeature("fuojrngif"),
-                new LegacyDisallowedCondition().withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.CREATE))
-                    .withFeature("sccbiuimzd")));
+            .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.AZURE_ASYNC_OPERATION_WAITING))
+            .withDisallowedConditions(Arrays.asList(new LegacyDisallowedCondition()
+                .withDisallowedLegacyOperations(
+                    Arrays.asList(LegacyOperation.NOT_SPECIFIED, LegacyOperation.NOT_SPECIFIED, LegacyOperation.ACTION))
+                .withFeature("qnyophzfyls")));
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesLegacyPolicy.class);
-        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals(LegacyOperation.RESOURCE_CACHE_WAITING,
+        Assertions.assertEquals(LegacyOperation.AZURE_ASYNC_OPERATION_WAITING,
+            model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals(LegacyOperation.NOT_SPECIFIED,
             model.disallowedConditions().get(0).disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("fuojrngif", model.disallowedConditions().get(0).feature());
+        Assertions.assertEquals("qnyophzfyls", model.disallowedConditions().get(0).feature());
     }
 }

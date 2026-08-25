@@ -12,19 +12,19 @@ public final class ResourceProviderManifestPropertiesDstsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesDstsConfiguration model
-            = BinaryData.fromString("{\"serviceName\":\"cqusr\",\"serviceDnsName\":\"etnwsdtutnw\"}")
+            = BinaryData.fromString("{\"serviceName\":\"srsjuivfc\",\"serviceDnsName\":\"syirnx\"}")
                 .toObject(ResourceProviderManifestPropertiesDstsConfiguration.class);
-        Assertions.assertEquals("cqusr", model.serviceName());
-        Assertions.assertEquals("etnwsdtutnw", model.serviceDnsName());
+        Assertions.assertEquals("srsjuivfc", model.serviceName());
+        Assertions.assertEquals("syirnx", model.serviceDnsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesDstsConfiguration model
-            = new ResourceProviderManifestPropertiesDstsConfiguration().withServiceName("cqusr")
-                .withServiceDnsName("etnwsdtutnw");
+            = new ResourceProviderManifestPropertiesDstsConfiguration().withServiceName("srsjuivfc")
+                .withServiceDnsName("syirnx");
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesDstsConfiguration.class);
-        Assertions.assertEquals("cqusr", model.serviceName());
-        Assertions.assertEquals("etnwsdtutnw", model.serviceDnsName());
+        Assertions.assertEquals("srsjuivfc", model.serviceName());
+        Assertions.assertEquals("syirnx", model.serviceDnsName());
     }
 }

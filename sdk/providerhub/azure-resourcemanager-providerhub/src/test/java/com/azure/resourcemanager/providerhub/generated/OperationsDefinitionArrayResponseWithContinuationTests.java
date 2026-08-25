@@ -14,16 +14,16 @@ public final class OperationsDefinitionArrayResponseWithContinuationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionArrayResponseWithContinuation model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"erhhbcsglumm\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"odxobnbdxkqpxok\",\"resource\":\"jionpimexgstxgc\",\"operation\":\"odgmaajrmvdjwz\",\"description\":\"lovmclwhijcoe\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datazaqsqsycbkbfk\\\"\"},{\"name\":\"ukdkexxppofmxa\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"gddtocj\",\"resource\":\"xhvpmoue\",\"operation\":\"hd\",\"description\":\"xibqeojnx\"},\"actionType\":\"Internal\",\"properties\":\"\\\"dataddntwndei\\\"\"},{\"name\":\"btwnpzaoqvuhrhcf\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"provider\":\"glmjth\",\"resource\":\"qkwpyeicxmqc\",\"operation\":\"wqvhkhixuigdt\",\"description\":\"pbobjo\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataw\\\"\"},{\"name\":\"a\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"z\",\"resource\":\"yvvtpgvdfgio\",\"operation\":\"kftutqxlngxlefg\",\"description\":\"gnxkrxdqmidtth\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datadrabhjybige\\\"\"}],\"nextLink\":\"qfbow\"}")
+            "{\"value\":[{\"name\":\"dkexxppofm\",\"isDataAction\":false,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"jpgd\",\"resource\":\"toc\",\"operation\":\"j\",\"description\":\"hvpmoue\"},\"actionType\":\"Internal\",\"properties\":\"\\\"dataxibqeojnx\\\"\"},{\"name\":\"bzv\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"ndei\",\"resource\":\"btwnpzaoqvuhrhcf\",\"operation\":\"cyddglmjthjqk\",\"description\":\"pyeicxm\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"dataq\\\"\"}],\"nextLink\":\"khixuigdtopbo\"}")
             .toObject(OperationsDefinitionArrayResponseWithContinuation.class);
-        Assertions.assertEquals("erhhbcsglumm", model.value().get(0).name());
-        Assertions.assertTrue(model.value().get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.USER, model.value().get(0).origin());
-        Assertions.assertEquals("odxobnbdxkqpxok", model.value().get(0).display().provider());
-        Assertions.assertEquals("jionpimexgstxgc", model.value().get(0).display().resource());
-        Assertions.assertEquals("odgmaajrmvdjwz", model.value().get(0).display().operation());
-        Assertions.assertEquals("lovmclwhijcoe", model.value().get(0).display().description());
+        Assertions.assertEquals("dkexxppofm", model.value().get(0).name());
+        Assertions.assertFalse(model.value().get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, model.value().get(0).origin());
+        Assertions.assertEquals("jpgd", model.value().get(0).display().provider());
+        Assertions.assertEquals("toc", model.value().get(0).display().resource());
+        Assertions.assertEquals("j", model.value().get(0).display().operation());
+        Assertions.assertEquals("hvpmoue", model.value().get(0).display().description());
         Assertions.assertEquals(OperationActionType.INTERNAL, model.value().get(0).actionType());
-        Assertions.assertEquals("qfbow", model.nextLink());
+        Assertions.assertEquals("khixuigdtopbo", model.nextLink());
     }
 }

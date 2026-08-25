@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public final class NewRegionFrontloadReleaseGenerateManifestSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_GenerateManifest.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_GenerateManifest.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_GenerateManifest.

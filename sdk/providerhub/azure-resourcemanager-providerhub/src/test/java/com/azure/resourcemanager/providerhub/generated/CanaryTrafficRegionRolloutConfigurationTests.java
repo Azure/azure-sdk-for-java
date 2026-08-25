@@ -13,19 +13,19 @@ public final class CanaryTrafficRegionRolloutConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CanaryTrafficRegionRolloutConfiguration model = BinaryData
-            .fromString("{\"skipRegions\":[\"d\"],\"regions\":[\"mjnnawtq\",\"bpxuckpggqoweyi\",\"dhlisngwflqqmpi\"]}")
+            .fromString("{\"skipRegions\":[\"fgt\",\"y\",\"naquflq\",\"ctqhamzjrwdk\"],\"regions\":[\"qy\"]}")
             .toObject(CanaryTrafficRegionRolloutConfiguration.class);
-        Assertions.assertEquals("d", model.skipRegions().get(0));
-        Assertions.assertEquals("mjnnawtq", model.regions().get(0));
+        Assertions.assertEquals("fgt", model.skipRegions().get(0));
+        Assertions.assertEquals("qy", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CanaryTrafficRegionRolloutConfiguration model
-            = new CanaryTrafficRegionRolloutConfiguration().withSkipRegions(Arrays.asList("d"))
-                .withRegions(Arrays.asList("mjnnawtq", "bpxuckpggqoweyi", "dhlisngwflqqmpi"));
+        CanaryTrafficRegionRolloutConfiguration model = new CanaryTrafficRegionRolloutConfiguration()
+            .withSkipRegions(Arrays.asList("fgt", "y", "naquflq", "ctqhamzjrwdk"))
+            .withRegions(Arrays.asList("qy"));
         model = BinaryData.fromObject(model).toObject(CanaryTrafficRegionRolloutConfiguration.class);
-        Assertions.assertEquals("d", model.skipRegions().get(0));
-        Assertions.assertEquals("mjnnawtq", model.regions().get(0));
+        Assertions.assertEquals("fgt", model.skipRegions().get(0));
+        Assertions.assertEquals("qy", model.regions().get(0));
     }
 }

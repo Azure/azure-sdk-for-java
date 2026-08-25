@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public final class NewRegionFrontloadReleaseCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_CreateOrUpdate.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_CreateOrUpdate.
@@ -33,7 +33,7 @@ public final class NewRegionFrontloadReleaseCreateOrUpdateSamples {
     public static void
         newRegionFrontloadReleaseCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.newRegionFrontloadReleases()
-            .createOrUpdateWithResponse("Microsoft.Contoso", "2020week10",
+            .createOrUpdateWithResponse("Microsoft.Contoso", "2020week11",
                 new FrontloadPayload().withProperties(new FrontloadPayloadProperties().withOperationType("Rollout")
                     .withProviderNamespace("Microsoft.Contoso")
                     .withFrontloadLocation("Israel Central")

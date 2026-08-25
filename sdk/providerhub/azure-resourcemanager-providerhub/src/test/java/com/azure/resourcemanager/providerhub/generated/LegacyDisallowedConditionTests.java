@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class LegacyDisallowedConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LegacyDisallowedCondition model = BinaryData
-            .fromString(
-                "{\"disallowedLegacyOperations\":[\"Create\",\"Create\",\"Read\",\"Delete\"],\"feature\":\"kyoqufdv\"}")
+        LegacyDisallowedCondition model = BinaryData.fromString(
+            "{\"disallowedLegacyOperations\":[\"Read\",\"ResourceCacheWaiting\",\"ResourceCacheWaiting\"],\"feature\":\"une\"}")
             .toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.CREATE, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("kyoqufdv", model.feature());
+        Assertions.assertEquals(LegacyOperation.READ, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("une", model.feature());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LegacyDisallowedCondition model = new LegacyDisallowedCondition()
-            .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.CREATE, LegacyOperation.CREATE,
-                LegacyOperation.READ, LegacyOperation.DELETE))
-            .withFeature("kyoqufdv");
+        LegacyDisallowedCondition model
+            = new LegacyDisallowedCondition()
+                .withDisallowedLegacyOperations(Arrays.asList(LegacyOperation.READ,
+                    LegacyOperation.RESOURCE_CACHE_WAITING, LegacyOperation.RESOURCE_CACHE_WAITING))
+                .withFeature("une");
         model = BinaryData.fromObject(model).toObject(LegacyDisallowedCondition.class);
-        Assertions.assertEquals(LegacyOperation.CREATE, model.disallowedLegacyOperations().get(0));
-        Assertions.assertEquals("kyoqufdv", model.feature());
+        Assertions.assertEquals(LegacyOperation.READ, model.disallowedLegacyOperations().get(0));
+        Assertions.assertEquals("une", model.feature());
     }
 }

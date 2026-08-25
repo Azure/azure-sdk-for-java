@@ -15,22 +15,21 @@ public final class LinkedOperationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedOperationRule model = BinaryData.fromString(
-            "{\"linkedOperation\":\"CrossResourceGroupResourceMove\",\"linkedAction\":\"NotSpecified\",\"dependsOnTypes\":[\"ljfmppee\",\"vmgxsab\",\"yqduujit\"]}")
+            "{\"linkedOperation\":\"None\",\"linkedAction\":\"NotSpecified\",\"dependsOnTypes\":[\"ti\",\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\"]}")
             .toObject(LinkedOperationRule.class);
-        Assertions.assertEquals(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE, model.linkedOperation());
+        Assertions.assertEquals(LinkedOperation.NONE, model.linkedOperation());
         Assertions.assertEquals(LinkedAction.NOT_SPECIFIED, model.linkedAction());
-        Assertions.assertEquals("ljfmppee", model.dependsOnTypes().get(0));
+        Assertions.assertEquals("ti", model.dependsOnTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedOperationRule model
-            = new LinkedOperationRule().withLinkedOperation(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE)
-                .withLinkedAction(LinkedAction.NOT_SPECIFIED)
-                .withDependsOnTypes(Arrays.asList("ljfmppee", "vmgxsab", "yqduujit"));
+        LinkedOperationRule model = new LinkedOperationRule().withLinkedOperation(LinkedOperation.NONE)
+            .withLinkedAction(LinkedAction.NOT_SPECIFIED)
+            .withDependsOnTypes(Arrays.asList("ti", "ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk"));
         model = BinaryData.fromObject(model).toObject(LinkedOperationRule.class);
-        Assertions.assertEquals(LinkedOperation.CROSS_RESOURCE_GROUP_RESOURCE_MOVE, model.linkedOperation());
+        Assertions.assertEquals(LinkedOperation.NONE, model.linkedOperation());
         Assertions.assertEquals(LinkedAction.NOT_SPECIFIED, model.linkedAction());
-        Assertions.assertEquals("ljfmppee", model.dependsOnTypes().get(0));
+        Assertions.assertEquals("ti", model.dependsOnTypes().get(0));
     }
 }

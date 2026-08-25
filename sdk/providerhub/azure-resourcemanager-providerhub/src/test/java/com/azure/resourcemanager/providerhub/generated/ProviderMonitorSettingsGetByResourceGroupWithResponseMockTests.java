@@ -21,7 +21,7 @@ public final class ProviderMonitorSettingsGetByResourceGroupWithResponseMockTest
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"xayg\",\"tags\":{\"zpaslavxjfiuo\":\"kgjn\",\"jopackyhydv\":\"pieidzlvssqy\",\"izwgsoriobijeiyd\":\"kmfngpmillxgjs\",\"okayrg\":\"euynh\"},\"id\":\"ybriop\",\"name\":\"weoftnorw\",\"type\":\"igsioctqkm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\"},\"location\":\"bggcj\",\"tags\":{\"hsudymymb\":\"blivw\",\"kqlgxzduv\":\"dosmbn\",\"irxyddmiploisj\":\"dmxexatmdmnrsenx\",\"yohpsapzupzwwytb\":\"zsoxznntwgk\"},\"id\":\"jzghximkg\",\"name\":\"mxpqkjnpyriwn\",\"type\":\"ot\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ProviderMonitorSettingsGetByResourceGroupWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProviderMonitorSetting response = manager.providerMonitorSettings()
-            .getByResourceGroupWithResponse("raq", "wbmpspfeylqloc", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("apitskshfyftt", "bjepzwhj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xayg", response.location());
-        Assertions.assertEquals("kgjn", response.tags().get("zpaslavxjfiuo"));
+        Assertions.assertEquals("bggcj", response.location());
+        Assertions.assertEquals("blivw", response.tags().get("hsudymymb"));
     }
 }

@@ -12,20 +12,20 @@ public final class ResourceMovePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceMovePolicy model = BinaryData.fromString(
-            "{\"validationRequired\":false,\"crossResourceGroupMoveEnabled\":true,\"crossSubscriptionMoveEnabled\":false}")
+            "{\"validationRequired\":true,\"crossResourceGroupMoveEnabled\":true,\"crossSubscriptionMoveEnabled\":false}")
             .toObject(ResourceMovePolicy.class);
-        Assertions.assertFalse(model.validationRequired());
+        Assertions.assertTrue(model.validationRequired());
         Assertions.assertTrue(model.crossResourceGroupMoveEnabled());
         Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceMovePolicy model = new ResourceMovePolicy().withValidationRequired(false)
+        ResourceMovePolicy model = new ResourceMovePolicy().withValidationRequired(true)
             .withCrossResourceGroupMoveEnabled(true)
             .withCrossSubscriptionMoveEnabled(false);
         model = BinaryData.fromObject(model).toObject(ResourceMovePolicy.class);
-        Assertions.assertFalse(model.validationRequired());
+        Assertions.assertTrue(model.validationRequired());
         Assertions.assertTrue(model.crossResourceGroupMoveEnabled());
         Assertions.assertFalse(model.crossSubscriptionMoveEnabled());
     }

@@ -13,24 +13,25 @@ public final class SkuSettingCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuSettingCapacity model = BinaryData
-            .fromString("{\"minimum\":3109009,\"maximum\":1015294496,\"default\":1495868863,\"scaleType\":\"Manual\"}")
+            .fromString(
+                "{\"minimum\":1906709978,\"maximum\":1870827980,\"default\":1322609988,\"scaleType\":\"Manual\"}")
             .toObject(SkuSettingCapacity.class);
-        Assertions.assertEquals(3109009, model.minimum());
-        Assertions.assertEquals(1015294496, model.maximum());
-        Assertions.assertEquals(1495868863, model.defaultProperty());
+        Assertions.assertEquals(1906709978, model.minimum());
+        Assertions.assertEquals(1870827980, model.maximum());
+        Assertions.assertEquals(1322609988, model.defaultProperty());
         Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuSettingCapacity model = new SkuSettingCapacity().withMinimum(3109009)
-            .withMaximum(1015294496)
-            .withDefaultProperty(1495868863)
+        SkuSettingCapacity model = new SkuSettingCapacity().withMinimum(1906709978)
+            .withMaximum(1870827980)
+            .withDefaultProperty(1322609988)
             .withScaleType(SkuScaleType.MANUAL);
         model = BinaryData.fromObject(model).toObject(SkuSettingCapacity.class);
-        Assertions.assertEquals(3109009, model.minimum());
-        Assertions.assertEquals(1015294496, model.maximum());
-        Assertions.assertEquals(1495868863, model.defaultProperty());
+        Assertions.assertEquals(1906709978, model.minimum());
+        Assertions.assertEquals(1870827980, model.maximum());
+        Assertions.assertEquals(1322609988, model.defaultProperty());
         Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
     }
 }

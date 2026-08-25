@@ -124,6 +124,13 @@ public interface ProviderHubManagementClient {
     ProviderMonitorSettingsClient getProviderMonitorSettings();
 
     /**
+     * Gets the ManifestsClient object to access its operations.
+     * 
+     * @return the ManifestsClient object.
+     */
+    ManifestsClient getManifests();
+
+    /**
      * Gets the ResourceActionsClient object to access its operations.
      * 
      * @return the ResourceActionsClient object.

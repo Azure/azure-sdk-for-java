@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomRolloutSpecificationCanaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomRolloutSpecificationCanary model
-            = BinaryData.fromString("{\"regions\":[\"wcluqovekqvgq\",\"uwifzmpjwyiv\"]}")
-                .toObject(CustomRolloutSpecificationCanary.class);
-        Assertions.assertEquals("wcluqovekqvgq", model.regions().get(0));
+        CustomRolloutSpecificationCanary model = BinaryData.fromString("{\"regions\":[\"lxgccknfnwmbtm\"]}")
+            .toObject(CustomRolloutSpecificationCanary.class);
+        Assertions.assertEquals("lxgccknfnwmbtm", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomRolloutSpecificationCanary model
-            = new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("wcluqovekqvgq", "uwifzmpjwyiv"));
+            = new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("lxgccknfnwmbtm"));
         model = BinaryData.fromObject(model).toObject(CustomRolloutSpecificationCanary.class);
-        Assertions.assertEquals("wcluqovekqvgq", model.regions().get(0));
+        Assertions.assertEquals("lxgccknfnwmbtm", model.regions().get(0));
     }
 }

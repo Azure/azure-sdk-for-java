@@ -15,30 +15,30 @@ public final class QuotaRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaRule model = BinaryData.fromString(
-            "{\"quotaPolicy\":\"Default\",\"locationRules\":[{\"policy\":\"None\",\"quotaId\":\"ndhkrw\",\"location\":\"appd\"},{\"policy\":\"Default\",\"quotaId\":\"vwrwj\",\"location\":\"usnhutje\"},{\"policy\":\"None\",\"quotaId\":\"ldhugjzzdatqxh\",\"location\":\"dgeablgphu\"}],\"requiredFeatures\":[\"ndv\",\"aozwyiftyhxhu\",\"okftyxolniwpwcuk\",\"fkgiawxk\"]}")
+            "{\"quotaPolicy\":\"None\",\"locationRules\":[{\"policy\":\"Default\",\"quotaId\":\"syyp\",\"location\":\"dhsgcba\"},{\"policy\":\"Default\",\"quotaId\":\"jkot\",\"location\":\"qgoulznd\"},{\"policy\":\"None\",\"quotaId\":\"yqkgfg\",\"location\":\"madgakeqsrxyb\"}],\"requiredFeatures\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"]}")
             .toObject(QuotaRule.class);
-        Assertions.assertEquals(QuotaPolicy.DEFAULT, model.quotaPolicy());
-        Assertions.assertEquals(QuotaPolicy.NONE, model.locationRules().get(0).policy());
-        Assertions.assertEquals("ndhkrw", model.locationRules().get(0).quotaId());
-        Assertions.assertEquals("appd", model.locationRules().get(0).location());
-        Assertions.assertEquals("ndv", model.requiredFeatures().get(0));
+        Assertions.assertEquals(QuotaPolicy.NONE, model.quotaPolicy());
+        Assertions.assertEquals(QuotaPolicy.DEFAULT, model.locationRules().get(0).policy());
+        Assertions.assertEquals("syyp", model.locationRules().get(0).quotaId());
+        Assertions.assertEquals("dhsgcba", model.locationRules().get(0).location());
+        Assertions.assertEquals("e", model.requiredFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRule model = new QuotaRule().withQuotaPolicy(QuotaPolicy.DEFAULT)
+        QuotaRule model = new QuotaRule().withQuotaPolicy(QuotaPolicy.NONE)
             .withLocationRules(Arrays.asList(
-                new LocationQuotaRule().withPolicy(QuotaPolicy.NONE).withQuotaId("ndhkrw").withLocation("appd"),
-                new LocationQuotaRule().withPolicy(QuotaPolicy.DEFAULT).withQuotaId("vwrwj").withLocation("usnhutje"),
+                new LocationQuotaRule().withPolicy(QuotaPolicy.DEFAULT).withQuotaId("syyp").withLocation("dhsgcba"),
+                new LocationQuotaRule().withPolicy(QuotaPolicy.DEFAULT).withQuotaId("jkot").withLocation("qgoulznd"),
                 new LocationQuotaRule().withPolicy(QuotaPolicy.NONE)
-                    .withQuotaId("ldhugjzzdatqxh")
-                    .withLocation("dgeablgphu")))
-            .withRequiredFeatures(Arrays.asList("ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk", "fkgiawxk"));
+                    .withQuotaId("yqkgfg")
+                    .withLocation("madgakeqsrxyb")))
+            .withRequiredFeatures(Arrays.asList("e", "qytbciq", "ouf", "mmnkzsmodmgl"));
         model = BinaryData.fromObject(model).toObject(QuotaRule.class);
-        Assertions.assertEquals(QuotaPolicy.DEFAULT, model.quotaPolicy());
-        Assertions.assertEquals(QuotaPolicy.NONE, model.locationRules().get(0).policy());
-        Assertions.assertEquals("ndhkrw", model.locationRules().get(0).quotaId());
-        Assertions.assertEquals("appd", model.locationRules().get(0).location());
-        Assertions.assertEquals("ndv", model.requiredFeatures().get(0));
+        Assertions.assertEquals(QuotaPolicy.NONE, model.quotaPolicy());
+        Assertions.assertEquals(QuotaPolicy.DEFAULT, model.locationRules().get(0).policy());
+        Assertions.assertEquals("syyp", model.locationRules().get(0).quotaId());
+        Assertions.assertEquals("dhsgcba", model.locationRules().get(0).location());
+        Assertions.assertEquals("e", model.requiredFeatures().get(0));
     }
 }

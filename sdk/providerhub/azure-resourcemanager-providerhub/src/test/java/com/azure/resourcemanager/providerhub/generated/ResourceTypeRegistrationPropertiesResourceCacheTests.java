@@ -12,19 +12,19 @@ public final class ResourceTypeRegistrationPropertiesResourceCacheTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceCache model
-            = BinaryData.fromString("{\"enableResourceCache\":false,\"resourceCacheExpirationTimespan\":\"bsnmfpph\"}")
+            = BinaryData.fromString("{\"enableResourceCache\":true,\"resourceCacheExpirationTimespan\":\"w\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceCache.class);
-        Assertions.assertFalse(model.enableResourceCache());
-        Assertions.assertEquals("bsnmfpph", model.resourceCacheExpirationTimespan());
+        Assertions.assertTrue(model.enableResourceCache());
+        Assertions.assertEquals("w", model.resourceCacheExpirationTimespan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceCache model
-            = new ResourceTypeRegistrationPropertiesResourceCache().withEnableResourceCache(false)
-                .withResourceCacheExpirationTimespan("bsnmfpph");
+            = new ResourceTypeRegistrationPropertiesResourceCache().withEnableResourceCache(true)
+                .withResourceCacheExpirationTimespan("w");
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceCache.class);
-        Assertions.assertFalse(model.enableResourceCache());
-        Assertions.assertEquals("bsnmfpph", model.resourceCacheExpirationTimespan());
+        Assertions.assertTrue(model.enableResourceCache());
+        Assertions.assertEquals("w", model.resourceCacheExpirationTimespan());
     }
 }

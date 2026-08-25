@@ -14,7 +14,7 @@ public final class ExtensionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionOptions model = BinaryData.fromString(
-            "{\"request\":[\"IncludeInternalMetadata\"],\"response\":[\"NotSpecified\",\"IncludeInternalMetadata\",\"IncludeInternalMetadata\"]}")
+            "{\"request\":[\"IncludeInternalMetadata\",\"IncludeInternalMetadata\"],\"response\":[\"NotSpecified\",\"NotSpecified\"]}")
             .toObject(ExtensionOptions.class);
         Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.request().get(0));
         Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.response().get(0));
@@ -22,10 +22,10 @@ public final class ExtensionOptionsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtensionOptions model
-            = new ExtensionOptions().withRequest(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA))
-                .withResponse(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED,
-                    ExtensionOptionType.INCLUDE_INTERNAL_METADATA, ExtensionOptionType.INCLUDE_INTERNAL_METADATA));
+        ExtensionOptions model = new ExtensionOptions()
+            .withRequest(Arrays.asList(ExtensionOptionType.INCLUDE_INTERNAL_METADATA,
+                ExtensionOptionType.INCLUDE_INTERNAL_METADATA))
+            .withResponse(Arrays.asList(ExtensionOptionType.NOT_SPECIFIED, ExtensionOptionType.NOT_SPECIFIED));
         model = BinaryData.fromObject(model).toObject(ExtensionOptions.class);
         Assertions.assertEquals(ExtensionOptionType.INCLUDE_INTERNAL_METADATA, model.request().get(0));
         Assertions.assertEquals(ExtensionOptionType.NOT_SPECIFIED, model.response().get(0));

@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckinManifestInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckinManifestInfoInner model = BinaryData
-            .fromString(
-                "{\"isCheckedIn\":false,\"statusMessage\":\"bzhfepgzgqexz\",\"pullRequest\":\"c\",\"commitId\":\"c\"}")
+        CheckinManifestInfoInner model = BinaryData.fromString(
+            "{\"isCheckedIn\":false,\"statusMessage\":\"odgmaajrmvdjwz\",\"pullRequest\":\"ovmclwhijcoejct\",\"commitId\":\"aqsqsycbkbfk\"}")
             .toObject(CheckinManifestInfoInner.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("bzhfepgzgqexz", model.statusMessage());
-        Assertions.assertEquals("c", model.pullRequest());
-        Assertions.assertEquals("c", model.commitId());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.statusMessage());
+        Assertions.assertEquals("ovmclwhijcoejct", model.pullRequest());
+        Assertions.assertEquals("aqsqsycbkbfk", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckinManifestInfoInner model = new CheckinManifestInfoInner().withIsCheckedIn(false)
-            .withStatusMessage("bzhfepgzgqexz")
-            .withPullRequest("c")
-            .withCommitId("c");
+            .withStatusMessage("odgmaajrmvdjwz")
+            .withPullRequest("ovmclwhijcoejct")
+            .withCommitId("aqsqsycbkbfk");
         model = BinaryData.fromObject(model).toObject(CheckinManifestInfoInner.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("bzhfepgzgqexz", model.statusMessage());
-        Assertions.assertEquals("c", model.pullRequest());
-        Assertions.assertEquals("c", model.commitId());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.statusMessage());
+        Assertions.assertEquals("ovmclwhijcoejct", model.pullRequest());
+        Assertions.assertEquals("aqsqsycbkbfk", model.commitId());
     }
 }

@@ -27,7 +27,7 @@ public final class SkusDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.skus().deleteWithResponse("zgssz", "vctkbbx", "harls", com.azure.core.util.Context.NONE);
+        manager.skus().deleteWithResponse("wjecooyvhtuqbpe", "nii", "ncgagdvc", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -12,18 +12,19 @@ public final class ResourceTypeEndpointBaseDstsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeEndpointBaseDstsConfiguration model
-            = BinaryData.fromString("{\"serviceName\":\"myccx\",\"serviceDnsName\":\"hcoxov\"}")
+            = BinaryData.fromString("{\"serviceName\":\"cyychunsjlp\",\"serviceDnsName\":\"twszhvvuic\"}")
                 .toObject(ResourceTypeEndpointBaseDstsConfiguration.class);
-        Assertions.assertEquals("myccx", model.serviceName());
-        Assertions.assertEquals("hcoxov", model.serviceDnsName());
+        Assertions.assertEquals("cyychunsjlp", model.serviceName());
+        Assertions.assertEquals("twszhvvuic", model.serviceDnsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeEndpointBaseDstsConfiguration model
-            = new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("myccx").withServiceDnsName("hcoxov");
+            = new ResourceTypeEndpointBaseDstsConfiguration().withServiceName("cyychunsjlp")
+                .withServiceDnsName("twszhvvuic");
         model = BinaryData.fromObject(model).toObject(ResourceTypeEndpointBaseDstsConfiguration.class);
-        Assertions.assertEquals("myccx", model.serviceName());
-        Assertions.assertEquals("hcoxov", model.serviceDnsName());
+        Assertions.assertEquals("cyychunsjlp", model.serviceName());
+        Assertions.assertEquals("twszhvvuic", model.serviceDnsName());
     }
 }

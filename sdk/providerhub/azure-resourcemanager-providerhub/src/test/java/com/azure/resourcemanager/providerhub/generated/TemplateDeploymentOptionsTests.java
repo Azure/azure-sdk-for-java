@@ -14,19 +14,19 @@ public final class TemplateDeploymentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TemplateDeploymentOptions model = BinaryData.fromString(
-            "{\"preflightSupported\":true,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"None\",\"DefaultValidationOnly\"]}")
+            "{\"preflightSupported\":false,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"ContinueDeploymentOnFailure\",\"ContinueDeploymentOnFailure\"]}")
             .toObject(TemplateDeploymentOptions.class);
-        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertFalse(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TemplateDeploymentOptions model = new TemplateDeploymentOptions().withPreflightSupported(true)
-            .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, PreflightOption.NONE,
-                PreflightOption.DEFAULT_VALIDATION_ONLY));
+        TemplateDeploymentOptions model = new TemplateDeploymentOptions().withPreflightSupported(false)
+            .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE,
+                PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE));
         model = BinaryData.fromObject(model).toObject(TemplateDeploymentOptions.class);
-        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertFalse(model.preflightSupported());
         Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 }

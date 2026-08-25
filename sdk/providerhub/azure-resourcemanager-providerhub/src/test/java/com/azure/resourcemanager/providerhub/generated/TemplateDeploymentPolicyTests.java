@@ -15,10 +15,10 @@ public final class TemplateDeploymentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TemplateDeploymentPolicy model = BinaryData.fromString(
-            "{\"capabilities\":\"Preflight\",\"preflightOptions\":\"RegisteredOnly\",\"preflightNotifications\":\"UnregisteredSubscriptions\"}")
+            "{\"capabilities\":\"Default\",\"preflightOptions\":\"TestOnly\",\"preflightNotifications\":\"UnregisteredSubscriptions\"}")
             .toObject(TemplateDeploymentPolicy.class);
-        Assertions.assertEquals(TemplateDeploymentCapabilities.PREFLIGHT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.REGISTERED_ONLY, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.TEST_ONLY, model.preflightOptions());
         Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
             model.preflightNotifications());
     }
@@ -26,12 +26,12 @@ public final class TemplateDeploymentPolicyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TemplateDeploymentPolicy model
-            = new TemplateDeploymentPolicy().withCapabilities(TemplateDeploymentCapabilities.PREFLIGHT)
-                .withPreflightOptions(TemplateDeploymentPreflightOptions.REGISTERED_ONLY)
+            = new TemplateDeploymentPolicy().withCapabilities(TemplateDeploymentCapabilities.DEFAULT)
+                .withPreflightOptions(TemplateDeploymentPreflightOptions.TEST_ONLY)
                 .withPreflightNotifications(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS);
         model = BinaryData.fromObject(model).toObject(TemplateDeploymentPolicy.class);
-        Assertions.assertEquals(TemplateDeploymentCapabilities.PREFLIGHT, model.capabilities());
-        Assertions.assertEquals(TemplateDeploymentPreflightOptions.REGISTERED_ONLY, model.preflightOptions());
+        Assertions.assertEquals(TemplateDeploymentCapabilities.DEFAULT, model.capabilities());
+        Assertions.assertEquals(TemplateDeploymentPreflightOptions.TEST_ONLY, model.preflightOptions());
         Assertions.assertEquals(TemplateDeploymentPreflightNotifications.UNREGISTERED_SUBSCRIPTIONS,
             model.preflightNotifications());
     }

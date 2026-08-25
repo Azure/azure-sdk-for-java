@@ -24,6 +24,11 @@
 - [ListByProviderRegistration](#defaultrollouts_listbyproviderregistration)
 - [Stop](#defaultrollouts_stop)
 
+## Manifests
+
+- [CreateOrUpdate](#manifests_createorupdate)
+- [Get](#manifests_get)
+
 ## NewRegionFrontloadRelease
 
 - [CreateOrUpdate](#newregionfrontloadrelease_createorupdate)
@@ -111,7 +116,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_CreateOrUpdate.json
      */
     /**
      * Sample code: AuthorizedApplications_CreateOrUpdate.
@@ -144,7 +149,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_Delete.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Delete.json
      */
     /**
      * Sample code: AuthorizedApplications_Delete.
@@ -169,7 +174,7 @@ import java.util.UUID;
  */
 public final class AuthorizedApplicationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_Get.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_Get.json
      */
     /**
      * Sample code: AuthorizedApplications_Get.
@@ -192,7 +197,7 @@ public final class AuthorizedApplicationsGetSamples {
  */
 public final class AuthorizedApplicationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/AuthorizedApplications_List.json
+     * x-ms-original-file: 2025-10-01/AuthorizedApplications_List.json
      */
     /**
      * Sample code: AuthorizedApplications_List.
@@ -208,10 +213,13 @@ public final class AuthorizedApplicationsListSamples {
 ### CustomRollouts_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAutoProvisionConfig;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
 import java.util.Arrays;
 
 /**
@@ -219,7 +227,7 @@ import java.util.Arrays;
  */
 public final class CustomRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomRollouts_CreateOrUpdate.
@@ -234,7 +242,12 @@ public final class CustomRolloutsCreateOrUpdateSamples {
                 .withAutoProvisionConfig(
                     new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(true))
                 .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))
-                .withRefreshSubscriptionRegistration(true)))
+                .withRefreshSubscriptionRegistration(true)
+                .withRolloutId("Ev2RolloutIdGuid")
+                .withManifestCheckinSpecification(new ManifestCheckinSpecification()
+                    .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
+                    .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
+                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
             .create();
     }
 }
@@ -248,7 +261,7 @@ public final class CustomRolloutsCreateOrUpdateSamples {
  */
 public final class CustomRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_Delete.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_Delete.json
      */
     /**
      * Sample code: providerReleases_Delete.
@@ -270,7 +283,7 @@ public final class CustomRolloutsDeleteSamples {
  */
 public final class CustomRolloutsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_Get.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_Get.json
      */
     /**
      * Sample code: CustomRollouts_Get.
@@ -292,7 +305,7 @@ public final class CustomRolloutsGetSamples {
  */
 public final class CustomRolloutsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_ListByProviderRegistration.json
      */
     /**
      * Sample code: CustomRollouts_ListByProviderRegistration.
@@ -314,7 +327,7 @@ public final class CustomRolloutsListByProviderRegistrationSamples {
  */
 public final class CustomRolloutsStopSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CustomRollouts_Stop.json
+     * x-ms-original-file: 2025-10-01/CustomRollouts_Stop.json
      */
     /**
      * Sample code: CustomRollouts_Stop.
@@ -330,11 +343,14 @@ public final class CustomRolloutsStopSamples {
 ### DefaultRollouts_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationCanary;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationExpeditedRollout;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationRestOfTheWorldGroupTwo;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinOption;
+import com.azure.resourcemanager.providerhub.models.ManifestCheckinSpecification;
 import java.time.Duration;
 import java.util.Arrays;
 
@@ -343,7 +359,7 @@ import java.util.Arrays;
  */
 public final class DefaultRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_CreateOrUpdate.json
      */
     /**
      * Sample code: DefaultRollouts_CreateOrUpdate.
@@ -354,12 +370,15 @@ public final class DefaultRolloutsCreateOrUpdateSamples {
         manager.defaultRollouts()
             .define("2020week10")
             .withExistingProviderRegistration("Microsoft.Contoso")
-            .withProperties(
-                new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
-                    .withExpeditedRollout(new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
-                    .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
-                    .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                        .withWaitDuration(Duration.parse("PT4H")))))
+            .withProperties(new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
+                .withExpeditedRollout(new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
+                .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
+                .withRestOfTheWorldGroupTwo(
+                    new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withWaitDuration(Duration.parse("PT4H")))
+                .withManifestCheckinSpecification(new ManifestCheckinSpecification()
+                    .withManifestCheckinOption(ManifestCheckinOption.ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
+                    .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("Prod")
+                        .withBaselineArmManifestLocation("EastUS2EUAP")))))
             .create();
     }
 }
@@ -373,7 +392,7 @@ public final class DefaultRolloutsCreateOrUpdateSamples {
  */
 public final class DefaultRolloutsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_Delete.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_Delete.json
      */
     /**
      * Sample code: DefaultRollouts_Delete.
@@ -395,7 +414,7 @@ public final class DefaultRolloutsDeleteSamples {
  */
 public final class DefaultRolloutsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_Get.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_Get.json
      */
     /**
      * Sample code: DefaultRollouts_Get.
@@ -416,7 +435,7 @@ public final class DefaultRolloutsGetSamples {
  */
 public final class DefaultRolloutsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_ListByProviderRegistration.json
      */
     /**
      * Sample code: DefaultRollouts_ListByProviderRegistration.
@@ -438,7 +457,7 @@ public final class DefaultRolloutsListByProviderRegistrationSamples {
  */
 public final class DefaultRolloutsStopSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DefaultRollouts_Stop.json
+     * x-ms-original-file: 2025-10-01/DefaultRollouts_Stop.json
      */
     /**
      * Sample code: DefaultRollouts_Stop.
@@ -447,6 +466,54 @@ public final class DefaultRolloutsStopSamples {
      */
     public static void defaultRolloutsStop(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.defaultRollouts().stopWithResponse("Microsoft.Contoso", "2020week10", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Manifests_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.providerhub.models.ManifestInfoProperties;
+
+/**
+ * Samples for Manifests CreateOrUpdate.
+ */
+public final class ManifestsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-10-01/Manifests_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Manifests_CreateOrUpdate.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void manifestsCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.manifests()
+            .define("prod")
+            .withExistingProviderRegistration("Microsoft.Contoso")
+            .withProperties(new ManifestInfoProperties().withManifest("<<Core RP manifest>>"))
+            .create();
+    }
+}
+```
+
+### Manifests_Get
+
+```java
+/**
+ * Samples for Manifests Get.
+ */
+public final class ManifestsGetSamples {
+    /*
+     * x-ms-original-file: 2025-10-01/Manifests_Get.json
+     */
+    /**
+     * Sample code: Manifests_Get.
+     * 
+     * @param manager Entry point to ProviderHubManager.
+     */
+    public static void manifestsGet(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.manifests().getWithResponse("Microsoft.Contoso", "prod", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -473,7 +540,7 @@ import java.util.Arrays;
  */
 public final class NewRegionFrontloadReleaseCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_CreateOrUpdate.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_CreateOrUpdate.
@@ -483,7 +550,7 @@ public final class NewRegionFrontloadReleaseCreateOrUpdateSamples {
     public static void
         newRegionFrontloadReleaseCreateOrUpdate(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
         manager.newRegionFrontloadReleases()
-            .createOrUpdateWithResponse("Microsoft.Contoso", "2020week10",
+            .createOrUpdateWithResponse("Microsoft.Contoso", "2020week11",
                 new FrontloadPayload().withProperties(new FrontloadPayloadProperties().withOperationType("Rollout")
                     .withProviderNamespace("Microsoft.Contoso")
                     .withFrontloadLocation("Israel Central")
@@ -540,7 +607,7 @@ import java.util.Arrays;
  */
 public final class NewRegionFrontloadReleaseGenerateManifestSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_GenerateManifest.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_GenerateManifest.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_GenerateManifest.
@@ -593,7 +660,7 @@ public final class NewRegionFrontloadReleaseGenerateManifestSamples {
  */
 public final class NewRegionFrontloadReleaseGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_Get.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_Get.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_Get.
@@ -615,7 +682,7 @@ public final class NewRegionFrontloadReleaseGetSamples {
  */
 public final class NewRegionFrontloadReleaseStopSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NewRegionFrontloadRelease_Stop.json
+     * x-ms-original-file: 2025-10-01/NewRegionFrontloadRelease_Stop.json
      */
     /**
      * Sample code: NewRegionFrontloadRelease_Stop.
@@ -643,7 +710,7 @@ import java.util.Arrays;
  */
 public final class NotificationRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: NotificationRegistrations_CreateOrUpdate.
@@ -677,7 +744,7 @@ public final class NotificationRegistrationsCreateOrUpdateSamples {
  */
 public final class NotificationRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_Delete.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_Delete.json
      */
     /**
      * Sample code: NotificationRegistrations_Delete.
@@ -701,7 +768,7 @@ public final class NotificationRegistrationsDeleteSamples {
  */
 public final class NotificationRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_Get.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_Get.json
      */
     /**
      * Sample code: NotificationRegistrations_Get.
@@ -723,7 +790,7 @@ public final class NotificationRegistrationsGetSamples {
  */
 public final class NotificationRegistrationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/NotificationRegistrations_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/NotificationRegistrations_ListByProviderRegistration.json
      */
     /**
      * Sample code: NotificationRegistrations_ListByProviderRegistration.
@@ -756,7 +823,7 @@ import java.util.Arrays;
  */
 public final class OperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/Operations_CreateOrUpdate.json
      */
     /**
      * Sample code: Operations_CreateOrUpdate.
@@ -803,7 +870,7 @@ public final class OperationsCreateOrUpdateSamples {
  */
 public final class OperationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_Delete.json
+     * x-ms-original-file: 2025-10-01/Operations_Delete.json
      */
     /**
      * Sample code: Operations_Delete.
@@ -824,7 +891,7 @@ public final class OperationsDeleteSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_List.json
+     * x-ms-original-file: 2025-10-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -845,7 +912,7 @@ public final class OperationsListSamples {
  */
 public final class OperationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Operations_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/Operations_ListByProviderRegistration.json
      */
     /**
      * Sample code: Operations_ListByProviderRegistration.
@@ -868,7 +935,7 @@ public final class OperationsListByProviderRegistrationSamples {
  */
 public final class ProviderMonitorSettingsCreateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_Create.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Create.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Create.
@@ -893,7 +960,7 @@ public final class ProviderMonitorSettingsCreateSamples {
  */
 public final class ProviderMonitorSettingsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_Delete.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Delete.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Delete.
@@ -915,7 +982,7 @@ public final class ProviderMonitorSettingsDeleteSamples {
  */
 public final class ProviderMonitorSettingsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_Get.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Get.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Get.
@@ -937,7 +1004,7 @@ public final class ProviderMonitorSettingsGetByResourceGroupSamples {
  */
 public final class ProviderMonitorSettingsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_ListBySubscription.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_ListBySubscription.json
      */
     /**
      * Sample code: ProviderMonitorSettings_ListBySubscription.
@@ -959,7 +1026,7 @@ public final class ProviderMonitorSettingsListSamples {
  */
 public final class ProviderMonitorSettingsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_ListByResourceGroup.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_ListByResourceGroup.json
      */
     /**
      * Sample code: ProviderMonitorSettings_ListByResourceGroup.
@@ -981,7 +1048,7 @@ public final class ProviderMonitorSettingsListByResourceGroupSamples {
  */
 public final class ProviderMonitorSettingsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderMonitorSettings_Update.json
+     * x-ms-original-file: 2025-10-01/ProviderMonitorSettings_Update.json
      */
     /**
      * Sample code: ProviderMonitorSettings_Update.
@@ -1034,7 +1101,7 @@ import java.util.Arrays;
  */
 public final class ProviderRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/DirectProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DirectProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectProviderRegistrations_CreateOrUpdate.
@@ -1102,7 +1169,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ProviderRegistrations_CreateOrUpdate.
@@ -1155,7 +1222,7 @@ public final class ProviderRegistrationsCreateOrUpdateSamples {
  */
 public final class ProviderRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_Delete.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_Delete.json
      */
     /**
      * Sample code: ProviderRegistrations_Delete.
@@ -1176,7 +1243,7 @@ public final class ProviderRegistrationsDeleteSamples {
  */
 public final class ProviderRegistrationsGenerateOperationsSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_GenerateOperations.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_GenerateOperations.json
      */
     /**
      * Sample code: ProviderRegistrations_GenerateOperations.
@@ -1199,7 +1266,7 @@ public final class ProviderRegistrationsGenerateOperationsSamples {
  */
 public final class ProviderRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_Get.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_Get.json
      */
     /**
      * Sample code: ProviderRegistrations_Get.
@@ -1220,7 +1287,7 @@ public final class ProviderRegistrationsGetSamples {
  */
 public final class ProviderRegistrationsListSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ProviderRegistrations_List.json
+     * x-ms-original-file: 2025-10-01/ProviderRegistrations_List.json
      */
     /**
      * Sample code: ProviderRegistrations_List.
@@ -1245,7 +1312,7 @@ import java.util.Arrays;
  */
 public final class ResourceActionsDeleteResourcesSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceActions_DeleteResources.json
+     * x-ms-original-file: 2025-10-01/ResourceActions_DeleteResources.json
      */
     /**
      * Sample code: ResourceActions_DeleteResources.
@@ -1276,7 +1343,7 @@ import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
  */
 public final class ResourceProviderCheckinManifestSamples {
     /*
-     * x-ms-original-file: 2024-09-01/CheckinManifest.json
+     * x-ms-original-file: 2025-10-01/CheckinManifest.json
      */
     /**
      * Sample code: CheckinManifest.
@@ -1300,7 +1367,7 @@ public final class ResourceProviderCheckinManifestSamples {
  */
 public final class ResourceProviderGenerateManifestSamples {
     /*
-     * x-ms-original-file: 2024-09-01/GenerateManifest.json
+     * x-ms-original-file: 2025-10-01/GenerateManifest.json
      */
     /**
      * Sample code: GenerateManifest.
@@ -1316,6 +1383,7 @@ public final class ResourceProviderGenerateManifestSamples {
 ### ResourceTypeRegistrations_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.providerhub.models.ActionConfiguration;
 import com.azure.resourcemanager.providerhub.models.AdditionalOptionsResourceTypeRegistration;
 import com.azure.resourcemanager.providerhub.models.AllowedResourceName;
 import com.azure.resourcemanager.providerhub.models.ApiProfile;
@@ -1326,11 +1394,13 @@ import com.azure.resourcemanager.providerhub.models.CommonApiVersionsMergeMode;
 import com.azure.resourcemanager.providerhub.models.CrossTenantTokenValidation;
 import com.azure.resourcemanager.providerhub.models.DeleteDependency;
 import com.azure.resourcemanager.providerhub.models.FilterOption;
+import com.azure.resourcemanager.providerhub.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.providerhub.models.LegacyDisallowedCondition;
 import com.azure.resourcemanager.providerhub.models.LegacyOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedAction;
 import com.azure.resourcemanager.providerhub.models.LinkedOperation;
 import com.azure.resourcemanager.providerhub.models.LinkedOperationRule;
+import com.azure.resourcemanager.providerhub.models.MarketplaceType;
 import com.azure.resourcemanager.providerhub.models.Notification;
 import com.azure.resourcemanager.providerhub.models.NotificationType;
 import com.azure.resourcemanager.providerhub.models.OpenApiConfiguration;
@@ -1338,6 +1408,7 @@ import com.azure.resourcemanager.providerhub.models.OpenApiValidation;
 import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.Policy;
 import com.azure.resourcemanager.providerhub.models.PolicyExecutionType;
+import com.azure.resourcemanager.providerhub.models.PrivateEndpointConfiguration;
 import com.azure.resourcemanager.providerhub.models.Readiness;
 import com.azure.resourcemanager.providerhub.models.Regionality;
 import com.azure.resourcemanager.providerhub.models.ResourceAccessPolicy;
@@ -1367,6 +1438,11 @@ import com.azure.resourcemanager.providerhub.models.SwaggerSpecification;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentCapabilities;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightNotifications;
 import com.azure.resourcemanager.providerhub.models.TemplateDeploymentPreflightOptions;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetric;
+import com.azure.resourcemanager.providerhub.models.ThrottlingMetricType;
+import com.azure.resourcemanager.providerhub.models.ThrottlingRule;
+import com.azure.resourcemanager.providerhub.models.WriteLockConfiguration;
+import com.azure.resourcemanager.providerhub.models.WriteLockState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -1376,7 +1452,7 @@ import java.util.Map;
  */
 public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_CreateOrUpdate.
@@ -1395,16 +1471,29 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                     Arrays.asList(new ResourceTypeEndpoint().withApiVersions(Arrays.asList("2020-06-01-preview"))
                         .withLocations(Arrays.asList("West US", "East US", "North Europe"))
                         .withRequiredFeatures(Arrays.asList("<feature flag>"))))
+                .withMarketplaceType(MarketplaceType.PROVIDER_HUB)
                 .withSwaggerSpecifications(Arrays.asList(new SwaggerSpecification()
                     .withApiVersions(Arrays.asList("2020-06-01-preview"))
                     .withSwaggerSpecFolderUri(
                         "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
+                .withThrottlingRules(Arrays.asList(new ThrottlingRule()
+                    .withAction("Microsoft.Foo/checkNameAvailability/write")
+                    .withMetrics(Arrays.asList(new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
+                        .withLimit(1L)
+                        .withBucketSize("XLarge")))))
                 .withRequestHeaderOptions(new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
                     .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY))
-                .withResourceConcurrencyControlOptions(mapOf("patch",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "post",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "put",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
+                .withPrivateEndpointConfiguration(new PrivateEndpointConfiguration().withMinApiVersion("2022-10-01")
+                    .withGroupConnectivityInformation(
+                        Arrays.asList(new GroupConnectivityInformation().withGroupId("Sql")
+                            .withRequiredMembers(Arrays.asList("Sql_Member"))
+                            .withRequiredZoneNames(Arrays.asList("Zone"))
+                            .withRedirectMapId("test"))))
+                .withWriteLock(new WriteLockConfiguration().withState(WriteLockState.ENABLED))
+                .withResourceConcurrencyControlOptions(
+                    mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "post", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
                 .withResourceGraphConfiguration(
                     new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
                         .withApiVersion("2019-01-01"))
@@ -1424,12 +1513,24 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                 .withMetadata(mapOf())
                 .withNotifications(
                     Arrays.asList(new Notification().withNotificationType(NotificationType.SUBSCRIPTION_NOTIFICATION)
-                        .withSkipNotifications(SkipNotifications.DISABLED))))
+                        .withSkipNotifications(SkipNotifications.DISABLED)))
+                .withResourceManagementOptions(
+                    new ResourceTypeRegistrationPropertiesResourceManagementOptions()
+                        .withBatchProvisioningSupport(
+                            new ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport()
+                                .withSupportedOperations(SupportedOperations.GET)
+                                .withMaxBatchSize(10L)
+                                .withBatchContractVersion("2020-06-01-preview")
+                                .withMaxNestedBatchSize(5L)
+                                .withRequiredFeatures(Arrays.asList("Microsoft.Contoso/feature1"))
+                                .withActionConfigurations(Arrays
+                                    .asList(new ActionConfiguration().withAuthorizationAction("fakeTokenPlaceholder")
+                                        .withMaxBatchSize(5L))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/DirectResourceTypeRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: DirectResourceTypeRegistrations_CreateOrUpdate.json.
@@ -1454,10 +1555,16 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
                         "https://github.com/Azure/azure-rest-api-specs/blob/feature/azure/contoso/specification/contoso/resource-manager/Microsoft.SampleRP/")))
                 .withRequestHeaderOptions(new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
                     .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY))
-                .withResourceConcurrencyControlOptions(mapOf("patch",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "post",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION), "put",
-                    new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
+                .withPrivateEndpointConfiguration(new PrivateEndpointConfiguration().withMinApiVersion("2022-10-01")
+                    .withGroupConnectivityInformation(
+                        Arrays.asList(new GroupConnectivityInformation().withGroupId("Sql")
+                            .withRequiredMembers(Arrays.asList("Sql_Member"))
+                            .withRequiredZoneNames(Arrays.asList("Zone"))
+                            .withRedirectMapId("test"))))
+                .withResourceConcurrencyControlOptions(
+                    mapOf("put", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "patch", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION),
+                        "post", new ResourceConcurrencyControlOption().withPolicy(Policy.SYNCHRONIZE_BEGIN_EXTENSION)))
                 .withResourceGraphConfiguration(
                     new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(true)
                         .withApiVersion("2019-01-01"))
@@ -1562,7 +1669,7 @@ public final class ResourceTypeRegistrationsCreateOrUpdateSamples {
  */
 public final class ResourceTypeRegistrationsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_Delete.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Delete.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Delete.
@@ -1585,7 +1692,7 @@ public final class ResourceTypeRegistrationsDeleteSamples {
  */
 public final class ResourceTypeRegistrationsGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_Get.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_Get.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_Get.
@@ -1607,7 +1714,7 @@ public final class ResourceTypeRegistrationsGetSamples {
  */
 public final class ResourceTypeRegistrationsListByProviderRegistrationSamples {
     /*
-     * x-ms-original-file: 2024-09-01/ResourceTypeRegistrations_ListByProviderRegistration.json
+     * x-ms-original-file: 2025-10-01/ResourceTypeRegistrations_ListByProviderRegistration.json
      */
     /**
      * Sample code: ResourceTypeRegistrations_ListByProviderRegistration.
@@ -1635,7 +1742,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdate.json
      */
     /**
      * Sample code: Skus_CreateOrUpdate.
@@ -1671,7 +1778,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
+     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeFirst.
@@ -1708,7 +1815,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
+     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeSecond.
@@ -1745,7 +1852,7 @@ import java.util.Arrays;
  */
 public final class SkusCreateOrUpdateNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
+     * x-ms-original-file: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeThird.
@@ -1776,7 +1883,7 @@ public final class SkusCreateOrUpdateNestedResourceTypeThirdSamples {
  */
 public final class SkusDeleteSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_Delete.json
+     * x-ms-original-file: 2025-10-01/Skus_Delete.json
      */
     /**
      * Sample code: Skus_Delete.
@@ -1798,7 +1905,7 @@ public final class SkusDeleteSamples {
  */
 public final class SkusDeleteNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_DeleteNestedResourceTypeFirst.json
+     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeFirst.
@@ -1822,7 +1929,7 @@ public final class SkusDeleteNestedResourceTypeFirstSamples {
  */
 public final class SkusDeleteNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_DeleteNestedResourceTypeSecond.json
+     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeSecond.
@@ -1846,7 +1953,7 @@ public final class SkusDeleteNestedResourceTypeSecondSamples {
  */
 public final class SkusDeleteNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_DeleteNestedResourceTypeThird.json
+     * x-ms-original-file: 2025-10-01/Skus_DeleteNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_DeleteNestedResourceTypeThird.
@@ -1871,7 +1978,7 @@ public final class SkusDeleteNestedResourceTypeThirdSamples {
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_Get.json
+     * x-ms-original-file: 2025-10-01/Skus_Get.json
      */
     /**
      * Sample code: Skus_Get.
@@ -1893,7 +2000,7 @@ public final class SkusGetSamples {
  */
 public final class SkusGetNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_GetNestedResourceTypeFirst.json
+     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeFirst.
@@ -1917,7 +2024,7 @@ public final class SkusGetNestedResourceTypeFirstSamples {
  */
 public final class SkusGetNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_GetNestedResourceTypeSecond.json
+     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeSecond.
@@ -1941,7 +2048,7 @@ public final class SkusGetNestedResourceTypeSecondSamples {
  */
 public final class SkusGetNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_GetNestedResourceTypeThird.json
+     * x-ms-original-file: 2025-10-01/Skus_GetNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_GetNestedResourceTypeThird.
@@ -1965,7 +2072,7 @@ public final class SkusGetNestedResourceTypeThirdSamples {
  */
 public final class SkusListByResourceTypeRegistrationsSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_ListByResourceTypeRegistrations.json
+     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrations.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrations.
@@ -1988,7 +2095,7 @@ public final class SkusListByResourceTypeRegistrationsSamples {
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
+     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.
@@ -2012,7 +2119,7 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstSam
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
+     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.
@@ -2036,7 +2143,7 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondSa
  */
 public final class SkusListByResourceTypeRegistrationsNestedResourceTypeThirdSamples {
     /*
-     * x-ms-original-file: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
+     * x-ms-original-file: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
      */
     /**
      * Sample code: Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.

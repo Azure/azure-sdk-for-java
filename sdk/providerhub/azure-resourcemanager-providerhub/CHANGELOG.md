@@ -1,14 +1,211 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.2.0 (2026-08-25)
 
-### Features Added
+- Azure Resource Manager ProviderHub client library for Java. This package contains Microsoft Azure SDK for ProviderHub Management SDK. Provider Hub. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManifestResourceDeletionPolicy` was removed
 
-### Other Changes
+#### `models.ResourceDeletionPolicy` was modified
+
+* `CASCADE_DELETE_ALL` was removed
+* `CASCADE_DELETE_PROXY_ONLY_CHILDREN` was removed
+
+#### `models.ResourceType` was modified
+
+* `models.ManifestResourceDeletionPolicy resourceDeletionPolicy()` -> `models.ResourceDeletionPolicy resourceDeletionPolicy()`
+
+#### `models.Operations` was modified
+
+* `java.util.List listByProviderRegistration(java.lang.String)` -> `models.OperationsPutContent listByProviderRegistration(java.lang.String)`
+
+#### `models.ResourceTypeRegistrationProperties` was modified
+
+* `models.ResourceDeletionPolicy resourceDeletionPolicy()` -> `models.RPaaSResourceDeletionPolicy resourceDeletionPolicy()`
+* `withResourceDeletionPolicy(models.ResourceDeletionPolicy)` was removed
+
+### Features Added
+
+* `models.ManifestInfo$Definition` was added
+
+* `models.ResourceDeletionPolicyProperties` was added
+
+* `models.ManifestCheckinSpecification` was added
+
+* `models.ResourceDeletionPolicyAndProperties` was added
+
+* `models.ResourceTypeManagedResourceGroupConfiguration` was added
+
+* `models.ManifestInfo$DefinitionStages` was added
+
+* `models.ManifestInfo$Update` was added
+
+* `models.Manifests` was added
+
+* `models.ManifestInfo` was added
+
+* `models.RPaaSResourceDeletionPolicy` was added
+
+* `models.WriteLockState` was added
+
+* `models.GroupConnectivityInformation` was added
+
+* `models.ManagedResourceGroupDenyAssignmentConfiguration` was added
+
+* `models.AppliedManifestInfo` was added
+
+* `models.ActionConfiguration` was added
+
+* `models.WriteLockConfiguration` was added
+
+* `models.ManifestInfoProperties` was added
+
+* `models.LocalizedOperationDisplayDefinitionQpsPloc` was added
+
+* `models.ManifestCheckinOption` was added
+
+* `models.ManifestInfo$UpdateStages` was added
+
+* `models.LinkedAccessCheckOptions` was added
+
+* `models.PrivateEndpointConfiguration` was added
+
+#### `models.ResourceProviderManagement` was modified
+
+* `withFeatureManagementOwners(java.util.List)` was added
+* `featureManagementOwners()` was added
+
+#### `models.LocalizedOperationDefinition` was modified
+
+* `properties()` was added
+* `withProperties(java.lang.Object)` was added
+
+#### `models.LinkedAccessCheck` was modified
+
+* `options()` was added
+
+#### `models.ResourceProviderManifestPropertiesManagement` was modified
+
+* `withFeatureManagementOwners(java.util.List)` was added
+
+#### `models.DefaultRolloutPropertiesSpecification` was modified
+
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+
+#### `models.LocalizedOperationDefinitionDisplay` was modified
+
+* `withQpsPloc(models.LocalizedOperationDisplayDefinitionQpsPloc)` was added
+
+#### `models.CustomRolloutPropertiesStatus` was modified
+
+* `withCompletedRegionsInfo(java.util.List)` was added
+
+#### `models.ResourceProviderManifest` was modified
+
+* `tokenAuthConfiguration()` was added
+
+#### `models.CustomRolloutStatus` was modified
+
+* `withCompletedRegionsInfo(java.util.List)` was added
+* `completedRegionsInfo()` was added
+
+#### `ProviderHubManager` was modified
+
+* `manifests()` was added
+
+#### `models.ResourceDeletionPolicy` was modified
+
+* `SOFT_DELETE` was added
+* `FORCE` was added
+* `CASCADE` was added
+
+#### `models.ApplicationDataAuthorization` was modified
+
+* `excludeApplicationIdFromManifest()` was added
+* `withExcludeApplicationIdFromManifest(java.lang.Boolean)` was added
+
+#### `models.CustomRolloutPropertiesSpecification` was modified
+
+* `withRolloutId(java.lang.String)` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+
+#### `models.ResourceType` was modified
+
+* `resourceDeletionPolicies()` was added
+
+#### `models.CustomRolloutSpecification` was modified
+
+* `manifestCheckinSpecification()` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
+* `withRolloutId(java.lang.String)` was added
+* `rolloutId()` was added
+
+#### `models.ProviderRegistrationProperties` was modified
+
+* `withOboSubscriptionId(java.lang.String)` was added
+* `enablePresetResourceTypes()` was added
+* `oboSubscriptionId()` was added
+* `withEnablePresetResourceTypes(java.lang.Boolean)` was added
+
+#### `models.ResourceTypeRegistrationPropertiesResourceManagementOptionsBatchProvisioningSupport` was modified
+
+* `withActionConfigurations(java.util.List)` was added
+* `requiredFeatures()` was added
+* `withMaxBatchSize(java.lang.Long)` was added
+* `withRequiredFeatures(java.util.List)` was added
+* `batchContractVersion()` was added
+* `withMaxNestedBatchSize(java.lang.Long)` was added
+* `maxNestedBatchSize()` was added
+* `actionConfigurations()` was added
+* `withBatchContractVersion(java.lang.String)` was added
+* `maxBatchSize()` was added
+
+#### `models.LocalizedOperationDisplayDefinition` was modified
+
+* `withQpsPloc(models.LocalizedOperationDisplayDefinitionQpsPloc)` was added
+* `qpsPloc()` was added
+
+#### `models.ResourceProviderType` was modified
+
+* `DECOMMISSIONED` was added
+
+#### `models.ResourceTypeRegistrationProperties` was modified
+
+* `withWriteLock(models.WriteLockConfiguration)` was added
+* `writeLock()` was added
+* `withResourceDeletionPolicy(models.RPaaSResourceDeletionPolicy)` was added
+* `managedResourceGroupConfiguration()` was added
+* `superScaleEnabled()` was added
+* `withResourceDeletionPolicies(java.util.List)` was added
+* `withSuperScaleEnabled(java.lang.Boolean)` was added
+* `withManagedResourceGroupConfiguration(models.ResourceTypeManagedResourceGroupConfiguration)` was added
+* `privateEndpointConfiguration()` was added
+* `withPrivateEndpointConfiguration(models.PrivateEndpointConfiguration)` was added
+* `resourceDeletionPolicies()` was added
+
+#### `models.ThrottlingMetric` was modified
+
+* `withBucketSize(java.lang.String)` was added
+* `bucketSize()` was added
+
+#### `models.ExtensionCategory` was modified
+
+* `RESOURCE_BILLING_NOTIFICATION` was added
+
+#### `models.MarketplaceType` was modified
+
+* `PROVIDER_HUB` was added
+
+#### `models.ResourceTypeRegistrationPropertiesManagement` was modified
+
+* `withFeatureManagementOwners(java.util.List)` was added
+
+#### `models.DefaultRolloutSpecification` was modified
+
+* `manifestCheckinSpecification()` was added
+* `withManifestCheckinSpecification(models.ManifestCheckinSpecification)` was added
 
 ## 2.1.0 (2026-03-03)
 

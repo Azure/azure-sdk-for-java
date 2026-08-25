@@ -12,17 +12,18 @@ public final class DstsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DstsConfiguration model
-            = BinaryData.fromString("{\"serviceName\":\"cyshurzafbljjgp\",\"serviceDnsName\":\"oq\"}")
+            = BinaryData.fromString("{\"serviceName\":\"ocxscpaierhhbcs\",\"serviceDnsName\":\"ummajtjaod\"}")
                 .toObject(DstsConfiguration.class);
-        Assertions.assertEquals("cyshurzafbljjgp", model.serviceName());
-        Assertions.assertEquals("oq", model.serviceDnsName());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.serviceName());
+        Assertions.assertEquals("ummajtjaod", model.serviceDnsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DstsConfiguration model = new DstsConfiguration().withServiceName("cyshurzafbljjgp").withServiceDnsName("oq");
+        DstsConfiguration model
+            = new DstsConfiguration().withServiceName("ocxscpaierhhbcs").withServiceDnsName("ummajtjaod");
         model = BinaryData.fromObject(model).toObject(DstsConfiguration.class);
-        Assertions.assertEquals("cyshurzafbljjgp", model.serviceName());
-        Assertions.assertEquals("oq", model.serviceDnsName());
+        Assertions.assertEquals("ocxscpaierhhbcs", model.serviceName());
+        Assertions.assertEquals("ummajtjaod", model.serviceDnsName());
     }
 }

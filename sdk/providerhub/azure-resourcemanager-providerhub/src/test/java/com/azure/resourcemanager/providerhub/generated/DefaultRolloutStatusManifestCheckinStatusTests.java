@@ -12,25 +12,25 @@ public final class DefaultRolloutStatusManifestCheckinStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutStatusManifestCheckinStatus model = BinaryData.fromString(
-            "{\"isCheckedIn\":true,\"statusMessage\":\"wjrmzvuporqzd\",\"pullRequest\":\"ydzvkf\",\"commitId\":\"cnqmxqpsw\"}")
+            "{\"isCheckedIn\":true,\"statusMessage\":\"cpeogkhnmgbrou\",\"pullRequest\":\"dbhfhp\",\"commitId\":\"azjzo\"}")
             .toObject(DefaultRolloutStatusManifestCheckinStatus.class);
         Assertions.assertTrue(model.isCheckedIn());
-        Assertions.assertEquals("wjrmzvuporqzd", model.statusMessage());
-        Assertions.assertEquals("ydzvkf", model.pullRequest());
-        Assertions.assertEquals("cnqmxqpsw", model.commitId());
+        Assertions.assertEquals("cpeogkhnmgbrou", model.statusMessage());
+        Assertions.assertEquals("dbhfhp", model.pullRequest());
+        Assertions.assertEquals("azjzo", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutStatusManifestCheckinStatus model
             = new DefaultRolloutStatusManifestCheckinStatus().withIsCheckedIn(true)
-                .withStatusMessage("wjrmzvuporqzd")
-                .withPullRequest("ydzvkf")
-                .withCommitId("cnqmxqpsw");
+                .withStatusMessage("cpeogkhnmgbrou")
+                .withPullRequest("dbhfhp")
+                .withCommitId("azjzo");
         model = BinaryData.fromObject(model).toObject(DefaultRolloutStatusManifestCheckinStatus.class);
         Assertions.assertTrue(model.isCheckedIn());
-        Assertions.assertEquals("wjrmzvuporqzd", model.statusMessage());
-        Assertions.assertEquals("ydzvkf", model.pullRequest());
-        Assertions.assertEquals("cnqmxqpsw", model.commitId());
+        Assertions.assertEquals("cpeogkhnmgbrou", model.statusMessage());
+        Assertions.assertEquals("dbhfhp", model.pullRequest());
+        Assertions.assertEquals("azjzo", model.commitId());
     }
 }

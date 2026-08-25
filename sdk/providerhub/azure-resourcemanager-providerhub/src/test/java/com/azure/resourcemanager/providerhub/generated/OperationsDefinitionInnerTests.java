@@ -14,15 +14,15 @@ public final class OperationsDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationsDefinitionInner model = BinaryData.fromString(
-            "{\"name\":\"kanyktzlcuiywg\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"drvyn\",\"resource\":\"zgpphrcgyncocpe\",\"operation\":\"fvm\",\"description\":\"coofsxlzev\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datajqabcypmivkwlzuv\\\"\"}")
+            "{\"name\":\"joghmewuama\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"provider\":\"yvvtpgvdfgio\",\"resource\":\"kftutqxlngxlefg\",\"operation\":\"gnxkrxdqmidtth\",\"description\":\"rvqdra\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"databig\\\"\"}")
             .toObject(OperationsDefinitionInner.class);
-        Assertions.assertEquals("kanyktzlcuiywg", model.name());
-        Assertions.assertTrue(model.isDataAction());
+        Assertions.assertEquals("joghmewuama", model.name());
+        Assertions.assertFalse(model.isDataAction());
         Assertions.assertEquals(OperationOrigins.USER, model.origin());
-        Assertions.assertEquals("drvyn", model.display().provider());
-        Assertions.assertEquals("zgpphrcgyncocpe", model.display().resource());
-        Assertions.assertEquals("fvm", model.display().operation());
-        Assertions.assertEquals("coofsxlzev", model.display().description());
+        Assertions.assertEquals("yvvtpgvdfgio", model.display().provider());
+        Assertions.assertEquals("kftutqxlngxlefg", model.display().resource());
+        Assertions.assertEquals("gnxkrxdqmidtth", model.display().operation());
+        Assertions.assertEquals("rvqdra", model.display().description());
         Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, model.actionType());
     }
 }

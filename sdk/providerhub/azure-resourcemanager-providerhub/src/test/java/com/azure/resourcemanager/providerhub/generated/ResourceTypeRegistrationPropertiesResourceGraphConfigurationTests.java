@@ -12,20 +12,20 @@ public final class ResourceTypeRegistrationPropertiesResourceGraphConfigurationT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceGraphConfiguration model
-            = BinaryData.fromString("{\"enabled\":false,\"apiVersion\":\"awumuaslzkwrrwo\"}")
+            = BinaryData.fromString("{\"enabled\":false,\"apiVersion\":\"dofdbxiqx\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceGraphConfiguration.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("awumuaslzkwrrwo", model.apiVersion());
+        Assertions.assertEquals("dofdbxiqx", model.apiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceGraphConfiguration model
             = new ResourceTypeRegistrationPropertiesResourceGraphConfiguration().withEnabled(false)
-                .withApiVersion("awumuaslzkwrrwo");
+                .withApiVersion("dofdbxiqx");
         model
             = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesResourceGraphConfiguration.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("awumuaslzkwrrwo", model.apiVersion());
+        Assertions.assertEquals("dofdbxiqx", model.apiVersion());
     }
 }

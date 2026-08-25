@@ -14,18 +14,18 @@ public final class NotificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Notification model = BinaryData
-            .fromString("{\"notificationType\":\"SubscriptionNotification\",\"skipNotifications\":\"Enabled\"}")
+            .fromString("{\"notificationType\":\"SubscriptionNotification\",\"skipNotifications\":\"Unspecified\"}")
             .toObject(Notification.class);
         Assertions.assertEquals(NotificationType.SUBSCRIPTION_NOTIFICATION, model.notificationType());
-        Assertions.assertEquals(SkipNotifications.ENABLED, model.skipNotifications());
+        Assertions.assertEquals(SkipNotifications.UNSPECIFIED, model.skipNotifications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Notification model = new Notification().withNotificationType(NotificationType.SUBSCRIPTION_NOTIFICATION)
-            .withSkipNotifications(SkipNotifications.ENABLED);
+            .withSkipNotifications(SkipNotifications.UNSPECIFIED);
         model = BinaryData.fromObject(model).toObject(Notification.class);
         Assertions.assertEquals(NotificationType.SUBSCRIPTION_NOTIFICATION, model.notificationType());
-        Assertions.assertEquals(SkipNotifications.ENABLED, model.skipNotifications());
+        Assertions.assertEquals(SkipNotifications.UNSPECIFIED, model.skipNotifications());
     }
 }

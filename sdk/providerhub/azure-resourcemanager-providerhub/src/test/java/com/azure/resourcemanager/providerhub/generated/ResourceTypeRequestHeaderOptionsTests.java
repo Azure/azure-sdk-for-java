@@ -13,11 +13,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceTypeRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceTypeRequestHeaderOptions model = BinaryData
-            .fromString(
-                "{\"optInHeaders\":\"ResourceGroupLocation\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
-            .toObject(ResourceTypeRequestHeaderOptions.class);
+        ResourceTypeRequestHeaderOptions model
+            = BinaryData.fromString("{\"optInHeaders\":\"ResourceGroupLocation\",\"optOutHeaders\":\"NotSpecified\"}")
+                .toObject(ResourceTypeRequestHeaderOptions.class);
         Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
-        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
+        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }

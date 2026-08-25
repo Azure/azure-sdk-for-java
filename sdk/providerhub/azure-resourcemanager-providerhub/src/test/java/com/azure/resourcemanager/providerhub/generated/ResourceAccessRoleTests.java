@@ -13,19 +13,18 @@ public final class ResourceAccessRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceAccessRole model = BinaryData
-            .fromString("{\"allowedGroupClaims\":[\"qpteeh\",\"zvypyqrimzinp\"],\"actions\":[\"jdkirsoodqx\"]}")
+            .fromString("{\"allowedGroupClaims\":[\"mnoh\",\"t\"],\"actions\":[\"h\",\"soifiyipjxsqw\",\"gr\"]}")
             .toObject(ResourceAccessRole.class);
-        Assertions.assertEquals("qpteeh", model.allowedGroupClaims().get(0));
-        Assertions.assertEquals("jdkirsoodqx", model.actions().get(0));
+        Assertions.assertEquals("mnoh", model.allowedGroupClaims().get(0));
+        Assertions.assertEquals("h", model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceAccessRole model
-            = new ResourceAccessRole().withAllowedGroupClaims(Arrays.asList("qpteeh", "zvypyqrimzinp"))
-                .withActions(Arrays.asList("jdkirsoodqx"));
+        ResourceAccessRole model = new ResourceAccessRole().withAllowedGroupClaims(Arrays.asList("mnoh", "t"))
+            .withActions(Arrays.asList("h", "soifiyipjxsqw", "gr"));
         model = BinaryData.fromObject(model).toObject(ResourceAccessRole.class);
-        Assertions.assertEquals("qpteeh", model.allowedGroupClaims().get(0));
-        Assertions.assertEquals("jdkirsoodqx", model.actions().get(0));
+        Assertions.assertEquals("mnoh", model.allowedGroupClaims().get(0));
+        Assertions.assertEquals("h", model.actions().get(0));
     }
 }

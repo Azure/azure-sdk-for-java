@@ -16,56 +16,55 @@ public final class ResourceProviderManifestPropertiesNotificationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model = BinaryData.fromString(
-            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"vekdxukuqgsjjxu\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"ketwzhhzjhfjmhv\",\"endpointInformation\":[{}]},{\"filterQuery\":\"gpmuneqsxvmhfbuz\",\"endpointInformation\":[{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"sbhud\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"yue\",\"endpointInformation\":[{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"qyrp\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"rlttymsjnygqdnfw\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"gtilax\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"qlyvijo\",\"endpointInformation\":[{}]}]}]}")
+            "{\"subscriberSettings\":[{\"filterRules\":[{\"filterQuery\":\"vk\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"nzonzl\",\"endpointInformation\":[{}]},{\"filterQuery\":\"yw\",\"endpointInformation\":[{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"z\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"zehtdhgb\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"eljeamurvzmlovua\",\"endpointInformation\":[{},{},{},{}]},{\"filterQuery\":\"cxlpmjerb\",\"endpointInformation\":[{},{},{},{}]}]},{\"filterRules\":[{\"filterQuery\":\"di\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"db\",\"endpointInformation\":[{},{}]},{\"filterQuery\":\"monfdgnwncypuuww\",\"endpointInformation\":[{}]}]},{\"filterRules\":[{\"filterQuery\":\"ctzenkeifzzhmkd\",\"endpointInformation\":[{},{},{}]},{\"filterQuery\":\"lyhb\",\"endpointInformation\":[{},{},{},{}]},{\"filterQuery\":\"chxgs\",\"endpointInformation\":[{},{},{}]}]}]}")
             .toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("vekdxukuqgsjjxu",
-            model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("vk", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesNotificationSettings model
-            = new ResourceProviderManifestPropertiesNotificationSettings()
-                .withSubscriberSettings(
-                    Arrays
-                        .asList(
-                            new SubscriberSetting()
-                                .withFilterRules(
-                                    Arrays
-                                        .asList(
-                                            new FilterRule().withFilterQuery("vekdxukuqgsjjxu")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("ketwzhhzjhfjmhv")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("gpmuneqsxvmhfbuz")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())))),
-                            new SubscriberSetting().withFilterRules(Arrays.asList(
-                                new FilterRule().withFilterQuery("sbhud")
-                                    .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                        new EndpointInformation(), new EndpointInformation())),
-                                new FilterRule().withFilterQuery("yue")
-                                    .withEndpointInformation(
-                                        Arrays.asList(new EndpointInformation(), new EndpointInformation(),
-                                            new EndpointInformation())))),
-                            new SubscriberSetting()
-                                .withFilterRules(
-                                    Arrays
-                                        .asList(
-                                            new FilterRule().withFilterQuery("qyrp")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("rlttymsjnygqdnfw")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("gtilax")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation(),
-                                                    new EndpointInformation())),
-                                            new FilterRule().withFilterQuery("qlyvijo")
-                                                .withEndpointInformation(Arrays.asList(new EndpointInformation()))))));
+            = new ResourceProviderManifestPropertiesNotificationSettings().withSubscriberSettings(Arrays.asList(
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("vk")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("nzonzl")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation())),
+                    new FilterRule().withFilterQuery("yw")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("z")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("zehtdhgb")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("eljeamurvzmlovua")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("cxlpmjerb")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation(), new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("di")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("db")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("monfdgnwncypuuww")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation())))),
+                new SubscriberSetting().withFilterRules(Arrays.asList(
+                    new FilterRule().withFilterQuery("ctzenkeifzzhmkd")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation())),
+                    new FilterRule().withFilterQuery("lyhb")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation(), new EndpointInformation())),
+                    new FilterRule().withFilterQuery("chxgs")
+                        .withEndpointInformation(Arrays.asList(new EndpointInformation(), new EndpointInformation(),
+                            new EndpointInformation()))))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesNotificationSettings.class);
-        Assertions.assertEquals("vekdxukuqgsjjxu",
-            model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
+        Assertions.assertEquals("vk", model.subscriberSettings().get(0).filterRules().get(0).filterQuery());
     }
 }

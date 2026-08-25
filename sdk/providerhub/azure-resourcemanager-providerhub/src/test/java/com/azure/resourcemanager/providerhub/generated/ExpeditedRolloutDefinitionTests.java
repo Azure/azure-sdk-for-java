@@ -12,14 +12,14 @@ public final class ExpeditedRolloutDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExpeditedRolloutDefinition model
-            = BinaryData.fromString("{\"enabled\":false}").toObject(ExpeditedRolloutDefinition.class);
-        Assertions.assertFalse(model.enabled());
+            = BinaryData.fromString("{\"enabled\":true}").toObject(ExpeditedRolloutDefinition.class);
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpeditedRolloutDefinition model = new ExpeditedRolloutDefinition().withEnabled(false);
+        ExpeditedRolloutDefinition model = new ExpeditedRolloutDefinition().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(ExpeditedRolloutDefinition.class);
-        Assertions.assertFalse(model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 }

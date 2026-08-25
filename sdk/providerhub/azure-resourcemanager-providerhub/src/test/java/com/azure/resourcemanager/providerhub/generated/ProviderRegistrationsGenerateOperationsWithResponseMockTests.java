@@ -24,7 +24,7 @@ public final class ProviderRegistrationsGenerateOperationsWithResponseMockTests 
     @Test
     public void testGenerateOperationsWithResponse() throws Exception {
         String responseStr
-            = "[{\"name\":\"wzm\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"xy\",\"resource\":\"fni\",\"operation\":\"sqywwwmhkru\",\"description\":\"aedrympmlqoin\"},\"actionType\":\"Internal\",\"properties\":\"\\\"dataewihapfji\\\"\"},{\"name\":\"knjdiqfliejhp\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"dfsbwceivb\",\"resource\":\"zipbwxgoooxzp\",\"operation\":\"admskx\",\"description\":\"npd\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datajsugswhgs\\\"\"},{\"name\":\"odkwwnbafocto\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"uvwsxbgnvk\",\"resource\":\"rvqchoadhrsxqvzv\",\"operation\":\"pabdsrg\",\"description\":\"ajglzrsubklr\"},\"actionType\":\"Internal\",\"properties\":\"\\\"dataltcetjdvqyd\\\"\"},{\"name\":\"eqq\",\"isDataAction\":true,\"origin\":\"NotSpecified\",\"display\":{\"provider\":\"wdxvqzxoebwg\",\"resource\":\"xbibanbaupw\",\"operation\":\"zvpaklozkxbzrpej\",\"description\":\"lssan\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datakgsuxunrswgk\\\"\"}]";
+            = "[{\"name\":\"ougu\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"pg\",\"resource\":\"ttbas\",\"operation\":\"alapdlndbe\",\"description\":\"qb\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datavlwynpbbfq\\\"\"},{\"name\":\"zfjmsp\",\"isDataAction\":false,\"origin\":\"System\",\"display\":{\"provider\":\"uzjljm\",\"resource\":\"hfkyez\",\"operation\":\"lgjzmi\",\"description\":\"uydoccnx\"},\"actionType\":\"NotSpecified\",\"properties\":\"\\\"datazbuiadhbatecaa\\\"\"},{\"name\":\"sdohz\",\"isDataAction\":false,\"origin\":\"User\",\"display\":{\"provider\":\"daomb\",\"resource\":\"iinj\",\"operation\":\"llwkt\",\"description\":\"e\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datavvqxua\\\"\"},{\"name\":\"g\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"ynkgfcfd\",\"resource\":\"uws\",\"operation\":\"kxx\",\"description\":\"clhuulriqbyokv\"},\"actionType\":\"Internal\",\"properties\":\"\\\"datasxebrslttfyhcdjw\\\"\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class ProviderRegistrationsGenerateOperationsWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<OperationsDefinition> response = manager.providerRegistrations()
-            .generateOperationsWithResponse("ttjxophgerhsmvgo", com.azure.core.util.Context.NONE)
+            .generateOperationsWithResponse("qgjjrlhiqlwixv", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wzm", response.get(0).name());
-        Assertions.assertTrue(response.get(0).isDataAction());
-        Assertions.assertEquals(OperationOrigins.NOT_SPECIFIED, response.get(0).origin());
-        Assertions.assertEquals("xy", response.get(0).display().provider());
-        Assertions.assertEquals("fni", response.get(0).display().resource());
-        Assertions.assertEquals("sqywwwmhkru", response.get(0).display().operation());
-        Assertions.assertEquals("aedrympmlqoin", response.get(0).display().description());
-        Assertions.assertEquals(OperationActionType.INTERNAL, response.get(0).actionType());
+        Assertions.assertEquals("ougu", response.get(0).name());
+        Assertions.assertFalse(response.get(0).isDataAction());
+        Assertions.assertEquals(OperationOrigins.SYSTEM, response.get(0).origin());
+        Assertions.assertEquals("pg", response.get(0).display().provider());
+        Assertions.assertEquals("ttbas", response.get(0).display().resource());
+        Assertions.assertEquals("alapdlndbe", response.get(0).display().operation());
+        Assertions.assertEquals("qb", response.get(0).display().description());
+        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, response.get(0).actionType());
     }
 }

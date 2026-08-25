@@ -13,24 +13,24 @@ public final class LocalizedOperationDisplayDefinitionPtTests {
     public void testDeserialize() throws Exception {
         LocalizedOperationDisplayDefinitionPt model = BinaryData
             .fromString(
-                "{\"provider\":\"z\",\"resource\":\"riglaec\",\"operation\":\"ndtic\",\"description\":\"kpvzmlq\"}")
+                "{\"provider\":\"ti\",\"resource\":\"vcpwpgclrc\",\"operation\":\"vtsoxf\",\"description\":\"kenx\"}")
             .toObject(LocalizedOperationDisplayDefinitionPt.class);
-        Assertions.assertEquals("z", model.provider());
-        Assertions.assertEquals("riglaec", model.resource());
-        Assertions.assertEquals("ndtic", model.operation());
-        Assertions.assertEquals("kpvzmlq", model.description());
+        Assertions.assertEquals("ti", model.provider());
+        Assertions.assertEquals("vcpwpgclrc", model.resource());
+        Assertions.assertEquals("vtsoxf", model.operation());
+        Assertions.assertEquals("kenx", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalizedOperationDisplayDefinitionPt model = new LocalizedOperationDisplayDefinitionPt().withProvider("z")
-            .withResource("riglaec")
-            .withOperation("ndtic")
-            .withDescription("kpvzmlq");
+        LocalizedOperationDisplayDefinitionPt model = new LocalizedOperationDisplayDefinitionPt().withProvider("ti")
+            .withResource("vcpwpgclrc")
+            .withOperation("vtsoxf")
+            .withDescription("kenx");
         model = BinaryData.fromObject(model).toObject(LocalizedOperationDisplayDefinitionPt.class);
-        Assertions.assertEquals("z", model.provider());
-        Assertions.assertEquals("riglaec", model.resource());
-        Assertions.assertEquals("ndtic", model.operation());
-        Assertions.assertEquals("kpvzmlq", model.description());
+        Assertions.assertEquals("ti", model.provider());
+        Assertions.assertEquals("vcpwpgclrc", model.resource());
+        Assertions.assertEquals("vtsoxf", model.operation());
+        Assertions.assertEquals("kenx", model.description());
     }
 }

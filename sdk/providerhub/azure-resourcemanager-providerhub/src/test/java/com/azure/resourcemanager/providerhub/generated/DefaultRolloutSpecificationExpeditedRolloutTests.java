@@ -12,15 +12,15 @@ public final class DefaultRolloutSpecificationExpeditedRolloutTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefaultRolloutSpecificationExpeditedRollout model
-            = BinaryData.fromString("{\"enabled\":false}").toObject(DefaultRolloutSpecificationExpeditedRollout.class);
-        Assertions.assertFalse(model.enabled());
+            = BinaryData.fromString("{\"enabled\":true}").toObject(DefaultRolloutSpecificationExpeditedRollout.class);
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationExpeditedRollout model
-            = new DefaultRolloutSpecificationExpeditedRollout().withEnabled(false);
+            = new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationExpeditedRollout.class);
-        Assertions.assertFalse(model.enabled());
+        Assertions.assertTrue(model.enabled());
     }
 }

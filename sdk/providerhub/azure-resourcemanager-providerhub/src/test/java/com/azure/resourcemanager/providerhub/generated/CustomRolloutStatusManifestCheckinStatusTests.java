@@ -11,27 +11,26 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomRolloutStatusManifestCheckinStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomRolloutStatusManifestCheckinStatus model = BinaryData
-            .fromString(
-                "{\"isCheckedIn\":false,\"statusMessage\":\"ky\",\"pullRequest\":\"cysihs\",\"commitId\":\"cw\"}")
+        CustomRolloutStatusManifestCheckinStatus model = BinaryData.fromString(
+            "{\"isCheckedIn\":false,\"statusMessage\":\"ilrmcaykggnox\",\"pullRequest\":\"t\",\"commitId\":\"sxwpndfcpfnznthj\"}")
             .toObject(CustomRolloutStatusManifestCheckinStatus.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("ky", model.statusMessage());
-        Assertions.assertEquals("cysihs", model.pullRequest());
-        Assertions.assertEquals("cw", model.commitId());
+        Assertions.assertEquals("ilrmcaykggnox", model.statusMessage());
+        Assertions.assertEquals("t", model.pullRequest());
+        Assertions.assertEquals("sxwpndfcpfnznthj", model.commitId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomRolloutStatusManifestCheckinStatus model
             = new CustomRolloutStatusManifestCheckinStatus().withIsCheckedIn(false)
-                .withStatusMessage("ky")
-                .withPullRequest("cysihs")
-                .withCommitId("cw");
+                .withStatusMessage("ilrmcaykggnox")
+                .withPullRequest("t")
+                .withCommitId("sxwpndfcpfnznthj");
         model = BinaryData.fromObject(model).toObject(CustomRolloutStatusManifestCheckinStatus.class);
         Assertions.assertFalse(model.isCheckedIn());
-        Assertions.assertEquals("ky", model.statusMessage());
-        Assertions.assertEquals("cysihs", model.pullRequest());
-        Assertions.assertEquals("cw", model.commitId());
+        Assertions.assertEquals("ilrmcaykggnox", model.statusMessage());
+        Assertions.assertEquals("t", model.pullRequest());
+        Assertions.assertEquals("sxwpndfcpfnznthj", model.commitId());
     }
 }

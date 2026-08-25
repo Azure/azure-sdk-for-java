@@ -28,7 +28,7 @@ public final class CustomRolloutsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.customRollouts()
-            .deleteByResourceGroupWithResponse("rg", "vrbnyrukoil", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("rhwv", "xqqggljky", com.azure.core.util.Context.NONE);
 
     }
 }
