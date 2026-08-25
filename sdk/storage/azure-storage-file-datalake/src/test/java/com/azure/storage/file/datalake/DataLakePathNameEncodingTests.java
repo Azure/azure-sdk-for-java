@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * Offline tests that document exactly how {@code azure-storage-file-datalake} treats special characters in path names
@@ -387,17 +388,24 @@ public class DataLakePathNameEncodingTests {
         DataLakeFileClient renamed = fileSystemClient.getFileClient("source.txt").rename(null, "my file.txt");
         String renameUrl = httpClient.getUrlPath();
         assertEquals("/" + FILE_SYSTEM_NAME + "/my%20file.txt", renameUrl);
+        HttpRequest renameRequest = httpClient.getRequest();
 
         // append is delegated to the internal async client - it must address the renamed path. The mock cannot return
-        // a valid append response, but the request URL is captured when the request is put on the wire, which is all
-        // this routing regression cares about.
+        // a valid append response, but the request is captured when it is put on the wire, which is all this routing
+        // regression cares about.
         byte[] data = new byte[] { 1, 2, 3 };
         try {
             renamed.append(new ByteArrayInputStream(data), 0, data.length);
         } catch (RuntimeException ignored) {
             // The offline mock does not satisfy the append response contract; only the request routing matters here.
         }
-        assertEquals("/" + FILE_SYSTEM_NAME + "/my%20file.txt", httpClient.getUrlPath());
+
+        HttpRequest appendRequest = httpClient.getRequest();
+        // Guard against a false pass: the append must actually have reached the HTTP client (a distinct request was
+        // captured) rather than failing earlier and leaving the rename request in place.
+        assertNotSame(renameRequest, appendRequest);
+        assertEquals(HttpMethod.PATCH, appendRequest.getHttpMethod());
+        assertEquals("/" + FILE_SYSTEM_NAME + "/my%20file.txt", appendRequest.getUrl().getPath());
     }
 
     /**
@@ -411,16 +419,23 @@ public class DataLakePathNameEncodingTests {
         DataLakeFileSystemClient fileSystemClient = fileSystemClient(httpClient);
 
         DataLakeDirectoryClient renamed = fileSystemClient.getDirectoryClient("source").rename(null, "dest dir");
+        HttpRequest renameRequest = httpClient.getRequest();
 
         // setAccessControlRecursive is delegated to the internal async client - it must address the renamed path. The
-        // mock cannot return a valid response body, but the request URL is captured when the request is put on the
-        // wire, which is all this routing regression cares about.
+        // mock cannot return a valid response body, but the request is captured when it is put on the wire, which is
+        // all this routing regression cares about.
         try {
             renamed.setAccessControlRecursive(PathAccessControlEntry.parseList("user::rwx"));
         } catch (RuntimeException ignored) {
             // The offline mock does not satisfy the response contract; only the request routing matters here.
         }
-        assertEquals("/" + FILE_SYSTEM_NAME + "/dest%20dir", httpClient.getUrlPath());
+
+        HttpRequest aclRequest = httpClient.getRequest();
+        // Guard against a false pass: the recursive ACL update must actually have reached the HTTP client (a distinct
+        // request was captured) rather than failing earlier and leaving the rename request in place.
+        assertNotSame(renameRequest, aclRequest);
+        assertEquals(HttpMethod.PATCH, aclRequest.getHttpMethod());
+        assertEquals("/" + FILE_SYSTEM_NAME + "/dest%20dir", aclRequest.getUrl().getPath());
     }
 
     /**
