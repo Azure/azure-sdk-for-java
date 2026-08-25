@@ -1,14 +1,10 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.0.3 (2026-08-28)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed request URLs when using custom endpoints.
 
 ## 2.0.2 (2026-08-18)
 
