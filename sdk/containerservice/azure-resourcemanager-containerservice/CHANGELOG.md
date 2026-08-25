@@ -1,14 +1,63 @@
 # Release History
 
-## 2.63.0-beta.2 (Unreleased)
+## 2.63.0 (2026-08-24)
+
+- Package api-version 2026-06-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.ManagedClusterNATGatewaySku` was added
 
-### Bugs Fixed
+* `models.ManagedClusterNATGatewayProfileOutboundIPs` was added
 
-### Other Changes
+* `models.DRANETProfile` was added
+
+* `models.DRANETMode` was added
+
+* `models.ManagedClusterAzureMonitorProfileContainerInsights` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` was added
+
+* `models.ContainerNetworkLogs` was added
+
+* `models.ManagedClusterNATGatewayProfileOutboundIpPrefixes` was added
+
+#### `models.AgentPoolNetworkProfile` was modified
+
+* `dranet()` was added
+* `withDranet(models.DRANETProfile)` was added
+
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoring` was modified
+
+* `openTelemetryMetrics()` was added
+* `openTelemetryLogsAndTraces()` was added
+* `withOpenTelemetryLogsAndTraces(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces)` was added
+* `withOpenTelemetryMetrics(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics)` was added
+
+#### `models.ManagedClusterManagedOutboundIpProfile` was modified
+
+* `countIPv6()` was added
+* `withCountIPv6(java.lang.Integer)` was added
+
+#### `models.ManagedClusterAzureMonitorProfile` was modified
+
+* `containerInsights()` was added
+* `withContainerInsights(models.ManagedClusterAzureMonitorProfileContainerInsights)` was added
+
+#### `models.ManagedClusterNatGatewayProfile` was modified
+
+* `withSku(models.ManagedClusterNATGatewaySku)` was added
+* `sku()` was added
+* `withOutboundIpPrefixes(models.ManagedClusterNATGatewayProfileOutboundIpPrefixes)` was added
+* `outboundIps()` was added
+* `withOutboundIps(models.ManagedClusterNATGatewayProfileOutboundIPs)` was added
+* `outboundIpPrefixes()` was added
+
+#### `models.AgentPoolSshAccess` was modified
+
+* `ENTRA_ID` was added
 
 ## 2.62.1 (2026-08-18)
 
