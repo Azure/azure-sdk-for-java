@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0 (2026-08-14)
+## 1.8.0 (2026-08-13)
 
 - Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK.  Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
