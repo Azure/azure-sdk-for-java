@@ -14,7 +14,32 @@ requirements and prototype reference, but its implementation should not be merge
 directly.
 
 See [TRACING_NOTES.md](TRACING_NOTES.md) for detailed design investigations and
-open technical questions discovered while building the proof of concept.
+open technical questions discovered while building the proof of concept. See
+[ADR.md](ADR.md) for the unresolved decisions, required participants, and final
+resolutions.
+
+## Decision Provenance
+
+Use public, durable sources for normative requirements and final decisions:
+
+- [PR #49706](https://github.com/Azure/azure-sdk-for-java/pull/49706) is the
+  Java implementation and review record.
+- [PR #49434](https://github.com/Azure/azure-sdk-for-java/pull/49434) is the
+  original prototype and requirements reference.
+- The
+  [OpenTelemetry GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai)
+  define standard telemetry fields and behavior.
+- The
+  [Azure SDK implementation guidelines](https://azure.github.io/azure-sdk/general_implementation.html)
+  define client configuration requirements and require Architecture Board
+  approval for new environment variables.
+
+Team discussions also identified requirements around SDK/service span naming,
+trace-context propagation privacy, raw-stream compatibility, end-to-end
+validation, and release ownership. Before Phase 0 exits, resolve the
+corresponding records in [ADR.md](ADR.md) and link each resolution to PR #49706
+or a public issue. Do not rely on chat or meeting history as the only
+specification for shipped behavior.
 
 ## Goals
 
@@ -25,6 +50,8 @@ open technical questions discovered while building the proof of concept.
 - Keep telemetry configuration and state isolated per client.
 - Cover synchronous, asynchronous, regular, raw-response, and streaming entry
   points consistently.
+- Cover raw-response streaming explicitly, including compatibility with
+  consumers that currently require tracing workarounds.
 - Preserve trace context between GenAI operation spans and HTTP spans.
 - Keep prompt, response, tool, workflow, and agent content disabled by default.
 - Make generated-client instrumentation deterministic and resilient to SDK
@@ -63,6 +90,28 @@ restoring the public `GenAiTracingConfiguration` and `GenAiTracingOptions` API
 from PR #49434. Confirm that the environment variable has the required Azure SDK
 Architecture Board approval.
 
+The per-client configuration and internal-gate direction intentionally differs
+from PR #49434, which used process-global configuration and a public
+`setExperimental(true)` option. Phase 0 must explicitly approve this difference;
+it must not be treated as an implementation-only refactoring. The same decision
+must specify whether any remaining public API requires `@Beta`, or record that
+preview status is conveyed only through package versioning and the internal
+feature gate.
+
+## Working Ownership and Milestone
+
+| Area | Working owner | Required confirmation |
+| --- | --- | --- |
+| Java implementation | Author and reviewers of [PR #49706](https://github.com/Azure/azure-sdk-for-java/pull/49706) | Confirm the Java SDK owner responsible for closing each phase. |
+| Prototype and E2E reference | Author of [PR #49434](https://github.com/Azure/azure-sdk-for-java/pull/49434) | Confirm the location and supported use of the E2E harness and reference output. |
+| Telemetry contract | Foundry telemetry owners and cross-language representatives | Name the approver for the contract matrix and Foundry extensions. |
+| Integration and release | Foundry Java integration/release owner | Name the final reviewer and release decision maker. |
+
+An end-of-month release was discussed as a target, not established as a firm
+commitment. Record the actual milestone and release owner after Phase 0 contract
+approval. A separate hotfix is not currently required for the raw-stream
+scenario; revisit that decision only if consumer impact changes.
+
 ## Phase 0: Freeze the Telemetry Contract
 
 **Owners:** Foundry telemetry owners, Java SDK owner, cross-language SDK
@@ -70,6 +119,7 @@ representatives.
 
 Before further implementation, approve and record a contract matrix containing:
 
+- Source link, rationale, approver, and approval date for every decision.
 - Semantic-convention version or exact source commit.
 - OpenTelemetry schema URL.
 - Span names, kinds, and operation names.
@@ -80,12 +130,23 @@ Before further implementation, approve and record a contract matrix containing:
 - Metrics, units, attributes, and expected boundaries.
 - Content-recording behavior and configuration variable.
 - Experimental feature gate.
+- Public API preview treatment, including the disposition of `@Beta`.
+- Trace-context propagation gate, propagated headers, baggage treatment, and
+  privacy behavior.
 - Error and cancellation behavior.
 - Operation coverage for typed, raw, and streaming APIs.
+- Consumer compatibility requirements for raw-response streaming.
+
+Use [ADR.md](ADR.md) to record the decision, participants, rationale, approval,
+and public evidence for each unresolved area. The contract matrix may be stored
+separately, but its approved version must be linked from ADR 1 and PR #49706.
 
 The matrix must distinguish official OpenTelemetry fields from Foundry
 extensions. In particular, resolve:
 
+- The prior `request_*` SDK span-name proposal, such as
+  `request_invoke_agent`, versus using an `invoke_agent` SDK parent span over
+  service `chat`, `execute_tool`, and related spans.
 - `gen_ai.system` versus `gen_ai.provider.name`.
 - `microsoft.foundry` as the provider value.
 - `create_conversation` as a custom operation.
@@ -99,6 +160,11 @@ extensions. In particular, resolve:
   redactions.
 - `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` versus
   `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED`.
+- Whether service trace-context propagation remains separately opt-in through
+  `AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION`, and whether baggage
+  is excluded because it may contain sensitive data.
+- Per-client Java configuration versus the global experimental configuration
+  used by PR #49434.
 
 Current cross-language implementations are useful inputs but are not mutually
 consistent:
@@ -111,9 +177,17 @@ consistent:
 ### Exit criteria
 
 - The contract matrix is approved by the relevant Foundry and SDK owners.
+- ADRs 1 through 10 are resolved, and ADRs 11 and 12 have named owners and an
+  approved execution plan.
+- The approved matrix or linked public decision record is referenced from
+  PR #49706.
 - Every emitted Java field has a defined name, type, requirement level, and
   source.
 - All custom Foundry fields are explicitly identified.
+- SDK/service span naming, propagation privacy, experimental gating, and
+  `@Beta` treatment have explicit decisions.
+- Each cross-language input has a Java mapping or a documented reason for
+  intentional divergence.
 
 ## Phase 1: Complete Operation Coverage
 
@@ -131,9 +205,13 @@ consistent:
 - Cover typed non-streaming responses.
 - Cover typed streaming responses.
 - Decide and implement coverage for raw-response methods.
+- Cover raw-response streaming as its own required scenario; do not assume that
+  typed streaming coverage exercises the same path.
 - Cover both synchronous and asynchronous clients.
 - Record request model, response model, response ID, finish reasons, token
   usage, conversation ID, tools, reasoning options, and approved content fields.
+- Verify compatibility with consumers that currently use a workaround to obtain
+  traces from raw streams, and document whether the workaround can be removed.
 
 ### Conversations
 
@@ -156,6 +234,11 @@ consistent:
 - Continue passing the GenAI span context through `RequestOptions` for
   `AgentsClient` and `AgentsAsyncClient`.
 - Propagate context through Reactor for OpenAI Java asynchronous response calls.
+- Apply the Phase 0 propagation decision consistently to sync, async, typed,
+  raw-response, and streaming calls.
+- If service propagation is opt-in, inject only the approved W3C headers and
+  verify that baggage or other potentially sensitive context is not forwarded
+  unless the contract explicitly requires it.
 - Verify that the HTTP span is a child of the GenAI operation span.
 - End asynchronous spans on completion, error, and cancellation.
 - End synchronous streaming spans on exhaustion, error, and early close.
@@ -223,6 +306,8 @@ Required coverage:
 - All supported agent types and overloads.
 - Sync and async clients.
 - Typed, raw, and streaming responses.
+- Raw-response streaming through the same entry point used by downstream
+  framework consumers.
 - Conversation success and failure.
 - Stream completion, error, cancellation, and early close.
 - Content enabled and disabled.
@@ -237,6 +322,19 @@ Required coverage:
 
 Where practical, derive golden expected telemetry from the current Python
 Foundry tests so Java remains cross-language compatible.
+
+In addition to unit-level golden data:
+
+- Run the E2E tracing harness associated with PR #49434, or migrate its required
+  scenarios into a maintained equivalent.
+- Compare emitted output with `trace-output-reference.txt` after updating that
+  reference to the approved Phase 0 contract.
+- Record the reviewer and outcome for the E2E application and every supported
+  configuration combination.
+- Verify all approved operation types, metric names, units, attributes, and
+  boundaries in the emitted output.
+- Add a regression scenario for raw-stream tracing and confirm whether the
+  downstream consumer workaround is still necessary.
 
 Repository validation must include:
 
@@ -253,7 +351,10 @@ Repository validation must include:
 - Replace proof-of-concept wording with the approved experimental contract.
 - Document configuration through `ClientOptions`.
 - Document the experimental feature gate if retained.
+- Document the approved `@Beta` or package-version preview treatment.
 - Document content privacy behavior and its opt-in variable.
+- Document trace-context propagation separately from content recording,
+  including whether baggage is propagated.
 - Provide console and Azure Monitor samples.
 - Document sync, async, and streaming span lifetime behavior.
 - Update the changelog only after the implementation contract is final.
@@ -276,12 +377,14 @@ Therefore:
 ## Pull Request Strategy
 
 1. Capture the approved contract and remaining requirements from PR #49434.
-2. Continue implementation in PR #49706.
-3. Rebase PR #49706 on the current `main` branch.
-4. Redirect or close PR #49434 after its requirements are represented here.
-5. Keep contract, implementation, tests, and documentation changes reviewable
+2. Convert decisions that currently exist only in team discussions into
+   PR #49706 comments, a linked public issue, or the approved contract artifact.
+3. Continue implementation in PR #49706.
+4. Rebase PR #49706 on the current `main` branch.
+5. Redirect or close PR #49434 after its requirements are represented here.
+6. Keep contract, implementation, tests, and documentation changes reviewable
    as separate commits where practical.
-6. Request Java SDK, Foundry telemetry, and API reviewers before removing draft
+7. Request Java SDK, Foundry telemetry, and API reviewers before removing draft
    status.
 
 ## Completion Criteria
@@ -290,11 +393,17 @@ Telemetry is ready to ship when:
 
 - The Foundry telemetry contract is approved and versioned.
 - All approved operations and overloads are instrumented.
+- Raw-response streaming works for direct SDK and downstream framework use.
 - Per-client configuration is preserved without public global mutable state.
+- The intentional configuration differences from PR #49434 are approved.
 - HTTP span parenting works for sync and async clients.
+- Service trace-context and baggage propagation match the approved privacy
+  policy.
 - Streaming spans close on all supported terminal paths.
 - Content remains disabled by default.
 - Attributes and metrics match golden cross-language expectations.
 - Regeneration preserves the implementation.
 - Package tests, quality checks, API checks, and samples pass.
+- The maintained E2E harness and approved reference output pass review.
 - `azure-ai-agents` and `azure-ai-projects` documentation is consistent.
+- Final ownership and the release milestone are recorded.
