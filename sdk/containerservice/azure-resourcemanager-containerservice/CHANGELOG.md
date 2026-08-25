@@ -1,396 +1,63 @@
 # Release History
 
-## 2.63.0-beta.2 (2026-08-24)
+## 2.63.0 (2026-08-24)
 
 - Package api-version 2026-06-01.
-
-### Breaking Changes
-
-#### `models.AgentPoolBlueGreenUpgradeSettings` was removed
-
-#### `models.UpgradeStrategy` was removed
-
-#### `models.MeshMembershipProperties` was removed
-
-#### `models.SeccompDefault` was removed
-
-#### `models.BootstrapAzureConfig` was removed
-
-#### `models.ManagedClusterSecurityProfileImageIntegrity` was removed
-
-#### `models.MeshMembershipPrivateConnectProfile` was removed
-
-#### `models.ComponentsByRelease` was removed
-
-#### `models.VmState` was removed
-
-#### `models.ResourceSkuCosts` was removed
-
-#### `models.ListBootstrapDataRequest` was removed
-
-#### `models.ManagedClusterSecurityProfileNodeRestriction` was removed
-
-#### `models.ResourceSkuRestrictionsType` was removed
-
-#### `models.MigStrategy` was removed
-
-#### `models.MachineOSProfileLinuxProfile` was removed
-
-#### `models.GuardrailsAvailableVersionsProperties` was removed
-
-#### `models.ResourceSkuRestrictions` was removed
-
-#### `models.MachineOSProfile` was removed
-
-#### `models.Operator` was removed
-
-#### `models.ClusterServiceLoadBalancerHealthProbeMode` was removed
-
-#### `models.ResourceSkuCapacity` was removed
-
-#### `models.JWTAuthenticatorExtraClaimMappingExpression` was removed
-
-#### `models.ContainerServiceNetworkProfileKubeProxyConfigIpvsConfig` was removed
-
-#### `models.GuardrailsSupport` was removed
-
-#### `models.ServiceAccountImagePullProfile` was removed
-
-#### `models.MachineBillingProfile` was removed
-
-#### `models.ResourceSkuRestrictionInfo` was removed
-
-#### `models.DriftAction` was removed
-
-#### `models.BastionProfile` was removed
-
-#### `models.NvidiaGPUProfile` was removed
-
-#### `models.SafeguardsSupport` was removed
-
-#### `models.KubeReserved` was removed
-
-#### `models.InfrastructureEncryption` was removed
-
-#### `models.NodeDisruptionPolicy` was removed
-
-#### `models.BootstrapKubeletConfig` was removed
-
-#### `models.BootstrapTokenInfo` was removed
-
-#### `models.ResourceSkuCapabilities` was removed
-
-#### `models.MachineKubernetesProfile` was removed
-
-#### `models.ManagedClusterHealthMonitorProfile` was removed
-
-#### `models.AllowedSubject` was removed
-
-#### `models.JWTAuthenticatorProperties` was removed
-
-#### `models.JWTAuthenticatorClaimMappings` was removed
-
-#### `models.SafeguardsAvailableVersionsProperties` was removed
-
-#### `models.MachineSecurityProfile` was removed
-
-#### `models.LabelSelectorRequirement` was removed
-
-#### `models.HardEvictionThreshold` was removed
-
-#### `models.BootstrapTargetCluster` was removed
-
-#### `models.ContainerServiceNetworkProfileKubeProxyConfig` was removed
-
-#### `models.BootstrapNetworkingConfig` was removed
-
-#### `models.ResourceSkuLocationInfo` was removed
-
-#### `models.ControlPlaneScalingSize` was removed
-
-#### `models.MachineHardwareProfile` was removed
-
-#### `models.ResourceSkuRestrictionsReasonCode` was removed
-
-#### `models.AlertNotification` was removed
-
-#### `models.JWTAuthenticatorIssuer` was removed
-
-#### `models.DriverType` was removed
-
-#### `models.ManagementMode` was removed
-
-#### `models.JWTAuthenticatorValidationRule` was removed
-
-#### `models.ManagedClusterPropertiesForSnapshot` was removed
-
-#### `models.ResourceSkuZoneDetails` was removed
-
-#### `models.MeshMembershipProvisioningState` was removed
-
-#### `models.MaintenanceWindowResourceProperties` was removed
-
-#### `models.ResourceSkuCapacityScaleType` was removed
-
-#### `models.BastionSku` was removed
-
-#### `models.PreparedImageSpecificationProfile` was removed
-
-#### `models.ManagedClusterIngressDefaultDomainProfile` was removed
-
-#### `models.IpvsScheduler` was removed
-
-#### `models.ManagedClusterIngressProfileApplicationLoadBalancer` was removed
-
-#### `models.LabelSelector` was removed
-
-#### `models.KubernetesResourceObjectEncryptionProfile` was removed
-
-#### `models.AlertConfigurationProvisioningState` was removed
-
-#### `models.Component` was removed
-
-#### `models.BootstrapNodeConfig` was removed
-
-#### `models.BootstrapComponentVersions` was removed
-
-#### `models.JWTAuthenticatorClaimMappingExpression` was removed
-
-#### `models.AlertConfigurationProperties` was removed
-
-#### `models.MachineStatus` was removed
-
-#### `models.RebalanceLoadBalancersRequestBody` was removed
-
-#### `models.Mode` was removed
-
-#### `models.AgentPoolNetworkInterface` was removed
-
-#### `models.NodeDisruptionProfile` was removed
-
-#### `models.ManagedClusterControlPlaneScalingProfile` was removed
-
-#### `models.AddonAutoscaling` was removed
-
-#### `models.NetworkProfileForSnapshot` was removed
-
-#### `models.ResourceProvisioningState` was removed
-
-#### `models.AlertConfigurationMode` was removed
-
-#### `models.AgentPoolNetworkInterfaceType` was removed
-
-#### `models.JWTAuthenticatorProvisioningState` was removed
-
-#### `models.PodLinkLocalAccess` was removed
-
-#### `models.ManagedClusterIngressProfile` was modified
-
-* `applicationLoadBalancer()` was removed
-* `withApplicationLoadBalancer(models.ManagedClusterIngressProfileApplicationLoadBalancer)` was removed
-
-#### `models.ContainerServiceNetworkProfile` was modified
-
-* `withKubeProxyConfig(models.ContainerServiceNetworkProfileKubeProxyConfig)` was removed
-* `withNatGatewayId(java.lang.String)` was removed
-* `bastionProfile()` was removed
-* `podLinkLocalAccess()` was removed
-* `withBastionProfile(models.BastionProfile)` was removed
-* `withPodLinkLocalAccess(models.PodLinkLocalAccess)` was removed
-* `kubeProxyConfig()` was removed
-* `natGatewayId()` was removed
-
-#### `models.AgentPoolMode` was modified
-
-* `MACHINES` was removed
-* `MANAGED_SYSTEM` was removed
-
-#### `models.ManagedClusterHttpProxyConfig` was modified
-
-* `effectiveNoProxy()` was removed
-
-#### `models.SnapshotType` was modified
-
-* `MANAGED_CLUSTER` was removed
-
-#### `models.BackendPoolType` was modified
-
-* `POD_IP` was removed
-
-#### `models.OutboundType` was modified
-
-* `MANAGED_NATGATEWAY_V2` was removed
-
-#### `models.ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler` was modified
-
-* `addonAutoscaling()` was removed
-* `withAddonAutoscaling(models.AddonAutoscaling)` was removed
-
-#### `models.IdentityBindingProperties` was modified
-
-* `withAllowedSubjects(java.util.List)` was removed
-* `allowedSubjects()` was removed
-
-#### `models.ManagedClusterAgentPoolProfile` was modified
-
-* `withNodeInitializationTaints(java.util.List)` was removed
-* `withPreparedImageSpecificationProfile(models.PreparedImageSpecificationProfile)` was removed
-* `withUpgradeSettingsBlueGreen(models.AgentPoolBlueGreenUpgradeSettings)` was removed
-* `withEnableOSDiskFullCaching(java.lang.Boolean)` was removed
-* `withUpgradeStrategy(models.UpgradeStrategy)` was removed
-
-#### `models.ManagedClusterSecurityProfile` was modified
-
-* `serviceAccountImagePullProfile()` was removed
-* `withServiceAccountImagePullProfile(models.ServiceAccountImagePullProfile)` was removed
-* `imageIntegrity()` was removed
-* `withKubernetesResourceObjectEncryptionProfile(models.KubernetesResourceObjectEncryptionProfile)` was removed
-* `withNodeRestriction(models.ManagedClusterSecurityProfileNodeRestriction)` was removed
-* `withImageIntegrity(models.ManagedClusterSecurityProfileImageIntegrity)` was removed
-* `nodeRestriction()` was removed
-* `kubernetesResourceObjectEncryptionProfile()` was removed
-
-#### `models.ManagedClusterAzureMonitorProfileContainerInsights` was modified
-
-* `disableCustomMetrics()` was removed
-* `withDisableCustomMetrics(java.lang.Boolean)` was removed
-
-#### `models.AgentPoolType` was modified
-
-* `FLEX_NODES` was removed
-
-#### `models.ManagedClusterIngressProfileWebAppRouting` was modified
-
-* `defaultDomain()` was removed
-* `withDefaultDomain(models.ManagedClusterIngressDefaultDomainProfile)` was removed
-
-#### `models.ManagedClusterLoadBalancerProfile` was modified
-
-* `withClusterServiceLoadBalancerHealthProbeMode(models.ClusterServiceLoadBalancerHealthProbeMode)` was removed
-* `clusterServiceLoadBalancerHealthProbeMode()` was removed
-
-#### `models.PublicNetworkAccess` was modified
-
-* `SECURED_BY_PERIMETER` was removed
-
-#### `models.TransitEncryptionType` was modified
-
-* `M_TLS` was removed
-
-#### `models.ManagedClusterPoolUpgradeProfileUpgradesItem` was modified
-
-* `isOutOfSupport()` was removed
-
-#### `models.AgentPoolNetworkProfile` was modified
-
-* `secondaryNetworkInterfaces()` was removed
-* `nodePublicIPPrefixIDs()` was removed
-* `withSecondaryNetworkInterfaces(java.util.List)` was removed
-* `withNodePublicIPPrefixIDs(java.util.List)` was removed
-
-#### `models.LoadBalancerSku` was modified
-
-* `SERVICE` was removed
-
-#### `models.MachineNetworkProperties` was modified
-
-* `MachineNetworkProperties()` was changed to private access
-* `nodePublicIpPrefixId()` was removed
-* `withNodePublicIpPrefixId(java.lang.String)` was removed
-* `podSubnetId()` was removed
-* `withEnableNodePublicIp(java.lang.Boolean)` was removed
-* `withVnetSubnetId(java.lang.String)` was removed
-* `withPodSubnetId(java.lang.String)` was removed
-* `enableNodePublicIp()` was removed
-* `nodePublicIpTags()` was removed
-* `vnetSubnetId()` was removed
-* `withNodePublicIpTags(java.util.List)` was removed
-
-#### `models.WorkloadRuntime` was modified
-
-* `KATA_MSHV_VM_ISOLATION` was removed
-
-#### `models.OSSku` was modified
-
-* `MARINER` was removed
-* `FLATCAR` was removed
-* `WINDOWS_ANNUAL` was removed
-
-#### `models.AgentPoolUpgradeProfilePropertiesUpgradesItem` was modified
-
-* `isOutOfSupport()` was removed
-
-#### `models.GpuProfile` was modified
-
-* `withNvidia(models.NvidiaGPUProfile)` was removed
-* `withDriverType(models.DriverType)` was removed
-* `nvidia()` was removed
-* `driverType()` was removed
-
-#### `models.AgentPoolUpgradeSettings` was modified
-
-* `maxBlockedNodes()` was removed
-* `withMaxBlockedNodes(java.lang.String)` was removed
-
-#### `models.ManagedClusterPoolUpgradeProfile` was modified
-
-* `componentsByReleases()` was removed
-
-#### `models.KubeletConfig` was modified
-
-* `withHardEvictionThreshold(models.HardEvictionThreshold)` was removed
-* `kubeReserved()` was removed
-* `withSeccompDefault(models.SeccompDefault)` was removed
-* `hardEvictionThreshold()` was removed
-* `seccompDefault()` was removed
-* `withKubeReserved(models.KubeReserved)` was removed
-
-#### `models.MachineProperties` was modified
-
-* `MachineProperties()` was changed to private access
-* `provisioningState()` was removed
-* `withBilling(models.MachineBillingProfile)` was removed
-* `hardware()` was removed
-* `withNetwork(models.MachineNetworkProperties)` was removed
-* `withMode(models.AgentPoolMode)` was removed
-* `withLocalDNSProfile(models.LocalDnsProfile)` was removed
-* `withTags(java.util.Map)` was removed
-* `kubernetes()` was removed
-* `eTag()` was removed
-* `withPriority(models.ScaleSetPriority)` was removed
-* `withSecurity(models.MachineSecurityProfile)` was removed
-* `evictionPolicy()` was removed
-* `status()` was removed
-* `tags()` was removed
-* `mode()` was removed
-* `withEvictionPolicy(models.ScaleSetEvictionPolicy)` was removed
-* `nodeImageVersion()` was removed
-* `withKubernetes(models.MachineKubernetesProfile)` was removed
-* `operatingSystem()` was removed
-* `withHardware(models.MachineHardwareProfile)` was removed
-* `billing()` was removed
-* `security()` was removed
-* `withOperatingSystem(models.MachineOSProfile)` was removed
-* `localDNSProfile()` was removed
-* `priority()` was removed
 
 ### Features Added
 
 * `models.ManagedClusterNATGatewaySku` was added
 
+* `models.ManagedClusterNATGatewayProfileOutboundIPs` was added
+
 * `models.DRANETProfile` was added
 
 * `models.DRANETMode` was added
+
+* `models.ManagedClusterAzureMonitorProfileContainerInsights` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces` was added
+
+* `models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics` was added
+
+* `models.ContainerNetworkLogs` was added
+
+* `models.ManagedClusterNATGatewayProfileOutboundIpPrefixes` was added
 
 #### `models.AgentPoolNetworkProfile` was modified
 
 * `dranet()` was added
 * `withDranet(models.DRANETProfile)` was added
 
+#### `models.ManagedClusterAzureMonitorProfileAppMonitoring` was modified
+
+* `openTelemetryMetrics()` was added
+* `openTelemetryLogsAndTraces()` was added
+* `withOpenTelemetryLogsAndTraces(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces)` was added
+* `withOpenTelemetryMetrics(models.ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics)` was added
+
+#### `models.ManagedClusterManagedOutboundIpProfile` was modified
+
+* `countIPv6()` was added
+* `withCountIPv6(java.lang.Integer)` was added
+
+#### `models.ManagedClusterAzureMonitorProfile` was modified
+
+* `containerInsights()` was added
+* `withContainerInsights(models.ManagedClusterAzureMonitorProfileContainerInsights)` was added
+
 #### `models.ManagedClusterNatGatewayProfile` was modified
 
 * `withSku(models.ManagedClusterNATGatewaySku)` was added
 * `sku()` was added
+* `withOutboundIpPrefixes(models.ManagedClusterNATGatewayProfileOutboundIpPrefixes)` was added
+* `outboundIps()` was added
+* `withOutboundIps(models.ManagedClusterNATGatewayProfileOutboundIPs)` was added
+* `outboundIpPrefixes()` was added
+
+#### `models.AgentPoolSshAccess` was modified
+
+* `ENTRA_ID` was added
 
 ## 2.62.1 (2026-08-18)
 
