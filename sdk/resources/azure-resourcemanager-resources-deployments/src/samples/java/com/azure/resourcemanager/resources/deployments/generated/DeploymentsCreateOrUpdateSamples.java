@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithExternalInputs.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithExternalInputs.json
      */
     /**
      * Sample code: Create deployment using external inputs.
@@ -50,7 +50,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentResourceGroup.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentResourceGroup.json
      */
     /**
      * Sample code: Create a deployment that will deploy a template with a uri and queryString.
@@ -72,7 +72,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
@@ -92,7 +92,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
      * Sample code: Create a deployment that will redeploy the last successful deployment on failure.
@@ -113,7 +113,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
      * Sample code: Create a deployment that will redeploy another deployment on failure.

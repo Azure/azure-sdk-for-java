@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +22,11 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      * Optional What-If operation settings.
      */
     private DeploymentWhatIfSettings whatIfSettings;
+
+    /*
+     * Resource predictions that can be utilized by what-if to produce potential modification changes.
+     */
+    private List<DeploymentResourceWhatIfPrediction> resourcePredictions;
 
     /**
      * Creates an instance of DeploymentWhatIfProperties class.
@@ -45,6 +51,29 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      */
     public DeploymentWhatIfProperties withWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
         this.whatIfSettings = whatIfSettings;
+        return this;
+    }
+
+    /**
+     * Get the resourcePredictions property: Resource predictions that can be utilized by what-if to produce potential
+     * modification changes.
+     * 
+     * @return the resourcePredictions value.
+     */
+    public List<DeploymentResourceWhatIfPrediction> resourcePredictions() {
+        return this.resourcePredictions;
+    }
+
+    /**
+     * Set the resourcePredictions property: Resource predictions that can be utilized by what-if to produce potential
+     * modification changes.
+     * 
+     * @param resourcePredictions the resourcePredictions value to set.
+     * @return the DeploymentWhatIfProperties object itself.
+     */
+    public DeploymentWhatIfProperties
+        withResourcePredictions(List<DeploymentResourceWhatIfPrediction> resourcePredictions) {
+        this.resourcePredictions = resourcePredictions;
         return this;
     }
 
@@ -183,6 +212,8 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         jsonWriter.writeJsonField("expressionEvaluationOptions", expressionEvaluationOptions());
         jsonWriter.writeStringField("validationLevel", validationLevel() == null ? null : validationLevel().toString());
         jsonWriter.writeJsonField("whatIfSettings", this.whatIfSettings);
+        jsonWriter.writeArrayField("resourcePredictions", this.resourcePredictions,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -239,6 +270,10 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
                         .withValidationLevel(ValidationLevel.fromString(reader.getString()));
                 } else if ("whatIfSettings".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.whatIfSettings = DeploymentWhatIfSettings.fromJson(reader);
+                } else if ("resourcePredictions".equals(fieldName)) {
+                    List<DeploymentResourceWhatIfPrediction> resourcePredictions
+                        = reader.readArray(reader1 -> DeploymentResourceWhatIfPrediction.fromJson(reader1));
+                    deserializedDeploymentWhatIfProperties.resourcePredictions = resourcePredictions;
                 } else {
                     reader.skipChildren();
                 }

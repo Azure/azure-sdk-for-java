@@ -172,7 +172,7 @@ public final class DeploymentsManagementClientImpl implements DeploymentsManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01";
+        this.apiVersion = "2026-06-01";
         this.deployments = new DeploymentsClientImpl(this);
         this.deploymentOperations = new DeploymentOperationsClientImpl(this);
     }

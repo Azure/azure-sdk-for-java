@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.deployments.models.HttpMessage;
 public final class HttpMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpMessage model
-            = BinaryData.fromString("{\"content\":\"\\\"dataagaowpulpqblylsy\\\"\"}").toObject(HttpMessage.class);
+        HttpMessage model = BinaryData.fromString("{\"content\":\"\\\"datau\\\"\"}").toObject(HttpMessage.class);
     }
 }

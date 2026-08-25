@@ -2,7 +2,7 @@
 
 Azure Resource Manager Deployments client library for Java.
 
-This package contains Microsoft Azure SDK for Deployments Management SDK. Provides operations for working with deployments. Package api-version 2025-04-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Deployments Management SDK. Provides operations for working with deployments. Package api-version 2026-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

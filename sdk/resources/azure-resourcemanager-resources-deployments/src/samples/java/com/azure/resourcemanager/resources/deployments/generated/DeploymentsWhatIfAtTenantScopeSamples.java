@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtTenantScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnTenant.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnTenant.json
      */
     /**
      * Sample code: Predict template changes at management group scope.

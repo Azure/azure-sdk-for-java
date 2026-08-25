@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.

@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
  */
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
-     * x-ms-original-file: 2025-04-01/CalculateTemplateHash.json
+     * x-ms-original-file: 2026-06-01/CalculateTemplateHash.json
      */
     /**
      * Sample code: Calculate template hash.

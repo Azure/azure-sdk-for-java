@@ -13,15 +13,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The DeploymentExtensionConfigItem model.
+ * Represents the value for an extension config property.
  */
 @Fluent
 public final class DeploymentExtensionConfigItem implements JsonSerializable<DeploymentExtensionConfigItem> {
-    /*
-     * The value type of the extension config property.
-     */
-    private ExtensionConfigPropertyType type;
-
     /*
      * The value of the extension config property.
      */
@@ -36,15 +31,6 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
      * Creates an instance of DeploymentExtensionConfigItem class.
      */
     public DeploymentExtensionConfigItem() {
-    }
-
-    /**
-     * Get the type property: The value type of the extension config property.
-     * 
-     * @return the type value.
-     */
-    public ExtensionConfigPropertyType type() {
-        return this.type;
     }
 
     /**
@@ -119,10 +105,7 @@ public final class DeploymentExtensionConfigItem implements JsonSerializable<Dep
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
-                    deserializedDeploymentExtensionConfigItem.type
-                        = ExtensionConfigPropertyType.fromString(reader.getString());
-                } else if ("value".equals(fieldName)) {
+                if ("value".equals(fieldName)) {
                     deserializedDeploymentExtensionConfigItem.value
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("keyVaultReference".equals(fieldName)) {

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnScope.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnScope.json
      */
     /**
      * Sample code: Validates a template at scope.

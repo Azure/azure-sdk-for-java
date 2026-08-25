@@ -13,10 +13,9 @@ public final class OnErrorDeploymentExtendedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OnErrorDeploymentExtended model = BinaryData
-            .fromString(
-                "{\"provisioningState\":\"haaxdbabphl\",\"type\":\"SpecificDeployment\",\"deploymentName\":\"fkts\"}")
+            .fromString("{\"provisioningState\":\"nrs\",\"type\":\"LastSuccessful\",\"deploymentName\":\"idybyxczf\"}")
             .toObject(OnErrorDeploymentExtended.class);
-        Assertions.assertEquals(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT, model.type());
-        Assertions.assertEquals("fkts", model.deploymentName());
+        Assertions.assertEquals(OnErrorDeploymentType.LAST_SUCCESSFUL, model.type());
+        Assertions.assertEquals("idybyxczf", model.deploymentName());
     }
 }

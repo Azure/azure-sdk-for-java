@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.deployments.fluent.models.DeploymentE
 public final class DeploymentExportResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentExportResultInner model = BinaryData.fromString("{\"template\":\"\\\"datarqhakauha\\\"\"}")
+        DeploymentExportResultInner model = BinaryData.fromString("{\"template\":\"\\\"datapkdeemaofmxagkvt\\\"\"}")
             .toObject(DeploymentExportResultInner.class);
     }
 }

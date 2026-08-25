@@ -13,15 +13,15 @@ public final class ExpressionEvaluationOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExpressionEvaluationOptions model
-            = BinaryData.fromString("{\"scope\":\"Outer\"}").toObject(ExpressionEvaluationOptions.class);
-        Assertions.assertEquals(ExpressionEvaluationOptionsScopeType.OUTER, model.scope());
+            = BinaryData.fromString("{\"scope\":\"NotSpecified\"}").toObject(ExpressionEvaluationOptions.class);
+        Assertions.assertEquals(ExpressionEvaluationOptionsScopeType.NOT_SPECIFIED, model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExpressionEvaluationOptions model
-            = new ExpressionEvaluationOptions().withScope(ExpressionEvaluationOptionsScopeType.OUTER);
+            = new ExpressionEvaluationOptions().withScope(ExpressionEvaluationOptionsScopeType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ExpressionEvaluationOptions.class);
-        Assertions.assertEquals(ExpressionEvaluationOptionsScopeType.OUTER, model.scope());
+        Assertions.assertEquals(ExpressionEvaluationOptionsScopeType.NOT_SPECIFIED, model.scope());
     }
 }

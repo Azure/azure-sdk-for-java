@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnSubscription.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnSubscription.json
      */
     /**
      * Sample code: Validates a template at subscription scope.

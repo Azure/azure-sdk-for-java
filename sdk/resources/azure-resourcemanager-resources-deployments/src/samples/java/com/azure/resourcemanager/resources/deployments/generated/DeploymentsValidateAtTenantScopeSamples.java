@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnTenant.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnTenant.json
      */
     /**
      * Sample code: Validates a template at tenant scope.

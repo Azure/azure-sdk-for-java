@@ -33,9 +33,15 @@ public final class DeploymentExtensionDefinition implements JsonSerializable<Dep
     private String version;
 
     /*
-     * The extension configuration ID. It uniquely identifies a deployment control plane within an extension.
+     * The extension configuration ID. It uniquely identifies a deployment target within an extension.
      */
     private String configId;
+
+    /*
+     * The extension configuration hash. Can be used to distinguish different configurations that have the same config
+     * ID.
+     */
+    private String configHash;
 
     /*
      * The extension configuration.
@@ -45,7 +51,7 @@ public final class DeploymentExtensionDefinition implements JsonSerializable<Dep
     /**
      * Creates an instance of DeploymentExtensionDefinition class.
      */
-    private DeploymentExtensionDefinition() {
+    public DeploymentExtensionDefinition() {
     }
 
     /**
@@ -76,13 +82,23 @@ public final class DeploymentExtensionDefinition implements JsonSerializable<Dep
     }
 
     /**
-     * Get the configId property: The extension configuration ID. It uniquely identifies a deployment control plane
-     * within an extension.
+     * Get the configId property: The extension configuration ID. It uniquely identifies a deployment target within an
+     * extension.
      * 
      * @return the configId value.
      */
     public String configId() {
         return this.configId;
+    }
+
+    /**
+     * Get the configHash property: The extension configuration hash. Can be used to distinguish different
+     * configurations that have the same config ID.
+     * 
+     * @return the configHash value.
+     */
+    public String configHash() {
+        return this.configHash;
     }
 
     /**
@@ -127,6 +143,8 @@ public final class DeploymentExtensionDefinition implements JsonSerializable<Dep
                     deserializedDeploymentExtensionDefinition.version = reader.getString();
                 } else if ("configId".equals(fieldName)) {
                     deserializedDeploymentExtensionDefinition.configId = reader.getString();
+                } else if ("configHash".equals(fieldName)) {
+                    deserializedDeploymentExtensionDefinition.configHash = reader.getString();
                 } else if ("config".equals(fieldName)) {
                     Map<String, DeploymentExtensionConfigItem> config
                         = reader.readMap(reader1 -> DeploymentExtensionConfigItem.fromJson(reader1));

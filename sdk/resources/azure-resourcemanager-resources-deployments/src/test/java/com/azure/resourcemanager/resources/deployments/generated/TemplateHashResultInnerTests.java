@@ -12,9 +12,9 @@ public final class TemplateHashResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TemplateHashResultInner model
-            = BinaryData.fromString("{\"minifiedTemplate\":\"ofwq\",\"templateHash\":\"qal\"}")
+            = BinaryData.fromString("{\"minifiedTemplate\":\"cdl\",\"templateHash\":\"shfwpracstwity\"}")
                 .toObject(TemplateHashResultInner.class);
-        Assertions.assertEquals("ofwq", model.minifiedTemplate());
-        Assertions.assertEquals("qal", model.templateHash());
+        Assertions.assertEquals("cdl", model.minifiedTemplate());
+        Assertions.assertEquals("shfwpracstwity", model.templateHash());
     }
 }

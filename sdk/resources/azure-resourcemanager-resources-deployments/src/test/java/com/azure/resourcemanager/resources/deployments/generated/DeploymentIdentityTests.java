@@ -16,19 +16,17 @@ public final class DeploymentIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeploymentIdentity model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"rpabg\":{\"principalId\":\"lfplp\",\"clientId\":\"xus\"},\"zwfqkqujidsuyon\":{\"principalId\":\"psbjta\",\"clientId\":\"ugxywpmueef\"},\"yudxytlmoy\":{\"principalId\":\"glaocq\",\"clientId\":\"ccm\"},\"hrxsbk\":{\"principalId\":\"vwfudwpzntxhd\",\"clientId\":\"lrqjbhckfr\"}}}")
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"ye\":{\"principalId\":\"lphox\",\"clientId\":\"crpab\"}}}")
             .toObject(DeploymentIdentity.class);
-        Assertions.assertEquals(DeploymentIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(DeploymentIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentIdentity model = new DeploymentIdentity().withType(DeploymentIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("rpabg", new UserAssignedIdentity(), "zwfqkqujidsuyon", new UserAssignedIdentity(), "yudxytlmoy",
-                    new UserAssignedIdentity(), "hrxsbk", new UserAssignedIdentity()));
+        DeploymentIdentity model = new DeploymentIdentity().withType(DeploymentIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("ye", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(DeploymentIdentity.class);
-        Assertions.assertEquals(DeploymentIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(DeploymentIdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available

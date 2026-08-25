@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnManagementGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnManagementGroup.json
      */
     /**
      * Sample code: Validates a template at management group scope.

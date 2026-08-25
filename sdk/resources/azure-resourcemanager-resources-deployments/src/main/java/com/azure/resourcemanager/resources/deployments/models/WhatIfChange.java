@@ -19,7 +19,7 @@ import java.util.List;
 @Immutable
 public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     /*
-     * Resource ID
+     * The fully-qualified ARM resource ID for this change.
      */
     private String resourceId;
 
@@ -32,6 +32,11 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      * The symbolic name of the resource responsible for this change.
      */
     private String symbolicName;
+
+    /*
+     * The resource type of the resource.
+     */
+    private String resourceType;
 
     /*
      * A subset of properties that uniquely identify a Bicep extensible resource because it lacks a resource id like an
@@ -76,7 +81,7 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     }
 
     /**
-     * Get the resourceId property: Resource ID.
+     * Get the resourceId property: The fully-qualified ARM resource ID for this change.
      * 
      * @return the resourceId value.
      */
@@ -100,6 +105,15 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      */
     public String symbolicName() {
         return this.symbolicName;
+    }
+
+    /**
+     * Get the resourceType property: The resource type of the resource.
+     * 
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -176,6 +190,7 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
         jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("deploymentId", this.deploymentId);
         jsonWriter.writeStringField("symbolicName", this.symbolicName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
         if (this.identifiers != null) {
             jsonWriter.writeFieldName("identifiers");
             this.identifiers.writeTo(jsonWriter);
@@ -218,6 +233,8 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
                     deserializedWhatIfChange.deploymentId = reader.getString();
                 } else if ("symbolicName".equals(fieldName)) {
                     deserializedWhatIfChange.symbolicName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedWhatIfChange.resourceType = reader.getString();
                 } else if ("identifiers".equals(fieldName)) {
                     deserializedWhatIfChange.identifiers
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));

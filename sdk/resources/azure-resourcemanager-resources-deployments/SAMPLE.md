@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
  */
 public final class DeploymentsCalculateTemplateHashSamples {
     /*
-     * x-ms-original-file: 2025-04-01/CalculateTemplateHash.json
+     * x-ms-original-file: 2026-06-01/CalculateTemplateHash.json
      */
     /**
      * Sample code: Calculate template hash.
@@ -68,7 +68,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithExternalInputs.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithExternalInputs.json
      */
     /**
      * Sample code: Create deployment using external inputs.
@@ -96,7 +96,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentResourceGroup.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentResourceGroup.json
      */
     /**
      * Sample code: Create a deployment that will deploy a template with a uri and queryString.
@@ -118,7 +118,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
@@ -138,7 +138,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
      * Sample code: Create a deployment that will redeploy the last successful deployment on failure.
@@ -159,7 +159,7 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
      * Sample code: Create a deployment that will redeploy another deployment on failure.
@@ -209,7 +209,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentAtManagementGroup.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentAtManagementGroup.json
      */
     /**
      * Sample code: Create deployment at management group scope.
@@ -257,7 +257,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentAtScope.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentAtScope.json
      */
     /**
      * Sample code: Create deployment at a given scope.
@@ -307,7 +307,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentSubscriptionTemplateSpecsWithId.json
      */
     /**
      * Sample code: Create a deployment that will deploy a templateSpec with the given resourceId.
@@ -354,7 +354,7 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PutDeploymentAtTenant.json
+     * x-ms-original-file: 2026-06-01/PutDeploymentAtTenant.json
      */
     /**
      * Sample code: Create deployment at tenant scope.
@@ -403,7 +403,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnResourceGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnResourceGroup.json
      */
     /**
      * Sample code: Validates a template at resource group scope.
@@ -450,7 +450,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnManagementGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnManagementGroup.json
      */
     /**
      * Sample code: Validates a template at management group scope.
@@ -498,7 +498,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnScope.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnScope.json
      */
     /**
      * Sample code: Validates a template at scope.
@@ -548,7 +548,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnSubscription.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnSubscription.json
      */
     /**
      * Sample code: Validates a template at subscription scope.
@@ -596,7 +596,7 @@ import java.util.Map;
  */
 public final class DeploymentsValidateAtTenantScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentValidateOnTenant.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentValidateOnTenant.json
      */
     /**
      * Sample code: Validates a template at tenant scope.
@@ -644,7 +644,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnResourceGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnResourceGroup.json
      */
     /**
      * Sample code: Predict template changes at resource group scope.
@@ -691,7 +691,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnManagementGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnManagementGroup.json
      */
     /**
      * Sample code: Predict template changes at management group scope.
@@ -739,7 +739,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnSubscription.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnSubscription.json
      */
     /**
      * Sample code: Predict template changes at subscription scope.
@@ -787,7 +787,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtTenantScopeSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnTenant.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnTenant.json
      */
     /**
      * Sample code: Predict template changes at management group scope.

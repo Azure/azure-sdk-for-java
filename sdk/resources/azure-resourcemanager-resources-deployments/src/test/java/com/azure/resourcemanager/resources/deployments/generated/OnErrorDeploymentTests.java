@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class OnErrorDeploymentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnErrorDeployment model = BinaryData.fromString("{\"type\":\"LastSuccessful\",\"deploymentName\":\"ywpnvjt\"}")
-            .toObject(OnErrorDeployment.class);
+        OnErrorDeployment model
+            = BinaryData.fromString("{\"type\":\"LastSuccessful\",\"deploymentName\":\"tkphywpnvjtoqn\"}")
+                .toObject(OnErrorDeployment.class);
         Assertions.assertEquals(OnErrorDeploymentType.LAST_SUCCESSFUL, model.type());
-        Assertions.assertEquals("ywpnvjt", model.deploymentName());
+        Assertions.assertEquals("tkphywpnvjtoqn", model.deploymentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnErrorDeployment model
-            = new OnErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL).withDeploymentName("ywpnvjt");
+        OnErrorDeployment model = new OnErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL)
+            .withDeploymentName("tkphywpnvjtoqn");
         model = BinaryData.fromObject(model).toObject(OnErrorDeployment.class);
         Assertions.assertEquals(OnErrorDeploymentType.LAST_SUCCESSFUL, model.type());
-        Assertions.assertEquals("ywpnvjt", model.deploymentName());
+        Assertions.assertEquals("tkphywpnvjtoqn", model.deploymentName());
     }
 }

@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DebugSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DebugSetting model = BinaryData.fromString("{\"detailLevel\":\"idybyxczf\"}").toObject(DebugSetting.class);
-        Assertions.assertEquals("idybyxczf", model.detailLevel());
+        DebugSetting model
+            = BinaryData.fromString("{\"detailLevel\":\"skpbhenbtkcxywn\"}").toObject(DebugSetting.class);
+        Assertions.assertEquals("skpbhenbtkcxywn", model.detailLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DebugSetting model = new DebugSetting().withDetailLevel("idybyxczf");
+        DebugSetting model = new DebugSetting().withDetailLevel("skpbhenbtkcxywn");
         model = BinaryData.fromObject(model).toObject(DebugSetting.class);
-        Assertions.assertEquals("idybyxczf", model.detailLevel());
+        Assertions.assertEquals("skpbhenbtkcxywn", model.detailLevel());
     }
 }

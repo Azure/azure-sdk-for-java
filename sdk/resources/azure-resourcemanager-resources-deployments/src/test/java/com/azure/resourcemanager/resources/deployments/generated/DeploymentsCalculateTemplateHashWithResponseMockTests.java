@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class DeploymentsCalculateTemplateHashWithResponseMockTests {
     @Test
     public void testCalculateTemplateHashWithResponse() throws Exception {
-        String responseStr = "{\"minifiedTemplate\":\"wxlp\",\"templateHash\":\"kftnkhtjsyin\"}";
+        String responseStr = "{\"minifiedTemplate\":\"xrrilozapee\",\"templateHash\":\"hpxlktwkuziycs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class DeploymentsCalculateTemplateHashWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TemplateHashResult response = manager.deployments()
-            .calculateTemplateHashWithResponse(BinaryData.fromBytes("\"datanjv\"".getBytes(StandardCharsets.UTF_8)),
+            .calculateTemplateHashWithResponse(
+                BinaryData.fromBytes("\"dataastjbkkdmflvestm\"".getBytes(StandardCharsets.UTF_8)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wxlp", response.minifiedTemplate());
-        Assertions.assertEquals("kftnkhtjsyin", response.templateHash());
+        Assertions.assertEquals("xrrilozapee", response.minifiedTemplate());
+        Assertions.assertEquals("hpxlktwkuziycs", response.templateHash());
     }
 }

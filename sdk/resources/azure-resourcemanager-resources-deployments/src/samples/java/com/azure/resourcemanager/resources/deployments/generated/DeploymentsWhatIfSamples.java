@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfSamples {
     /*
-     * x-ms-original-file: 2025-04-01/PostDeploymentWhatIfOnResourceGroup.json
+     * x-ms-original-file: 2026-06-01/PostDeploymentWhatIfOnResourceGroup.json
      */
     /**
      * Sample code: Predict template changes at resource group scope.

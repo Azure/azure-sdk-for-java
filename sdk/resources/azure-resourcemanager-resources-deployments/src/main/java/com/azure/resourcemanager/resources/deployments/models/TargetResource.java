@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Target resource.
@@ -51,6 +52,12 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
      * The symbolic name of the resource as defined in the deployment template.
      */
     private String symbolicName;
+
+    /*
+     * The symbolic name path to the resource in the deployment template, including nested deployment(s) and extension
+     * if applicable.
+     */
+    private List<String> symbolicNamePath;
 
     /**
      * Creates an instance of TargetResource class.
@@ -122,6 +129,16 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
     }
 
     /**
+     * Get the symbolicNamePath property: The symbolic name path to the resource in the deployment template, including
+     * nested deployment(s) and extension if applicable.
+     * 
+     * @return the symbolicNamePath value.
+     */
+    public List<String> symbolicNamePath() {
+        return this.symbolicNamePath;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -137,6 +154,8 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
         }
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
         jsonWriter.writeStringField("symbolicName", this.symbolicName);
+        jsonWriter.writeArrayField("symbolicNamePath", this.symbolicNamePath,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -170,6 +189,9 @@ public final class TargetResource implements JsonSerializable<TargetResource> {
                     deserializedTargetResource.apiVersion = reader.getString();
                 } else if ("symbolicName".equals(fieldName)) {
                     deserializedTargetResource.symbolicName = reader.getString();
+                } else if ("symbolicNamePath".equals(fieldName)) {
+                    List<String> symbolicNamePath = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTargetResource.symbolicNamePath = symbolicNamePath;
                 } else {
                     reader.skipChildren();
                 }

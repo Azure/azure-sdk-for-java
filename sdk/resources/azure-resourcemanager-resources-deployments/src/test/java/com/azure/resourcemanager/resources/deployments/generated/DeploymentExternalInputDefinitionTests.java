@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentExternalInputDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentExternalInputDefinition model
-            = BinaryData.fromString("{\"kind\":\"bkc\",\"config\":\"\\\"datadhbt\\\"\"}")
-                .toObject(DeploymentExternalInputDefinition.class);
-        Assertions.assertEquals("bkc", model.kind());
+        DeploymentExternalInputDefinition model = BinaryData.fromString("{\"kind\":\"k\",\"config\":\"\\\"datax\\\"\"}")
+            .toObject(DeploymentExternalInputDefinition.class);
+        Assertions.assertEquals("k", model.kind());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentExternalInputDefinition model = new DeploymentExternalInputDefinition().withKind("bkc")
-            .withConfig(BinaryData.fromBytes("\"datadhbt\"".getBytes(StandardCharsets.UTF_8)));
+        DeploymentExternalInputDefinition model = new DeploymentExternalInputDefinition().withKind("k")
+            .withConfig(BinaryData.fromBytes("\"datax\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(DeploymentExternalInputDefinition.class);
-        Assertions.assertEquals("bkc", model.kind());
+        Assertions.assertEquals("k", model.kind());
     }
 }

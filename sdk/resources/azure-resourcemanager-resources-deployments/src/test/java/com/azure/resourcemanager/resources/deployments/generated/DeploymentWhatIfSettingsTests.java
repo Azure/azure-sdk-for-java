@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentWhatIfSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentWhatIfSettings model
-            = BinaryData.fromString("{\"resultFormat\":\"ResourceIdOnly\"}").toObject(DeploymentWhatIfSettings.class);
-        Assertions.assertEquals(WhatIfResultFormat.RESOURCE_ID_ONLY, model.resultFormat());
+        DeploymentWhatIfSettings model = BinaryData.fromString("{\"resultFormat\":\"FullResourcePayloads\"}")
+            .toObject(DeploymentWhatIfSettings.class);
+        Assertions.assertEquals(WhatIfResultFormat.FULL_RESOURCE_PAYLOADS, model.resultFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentWhatIfSettings model
-            = new DeploymentWhatIfSettings().withResultFormat(WhatIfResultFormat.RESOURCE_ID_ONLY);
+            = new DeploymentWhatIfSettings().withResultFormat(WhatIfResultFormat.FULL_RESOURCE_PAYLOADS);
         model = BinaryData.fromObject(model).toObject(DeploymentWhatIfSettings.class);
-        Assertions.assertEquals(WhatIfResultFormat.RESOURCE_ID_ONLY, model.resultFormat());
+        Assertions.assertEquals(WhatIfResultFormat.FULL_RESOURCE_PAYLOADS, model.resultFormat());
     }
 }

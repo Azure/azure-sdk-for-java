@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Deployments Management</name>
-  <description>This package contains Microsoft Azure SDK for Deployments Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Provides operations for working with deployments. Package api-version 2025-04-01.</description>
+  <description>This package contains Microsoft Azure SDK for Deployments Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Provides operations for working with deployments. Package api-version 2026-06-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
