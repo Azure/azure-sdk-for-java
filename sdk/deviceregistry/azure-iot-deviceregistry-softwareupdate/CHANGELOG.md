@@ -6,11 +6,10 @@
 
 ### Features Added
 
+- Initial release for the azure-iot-deviceregistry-softwareupdate Java SDK.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-### Features Added
-
-- Initial release for the azure-iot-deviceregistry-softwareupdate Java SDK.
