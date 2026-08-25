@@ -113,9 +113,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                     // ranged downloads always set it up). Sharing it means a reliable-download ranged resume of this
                     // same operation - which re-enters the pipeline through the range branch with the same context -
                     // enforces one nonce scheme across the initial and resumed portions.
-                    CseV2NonceOrderValidator nonceValidator
-                        = (CseV2NonceOrderValidator) context.getData(CryptographyConstants.GCM_NONCE_VALIDATOR_KEY)
-                            .orElse(null);
+                    CseV2NonceOrderValidator nonceValidator = CseV2NonceOrderValidator.fromContext(context);
 
                     Flux<ByteBuffer> plainTextData = this.decryptBlob(httpResponse.getBody(), encryptedRange, padding,
                         encryptionData, httpResponse.getRequest().getUrl(), nonceValidator);
@@ -137,9 +135,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             // Shared across every chunk of this download so the CSEv2 nonce scheme is enforced consistently across the
             // whole operation (partitioned downloadToFile / chunked openInputStream issue one ranged request per
             // chunk). Set up once per operation alongside the encryption data.
-            CseV2NonceOrderValidator nonceValidator
-                = (CseV2NonceOrderValidator) context.getData(CryptographyConstants.GCM_NONCE_VALIDATOR_KEY)
-                    .orElse(null);
+            CseV2NonceOrderValidator nonceValidator = CseV2NonceOrderValidator.fromContext(context);
 
             EncryptedBlobRange encryptedRange
                 = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(initialRangeHeader, encryptionData);

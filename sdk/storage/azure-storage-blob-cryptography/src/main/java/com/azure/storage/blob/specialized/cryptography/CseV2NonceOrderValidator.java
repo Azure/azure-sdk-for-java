@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_ENV_VAR;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ALLOW_MISORDERED_REGIONS_PROPERTY;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_NONCE_VALIDATOR_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 
 /**
@@ -47,6 +49,18 @@ final class CseV2NonceOrderValidator {
     CseV2NonceOrderValidator() {
         // Read the data-recovery bypass switch once per download operation.
         this.validationEnabled = !cseV2AllowMisorderedAuthRegions();
+    }
+
+    /**
+     * Retrieves the operation-scoped validator installed in the pipeline context, if any. A single instance is shared
+     * across every chunk of a download operation so the nonce scheme is enforced consistently (see the class-level
+     * documentation).
+     *
+     * @param context The pipeline call context for the current request.
+     * @return The shared validator, or {@code null} if none was installed (e.g. a full-blob single-shot download).
+     */
+    static CseV2NonceOrderValidator fromContext(HttpPipelineCallContext context) {
+        return (CseV2NonceOrderValidator) context.getData(GCM_NONCE_VALIDATOR_KEY).orElse(null);
     }
 
     /**
