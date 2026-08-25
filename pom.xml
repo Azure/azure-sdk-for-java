@@ -95,6 +95,7 @@
     <module>sdk/dell</module>
     <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
+    <module>sdk/deployments</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
     <module>sdk/devhub</module>
