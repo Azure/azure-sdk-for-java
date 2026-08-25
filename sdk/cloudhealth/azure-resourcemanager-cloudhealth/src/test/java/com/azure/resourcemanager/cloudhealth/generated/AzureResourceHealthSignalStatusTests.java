@@ -12,8 +12,8 @@ public final class AzureResourceHealthSignalStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceHealthSignalStatus model = BinaryData.fromString(
-            "{\"healthState\":\"Unknown\",\"value\":46.859483085827016,\"reportedAt\":\"2021-10-17T10:06:59Z\",\"error\":\"kyhkobopg\",\"additionalContext\":\"dkow\",\"availabilityState\":\"Available\",\"category\":\"Planned\",\"detailedStatus\":\"rfkbwccsnjvcdwxl\",\"summary\":\"ekftnkhtj\",\"reasonType\":\"Planned\",\"reasonChronicity\":\"Persistent\",\"availabilityReportedTime\":\"2021-09-11T08:24:22Z\"}")
+            "{\"healthState\":\"Unknown\",\"value\":22.000838494601293,\"reportedAt\":\"2021-09-04T02:46:50Z\",\"error\":\"xrjqcirgzpfrlazs\",\"additionalContext\":\"nwoiind\",\"availabilityState\":\"Available\",\"category\":\"Unplanned\",\"detailedStatus\":\"lwbtlhf\",\"summary\":\"jcdh\",\"reasonType\":\"Planned\",\"reasonChronicity\":\"Transient\",\"availabilityReportedTime\":\"2021-05-07T17:12:41Z\"}")
             .toObject(AzureResourceHealthSignalStatus.class);
-        Assertions.assertEquals("dkow", model.additionalContext());
+        Assertions.assertEquals("nwoiind", model.additionalContext());
     }
 }
