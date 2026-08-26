@@ -1,15 +1,12 @@
 ## Release History
 
-### 4.82.0-beta.1 (Unreleased)
+### 4.82.0 (2026-08-26)
 
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
 
-#### Breaking Changes
-
 #### Bugs Fixed
-* Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
 * Fixed a possible delay of PPCB failback when the SDK has never received a successful address response for the affected partition before failover, which could impact tail latency in certain workloads - See [PR 50182](https://github.com/Azure/azure-sdk-for-java/pull/50182).
 * Fixed an intermittent `IndexOutOfBoundsException` in cross-partition hybrid search queries caused by multiple subscriptions to the coalesced component query results. - See PR [49831](https://github.com/Azure/azure-sdk-for-java/issues/49831)
 * Fixed document requests failing when Gateway V2 is enabled with resource-token or permission-feed authentication by routing those requests through Compute Gateway. - See PR [50084](https://github.com/Azure/azure-sdk-for-java/pull/50084).
@@ -19,6 +16,7 @@
 * Fixed hedged requests losing request-scoped routing, timeout, authorization, throughput-control, and metadata state when cloning the original request. - See [PR 50069](https://github.com/Azure/azure-sdk-for-java/pull/50069).
 
 #### Other Changes
+* Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
 * Added per-region Per-Partition Circuit Breaker health and last failback outcome snapshots to `CosmosDiagnostics`, including structured failure reasons, and WARN logging for failback failures. - See [PR 50158](https://github.com/Azure/azure-sdk-for-java/pull/50158).
 * Reduced memory footprint of deserialized `PartitionKeyRange` instances by stripping unused fields in the `PartitionKeyRange(ObjectNode)` constructor - See PR [49513](https://github.com/Azure/azure-sdk-for-java/pull/49513).
 * Added bounded retries for transient "collection routing map / partition key range metadata not available" responses (HTTP 404 with sub-status `0`, `1003`, or `1013`) that can briefly occur right after a container is (re)created, improving the robustness of data-plane operations against the post-creation metadata-propagation race. As part of this change, when the routing map remains unavailable after retries an operation now fails with a `CosmosException` (HTTP 404, sub-status `1024` / `INCORRECT_CONTAINER_RID`) instead of an internal `IllegalStateException`. - See [PR 49639](https://github.com/Azure/azure-sdk-for-java/pull/49639).
