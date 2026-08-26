@@ -8,9 +8,13 @@ import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -32,14 +36,12 @@ import java.util.UUID;
  * <ul>
  *     <li>SEARCH_ENDPOINT - the endpoint of your Azure AI Search service</li>
  *     <li>SEARCH_API_KEY - the admin key of your Azure AI Search service</li>
- *     <li>SEARCH_INDEX_NAME - the name of an existing search index</li>
  * </ul>
  */
 public class KnowledgeBaseCrudExample {
 
     private static final String ENDPOINT = System.getenv("SEARCH_ENDPOINT");
     private static final String API_KEY = System.getenv("SEARCH_API_KEY");
-    private static final String INDEX_NAME = System.getenv("SEARCH_INDEX_NAME");
 
     public static void main(String[] args) {
         SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
@@ -48,13 +50,22 @@ public class KnowledgeBaseCrudExample {
             .buildClient();
 
         String resourceSuffix = UUID.randomUUID().toString().replace("-", "");
+        String indexName = "sample-kb-index-" + resourceSuffix;
         String knowledgeBaseName = "sample-knowledge-base-" + resourceSuffix;
         String knowledgeSourceName = "sample-knowledge-source-" + resourceSuffix;
+        boolean indexCreated = false;
+        boolean knowledgeSourceCreated = false;
+        boolean knowledgeBaseCreated = false;
 
         try {
+            searchIndexClient.createIndex(new SearchIndex(indexName,
+                Collections.singletonList(new SearchField("id", SearchFieldDataType.STRING).setKey(true))));
+            indexCreated = true;
+
             SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(knowledgeSourceName,
-                new SearchIndexKnowledgeSourceParameters(INDEX_NAME));
+                new SearchIndexKnowledgeSourceParameters(indexName));
             searchIndexClient.createKnowledgeSource(knowledgeSource);
+            knowledgeSourceCreated = true;
 
             Map<String, String> initialTags = new LinkedHashMap<>();
             initialTags.put("environment", "sample");
@@ -66,8 +77,12 @@ public class KnowledgeBaseCrudExample {
                     .setTags(initialTags);
 
             KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
+            knowledgeBaseCreated = true;
             System.out.println("Created knowledge base: " + created.getName());
             verifyTags(initialTags, created.getTags(), "create");
+            if (!knowledgeBaseName.equals(created.getName())) {
+                throw new IllegalStateException("The created knowledge base name didn't match the request.");
+            }
 
             // Get a knowledge base by name
             KnowledgeBase retrieved = searchIndexClient.getKnowledgeBase(knowledgeBaseName);
@@ -75,11 +90,17 @@ public class KnowledgeBaseCrudExample {
             System.out.println("ETag: " + retrieved.getETag());
             System.out.println("Knowledge sources: " + retrieved.getKnowledgeSources().size());
             verifyTags(initialTags, retrieved.getTags(), "get");
+            if (retrieved.getETag() == null || retrieved.getKnowledgeSources().size() != 1) {
+                throw new IllegalStateException("The retrieved knowledge base was missing its ETag or source.");
+            }
 
             // List all knowledge bases
-            System.out.println("\nAll knowledge bases:");
-            searchIndexClient.listKnowledgeBases()
-                .forEach(kb -> System.out.println("  - " + kb.getName()));
+            boolean listed = searchIndexClient.listKnowledgeBases()
+                .stream()
+                .anyMatch(kb -> knowledgeBaseName.equals(kb.getName()));
+            if (!listed) {
+                throw new IllegalStateException("The created knowledge base wasn't returned by listKnowledgeBases.");
+            }
 
             // Update a knowledge base
             Map<String, String> updatedTags = new LinkedHashMap<>(initialTags);
@@ -90,9 +111,19 @@ public class KnowledgeBaseCrudExample {
             System.out.println("\nUpdated knowledge base: " + updated.getName());
             System.out.println("Description: " + updated.getDescription());
             verifyTags(updatedTags, updated.getTags(), "update");
+            if (!retrieved.getDescription().equals(updated.getDescription())) {
+                throw new IllegalStateException("The updated description wasn't persisted.");
+            }
         } finally {
-            searchIndexClient.deleteKnowledgeBase(knowledgeBaseName);
-            searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
+            if (knowledgeBaseCreated) {
+                searchIndexClient.deleteKnowledgeBase(knowledgeBaseName);
+            }
+            if (knowledgeSourceCreated) {
+                searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
+            }
+            if (indexCreated) {
+                searchIndexClient.deleteIndex(indexName);
+            }
             System.out.println("\nDeleted sample knowledge base and knowledge source.");
         }
     }

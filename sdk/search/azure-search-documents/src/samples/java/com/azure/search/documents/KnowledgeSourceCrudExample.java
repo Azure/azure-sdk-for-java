@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.CreatedResources;
 import com.azure.search.documents.indexes.models.KnowledgeSourceContentExtractionMode;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceFieldValueBoost;
@@ -29,6 +30,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeSourceIngestion
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceNetworkAccessMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -36,12 +38,11 @@ import java.util.UUID;
 /**
  * Demonstrates preview Knowledge Source configuration and generated-resource inspection.
  *
- * <p>The existing index must contain a filterable {@code Category} field. The supported-language Blob folder should
- * contain English content; the fallback folder should contain content in a language without a dedicated Microsoft
- * analyzer.</p>
+ * <p>The supported-language Blob folder should contain English content; the fallback folder should contain content in
+ * a language without a dedicated Microsoft analyzer.</p>
  *
- * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_INDEX_NAME},
- * {@code SEARCH_STORAGE_RESOURCE_ID}, {@code SEARCH_STORAGE_CONTAINER_NAME},
+ * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_STORAGE_RESOURCE_ID},
+ * {@code SEARCH_STORAGE_CONTAINER_NAME},
  * {@code SEARCH_SUPPORTED_LANGUAGE_FOLDER_PATH}, {@code SEARCH_UNSUPPORTED_LANGUAGE_FOLDER_PATH},
  * {@code SEARCH_AI_SERVICES_ENDPOINT}, {@code SEARCH_AI_SERVICES_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
  * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_EMBEDDING_DEPLOYMENT_NAME}, and
@@ -57,14 +58,20 @@ public class KnowledgeSourceCrudExample {
             = new SearchIndexerClientBuilder().credential(credential).endpoint(endpoint).buildClient();
 
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        String indexName = "query-hints-index-" + suffix;
         String searchIndexSourceName = "query-hints-" + suffix;
         String privateBlobSourceName = "private-blob-" + suffix;
         String fallbackBlobSourceName = "fallback-blob-" + suffix;
         List<String> createdSources = new ArrayList<>();
+        boolean indexCreated = false;
 
         try {
-            SearchIndexKnowledgeSource queryHintSource = createQueryHintSource(searchIndexSourceName,
-                System.getenv("SEARCH_INDEX_NAME"));
+            searchIndexClient.createIndex(new SearchIndex(indexName,
+                Arrays.asList(new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+                    new SearchField("Category", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true))));
+            indexCreated = true;
+
+            SearchIndexKnowledgeSource queryHintSource = createQueryHintSource(searchIndexSourceName, indexName);
             SearchIndexKnowledgeSource createdQueryHintSource = (SearchIndexKnowledgeSource) searchIndexClient
                 .createKnowledgeSource(queryHintSource);
             createdSources.add(searchIndexSourceName);
@@ -95,6 +102,9 @@ public class KnowledgeSourceCrudExample {
         } finally {
             Collections.reverse(createdSources);
             createdSources.forEach(searchIndexClient::deleteKnowledgeSource);
+            if (indexCreated) {
+                searchIndexClient.deleteIndex(indexName);
+            }
         }
     }
 

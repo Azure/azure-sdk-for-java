@@ -34,6 +34,8 @@ public class KnowledgeServiceStatsPreviewExample {
         // New preview counters for Knowledge Retrieval objects
         ResourceCounter kbCounter = counters.getKnowledgeBaseCounter();
         ResourceCounter ksCounter = counters.getKnowledgeSourceCounter();
+        verifyCounter("knowledge base", kbCounter);
+        verifyCounter("knowledge source", ksCounter);
 
         System.out.println("Knowledge Bases - usage: " + kbCounter.getUsage() + ", quota: " + kbCounter.getQuota());
         System.out.println("Knowledge Sources - usage: " + ksCounter.getUsage() + ", quota: " + ksCounter.getQuota());
@@ -42,7 +44,17 @@ public class KnowledgeServiceStatsPreviewExample {
         if (maxVectorIndexSize == null) {
             System.out.println("The service didn't report a per-index vector-size limit.");
         } else {
+            if (maxVectorIndexSize <= 0) {
+                throw new IllegalStateException("The per-index vector-size limit must be positive.");
+            }
             System.out.println("Maximum vector index size per index: " + maxVectorIndexSize + " bytes");
+        }
+    }
+
+    private static void verifyCounter(String resourceType, ResourceCounter counter) {
+        if (counter == null || counter.getUsage() < 0
+            || (counter.getQuota() != null && counter.getQuota() < counter.getUsage())) {
+            throw new IllegalStateException("The " + resourceType + " counter was missing or invalid.");
         }
     }
 }

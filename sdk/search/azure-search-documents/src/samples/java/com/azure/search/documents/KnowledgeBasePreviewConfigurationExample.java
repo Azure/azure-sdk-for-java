@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.AzureOpenAIModelName;
@@ -12,8 +13,15 @@ import com.azure.search.documents.indexes.models.KnowledgeBase;
 import com.azure.search.documents.indexes.models.KnowledgeBaseAzureOpenAIModel;
 import com.azure.search.documents.indexes.models.KnowledgeBaseRetrieveDefaults;
 import com.azure.search.documents.indexes.models.KnowledgeSourceReference;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSourceParameters;
+import com.azure.search.documents.indexes.models.SemanticConfiguration;
+import com.azure.search.documents.indexes.models.SemanticField;
+import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
+import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClient;
 import com.azure.search.documents.knowledgebases.KnowledgeBaseRetrievalClientBuilder;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAgenticReasoningActivityRecord;
@@ -24,18 +32,26 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalLowRea
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalOutputMode;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalReasoningEffortKind;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemanticIntent;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexDocumentsResult;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * Demonstrates knowledge-base and request-level retrieval configuration precedence.
  *
- * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_INDEX_NAME},
- * {@code SEARCH_SEMANTIC_CONFIGURATION_NAME}, {@code SEARCH_OPENAI_ENDPOINT},
- * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and
- * {@code SEARCH_OPENAI_MODEL_NAME}. The deployed model must support automatic reasoning.</p>
+ * <p>Set {@code SEARCH_ENDPOINT}, {@code SEARCH_API_KEY}, {@code SEARCH_OPENAI_ENDPOINT},
+ * {@code SEARCH_OPENAI_API_KEY}, {@code SEARCH_OPENAI_DEPLOYMENT_NAME}, and {@code SEARCH_OPENAI_MODEL_NAME}. The
+ * deployed model must support automatic reasoning.</p>
  */
 public class KnowledgeBasePreviewConfigurationExample {
+    private static final String SEMANTIC_CONFIGURATION_NAME = "sample-semantic-config";
+
     public static void main(String[] args) {
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         AzureKeyCredential credential = new AzureKeyCredential(System.getenv("SEARCH_API_KEY"));
@@ -43,15 +59,21 @@ public class KnowledgeBasePreviewConfigurationExample {
             = new SearchIndexClientBuilder().credential(credential).endpoint(endpoint).buildClient();
 
         String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+        String indexName = "kb-config-index-" + suffix;
         String knowledgeSourceName = "kb-config-source-" + suffix;
         String knowledgeBaseName = "kb-config-" + suffix;
+        boolean indexCreated = false;
         boolean knowledgeSourceCreated = false;
         boolean knowledgeBaseCreated = false;
 
         try {
+            searchIndexClient.createIndex(createSampleIndex(indexName));
+            indexCreated = true;
+            uploadSampleDocument(searchIndexClient.getSearchClient(indexName));
+
             SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(knowledgeSourceName,
-                new SearchIndexKnowledgeSourceParameters(System.getenv("SEARCH_INDEX_NAME"))
-                    .setSemanticConfigurationName(System.getenv("SEARCH_SEMANTIC_CONFIGURATION_NAME")));
+                new SearchIndexKnowledgeSourceParameters(indexName)
+                    .setSemanticConfigurationName(SEMANTIC_CONFIGURATION_NAME));
             searchIndexClient.createKnowledgeSource(knowledgeSource);
             knowledgeSourceCreated = true;
 
@@ -121,7 +143,49 @@ public class KnowledgeBasePreviewConfigurationExample {
             if (knowledgeSourceCreated) {
                 searchIndexClient.deleteKnowledgeSource(knowledgeSourceName);
             }
+            if (indexCreated) {
+                searchIndexClient.deleteIndex(indexName);
+            }
         }
+    }
+
+    private static SearchIndex createSampleIndex(String indexName) {
+        return new SearchIndex(indexName,
+            Arrays.asList(new SearchField("id", SearchFieldDataType.STRING).setKey(true),
+                new SearchField("title", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("content", SearchFieldDataType.STRING).setSearchable(true),
+                new SearchField("category", SearchFieldDataType.STRING).setSearchable(true).setFilterable(true)))
+                    .setSemanticSearch(new SemanticSearch().setConfigurations(new SemanticConfiguration(
+                        SEMANTIC_CONFIGURATION_NAME,
+                        new SemanticPrioritizedFields().setTitleField(new SemanticField("title"))
+                            .setContentFields(new SemanticField("content"))
+                            .setKeywordsFields(new SemanticField("category")))));
+    }
+
+    private static void uploadSampleDocument(SearchClient searchClient) {
+        Map<String, Object> document = new LinkedHashMap<>();
+        document.put("id", "1");
+        document.put("title", "August product update");
+        document.put("content", "The latest product update adds knowledge base reasoning improvements.");
+        document.put("category", "Product update");
+        IndexDocumentsResult result = searchClient.indexDocuments(new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(document)));
+        if (result.getResults().size() != 1 || !result.getResults().get(0).isSucceeded()) {
+            throw new IllegalStateException("The sample document wasn't indexed successfully.");
+        }
+
+        for (int attempt = 0; attempt < 30; attempt++) {
+            if (searchClient.getDocumentCount() > 0) {
+                return;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Interrupted while waiting for the sample document.", ex);
+            }
+        }
+        throw new IllegalStateException("The sample document wasn't available for retrieval.");
     }
 
     private static KnowledgeBaseRetrievalOptions createRequest() {

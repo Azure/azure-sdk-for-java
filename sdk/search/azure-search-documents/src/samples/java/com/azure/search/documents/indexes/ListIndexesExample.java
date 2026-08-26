@@ -38,9 +38,13 @@ public class ListIndexesExample {
 
         String prefix = "sample-paged-index-" + UUID.randomUUID().toString().replace("-", "");
         List<String> expectedNames = Arrays.asList(prefix + "-one", prefix + "-two");
+        List<String> createdNames = new ArrayList<>();
 
         try {
-            expectedNames.forEach(name -> indexClient.createIndex(createIndex(name)));
+            expectedNames.forEach(name -> {
+                indexClient.createIndex(createIndex(name));
+                createdNames.add(name);
+            });
 
             RequestOptions requestOptions = new RequestOptions().addQueryParam("search", prefix)
                 .addQueryParam("pageSize", "1")
@@ -54,7 +58,7 @@ public class ListIndexesExample {
                 = indexAsyncClient.listIndexes(requestOptions).byPage().collectList().block();
             verifyPages("reactive", expectedNames, asyncPages);
         } finally {
-            expectedNames.forEach(indexClient::deleteIndex);
+            createdNames.forEach(indexClient::deleteIndex);
         }
     }
 

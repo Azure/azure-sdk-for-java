@@ -60,8 +60,11 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedShar
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseIndexedSqlReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelAnswerSynthesisActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseModelQueryPlanningActivityRecord;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseResponseCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStartedStreamEvent;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexActivityRecord;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseSearchIndexReference;
 import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalAutoReasoningEffort;
@@ -74,6 +77,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeSourceParams;
 import com.azure.search.documents.knowledgebases.models.PurviewSensitivityLabelInfo;
 import com.azure.search.documents.knowledgebases.models.SearchIndexKnowledgeSourceParams;
 import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.ServerSentEvent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -89,6 +93,7 @@ import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -1574,6 +1579,54 @@ public class KnowledgeBaseTests extends SearchTestBase {
             assertNotNull(response);
             assertNotNull(response.getResponse());
         }).verifyComplete();
+    }
+
+    @Test
+    public void basicRetrievalStreamSync() {
+        SearchIndexClient indexClient = getSearchIndexClientBuilder(true).buildClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+        indexClient.createKnowledgeBase(knowledgeBase);
+        KnowledgeBaseRetrievalClient retrievalClient
+            = getKnowledgeBaseRetrievalClientBuilder(true).knowledgeBaseName(knowledgeBase.getName()).buildClient();
+        KnowledgeBaseRetrievalOptions request = new KnowledgeBaseRetrievalOptions()
+            .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+            .setIncludeActivity(true);
+        List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events = new ArrayList<>();
+
+        retrievalClient.retrieveStream(request, events::add);
+
+        assertSuccessfulRetrievalStream(events);
+    }
+
+    @Test
+    public void basicRetrievalStreamAsync() {
+        SearchIndexAsyncClient indexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
+        KnowledgeBase knowledgeBase
+            = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
+
+        StepVerifier.create(indexClient.createKnowledgeBase(knowledgeBase)
+            .flatMapMany(created -> getKnowledgeBaseRetrievalClientBuilder(false).knowledgeBaseName(created.getName())
+                .buildAsyncClient()
+                .retrieveStream(new KnowledgeBaseRetrievalOptions()
+                    .setIntents(new KnowledgeRetrievalSemanticIntent("What are the pet policies at the hotel?"))
+                    .setIncludeActivity(true)))
+            .collectList()).assertNext(KnowledgeBaseTests::assertSuccessfulRetrievalStream).verifyComplete();
+    }
+
+    private static void
+        assertSuccessfulRetrievalStream(List<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> events) {
+        assertFalse(events.isEmpty());
+        assertTrue(
+            events.stream().anyMatch(event -> event.getData() instanceof KnowledgeBaseRetrievalStartedStreamEvent));
+        KnowledgeBaseResponseCompletedStreamEvent completed = events.stream()
+            .map(ServerSentEvent::getData)
+            .filter(KnowledgeBaseResponseCompletedStreamEvent.class::isInstance)
+            .map(KnowledgeBaseResponseCompletedStreamEvent.class::cast)
+            .findFirst()
+            .orElseThrow(() -> new AssertionError("Expected a response.completed event."));
+        assertTrue(completed.isTerminal());
+        assertNotNull(completed.getValue().getResponse());
     }
 
     @Test
