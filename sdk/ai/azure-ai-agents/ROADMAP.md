@@ -14,9 +14,8 @@ requirements and prototype reference, but its implementation should not be merge
 directly.
 
 See [TRACING_NOTES.md](TRACING_NOTES.md) for detailed design investigations and
-open technical questions discovered while building the proof of concept. See
-[ADR.md](ADR.md) for the unresolved decisions, required participants, and final
-resolutions.
+[GAPS.md](GAPS.md) for the concrete differences from the Python baseline and
+remaining release-validation work.
 
 ## Decision Provenance
 
@@ -34,12 +33,11 @@ Use public, durable sources for normative requirements and final decisions:
   define client configuration requirements and require Architecture Board
   approval for new environment variables.
 
-Team discussions also identified requirements around SDK/service span naming,
-trace-context propagation privacy, raw-stream compatibility, end-to-end
-validation, and release ownership. Before Phase 0 exits, resolve the
-corresponding records in [ADR.md](ADR.md) and link each resolution to PR #49706
-or a public issue. Do not rely on chat or meeting history as the only
-specification for shipped behavior.
+Team discussions also identified requirements around trace-context propagation
+privacy, raw-stream compatibility, end-to-end validation, and release
+ownership. Track concrete remaining work in [GAPS.md](GAPS.md) and record final
+implementation decisions in PR #49706 or a linked public issue. Do not rely on
+chat or meeting history as the only specification for shipped behavior.
 
 The August 25, 2026 Java tracing design discussion established the current
 working approach: use the current Python implementation as the behavioral
@@ -116,7 +114,7 @@ feature gate.
 | --- | --- | --- |
 | Java implementation | Author and reviewers of [PR #49706](https://github.com/Azure/azure-sdk-for-java/pull/49706) | Confirm the Java SDK owner responsible for closing each phase. |
 | Prototype and E2E reference | Author of [PR #49434](https://github.com/Azure/azure-sdk-for-java/pull/49434) | Confirm the location and supported use of the E2E harness and reference output. |
-| Telemetry contract | Foundry telemetry owners and cross-language representatives | Name the approver for the contract matrix and Foundry extensions. |
+| Telemetry parity | Foundry telemetry owners and cross-language representatives | Confirm the Python baseline and approve intentional Java differences. |
 | Integration and release | Foundry Java integration/release owner | Name the final reviewer and release decision maker. |
 
 An end-of-month release was discussed as a target, not established as a firm
@@ -124,59 +122,27 @@ commitment. Record the actual milestone and release owner after Phase 0 contract
 approval. A separate hotfix is not currently required for the raw-stream
 scenario; revisit that decision only if consumer impact changes.
 
-## Phase 0: Freeze the Telemetry Contract
+## Phase 0: Confirm Python Parity
 
 **Owners:** Foundry telemetry owners, Java SDK owner, cross-language SDK
 representatives.
 
-Before further implementation, approve and record a contract matrix containing:
+Use the current Python implementation as the default behavior and resolve the
+specific differences listed in [GAPS.md](GAPS.md). The immediate parity work is:
 
-- Source link, rationale, approver, and approval date for every decision.
-- Semantic-convention version or exact source commit.
-- OpenTelemetry schema URL.
-- Span names, kinds, and operation names.
-- Required, conditional, recommended, and opt-in attributes.
-- Attribute value types.
-- Foundry-specific attributes and events.
-- Provider name and resource-provider namespace.
-- Metrics, units, attributes, and expected boundaries.
-- Content-recording behavior and configuration variable.
-- Experimental feature gate.
-- Public API preview treatment, including the disposition of `@Beta`.
-- Trace-context propagation gate, propagated headers, baggage treatment, and
-  privacy behavior.
-- Error and cancellation behavior.
-- Operation coverage for typed, raw, and streaming APIs.
-- Consumer compatibility requirements for raw-response streaming.
+- Align the semantic-convention schema and affected attributes.
+- Confirm whether Java honors Python's internal experimental gate.
+- Select the supported content-recording configuration key.
+- Match provider and legacy-attribute compatibility behavior.
+- Confirm whether Python-equivalent propagation controls are required while
+  keeping baggage disabled by default.
+- Decide whether current Java consumers require raw-response and raw-stream
+  coverage in the first release.
 
-Use [ADR.md](ADR.md) to record the decision, participants, rationale, approval,
-and public evidence for each unresolved area. The contract matrix may be stored
-separately, but its approved version must be linked from ADR 1 and PR #49706.
-
-The matrix must distinguish official OpenTelemetry fields from Foundry
-extensions. In particular, resolve:
-
-- The prior `request_*` SDK span-name proposal, such as
-  `request_invoke_agent`, versus using an `invoke_agent` SDK parent span over
-  service `chat`, `execute_tool`, and related spans.
-- `gen_ai.system` versus `gen_ai.provider.name`.
-- `microsoft.foundry` as the provider value.
-- `create_conversation` as a custom operation.
-- `gen_ai.agent.type` and hosted-agent attributes.
-- `gen_ai.workflow.action` versus `gen_ai.conversation.item`.
-- `gen_ai.request.max_input_tokens` and
-  `gen_ai.request.max_output_tokens` versus `gen_ai.request.max_tokens`.
-- `gen_ai.request.reasoning.effort` versus
-  `gen_ai.request.reasoning.level`.
-- Whether content-disabled mode omits message attributes or emits structural
-  redactions.
-- `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` versus
-  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED`.
-- Whether service trace-context propagation remains separately opt-in through
-  `AZURE_TRACING_GEN_AI_ENABLE_TRACE_CONTEXT_PROPAGATION`, and whether baggage
-  is excluded because it may contain sensitive data.
-- Per-client Java configuration versus the global experimental configuration
-  used by PR #49434.
+Keep Java-specific plumbing idiomatic: per-client `ClientOptions`, Azure Core
+tracing and metrics abstractions, transparent instrumentation of normal methods,
+and no process-global mutable API. Do not copy deprecated workflow agents or
+legacy Projects operations from Python.
 
 The current Python implementation is the primary behavioral reference because
 it was implemented first and is the implementation other languages generally
@@ -191,18 +157,12 @@ implementations are useful corroborating inputs but are not mutually consistent:
 
 ### Exit criteria
 
-- The contract matrix is approved by the relevant Foundry and SDK owners.
-- ADRs 1 through 10 are resolved, and ADRs 11 and 12 have named owners and an
-  approved execution plan.
-- The approved matrix or linked public decision record is referenced from
-  PR #49706.
-- Every emitted Java field has a defined name, type, requirement level, and
-  source.
-- All custom Foundry fields are explicitly identified.
-- SDK/service span naming, propagation privacy, experimental gating, and
-  `@Beta` treatment have explicit decisions.
-- Each cross-language input has a Java mapping or a documented reason for
-  intentional divergence.
+- Every P0 item in [GAPS.md](GAPS.md) is resolved.
+- Required Python fields and operation paths have a Java mapping or a documented
+  reason for intentional divergence.
+- Propagation privacy, experimental gating, and content opt-in behavior are
+  approved.
+- Final decisions are recorded in PR #49706 or a linked public issue.
 
 ## Phase 1: Complete Operation Coverage
 
@@ -218,7 +178,7 @@ Implementation status as of 2026-08-26:
   agents are retiring; unsupported definitions receive only generic agent
   identity attributes.
 - Raw-response methods, conversation-item listing, and broader CRUD coverage
-  remain blocked on ADR 8 and ADR 9 rather than being inferred from legacy
+  remain tracked Python-parity gaps rather than being inferred from legacy
   Python or Projects APIs.
 
 ### Agent creation
@@ -342,8 +302,8 @@ Verification status as of 2026-08-26:
   `createAgentVersion` overloads and conversation wrappers.
 - The generator produced unrelated broad specification drift, which is not part
   of this tracing change and was removed after verifying preservation.
-- ADR 11 remains open because one successful fallback verification does not
-  replace an ownership decision about AST-based customization.
+- Long-term ownership still needs to confirm whether the validated fallback is
+  sufficient or AST-based customization is required.
 
 Preferred approach:
 
