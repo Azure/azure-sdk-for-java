@@ -14,10 +14,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 
 /**
- * The BlobLayout model.
+ * The BlobLayoutInternal model.
  */
 @Fluent
-public final class BlobLayout implements XmlSerializable<BlobLayout> {
+public final class BlobLayoutInternal implements XmlSerializable<BlobLayoutInternal> {
     /*
      * The Ranges property.
      */
@@ -50,15 +50,15 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     private Integer maxResults;
 
     /**
-     * Creates an instance of BlobLayout class.
+     * Creates an instance of BlobLayoutInternal class.
      */
     @Generated
-    public BlobLayout() {
+    public BlobLayoutInternal() {
     }
 
     /**
      * Get the ranges property: The Ranges property.
-     *
+     * 
      * @return the ranges value.
      */
     @Generated
@@ -68,19 +68,19 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the ranges property: The Ranges property.
-     *
+     * 
      * @param ranges the ranges value to set.
-     * @return the BlobLayout object itself.
+     * @return the BlobLayoutInternal object itself.
      */
     @Generated
-    public BlobLayout setRanges(BlobLayoutRanges ranges) {
+    public BlobLayoutInternal setRanges(BlobLayoutRanges ranges) {
         this.ranges = ranges;
         return this;
     }
 
     /**
      * Get the endpoints property: The Endpoints property.
-     *
+     * 
      * @return the endpoints value.
      */
     @Generated
@@ -90,19 +90,19 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the endpoints property: The Endpoints property.
-     *
+     * 
      * @param endpoints the endpoints value to set.
-     * @return the BlobLayout object itself.
+     * @return the BlobLayoutInternal object itself.
      */
     @Generated
-    public BlobLayout setEndpoints(BlobLayoutEndpoints endpoints) {
+    public BlobLayoutInternal setEndpoints(BlobLayoutEndpoints endpoints) {
         this.endpoints = endpoints;
         return this;
     }
 
     /**
      * Get the marker property: The continuation marker used for this request.
-     *
+     * 
      * @return the marker value.
      */
     @Generated
@@ -112,12 +112,12 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the marker property: The continuation marker used for this request.
-     *
+     * 
      * @param marker the marker value to set.
-     * @return the BlobLayout object itself.
+     * @return the BlobLayoutInternal object itself.
      */
     @Generated
-    public BlobLayout setMarker(String marker) {
+    public BlobLayoutInternal setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -125,7 +125,7 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     /**
      * Get the nextMarker property: If the number of ranges exceeds MaxResults, a NextMarker is returned for use in
      * subsequent requests to continue listing.
-     *
+     * 
      * @return the nextMarker value.
      */
     @Generated
@@ -136,19 +136,19 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     /**
      * Set the nextMarker property: If the number of ranges exceeds MaxResults, a NextMarker is returned for use in
      * subsequent requests to continue listing.
-     *
+     * 
      * @param nextMarker the nextMarker value to set.
-     * @return the BlobLayout object itself.
+     * @return the BlobLayoutInternal object itself.
      */
     @Generated
-    public BlobLayout setNextMarker(String nextMarker) {
+    public BlobLayoutInternal setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }
 
     /**
      * Get the maxResults property: The maximum number of ranges to return per request.
-     *
+     * 
      * @return the maxResults value.
      */
     @Generated
@@ -158,12 +158,12 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
 
     /**
      * Set the maxResults property: The maximum number of ranges to return per request.
-     *
+     * 
      * @param maxResults the maxResults value to set.
-     * @return the BlobLayout object itself.
+     * @return the BlobLayoutInternal object itself.
      */
     @Generated
-    public BlobLayout setMaxResults(Integer maxResults) {
+    public BlobLayoutInternal setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -188,34 +188,34 @@ public final class BlobLayout implements XmlSerializable<BlobLayout> {
     }
 
     /**
-     * Reads an instance of BlobLayout from the XmlReader.
-     *
+     * Reads an instance of BlobLayoutInternal from the XmlReader.
+     * 
      * @param xmlReader The XmlReader being read.
-     * @return An instance of BlobLayout if the XmlReader was pointing to an instance of it, or null if it was pointing
-     * to XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobLayout.
+     * @return An instance of BlobLayoutInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the BlobLayoutInternal.
      */
     @Generated
-    public static BlobLayout fromXml(XmlReader xmlReader) throws XMLStreamException {
+    public static BlobLayoutInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
     /**
-     * Reads an instance of BlobLayout from the XmlReader.
-     *
+     * Reads an instance of BlobLayoutInternal from the XmlReader.
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
-     * @return An instance of BlobLayout if the XmlReader was pointing to an instance of it, or null if it was pointing
-     * to XML null.
-     * @throws XMLStreamException If an error occurs while reading the BlobLayout.
+     * @return An instance of BlobLayoutInternal if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the BlobLayoutInternal.
      */
     @Generated
-    public static BlobLayout fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+    public static BlobLayoutInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
             = rootElementName == null || rootElementName.isEmpty() ? "BlobLayout" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
-            BlobLayout deserializedBlobLayout = new BlobLayout();
+            BlobLayoutInternal deserializedBlobLayout = new BlobLayoutInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

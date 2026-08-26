@@ -29,7 +29,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.models.BlobDeleteType;
 import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
-import com.azure.storage.blob.implementation.models.BlobLayout;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLHeaders;
@@ -336,7 +336,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayout(@HostParam("url") String url,
+        Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> getLayout(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
             @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
@@ -355,7 +355,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        Mono<Response<BlobLayout>> getLayoutNoCustomHeaders(@HostParam("url") String url,
+        Mono<Response<BlobLayoutInternal>> getLayoutNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
             @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
@@ -374,7 +374,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        ResponseBase<BlobsGetLayoutHeaders, BlobLayout> getLayoutSync(@HostParam("url") String url,
+        ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> getLayoutSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
             @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
@@ -393,7 +393,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
-        Response<BlobLayout> getLayoutNoCustomHeadersSync(@HostParam("url") String url,
+        Response<BlobLayoutInternal> getLayoutNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @PathParam("blob") String blob,
             @QueryParam("comp") String comp, @QueryParam("snapshot") String snapshot,
             @QueryParam("versionid") String versionId, @QueryParam("marker") String marker,
@@ -3369,10 +3369,10 @@ public final class BlobsImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutWithResponseAsync(String containerName,
-        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
-        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
-        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
+    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> getLayoutWithResponseAsync(
+        String containerName, String blob, String snapshot, String versionId, String marker, Integer maxresults,
+        Integer timeout, String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> getLayoutWithResponseAsync(containerName, blob, snapshot, versionId, marker,
                 maxresults, timeout, range, leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
@@ -3424,10 +3424,11 @@ public final class BlobsImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getLayoutWithResponseAsync(String containerName,
-        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
-        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
-        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+    public Mono<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> getLayoutWithResponseAsync(
+        String containerName, String blob, String snapshot, String versionId, String marker, Integer maxresults,
+        Integer timeout, String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince,
+        OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo,
+        Context context) {
         final String comp = "layout";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3500,7 +3501,7 @@ public final class BlobsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobLayout> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
+    public Mono<BlobLayoutInternal> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
         String marker, Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String requestId, CpkInfo cpkInfo) {
@@ -3554,7 +3555,7 @@ public final class BlobsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobLayout> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
+    public Mono<BlobLayoutInternal> getLayoutAsync(String containerName, String blob, String snapshot, String versionId,
         String marker, Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String requestId, CpkInfo cpkInfo, Context context) {
@@ -3607,10 +3608,10 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobLayout>> getLayoutNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
-        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
+    public Mono<Response<BlobLayoutInternal>> getLayoutNoCustomHeadersWithResponseAsync(String containerName,
+        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
+        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
+        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo) {
         return FluxUtil
             .withContext(context -> getLayoutNoCustomHeadersWithResponseAsync(containerName, blob, snapshot, versionId,
                 marker, maxresults, timeout, range, leaseId, ifTags, ifModifiedSince, ifUnmodifiedSince, ifMatch,
@@ -3662,10 +3663,10 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobLayout>> getLayoutNoCustomHeadersWithResponseAsync(String containerName, String blob,
-        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
-        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+    public Mono<Response<BlobLayoutInternal>> getLayoutNoCustomHeadersWithResponseAsync(String containerName,
+        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
+        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
+        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
         final String comp = "layout";
         final String accept = "application/xml";
         String encryptionKeyInternal = null;
@@ -3739,10 +3740,10 @@ public final class BlobsImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<BlobsGetLayoutHeaders, BlobLayout> getLayoutWithResponse(String containerName, String blob,
-        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
-        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
-        String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
+    public ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> getLayoutWithResponse(String containerName,
+        String blob, String snapshot, String versionId, String marker, Integer maxresults, Integer timeout,
+        String range, String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
+        String ifMatch, String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
         try {
             final String comp = "layout";
             final String accept = "application/xml";
@@ -3817,8 +3818,8 @@ public final class BlobsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobLayout getLayout(String containerName, String blob, String snapshot, String versionId, String marker,
-        Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
+    public BlobLayoutInternal getLayout(String containerName, String blob, String snapshot, String versionId,
+        String marker, Integer maxresults, Integer timeout, String range, String leaseId, String ifTags,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String requestId, CpkInfo cpkInfo) {
         try {
@@ -3874,9 +3875,9 @@ public final class BlobsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobLayout> getLayoutNoCustomHeadersWithResponse(String containerName, String blob, String snapshot,
-        String versionId, String marker, Integer maxresults, Integer timeout, String range, String leaseId,
-        String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
+    public Response<BlobLayoutInternal> getLayoutNoCustomHeadersWithResponse(String containerName, String blob,
+        String snapshot, String versionId, String marker, Integer maxresults, Integer timeout, String range,
+        String leaseId, String ifTags, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String requestId, CpkInfo cpkInfo, Context context) {
         try {
             final String comp = "layout";
