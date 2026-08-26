@@ -22,7 +22,6 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobLayoutInfo;
-import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
@@ -47,6 +46,7 @@ import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
@@ -110,8 +110,9 @@ import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileReadOptions;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -318,6 +319,17 @@ class Transforms {
             .setMaxResultsPerPage(options.getMaxResultsPerPage());
     }
 
+    static BlobDownloadStreamOptions toBlobDownloadStreamOptions(FileReadOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlobDownloadStreamOptions().setRange(toBlobRange(options.getRange()))
+            .setDownloadRetryOptions(toBlobDownloadRetryOptions(options.getDownloadRetryOptions()))
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()))
+            .setRetrieveContentRangeMd5(options.isRetrieveContentRangeMd5())
+            .setDataLocalityEndpoint(options.getDataLocalityEndpoint());
+    }
+
     static com.azure.storage.blob.models.ConsistentReadControl toBlobConsistentReadControl(
         com.azure.storage.file.datalake.models.ConsistentReadControl datalakeConsistentReadControl) {
         if (datalakeConsistentReadControl == null) {
@@ -422,17 +434,6 @@ class Transforms {
                 : com.azure.storage.blob.models.ArchiveStatus.fromString(blobLayoutInfo.getArchiveStatus())),
             blobLayoutInfo.getEncryptionKeySha256(), blobLayoutInfo.getAccessTierChangeTime(),
             blobLayoutInfo.getMetadata(), blobLayoutInfo.getExpiresOn());
-    }
-
-    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayout blobLayout) {
-        if (blobLayout == null) {
-            return null;
-        }
-        List<DataLakeFileLayoutRange> ranges = blobLayout.getRanges() == null
-            ? new ArrayList<>()
-            : blobLayout.getRanges().stream().map(Transforms::toDataLakeFileLayoutRange).collect(Collectors.toList());
-        return new DataLakeFileLayoutInfo(ranges, null, null, null, 0, null, null, null, null, null, null, null, null,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
     private static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {

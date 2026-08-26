@@ -3,16 +3,63 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.options.BlobDownloadStreamOptions;
 import com.azure.storage.common.policy.DataLocalityPolicy;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DownloadRetryOptions;
+import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DataLakeDataLocalityOptionsTests {
+public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
+    private static final String ORIGINAL_DFS_ENDPOINT = "https://account.dfs.core.windows.net/filesystem/path";
+    private static final String ORIGINAL_BLOB_HOST = "account.blob.core.windows.net";
+    private static final String DATA_LOCALITY_HOST = "other-host.blob.core.windows.net";
+    private static final String DATA_LOCALITY_ENDPOINT = "https://" + DATA_LOCALITY_HOST;
+    private static final byte[] DOWNLOAD_BODY = "test".getBytes(StandardCharsets.UTF_8);
+
+    @Override
+    public void beforeTest() {
+        if (testContextManager.doNotRecordTest()) {
+            return;
+        }
+
+        super.beforeTest();
+    }
+
+    @Override
+    protected void afterTest() {
+        if (testContextManager.doNotRecordTest()) {
+            return;
+        }
+
+        super.afterTest();
+    }
+
+    @DoNotRecord
     @Test
     public void readToFileOptionsCarryDataLocalityEndpoint() {
         String endpoint = "https://layout.example.net:443";
@@ -25,6 +72,7 @@ public class DataLakeDataLocalityOptionsTests {
         assertEquals(endpoint, context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
     }
 
+    @DoNotRecord
     @Test
     public void inputStreamOptionsCarryDataLocalityEndpoint() {
         String endpoint = "https://layout.example.net:443";
@@ -35,5 +83,142 @@ public class DataLakeDataLocalityOptionsTests {
         Context context = Transforms.addDataLocalityEndpoint(Context.NONE, options.getDataLocalityEndpoint());
         assertTrue(context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
         assertEquals(endpoint, context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileReadOptionsRoundTrip() {
+        FileRange range = new FileRange(10, 20L);
+        DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("leaseId");
+        FileReadOptions options = new FileReadOptions().setRange(range)
+            .setDownloadRetryOptions(downloadRetryOptions)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(true)
+            .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT)
+            .setUserPrincipalName(true);
+
+        assertSame(range, options.getRange());
+        assertSame(downloadRetryOptions, options.getDownloadRetryOptions());
+        assertSame(requestConditions, options.getRequestConditions());
+        assertTrue(options.isRetrieveContentRangeMd5());
+        assertEquals(DATA_LOCALITY_ENDPOINT, options.getDataLocalityEndpoint());
+        assertEquals(Boolean.TRUE, options.isUserPrincipalName());
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileReadOptionsTransformToBlobDownloadStreamOptions() {
+        FileRange range = new FileRange(10, 20L);
+        DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
+        OffsetDateTime ifModifiedSince = OffsetDateTime.of(2026, 8, 25, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime ifUnmodifiedSince = OffsetDateTime.of(2026, 8, 26, 0, 0, 0, 0, ZoneOffset.UTC);
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("leaseId")
+            .setIfMatch("\"match\"")
+            .setIfNoneMatch("\"none\"")
+            .setIfModifiedSince(ifModifiedSince)
+            .setIfUnmodifiedSince(ifUnmodifiedSince);
+        FileReadOptions options = new FileReadOptions().setRange(range)
+            .setDownloadRetryOptions(downloadRetryOptions)
+            .setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(true)
+            .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT);
+
+        BlobDownloadStreamOptions blobOptions = Transforms.toBlobDownloadStreamOptions(options);
+
+        assertEquals(range.getOffset(), blobOptions.getRange().getOffset());
+        assertEquals(range.getCount(), blobOptions.getRange().getCount());
+        assertEquals(downloadRetryOptions.getMaxRetryRequests(),
+            blobOptions.getDownloadRetryOptions().getMaxRetryRequests());
+        assertEquals(requestConditions.getLeaseId(), blobOptions.getRequestConditions().getLeaseId());
+        assertEquals(requestConditions.getIfMatch(), blobOptions.getRequestConditions().getIfMatch());
+        assertEquals(requestConditions.getIfNoneMatch(), blobOptions.getRequestConditions().getIfNoneMatch());
+        assertEquals(requestConditions.getIfModifiedSince(), blobOptions.getRequestConditions().getIfModifiedSince());
+        assertEquals(requestConditions.getIfUnmodifiedSince(),
+            blobOptions.getRequestConditions().getIfUnmodifiedSince());
+        assertTrue(blobOptions.isRetrieveContentRangeMd5());
+        assertEquals(DATA_LOCALITY_ENDPOINT, blobOptions.getDataLocalityEndpoint());
+        assertNull(Transforms.toBlobDownloadStreamOptions(null));
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileReadWithResponseUsesDataLocalityEndpoint() {
+        ReadHttpClient httpClient = new ReadHttpClient();
+        DataLakeFileClient client = client(httpClient);
+
+        client.readWithResponse(new ByteArrayOutputStream(),
+            new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
+                .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT),
+            null, Context.NONE);
+        client.readWithResponse(new ByteArrayOutputStream(),
+            new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length)), null, Context.NONE);
+
+        CapturedRequest rewritten = httpClient.captured.get(0);
+        assertEquals(DATA_LOCALITY_HOST, rewritten.urlHost);
+        assertEquals(ORIGINAL_BLOB_HOST, rewritten.hostHeader);
+
+        CapturedRequest unmodified = httpClient.captured.get(1);
+        assertEquals(ORIGINAL_BLOB_HOST, unmodified.urlHost);
+        assertNull(unmodified.hostHeader);
+    }
+
+    @DoNotRecord
+    @Test
+    public void fileAsyncReadWithResponseUsesDataLocalityEndpoint() {
+        ReadHttpClient httpClient = new ReadHttpClient();
+        DataLakeFileAsyncClient client = asyncClient(httpClient);
+
+        client.readWithResponse(new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))
+            .setDataLocalityEndpoint(DATA_LOCALITY_ENDPOINT)).block();
+        client.readWithResponse(new FileReadOptions().setRange(new FileRange(0, (long) DOWNLOAD_BODY.length))).block();
+
+        CapturedRequest rewritten = httpClient.captured.get(0);
+        assertEquals(DATA_LOCALITY_HOST, rewritten.urlHost);
+        assertEquals(ORIGINAL_BLOB_HOST, rewritten.hostHeader);
+
+        CapturedRequest unmodified = httpClient.captured.get(1);
+        assertEquals(ORIGINAL_BLOB_HOST, unmodified.urlHost);
+        assertNull(unmodified.hostHeader);
+    }
+
+    private static DataLakeFileClient client(HttpClient httpClient) {
+        return new DataLakePathClientBuilder().endpoint(ORIGINAL_DFS_ENDPOINT)
+            .setAnonymousAccess()
+            .httpClient(httpClient)
+            .buildFileClient();
+    }
+
+    private static DataLakeFileAsyncClient asyncClient(HttpClient httpClient) {
+        return new DataLakePathClientBuilder().endpoint(ORIGINAL_DFS_ENDPOINT)
+            .setAnonymousAccess()
+            .httpClient(httpClient)
+            .buildFileAsyncClient();
+    }
+
+    private static final class CapturedRequest {
+        private final String urlHost;
+        private final String hostHeader;
+
+        CapturedRequest(HttpRequest request) {
+            this.urlHost = request.getUrl().getHost();
+            this.hostHeader = request.getHeaders().getValue(HttpHeaderName.HOST);
+        }
+    }
+
+    private static final class ReadHttpClient implements HttpClient {
+        private final List<CapturedRequest> captured = new ArrayList<>();
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            captured.add(new CapturedRequest(request));
+
+            HttpHeaders headers
+                = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(DOWNLOAD_BODY.length))
+                    .set(HttpHeaderName.CONTENT_RANGE,
+                        "bytes 0-" + (DOWNLOAD_BODY.length - 1) + "/" + DOWNLOAD_BODY.length)
+                    .set(HttpHeaderName.ETAG, "\"etag\"");
+            return Mono.just(new MockHttpResponse(request, 206, headers, DOWNLOAD_BODY));
+        }
     }
 }

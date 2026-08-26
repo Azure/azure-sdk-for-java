@@ -23,7 +23,6 @@ import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -61,6 +60,7 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
@@ -1485,6 +1485,30 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
+     * Reads a range of bytes from a file with options.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link FileReadOptions}
+     * @return A reactive response containing the file data.
+     */
+    public Mono<FileReadAsyncResponse> readWithResponse(FileReadOptions options) {
+        try {
+            FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
+            Context context = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, null);
+            context = Transforms.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
+
+            return blockBlobAsyncClient.downloadStreamWithResponse(Transforms.toBlobDownloadStreamOptions(finalOptions))
+                .contextWrite(FluxUtil.toReactorContext(context))
+                .map(Transforms::toFileReadAsyncResponse)
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Reads the entire file into a file specified by the path.
      *
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
@@ -1658,12 +1682,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> readToFileWithResponse(ReadToFileOptions options) {
-        Context context
-            = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
-        context
-            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
+        StorageImplUtils.assertNotNull("options", options);
 
-        assert options != null;
+        Context context = BuilderHelper.addUpnHeader(options::isUserPrincipalName, null);
+        context = Transforms.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         return blockBlobAsyncClient
             .downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
                 .setRange(Transforms.toBlobRange(options.getRange()))

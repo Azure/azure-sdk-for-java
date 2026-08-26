@@ -60,6 +60,7 @@ import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileReadOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
@@ -1112,6 +1113,33 @@ public class DataLakeFileClient extends DataLakePathClient {
             BlobDownloadResponse response = blockBlobClient.downloadWithResponse(stream, Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 getRangeContentMd5, timeout, context);
+            return Transforms.toFileReadResponse(response);
+        }, LOGGER);
+    }
+
+    /**
+     * Reads a range of bytes from a file into an output stream with options.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link FileReadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
+     */
+    public FileReadResponse readWithResponse(OutputStream stream, FileReadOptions options, Duration timeout,
+        Context context) {
+        FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
+        Context upnContext = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, context);
+        Context finalContext = Transforms.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            BlobDownloadResponse response = blockBlobClient.downloadStreamWithResponse(stream,
+                Transforms.toBlobDownloadStreamOptions(finalOptions), timeout, finalContext);
             return Transforms.toFileReadResponse(response);
         }, LOGGER);
     }
