@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceListValidSkusSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/DPSGetValidSku.json
+     * x-ms-original-file: 2026-08-31/DPSGetValidSku.json
      */
     /**
      * Sample code: DPSGetValidSku.
