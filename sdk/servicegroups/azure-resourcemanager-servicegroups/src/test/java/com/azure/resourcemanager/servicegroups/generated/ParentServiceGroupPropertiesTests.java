@@ -12,14 +12,14 @@ public final class ParentServiceGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParentServiceGroupProperties model
-            = BinaryData.fromString("{\"resourceId\":\"ajpsquc\"}").toObject(ParentServiceGroupProperties.class);
-        Assertions.assertEquals("ajpsquc", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"f\"}").toObject(ParentServiceGroupProperties.class);
+        Assertions.assertEquals("f", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParentServiceGroupProperties model = new ParentServiceGroupProperties().withResourceId("ajpsquc");
+        ParentServiceGroupProperties model = new ParentServiceGroupProperties().withResourceId("f");
         model = BinaryData.fromObject(model).toObject(ParentServiceGroupProperties.class);
-        Assertions.assertEquals("ajpsquc", model.resourceId());
+        Assertions.assertEquals("f", model.resourceId());
     }
 }

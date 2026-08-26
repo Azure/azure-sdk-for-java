@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicegroups.generated;
 
 import com.azure.resourcemanager.servicegroups.fluent.models.ServiceGroupInner;
+import com.azure.resourcemanager.servicegroups.models.ServiceGroupAttributes;
 import com.azure.resourcemanager.servicegroups.models.ServiceGroupProperties;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
  */
 public final class ResourceProviderUpdateServiceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-01-preview/ServiceGroup_Patch.json
+     * x-ms-original-file: 2026-08-01/ServiceGroup_Patch.json
      */
     /**
      * Sample code: PatchServiceGroup.
@@ -25,7 +26,8 @@ public final class ResourceProviderUpdateServiceGroupSamples {
         manager.resourceProviders()
             .updateServiceGroup("ServiceGroup1",
                 new ServiceGroupInner()
-                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name"))
+                    .withProperties(new ServiceGroupProperties().withDisplayName("ServiceGroup 1 Name")
+                        .withAttributes(new ServiceGroupAttributes().withCriticality(2)))
                     .withTags(mapOf("tag1", "value1", "tag2", "value2")),
                 com.azure.core.util.Context.NONE);
     }
