@@ -82,8 +82,8 @@ successfully with `tsp-client` 0.31.0 and the tracing fields, constructors, and
 customized non-`@Generated` methods were preserved. The update also produced
 broad unrelated generated drift from the referenced specification; that drift
 was discarded to keep this tracing change focused. This validates the current
-fallback approach, but ADR 11 still needs to decide whether deterministic AST
-customization is required for long-term ownership.
+fallback approach. [GAPS.md](GAPS.md) tracks the remaining long-term ownership
+decision about deterministic AST customization.
 
 ---
 
@@ -181,7 +181,8 @@ customization is required for long-term ownership.
   (sync + async).
 - Not traced: `getAgent` / `listAgents` / `deleteAgent`, sessions, memory stores, toolboxes, and the other
   `createAgentVersion*` methods with distinct names. Raw-response create and raw-response streaming methods are
-  also not traced pending ADR 8 and ADR 9.
+  also not traced pending the raw-response and raw-stream scope decision in
+  [GAPS.md](GAPS.md).
 - **Open:** decide the intended operation coverage and whether CRUD reads should emit spans at all.
 
 ---
@@ -238,19 +239,19 @@ following:
 
 Audit performed against the current Python implementation under
 `sdk/ai/azure-ai-projects/azure/ai/projects/telemetry`. This table records
-observed differences; it does not resolve the corresponding ADRs.
+observed differences and feeds the actionable tracker in [GAPS.md](GAPS.md).
 
 | Area | Python behavior | Current Java behavior | Disposition |
 | --- | --- | --- | --- |
-| Semantic-convention schema | Declares `1.34.0` | Declares `1.29.0` | Resolve through ADR 1 before changing. |
-| Provider identity | Emits `gen_ai.provider.name=microsoft.foundry`; conditionally retains `gen_ai.system` | Emits provider and legacy system attributes | Resolve through ADR 3. |
-| Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Activation follows per-client Azure Core tracing configuration | Resolve through ADR 4; do not restore global mutable APIs. |
-| Content gate | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` | Resolve through ADR 6 and Architecture Board review. |
-| Service propagation | Separate trace-context gate, enabled by default; baggage separately disabled by default | Sync uses the current span; async uses a per-client, request-scoped Azure `Context` bridge. The pipeline injects W3C trace context; baggage is not propagated by this bridge. | HTTP parenting verified locally against a live service; resolve the configurable propagation/privacy contract through ADR 5. |
+| Semantic-convention schema | Declares `1.34.0` | Declares `1.29.0` | P0 parity gap: align or document a concrete compatibility constraint. |
+| Provider identity | Emits `gen_ai.provider.name=microsoft.foundry`; conditionally retains `gen_ai.system` | Emits provider and legacy system attributes | P1 parity gap: match Python's compatibility behavior. |
+| Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Activation follows per-client Azure Core tracing configuration | P0 parity gap: confirm the internal gate without restoring global mutable APIs. |
+| Content gate | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` | P0 parity gap: select the supported key and retain default-off behavior. |
+| Service propagation | Separate trace-context gate, enabled by default; baggage separately disabled by default | Sync uses the current span; async uses a per-client, request-scoped Azure `Context` bridge. The pipeline injects W3C trace context; baggage is not propagated by this bridge. | P1 parity gap: confirm configuration controls; HTTP parenting is already live-validated. |
 | Agent creation | Instruments agent version creation | All current Java `createAgentVersion` convenience overloads are instrumented | Implemented; verify regeneration and E2E parity. |
-| Responses | Typed sync/async, streaming, and raw-response streaming wrappers | Typed sync/async and streaming are instrumented; raw-response methods are not | ADR 8 and ADR 9 blocker. |
-| Conversations | Create and conversation-item listing | Create only | ADR 8 blocker; do not add public APIs solely for tracing. |
-| Streaming lifecycle | Explicit cleanup for regular and raw streams | Typed sync supports exhaustion/error/explicit close; async supports completion/error/cancellation | Add raw-stream coverage only after ADR 9. |
+| Responses | Typed sync/async, streaming, and raw-response streaming wrappers | Typed sync/async and streaming are instrumented; raw-response methods are not | P1 parity gap if current Java consumers require raw paths. |
+| Conversations | Create and conversation-item listing | Create only | P1 parity gap only if listing is part of the current Agents API. |
+| Streaming lifecycle | Explicit cleanup for regular and raw streams | Typed sync supports exhaustion/error/explicit close; async supports completion/error/cancellation | Add raw-stream coverage if included in the release scope. |
 | Duration timing | Wall-clock timing | Monotonic `System.nanoTime()` | Intentional Java reliability improvement required by the roadmap. |
 | Workflow instrumentation | Present in Python | Excluded from Java instrumentation and the E2E scope | Intentional: workflow agents are retiring and are not a Java tracing requirement. |
 
