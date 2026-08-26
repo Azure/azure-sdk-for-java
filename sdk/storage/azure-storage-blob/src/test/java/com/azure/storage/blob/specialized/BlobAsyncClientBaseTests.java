@@ -103,7 +103,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         bc.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayout() {
         StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
@@ -114,7 +114,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutEmptyBlob() {
         BlobAsyncClient emptyBlob = ccAsync.getBlobAsyncClient(generateBlobName());
@@ -125,7 +125,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
             .then()).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutRange() {
         StepVerifier.create(bc.getBlockBlobAsyncClient()
@@ -135,7 +135,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
             .then()).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutPageSize() {
         StepVerifier.create(bc.getLayoutWithResponse(null).byPage(1).collectList()).assertNext(r -> {
@@ -144,7 +144,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutContinuationToken() {
         Flux<PagedResponse<BlobLayout>> response = bc.getLayoutWithResponse(null)
@@ -155,7 +155,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(response.then()).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
     public void getLayoutAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -180,7 +180,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(response.then()).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
     public void getLayoutACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -203,7 +203,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void getLayoutError() {
         BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(generateBlobName());

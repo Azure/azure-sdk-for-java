@@ -58,7 +58,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void downloadToFileWithDefaultDataLocalitySingleChunk() throws IOException {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
@@ -70,7 +70,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void downloadToFileWithDefaultDataLocalityMultipleChunks() throws IOException {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
@@ -86,7 +86,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(contentBytes, Files.readAllBytes(testFile));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void openInputStreamWithDefaultDataLocality() throws IOException {
         BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(2 * Constants.KB)
@@ -100,7 +100,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(contentBytes, readBytes);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void openInputStreamWithDefaultDataLocalityPartialRange() throws IOException {
         BlobInputStreamOptions options = new BlobInputStreamOptions().setBlockSize(2 * Constants.KB)
@@ -116,7 +116,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
         assertArrayEquals(expected, readBytes);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-10-06")
     @Test
     public void downloadToFileWithDefaultDataLocalityReturnsProperties() throws IOException {
         testFile = Files.createTempFile(generateBlobName(), ".dat");
