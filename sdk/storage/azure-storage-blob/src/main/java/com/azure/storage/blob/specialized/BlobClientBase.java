@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -1870,44 +1871,43 @@ public class BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 
-        // PagedIterable doesn't expose a supplier constructor, so re-enumerating this instance reuses the locked ETag.
-        AtomicReference<String> layoutETag = new AtomicReference<>();
-        BiFunction<String, Integer, PagedResponse<BlobLayout>> pageRetriever = (continuationToken, pageSize) -> {
-            BlobGetLayoutOptions requestOptions
-                = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(finalOptions, continuationToken, layoutETag.get());
-            BlobRange range = requestOptions.getRange() == null ? new BlobRange(0) : requestOptions.getRange();
-            BlobRequestConditions requestConditions = requestOptions.getRequestConditions() == null
-                ? new BlobRequestConditions()
-                : requestOptions.getRequestConditions();
-            Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
+        return new PagedIterable<>(PagedFlux.create(() -> {
+            AtomicReference<String> layoutETag = new AtomicReference<>();
+            return (continuationToken, pageSize) -> Mono.<PagedResponse<BlobLayout>>fromSupplier(() -> {
+                BlobGetLayoutOptions requestOptions = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(finalOptions,
+                    continuationToken, layoutETag.get());
+                BlobRange range = requestOptions.getRange() == null ? new BlobRange(0) : requestOptions.getRange();
+                BlobRequestConditions requestConditions = requestOptions.getRequestConditions() == null
+                    ? new BlobRequestConditions()
+                    : requestOptions.getRequestConditions();
+                Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
 
-            Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
-                = () -> this.azureBlobStorage.getBlobs()
-                    .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken,
-                        finalPageSize, null, range.toHeaderValue(), requestConditions.getLeaseId(),
-                        requestConditions.getTagsConditions(), requestConditions.getIfModifiedSince(),
-                        requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                        requestConditions.getIfNoneMatch(), null, customerProvidedKey, finalContext);
+                Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
+                    = () -> this.azureBlobStorage.getBlobs()
+                        .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken,
+                            finalPageSize, null, range.toHeaderValue(), requestConditions.getLeaseId(),
+                            requestConditions.getTagsConditions(), requestConditions.getIfModifiedSince(),
+                            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                            requestConditions.getIfNoneMatch(), null, customerProvidedKey, finalContext);
 
-            ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
-                = sendRequest(operation, null, BlobStorageException.class);
-            if (continuationToken == null) {
-                layoutETag.set(response.getDeserializedHeaders().getETag());
-            }
+                ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
+                    = sendRequest(operation, null, BlobStorageException.class);
+                if (continuationToken == null) {
+                    layoutETag.set(response.getDeserializedHeaders().getETag());
+                }
 
-            BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-            BlobLayout publicValue = value == null
-                ? null
-                : new BlobLayout(value.getRanges(), null,
-                    response.getValue() == null ? null : response.getValue().getNextMarker(), finalPageSize, value);
-            BlobLayoutInternal layout = response.getValue();
+                BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
+                BlobLayout publicValue = value == null
+                    ? null
+                    : new BlobLayout(value.getRanges(), null,
+                        response.getValue() == null ? null : response.getValue().getNextMarker(), finalPageSize, value);
+                BlobLayoutInternal layout = response.getValue();
 
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                publicValue == null ? Collections.emptyList() : Collections.singletonList(publicValue),
-                layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-        };
-
-        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    publicValue == null ? Collections.emptyList() : Collections.singletonList(publicValue),
+                    layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+            }).flux();
+        }));
     }
 
     /**

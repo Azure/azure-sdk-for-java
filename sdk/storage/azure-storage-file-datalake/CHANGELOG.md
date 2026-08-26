@@ -5,7 +5,6 @@
 ### Features Added
 - Added `getLayout` on `DataLakeFileClient` and `DataLakeFileAsyncClient`, returning `DataLakeFileLayoutInfo` so callers can obtain a file layout and use its endpoint for one-shot reads.
 - Added `FileReadOptions` and `readWithResponse` overloads on the sync and async file clients, including `setDataLocalityEndpoint` for one-shot reads.
-- Added `setDataLocalityEndpoint` to `ReadToFileOptions` and `DataLakeFileInputStreamOptions`.
 - Added `DataLakeFileLayoutInfo` and `DataLakeFileLayoutRange` in `com.azure.storage.file.datalake.models`, and `readToFile`/`openInputStream` inherit the blob layer's locality-aware chunk routing.
 
 ### Breaking Changes
@@ -881,4 +880,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-datalake/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
-

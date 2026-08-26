@@ -1685,7 +1685,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         StorageImplUtils.assertNotNull("options", options);
 
         Context context = BuilderHelper.addUpnHeader(options::isUserPrincipalName, null);
-        context = Transforms.addDataLocalityEndpoint(context, options.getDataLocalityEndpoint());
         return blockBlobAsyncClient
             .downloadToFileWithResponse(new BlobDownloadToFileOptions(options.getFilePath())
                 .setRange(Transforms.toBlobRange(options.getRange()))

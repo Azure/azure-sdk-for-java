@@ -18,7 +18,6 @@ public final class DataLakeFileInputStreamOptions {
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
     private Boolean userPrincipalName;
-    private String dataLocalityEndpoint;
 
     /**
      * Creates a new instance of {@link DataLakeFileInputStreamOptions}.
@@ -134,23 +133,4 @@ public final class DataLakeFileInputStreamOptions {
         return this;
     }
 
-    /**
-     * Gets the endpoint to use for this download, when selected from file layout information.
-     *
-     * @return The data locality endpoint, or {@code null} if the client's configured endpoint should be used.
-     */
-    public String getDataLocalityEndpoint() {
-        return dataLocalityEndpoint;
-    }
-
-    /**
-     * Sets the endpoint to use for this download.
-     *
-     * @param dataLocalityEndpoint The absolute endpoint selected from file layout information.
-     * @return The updated options.
-     */
-    public DataLakeFileInputStreamOptions setDataLocalityEndpoint(String dataLocalityEndpoint) {
-        this.dataLocalityEndpoint = dataLocalityEndpoint;
-        return this;
-    }
 }

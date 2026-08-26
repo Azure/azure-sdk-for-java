@@ -8,9 +8,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.BlobClient;
@@ -248,6 +249,27 @@ public class BlobClientBaseTests extends BlobTestBase {
         assertNull(httpClient.captured.get(0).ifMatch);
     }
 
+    @DoNotRecord
+    @Test
+    public void getLayoutIndependentEnumerationsUseTheirOwnFirstPageETag() {
+        LayoutPagesHttpClient httpClient = new LayoutPagesHttpClient(true, true);
+        BlobClient client = client(httpClient);
+        PagedIterable<BlobLayout> layouts = client.getLayout(null);
+        Iterator<PagedResponse<BlobLayout>> firstEnumeration = layouts.iterableByPage().iterator();
+        Iterator<PagedResponse<BlobLayout>> secondEnumeration = layouts.iterableByPage().iterator();
+
+        firstEnumeration.next();
+        secondEnumeration.next();
+        firstEnumeration.next();
+        secondEnumeration.next();
+
+        assertEquals(4, httpClient.captured.size());
+        assertNull(httpClient.captured.get(0).ifMatch);
+        assertNull(httpClient.captured.get(1).ifMatch);
+        assertEquals(FIRST_PAGE_ETAG, httpClient.captured.get(2).ifMatch);
+        assertEquals(SECOND_PAGE_ETAG, httpClient.captured.get(3).ifMatch);
+    }
+
     private static BlobClient client(HttpClient httpClient) {
         return new BlobClientBuilder().endpoint("https://account.blob.core.windows.net")
             .containerName("container")
@@ -275,23 +297,40 @@ public class BlobClientBaseTests extends BlobTestBase {
 
     private static final class LayoutPagesHttpClient implements HttpClient {
         private final boolean includeContinuation;
+        private final boolean distinctFirstPageETags;
         private final List<CapturedRequest> captured = new ArrayList<>();
+        private int firstPageRequests;
 
         LayoutPagesHttpClient(boolean includeContinuation) {
+            this(includeContinuation, false);
+        }
+
+        LayoutPagesHttpClient(boolean includeContinuation, boolean distinctFirstPageETags) {
             this.includeContinuation = includeContinuation;
+            this.distinctFirstPageETags = distinctFirstPageETags;
         }
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            captured.add(new CapturedRequest(request));
+            CapturedRequest capturedRequest = new CapturedRequest(request);
+            captured.add(capturedRequest);
 
-            boolean isFirstPage = captured.size() == 1;
+            boolean isFirstPage = !capturedRequest.url.contains("marker=");
             String body = isFirstPage ? includeContinuation ? FIRST_PAGE : SINGLE_PAGE : SECOND_PAGE;
+            String eTag = isFirstPage ? getFirstPageETag() : SECOND_PAGE_ETAG;
             HttpHeaders headers
-                = new HttpHeaders().set(HttpHeaderName.ETAG, isFirstPage ? FIRST_PAGE_ETAG : SECOND_PAGE_ETAG)
-                    .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+                = new HttpHeaders().set(HttpHeaderName.ETAG, eTag).set(HttpHeaderName.CONTENT_TYPE, "application/xml");
 
             return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+        }
+
+        private String getFirstPageETag() {
+            if (!distinctFirstPageETags) {
+                return FIRST_PAGE_ETAG;
+            }
+
+            firstPageRequests++;
+            return firstPageRequests == 1 ? FIRST_PAGE_ETAG : SECOND_PAGE_ETAG;
         }
     }
 }

@@ -12,13 +12,10 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadStreamOptions;
-import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
-import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.FileReadOptions;
-import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -57,32 +54,6 @@ public class DataLakeDataLocalityOptionsTests extends DataLakeTestBase {
         }
 
         super.afterTest();
-    }
-
-    @DoNotRecord
-    @Test
-    public void readToFileOptionsCarryDataLocalityEndpoint() {
-        String endpoint = "https://layout.example.net:443";
-        ReadToFileOptions options = new ReadToFileOptions("/path/to/file.txt").setDataLocalityEndpoint(endpoint);
-
-        assertEquals(endpoint, options.getDataLocalityEndpoint());
-
-        Context context = Transforms.addDataLocalityEndpoint(Context.NONE, options.getDataLocalityEndpoint());
-        assertTrue(context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
-        assertEquals(endpoint, context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
-    }
-
-    @DoNotRecord
-    @Test
-    public void inputStreamOptionsCarryDataLocalityEndpoint() {
-        String endpoint = "https://layout.example.net:443";
-        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setDataLocalityEndpoint(endpoint);
-
-        assertEquals(endpoint, options.getDataLocalityEndpoint());
-
-        Context context = Transforms.addDataLocalityEndpoint(Context.NONE, options.getDataLocalityEndpoint());
-        assertTrue(context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).isPresent());
-        assertEquals(endpoint, context.getData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY).get());
     }
 
     @DoNotRecord

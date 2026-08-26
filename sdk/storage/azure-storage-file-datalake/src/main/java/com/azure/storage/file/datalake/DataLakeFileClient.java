@@ -1199,8 +1199,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     public DataLakeFileOpenInputStreamResult openInputStream(DataLakeFileInputStreamOptions options, Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
-        context
-            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
 
         BlobInputStreamOptions convertedOptions = Transforms.toBlobInputStreamOptions(options);
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions, context);
@@ -1435,8 +1433,6 @@ public class DataLakeFileClient extends DataLakePathClient {
     public Response<PathProperties> readToFileWithResponse(ReadToFileOptions options, Duration timeout,
         Context context) {
         context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
-        context
-            = Transforms.addDataLocalityEndpoint(context, options == null ? null : options.getDataLocalityEndpoint());
         Context finalContext = context;
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
