@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.knowledgebases.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
@@ -12,8 +14,10 @@ import java.util.List;
 /**
  * Represents the {@code references.completed} knowledge base retrieval stream event.
  */
+@Immutable
 public final class KnowledgeBaseReferencesCompletedStreamEvent extends KnowledgeBaseRetrievalStreamEvent
     implements JsonSerializable<KnowledgeBaseReferencesCompletedStreamEvent> {
+    @Generated
     private final List<KnowledgeBaseReference> value;
 
     /**
@@ -21,6 +25,7 @@ public final class KnowledgeBaseReferencesCompletedStreamEvent extends Knowledge
      *
      * @param value The event payload.
      */
+    @Generated
     public KnowledgeBaseReferencesCompletedStreamEvent(List<KnowledgeBaseReference> value) {
         super("references.completed");
         this.value = value;
@@ -31,10 +36,12 @@ public final class KnowledgeBaseReferencesCompletedStreamEvent extends Knowledge
      *
      * @return The event payload.
      */
+    @Generated
     public List<KnowledgeBaseReference> getValue() {
         return value;
     }
 
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeArray(value, (writer, item) -> item.toJson(writer));
@@ -47,6 +54,7 @@ public final class KnowledgeBaseReferencesCompletedStreamEvent extends Knowledge
      * @return The parsed event wrapper.
      * @throws IOException If the event payload cannot be read.
      */
+    @Generated
     public static KnowledgeBaseReferencesCompletedStreamEvent fromJson(JsonReader jsonReader) throws IOException {
         return new KnowledgeBaseReferencesCompletedStreamEvent(
             jsonReader.readArray(reader -> KnowledgeBaseReference.fromJson(reader)));

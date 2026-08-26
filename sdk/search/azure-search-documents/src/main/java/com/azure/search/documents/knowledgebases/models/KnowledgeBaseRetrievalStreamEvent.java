@@ -3,10 +3,13 @@
 
 package com.azure.search.documents.knowledgebases.models;
 
+import com.azure.core.annotation.Generated;
+
 /**
  * Base type for events emitted by a streaming knowledge base retrieval.
  */
 public abstract class KnowledgeBaseRetrievalStreamEvent {
+    @Generated
     private final String eventName;
 
     /**
@@ -14,6 +17,7 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
      *
      * @param eventName The server-sent event name.
      */
+    @Generated
     protected KnowledgeBaseRetrievalStreamEvent(String eventName) {
         this.eventName = eventName;
     }
@@ -23,6 +27,7 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
      *
      * @return The event name.
      */
+    @Generated
     public final String getEventName() {
         return eventName;
     }
@@ -32,6 +37,7 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
      *
      * @return {@code true} if this is a terminal event; otherwise {@code false}.
      */
+    @Generated
     public boolean isTerminal() {
         return false;
     }

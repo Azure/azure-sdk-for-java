@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.knowledgebases.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
@@ -11,8 +13,10 @@ import java.io.IOException;
 /**
  * Represents the {@code answer.completed} knowledge base retrieval stream event.
  */
+@Immutable
 public final class KnowledgeBaseAnswerCompletedStreamEvent extends KnowledgeBaseRetrievalStreamEvent
     implements JsonSerializable<KnowledgeBaseAnswerCompletedStreamEvent> {
+    @Generated
     private final KnowledgeBaseAnswerCompletedEvent value;
 
     /**
@@ -20,6 +24,7 @@ public final class KnowledgeBaseAnswerCompletedStreamEvent extends KnowledgeBase
      *
      * @param value The event payload.
      */
+    @Generated
     public KnowledgeBaseAnswerCompletedStreamEvent(KnowledgeBaseAnswerCompletedEvent value) {
         super("answer.completed");
         this.value = value;
@@ -30,10 +35,12 @@ public final class KnowledgeBaseAnswerCompletedStreamEvent extends KnowledgeBase
      *
      * @return The event payload.
      */
+    @Generated
     public KnowledgeBaseAnswerCompletedEvent getValue() {
         return value;
     }
 
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return value.toJson(jsonWriter);
@@ -46,6 +53,7 @@ public final class KnowledgeBaseAnswerCompletedStreamEvent extends KnowledgeBase
      * @return The parsed event wrapper.
      * @throws IOException If the event payload cannot be read.
      */
+    @Generated
     public static KnowledgeBaseAnswerCompletedStreamEvent fromJson(JsonReader jsonReader) throws IOException {
         return new KnowledgeBaseAnswerCompletedStreamEvent(KnowledgeBaseAnswerCompletedEvent.fromJson(jsonReader));
     }

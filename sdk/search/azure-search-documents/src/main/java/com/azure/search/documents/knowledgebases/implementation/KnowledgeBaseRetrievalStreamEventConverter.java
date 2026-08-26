@@ -59,7 +59,7 @@ public final class KnowledgeBaseRetrievalStreamEventConverter {
         }
     }
 
-    private static KnowledgeBaseRetrievalStreamEvent read(String eventName, String data, ReadValueCallback<KnowledgeBaseRetrievalStreamEvent, JsonReader> eventReader) {
+    private static KnowledgeBaseRetrievalStreamEvent read(String eventName, String data, EventReader eventReader) {
         try (JsonReader reader = JsonProviders.createReader(data)) {
             return eventReader.read(reader);
         } catch (IOException exception) {
