@@ -3,6 +3,7 @@
 ## 12.36.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for retrieving a blob's physical layout through `BlobClient` and `BlobAsyncClient`.
 
 ### Breaking Changes
 

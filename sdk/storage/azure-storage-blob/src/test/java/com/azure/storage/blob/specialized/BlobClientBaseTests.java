@@ -8,13 +8,10 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobType;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -49,20 +46,12 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayout() {
-        Iterator<BlobLayoutInfo> iterator = bc.getLayout(null, Context.NONE).iterator();
+        Iterator<BlobLayout> iterator = bc.getLayout(null, Context.NONE).iterator();
 
         assertTrue(iterator.hasNext());
-        BlobLayoutInfo info = iterator.next();
-
-        assertNotNull(info.getETag());
-        assertFalse(info.getETag().isEmpty());
-        assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
-        assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
-        assertNotNull(info.getLastModified());
-        assertNotNull(info.getCreatedOn());
-        assertTrue(info.isServerEncrypted());
-        assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
-        assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+        BlobLayout layout = iterator.next();
+        assertNotNull(layout.getRanges());
+        assertFalse(layout.getRanges().isEmpty());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
@@ -88,12 +77,11 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutPageSize() {
-        Iterator<PagedResponse<BlobLayoutInfo>> iterator
-            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        Iterator<PagedResponse<BlobLayout>> iterator = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
         int pageCount = 0;
 
         while (iterator.hasNext()) {
-            PagedResponse<BlobLayoutInfo> page = iterator.next();
+            PagedResponse<BlobLayout> page = iterator.next();
             assertTrue(page.getValue().size() <= 1);
             pageCount++;
         }
@@ -104,8 +92,7 @@ public class BlobClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutContinuationToken() {
-        Iterator<PagedResponse<BlobLayoutInfo>> iterator
-            = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
+        Iterator<PagedResponse<BlobLayout>> iterator = bc.getLayout(null, Context.NONE).iterableByPage(1).iterator();
         String token = iterator.next().getContinuationToken();
 
         assertDoesNotThrow(() -> bc.getLayout(null, Context.NONE).iterableByPage(token).iterator().hasNext());

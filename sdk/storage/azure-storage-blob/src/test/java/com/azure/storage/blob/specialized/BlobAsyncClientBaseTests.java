@@ -16,14 +16,11 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.implementation.util.BlobLayoutCacheValue;
-import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobType;
-import com.azure.storage.blob.models.LeaseStateType;
-import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.options.BlobGetLayoutOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -67,16 +64,9 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     public void getLayout() {
         StepVerifier.create(bc.getLayoutWithResponse(null).collectList()).assertNext(r -> {
             assertFalse(r.isEmpty());
-            BlobLayoutInfo info = r.get(0);
-            assertNotNull(info.getETag());
-            assertFalse(info.getETag().isEmpty());
-            assertEquals(DATA.getDefaultDataSize(), info.getBlobContentLength());
-            assertEquals(BlobType.BLOCK_BLOB, info.getBlobType());
-            assertNotNull(info.getLastModified());
-            assertNotNull(info.getCreatedOn());
-            assertTrue(info.isServerEncrypted());
-            assertEquals(LeaseStatusType.UNLOCKED, info.getLeaseStatus());
-            assertEquals(LeaseStateType.AVAILABLE, info.getLeaseState());
+            BlobLayout layout = r.get(0);
+            assertNotNull(layout.getRanges());
+            assertFalse(layout.getRanges().isEmpty());
         }).verifyComplete();
     }
 
@@ -113,7 +103,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2027-03-07")
     @Test
     public void getLayoutContinuationToken() {
-        Flux<PagedResponse<BlobLayoutInfo>> response = bc.getLayoutWithResponse(null)
+        Flux<PagedResponse<BlobLayout>> response = bc.getLayoutWithResponse(null)
             .byPage(1)
             .next()
             .flatMapMany(r -> bc.getLayoutWithResponse(null).byPage(r.getContinuationToken()));
@@ -129,7 +119,7 @@ public class BlobAsyncClientBaseTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
 
-        Flux<BlobLayoutInfo> response = bc.setTags(t)
+        Flux<BlobLayout> response = bc.setTags(t)
             .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match),
                 BlobTestBase::convertNulls))
             .flatMapMany(conditions -> {

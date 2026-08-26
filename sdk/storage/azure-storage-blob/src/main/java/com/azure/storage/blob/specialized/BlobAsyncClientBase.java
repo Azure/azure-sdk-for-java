@@ -33,9 +33,8 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
-import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutAccessor;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobLayout;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
@@ -130,6 +129,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
@@ -185,10 +185,6 @@ public class BlobAsyncClientBase {
      * Storage REST API version used in requests to the Storage service.
      */
     protected final BlobServiceVersion serviceVersion;
-
-    static {
-        BlobLayoutAccessor.setAccessor(BlobAsyncClientBase::getLayoutWithResponse);
-    }
 
     /**
      * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -1915,10 +1911,11 @@ public class BlobAsyncClientBase {
      * @return A reactive response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    protected PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options) {
-        return new PagedFlux<>(pageSize -> withContext(context -> getLayoutPage(null, options, pageSize, context)),
-            (continuationToken,
-                pageSize) -> withContext(context -> getLayoutPage(continuationToken, options, pageSize, context)));
+    public PagedFlux<com.azure.storage.blob.models.BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
+        return new PagedFlux<>(
+            pageSize -> withContext(context -> getPublicLayoutPage(null, options, pageSize, context)),
+            (continuationToken, pageSize) -> withContext(
+                context -> getPublicLayoutPage(continuationToken, options, pageSize, context)));
     }
 
     /**
@@ -1928,10 +1925,11 @@ public class BlobAsyncClientBase {
      * @param context {@link Context}
      * @return A reactive response emitting all blob layout information.
      */
-    protected PagedFlux<BlobLayoutInfo> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
+    public PagedFlux<com.azure.storage.blob.models.BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options,
+        Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        return new PagedFlux<>(pageSize -> getLayoutPage(null, options, pageSize, finalContext),
-            (continuationToken, pageSize) -> getLayoutPage(continuationToken, options, pageSize, finalContext));
+        return new PagedFlux<>(pageSize -> getPublicLayoutPage(null, options, pageSize, finalContext),
+            (continuationToken, pageSize) -> getPublicLayoutPage(continuationToken, options, pageSize, finalContext));
     }
 
     Mono<BlobLayoutCacheValue> fetchLayoutCacheValueAsync(BlobRange layoutRange,
@@ -1996,6 +1994,18 @@ public class BlobAsyncClientBase {
         return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
     }
 
+    private Mono<PagedResponse<com.azure.storage.blob.models.BlobLayout>> getPublicLayoutPage(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
+        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(
+            response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                response.getValue()
+                    .stream()
+                    .map(info -> new com.azure.storage.blob.models.BlobLayout(info.getRanges(), null,
+                        response.getContinuationToken(), pageSize, info))
+                    .collect(Collectors.toList()),
+                response.getContinuationToken(), response.getDeserializedHeaders()));
+    }
+
     private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getLayoutPageWithHeaders(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context) {
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
@@ -2019,12 +2029,21 @@ public class BlobAsyncClientBase {
     }
 
     private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>
-        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayout> response) {
+        toLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
         BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-        BlobLayout layout = response.getValue();
+        BlobLayoutInternal layout = response.getValue();
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             value == null ? Collections.emptyList() : Collections.singletonList(value),
             layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+    }
+
+    private static PagedResponseBase<BlobsGetLayoutHeaders, com.azure.storage.blob.models.BlobLayout>
+        toPublicLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
+        com.azure.storage.blob.models.BlobLayout layout = ModelHelper.transformBlobLayout(response.getValue());
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            layout == null ? Collections.emptyList() : Collections.singletonList(layout),
+            response.getValue() == null ? null : response.getValue().getNextMarker(),
+            response.getDeserializedHeaders());
     }
 
     private static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source,

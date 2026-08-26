@@ -18,7 +18,7 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadHeadersCo
 import com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobLayout;
+import com.azure.storage.blob.implementation.models.BlobLayoutInternal;
 import com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem;
 import com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
@@ -420,18 +420,20 @@ public final class ModelHelper {
      * @param response {@link ResponseBase}
      * @return {@link BlobLayoutInfo}
      */
-    public static BlobLayoutInfo transformBlobLayoutInfo(ResponseBase<BlobsGetLayoutHeaders, BlobLayout> response) {
+    public static BlobLayoutInfo
+        transformBlobLayoutInfo(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
         if (response == null) {
             return null;
         }
 
-        BlobLayout layout = response.getValue();
+        BlobLayoutInternal layout = response.getValue();
         Map<Integer, String> endpoints = new HashMap<>();
         if (layout != null && layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
             for (BlobLayoutEndpointsEndpointItem endpoint : layout.getEndpoints().getEndpoint()) {
                 if (endpoint != null) {
                     endpoints.put(endpoint.getIndex(), endpoint.getValue());
                 }
+
             }
         }
 
@@ -490,6 +492,41 @@ public final class ModelHelper {
             headers == null ? null : headers.getXMsBlobContentEncoding(),
             headers == null ? null : headers.getXMsBlobContentMd5(),
             headers == null ? null : headers.getXMsBlobCreationTime());
+    }
+
+    /**
+     * Transforms the generated layout response into the public blob layout model.
+     *
+     * @param layout The generated layout response.
+     * @return The public blob layout.
+     */
+    public static com.azure.storage.blob.models.BlobLayout transformBlobLayout(BlobLayoutInternal layout) {
+        if (layout == null) {
+            return null;
+        }
+
+        Map<Integer, String> endpoints = new HashMap<>();
+        if (layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
+            for (BlobLayoutEndpointsEndpointItem endpoint : layout.getEndpoints().getEndpoint()) {
+                if (endpoint != null) {
+                    endpoints.put(endpoint.getIndex(), endpoint.getValue());
+                }
+            }
+        }
+
+        List<BlobLayoutRange> ranges = new ArrayList<>();
+        if (layout.getRanges() != null && layout.getRanges().getRange() != null) {
+            for (BlobLayoutRangesRangeItem range : layout.getRanges().getRange()) {
+                if (range != null) {
+                    ranges
+                        .add(new BlobLayoutRange(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1),
+                            endpoints.get(range.getEndpointIndex())));
+                }
+            }
+        }
+
+        return new com.azure.storage.blob.models.BlobLayout(ranges, layout.getMarker(), layout.getNextMarker(),
+            layout.getMaxResults());
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {

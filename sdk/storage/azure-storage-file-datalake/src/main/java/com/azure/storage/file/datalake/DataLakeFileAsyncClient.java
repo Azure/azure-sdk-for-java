@@ -24,8 +24,7 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.implementation.accesshelpers.BlobLayoutAccessor;
-import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -180,11 +179,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataLakeFileLayoutInfo> getLayout(DataLakeFileGetLayoutOptions options) {
-        PagedFlux<BlobLayoutInfo> inputPagedFlux
-            = BlobLayoutAccessor.getLayout(blockBlobAsyncClient, Transforms.toBlobGetLayoutOptions(options));
+        PagedFlux<BlobLayout> inputPagedFlux
+            = blockBlobAsyncClient.getLayoutWithResponse(Transforms.toBlobGetLayoutOptions(options));
 
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BlobLayoutInfo>> flux;
+            Flux<PagedResponse<BlobLayout>> flux;
             if (continuationToken != null && pageSize != null) {
                 flux = inputPagedFlux.byPage(continuationToken, pageSize);
             } else if (continuationToken != null) {
@@ -198,7 +197,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             return flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 .map(response -> new PagedResponseBase<Void, DataLakeFileLayoutInfo>(response.getRequest(),
                     response.getStatusCode(), response.getHeaders(),
-                    response.getValue().stream().map(Transforms::toDataLakeFileLayoutInfo).collect(Collectors.toList()),
+                    response.getValue()
+                        .stream()
+                        .map(layout -> Transforms.toDataLakeFileLayoutInfo(layout.getBlobLayoutInfo()))
+                        .collect(Collectors.toList()),
                     response.getContinuationToken(), null));
         });
     }

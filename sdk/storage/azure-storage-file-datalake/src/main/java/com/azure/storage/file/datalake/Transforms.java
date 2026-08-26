@@ -22,6 +22,7 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobLayoutInfo;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobProperties;
@@ -421,6 +422,17 @@ class Transforms {
                 : com.azure.storage.blob.models.ArchiveStatus.fromString(blobLayoutInfo.getArchiveStatus())),
             blobLayoutInfo.getEncryptionKeySha256(), blobLayoutInfo.getAccessTierChangeTime(),
             blobLayoutInfo.getMetadata(), blobLayoutInfo.getExpiresOn());
+    }
+
+    static DataLakeFileLayoutInfo toDataLakeFileLayoutInfo(BlobLayout blobLayout) {
+        if (blobLayout == null) {
+            return null;
+        }
+        List<DataLakeFileLayoutRange> ranges = blobLayout.getRanges() == null
+            ? new ArrayList<>()
+            : blobLayout.getRanges().stream().map(Transforms::toDataLakeFileLayoutRange).collect(Collectors.toList());
+        return new DataLakeFileLayoutInfo(ranges, null, null, null, 0, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     }
 
     private static DataLakeFileLayoutRange toDataLakeFileLayoutRange(BlobLayoutRange blobLayoutRange) {
