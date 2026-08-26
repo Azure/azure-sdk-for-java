@@ -1995,16 +1995,6 @@ public class BlobAsyncClientBase {
         return Mono.just(new BlobLayoutCacheValue(null));
     }
 
-    private Mono<PagedResponse<BlobLayoutInfo>> getLayoutPage(String marker, BlobGetLayoutOptions options,
-        Integer pageSize, Context context) {
-        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
-    }
-
-    private Mono<PagedResponse<BlobLayout>> getPublicLayoutPage(String marker, BlobGetLayoutOptions options,
-        Integer pageSize, Context context) {
-        return getPublicLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
-    }
-
     private Mono<PagedResponse<BlobLayout>> getPublicLayoutPageWithLockedETag(String marker,
         BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
         BlobGetLayoutOptions optionsWithConditions = getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
@@ -2057,15 +2047,6 @@ public class BlobAsyncClientBase {
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             value == null ? Collections.emptyList() : Collections.singletonList(value),
             layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-    }
-
-    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>
-        toPublicLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        BlobLayout layout = ModelHelper.transformBlobLayout(response.getValue());
-        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            layout == null ? Collections.emptyList() : Collections.singletonList(layout),
-            response.getValue() == null ? null : response.getValue().getNextMarker(),
-            response.getDeserializedHeaders());
     }
 
     static BlobGetLayoutOptions getLayoutOptionsWithLockedETag(BlobGetLayoutOptions options, String marker,
