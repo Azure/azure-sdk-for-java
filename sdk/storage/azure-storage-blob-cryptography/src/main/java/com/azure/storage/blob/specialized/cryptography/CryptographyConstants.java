@@ -33,6 +33,12 @@ final class CryptographyConstants {
 
     static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
+    /**
+     * Context key under which a per-download-operation {@link CseV2NonceOrderValidator} is shared, so that the CSEv2
+     * nonce scheme is enforced consistently across every (possibly concurrent) chunk of a single download.
+     */
+    static final String GCM_NONCE_VALIDATOR_KEY = "gcmNonceValidator";
+
     static final HttpHeaderName ENCRYPTION_METADATA_HEADER
         = HttpHeaderName.fromString(Constants.HeaderConstants.X_MS_META + "-" + ENCRYPTION_DATA_KEY);
 
@@ -54,6 +60,18 @@ final class CryptographyConstants {
         = "Encryption client is being used but the blob metadata indicates " + "that it is not encrypted.";
 
     static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
+
+    /**
+     * System property name that, when set to {@code true}, disables detection of reordered client-side encryption v2
+     * authenticated regions. Intended for data recovery only.
+     */
+    static final String ALLOW_MISORDERED_REGIONS_PROPERTY = "Azure.Storage.CseV2AllowMisorderedAuthRegions";
+
+    /**
+     * Environment variable name that, when set to {@code true}, disables detection of reordered client-side encryption
+     * v2 authenticated regions. Intended for data recovery only.
+     */
+    static final String ALLOW_MISORDERED_REGIONS_ENV_VAR = "AZURE_STORAGE_CSE_V2_ALLOW_MISORDERED_AUTH_REGIONS";
 
     private CryptographyConstants() {
     }
