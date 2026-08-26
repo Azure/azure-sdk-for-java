@@ -89,7 +89,7 @@ abstract class Decryptor {
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey);
 
     static Decryptor getDecryptor(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
-        EncryptionData encryptionData) {
+        EncryptionData encryptionData, CseV2NonceOrderValidator nonceValidator) {
         if (encryptionData == null) {
             return new NoOpDecryptor(keyResolver, keyWrapper, null);
         }
@@ -99,7 +99,7 @@ abstract class Decryptor {
 
             case ENCRYPTION_PROTOCOL_V2:
             case ENCRYPTION_PROTOCOL_V2_1:
-                return new DecryptorV2(keyResolver, keyWrapper, encryptionData);
+                return new DecryptorV2(keyResolver, keyWrapper, encryptionData, nonceValidator);
 
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
