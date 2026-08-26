@@ -1,12 +1,10 @@
 ## Release History
 
-### 4.82.0-beta.1 (Unreleased)
+### 4.82.0 (2026-08-25)
 
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)
 * Added support for QueryPlan and Execute Stored Procedure requests to be routed to Gateway V2. - See [PR 47759](https://github.com/Azure/azure-sdk-for-java/pull/47759)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed an issue in direct connectivity mode where 429 (Too Many Requests) responses during read/write barrier requests could cause excessive retries instead of yielding early. When all contacted replicas return 429 on consecutive barrier attempts, the SDK now propagates the throttle response (for reads) or returns a 408 with substatus 21013 (for writes) to allow the built-in `ResourceThrottleRetryPolicy` to handle backoff. This behavior is enabled by default; opt out by setting system property `COSMOS.ENABLE_BARRIER_EARLY_YIELD_ON_429` or environment variable `COSMOS_ENABLE_BARRIER_EARLY_YIELD_ON_429` to `false`. - See [PR 48914](https://github.com/Azure/azure-sdk-for-java/pull/48914)
