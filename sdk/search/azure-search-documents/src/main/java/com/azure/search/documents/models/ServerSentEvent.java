@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Generated;
@@ -22,19 +21,25 @@ import java.time.Duration;
  */
 @Immutable
 public final class ServerSentEvent<T> {
+
     @Generated
     private final String id;
+
     @Generated
     private final String event;
+
     @Generated
     private final T data;
+
     @Generated
     private final String comment;
+
     @Generated
     private final Duration retryAfter;
 
     static {
         ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {
+
             @Generated
             @Override
             public <U> ServerSentEvent<U> create(String id, String event, U data, String comment, Duration retryAfter) {

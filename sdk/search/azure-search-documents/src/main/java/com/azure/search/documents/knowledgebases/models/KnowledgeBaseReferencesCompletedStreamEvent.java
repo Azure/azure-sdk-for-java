@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
@@ -17,6 +16,7 @@ import java.util.List;
 @Immutable
 public final class KnowledgeBaseReferencesCompletedStreamEvent extends KnowledgeBaseRetrievalStreamEvent
     implements JsonSerializable<KnowledgeBaseReferencesCompletedStreamEvent> {
+
     @Generated
     private final List<KnowledgeBaseReference> value;
 

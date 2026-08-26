@@ -97,13 +97,54 @@ public class SearchCustomizations extends Customization {
 
     // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the premature
     // retrieval stream API customizations isolated so they can be removed when native support is available.
+    private static final String PUBLIC_MODELS_PATH = "src/main/java/com/azure/search/documents/models/";
+    private static final String MODELS_PATH = "src/main/java/com/azure/search/documents/knowledgebases/models/";
+
     private static void customizeKnowledgeBaseRetrievalStream(LibraryCustomization libraryCustomization,
         Logger logger) {
-        logger.info("Adding knowledge base retrieval stream convenience APIs");
+        logger.info("Adding knowledge base retrieval stream convenience APIs and models");
+        addStreamModels(libraryCustomization);
+
         PackageCustomization knowledgeBases
             = libraryCustomization.getPackage("com.azure.search.documents.knowledgebases");
         addAsyncRetrieveStream(knowledgeBases.getClass("KnowledgeBaseRetrievalAsyncClient"));
         addSyncRetrieveStream(knowledgeBases.getClass("KnowledgeBaseRetrievalClient"));
+    }
+
+    private static void addStreamModels(LibraryCustomization customization) {
+        customization.getRawEditor().addFile(PUBLIC_MODELS_PATH + "ServerSentEvent.java", serverSentEventSource());
+        customization.getRawEditor()
+            .addFile(PUBLIC_MODELS_PATH + "ServerSentEventListener.java", serverSentEventListenerSource());
+        customization.getRawEditor().addFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "UnknownKnowledgeBaseRetrievalStreamEvent.java", unknownEventSource());
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseRetrievalStartedStreamEvent.java",
+                wrapperSource("KnowledgeBaseRetrievalStartedStreamEvent", "KnowledgeBaseRetrievalStartedEvent",
+                    "retrieval.started", false, false));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseActivityStartedStreamEvent.java",
+                wrapperSource("KnowledgeBaseActivityStartedStreamEvent", "KnowledgeBaseActivityStartedEvent",
+                    "activity.started", false, false));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseActivityCompletedStreamEvent.java",
+                wrapperSource("KnowledgeBaseActivityCompletedStreamEvent", "KnowledgeBaseActivityRecord",
+                    "activity.completed", false, false));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseAnswerCompletedStreamEvent.java",
+                wrapperSource("KnowledgeBaseAnswerCompletedStreamEvent", "KnowledgeBaseAnswerCompletedEvent",
+                    "answer.completed", false, false));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseReferencesCompletedStreamEvent.java",
+                wrapperSource("KnowledgeBaseReferencesCompletedStreamEvent", "KnowledgeBaseReference",
+                    "references.completed", false, true));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseErrorStreamEvent.java",
+                wrapperSource("KnowledgeBaseErrorStreamEvent", "KnowledgeBaseStreamErrorEvent", "error", true, false));
+        customization.getRawEditor()
+            .addFile(MODELS_PATH + "KnowledgeBaseResponseCompletedStreamEvent.java",
+                wrapperSource("KnowledgeBaseResponseCompletedStreamEvent", "KnowledgeBaseResponseCompletedEvent",
+                    "response.completed", true, false));
     }
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
@@ -256,6 +297,167 @@ public class SearchCustomizations extends Customization {
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
     }
+
+    private static String serverSentEventSource() {
+        return header("com.azure.search.documents.models") + "import com.azure.core.annotation.Generated;\n"
+            + "import com.azure.core.annotation.Immutable;\n"
+            + "import com.azure.search.documents.models.implementation.sse.ServerSentEventHelper;\n\n"
+            + "import java.time.Duration;\n\n" + "/**\n"
+            + " * Represents a server-sent event with a typed data payload.\n" + " *\n"
+            + " * <p>An emitted server-sent event contains data and may expose an identifier, event name, comment, "
+            + "and retry interval.\n"
+            + " * The identifier and retry interval represent the effective stream state when the event was "
+            + "dispatched, including\n" + " * values inherited from earlier metadata-only blocks.</p>\n" + " *\n"
+            + " * <p>The identifier and retry interval are protocol metadata only. The client does not reconnect or "
+            + "replay the\n"
+            + " * request. Metadata-only updates received after the latest emitted event aren't exposed as an "
+            + "additional event.</p>\n" + " *\n" + " * @param <T> The type of the event data.\n" + " */\n"
+            + "@Immutable\n" + "public final class ServerSentEvent<T> {\n" + "    @Generated\n"
+            + "    private final String id;\n" + "    @Generated\n" + "    private final String event;\n"
+            + "    @Generated\n" + "    private final T data;\n" + "    @Generated\n"
+            + "    private final String comment;\n" + "    @Generated\n" + "    private final Duration retryAfter;\n\n"
+            + "    static {\n"
+            + "        ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {\n"
+            + "            @Generated\n" + "            @Override\n"
+            + "            public <U> ServerSentEvent<U> create(String id, String event, U data, String comment, "
+            + "Duration retryAfter) {\n"
+            + "                return new ServerSentEvent<>(id, event, data, comment, retryAfter);\n"
+            + "            }\n" + "        });\n" + "    }\n\n"
+            + "    @Generated\n"
+            + "    private ServerSentEvent(String id, String event, T data, String comment, Duration retryAfter) {\n"
+            + "        this.id = id;\n" + "        this.event = event;\n" + "        this.data = data;\n"
+            + "        this.comment = comment;\n" + "        this.retryAfter = retryAfter;\n" + "    }\n\n"
+            + "    /**\n" + "     * Gets the effective last-event identifier when this event was dispatched.\n"
+            + "     *\n"
+            + "     * @return The effective last-event identifier, {@code null} if no valid {@code id} field was "
+            + "received before this\n"
+            + "     * event, or an empty string if an empty {@code id} field reset the identifier.\n" + "     */\n"
+            + "    @Generated\n" + "    public String getId() {\n" + "        return id;\n" + "    }\n\n"
+            + "    /**\n"
+            + "     * Gets the event name.\n" + "     *\n"
+            + "     * @return The event name, or {@code message} if no non-empty {@code event} field was specified.\n"
+            + "     */\n" + "    @Generated\n" + "    public String getEvent() {\n" + "        return event;\n"
+            + "    }\n\n" + "    /**\n"
+            + "     * Gets the event data.\n" + "     *\n"
+            + "     * @return The event data, or {@code null} if event data wasn't specified.\n" + "     */\n"
+            + "    @Generated\n" + "    public T getData() {\n" + "        return data;\n" + "    }\n\n"
+            + "    /**\n"
+            + "     * Gets the event comment.\n" + "     *\n"
+            + "     * @return The event comment, or {@code null} if it wasn't specified.\n" + "     */\n"
+            + "    @Generated\n" + "    public String getComment() {\n" + "        return comment;\n" + "    }\n\n"
+            + "    /**\n"
+            + "     * Gets the effective retry interval when this event was dispatched.\n" + "     *\n"
+            + "     * @return The latest valid retry interval received before this event, or {@code null} if no valid\n"
+            + "     * {@code retry} field was received.\n" + "     */\n" + "    @Generated\n"
+            + "    public Duration getRetryAfter() {\n"
+            + "        return retryAfter;\n" + "    }\n" + "}\n";
+    }
+
+
+    private static String serverSentEventListenerSource() {
+        return header("com.azure.search.documents.models") + "import com.azure.core.annotation.Generated;\n\n"
+            + "/**\n"
+            + " * A listener for receiving server-sent events.\n" + " *\n"
+            + " * <p>Errors terminate processing, invoke {@link #onError(Throwable)} and {@link #onClose()}, and are "
+            + "rethrown to the\n" + " * synchronous service caller as unchecked exceptions.</p>\n" + " *\n"
+            + " * @param <T> The type of the event data.\n" + " */\n" + "@FunctionalInterface\n"
+            + "public interface ServerSentEventListener<T> {\n" + "    /**\n" + "     * Handles a server-sent event.\n"
+            + "     *\n" + "     * @param event The server-sent event.\n"
+            + "     * @throws RuntimeException If an error occurs while handling the event.\n" + "     */\n"
+            + "    @Generated\n" + "    void onEvent(ServerSentEvent<T> event);\n\n" + "    /**\n"
+            + "     * Handles an error that terminates event processing.\n" + "     *\n"
+            + "     * @param error The error that terminated event processing.\n" + "     */\n"
+            + "    @Generated\n" + "    default void onError(Throwable error) {\n" + "        // No-op by default.\n"
+            + "    }\n\n"
+            + "    /**\n" + "     * Handles closure of the event stream.\n" + "     */\n"
+            + "    @Generated\n" + "    default void onClose() {\n" + "        // No-op by default.\n" + "    }\n"
+            + "}\n";
+    }
+
+
+    private static String baseEventSource() {
+        return header("com.azure.search.documents.knowledgebases.models")
+            + "import com.azure.core.annotation.Generated;\n\n" + "/**\n"
+            + " * Base type for events emitted by a streaming knowledge base retrieval.\n" + " */\n"
+            + "public abstract class KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
+            + "    private final String eventName;\n\n" + "    /**\n" + "     * Creates a stream event.\n" + "     *\n"
+            + "     * @param eventName The server-sent event name.\n" + "     */\n"
+            + "    @Generated\n" + "    protected KnowledgeBaseRetrievalStreamEvent(String eventName) {\n"
+            + "        this.eventName = eventName;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets the server-sent event name.\n" + "     *\n" + "     * @return The event name.\n"
+            + "     */\n" + "    @Generated\n" + "    public final String getEventName() {\n"
+            + "        return eventName;\n" + "    }\n\n"
+            + "    /**\n" + "     * Gets whether this event terminates the retrieval stream.\n" + "     *\n"
+            + "     * @return {@code true} if this is a terminal event; otherwise {@code false}.\n" + "     */\n"
+            + "    @Generated\n" + "    public boolean isTerminal() {\n" + "        return false;\n" + "    }\n"
+            + "}\n";
+    }
+
+
+    private static String unknownEventSource() {
+        return header("com.azure.search.documents.knowledgebases.models")
+            + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n\n"
+            + "/**\n"
+            + " * Represents a knowledge base retrieval stream event that is not recognized by this SDK version.\n"
+            + " */\n" + "@Immutable\n" + "public final class UnknownKnowledgeBaseRetrievalStreamEvent\n"
+            + "    extends KnowledgeBaseRetrievalStreamEvent {\n" + "    @Generated\n"
+            + "    private final String data;\n\n" + "    /**\n"
+            + "     * Creates an unknown stream event.\n" + "     *\n"
+            + "     * @param eventName The server-sent event name.\n"
+            + "     * @param data The raw server-sent event data.\n" + "     */\n"
+            + "    @Generated\n" + "    public UnknownKnowledgeBaseRetrievalStreamEvent(String eventName, String data) {\n"
+            + "        super(eventName);\n" + "        this.data = data;\n" + "    }\n\n" + "    /**\n"
+            + "     * Gets the raw server-sent event data.\n" + "     *\n" + "     * @return The raw event data.\n"
+            + "     */\n" + "    @Generated\n" + "    public String getData() {\n" + "        return data;\n"
+            + "    }\n" + "}\n";
+    }
+
+
+    private static String wrapperSource(String className, String payloadType, String eventName, boolean terminal,
+        boolean listPayload) {
+        String valueType = listPayload ? "List<" + payloadType + ">" : payloadType;
+        String listImport = listPayload ? "import java.util.List;\n" : "";
+        String toJson = listPayload
+            ? "        return jsonWriter.writeArray(value, (writer, item) -> item.toJson(writer));\n"
+            : "        return value.toJson(jsonWriter);\n";
+        String fromJson = listPayload
+            ? "        return new " + className + "(jsonReader.readArray(reader -> " + payloadType
+                + ".fromJson(reader)));\n"
+            : "        return new " + className + "(" + payloadType + ".fromJson(jsonReader));\n";
+        String terminalOverride = terminal
+            ? "\n    @Generated\n" + "    @Override\n" + "    public boolean isTerminal() {\n"
+                + "        return true;\n" + "    }\n"
+            : "";
+
+        return header("com.azure.search.documents.knowledgebases.models")
+            + "import com.azure.core.annotation.Generated;\n" + "import com.azure.core.annotation.Immutable;\n"
+            + "import com.azure.json.JsonReader;\n"
+            + "import com.azure.json.JsonSerializable;\n" + "import com.azure.json.JsonWriter;\n\n"
+            + "import java.io.IOException;\n" + listImport + "\n" + "/**\n" + " * Represents the {@code " + eventName
+            + "} knowledge base retrieval stream event.\n" + " */\n" + "@Immutable\n" + "public final class " + className
+            + " extends KnowledgeBaseRetrievalStreamEvent\n" + "    implements JsonSerializable<" + className + "> {\n"
+            + "    @Generated\n" + "    private final " + valueType + " value;\n\n" + "    /**\n"
+            + "     * Creates an event wrapper.\n" + "     *\n" + "     * @param value The event payload.\n"
+            + "     */\n" + "    @Generated\n" + "    public " + className + "("
+            + valueType + " value) {\n" + "        super(\"" + eventName + "\");\n" + "        this.value = value;\n"
+            + "    }\n\n" + "    /**\n"
+            + "     * Gets the event payload.\n" + "     *\n" + "     * @return The event payload.\n" + "     */\n"
+            + "    @Generated\n" + "    public " + valueType + " getValue() {\n" + "        return value;\n"
+            + "    }\n\n" + terminalOverride + "\n" + "    @Generated\n" + "    @Override\n"
+            + "    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {\n" + toJson + "    }\n\n"
+            + "    /**\n" + "     * Reads an event wrapper from JSON.\n" + "     *\n"
+            + "     * @param jsonReader The reader to read from.\n" + "     * @return The parsed event wrapper.\n"
+            + "     * @throws IOException If the event payload cannot be read.\n" + "     */\n" + "    @Generated\n"
+            + "    public static " + className + " fromJson(JsonReader jsonReader) throws IOException {\n" + fromJson
+            + "    }\n" + "}\n";
+    }
+
+
+    private static String header(String packageName) {
+        return "// Copyright (c) Microsoft Corporation. All rights reserved.\n"
+            + "// Licensed under the MIT License.\n\n" + "package " + packageName + ";\n\n";
+    }
+
 
     // Adds SearchAudience handling to generated builders. This is a temporary fix until
     // https://github.com/microsoft/typespec/issues/9458 is addressed.
