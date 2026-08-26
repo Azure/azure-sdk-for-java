@@ -66,6 +66,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
@@ -1911,7 +1912,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<com.azure.storage.blob.models.BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
+    public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
         return new PagedFlux<>(
             pageSize -> withContext(context -> getPublicLayoutPage(null, options, pageSize, context)),
             (continuationToken, pageSize) -> withContext(
@@ -1925,8 +1926,7 @@ public class BlobAsyncClientBase {
      * @param context {@link Context}
      * @return A reactive response emitting all blob layout information.
      */
-    public PagedFlux<com.azure.storage.blob.models.BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options,
-        Context context) {
+    public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         return new PagedFlux<>(pageSize -> getPublicLayoutPage(null, options, pageSize, finalContext),
             (continuationToken, pageSize) -> getPublicLayoutPage(continuationToken, options, pageSize, finalContext));
@@ -1994,16 +1994,15 @@ public class BlobAsyncClientBase {
         return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
     }
 
-    private Mono<PagedResponse<com.azure.storage.blob.models.BlobLayout>> getPublicLayoutPage(String marker,
-        BlobGetLayoutOptions options, Integer pageSize, Context context) {
-        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(
-            response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                response.getValue()
-                    .stream()
-                    .map(info -> new com.azure.storage.blob.models.BlobLayout(info.getRanges(), null,
-                        response.getContinuationToken(), pageSize, info))
-                    .collect(Collectors.toList()),
-                response.getContinuationToken(), response.getDeserializedHeaders()));
+    private Mono<PagedResponse<BlobLayout>> getPublicLayoutPage(String marker, BlobGetLayoutOptions options,
+        Integer pageSize, Context context) {
+        return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> new PagedResponseBase<>(
+            response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            response.getValue()
+                .stream()
+                .map(info -> new BlobLayout(info.getRanges(), null, response.getContinuationToken(), pageSize, info))
+                .collect(Collectors.toList()),
+            response.getContinuationToken(), response.getDeserializedHeaders()));
     }
 
     private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayoutInfo>> getLayoutPageWithHeaders(String marker,
@@ -2037,9 +2036,9 @@ public class BlobAsyncClientBase {
             layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
     }
 
-    private static PagedResponseBase<BlobsGetLayoutHeaders, com.azure.storage.blob.models.BlobLayout>
+    private static PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>
         toPublicLayoutPagedResponse(ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response) {
-        com.azure.storage.blob.models.BlobLayout layout = ModelHelper.transformBlobLayout(response.getValue());
+        BlobLayout layout = ModelHelper.transformBlobLayout(response.getValue());
         return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             layout == null ? Collections.emptyList() : Collections.singletonList(layout),
             response.getValue() == null ? null : response.getValue().getNextMarker(),

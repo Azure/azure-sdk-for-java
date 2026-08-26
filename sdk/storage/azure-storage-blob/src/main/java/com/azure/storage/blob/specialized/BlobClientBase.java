@@ -64,6 +64,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -1853,7 +1854,7 @@ public class BlobClientBase {
      * @return A response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<com.azure.storage.blob.models.BlobLayout> getLayout(BlobGetLayoutOptions options) {
+    public PagedIterable<BlobLayout> getLayout(BlobGetLayoutOptions options) {
         return getLayout(options, Context.NONE);
     }
 
@@ -1865,40 +1866,38 @@ public class BlobClientBase {
      * @return A response emitting all blob layout information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<com.azure.storage.blob.models.BlobLayout> getLayout(BlobGetLayoutOptions options,
-        Context context) {
+    public PagedIterable<BlobLayout> getLayout(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 
-        BiFunction<String, Integer, PagedResponse<com.azure.storage.blob.models.BlobLayout>> pageRetriever
-            = (continuationToken, pageSize) -> {
-                BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
-                BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
-                    ? new BlobRequestConditions()
-                    : finalOptions.getRequestConditions();
-                Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
+        BiFunction<String, Integer, PagedResponse<BlobLayout>> pageRetriever = (continuationToken, pageSize) -> {
+            BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
+            BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+                ? new BlobRequestConditions()
+                : finalOptions.getRequestConditions();
+            Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
 
-                Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
-                    = () -> this.azureBlobStorage.getBlobs()
-                        .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken,
-                            finalPageSize, null, range.toHeaderValue(), requestConditions.getLeaseId(),
-                            requestConditions.getTagsConditions(), requestConditions.getIfModifiedSince(),
-                            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                            requestConditions.getIfNoneMatch(), null, customerProvidedKey, finalContext);
+            Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
+                = () -> this.azureBlobStorage.getBlobs()
+                    .getLayoutWithResponse(containerName, blobName, snapshot, versionId, continuationToken,
+                        finalPageSize, null, range.toHeaderValue(), requestConditions.getLeaseId(),
+                        requestConditions.getTagsConditions(), requestConditions.getIfModifiedSince(),
+                        requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                        requestConditions.getIfNoneMatch(), null, customerProvidedKey, finalContext);
 
-                ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
-                    = sendRequest(operation, null, BlobStorageException.class);
-                BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
-                com.azure.storage.blob.models.BlobLayout publicValue = value == null
-                    ? null
-                    : new com.azure.storage.blob.models.BlobLayout(value.getRanges(), null,
-                        response.getValue() == null ? null : response.getValue().getNextMarker(), finalPageSize, value);
-                BlobLayoutInternal layout = response.getValue();
+            ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
+                = sendRequest(operation, null, BlobStorageException.class);
+            BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
+            BlobLayout publicValue = value == null
+                ? null
+                : new BlobLayout(value.getRanges(), null,
+                    response.getValue() == null ? null : response.getValue().getNextMarker(), finalPageSize, value);
+            BlobLayoutInternal layout = response.getValue();
 
-                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    publicValue == null ? Collections.emptyList() : Collections.singletonList(publicValue),
-                    layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
-            };
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                publicValue == null ? Collections.emptyList() : Collections.singletonList(publicValue),
+                layout == null ? null : layout.getNextMarker(), response.getDeserializedHeaders());
+        };
 
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }

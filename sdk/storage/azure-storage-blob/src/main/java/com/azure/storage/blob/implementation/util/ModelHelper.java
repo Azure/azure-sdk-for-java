@@ -40,6 +40,7 @@ import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobLayout;
 import com.azure.storage.blob.models.BlobLayoutInfo;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import com.azure.storage.blob.models.BlobProperties;
@@ -500,7 +501,7 @@ public final class ModelHelper {
      * @param layout The generated layout response.
      * @return The public blob layout.
      */
-    public static com.azure.storage.blob.models.BlobLayout transformBlobLayout(BlobLayoutInternal layout) {
+    public static BlobLayout transformBlobLayout(BlobLayoutInternal layout) {
         if (layout == null) {
             return null;
         }
@@ -525,8 +526,7 @@ public final class ModelHelper {
             }
         }
 
-        return new com.azure.storage.blob.models.BlobLayout(ranges, layout.getMarker(), layout.getNextMarker(),
-            layout.getMaxResults());
+        return new BlobLayout(ranges, layout.getMarker(), layout.getNextMarker(), layout.getMaxResults());
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
