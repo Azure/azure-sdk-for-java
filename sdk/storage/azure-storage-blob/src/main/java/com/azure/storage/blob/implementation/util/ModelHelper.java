@@ -427,72 +427,34 @@ public final class ModelHelper {
             return null;
         }
 
-        BlobLayoutInternal layout = response.getValue();
-        Map<Integer, String> endpoints = new HashMap<>();
-        if (layout != null && layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
-            for (BlobLayoutEndpointsEndpointItem endpoint : layout.getEndpoints().getEndpoint()) {
-                if (endpoint != null) {
-                    endpoints.put(endpoint.getIndex(), endpoint.getValue());
-                }
+        // Substituting an empty header set for missing headers lets every property below be read unconditionally,
+        // as each generated getter returns null when its header is absent.
+        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders() == null
+            ? new BlobsGetLayoutHeaders(new HttpHeaders())
+            : response.getDeserializedHeaders();
 
-            }
-        }
-
-        List<BlobLayoutRange> ranges = new ArrayList<>();
-        if (layout != null && layout.getRanges() != null && layout.getRanges().getRange() != null) {
-            for (BlobLayoutRangesRangeItem range : layout.getRanges().getRange()) {
-                if (range != null) {
-                    ranges
-                        .add(new BlobLayoutRange(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1),
-                            endpoints.get(range.getEndpointIndex())));
-                }
-            }
-        }
-
-        BlobsGetLayoutHeaders headers = response.getDeserializedHeaders();
-        BlobImmutabilityPolicy immutabilityPolicy = null;
-        if (headers != null) {
-            immutabilityPolicy = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(headers.getXMsImmutabilityPolicyUntilDate())
                 .setPolicyMode(headers.getXMsImmutabilityPolicyMode());
-        }
 
-        return new BlobLayoutInfo(ranges, headers == null ? null : headers.getLastModified(),
-            headers == null ? null : headers.getXMsCreationTime(), headers == null ? null : headers.getXMsMeta(),
-            headers == null ? null : getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
-            headers == null ? null : getObjectReplicationSourcePolicies(headers.getXMsOr()),
-            headers == null ? null : headers.getXMsBlobType(),
-            headers == null ? null : headers.getXMsCopyCompletionTime(),
-            headers == null ? null : headers.getXMsCopyStatusDescription(),
-            headers == null ? null : headers.getXMsCopyId(), headers == null ? null : headers.getXMsCopyProgress(),
-            headers == null ? null : headers.getXMsCopySource(), headers == null ? null : headers.getXMsCopyStatus(),
-            headers == null ? null : headers.getXMsLeaseDuration(), headers == null ? null : headers.getXMsLeaseState(),
-            headers == null ? null : headers.getXMsLeaseStatus(), headers == null ? null : headers.getContentLength(),
-            headers == null ? null : headers.getContentType(), headers == null ? null : headers.getETag(),
-            headers == null ? null : headers.getContentMD5(), headers == null ? null : headers.getContentEncoding(),
-            headers == null ? null : headers.getContentDisposition(),
-            headers == null ? null : headers.getContentLanguage(), headers == null ? null : headers.getCacheControl(),
-            headers == null ? null : headers.getXMsBlobSequenceNumber(),
-            headers == null ? null : headers.getAcceptRanges(),
-            headers == null ? null : headers.getXMsBlobCommittedBlockCount(),
-            headers == null ? null : headers.isXMsServerEncrypted(),
-            headers == null ? null : headers.getXMsEncryptionKeySha256(),
-            headers == null ? null : headers.getXMsEncryptionScope(),
-            headers == null ? null : headers.getXMsAccessTier(),
-            headers == null ? null : headers.isXMsAccessTierInferred(),
-            headers == null ? null : headers.getXMsSmartAccessTier(),
-            headers == null ? null : headers.getXMsArchiveStatus(),
-            headers == null ? null : headers.getXMsAccessTierChangeTime(),
-            headers == null ? null : headers.getXMsVersionId(),
-            headers == null ? null : headers.isXMsIsCurrentVersion(), headers == null ? null : headers.getXMsTagCount(),
-            headers == null ? null : headers.getXMsExpiryTime(), headers == null ? null : headers.isXMsBlobSealed(),
-            headers == null ? null : headers.getXMsRehydratePriority(),
-            headers == null ? null : headers.getXMsLastAccessTime(), immutabilityPolicy,
-            headers == null ? null : headers.isXMsLegalHold(),
-            headers == null ? null : headers.getXMsBlobContentLength(),
-            headers == null ? null : headers.getXMsBlobContentType(),
-            headers == null ? null : headers.getXMsBlobContentEncoding(),
-            headers == null ? null : headers.getXMsBlobContentMd5(),
-            headers == null ? null : headers.getXMsBlobCreationTime());
+        return new BlobLayoutInfo(transformBlobLayoutRanges(response.getValue()), headers.getLastModified(),
+            headers.getXMsCreationTime(), headers.getXMsMeta(),
+            getObjectReplicationDestinationPolicyId(headers.getXMsOr()),
+            getObjectReplicationSourcePolicies(headers.getXMsOr()), headers.getXMsBlobType(),
+            headers.getXMsCopyCompletionTime(), headers.getXMsCopyStatusDescription(), headers.getXMsCopyId(),
+            headers.getXMsCopyProgress(), headers.getXMsCopySource(), headers.getXMsCopyStatus(),
+            headers.getXMsLeaseDuration(), headers.getXMsLeaseState(), headers.getXMsLeaseStatus(),
+            headers.getContentLength(), headers.getContentType(), headers.getETag(), headers.getContentMD5(),
+            headers.getContentEncoding(), headers.getContentDisposition(), headers.getContentLanguage(),
+            headers.getCacheControl(), headers.getXMsBlobSequenceNumber(), headers.getAcceptRanges(),
+            headers.getXMsBlobCommittedBlockCount(), headers.isXMsServerEncrypted(),
+            headers.getXMsEncryptionKeySha256(), headers.getXMsEncryptionScope(), headers.getXMsAccessTier(),
+            headers.isXMsAccessTierInferred(), headers.getXMsSmartAccessTier(), headers.getXMsArchiveStatus(),
+            headers.getXMsAccessTierChangeTime(), headers.getXMsVersionId(), headers.isXMsIsCurrentVersion(),
+            headers.getXMsTagCount(), headers.getXMsExpiryTime(), headers.isXMsBlobSealed(),
+            headers.getXMsRehydratePriority(), headers.getXMsLastAccessTime(), immutabilityPolicy,
+            headers.isXMsLegalHold(), headers.getXMsBlobContentLength(), headers.getXMsBlobContentType(),
+            headers.getXMsBlobContentEncoding(), headers.getXMsBlobContentMd5(), headers.getXMsBlobCreationTime());
     }
 
     /**
@@ -506,27 +468,34 @@ public final class ModelHelper {
             return null;
         }
 
-        Map<Integer, String> endpoints = new HashMap<>();
+        return new BlobLayout(transformBlobLayoutRanges(layout), layout.getMarker(), layout.getNextMarker(),
+            layout.getMaxResults());
+    }
+
+    private static List<BlobLayoutRange> transformBlobLayoutRanges(BlobLayoutInternal layout) {
+        List<BlobLayoutRange> layoutRanges = new ArrayList<>();
+        if (layout == null || layout.getRanges() == null || layout.getRanges().getRange() == null) {
+            return layoutRanges;
+        }
+
+        Map<Integer, String> endpointsByIndex = new HashMap<>();
         if (layout.getEndpoints() != null && layout.getEndpoints().getEndpoint() != null) {
-            for (BlobLayoutEndpointsEndpointItem endpoint : layout.getEndpoints().getEndpoint()) {
-                if (endpoint != null) {
-                    endpoints.put(endpoint.getIndex(), endpoint.getValue());
+            for (BlobLayoutEndpointsEndpointItem endpointItem : layout.getEndpoints().getEndpoint()) {
+                if (endpointItem != null) {
+                    endpointsByIndex.put(endpointItem.getIndex(), endpointItem.getValue());
                 }
             }
         }
 
-        List<BlobLayoutRange> ranges = new ArrayList<>();
-        if (layout.getRanges() != null && layout.getRanges().getRange() != null) {
-            for (BlobLayoutRangesRangeItem range : layout.getRanges().getRange()) {
-                if (range != null) {
-                    ranges
-                        .add(new BlobLayoutRange(new HttpRange(range.getStart(), range.getEnd() - range.getStart() + 1),
-                            endpoints.get(range.getEndpointIndex())));
-                }
+        for (BlobLayoutRangesRangeItem rangeItem : layout.getRanges().getRange()) {
+            if (rangeItem != null) {
+                HttpRange httpRange
+                    = new HttpRange(rangeItem.getStart(), rangeItem.getEnd() - rangeItem.getStart() + 1);
+                layoutRanges.add(new BlobLayoutRange(httpRange, endpointsByIndex.get(rangeItem.getEndpointIndex())));
             }
         }
 
-        return new BlobLayout(ranges, layout.getMarker(), layout.getNextMarker(), layout.getMaxResults());
+        return layoutRanges;
     }
 
     public static BlobQueryHeaders transformQueryHeaders(BlobsQueryHeaders headers, HttpHeaders rawHeaders) {
