@@ -5,6 +5,7 @@ package com.azure.search.documents.knowledgebases.implementation;
 
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.ReadValueCallback;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityCompletedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseActivityStartedStreamEvent;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseAnswerCompletedStreamEvent;
@@ -59,17 +60,13 @@ public final class KnowledgeBaseRetrievalStreamEventConverter {
         }
     }
 
-    private static KnowledgeBaseRetrievalStreamEvent read(String eventName, String data, EventReader eventReader) {
+    private static KnowledgeBaseRetrievalStreamEvent read(String eventName, String data,
+        ReadValueCallback<JsonReader, KnowledgeBaseRetrievalStreamEvent> eventReader) {
         try (JsonReader reader = JsonProviders.createReader(data)) {
             return eventReader.read(reader);
         } catch (IOException exception) {
             throw new UncheckedIOException("Failed to decode knowledge base retrieval stream event: " + eventName,
                 exception);
         }
-    }
-
-    @FunctionalInterface
-    private interface EventReader {
-        KnowledgeBaseRetrievalStreamEvent read(JsonReader reader) throws IOException;
     }
 }
