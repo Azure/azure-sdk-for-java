@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.horizondb.fluent.HorizonDbManagementClient;
+import com.azure.resourcemanager.horizondb.implementation.HorizonDbAdministratorsImpl;
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbClustersImpl;
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbFirewallRulesImpl;
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbManagementClientBuilder;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.horizondb.implementation.HorizonDbPrivateEndpoi
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbPrivateLinkResourcesImpl;
 import com.azure.resourcemanager.horizondb.implementation.HorizonDbReplicasImpl;
 import com.azure.resourcemanager.horizondb.implementation.OperationsImpl;
+import com.azure.resourcemanager.horizondb.models.HorizonDbAdministrators;
 import com.azure.resourcemanager.horizondb.models.HorizonDbClusters;
 import com.azure.resourcemanager.horizondb.models.HorizonDbFirewallRules;
 import com.azure.resourcemanager.horizondb.models.HorizonDbParameterGroups;
@@ -52,7 +54,7 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to HorizonDbManager.
- * Azure Resource Provider API for managing HorizonDb clusters, pools, replicas, and firewall rules.
+ * Azure Resource Provider API for managing HorizonDB clusters, pools, replicas, and firewall rules.
  */
 public final class HorizonDbManager {
     private Operations operations;
@@ -70,6 +72,8 @@ public final class HorizonDbManager {
     private HorizonDbPrivateLinkResources horizonDbPrivateLinkResources;
 
     private HorizonDbParameterGroups horizonDbParameterGroups;
+
+    private HorizonDbAdministrators horizonDbAdministrators;
 
     private final HorizonDbManagementClient clientObject;
 
@@ -384,6 +388,19 @@ public final class HorizonDbManager {
                 = new HorizonDbParameterGroupsImpl(clientObject.getHorizonDbParameterGroups(), this);
         }
         return horizonDbParameterGroups;
+    }
+
+    /**
+     * Gets the resource collection API of HorizonDbAdministrators. It manages HorizonDbAdministrator.
+     * 
+     * @return Resource collection API of HorizonDbAdministrators.
+     */
+    public HorizonDbAdministrators horizonDbAdministrators() {
+        if (this.horizonDbAdministrators == null) {
+            this.horizonDbAdministrators
+                = new HorizonDbAdministratorsImpl(clientObject.getHorizonDbAdministrators(), this);
+        }
+        return horizonDbAdministrators;
     }
 
     /**

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.bulkactions.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendationParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.OptimizationPreference;
@@ -20,19 +21,24 @@ public final class ExecuteDeleteContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDeleteContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":825369958,\"retryWindowInMinutes\":1635783635,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true},\"resources\":{\"ids\":[\"j\",\"hvpmoue\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"zxibqeoj\",\"resourceContext\":\"xqbzvddntwnd\"},{\"resourceId\":\"icbtwnpzao\",\"resourceContext\":\"vuhrhcffcyddgl\"},{\"resourceId\":\"jthjqkwpyei\",\"resourceContext\":\"xmqci\"},{\"resourceId\":\"q\",\"resourceContext\":\"hkh\"}]},\"forceDeletion\":true}")
+            "{\"executionParameters\":{\"optimizationPreference\":\"CostAvailabilityBalanced\",\"retryPolicy\":{\"retryCount\":1558612469,\"retryWindowInMinutes\":1037618415,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"cbkhajdeyeamdph\",\"g\",\"lpbuxwgipwhonowk\"],\"desiredSizes\":[\"wankixzbi\",\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"],\"availabilityZones\":true}},\"resources\":{\"ids\":[\"ohoqqnwvlryav\",\"hheunmmqhgyx\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"noc\",\"resourceContext\":\"koklya\"},{\"resourceId\":\"uconuqszfkbey\",\"resourceContext\":\"ewrmjmwvvjektc\"}]},\"forceDeletion\":false}")
             .toObject(ExecuteDeleteContent.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(825369958, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1635783635, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(1558612469, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1037618415, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("j", model.resources().ids().get(0));
-        Assertions.assertEquals("zxibqeoj", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("xqbzvddntwnd", model.resourcesWithContext().resources().get(0).resourceContext());
-        Assertions.assertTrue(model.forceDeletion());
+        Assertions.assertEquals("cbkhajdeyeamdph",
+            model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("wankixzbi",
+            model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("ohoqqnwvlryav", model.resources().ids().get(0));
+        Assertions.assertEquals("noc", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("koklya", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertFalse(model.forceDeletion());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,28 +46,35 @@ public final class ExecuteDeleteContentTests {
         ExecuteDeleteContent model = new ExecuteDeleteContent()
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(825369958)
-                        .withRetryWindowInMinutes(1635783635)
-                        .withOnFailureAction(ResourceOperationType.START))
-                    .withVerifyVmAgentHealth(true))
-            .withResources(new Resources().withIds(Arrays.asList("j", "hvpmoue")))
+                    .withRetryPolicy(new RetryPolicy().withRetryCount(1558612469)
+                        .withRetryWindowInMinutes(1037618415)
+                        .withOnFailureAction(ResourceOperationType.DEALLOCATE))
+                    .withVerifyVmAgentHealth(true)
+                    .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                        .withDesiredLocations(Arrays.asList("cbkhajdeyeamdph", "g", "lpbuxwgipwhonowk"))
+                        .withDesiredSizes(Arrays.asList("wankixzbi", "jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh"))
+                        .withAvailabilityZones(true)))
+            .withResources(new Resources().withIds(Arrays.asList("ohoqqnwvlryav", "hheunmmqhgyx")))
             .withResourcesWithContext(new ResourcesWithContext().withResources(
-                Arrays.asList(new ResourceWithContext().withResourceId("zxibqeoj").withResourceContext("xqbzvddntwnd"),
-                    new ResourceWithContext().withResourceId("icbtwnpzao").withResourceContext("vuhrhcffcyddgl"),
-                    new ResourceWithContext().withResourceId("jthjqkwpyei").withResourceContext("xmqci"),
-                    new ResourceWithContext().withResourceId("q").withResourceContext("hkh"))))
-            .withForceDeletion(true);
+                Arrays.asList(new ResourceWithContext().withResourceId("noc").withResourceContext("koklya"),
+                    new ResourceWithContext().withResourceId("uconuqszfkbey").withResourceContext("ewrmjmwvvjektc"))))
+            .withForceDeletion(false);
         model = BinaryData.fromObject(model).toObject(ExecuteDeleteContent.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
             model.executionParameters().optimizationPreference());
-        Assertions.assertEquals(825369958, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(1635783635, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(1558612469, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1037618415, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DEALLOCATE,
             model.executionParameters().retryPolicy().onFailureAction());
         Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("j", model.resources().ids().get(0));
-        Assertions.assertEquals("zxibqeoj", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("xqbzvddntwnd", model.resourcesWithContext().resources().get(0).resourceContext());
-        Assertions.assertTrue(model.forceDeletion());
+        Assertions.assertEquals("cbkhajdeyeamdph",
+            model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("wankixzbi",
+            model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
+        Assertions.assertEquals("ohoqqnwvlryav", model.resources().ids().get(0));
+        Assertions.assertEquals("noc", model.resourcesWithContext().resources().get(0).resourceId());
+        Assertions.assertEquals("koklya", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertFalse(model.forceDeletion());
     }
 }

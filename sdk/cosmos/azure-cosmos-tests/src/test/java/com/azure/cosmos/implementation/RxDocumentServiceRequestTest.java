@@ -3,21 +3,44 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.http.HttpTransportSerializer;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
 public class RxDocumentServiceRequestTest {
+
+    // activityId is regenerated for the clone and isDisposed is reset by its constructor. All other fields are copied.
+    // Keeping the intentional exceptions in this inventory makes adding a field fail this test until clone() is audited.
+    private static final Set<String> CLONE_ACCOUNTED_FIELDS = new HashSet<>(Arrays.asList(
+        "clientContext", "forcePartitionKeyRangeRefresh", "forceCollectionRoutingMapRefresh", "resourceId",
+        "resourceType", "headers", "continuation", "isMedia", "isNameBased", "operationType", "resourceAddress",
+        "forceNameCacheRefresh", "endpointOverride", "activityId", "originalSessionToken", "partitionKeyRangeIdentity",
+        "defaultReplicaIndex", "isAddressRefresh", "isForcedAddressRefresh", "requestContext",
+        "faultInjectionRequestContext", "partitionKeyInternal", "partitionKeyDefinition", "effectivePartitionKey",
+        "feedRange", "effectiveRange", "numberOfItemsInBatchRequest", "contentAsByteArray", "useGatewayMode",
+        "useThinClientMode", "isDisposed", "entityId", "isFeed", "authorizationTokenType", "properties",
+        "throughputControlGroupName", "intendedCollectionRidPassedIntoSDK", "isBarrierRequest", "responseTimeout",
+        "nonIdempotentWriteRetriesEnabled", "hasFeedRangeFilteringBeenApplied",
+        "isPerPartitionAutomaticFailoverEnabledAndWriteRequest", "httpTransportSerializer"));
 
     private final static String DOCUMENT_DEFINITION = "{ " + "\"id\": \"%s\", " + "\"mypk\": \"%s\", "
             + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]" + "}";
@@ -439,6 +462,54 @@ public class RxDocumentServiceRequestTest {
         assertThat(original.getHeaders().containsKey("x-new-header")).isFalse();
         assertThat(cloned.getHeaders().get("x-test-header")).isEqualTo("cloned-value");
         assertThat(cloned.getHeaders().get("x-new-header")).isEqualTo("new-value");
+    }
+
+    @Test(groups = { "unit" })
+    public void cloneCopiesRequestScopedFields() {
+        RxDocumentServiceRequest original = RxDocumentServiceRequest.createFromName(
+            mockDiagnosticsClientContext(),
+            OperationType.Query,
+            "/dbs/db/colls/coll/docs",
+            ResourceType.Document);
+        original.setAddressRefresh(true, true);
+        original.setEffectivePartitionKey("effective-partition-key");
+        original.setNumberOfItemsInBatchRequest(42);
+        original.entityId = "entity-id";
+        original.authorizationTokenType = AuthorizationTokenType.ResourceToken;
+        original.properties = new HashedMap<>();
+        original.properties.put("excludedRegions", Arrays.asList("region1"));
+        original.throughputControlGroupName = "throughput-control-group";
+        original.intendedCollectionRidPassedIntoSDK = true;
+        original.isBarrierRequest = true;
+        original.setResponseTimeout(Duration.ofSeconds(5));
+        HttpTransportSerializer transportSerializer = Mockito.mock(HttpTransportSerializer.class);
+        HttpTransportSerializer defaultTransportSerializer = Mockito.mock(HttpTransportSerializer.class);
+        original.setHttpTransportSerializer(transportSerializer);
+
+        RxDocumentServiceRequest cloned = original.clone();
+
+        assertThat(cloned.isAddressRefresh()).isTrue();
+        assertThat(cloned.shouldForceAddressRefresh()).isTrue();
+        assertThat(cloned.getEffectivePartitionKey()).isEqualTo("effective-partition-key");
+        assertThat(cloned.getNumberOfItemsInBatchRequest()).isEqualTo(42);
+        assertThat(cloned.entityId).isEqualTo("entity-id");
+        assertThat(cloned.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
+        assertThat(cloned.properties).isEqualTo(original.properties).isNotSameAs(original.properties);
+        assertThat(cloned.throughputControlGroupName).isEqualTo("throughput-control-group");
+        assertThat(cloned.intendedCollectionRidPassedIntoSDK).isTrue();
+        assertThat(cloned.isBarrierRequest).isTrue();
+        assertThat(cloned.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
+        assertThat(cloned.getEffectiveHttpTransportSerializer(defaultTransportSerializer)).isSameAs(transportSerializer);
+    }
+
+    @Test(groups = { "unit" })
+    public void cloneAccountsForEveryInstanceField() {
+        Set<String> instanceFields = Arrays.stream(RxDocumentServiceRequest.class.getDeclaredFields())
+            .filter(field -> !Modifier.isStatic(field.getModifiers()))
+            .map(Field::getName)
+            .collect(Collectors.toSet());
+
+        assertThat(CLONE_ACCOUNTED_FIELDS).isEqualTo(instanceFields);
     }
 
     @Test(groups = { "unit" })

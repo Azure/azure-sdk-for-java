@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Properties of a HorizonDb parameter group.
+ * Properties of a HorizonDB parameter group.
  */
 @Fluent
 public final class HorizonDbParameterGroupProperties implements JsonSerializable<HorizonDbParameterGroupProperties> {

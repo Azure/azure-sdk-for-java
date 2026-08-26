@@ -46,7 +46,7 @@ public class CertificateUtilTest {
     private void assertCertNumberInCertChain(String pemFile, int expectedNumber) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         String pemString = new String(Files.readAllBytes(Paths.get(pemFile)), StandardCharsets.UTF_8);
-        assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString).length);
+        assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString, false).length);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class CertificateUtilTest {
         String unterminatedPem = pemString.substring(0, pemString.indexOf("-----END CERTIFICATE-----"));
 
         CertificateException exception = assertThrows(CertificateException.class,
-            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(unterminatedPem));
+            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(unterminatedPem, false));
 
         assertEquals("Certificate PEM block is not terminated.", exception.getMessage());
     }
@@ -65,7 +65,7 @@ public class CertificateUtilTest {
         String nestedPem = "-----BEGIN CERTIFICATE-----\n" + readCertificatePem();
 
         CertificateException exception = assertThrows(CertificateException.class,
-            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(nestedPem));
+            () -> CertificateUtil.loadCertificatesFromSecretBundleValue(nestedPem, false));
 
         assertEquals("Certificate PEM block contains a nested BEGIN CERTIFICATE marker.", exception.getMessage());
     }
