@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedNamespacesListByManagedClusterSamples {
     /*
-     * x-ms-original-file: 2026-05-01/ManagedNamespacesList.json
+     * x-ms-original-file: 2026-06-01/ManagedNamespacesList.json
      */
     /**
      * Sample code: List namespaces by Managed Cluster.

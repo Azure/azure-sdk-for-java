@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersStartSamples {
     /*
-     * x-ms-original-file: 2026-05-01/ManagedClustersStart.json
+     * x-ms-original-file: 2026-06-01/ManagedClustersStart.json
      */
     /**
      * Sample code: Start Managed Cluster.

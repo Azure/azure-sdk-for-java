@@ -677,7 +677,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()),
                     requestOptions);
-            validateResourceResponseFailure(readObservable, failureValidator);
+            validateResourceResponseFailure(readObservable, failureValidator, CONSISTENCY_TEST_TIMEOUT);
         } finally {
             safeClose(writeClient);
         }

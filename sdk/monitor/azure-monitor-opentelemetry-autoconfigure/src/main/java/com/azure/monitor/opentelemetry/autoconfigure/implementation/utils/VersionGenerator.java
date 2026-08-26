@@ -14,6 +14,7 @@ public final class VersionGenerator {
     private static final String UNKNOWN_VERSION_VALUE = "unknown";
 
     private static final String sdkVersionString;
+    private static final String sdkVersionNumber;
 
     static {
         String componentName = null;
@@ -41,8 +42,9 @@ public final class VersionGenerator {
             componentVersion = otelAutoconfigureProperties.get("version");
         }
 
+        sdkVersionNumber = componentVersion != null ? componentVersion : UNKNOWN_VERSION_VALUE;
         sdkVersionString = getPrefix() + "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel"
-            + getOpenTelemetryApiVersion() + ":" + componentName + componentVersion;
+            + getOpenTelemetryApiVersion() + ":" + componentName + sdkVersionNumber;
     }
 
     private static String getPrefix() {
@@ -80,6 +82,15 @@ public final class VersionGenerator {
      */
     public static String getSdkVersion() {
         return sdkVersionString;
+    }
+
+    /**
+     * Returns the version of the Azure Monitor distro represented in {@link #getSdkVersion()}.
+     *
+     * @return the Azure Monitor distro version.
+     */
+    public static String getSdkVersionNumber() {
+        return sdkVersionNumber;
     }
 
     private static String getJavaVersion() {

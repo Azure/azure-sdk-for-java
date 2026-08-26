@@ -28,7 +28,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
     @Test
     public void testTestAllRoutesWithResponse() throws Exception {
         String responseStr
-            = "{\"routes\":[{\"properties\":{\"name\":\"p\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"stwit\",\"endpointNames\":[\"hevxcced\",\"pnmdyodnwzxltjcv\",\"hlt\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"cxnavv\",\"source\":\"DeviceMessages\",\"condition\":\"ibyqunyowxwlmdj\",\"endpointNames\":[\"vfgbvfvpdboda\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"sjq\",\"source\":\"DeviceMessages\",\"condition\":\"rribd\",\"endpointNames\":[\"b\",\"ipqkghvxndzwm\"],\"isEnabled\":true}}]}";
+            = "{\"routes\":[{\"properties\":{\"name\":\"byqunyow\",\"source\":\"DeviceLifecycleEvents\",\"condition\":\"mdjrkvfgbvfvp\",\"endpointNames\":[\"odacizs\",\"q\",\"hkr\"],\"isEnabled\":false}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,26 +38,22 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TestAllRoutesResult response = manager.iotHubResources()
-            .testAllRoutesWithResponse("dcngqqmoakufgmj", "rwr",
-                new TestAllRoutesInput().withRoutingSource(RoutingSource.DIGITAL_TWIN_CHANGE_EVENTS)
-                    .withMessage(new RoutingMessage().withBody("aenuuz")
-                        .withAppProperties(mapOf("iefozbhdmsml", "bminrfdwoyuhhzi", "rmaequ", "zqhof"))
-                        .withSystemProperties(
-                            mapOf("z", "xicslfao", "kaivwit", "iyylhalnswhccsp", "bwemhairs", "scywuggwoluhc")))
-                    .withTwin(new RoutingTwin().withTags(mapOf("ggicccnxqhue", "\"datadwmsweypqwd\""))
-                        .withProperties(new RoutingTwinProperties()
-                            .withDesired(mapOf("zrncsdt", "\"datatlstvlzywem\"", "bsfgytguslfea", "\"datalusiy\"",
-                                "qukyhejhzi", "\"datacy\"", "srp", "\"dataxgfpelolppv\""))
-                            .withReported(mapOf("swibyr", "\"datajzraehtwdwrf\"", "h", "\"datadl\"")))),
+            .testAllRoutesWithResponse("fgytguslfeadcyg", "ukyhejhzis",
+                new TestAllRoutesInput().withRoutingSource(RoutingSource.DEVICE_MESSAGES)
+                    .withMessage(new RoutingMessage().withBody("lolp")
+                        .withAppProperties(mapOf("vu", "srp", "r", "zraehtwd"))
+                        .withSystemProperties(mapOf("rcdlbhshfwpr", "wib", "hevxcced", "cstwity")))
+                    .withTwin(new RoutingTwin().withTags("\"datamd\"")
+                        .withProperties(new RoutingTwinProperties().withDesired("\"datanwzxltjcv\"")
+                            .withReported("\"dataltiugcxnavv\""))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("p", response.routes().get(0).properties().name());
-        Assertions.assertEquals(RoutingSource.DEVICE_JOB_LIFECYCLE_EVENTS,
-            response.routes().get(0).properties().source());
-        Assertions.assertEquals("stwit", response.routes().get(0).properties().condition());
-        Assertions.assertEquals("hevxcced", response.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertTrue(response.routes().get(0).properties().isEnabled());
+        Assertions.assertEquals("byqunyow", response.routes().get(0).properties().name());
+        Assertions.assertEquals(RoutingSource.DEVICE_LIFECYCLE_EVENTS, response.routes().get(0).properties().source());
+        Assertions.assertEquals("mdjrkvfgbvfvp", response.routes().get(0).properties().condition());
+        Assertions.assertEquals("odacizs", response.routes().get(0).properties().endpointNames().get(0));
+        Assertions.assertFalse(response.routes().get(0).properties().isEnabled());
     }
 
     // Use "Map.of" if available

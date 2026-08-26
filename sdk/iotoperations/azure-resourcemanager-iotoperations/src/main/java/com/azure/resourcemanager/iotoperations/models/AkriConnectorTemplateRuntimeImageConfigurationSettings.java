@@ -28,6 +28,12 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettings
     private AkriConnectorsImagePullPolicy imagePullPolicy;
 
     /*
+     * Optional readiness probe for the connector container. When set, the operator injects this into the pod spec and
+     * uses the pod's `Ready` condition for health reporting instead of crash-based detection.
+     */
+    private AkriConnectorTemplateReadinessProbe readinessProbe;
+
+    /*
      * The number of replicas to be set up.
      */
     private Integer replicas;
@@ -87,6 +93,31 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettings
     public AkriConnectorTemplateRuntimeImageConfigurationSettings
         withImagePullPolicy(AkriConnectorsImagePullPolicy imagePullPolicy) {
         this.imagePullPolicy = imagePullPolicy;
+        return this;
+    }
+
+    /**
+     * Get the readinessProbe property: Optional readiness probe for the connector container. When set, the operator
+     * injects this into the pod spec and uses the pod's `Ready` condition for health reporting instead of crash-based
+     * detection.
+     * 
+     * @return the readinessProbe value.
+     */
+    public AkriConnectorTemplateReadinessProbe readinessProbe() {
+        return this.readinessProbe;
+    }
+
+    /**
+     * Set the readinessProbe property: Optional readiness probe for the connector container. When set, the operator
+     * injects this into the pod spec and uses the pod's `Ready` condition for health reporting instead of crash-based
+     * detection.
+     * 
+     * @param readinessProbe the readinessProbe value to set.
+     * @return the AkriConnectorTemplateRuntimeImageConfigurationSettings object itself.
+     */
+    public AkriConnectorTemplateRuntimeImageConfigurationSettings
+        withReadinessProbe(AkriConnectorTemplateReadinessProbe readinessProbe) {
+        this.readinessProbe = readinessProbe;
         return this;
     }
 
@@ -163,6 +194,7 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettings
         jsonWriter.writeStringField("imageName", this.imageName);
         jsonWriter.writeStringField("imagePullPolicy",
             this.imagePullPolicy == null ? null : this.imagePullPolicy.toString());
+        jsonWriter.writeJsonField("readinessProbe", this.readinessProbe);
         jsonWriter.writeNumberField("replicas", this.replicas);
         jsonWriter.writeJsonField("registrySettings", this.registrySettings);
         jsonWriter.writeJsonField("tagDigestSettings", this.tagDigestSettings);
@@ -192,6 +224,9 @@ public final class AkriConnectorTemplateRuntimeImageConfigurationSettings
                 } else if ("imagePullPolicy".equals(fieldName)) {
                     deserializedAkriConnectorTemplateRuntimeImageConfigurationSettings.imagePullPolicy
                         = AkriConnectorsImagePullPolicy.fromString(reader.getString());
+                } else if ("readinessProbe".equals(fieldName)) {
+                    deserializedAkriConnectorTemplateRuntimeImageConfigurationSettings.readinessProbe
+                        = AkriConnectorTemplateReadinessProbe.fromJson(reader);
                 } else if ("replicas".equals(fieldName)) {
                     deserializedAkriConnectorTemplateRuntimeImageConfigurationSettings.replicas
                         = reader.getNullable(JsonReader::getInt);

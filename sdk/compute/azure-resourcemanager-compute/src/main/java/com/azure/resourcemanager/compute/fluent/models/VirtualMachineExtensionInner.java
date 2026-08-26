@@ -190,7 +190,9 @@ public final class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     * Get the typeHandlerVersion property: Specifies the Major.Minor version of the script handler. Customer is able to
+     * specify only the Major.Minor version of an extension, Azure platform will deliver the latest Patch.Hotfix version
+     * in the Major.Minor series.
      * 
      * @return the typeHandlerVersion value.
      */
@@ -199,7 +201,9 @@ public final class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
+     * Set the typeHandlerVersion property: Specifies the Major.Minor version of the script handler. Customer is able to
+     * specify only the Major.Minor version of an extension, Azure platform will deliver the latest Patch.Hotfix version
+     * in the Major.Minor series.
      * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineExtensionInner object itself.

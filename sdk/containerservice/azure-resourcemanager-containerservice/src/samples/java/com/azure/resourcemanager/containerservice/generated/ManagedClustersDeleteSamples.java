@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerservice.generated;
  */
 public final class ManagedClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01/ManagedClustersDelete.json
+     * x-ms-original-file: 2026-06-01/ManagedClustersDelete.json
      */
     /**
      * Sample code: Delete Managed Cluster.

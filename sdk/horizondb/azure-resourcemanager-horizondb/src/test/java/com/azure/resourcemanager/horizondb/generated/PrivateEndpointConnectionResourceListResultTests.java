@@ -13,14 +13,14 @@ public final class PrivateEndpointConnectionResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"z\",\"yvvtpgvdfgio\"],\"privateEndpoint\":{\"id\":\"tutqxlngxlefgug\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"xdqmidtthzrvqdra\",\"actionsRequired\":\"jybige\"},\"provisioningState\":\"Creating\"},\"id\":\"bowsk\",\"name\":\"nyktzlcuiy\",\"type\":\"gqywgndrv\"}],\"nextLink\":\"hzgpphrcgyncocpe\"}")
+            "{\"value\":[{\"properties\":{\"groupIds\":[\"cp\"],\"privateEndpoint\":{\"id\":\"maajrmvdjwzrlo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"whijcoejctbza\",\"actionsRequired\":\"qsycbkbfkgu\"},\"provisioningState\":\"Creating\"},\"id\":\"xxppofm\",\"name\":\"axcfjpgddtocjjx\",\"type\":\"vpmouexhdzxib\"},{\"properties\":{\"groupIds\":[\"nxqbzvddn\",\"wndeicbtwnp\",\"aoqvuh\",\"hcffcyddglmjthjq\"],\"privateEndpoint\":{\"id\":\"yeicxmqciwqvhk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"igdtopbob\",\"actionsRequired\":\"ghmewuam\"},\"provisioningState\":\"Failed\"},\"id\":\"z\",\"name\":\"yvvtpgvdfgio\",\"type\":\"kftutqxlngxlefg\"}],\"nextLink\":\"nxkrx\"}")
             .toObject(PrivateEndpointConnectionResourceListResult.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xdqmidtthzrvqdra",
+        Assertions.assertEquals("whijcoejctbza",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("jybige",
+        Assertions.assertEquals("qsycbkbfkgu",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.nextLink());
+        Assertions.assertEquals("nxkrx", model.nextLink());
     }
 }

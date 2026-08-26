@@ -22,7 +22,7 @@ public final class AccessRule implements JsonSerializable<AccessRule> {
     private String name;
 
     /*
-     * The properties property.
+     * Properties of the access rule
      */
     private AccessRuleProperties properties;
 
@@ -42,7 +42,7 @@ public final class AccessRule implements JsonSerializable<AccessRule> {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Properties of the access rule.
      * 
      * @return the properties value.
      */

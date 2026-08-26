@@ -14,17 +14,17 @@ public final class EndpointHealthDataListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointHealthDataListResult model = BinaryData.fromString(
-            "{\"value\":[{\"endpointId\":\"ebwpucwwfvo\",\"healthStatus\":\"dead\",\"lastKnownError\":\"euecivyhzceuoj\",\"lastKnownErrorTime\":\"Fri, 06 Aug 2021 17:35:05 GMT\",\"lastSuccessfulSendAttemptTime\":\"Wed, 13 Jan 2021 06:34:52 GMT\",\"lastSendAttemptTime\":\"Mon, 11 Jan 2021 08:00:10 GMT\"}],\"nextLink\":\"otwmcdyt\"}")
+            "{\"value\":[{\"endpointId\":\"btdhxujznbm\",\"healthStatus\":\"unknown\",\"lastKnownError\":\"wpr\",\"lastKnownErrorTime\":\"Sun, 10 Jan 2021 20:10:28 GMT\",\"lastSuccessfulSendAttemptTime\":\"Tue, 11 May 2021 15:12:41 GMT\",\"lastSendAttemptTime\":\"Mon, 01 Feb 2021 23:11:32 GMT\"},{\"endpointId\":\"upjm\",\"healthStatus\":\"healthy\",\"lastKnownError\":\"obbc\",\"lastKnownErrorTime\":\"Fri, 12 Mar 2021 03:03:28 GMT\",\"lastSuccessfulSendAttemptTime\":\"Mon, 01 Nov 2021 16:23:57 GMT\",\"lastSendAttemptTime\":\"Sat, 30 Jan 2021 14:58:59 GMT\"}],\"nextLink\":\"plrbpbewtghf\"}")
             .toObject(EndpointHealthDataListResult.class);
-        Assertions.assertEquals("ebwpucwwfvo", model.value().get(0).endpointId());
-        Assertions.assertEquals(EndpointHealthStatus.DEAD, model.value().get(0).healthStatus());
-        Assertions.assertEquals("euecivyhzceuoj", model.value().get(0).lastKnownError());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-06T17:35:05Z"),
+        Assertions.assertEquals("btdhxujznbm", model.value().get(0).endpointId());
+        Assertions.assertEquals(EndpointHealthStatus.UNKNOWN, model.value().get(0).healthStatus());
+        Assertions.assertEquals("wpr", model.value().get(0).lastKnownError());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-10T20:10:28Z"),
             model.value().get(0).lastKnownErrorTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T06:34:52Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T15:12:41Z"),
             model.value().get(0).lastSuccessfulSendAttemptTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T08:00:10Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T23:11:32Z"),
             model.value().get(0).lastSendAttemptTime());
-        Assertions.assertEquals("otwmcdyt", model.nextLink());
+        Assertions.assertEquals("plrbpbewtghf", model.nextLink());
     }
 }

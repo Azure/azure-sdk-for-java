@@ -1,6 +1,6 @@
 # Release History
 
-## 2.3.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,67 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
+- Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
+  advanced memory-store workflows, and agent optimization.
+- Improved the Fabric IQ sync and async samples with configurable agent names, readable response and annotation
+  output, and reliable asynchronous cleanup.
+
+## 2.4.0 (2026-08-19)
+
+### Features Added
+
+- Agent-to-agent (A2A) tool graduated to general availability. Added `A2ATool` and `A2AToolboxTool` with `A2AProtocolVersion` (values include `V1_0`), plus `ToolType.A2A` and `ToolboxToolType.A2A` discriminator values. The preview `A2APreviewTool` / `A2APreviewToolboxTool` (`a2a_preview`) are retained alongside for backward compatibility.
+- Added `AgentDetails.getStateSource()` and the new `AgentStateSource` enum (`AGENT_INSTANCE_IDENTITY`, `AGENT_BLUEPRINT`) to expose where an agent's operational state is derived from (agent instance identity or agent blueprint).
+- Added `ContainerConfiguration.setRegistryConnectionId(...)` / `getRegistryConnectionId()` for supplying the Foundry project connection that holds the credentials for a private container registry hosting the hosted-agent image. `ContainerConfiguration` is now `@Fluent` instead of `@Immutable`.
+- Added `AgentOptimizationJob.setInputs(...)` and `AgentOptimizationJob.getWarnings()` to configure inputs directly and to read non-fatal warnings emitted during preview optimization.
+- Added `AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW` (`VoiceAgents=V1Preview`) opt-in flag.
+
+### Breaking Changes
+
+- Preview agent-optimization models were renamed to include the `Agent` prefix, and `BetaAgentsClient` / `BetaAgentsAsyncClient` methods (`getOptimizationJob`, `listOptimizationJobs`, `cancelOptimizationJob`, `beginCreateOptimizationJob`, and their async counterparts) now use the renamed types. Notable renames:
+  - `OptimizationJob` → `AgentOptimizationJob`
+  - `OptimizationJobInputs` → `AgentOptimizationJobInputs`
+  - `OptimizationJobListItem` → `AgentOptimizationJobListItem`
+  - `OptimizationJobProgress` → `AgentOptimizationJobProgress`
+  - `OptimizationJobResult` → `AgentOptimizationJobResult`
+  - `OptimizationOptions` → `AgentOptimizationOptions`
+  - `OptimizationCandidate` → `AgentOptimizationCandidate`
+  - `OptimizationDatasetInput` / `OptimizationInlineDatasetInput` / `OptimizationReferenceDatasetInput` / `OptimizationDatasetItem` / `OptimizationDatasetCriterion` / `OptimizationDatasetInputType` → their `AgentOptimization*` counterparts
+  - `OptimizationEvaluatorRef` → `AgentOptimizationEvaluatorRef`
+  - `OptimizationAgentIdentifier` → `OptimizedAgentIdentifier`
+
+### Other Changes
+
+- `WorkflowAgentDefinition` documentation was updated to note that Microsoft Foundry is retiring workflows on December 1, 2026, with a link to the workflow migration guide.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.3.0 (2026-08-06)
+
+### Features Added
+
+- Added `AzureUserSecurityContext` and `AzureCreateResponseOptions.setUserSecurityContext(...)` for supplying application and end-user context to Microsoft Defender for Cloud when creating an Azure response. See [Protecting AI applications](https://aka.ms/TP4AI/Documentation/EndUserContext) for details.
+- Added `AgentIdentityStatus` (values `ACTIVE` and `DISABLED`) and `AgentIdentity.getStatus()` to expose the status of an agent's instance identity or blueprint identity.
+- Added an `allowedCallers` property to many tool models, backed by the new `CallableToolAllowedCaller` enum (`DIRECT`, `PROGRAMMATIC`), so callers can restrict how a tool may be invoked. Supported types include `ApplyPatchToolParameter`, `CodeInterpreterTool`, `CodeInterpreterToolboxTool`, `CustomToolParameter`, `FunctionShellToolParameter`, `FunctionTool`, `McpTool`, and `McpToolboxTool`.
+- Added programmatic tool calling support: new `ProgrammaticToolCallingParameter` tool and `ToolType.PROGRAMMATIC_TOOL_CALLING` value.
+- Toolbox Search graduated to general availability. Added `ToolSearchToolboxTool` and `ToolboxToolType.TOOLBOX_SEARCH` for the GA tool; the preview `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is retained alongside for backward compatibility.
+- Added `McpTool.setTunnelId(...)` / `getTunnelId()` and the same on `McpToolboxTool` to route MCP calls through a Secure MCP Tunnel as an alternative to `serverUrl` or `connectorId`.
+- Added `FunctionTool.setOutputSchema(...)` / `getOutputSchema()` for declaring the JSON schema of a function tool's return payload.
+- Added `OptimizationOptions.setMaxStalls(...)` / `getMaxStalls()` for configuring early-stop behavior of preview agent-optimization jobs.
+- Added `ResponseUsageInputTokensDetails.getCacheWriteTokens()` to expose the number of tokens written to the prompt cache in a response.
+
+### Breaking Changes
+
+- `BetaAgentsClient.createOptimizationJob(OptimizationJob)` and `createOptimizationJob(OptimizationJob, String)` were replaced by long-running operations `beginCreateOptimizationJob(OptimizationJob)` and `beginCreateOptimizationJob(OptimizationJob, String)`, which return `SyncPoller<OptimizationJob, OptimizationJobResult>` instead of `OptimizationJob`. The corresponding `BetaAgentsAsyncClient` methods now return `PollerFlux<OptimizationJob, OptimizationJobResult>`. The protocol method was likewise replaced by `beginCreateOptimizationJob(BinaryData, RequestOptions)` returning `SyncPoller<BinaryData, BinaryData>` / `PollerFlux<BinaryData, BinaryData>`.
+- `ResponseUsageInputTokensDetails` now also carries a `cacheWriteTokens` field. Deserialized instances continue to work, but any code depending on the previous single-field structure should be updated to read the new value.
+
+### Other Changes
+
+- Refined preview annotations. `AgentDefinition` and `CreateAgentVersionInput` are no longer marked `@Beta` at the class level; instead the preview-only fields (for example, `CreateAgentVersionInput.getDefinition()` and `CreateAgentVersionInput.isDraft()`) are individually annotated. Additional preview tool classes such as `A2APreviewTool`, `BingCustomSearchPreviewTool`, `BrowserAutomationPreviewTool`, `FabricIqPreviewTool`, `MemorySearchPreviewTool`, `MicrosoftFabricPreviewTool`, `SharepointPreviewTool`, `WorkIqPreviewTool`, and their toolbox counterparts are now marked `@Beta` so preview surface area is explicit in generated API docs.
+- Reworked internal LRO polling-strategy customizations so that both `BetaMemoryStoresClient` and `BetaAgentsClient` long-running operations inherit the per-client `Foundry-Features` value from the builder pipeline instead of a hardcoded polling-only header. This lets each Beta sub-client's poll GETs carry the same preview opt-ins as its initial request.
+- Regenerated client from the updated TypeSpec specification.
+- Updated version of `openai` client library to `4.45.0`.
 
 ## 2.2.0 (2026-07-01)
 

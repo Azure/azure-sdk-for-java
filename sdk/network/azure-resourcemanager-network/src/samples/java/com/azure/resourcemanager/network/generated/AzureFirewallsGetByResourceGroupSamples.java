@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AzureFirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGetWithAdditionalProperties.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGetWithAdditionalProperties.json
      */
     /**
      * Sample code: Get Azure Firewall With Additional Properties.
@@ -24,7 +24,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGetWithIpGroups.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGetWithIpGroups.json
      */
     /**
      * Sample code: Get Azure Firewall With IpGroups.
@@ -38,7 +38,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGetWithZones.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGetWithZones.json
      */
     /**
      * Sample code: Get Azure Firewall With Zones.
@@ -52,7 +52,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGetWithAfcConfiguration.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGetWithAfcConfiguration.json
      */
     /**
      * Sample code: Get Azure Firewall With AFC Control Plane.
@@ -66,7 +66,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGetWithMgmtSubnet.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGetWithMgmtSubnet.json
      */
     /**
      * Sample code: Get Azure Firewall With management subnet.
@@ -80,7 +80,7 @@ public final class AzureFirewallsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/AzureFirewallGet.json
+     * x-ms-original-file: 2025-09-01/AzureFirewallGet.json
      */
     /**
      * Sample code: Get Azure Firewall.

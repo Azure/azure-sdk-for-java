@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetryPolicy model = BinaryData
-            .fromString(
-                "{\"retryCount\":1913076092,\"retryWindowInMinutes\":1434472255,\"onFailureAction\":\"Create\"}")
+        RetryPolicy model = BinaryData.fromString(
+            "{\"retryCount\":127605943,\"retryWindowInMinutes\":2028392349,\"onFailureAction\":\"GetInstanceView\"}")
             .toObject(RetryPolicy.class);
-        Assertions.assertEquals(1913076092, model.retryCount());
-        Assertions.assertEquals(1434472255, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE, model.onFailureAction());
+        Assertions.assertEquals(127605943, model.retryCount());
+        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withRetryCount(1913076092)
-            .withRetryWindowInMinutes(1434472255)
-            .withOnFailureAction(ResourceOperationType.CREATE);
+        RetryPolicy model = new RetryPolicy().withRetryCount(127605943)
+            .withRetryWindowInMinutes(2028392349)
+            .withOnFailureAction(ResourceOperationType.GET_INSTANCE_VIEW);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(1913076092, model.retryCount());
-        Assertions.assertEquals(1434472255, model.retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.CREATE, model.onFailureAction());
+        Assertions.assertEquals(127605943, model.retryCount());
+        Assertions.assertEquals(2028392349, model.retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.GET_INSTANCE_VIEW, model.onFailureAction());
     }
 }

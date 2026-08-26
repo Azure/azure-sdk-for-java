@@ -4,11 +4,22 @@
 
 ### Features Added
 
+- Added secure key wrap and unwrap operations via `CryptographyClient`/`CryptographyAsyncClient` `secureWrapKey` and `secureUnwrapKey` methods, along with the `SecureKeyWrapAlgorithm`, `SecureWrapResult`, and `SecureUnwrapResult` models. Only supported on Managed HSM with service version `2026-01-01-preview` or newer, and requires a remote-key client.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.11.2 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
 
 ## 4.12.0-beta.1 (2026-07-03)
 
