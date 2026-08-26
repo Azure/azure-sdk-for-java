@@ -74,7 +74,9 @@ public class KnowledgeRetrievalPreviewResponseExample {
                 if (record instanceof KnowledgeBaseModelAnswerSynthesisActivityRecord) {
                     KnowledgeBaseModelAnswerSynthesisActivityRecord synthesis =
                         (KnowledgeBaseModelAnswerSynthesisActivityRecord) record;
-                    System.out.println("  Model: " + synthesis.getModelName());
+                    if (synthesis.getModel() != null) {
+                        System.out.println("  Model: " + synthesis.getModel().getModelName());
+                    }
                     System.out.println("  Input tokens: " + synthesis.getInputTokens());
                     System.out.println("  Output tokens: " + synthesis.getOutputTokens());
                 }

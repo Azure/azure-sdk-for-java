@@ -4,7 +4,37 @@
 
 ### Features Added
 
+- Added support for the `2026-08-01-Preview` service version, which is now the default service version.
+- Added File knowledge source file management APIs on `SearchIndexClient`/`SearchIndexAsyncClient`, including
+  `uploadKnowledgeSourceFileMultipart` and `updateKnowledgeSourceFile`, along with the supporting models
+  `FileUploadMetadata`, `ContentFileDetails`, `UploadKnowledgeSourceFileMultipartRequest`,
+  `UpdateKnowledgeSourceFileRequest`, and `FileKnowledgeSourceExtractionMode`.
+- Added knowledge source query hint and boosting models: `SearchIndexKnowledgeSourceQueryHints`,
+  `SearchIndexKnowledgeSourceBoost`, `SearchIndexKnowledgeSourceBoostKind`,
+  `SearchIndexKnowledgeSourceFieldValueBoost`, `SearchIndexKnowledgeSourceMultiWordExpressionBoost`,
+  `SearchIndexKnowledgeSourceFilterHint`, and `KnowledgeSourceResultsProcessing`.
+- Added knowledge base retrieval models `KnowledgeBaseActivityRecordModel`, `KnowledgeBaseQueryHintProcessing`,
+  `KnowledgeBaseRetrieveDefaults`, and `KnowledgeRetrievalAutoReasoningEffort`.
+- Added `EntraAppAuthentication`, `KnowledgeSourceNetworkAccessMode`, `ServedImage`, and `ListingSearchType` models.
+- Added typed server-sent event `retrieveStream` APIs to `KnowledgeBaseRetrievalClient` and
+  `KnowledgeBaseRetrievalAsyncClient`, reusable `ServerSentEvent` and `ServerSentEventListener` models, and event
+  wrappers derived from `KnowledgeBaseRetrievalStreamEvent`, including `UnknownKnowledgeBaseRetrievalStreamEvent` for
+  forward-compatible handling of unrecognized event names.
+
 ### Breaking Changes
+
+- `WorkIQKnowledgeSource` now takes a `com.azure.search.documents.models.WorkIQKnowledgeSourceParameters`.
+- Removed the offset-based `listIndexesWithSelectedProperties(List<String> select, Integer top, Integer skip, Boolean count)`
+  overload from `SearchIndexClient`/`SearchIndexAsyncClient`. Use `listIndexesWithSelectedProperties()` or
+  `listIndexesWithSelectedProperties(List<String> select)`.
+- Changed `listIndexStatsSummary` overload parameters from `(Integer top, Integer skip, Boolean count)` to
+  `(String search, Integer pageSize, ListingSearchType searchType)`.
+- Changed the `KnowledgeBaseRetrievalClient`/`KnowledgeBaseRetrievalAsyncClient` `retrieve` overload from
+  `retrieve(KnowledgeBaseRetrievalOptions, String)` to
+  `retrieve(KnowledgeBaseRetrievalOptions, String querySourceAuthorization, String queryWorkIQSourceAuthorization)`.
+- Replaced `getModelName()` with `getModel().getModelName()` on `KnowledgeBaseModelAnswerSynthesisActivityRecord`,
+  `KnowledgeBaseModelQueryPlanningActivityRecord`, and `KnowledgeBaseModelWebSummarizationActivityRecord`.
+- Removed the `McpServerToolInclusionMode` and `WorkIQAttribution` models.
 
 ### Bugs Fixed
 
