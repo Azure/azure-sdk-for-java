@@ -35,7 +35,7 @@ public final class BlobLayoutEndpoints implements XmlSerializable<BlobLayoutEndp
 
     /**
      * Get the endpoint property: The Endpoint property.
-     *
+     * 
      * @return the endpoint value.
      */
     @Generated
@@ -45,7 +45,7 @@ public final class BlobLayoutEndpoints implements XmlSerializable<BlobLayoutEndp
 
     /**
      * Set the endpoint property: The Endpoint property.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the BlobLayoutEndpoints object itself.
      */
@@ -76,7 +76,7 @@ public final class BlobLayoutEndpoints implements XmlSerializable<BlobLayoutEndp
 
     /**
      * Reads an instance of BlobLayoutEndpoints from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobLayoutEndpoints if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -89,7 +89,7 @@ public final class BlobLayoutEndpoints implements XmlSerializable<BlobLayoutEndp
 
     /**
      * Reads an instance of BlobLayoutEndpoints from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
