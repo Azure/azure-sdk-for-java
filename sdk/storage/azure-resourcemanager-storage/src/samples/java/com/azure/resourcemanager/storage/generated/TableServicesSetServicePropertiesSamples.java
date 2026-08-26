@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class TableServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TableServicesPut.json
+     * x-ms-original-file: 2026-06-01/TableServicesPut.json
      */
     /**
      * Sample code: TableServicesPut.
