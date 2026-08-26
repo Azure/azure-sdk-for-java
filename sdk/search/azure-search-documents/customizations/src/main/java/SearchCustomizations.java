@@ -97,7 +97,6 @@ public class SearchCustomizations extends Customization {
 
     // The TypeSpec Java emitter compiles and loads only this configured customization class. Keep the premature
     // retrieval stream API customizations isolated so they can be removed when native support is available.
-    private static final String PUBLIC_MODELS_PATH = "src/main/java/com/azure/search/documents/models/";
     private static final String MODELS_PATH = "src/main/java/com/azure/search/documents/knowledgebases/models/";
 
     private static void customizeKnowledgeBaseRetrievalStream(LibraryCustomization libraryCustomization,
@@ -112,9 +111,6 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addStreamModels(LibraryCustomization customization) {
-        customization.getRawEditor().addFile(PUBLIC_MODELS_PATH + "ServerSentEvent.java", serverSentEventSource());
-        customization.getRawEditor()
-            .addFile(PUBLIC_MODELS_PATH + "ServerSentEventListener.java", serverSentEventListenerSource());
         customization.getRawEditor().addFile(MODELS_PATH + "KnowledgeBaseRetrievalStreamEvent.java", baseEventSource());
         customization.getRawEditor()
             .addFile(MODELS_PATH + "UnknownKnowledgeBaseRetrievalStreamEvent.java", unknownEventSource());
@@ -297,83 +293,6 @@ public class SearchCustomizations extends Customization {
                 clazz.addMember(methodWithAuthorizationHeaders);
             }));
     }
-
-    private static String serverSentEventSource() {
-        return header("com.azure.search.documents.models") + "import com.azure.core.annotation.Generated;\n"
-            + "import com.azure.core.annotation.Immutable;\n"
-            + "import com.azure.search.documents.models.implementation.sse.ServerSentEventHelper;\n\n"
-            + "import java.time.Duration;\n\n" + "/**\n"
-            + " * Represents a server-sent event with a typed data payload.\n" + " *\n"
-            + " * <p>An emitted server-sent event contains data and may expose an identifier, event name, comment, "
-            + "and retry interval.\n"
-            + " * The identifier and retry interval represent the effective stream state when the event was "
-            + "dispatched, including\n" + " * values inherited from earlier metadata-only blocks.</p>\n" + " *\n"
-            + " * <p>The identifier and retry interval are protocol metadata only. The client does not reconnect or "
-            + "replay the\n"
-            + " * request. Metadata-only updates received after the latest emitted event aren't exposed as an "
-            + "additional event.</p>\n" + " *\n" + " * @param <T> The type of the event data.\n" + " */\n"
-            + "@Immutable\n" + "public final class ServerSentEvent<T> {\n" + "    @Generated\n"
-            + "    private final String id;\n" + "    @Generated\n" + "    private final String event;\n"
-            + "    @Generated\n" + "    private final T data;\n" + "    @Generated\n"
-            + "    private final String comment;\n" + "    @Generated\n" + "    private final Duration retryAfter;\n\n"
-            + "    static {\n"
-            + "        ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {\n"
-            + "            @Generated\n" + "            @Override\n"
-            + "            public <U> ServerSentEvent<U> create(String id, String event, U data, String comment, "
-            + "Duration retryAfter) {\n"
-            + "                return new ServerSentEvent<>(id, event, data, comment, retryAfter);\n"
-            + "            }\n" + "        });\n" + "    }\n\n"
-            + "    @Generated\n"
-            + "    private ServerSentEvent(String id, String event, T data, String comment, Duration retryAfter) {\n"
-            + "        this.id = id;\n" + "        this.event = event;\n" + "        this.data = data;\n"
-            + "        this.comment = comment;\n" + "        this.retryAfter = retryAfter;\n" + "    }\n\n"
-            + "    /**\n" + "     * Gets the effective last-event identifier when this event was dispatched.\n"
-            + "     *\n"
-            + "     * @return The effective last-event identifier, {@code null} if no valid {@code id} field was "
-            + "received before this\n"
-            + "     * event, or an empty string if an empty {@code id} field reset the identifier.\n" + "     */\n"
-            + "    @Generated\n" + "    public String getId() {\n" + "        return id;\n" + "    }\n\n"
-            + "    /**\n"
-            + "     * Gets the event name.\n" + "     *\n"
-            + "     * @return The event name, or {@code message} if no non-empty {@code event} field was specified.\n"
-            + "     */\n" + "    @Generated\n" + "    public String getEvent() {\n" + "        return event;\n"
-            + "    }\n\n" + "    /**\n"
-            + "     * Gets the event data.\n" + "     *\n"
-            + "     * @return The event data, or {@code null} if event data wasn't specified.\n" + "     */\n"
-            + "    @Generated\n" + "    public T getData() {\n" + "        return data;\n" + "    }\n\n"
-            + "    /**\n"
-            + "     * Gets the event comment.\n" + "     *\n"
-            + "     * @return The event comment, or {@code null} if it wasn't specified.\n" + "     */\n"
-            + "    @Generated\n" + "    public String getComment() {\n" + "        return comment;\n" + "    }\n\n"
-            + "    /**\n"
-            + "     * Gets the effective retry interval when this event was dispatched.\n" + "     *\n"
-            + "     * @return The latest valid retry interval received before this event, or {@code null} if no valid\n"
-            + "     * {@code retry} field was received.\n" + "     */\n" + "    @Generated\n"
-            + "    public Duration getRetryAfter() {\n"
-            + "        return retryAfter;\n" + "    }\n" + "}\n";
-    }
-
-
-    private static String serverSentEventListenerSource() {
-        return header("com.azure.search.documents.models") + "import com.azure.core.annotation.Generated;\n\n"
-            + "/**\n"
-            + " * A listener for receiving server-sent events.\n" + " *\n"
-            + " * <p>Errors terminate processing, invoke {@link #onError(Throwable)} and {@link #onClose()}, and are "
-            + "rethrown to the\n" + " * synchronous service caller as unchecked exceptions.</p>\n" + " *\n"
-            + " * @param <T> The type of the event data.\n" + " */\n" + "@FunctionalInterface\n"
-            + "public interface ServerSentEventListener<T> {\n" + "    /**\n" + "     * Handles a server-sent event.\n"
-            + "     *\n" + "     * @param event The server-sent event.\n"
-            + "     * @throws RuntimeException If an error occurs while handling the event.\n" + "     */\n"
-            + "    @Generated\n" + "    void onEvent(ServerSentEvent<T> event);\n\n" + "    /**\n"
-            + "     * Handles an error that terminates event processing.\n" + "     *\n"
-            + "     * @param error The error that terminated event processing.\n" + "     */\n"
-            + "    @Generated\n" + "    default void onError(Throwable error) {\n" + "        // No-op by default.\n"
-            + "    }\n\n"
-            + "    /**\n" + "     * Handles closure of the event stream.\n" + "     */\n"
-            + "    @Generated\n" + "    default void onClose() {\n" + "        // No-op by default.\n" + "    }\n"
-            + "}\n";
-    }
-
 
     private static String baseEventSource() {
         return header("com.azure.search.documents.knowledgebases.models")

@@ -3,8 +3,6 @@
 
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
-
 /**
  * A listener for receiving server-sent events.
  *
@@ -21,7 +19,6 @@ public interface ServerSentEventListener<T> {
      * @param event The server-sent event.
      * @throws RuntimeException If an error occurs while handling the event.
      */
-    @Generated
     void onEvent(ServerSentEvent<T> event);
 
     /**
@@ -29,7 +26,6 @@ public interface ServerSentEventListener<T> {
      *
      * @param error The error that terminated event processing.
      */
-    @Generated
     default void onError(Throwable error) {
         // No-op by default.
     }
@@ -37,7 +33,6 @@ public interface ServerSentEventListener<T> {
     /**
      * Handles closure of the event stream.
      */
-    @Generated
     default void onClose() {
         // No-op by default.
     }

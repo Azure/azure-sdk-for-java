@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.search.documents.models.implementation.sse.ServerSentEventHelper;
 import java.time.Duration;
@@ -22,25 +21,19 @@ import java.time.Duration;
 @Immutable
 public final class ServerSentEvent<T> {
 
-    @Generated
     private final String id;
 
-    @Generated
     private final String event;
 
-    @Generated
     private final T data;
 
-    @Generated
     private final String comment;
 
-    @Generated
     private final Duration retryAfter;
 
     static {
         ServerSentEventHelper.setAccessor(new ServerSentEventHelper.ServerSentEventAccessor() {
 
-            @Generated
             @Override
             public <U> ServerSentEvent<U> create(String id, String event, U data, String comment, Duration retryAfter) {
                 return new ServerSentEvent<>(id, event, data, comment, retryAfter);
@@ -48,7 +41,6 @@ public final class ServerSentEvent<T> {
         });
     }
 
-    @Generated
     private ServerSentEvent(String id, String event, T data, String comment, Duration retryAfter) {
         this.id = id;
         this.event = event;
@@ -63,7 +55,6 @@ public final class ServerSentEvent<T> {
      * @return The effective last-event identifier, {@code null} if no valid {@code id} field was received before this
      * event, or an empty string if an empty {@code id} field reset the identifier.
      */
-    @Generated
     public String getId() {
         return id;
     }
@@ -73,7 +64,6 @@ public final class ServerSentEvent<T> {
      *
      * @return The event name, or {@code message} if no non-empty {@code event} field was specified.
      */
-    @Generated
     public String getEvent() {
         return event;
     }
@@ -83,7 +73,6 @@ public final class ServerSentEvent<T> {
      *
      * @return The event data, or {@code null} if event data wasn't specified.
      */
-    @Generated
     public T getData() {
         return data;
     }
@@ -93,7 +82,6 @@ public final class ServerSentEvent<T> {
      *
      * @return The event comment, or {@code null} if it wasn't specified.
      */
-    @Generated
     public String getComment() {
         return comment;
     }
@@ -104,7 +92,6 @@ public final class ServerSentEvent<T> {
      * @return The latest valid retry interval received before this event, or {@code null} if no valid
      * {@code retry} field was received.
      */
-    @Generated
     public Duration getRetryAfter() {
         return retryAfter;
     }
