@@ -12,32 +12,32 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The FunctionShellToolParamEnvironment model.
+ * An execution environment for a shell tool stored in a toolbox. This environment model is scoped to toolbox
+ * configuration and does not modify the OpenAI shell environment contract.
  */
 @Immutable
-public class FunctionShellToolParamEnvironment implements JsonSerializable<FunctionShellToolParamEnvironment> {
+public class ToolboxShellEnvironment implements JsonSerializable<ToolboxShellEnvironment> {
 
     /*
-     * The type property.
+     * The type of the shell execution environment.
      */
     @Generated
-    private FunctionShellToolParamEnvironmentType type
-        = FunctionShellToolParamEnvironmentType.fromString("FunctionShellToolParamEnvironment");
+    private String type = "ToolboxShellEnvironment";
 
     /**
-     * Creates an instance of FunctionShellToolParamEnvironment class.
+     * Creates an instance of ToolboxShellEnvironment class.
      */
     @Generated
-    public FunctionShellToolParamEnvironment() {
+    public ToolboxShellEnvironment() {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of the shell execution environment.
      *
      * @return the type value.
      */
     @Generated
-    public FunctionShellToolParamEnvironmentType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -48,20 +48,20 @@ public class FunctionShellToolParamEnvironment implements JsonSerializable<Funct
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of FunctionShellToolParamEnvironment from the JsonReader.
+     * Reads an instance of ToolboxShellEnvironment from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellToolParamEnvironment if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FunctionShellToolParamEnvironment.
+     * @return An instance of ToolboxShellEnvironment if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ToolboxShellEnvironment.
      */
     @Generated
-    public static FunctionShellToolParamEnvironment fromJson(JsonReader jsonReader) throws IOException {
+    public static ToolboxShellEnvironment fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             try (JsonReader readerToUse = reader.bufferObject()) {
@@ -79,12 +79,9 @@ public class FunctionShellToolParamEnvironment implements JsonSerializable<Funct
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("container_auto".equals(discriminatorValue)) {
-                    return ContainerAutoParameter.fromJson(readerToUse.reset());
+                    return ToolboxShellContainerAutoEnvironment.fromJson(readerToUse.reset());
                 } else if ("container_reference".equals(discriminatorValue)) {
-                    return FunctionShellToolParameterEnvironmentContainerReferenceParameter
-                        .fromJson(readerToUse.reset());
-                } else if ("local".equals(discriminatorValue)) {
-                    return FunctionShellToolParameterEnvironmentLocalEnvironmentParameter.fromJson(readerToUse.reset());
+                    return ToolboxShellContainerReferenceEnvironment.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -93,21 +90,19 @@ public class FunctionShellToolParamEnvironment implements JsonSerializable<Funct
     }
 
     @Generated
-    static FunctionShellToolParamEnvironment fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static ToolboxShellEnvironment fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FunctionShellToolParamEnvironment deserializedFunctionShellToolParamEnvironment
-                = new FunctionShellToolParamEnvironment();
+            ToolboxShellEnvironment deserializedToolboxShellEnvironment = new ToolboxShellEnvironment();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedFunctionShellToolParamEnvironment.type
-                        = FunctionShellToolParamEnvironmentType.fromString(reader.getString());
+                    deserializedToolboxShellEnvironment.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedFunctionShellToolParamEnvironment;
+            return deserializedToolboxShellEnvironment;
         });
     }
 }

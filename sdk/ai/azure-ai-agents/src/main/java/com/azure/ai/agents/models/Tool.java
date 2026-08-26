@@ -103,6 +103,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return WorkIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("fabric_iq_preview".equals(discriminatorValue)) {
                     return FabricIqPreviewTool.fromJson(readerToUse.reset());
+                } else if ("web_iq_preview".equals(discriminatorValue)) {
+                    return WebIqPreviewTool.fromJson(readerToUse.reset());
                 } else if ("memory_search_preview".equals(discriminatorValue)) {
                     return MemorySearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
@@ -111,6 +113,8 @@ public class Tool implements JsonSerializable<Tool> {
                     return FileSearchTool.fromJson(readerToUse.reset());
                 } else if ("web_search".equals(discriminatorValue)) {
                     return WebSearchTool.fromJson(readerToUse.reset());
+                } else if ("shell".equals(discriminatorValue)) {
+                    return FunctionShellToolParameter.fromJson(readerToUse.reset());
                 } else if ("mcp".equals(discriminatorValue)) {
                     return McpTool.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
@@ -123,8 +127,6 @@ public class Tool implements JsonSerializable<Tool> {
                     return ImageGenTool.fromJson(readerToUse.reset());
                 } else if ("local_shell".equals(discriminatorValue)) {
                     return LocalShellToolParameter.fromJson(readerToUse.reset());
-                } else if ("shell".equals(discriminatorValue)) {
-                    return FunctionShellToolParameter.fromJson(readerToUse.reset());
                 } else if ("custom".equals(discriminatorValue)) {
                     return CustomToolParameter.fromJson(readerToUse.reset());
                 } else if ("web_search_preview".equals(discriminatorValue)) {

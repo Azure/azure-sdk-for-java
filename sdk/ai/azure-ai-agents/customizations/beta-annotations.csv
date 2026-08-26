@@ -70,6 +70,8 @@ class;com.azure.ai.agents.models.SharepointGroundingToolParameters;Preview API. 
 class;com.azure.ai.agents.models.SharepointPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.ToolboxSearchPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.UserProfileMemoryItem;Preview API. MemoryStores=V1Preview;
+class;com.azure.ai.agents.models.WebIqPreviewTool;Preview API. preview_tool;
+class;com.azure.ai.agents.models.WebIqPreviewToolboxTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.WorkflowAgentDefinition;Preview API. WorkflowAgents=V1Preview;
 class;com.azure.ai.agents.models.WorkIqPreviewTool;Preview API. preview_tool;
 class;com.azure.ai.agents.models.WorkIqPreviewToolboxTool;Preview API. preview_tool;
