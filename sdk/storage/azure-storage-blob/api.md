@@ -57,7 +57,7 @@ package com.azure.storage.blob {
         public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions)
         @Override public BlobAsyncClient getVersionClient(String versionId)
     }
-    @ServiceClient(builder  =  BlobClientBuilder)
+    @ServiceClient(builder = BlobClientBuilder)
     public class BlobClient extends BlobClientBase {
         public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobConstants.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
@@ -87,7 +87,7 @@ package com.azure.storage.blob {
         @Override public BlobClient getSnapshotClient(String snapshot)
         @Override public BlobClient getVersionClient(String versionId)
     }
-    @ServiceClientBuilder(serviceClients  =  { BlobClient, BlobAsyncClient })
+    @ServiceClientBuilder(serviceClients = { BlobClient, BlobAsyncClient })
     public final class BlobClientBuilder implements TokenCredentialTrait<BlobClientBuilder> , ConnectionStringTrait<BlobClientBuilder> , AzureNamedKeyCredentialTrait<BlobClientBuilder> , AzureSasCredentialTrait<BlobClientBuilder> , HttpTrait<BlobClientBuilder> , ConfigurationTrait<BlobClientBuilder> , EndpointTrait<BlobClientBuilder> {
         public BlobClientBuilder()
         @Override public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy)
@@ -118,7 +118,7 @@ package com.azure.storage.blob {
         public BlobAsyncClient buildAsyncClient()
         public BlobClient buildClient()
     }
-    @ServiceClient(builder  =  BlobContainerClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = BlobContainerClientBuilder, isAsync = true)
     public final class BlobContainerAsyncClient {
         public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
         public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
@@ -172,7 +172,7 @@ package com.azure.storage.blob {
         public BlobServiceAsyncClient getServiceAsyncClient()
         public BlobServiceVersion getServiceVersion()
     }
-    @ServiceClient(builder  =  BlobContainerClientBuilder)
+    @ServiceClient(builder = BlobContainerClientBuilder)
     public final class BlobContainerClient {
         public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
         public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
@@ -226,7 +226,7 @@ package com.azure.storage.blob {
         public BlobServiceClient getServiceClient()
         public BlobServiceVersion getServiceVersion()
     }
-    @ServiceClientBuilder(serviceClients  =  { BlobContainerClient, BlobContainerAsyncClient })
+    @ServiceClientBuilder(serviceClients = { BlobContainerClient, BlobContainerAsyncClient })
     public final class BlobContainerClientBuilder implements TokenCredentialTrait<BlobContainerClientBuilder> , ConnectionStringTrait<BlobContainerClientBuilder> , AzureSasCredentialTrait<BlobContainerClientBuilder> , AzureNamedKeyCredentialTrait<BlobContainerClientBuilder> , HttpTrait<BlobContainerClientBuilder> , ConfigurationTrait<BlobContainerClientBuilder> , EndpointTrait<BlobContainerClientBuilder> {
         public BlobContainerClientBuilder()
         @Override public BlobContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy)
@@ -255,7 +255,7 @@ package com.azure.storage.blob {
         public BlobContainerAsyncClient buildAsyncClient()
         public BlobContainerClient buildClient()
     }
-    @ServiceClient(builder  =  BlobServiceClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = BlobServiceClientBuilder, isAsync = true)
     public final class BlobServiceAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -294,7 +294,7 @@ package com.azure.storage.blob {
         public HttpPipeline getHttpPipeline()
         public BlobServiceVersion getServiceVersion()
     }
-    @ServiceClient(builder  =  BlobServiceClientBuilder)
+    @ServiceClient(builder = BlobServiceClientBuilder)
     public final class BlobServiceClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -333,7 +333,7 @@ package com.azure.storage.blob {
         public HttpPipeline getHttpPipeline()
         public BlobServiceVersion getServiceVersion()
     }
-    @ServiceClientBuilder(serviceClients  =  { BlobServiceClient, BlobServiceAsyncClient })
+    @ServiceClientBuilder(serviceClients = { BlobServiceClient, BlobServiceAsyncClient })
     public final class BlobServiceClientBuilder implements TokenCredentialTrait<BlobServiceClientBuilder> , ConnectionStringTrait<BlobServiceClientBuilder> , AzureNamedKeyCredentialTrait<BlobServiceClientBuilder> , AzureSasCredentialTrait<BlobServiceClientBuilder> , HttpTrait<BlobServiceClientBuilder> , ConfigurationTrait<BlobServiceClientBuilder> , EndpointTrait<BlobServiceClientBuilder> {
         public BlobServiceClientBuilder()
         @Override public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy)
@@ -2504,9 +2504,9 @@ package com.azure.storage.blob.sas {
     }
 }
 package com.azure.storage.blob.specialized {
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = SpecializedBlobClientBuilder, isAsync = true)
     public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
-        @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 *  Constants.MB;
+        @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
         @Deprecated public static final int MAX_BLOCKS = 50000;
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -2530,9 +2530,9 @@ package com.azure.storage.blob.specialized {
         public int getMaxAppendBlockBytes()
         public int getMaxBlocks()
     }
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder)
+    @ServiceClient(builder = SpecializedBlobClientBuilder)
     public final class AppendBlobClient extends BlobClientBase {
-        @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 *  Constants.MB;
+        @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
         @Deprecated public static final int MAX_BLOCKS = 50000;
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -2746,7 +2746,7 @@ package com.azure.storage.blob.specialized {
         @Override protected synchronized ByteBuffer dispatchRead(int readLength, long offset) throws IOException
         public BlobProperties getProperties()
     }
-    @ServiceClient(builder  =  BlobLeaseClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = BlobLeaseClientBuilder, isAsync = true)
     public final class BlobLeaseAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -2770,7 +2770,7 @@ package com.azure.storage.blob.specialized {
         public String getLeaseId()
         public String getResourceUrl()
     }
-    @ServiceClient(builder  =  BlobLeaseClientBuilder)
+    @ServiceClient(builder = BlobLeaseClientBuilder)
     public final class BlobLeaseClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -2794,7 +2794,7 @@ package com.azure.storage.blob.specialized {
         public String getLeaseId()
         public String getResourceUrl()
     }
-    @ServiceClientBuilder(serviceClients  =  { BlobLeaseClient, BlobLeaseAsyncClient })
+    @ServiceClientBuilder(serviceClients = { BlobLeaseClient, BlobLeaseAsyncClient })
     public final class BlobLeaseClientBuilder {
         public BlobLeaseClientBuilder()
         public BlobLeaseClientBuilder blobAsyncClient(BlobAsyncClientBase blobAsyncClient)
@@ -2812,11 +2812,11 @@ package com.azure.storage.blob.specialized {
         public static BlobOutputStream blockBlobOutputStream(BlobAsyncClient client, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Context context)
         @Override public synchronized void close() throws IOException
     }
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = SpecializedBlobClientBuilder, isAsync = true)
     public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
-        @Deprecated public static final int MAX_UPLOAD_BLOB_BYTES = 256 *  Constants.MB;
+        @Deprecated public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
         public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
-        @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 *  Constants.MB;
+        @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
         public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
         public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
@@ -2848,11 +2848,11 @@ package com.azure.storage.blob.specialized {
         @Override public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey)
         @Override public BlockBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope)
     }
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder)
+    @ServiceClient(builder = SpecializedBlobClientBuilder)
     public final class BlockBlobClient extends BlobClientBase {
-        @Deprecated public static final int MAX_UPLOAD_BLOB_BYTES = 256 *  Constants.MB;
+        @Deprecated public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
         public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
-        @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 *  Constants.MB;
+        @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
         public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
         public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
@@ -2891,7 +2891,7 @@ package com.azure.storage.blob.specialized {
         @Override public BlockBlobClient getEncryptionScopeClient(String encryptionScope)
         public SeekableByteChannel openSeekableByteChannelWrite(BlockBlobSeekableByteChannelWriteOptions options)
     }
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = SpecializedBlobClientBuilder, isAsync = true)
     public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
         public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
@@ -2932,7 +2932,7 @@ package com.azure.storage.blob.specialized {
         @Override public PageBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey)
         @Override public PageBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope)
     }
-    @ServiceClient(builder  =  SpecializedBlobClientBuilder)
+    @ServiceClient(builder = SpecializedBlobClientBuilder)
     public final class PageBlobClient extends BlobClientBase {
         public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
         public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
@@ -2976,7 +2976,7 @@ package com.azure.storage.blob.specialized {
         @Override public PageBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey)
         @Override public PageBlobClient getEncryptionScopeClient(String encryptionScope)
     }
-    @ServiceClientBuilder(serviceClients  =  { AppendBlobClient, AppendBlobAsyncClient, BlockBlobClient, BlockBlobAsyncClient, PageBlobClient, PageBlobAsyncClient })
+    @ServiceClientBuilder(serviceClients = { AppendBlobClient, AppendBlobAsyncClient, BlockBlobClient, BlockBlobAsyncClient, PageBlobClient, PageBlobAsyncClient })
     public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<SpecializedBlobClientBuilder> , ConnectionStringTrait<SpecializedBlobClientBuilder> , AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder> , AzureSasCredentialTrait<SpecializedBlobClientBuilder> , HttpTrait<SpecializedBlobClientBuilder> , ConfigurationTrait<SpecializedBlobClientBuilder> , EndpointTrait<SpecializedBlobClientBuilder> {
         public SpecializedBlobClientBuilder()
         @Override public SpecializedBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy)

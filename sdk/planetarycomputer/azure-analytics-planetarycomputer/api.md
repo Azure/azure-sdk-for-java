@@ -24,7 +24,7 @@ module com.azure.analytics.planetarycomputer {
     opens com.azure.analytics.planetarycomputer.implementation.models to com.azure.core;
 }
 package com.azure.analytics.planetarycomputer {
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder, isAsync = true)
     public final class DataAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -279,7 +279,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Mono<Response<BinaryData>> getTileWithTmsByScaleWithResponse(String collectionId, String itemId, String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions)
         @Generated public Mono<Response<BinaryData>> getTileWithTmsWithResponse(String collectionId, String itemId, String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder)
     public final class DataClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -534,7 +534,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Response<BinaryData> getTileWithTmsByScaleWithResponse(String collectionId, String itemId, String tileMatrixSetId, double z, double x, double y, double scale, RequestOptions requestOptions)
         @Generated public Response<BinaryData> getTileWithTmsWithResponse(String collectionId, String itemId, String tileMatrixSetId, double z, double x, double y, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder, isAsync = true)
     public final class IngestionAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -578,7 +578,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Mono<Response<BinaryData>> updateWithResponse(String collectionId, String ingestionId, BinaryData body, RequestOptions requestOptions)
         @Generated public Mono<Response<BinaryData>> getWithResponse(String collectionId, String ingestionId, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder)
     public final class IngestionClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -622,7 +622,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Response<BinaryData> updateWithResponse(String collectionId, String ingestionId, BinaryData body, RequestOptions requestOptions)
         @Generated public Response<BinaryData> getWithResponse(String collectionId, String ingestionId, RequestOptions requestOptions)
     }
-    @ServiceClientBuilder(serviceClients  =  { IngestionClient, StacClient, DataClient, SharedAccessSignatureClient, IngestionAsyncClient, StacAsyncClient, DataAsyncClient, SharedAccessSignatureAsyncClient })
+    @ServiceClientBuilder(serviceClients = { IngestionClient, StacClient, DataClient, SharedAccessSignatureClient, IngestionAsyncClient, StacAsyncClient, DataAsyncClient, SharedAccessSignatureAsyncClient })
     public final class PlanetaryComputerProClientBuilder implements HttpTrait<PlanetaryComputerProClientBuilder> , ConfigurationTrait<PlanetaryComputerProClientBuilder> , TokenCredentialTrait<PlanetaryComputerProClientBuilder> , EndpointTrait<PlanetaryComputerProClientBuilder> {
         @Generated public PlanetaryComputerProClientBuilder()
         @Generated @Override public PlanetaryComputerProClientBuilder addPolicy(HttpPipelinePolicy customPolicy)
@@ -650,7 +650,7 @@ package com.azure.analytics.planetarycomputer {
         public static PlanetaryComputerServiceVersion getLatest() // returns V2026_04_15
         @Override public String getVersion()
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder, isAsync = true)
     public final class SharedAccessSignatureAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -664,7 +664,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Mono<SharedAccessSignatureSignedLink> getUrl(String href, Integer durationInMinutes)
         @Generated public Mono<Response<BinaryData>> getUrlWithResponse(String href, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder)
     public final class SharedAccessSignatureClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -678,7 +678,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public SharedAccessSignatureSignedLink getUrl(String href, Integer durationInMinutes)
         @Generated public Response<BinaryData> getUrlWithResponse(String href, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder, isAsync = true)
     public final class StacAsyncClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:
@@ -761,7 +761,7 @@ package com.azure.analytics.planetarycomputer {
         @Generated public Mono<TileSettings> getTileSettings(String collectionId)
         @Generated public Mono<Response<BinaryData>> getTileSettingsWithResponse(String collectionId, RequestOptions requestOptions)
     }
-    @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
+    @ServiceClient(builder = PlanetaryComputerProClientBuilder)
     public final class StacClient {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         // Service Methods:

@@ -212,7 +212,7 @@ package com.azure.core.annotation {
     public @annotation ServiceClient {
         Class<?> builder()
         boolean isAsync() default false
-        Class<?>[] serviceInterfaces() default {  }
+        Class<?>[] serviceInterfaces() default { }
     }
     @Retention(RUNTIME)
     @Target(TYPE)
@@ -239,7 +239,7 @@ package com.azure.core.annotation {
     @Target(METHOD)
     public @annotation UnexpectedResponseExceptionType {
         Class<? extends HttpResponseException> value()
-        int[] code() default {  }
+        int[] code() default { }
     }
     @Retention(RUNTIME)
     @Target(METHOD)
