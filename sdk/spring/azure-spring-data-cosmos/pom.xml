@@ -39,6 +39,15 @@
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain.inheritance=com.fasterxml.jackson.databind,spring.core,spring.data.commons
       --add-opens com.fasterxml.jackson.databind/com.fasterxml.jackson.databind=spring.core
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity.rntbd=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.feedranges=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.faultinjection=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.guava25.base=ALL-UNNAMED
+      --add-exports com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
@@ -192,6 +201,12 @@
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <version>3.8.6</version> <!-- {x-version-update;springboot4_io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos-test</artifactId>
+      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-cosmos-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

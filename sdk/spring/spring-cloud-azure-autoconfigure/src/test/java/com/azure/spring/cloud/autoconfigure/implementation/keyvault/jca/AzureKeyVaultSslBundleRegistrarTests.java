@@ -43,6 +43,7 @@ class AzureKeyVaultSslBundleRegistrarTests {
     @AfterEach
     void cleanupProvider() {
         Security.removeProvider(KeyVaultJcaProvider.PROVIDER_NAME);
+        System.clearProperty("azure.keyvault.jca.disable-aia-download");
     }
 
     @Test
@@ -263,6 +264,40 @@ class AzureKeyVaultSslBundleRegistrarTests {
                 .stream()
                 .filter(name -> name.startsWith("azure.keyvault.jca.certificate-alias-filter-pattern."))
                 .forEach(System::clearProperty);
+        }
+    }
+
+    @Test
+    void configureDisableAiaDownload() {
+        AzureKeyVaultJcaProperties jcaProperties = new AzureKeyVaultJcaProperties();
+        AzureKeyVaultSslBundleProperties sslBundleProperties = new AzureKeyVaultSslBundleProperties();
+        AzureKeyVaultSslBundleRegistrar registrar = new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundleProperties);
+        registrar.setResourceLoader(new DefaultResourceLoader());
+
+        try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
+            KeyStore keyStore = Mockito.mock(KeyStore.class);
+            List<String> configuredValues = new ArrayList<>();
+            keyStoreMockedStatic.when(() -> KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME))
+                .thenAnswer(invocation -> {
+                    configuredValues.add(System.getProperty("azure.keyvault.jca.disable-aia-download"));
+                    return keyStore;
+                });
+
+            AzureKeyVaultJcaProperties.JcaVaultProperties vaultProperties
+                = new AzureKeyVaultJcaProperties.JcaVaultProperties();
+            vaultProperties.setEndpoint("https://test.vault.azure.net/");
+            jcaProperties.getVaults().put("keyvault1", vaultProperties);
+
+            AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties bundleProperties
+                = new AzureKeyVaultSslBundleProperties.KeyVaultSslBundleProperties();
+            bundleProperties.getKeystore().setKeyvaultRef("keyvault1");
+            bundleProperties.getKeystore().setDisableAiaDownload(true);
+            bundleProperties.getTruststore().setKeyvaultRef("keyvault1");
+            sslBundleProperties.getKeyvault().put("testBundle", bundleProperties);
+
+            registrar.registerBundles(Mockito.mock(SslBundleRegistry.class));
+
+            assertThat(configuredValues).containsExactly("true", "false");
         }
     }
 
