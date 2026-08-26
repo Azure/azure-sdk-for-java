@@ -24,8 +24,6 @@ import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.DEFAUL
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_OPERATION_NAME;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_SYSTEM;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_SYSTEM_VALUE;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.METRIC_OPERATION_DURATION;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.METRIC_TOKEN_USAGE;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.METRIC_UNIT_SECONDS;
@@ -52,11 +50,24 @@ public final class GenAiInstrumentation {
     /**
      * OpenTelemetry schema URL for the GenAI semantic conventions emitted by this instrumentation.
      */
-    public static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.29.0";
+    public static final String OTEL_SCHEMA_URL = "https://opentelemetry.io/schemas/1.34.0";
 
     private static final ClientLogger LOGGER = new ClientLogger(GenAiInstrumentation.class);
 
+    private static final ConfigurationProperty<Boolean> EXPERIMENTAL_GEN_AI_TRACING
+        = ConfigurationPropertyBuilder.ofBoolean("experimental.enable_genai_tracing")
+            .environmentVariableName("AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING")
+            .systemPropertyName("azure.experimental.enable_genai_tracing")
+            .shared(true)
+            .defaultValue(false)
+            .build();
     private static final ConfigurationProperty<Boolean> CAPTURE_MESSAGE_CONTENT
+        = ConfigurationPropertyBuilder.ofBoolean("otel.instrumentation.genai.capture_message_content")
+            .environmentVariableName("OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT")
+            .systemPropertyName("otel.instrumentation.genai.capture_message_content")
+            .shared(true)
+            .build();
+    private static final ConfigurationProperty<Boolean> LEGACY_CAPTURE_MESSAGE_CONTENT
         = ConfigurationPropertyBuilder.ofBoolean("azure.tracing.gen_ai.content_recording_enabled")
             .environmentVariableName("AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED")
             .systemPropertyName("azure.tracing.gen_ai.content_recording_enabled")
@@ -69,6 +80,7 @@ public final class GenAiInstrumentation {
     private final Meter meter;
     private final DoubleHistogram durationHistogram;
     private final DoubleHistogram tokenUsageHistogram;
+    private final boolean experimentalEnabled;
     private final boolean captureContent;
     private final String host;
     private final int port;
@@ -91,9 +103,12 @@ public final class GenAiInstrumentation {
             this.host = null;
             this.port = -1;
         }
-        this.captureContent = configuration == null
-            ? GLOBAL_CONFIG.get(CAPTURE_MESSAGE_CONTENT)
-            : configuration.get(CAPTURE_MESSAGE_CONTENT);
+        Configuration resolvedConfiguration = configuration == null ? GLOBAL_CONFIG : configuration;
+        this.experimentalEnabled = resolvedConfiguration.get(EXPERIMENTAL_GEN_AI_TRACING);
+        Boolean captureMessageContent = resolvedConfiguration.get(CAPTURE_MESSAGE_CONTENT);
+        this.captureContent = captureMessageContent == null
+            ? resolvedConfiguration.get(LEGACY_CAPTURE_MESSAGE_CONTENT)
+            : captureMessageContent;
         this.tracer = tracer;
         this.meter = meter;
         this.durationHistogram = meter.createDoubleHistogram(METRIC_OPERATION_DURATION, "Duration of GenAI operations",
@@ -106,7 +121,8 @@ public final class GenAiInstrumentation {
      * @return whether any span or metric collection is active for this instrumentation.
      */
     public boolean isEnabled() {
-        return tracer.isEnabled() || durationHistogram.isEnabled() || tokenUsageHistogram.isEnabled();
+        return experimentalEnabled
+            && (tracer.isEnabled() || durationHistogram.isEnabled() || tokenUsageHistogram.isEnabled());
     }
 
     boolean isContentRecordingEnabled() {
@@ -156,7 +172,6 @@ public final class GenAiInstrumentation {
 
         StartSpanOptions options
             = new StartSpanOptions(SpanKind.CLIENT).setAttribute(GEN_AI_OPERATION_NAME, operationName)
-                .setAttribute(GEN_AI_SYSTEM, GEN_AI_SYSTEM_VALUE)
                 .setAttribute(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE)
                 .setAttribute(SERVER_ADDRESS, serverAddress);
         if (serverPort != DEFAULT_HTTPS_PORT) {

@@ -40,6 +40,9 @@ import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_TOKEN_TYPE;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_USAGE_INPUT_TOKENS;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_USAGE_OUTPUT_TOKENS;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_CHAT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_INVOKE_AGENT;
+import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.OPERATION_RESPONSES;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.SERVER_ADDRESS;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.SERVER_PORT;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.TOKEN_TYPE_INPUT;
@@ -61,6 +64,7 @@ final class GenAiTracingScope implements AutoCloseable {
     private final AtomicInteger ended = new AtomicInteger(0);
 
     // Deferred attributes for metrics.
+    private String requestModel;
     private String responseModel;
     private String errorType;
     private Throwable error;
@@ -99,6 +103,7 @@ final class GenAiTracingScope implements AutoCloseable {
 
     void setRequestModelAttributes(String model, Double temperature, Double topP) {
         setAttributeIfNotEmpty(GEN_AI_REQUEST_MODEL, model);
+        this.requestModel = model;
         if (temperature != null) {
             instrumentation.tracer().setAttribute(GEN_AI_REQUEST_TEMPERATURE, String.valueOf(temperature), spanContext);
         }
@@ -185,14 +190,19 @@ final class GenAiTracingScope implements AutoCloseable {
         double durationSeconds = (System.nanoTime() - startTimeNanos) / 1_000_000_000.0;
 
         Map<String, Object> baseAttributes = new HashMap<>();
-        baseAttributes.put(GEN_AI_OPERATION_NAME, operationName);
+        String metricOperationName
+            = OPERATION_CHAT.equals(operationName) || OPERATION_INVOKE_AGENT.equals(operationName)
+                ? OPERATION_RESPONSES
+                : operationName;
+        baseAttributes.put(GEN_AI_OPERATION_NAME, metricOperationName);
         baseAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
         baseAttributes.put(SERVER_ADDRESS, serverAddress);
         if (serverPort != DEFAULT_HTTPS_PORT) {
             baseAttributes.put(SERVER_PORT, (long) serverPort);
         }
-        if (responseModel != null) {
-            baseAttributes.put(GEN_AI_RESPONSE_MODEL, responseModel);
+        String model = responseModel == null ? requestModel : responseModel;
+        if (model != null) {
+            baseAttributes.put(GEN_AI_REQUEST_MODEL, model);
         }
         if (errorType != null) {
             baseAttributes.put(ERROR_TYPE, errorType);

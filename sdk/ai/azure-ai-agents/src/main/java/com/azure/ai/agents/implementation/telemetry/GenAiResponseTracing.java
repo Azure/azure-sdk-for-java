@@ -7,6 +7,8 @@ import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.openai.helpers.ResponseAccumulator;
+import com.openai.core.http.HttpResponseFor;
+import com.openai.core.http.StreamResponse;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCodeInterpreterToolCall;
@@ -28,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -205,8 +208,8 @@ public final class GenAiResponseTracing {
         });
     }
 
-    private Mono<Response> startMonoWithContext(GenAiTracingScope scope, ResponseCreateParams params,
-        Function<ResponseCreateParams, Mono<Response>> operation) {
+    private <T> Mono<T> startMonoWithContext(GenAiTracingScope scope, ResponseCreateParams params,
+        Function<ResponseCreateParams, Mono<T>> operation) {
         if (contextBridge == null) {
             return startMono(scope, () -> operation.apply(params));
         }
@@ -215,6 +218,130 @@ public final class GenAiResponseTracing {
         builder.replaceAdditionalHeaders(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token);
         return startMono(scope, () -> operation.apply(builder.build()))
             .doFinally(signalType -> contextBridge.discard(token));
+    }
+
+    /**
+     * Traces a synchronous raw-response operation.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the raw request represented as OpenAI parameters.
+     * @param operation the raw-response operation.
+     * @return the raw HTTP response.
+     */
+    @SuppressWarnings("try")
+    public HttpResponseFor<Response> traceRawResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, Supplier<HttpResponseFor<Response>> operation) {
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        GenAiTracingScope scope = startResponseScope(params);
+        if (scope == null) {
+            return operation.get();
+        }
+        try {
+            try (AutoCloseable ignored = scope.makeSpanCurrent()) {
+                return operation.get();
+            }
+        } catch (Exception e) {
+            scope.recordError(e);
+            sneakyThrows(e);
+            return null;
+        } finally {
+            scope.close();
+        }
+    }
+
+    /**
+     * Traces an asynchronous raw-response operation.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the raw request represented as OpenAI parameters.
+     * @param operation the raw-response operation.
+     * @return the raw HTTP response publisher.
+     */
+    public Mono<HttpResponseFor<Response>> traceRawResponseAsync(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams builtParams, Function<ResponseCreateParams, Mono<HttpResponseFor<Response>>> operation) {
+        if (!instrumentation.isEnabled()) {
+            return operation.apply(builtParams);
+        }
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        Mono<GenAiTracingScope> resourceSupplier = Mono.fromSupplier(() -> startResponseScope(params));
+        return Mono.usingWhen(resourceSupplier, scope -> startMonoWithContext(scope, builtParams, operation), scope -> {
+            scope.close();
+            return Mono.empty();
+        }, (scope, throwable) -> {
+            scope.recordError(throwable);
+            scope.close();
+            return Mono.empty();
+        }, scope -> {
+            scope.close();
+            return Mono.empty();
+        });
+    }
+
+    /**
+     * Traces a synchronous raw streaming operation. The returned response owns the span until its parsed stream is
+     * exhausted, fails, or is closed.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the raw request represented as OpenAI parameters.
+     * @param operation the raw streaming operation.
+     * @return the traced raw streaming response.
+     */
+    @SuppressWarnings("try")
+    public HttpResponseFor<StreamResponse<ResponseStreamEvent>> traceRawStreamingResponse(
+        AzureCreateResponseOptions createResponse, ResponseCreateParams builtParams,
+        Supplier<HttpResponseFor<StreamResponse<ResponseStreamEvent>>> operation) {
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        GenAiTracingScope scope = startResponseScope(params);
+        if (scope == null) {
+            return operation.get();
+        }
+        try {
+            HttpResponseFor<StreamResponse<ResponseStreamEvent>> response;
+            try (AutoCloseable ignored = scope.makeSpanCurrent()) {
+                response = operation.get();
+            }
+            return new TracedRawStreamingResponse(response, scope, this, params.isInvokeAgent);
+        } catch (Exception e) {
+            scope.recordError(e);
+            scope.close();
+            sneakyThrows(e);
+            return null;
+        }
+    }
+
+    /**
+     * Traces an asynchronous raw streaming operation. The emitted response owns the span until its parsed stream is
+     * exhausted, fails, or is closed.
+     *
+     * @param createResponse the Azure-specific create response options.
+     * @param builtParams the raw request represented as OpenAI parameters.
+     * @param operation the raw streaming operation.
+     * @return the traced raw streaming response publisher.
+     */
+    public Mono<HttpResponseFor<StreamResponse<ResponseStreamEvent>>> traceRawStreamingResponseAsync(
+        AzureCreateResponseOptions createResponse, ResponseCreateParams builtParams,
+        Function<ResponseCreateParams, Mono<HttpResponseFor<StreamResponse<ResponseStreamEvent>>>> operation) {
+        if (!instrumentation.isEnabled()) {
+            return operation.apply(builtParams);
+        }
+        ResponseSpanParams params = extractParams(createResponse, builtParams);
+        return Mono.defer(() -> {
+            GenAiTracingScope scope = startResponseScope(params);
+            AtomicBoolean ownershipTransferred = new AtomicBoolean();
+            return startMonoWithContext(scope, builtParams, operation).map(response -> {
+                HttpResponseFor<StreamResponse<ResponseStreamEvent>> tracedResponse
+                    = new TracedRawStreamingResponse(response, scope, this, params.isInvokeAgent);
+                ownershipTransferred.set(true);
+                return tracedResponse;
+            }).doOnError(throwable -> {
+                scope.recordError(throwable);
+                scope.close();
+            }).doOnCancel(() -> {
+                if (!ownershipTransferred.get()) {
+                    scope.close();
+                }
+            });
+        });
     }
 
     private Flux<ResponseStreamEvent> startFluxWithContext(GenAiTracingScope scope, ResponseCreateParams params,
@@ -373,10 +500,6 @@ public final class GenAiResponseTracing {
 
         scope.setResponseAttributes(responseId, responseModel, inputTokens, outputTokens, null);
         scope.setOutputMessages(outputMessages);
-
-        if (responseModel != null && !isInvokeAgent) {
-            scope.setRequestModelAttributes(responseModel, null, null);
-        }
 
     }
 
@@ -616,7 +739,7 @@ public final class GenAiResponseTracing {
         String inputMessages = extractInputMessages(builtParams);
         String instructions = builtParams.instructions().orElse("");
         String conversationId = builtParams.conversation().isPresent() ? builtParams.conversation().get().asId() : null;
-        return new ResponseSpanParams(isInvokeAgent, nameForSpan, agentName, inputMessages, instructions,
+        return new ResponseSpanParams(isInvokeAgent, nameForSpan, agentName, model, inputMessages, instructions,
             conversationId);
     }
 
@@ -630,6 +753,7 @@ public final class GenAiResponseTracing {
         if (params.agentName != null) {
             scope.setAgentAttributes(null, params.agentName, null, null);
         }
+        scope.setRequestModelAttributes(params.model, null, null);
         scope.setInputMessages(params.inputMessages);
         if (!params.isInvokeAgent && params.instructions != null && captureContent()) {
             scope.setSystemInstructions(params.instructions);
@@ -644,15 +768,17 @@ public final class GenAiResponseTracing {
         private final boolean isInvokeAgent;
         private final String nameForSpan;
         private final String agentName;
+        private final String model;
         private final String inputMessages;
         private final String instructions;
         private final String conversationId;
 
-        ResponseSpanParams(boolean isInvokeAgent, String nameForSpan, String agentName, String inputMessages,
-            String instructions, String conversationId) {
+        ResponseSpanParams(boolean isInvokeAgent, String nameForSpan, String agentName, String model,
+            String inputMessages, String instructions, String conversationId) {
             this.isInvokeAgent = isInvokeAgent;
             this.nameForSpan = nameForSpan;
             this.agentName = agentName;
+            this.model = model;
             this.inputMessages = inputMessages;
             this.instructions = instructions;
             this.conversationId = conversationId;

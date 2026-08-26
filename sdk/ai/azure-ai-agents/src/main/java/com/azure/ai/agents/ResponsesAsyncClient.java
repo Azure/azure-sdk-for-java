@@ -164,11 +164,12 @@ public final class ResponsesAsyncClient {
         RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions));
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawResponseAsync(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions,
+            params, tracedParams -> Mono.fromFuture(this.responseServiceAsync.withRawResponse()
+                .create(tracedParams, requestOptions == null ? RequestOptions.none() : requestOptions)));
     }
 
     /**
@@ -196,10 +197,12 @@ public final class ResponsesAsyncClient {
         createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions));
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawStreamingResponseAsync(
+            azureOptions == null ? new AzureCreateResponseOptions() : azureOptions, params,
+            tracedParams -> Mono.fromFuture(this.responseServiceAsync.withRawResponse()
+                .createStreaming(tracedParams, requestOptions == null ? RequestOptions.none() : requestOptions)));
     }
 }
