@@ -10,6 +10,7 @@ import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
@@ -55,7 +56,6 @@ public final class GenAiAgentTracingTest {
     private static final String AGENT_NAME = "weather-agent";
 
     private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
-    private static final AttributeKey<String> GEN_AI_SYSTEM = AttributeKey.stringKey("gen_ai.system");
     private static final AttributeKey<String> GEN_AI_PROVIDER_NAME = AttributeKey.stringKey("gen_ai.provider.name");
     private static final AttributeKey<String> GEN_AI_OPERATION_NAME = AttributeKey.stringKey("gen_ai.operation.name");
     private static final AttributeKey<String> GEN_AI_AGENT_NAME = AttributeKey.stringKey("gen_ai.agent.name");
@@ -78,7 +78,9 @@ public final class GenAiAgentTracingTest {
             = new OpenTelemetryTracingOptions().setOpenTelemetry(OpenTelemetrySdk.builder()
                 .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build())
                 .build());
-        tracer = TracerProvider.getDefaultProvider().createTracer("test", null, AZ_NAMESPACE_NAME, tracingOptions);
+        tracer = TracerProvider.getDefaultProvider()
+            .createTracer(new LibraryTelemetryOptions("test").setResourceProviderNamespace(AZ_NAMESPACE_NAME)
+                .setSchemaUrl(GenAiInstrumentation.OTEL_SCHEMA_URL), tracingOptions);
         meter = MeterProvider.getDefaultProvider().createMeter("test", null, null);
     }
 
@@ -101,7 +103,6 @@ public final class GenAiAgentTracingTest {
         Attributes attrs = span.getAttributes();
         assertEquals(AZ_NAMESPACE_NAME, attrs.get(AZ_NAMESPACE));
         assertEquals("create_agent", attrs.get(GEN_AI_OPERATION_NAME));
-        assertEquals("az.ai.agents", attrs.get(GEN_AI_SYSTEM));
         assertEquals("microsoft.foundry", attrs.get(GEN_AI_PROVIDER_NAME));
         assertEquals(AGENT_NAME, attrs.get(GEN_AI_AGENT_NAME));
         assertEquals("prompt", attrs.get(GEN_AI_AGENT_TYPE));
@@ -114,6 +115,8 @@ public final class GenAiAgentTracingTest {
         String instructions = attrs.get(GEN_AI_SYSTEM_INSTRUCTIONS);
         assertNotNull(instructions);
         assertEquals(captureContent, instructions.contains("Be helpful"));
+        assertEquals(GenAiInstrumentation.OTEL_SCHEMA_URL,
+            span.toSpanData().getInstrumentationScopeInfo().getSchemaUrl());
     }
 
     @Test
@@ -175,6 +178,54 @@ public final class GenAiAgentTracingTest {
         assertTrue(spanProcessor.getEndedSpans().isEmpty());
     }
 
+    @Test
+    public void experimentalGateDisabledOperationDoesNotEmitGenAiSpan() {
+        GenAiAgentTracing tracing = new GenAiAgentTracing(
+            new GenAiInstrumentation(ENDPOINT, new ConfigurationBuilder().build(), tracer, meter));
+        AgentVersionDetails response = agentVersionResponse();
+
+        AgentVersionDetails result = tracing.traceCreateAgentVersion(AGENT_NAME, new PromptAgentDefinition("gpt-4o"),
+            (request, options) -> response, BinaryData.fromString("{}"), new RequestOptions());
+
+        assertSame(response, result);
+        assertTrue(spanProcessor.getEndedSpans().isEmpty());
+    }
+
+    @Test
+    public void standardContentSettingOverridesLegacySetting() {
+        Configuration configuration
+            = new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+                .putProperty("otel.instrumentation.genai.capture_message_content", "false")
+                .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
+                .build();
+        GenAiAgentTracing tracing
+            = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, configuration, tracer, meter));
+
+        tracing.traceCreateAgentVersion(AGENT_NAME,
+            new PromptAgentDefinition("gpt-4o").setInstructions("Sensitive instructions"),
+            (request, options) -> agentVersionResponse(), BinaryData.fromString("{}"), new RequestOptions());
+
+        String instructions = getSpan().getAttributes().get(GEN_AI_SYSTEM_INSTRUCTIONS);
+        assertNotNull(instructions);
+        assertFalse(instructions.contains("Sensitive instructions"));
+    }
+
+    @Test
+    public void legacyContentSettingRemainsSupported() {
+        Configuration configuration
+            = new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+                .putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
+                .build();
+        GenAiAgentTracing tracing
+            = new GenAiAgentTracing(new GenAiInstrumentation(ENDPOINT, configuration, tracer, meter));
+
+        tracing.traceCreateAgentVersion(AGENT_NAME,
+            new PromptAgentDefinition("gpt-4o").setInstructions("Legacy opt-in"),
+            (request, options) -> agentVersionResponse(), BinaryData.fromString("{}"), new RequestOptions());
+
+        assertTrue(getSpan().getAttributes().get(GEN_AI_SYSTEM_INSTRUCTIONS).contains("Legacy opt-in"));
+    }
+
     private ReadableSpan getSpan() {
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         assertFalse(spans.isEmpty(), "Expected at least one ended span.");
@@ -194,11 +245,9 @@ public final class GenAiAgentTracingTest {
     }
 
     private static Configuration configuration(boolean captureContent) {
-        if (captureContent) {
-            return new ConfigurationBuilder().putProperty("azure.tracing.gen_ai.content_recording_enabled", "true")
-                .build();
-        }
-        return new ConfigurationBuilder().build();
+        return new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+            .putProperty("otel.instrumentation.genai.capture_message_content", Boolean.toString(captureContent))
+            .build();
     }
 
     private static final class TestSpanProcessor implements SpanProcessor {

@@ -898,12 +898,18 @@ Always ensure that the chosen API version is fully supported and operational for
 ## Tracing
 
 `azure-ai-agents` emits experimental [OpenTelemetry GenAI](https://opentelemetry.io/docs/specs/semconv/gen-ai/) spans
-and metrics for agent creation, response (`chat` / `invoke_agent`) and conversation operations. Tracing activates
-automatically when an OpenTelemetry implementation is configured for the client (through `ClientOptions`) or globally;
-there is no opt-in call. Customer-controlled prompts, responses, messages, instructions, function arguments, tool
-results, and equivalent agent content are omitted unless you set the
-`AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` environment variable to `true`. Review your privacy requirements
-before enabling content recording.
+and metrics for agent creation, response (`chat` / `invoke_agent`) and conversation operations. To use this
+experimental feature, set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` and configure an OpenTelemetry implementation
+for the client through `ClientOptions` or globally. There is no programmatic opt-in call or process-global mutable
+tracing state. Customer-controlled prompts, responses, messages, instructions, function arguments, tool results, and
+equivalent agent content are omitted unless you also set
+`OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`. Review your privacy requirements before enabling content
+recording. The former `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` setting remains available as a compatibility
+fallback when the OpenTelemetry setting is absent.
+
+Typed and raw-response methods are covered, including synchronous and
+asynchronous streaming. Streaming spans remain open until the stream completes,
+fails, is cancelled, or is explicitly closed.
 
 ```java com.azure.ai.agents.tracing
 // Configure any OpenTelemetry SDK (exporters, sampling, etc.) and pass it through ClientOptions. The client

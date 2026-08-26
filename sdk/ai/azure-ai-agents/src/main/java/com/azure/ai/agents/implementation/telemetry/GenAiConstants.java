@@ -19,11 +19,10 @@ final class GenAiConstants {
     static final String OPERATION_CREATE_AGENT = "create_agent";
     static final String OPERATION_INVOKE_AGENT = "invoke_agent";
     static final String OPERATION_CHAT = "chat";
+    static final String OPERATION_RESPONSES = "responses";
     static final String OPERATION_CREATE_CONVERSATION = "create_conversation";
 
     // --- System / Provider ---
-    static final String GEN_AI_SYSTEM = "gen_ai.system";
-    static final String GEN_AI_SYSTEM_VALUE = "az.ai.agents";
     static final String GEN_AI_PROVIDER_NAME = "gen_ai.provider.name";
     static final String GEN_AI_PROVIDER_NAME_VALUE = "microsoft.foundry";
     static final String AZ_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
@@ -77,7 +76,7 @@ final class GenAiConstants {
     // --- Token type (for metrics) ---
     static final String GEN_AI_TOKEN_TYPE = "gen_ai.token.type";
     static final String TOKEN_TYPE_INPUT = "input";
-    static final String TOKEN_TYPE_OUTPUT = "output";
+    static final String TOKEN_TYPE_OUTPUT = "completion";
 
     // --- Metric names ---
     static final String METRIC_OPERATION_DURATION = "gen_ai.client.operation.duration";
@@ -85,7 +84,7 @@ final class GenAiConstants {
 
     // --- Metric units ---
     static final String METRIC_UNIT_SECONDS = "s";
-    static final String METRIC_UNIT_TOKENS = "{token}";
+    static final String METRIC_UNIT_TOKENS = "token";
 
     // --- Agent type values ---
     static final String AGENT_TYPE_PROMPT = "prompt";

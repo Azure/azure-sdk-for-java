@@ -176,11 +176,12 @@ public final class ResponsesClient {
         RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return this.responseService.withRawResponse()
-            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawResponse(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions, params,
+            () -> this.responseService.withRawResponse()
+                .create(params, requestOptions == null ? RequestOptions.none() : requestOptions));
     }
 
     /**
@@ -206,11 +207,12 @@ public final class ResponsesClient {
         createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return this.responseService.withRawResponse()
-            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions);
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawStreamingResponse(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions,
+            params, () -> this.responseService.withRawResponse()
+                .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions));
     }
 
 }

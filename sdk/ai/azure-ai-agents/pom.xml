@@ -50,6 +50,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.ai.agents=com.azure.core.tracing.opentelemetry
+      --add-reads com.azure.ai.agents=com.azure.core.metrics.opentelemetry
     </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
@@ -96,9 +97,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-metrics-opentelemetry</artifactId>
+      <version>1.0.0-beta.38</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
       <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-testing</artifactId>
+      <version>1.58.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

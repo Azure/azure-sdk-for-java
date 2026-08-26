@@ -94,11 +94,9 @@ The following proof-of-concept decisions should be retained:
 | Content | Disable content recording by default and require explicit opt-in; without opt-in, emit no customer-controlled prompts, responses, messages, instructions, or function arguments. |
 | Library metadata | Read client name and version from `azure-ai-agents.properties`. |
 
-If the cross-language contract requires
-`AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING`, implement the gate internally without
+Java now honors `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING` internally without
 restoring the public `GenAiTracingConfiguration` and `GenAiTracingOptions` API
-from PR #49434. Confirm that the environment variable has the required Azure SDK
-Architecture Board approval.
+from PR #49434.
 
 The per-client configuration and internal-gate direction intentionally differs
 from PR #49434, which used process-global configuration and a public
@@ -130,14 +128,17 @@ representatives.
 Use the current Python implementation as the default behavior and resolve the
 specific differences listed in [GAPS.md](GAPS.md). The immediate parity work is:
 
-- Align the semantic-convention schema and affected attributes.
-- Confirm whether Java honors Python's internal experimental gate.
-- Select the supported content-recording configuration key.
+- Keep the semantic-convention schema and affected attributes aligned with
+  Python.
+- Retain Python's internal experimental gate without introducing mutable global
+  APIs.
+- Use the Python content-recording configuration key while retaining the former
+  Java key as a compatibility fallback.
 - Match provider and legacy-attribute compatibility behavior.
 - Confirm whether Python-equivalent propagation controls are required while
   keeping baggage disabled by default.
-- Decide whether current Java consumers require raw-response and raw-stream
-  coverage in the first release.
+- Keep the implemented raw-response and raw-stream coverage in the first
+  release and in maintained live validation.
 
 Keep Java-specific plumbing idiomatic: per-client `ClientOptions`, Azure Core
 tracing and metrics abstractions, transparent instrumentation of normal methods,
@@ -177,9 +178,10 @@ Implementation status as of 2026-08-26:
 - Workflow-specific instrumentation is intentionally excluded because workflow
   agents are retiring; unsupported definitions receive only generic agent
   identity attributes.
-- Raw-response methods, conversation-item listing, and broader CRUD coverage
-  remain tracked Python-parity gaps rather than being inferred from legacy
-  Python or Projects APIs.
+- Existing raw-response and raw-streaming protocol methods are instrumented.
+- Conversation-item listing and broader CRUD coverage are not inferred from
+  legacy Python or Projects APIs when the operations are absent from the
+  current Java Agents surface.
 
 ### Agent creation
 
@@ -198,8 +200,8 @@ Implementation status as of 2026-08-26:
 
 - Cover typed non-streaming responses.
 - Cover typed streaming responses.
-- Decide and implement coverage for raw-response methods.
-- Cover raw-response streaming as its own required scenario; do not assume that
+- Keep raw-response methods covered.
+- Keep raw-response streaming as its own required scenario; do not assume that
   typed streaming coverage exercises the same path.
 - Cover both synchronous and asynchronous clients.
 - Record request model, response model, response ID, finish reasons, token
@@ -238,7 +240,8 @@ Implementation status as of 2026-08-26:
 - Duration metrics use monotonic elapsed time.
 - The maintained E2E verifier now requires each response HTTP span to share the
   GenAI operation's trace ID and use its span ID as the direct parent.
-- Live synchronous and asynchronous quick runs each passed 142/142 checks with
+- Live synchronous and asynchronous quick runs each passed 200/200 checks
+  across typed, raw-response, raw-streaming, and tool-call scenarios with
   content recording both disabled and enabled. This verifies local exported
   spans against a live Foundry service; Foundry and Application Insights UI
   inspection remains outstanding.

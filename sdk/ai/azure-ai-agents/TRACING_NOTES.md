@@ -32,8 +32,10 @@ plumbing and conventions come from `azure-ai-inference`.
   provider is present. A boolean toggle duplicates (and can contradict) that state.
 - **Preview status** should be conveyed the repo way: the package version (`-beta.N`) and/or the internal
   `@Beta` annotation (`com.azure.ai.agents.implementation.utils.Beta`) — not a runtime `setExperimental(true)`.
-- The only current PoC knob is **content recording**, and it is a standard shared configuration property
-  (`AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED`), not a programmatic on/off switch. Trace-context
+- The implementation uses Python's internal
+  `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` feature gate without restoring a programmatic or mutable global API.
+- Content recording uses `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`, with the former
+  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` setting retained as a compatibility fallback. Trace-context
   propagation may require a separate privacy-sensitive opt-in if the approved cross-language contract requires
   it; that decision must remain distinct from whether local GenAI spans are enabled.
 
@@ -108,10 +110,11 @@ decision about deterministic AST customization.
 - The bridge is per-client rather than global, supports concurrent requests, and does not send the opaque token,
   baggage, or customer content to the service. The Azure pipeline still creates and injects the normal HTTP
   child span and W3C trace headers.
-- **Live verification (2026-08-26):** synchronous and asynchronous quick suites each passed 142/142 checks
-  against a live Foundry project. Every response HTTP span shared the GenAI span's trace ID and had the GenAI
-  span ID as its direct `parentSpanId`; content-disabled and content-enabled checks also passed. Foundry and
-  Application Insights UI inspection remains separate release work.
+- **Live verification (2026-08-26):** synchronous and asynchronous quick suites each passed 200/200 checks
+  against a live Foundry project across typed, raw-response, raw-streaming, and tool-call scenarios. Every
+  response HTTP span shared the GenAI span's trace ID and had the GenAI span ID as its direct `parentSpanId`;
+  content-disabled and content-enabled checks also passed. Foundry and Application Insights UI inspection
+  remains separate release work.
 
 ---
 
@@ -119,10 +122,10 @@ decision about deterministic AST customization.
 
 - The source PR defined both `GEN_AI_SYSTEM` (`az.ai.agents`) and `GEN_AI_PROVIDER_NAME` (`microsoft.foundry`)
   but set only `gen_ai.provider.name` on spans (the `gen_ai.system` constant was effectively unused on spans).
-- The GenAI semantic conventions renamed `gen_ai.system` → `gen_ai.provider.name` across versions. This PoC sets
-  **both** for compatibility with backends that read either.
-- **Open:** confirm the canonical attribute(s) and values for the targeted schema (currently
-  `https://opentelemetry.io/schemas/1.29.0`) and the Foundry backend, then drop whichever is redundant.
+- The GenAI semantic conventions renamed `gen_ai.system` → `gen_ai.provider.name` across versions. Java now matches
+  the current Python paths in scope by emitting `gen_ai.provider.name=microsoft.foundry` without unconditionally
+  emitting the legacy attribute.
+- Java now declares the same `1.34.0` schema as Python.
 
 ---
 
@@ -135,13 +138,13 @@ decision about deterministic AST customization.
 
 ---
 
-## 6. Metrics are implemented but not unit-tested
+## 6. Metrics are implemented and unit-tested
 
 - `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` histograms are created per client from
   `ClientOptions.getMetricsOptions()` and recorded on span close.
-- The unit tests assert spans (via an in-memory OpenTelemetry `SdkTracerProvider`) but **do not** assert metrics
-  (that needs an OTel `MeterProvider` + in-memory metric reader wired through `MetricsOptions`).
-- **Open:** add metric assertions.
+- In-memory metric tests assert names, units, values, and dimensions for response duration, input/completion token
+  usage, response-model selection, request-model fallback, and errors.
+- Response metrics follow Python's `responses` operation name and `input` / `completion` token types.
 
 ---
 
@@ -167,10 +170,9 @@ decision about deterministic AST customization.
 
 ## 9. Content-recording environment variable name
 
-- This PoC uses `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` (the `azure-ai-inference` standard; system
-  property `azure.tracing.gen_ai.content_recording_enabled`, default `false`).
-- The source PR used `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`.
-- **Open:** confirm the intended standard for Foundry Agents and align the docs.
+- Java now uses Python's `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` setting (default `false`).
+- `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` remains a compatibility fallback when the standard setting is
+  absent; an explicit standard setting takes precedence.
 
 ---
 
@@ -179,10 +181,10 @@ decision about deterministic AST customization.
 - Traced in this PoC: all three current `createAgentVersion` convenience overloads (sync + async),
   `createAzureResponse`, `createStreamingAzureResponse` (sync + async), and `createConversation`
   (sync + async).
+- Also traced: synchronous and asynchronous raw-response create and raw-response streaming protocol methods.
+  Raw streaming spans remain open through exhaustion, failure, cancellation, or explicit close.
 - Not traced: `getAgent` / `listAgents` / `deleteAgent`, sessions, memory stores, toolboxes, and the other
-  `createAgentVersion*` methods with distinct names. Raw-response create and raw-response streaming methods are
-  also not traced pending the raw-response and raw-stream scope decision in
-  [GAPS.md](GAPS.md).
+  `createAgentVersion*` methods with distinct names.
 - **Open:** decide the intended operation coverage and whether CRUD reads should emit spans at all.
 
 ---
@@ -243,15 +245,15 @@ observed differences and feeds the actionable tracker in [GAPS.md](GAPS.md).
 
 | Area | Python behavior | Current Java behavior | Disposition |
 | --- | --- | --- | --- |
-| Semantic-convention schema | Declares `1.34.0` | Declares `1.29.0` | P0 parity gap: align or document a concrete compatibility constraint. |
-| Provider identity | Emits `gen_ai.provider.name=microsoft.foundry`; conditionally retains `gen_ai.system` | Emits provider and legacy system attributes | P1 parity gap: match Python's compatibility behavior. |
-| Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Activation follows per-client Azure Core tracing configuration | P0 parity gap: confirm the internal gate without restoring global mutable APIs. |
-| Content gate | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` | P0 parity gap: select the supported key and retain default-off behavior. |
+| Semantic-convention schema | Declares `1.34.0` | Declares `1.34.0` | Aligned. |
+| Provider identity | Emits `gen_ai.provider.name=microsoft.foundry`; conditionally retains `gen_ai.system` | Emits `gen_ai.provider.name=microsoft.foundry` for current Agents paths | Aligned for the supported paths. |
+| Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Uses the same internal gate with per-client Azure Core configuration | Aligned without restoring global mutable APIs. |
+| Content gate | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | Uses the same setting; former Azure setting is a fallback | Aligned with compatibility fallback. |
 | Service propagation | Separate trace-context gate, enabled by default; baggage separately disabled by default | Sync uses the current span; async uses a per-client, request-scoped Azure `Context` bridge. The pipeline injects W3C trace context; baggage is not propagated by this bridge. | P1 parity gap: confirm configuration controls; HTTP parenting is already live-validated. |
 | Agent creation | Instruments agent version creation | All current Java `createAgentVersion` convenience overloads are instrumented | Implemented; verify regeneration and E2E parity. |
-| Responses | Typed sync/async, streaming, and raw-response streaming wrappers | Typed sync/async and streaming are instrumented; raw-response methods are not | P1 parity gap if current Java consumers require raw paths. |
-| Conversations | Create and conversation-item listing | Create only | P1 parity gap only if listing is part of the current Agents API. |
-| Streaming lifecycle | Explicit cleanup for regular and raw streams | Typed sync supports exhaustion/error/explicit close; async supports completion/error/cancellation | Add raw-stream coverage if included in the release scope. |
+| Responses | Typed sync/async, streaming, and raw-response streaming wrappers | Typed and raw sync/async response paths are instrumented | Aligned for the current Java API. |
+| Conversations | Create and conversation-item listing | Create only | Intentional: listing is not exposed by the current Java Agents API. |
+| Streaming lifecycle | Explicit cleanup for regular and raw streams | Typed and raw streams close spans on exhaustion, error, cancellation, or explicit close | Aligned for the current Java API. |
 | Duration timing | Wall-clock timing | Monotonic `System.nanoTime()` | Intentional Java reliability improvement required by the roadmap. |
 | Workflow instrumentation | Present in Python | Excluded from Java instrumentation and the E2E scope | Intentional: workflow agents are retiring and are not a Java tracing requirement. |
 
@@ -274,13 +276,13 @@ Confirmed Java correctness fixes from this audit:
 
 | Area | Decision |
 | --- | --- |
-| Enable/disable toggle | Removed — tracing activates from configured OpenTelemetry |
+| Enable/disable toggle | No public toggle; the Python-compatible internal experimental gate and configured OpenTelemetry both apply |
 | Configuration | Per-client `Tracer` + `Meter` from `ClientOptions` (`TracingOptions` / `MetricsOptions`) |
 | Placement | `com.azure.ai.agents.implementation.telemetry` (non-API) |
 | Behavioral reference | Current Python Foundry telemetry implementation |
 | Java abstractions | Prefer `azure-core`; use direct OpenTelemetry only for documented gaps |
 | Weaving | Customize the generated convenience methods (matches `azure-ai-inference`) |
-| Content gating | `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED`, off by default; no customer-controlled content when disabled |
+| Content gating | `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`, off by default; former Azure key is a fallback |
 | Live validation | Foundry project connected to Application Insights, using the end-to-end tracing scenario |
 | Review gate | Azure SDK architecture review before merge |
 | Bugs fixed | `end(errorType, throwable)`; monotonic duration; conversation request lifecycle; async request initiation context; all `createAgentVersion` overloads; `formatToolCallOutput` content; histogram start gate; library version from `azure-ai-agents.properties` |

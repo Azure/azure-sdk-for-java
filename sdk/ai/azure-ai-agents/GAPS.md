@@ -33,20 +33,14 @@ The Java implementation already:
 - Uses monotonic duration measurement.
 - Survives `tsp-client update`.
 - Passes the maintained live quick suite in synchronous and asynchronous modes,
-  with 142/142 checks in both content-disabled and content-enabled runs.
+  with 200/200 checks across typed, raw-response, raw-streaming, and tool-call
+  scenarios with content recording both disabled and enabled.
 
 ## Python parity gaps
 
 | Priority | Area | Python behavior | Current Java behavior | Required work |
 | --- | --- | --- | --- | --- |
-| P0 | Semantic-convention schema | Declares `1.34.0` | Declares `1.29.0` | Align Java to `1.34.0`, or document a concrete compatibility reason not to. Verify affected attribute names and types at the same time. |
-| P0 | Experimental gate | Requires `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` | Tracing activates when an OpenTelemetry provider is configured through `ClientOptions` | Confirm whether Java must honor the same internal environment gate. Do not restore the process-global mutable API from the prototype. |
-| P0 | Content opt-in | Uses `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT` | Uses `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` | Select one supported key and update implementation, tests, and documentation. Preserve the default-off privacy boundary. |
-| P1 | Provider attributes | Emits `gen_ai.provider.name=microsoft.foundry` and conditionally retains legacy `gen_ai.system` | Emits both provider and legacy system attributes | Match Python's compatibility behavior and remove any redundant legacy attribute when safe. |
 | P1 | Propagation controls | Has separate trace-context and baggage controls; trace context is enabled by default and baggage is disabled by default | Propagates trace context through Azure Core; the Java bridge never propagates baggage | Decide whether Java needs the same configuration controls. Keep baggage excluded unless explicitly approved. |
-| P1 | Raw responses and raw streams | Wraps typed responses, typed streams, and raw-response streaming | Instruments typed responses and typed streams only | Confirm that current Java consumers require raw paths, then instrument and validate those paths without adding telemetry-only public APIs. |
-| P1 | Conversation operations | Instruments conversation creation and conversation-item listing | Instruments conversation creation only | Add listing only if the operation exists in the approved current Agents API. Do not recreate legacy Projects APIs for parity. |
-| P1 | Metrics verification | Emits operation-duration and token-usage metrics under the Python contract | Emits both metrics, but unit tests do not assert values and dimensions | Add in-memory metric assertions for names, units, values, dimensions, errors, cancellation, and streaming. |
 | P2 | Response fixture coverage | Python tests can exercise response and stream payload formatting | Java lifecycle tests do not directly construct full openai-java response payloads | Add recorded fixtures or a narrow test seam for response attributes, usage, tool calls, and content gating. |
 | P2 | Structured event serialization | Uses structured serialization | Some Java event payloads are built with string concatenation | Migrate to `azure-json` `JsonWriter` and add escaping/schema tests. |
 
@@ -60,9 +54,18 @@ These are acceptance tasks rather than Python behavior differences:
 2. Complete Azure SDK architecture review, focused on per-client configuration,
    environment-variable selection, propagation privacy, and the content
    boundary.
-3. Confirm whether raw-response streaming is required for the first release and
-   validate the same entry point used by downstream consumers if it is.
-4. Record the release owner and target milestone.
+3. Record the release owner and target milestone.
+
+## Resolved parity gaps
+
+| Area | Resolution |
+| --- | --- |
+| Semantic-convention schema | Java now declares the Python baseline schema, `1.34.0`. |
+| Experimental gate | Java honors `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` internally while retaining per-client Azure Core configuration and no mutable global API. |
+| Content opt-in | Java uses `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT`, defaulting to `false`; the former Azure setting is a compatibility fallback. |
+| Provider attributes | Java emits `gen_ai.provider.name=microsoft.foundry` and no longer unconditionally emits the legacy `gen_ai.system` attribute, matching the current Python paths in scope. |
+| Metrics verification | In-memory tests assert duration and token metric names, units, values, provider, operation, server, model, token type, and error dimensions. Response operations use Python's `responses` metric operation and `input` / `completion` token types. |
+| Raw responses and raw streams | Existing sync and async protocol methods are instrumented. Raw streaming spans remain open through stream exhaustion, failure, cancellation, or explicit close and use the same async context bridge as typed calls. |
 
 ## Intentional non-gaps
 
@@ -71,6 +74,7 @@ Python or prototype code:
 
 - Workflow-agent telemetry and workflow-specific events.
 - Legacy Projects operations that are not part of the current Agents API.
+- Conversation-item listing, which is not exposed by the current Java Agents API.
 - Process-global mutable tracing configuration.
 - Public `traced*` method variants.
 - Public conversation methods added only as telemetry scaffolding.

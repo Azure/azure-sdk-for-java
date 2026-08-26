@@ -4,7 +4,9 @@
 package com.azure.ai.agents.implementation.telemetry;
 
 import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
+import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.metrics.Meter;
@@ -12,8 +14,13 @@ import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.openai.core.JsonValue;
+import com.openai.core.http.Headers;
+import com.openai.core.http.HttpResponseFor;
+import com.openai.core.http.StreamResponse;
 import com.openai.models.conversations.Conversation;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -27,9 +34,13 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,7 +70,8 @@ public final class GenAiResponseTracingTest {
                 new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
         Meter meter = MeterProvider.getDefaultProvider().createMeter("test", null, null);
         responseTracing = new GenAiResponseTracing(new GenAiInstrumentation("https://contoso.services.ai.azure.com",
-            new ConfigurationBuilder().build(), tracer, meter), new OpenAITracingContextBridge());
+            new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true").build(), tracer, meter),
+            new OpenAITracingContextBridge());
     }
 
     @Test
@@ -128,6 +140,133 @@ public final class GenAiResponseTracingTest {
             .orElse(null));
     }
 
+    @Test
+    public void rawRequestPromotesTracingFieldsAndPreservesAzureExtensions() {
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(
+            BinaryData.fromString("{\"model\":\"gpt-4o\",\"input\":\"hello\",\"instructions\":\"be helpful\","
+                + "\"conversation\":\"conversation-1\",\"agent_reference\":{\"name\":\"weather-agent\"}}"));
+
+        assertEquals("gpt-4o", GenAiResponseTracing.extractModelString(params.model().get()));
+        assertEquals("hello", params.input().get().asText());
+        assertEquals("be helpful", params.instructions().get());
+        assertEquals(CONVERSATION_ID, params.conversation().get().asId());
+        assertTrue(params._additionalBodyProperties().containsKey("agent_reference"));
+    }
+
+    @Test
+    public void rawRequestPreservesExplicitNullFields() {
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(
+            BinaryData.fromString("{\"model\":null,\"input\":null,\"instructions\":null,\"conversation\":null}"));
+
+        assertTrue(params._additionalBodyProperties().containsKey("model"));
+        assertTrue(params._additionalBodyProperties().containsKey("input"));
+        assertTrue(params._additionalBodyProperties().containsKey("instructions"));
+        assertTrue(params._additionalBodyProperties().containsKey("conversation"));
+    }
+
+    @Test
+    public void tracesRawResponseAndClosesSpanWhenHeadersArrive() {
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+
+        HttpResponseFor<Response> result
+            = responseTracing.traceRawResponse(new AzureCreateResponseOptions(), params, () -> {
+                assertTrue(io.opentelemetry.api.trace.Span.current().getSpanContext().isValid());
+                return rawResponse(null, new AtomicBoolean());
+            });
+
+        assertNotNull(result);
+        assertNotNull(getResponseSpan());
+    }
+
+    @Test
+    public void tracesAsyncRawResponseWithBridgeContext() {
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+
+        HttpResponseFor<Response> result
+            = responseTracing.traceRawResponseAsync(new AzureCreateResponseOptions(), params, tracedParams -> {
+                assertTrue(tracedParams._additionalHeaders()
+                    .names()
+                    .contains(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER));
+                return Mono.just(rawResponse(null, new AtomicBoolean()));
+            }).block();
+
+        assertNotNull(result);
+        assertNotNull(getResponseSpan());
+    }
+
+    @Test
+    public void rawStreamingSpanEndsOnExhaustionAndClosesStream() {
+        AtomicBoolean streamClosed = new AtomicBoolean();
+        StreamResponse<ResponseStreamEvent> streamResponse = streamResponse(Stream.empty(), streamClosed);
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+
+        HttpResponseFor<StreamResponse<ResponseStreamEvent>> response = responseTracing.traceRawStreamingResponse(
+            new AzureCreateResponseOptions(), params, () -> rawResponse(streamResponse, new AtomicBoolean()));
+
+        assertTrue(spanProcessor.getEndedSpans().stream().noneMatch(span -> "chat gpt-4o".equals(span.getName())));
+        assertEquals(0, response.parse().stream().count());
+        assertTrue(streamClosed.get());
+        assertNotNull(getResponseSpan());
+    }
+
+    @Test
+    public void rawStreamingSpanEndsOnExplicitResponseClose() {
+        AtomicBoolean responseClosed = new AtomicBoolean();
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+        HttpResponseFor<StreamResponse<ResponseStreamEvent>> response
+            = responseTracing.traceRawStreamingResponse(new AzureCreateResponseOptions(), params,
+                () -> rawResponse(streamResponse(Stream.empty(), new AtomicBoolean()), responseClosed));
+
+        response.close();
+
+        assertTrue(responseClosed.get());
+        assertNotNull(getResponseSpan());
+    }
+
+    @Test
+    public void asyncRawStreamingResponseRetainsSpanOwnershipAfterEmission() {
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+
+        HttpResponseFor<StreamResponse<ResponseStreamEvent>> response = responseTracing
+            .traceRawStreamingResponseAsync(new AzureCreateResponseOptions(), params,
+                ignored -> Mono
+                    .just(rawResponse(streamResponse(Stream.empty(), new AtomicBoolean()), new AtomicBoolean())))
+            .flux()
+            .take(1)
+            .next()
+            .block();
+
+        assertTrue(spanProcessor.getEndedSpans().stream().noneMatch(span -> "chat gpt-4o".equals(span.getName())));
+        response.close();
+        assertNotNull(getResponseSpan());
+    }
+
+    @Test
+    public void rawStreamingInitializationFailureEndsSpanAndClosesStream() {
+        AtomicBoolean streamClosed = new AtomicBoolean();
+        RuntimeException failure = new RuntimeException("stream initialization failed");
+        StreamResponse<ResponseStreamEvent> streamResponse = new StreamResponse<ResponseStreamEvent>() {
+            @Override
+            public Stream<ResponseStreamEvent> stream() {
+                throw failure;
+            }
+
+            @Override
+            public void close() {
+                streamClosed.set(true);
+            }
+        };
+        ResponseCreateParams params = ResponseCreateParams.builder().model("gpt-4o").input("hello").build();
+        HttpResponseFor<StreamResponse<ResponseStreamEvent>> response = responseTracing.traceRawStreamingResponse(
+            new AzureCreateResponseOptions(), params, () -> rawResponse(streamResponse, new AtomicBoolean()));
+
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> response.parse().stream());
+
+        assertSame(failure, thrown);
+        assertTrue(streamClosed.get());
+        assertEquals(StatusCode.ERROR, getResponseSpan().toSpanData().getStatus().getStatusCode());
+    }
+
     private ReadableSpan getConversationSpan() {
         ReadableSpan span = spanProcessor.getEndedSpans()
             .stream()
@@ -136,6 +275,60 @@ public final class GenAiResponseTracingTest {
             .orElse(null);
         assertNotNull(span, "create_conversation span not found.");
         return span;
+    }
+
+    private ReadableSpan getResponseSpan() {
+        ReadableSpan span = spanProcessor.getEndedSpans()
+            .stream()
+            .filter(candidate -> "chat gpt-4o".equals(candidate.getName()))
+            .findFirst()
+            .orElse(null);
+        assertNotNull(span, "chat response span not found.");
+        return span;
+    }
+
+    private static <T> HttpResponseFor<T> rawResponse(T parsed, AtomicBoolean closed) {
+        return new HttpResponseFor<T>() {
+            @Override
+            public int statusCode() {
+                return 200;
+            }
+
+            @Override
+            public Headers headers() {
+                return Headers.builder().build();
+            }
+
+            @Override
+            public InputStream body() {
+                return new ByteArrayInputStream(new byte[0]);
+            }
+
+            @Override
+            public T parse() {
+                return parsed;
+            }
+
+            @Override
+            public void close() {
+                closed.set(true);
+            }
+        };
+    }
+
+    private static StreamResponse<ResponseStreamEvent> streamResponse(Stream<ResponseStreamEvent> stream,
+        AtomicBoolean closed) {
+        return new StreamResponse<ResponseStreamEvent>() {
+            @Override
+            public Stream<ResponseStreamEvent> stream() {
+                return stream;
+            }
+
+            @Override
+            public void close() {
+                closed.set(true);
+            }
+        };
     }
 
     private static Conversation conversation() {
