@@ -46,13 +46,13 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
     /*
      * The execution parameters the scheduled action is supposed to follow
      */
-    private RecurringScheduledActionsExecutionParameters executionParameters;
+    private ScheduledActionsExecutionParameters executionParameters;
 
     /*
      * The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will
      * default to InitiateAt.
      */
-    private RecurringScheduledActionsDeadlineType deadlineType;
+    private ScheduledActionsDeadlineType deadlineType;
 
     /**
      * Creates an instance of ScheduledActionsSchedule class.
@@ -171,7 +171,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
      * 
      * @return the executionParameters value.
      */
-    public RecurringScheduledActionsExecutionParameters executionParameters() {
+    public ScheduledActionsExecutionParameters executionParameters() {
         return this.executionParameters;
     }
 
@@ -181,8 +181,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
      * @param executionParameters the executionParameters value to set.
      * @return the ScheduledActionsSchedule object itself.
      */
-    public ScheduledActionsSchedule
-        withExecutionParameters(RecurringScheduledActionsExecutionParameters executionParameters) {
+    public ScheduledActionsSchedule withExecutionParameters(ScheduledActionsExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -193,7 +192,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
      * 
      * @return the deadlineType value.
      */
-    public RecurringScheduledActionsDeadlineType deadlineType() {
+    public ScheduledActionsDeadlineType deadlineType() {
         return this.deadlineType;
     }
 
@@ -204,7 +203,7 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
      * @param deadlineType the deadlineType value to set.
      * @return the ScheduledActionsSchedule object itself.
      */
-    public ScheduledActionsSchedule withDeadlineType(RecurringScheduledActionsDeadlineType deadlineType) {
+    public ScheduledActionsSchedule withDeadlineType(ScheduledActionsDeadlineType deadlineType) {
         this.deadlineType = deadlineType;
         return this;
     }
@@ -260,10 +259,10 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
                     deserializedScheduledActionsSchedule.requestedDaysOfTheMonth = requestedDaysOfTheMonth;
                 } else if ("executionParameters".equals(fieldName)) {
                     deserializedScheduledActionsSchedule.executionParameters
-                        = RecurringScheduledActionsExecutionParameters.fromJson(reader);
+                        = ScheduledActionsExecutionParameters.fromJson(reader);
                 } else if ("deadlineType".equals(fieldName)) {
                     deserializedScheduledActionsSchedule.deadlineType
-                        = RecurringScheduledActionsDeadlineType.fromString(reader.getString());
+                        = ScheduledActionsDeadlineType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

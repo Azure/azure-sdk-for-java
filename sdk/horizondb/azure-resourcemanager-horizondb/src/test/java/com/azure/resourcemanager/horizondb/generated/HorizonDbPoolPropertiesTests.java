@@ -12,8 +12,8 @@ public final class HorizonDbPoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HorizonDbPoolProperties model = BinaryData.fromString(
-            "{\"location\":\"tfell\",\"state\":\"Disabled\",\"replicaCount\":348508366,\"version\":\"onpeqfpjkjlxofp\",\"createMode\":\"Create\",\"provisioningState\":\"Failed\"}")
+            "{\"location\":\"jdkwtnhxbnjb\",\"state\":\"Disabled\",\"replicaCount\":588901049,\"version\":\"lssai\",\"createMode\":\"Create\",\"provisioningState\":\"Failed\"}")
             .toObject(HorizonDbPoolProperties.class);
-        Assertions.assertEquals("tfell", model.location());
+        Assertions.assertEquals("jdkwtnhxbnjb", model.location());
     }
 }

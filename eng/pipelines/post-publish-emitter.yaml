@@ -157,5 +157,4 @@ jobs:
       PRBranchName: typespec-java-generation-$(Build.BuildId)
       CommitMsg: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
       PRTitle: '[Automation] Generate SDK based on TypeSpec $(PackageVersion)$(PullRequestTitleSuffix)'
-      PRLabels: 'DPG'
       OpenAsDraft: 'true'

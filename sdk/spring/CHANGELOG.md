@@ -3,6 +3,11 @@
 
 ### Spring Cloud Azure Autoconfigure
 
+#### Features Added
+
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.certificate-alias-filter-patterns` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.certificate-alias-filter-patterns` configuration. The patterns are passed to the Key Vault JCA provider to limit which certificate aliases are loaded. ([#50013](https://github.com/Azure/azure-sdk-for-java/issues/50013))
+- Added `spring.ssl.bundle.keyvault.<bundle-name>.keystore.disable-aia-download` and `spring.ssl.bundle.keyvault.<bundle-name>.truststore.disable-aia-download` configuration to disable automatic Authority Information Access (AIA) certificate downloads. The default is `false`. ([#50163](https://github.com/Azure/azure-sdk-for-java/pull/50163))
+
 #### Bugs Fixed
 
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))

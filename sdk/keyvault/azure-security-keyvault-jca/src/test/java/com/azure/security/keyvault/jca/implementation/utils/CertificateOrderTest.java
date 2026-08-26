@@ -37,7 +37,7 @@ public class CertificateOrderTest {
                 Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
             StandardCharsets.UTF_8);
 
-        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString);
+        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString, false);
 
         assertEquals(3, certs.length, "Should have 3 certificates in chain");
 
@@ -79,7 +79,7 @@ public class CertificateOrderTest {
                 Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx")),
             StandardCharsets.UTF_8);
 
-        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pfxString);
+        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pfxString, false);
 
         assertEquals(3, certs.length, "Should have 3 certificates in chain");
 
@@ -121,7 +121,7 @@ public class CertificateOrderTest {
                 Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
             StandardCharsets.UTF_8);
 
-        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString);
+        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString, false);
 
         // Reverse the certificate order to simulate the issue
         Certificate[] reversedCerts = new Certificate[certs.length];
@@ -170,7 +170,7 @@ public class CertificateOrderTest {
             Files.readAllBytes(
                 Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
             StandardCharsets.UTF_8);
-        Certificate concreteSingleCert = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString)[0];
+        Certificate concreteSingleCert = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString, false)[0];
         Certificate[] singleCert = new Certificate[] { concreteSingleCert };
         result = CertificateUtil.orderCertificateChain(singleCert);
         assertEquals(1, result.length, "Should return single certificate unchanged");
@@ -194,7 +194,7 @@ public class CertificateOrderTest {
                 Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
             StandardCharsets.UTF_8);
 
-        Certificate[] fullChain = CertificateUtil.loadCertificatesFromSecretBundleValue(fullChainPem);
+        Certificate[] fullChain = CertificateUtil.loadCertificatesFromSecretBundleValue(fullChainPem, false);
         assertEquals(3, fullChain.length, "Full chain should have 3 certificates");
 
         // Create incomplete chain: [root, leaf] (missing intermediate)

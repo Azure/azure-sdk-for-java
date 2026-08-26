@@ -9,7 +9,7 @@ package com.azure.resourcemanager.edgezones.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-04-01-preview/Operations_List.json
+     * x-ms-original-file: 2026-10-01/Operations_List.json
      */
     /**
      * Sample code: ListOperations.

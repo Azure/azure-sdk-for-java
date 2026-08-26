@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * HorizonDb cluster for update operations.
+ * HorizonDB cluster for update operations.
  */
 @Fluent
 public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<HorizonDbClusterForPatchUpdate> {
@@ -23,7 +23,12 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
     private Map<String, String> tags;
 
     /*
-     * The properties that can be updated for a HorizonDb cluster.
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
+     * The properties that can be updated for a HorizonDB cluster.
      */
     private HorizonDbClusterPropertiesForPatchUpdate properties;
 
@@ -54,7 +59,27 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
     }
 
     /**
-     * Get the properties property: The properties that can be updated for a HorizonDb cluster.
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the HorizonDbClusterForPatchUpdate object itself.
+     */
+    public HorizonDbClusterForPatchUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the properties property: The properties that can be updated for a HorizonDB cluster.
      * 
      * @return the properties value.
      */
@@ -63,7 +88,7 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
     }
 
     /**
-     * Set the properties property: The properties that can be updated for a HorizonDb cluster.
+     * Set the properties property: The properties that can be updated for a HorizonDB cluster.
      * 
      * @param properties the properties value to set.
      * @return the HorizonDbClusterForPatchUpdate object itself.
@@ -80,6 +105,7 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
@@ -103,6 +129,8 @@ public final class HorizonDbClusterForPatchUpdate implements JsonSerializable<Ho
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedHorizonDbClusterForPatchUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedHorizonDbClusterForPatchUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedHorizonDbClusterForPatchUpdate.properties
                         = HorizonDbClusterPropertiesForPatchUpdate.fromJson(reader);
