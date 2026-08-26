@@ -19,11 +19,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
-import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamUtils;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
 import com.azure.search.documents.models.ServerSentEventListener;
+import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -467,9 +468,10 @@ public final class KnowledgeBaseRetrievalClient {
     @Generated
     public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,
         ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        KnowledgeBaseRetrievalStreamUtils
-            .listen(hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest),
-                KnowledgeBaseRetrievalStreamUtils.createRequestOptions(null, null)), listener);
+        RequestOptions requestOptions = new RequestOptions();
+        ServerSentEventStreams.listen(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
     }
 
     /**
@@ -490,9 +492,17 @@ public final class KnowledgeBaseRetrievalClient {
     @Generated
     public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
         String queryWorkIQSourceAuthorization, ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {
-        KnowledgeBaseRetrievalStreamUtils.listen(hiddenGeneratedRetrieveStreamWithResponse(
-            BinaryData.fromObject(retrievalRequest), KnowledgeBaseRetrievalStreamUtils
-                .createRequestOptions(querySourceAuthorization, queryWorkIQSourceAuthorization)),
-            listener);
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (queryWorkIQSourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
+                queryWorkIQSourceAuthorization);
+        }
+        ServerSentEventStreams.listen(
+            hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions),
+            KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal(), listener);
     }
 }

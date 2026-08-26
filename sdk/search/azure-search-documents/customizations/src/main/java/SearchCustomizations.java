@@ -107,9 +107,11 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addAsyncRetrieveStream(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEvent")
+        customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
+            .addImport("com.azure.search.documents.models.ServerSentEvent")
+            .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
-                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamUtils")
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
             .addImport("com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent")
             .addImport("reactor.core.publisher.Flux")
             .getClassByName(customization.getClassName())
@@ -120,10 +122,12 @@ public class SearchCustomizations extends Customization {
                         .parseBodyDeclaration("@Generated\n"
                             + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
                                 + "KnowledgeBaseRetrievalOptions retrievalRequest) {\n"
-                                + "    return KnowledgeBaseRetrievalStreamUtils.toFlux(\n"
-                                + "        hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject("
-                                + "retrievalRequest),\n"
-                                + "            KnowledgeBaseRetrievalStreamUtils.createRequestOptions(null, null)));\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "            event -> event.getData().isTerminal()));\n"
                                 + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(
@@ -143,13 +147,22 @@ public class SearchCustomizations extends Customization {
                             + "public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream("
                                 + "KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,\n"
                                 + "    String queryWorkIQSourceAuthorization) {\n"
-                                + "    return KnowledgeBaseRetrievalStreamUtils.toFlux(\n"
-                                + "        hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject("
-                                + "retrievalRequest),\n"
-                                + "            KnowledgeBaseRetrievalStreamUtils.createRequestOptions("
-                                + "querySourceAuthorization,\n"
-                                + "                queryWorkIQSourceAuthorization)));\n"
-                                + "}\n")
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    if (querySourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                                + "            querySourceAuthorization);\n"
+                                + "    }\n"
+                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
+                                + "            queryWorkIQSourceAuthorization);\n"
+                                + "    }\n"
+                                + "    return hiddenGeneratedRetrieveStreamWithResponse("
+                                + "BinaryData.fromObject(retrievalRequest), requestOptions)\n"
+                                + "        .flatMapMany(response -> ServerSentEventStreams.toFlux(response,\n"
+                                + "            KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "            event -> event.getData().isTerminal()));\n" + "}\n")
                         .asMethodDeclaration();
                 methodWithAuthorizationHeaders.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
@@ -170,9 +183,11 @@ public class SearchCustomizations extends Customization {
     }
 
     private static void addSyncRetrieveStream(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.addImport("com.azure.search.documents.models.ServerSentEventListener")
+        customization.customizeAst(ast -> ast.addImport("com.azure.core.http.HttpHeaderName")
+            .addImport("com.azure.search.documents.models.ServerSentEventListener")
+            .addImport("com.azure.search.documents.models.implementation.sse.ServerSentEventStreams")
             .addImport(
-                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamUtils")
+                "com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter")
             .addImport("com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent")
             .getClassByName(customization.getClassName())
             .ifPresent(clazz -> {
@@ -182,11 +197,11 @@ public class SearchCustomizations extends Customization {
                         .parseBodyDeclaration("@Generated\n"
                             + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
                                 + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    KnowledgeBaseRetrievalStreamUtils.listen(\n"
-                                + "        hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject("
-                                + "retrievalRequest),\n"
-                                + "            KnowledgeBaseRetrievalStreamUtils.createRequestOptions(null, null)), "
-                                + "listener);\n"
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "        event -> event.getData().isTerminal(), listener);\n"
                                 + "}\n")
                         .asMethodDeclaration();
                 method.setJavadocComment(
@@ -207,13 +222,21 @@ public class SearchCustomizations extends Customization {
                             + "public void retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest,\n"
                                 + "    String querySourceAuthorization, String queryWorkIQSourceAuthorization,\n"
                                 + "    ServerSentEventListener<KnowledgeBaseRetrievalStreamEvent> listener) {\n"
-                                + "    KnowledgeBaseRetrievalStreamUtils.listen(\n"
-                                + "        hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject("
-                                + "retrievalRequest),\n"
-                                + "            KnowledgeBaseRetrievalStreamUtils.createRequestOptions("
-                                + "querySourceAuthorization,\n"
-                                + "                queryWorkIQSourceAuthorization)), listener);\n"
-                                + "}\n")
+                                + "    RequestOptions requestOptions = new RequestOptions();\n"
+                                + "    if (querySourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-source-authorization\"),\n"
+                                + "            querySourceAuthorization);\n"
+                                + "    }\n"
+                                + "    if (queryWorkIQSourceAuthorization != null) {\n"
+                                + "        requestOptions.setHeader(\n"
+                                + "            HttpHeaderName.fromString(\"x-ms-query-work-iq-source-authorization\"),\n"
+                                + "            queryWorkIQSourceAuthorization);\n"
+                                + "    }\n"
+                                + "    ServerSentEventStreams.listen(hiddenGeneratedRetrieveStreamWithResponse(\n"
+                                + "        BinaryData.fromObject(retrievalRequest), requestOptions),\n"
+                                + "        KnowledgeBaseRetrievalStreamEventConverter::convert,\n"
+                                + "        event -> event.getData().isTerminal(), listener);\n" + "}\n")
                         .asMethodDeclaration();
                 methodWithAuthorizationHeaders.setJavadocComment(
                     "Retrieves relevant data from backing stores and streams progress and results as server-sent "
