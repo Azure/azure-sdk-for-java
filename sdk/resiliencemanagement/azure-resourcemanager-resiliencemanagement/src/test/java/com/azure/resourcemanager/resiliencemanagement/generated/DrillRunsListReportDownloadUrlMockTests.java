@@ -12,16 +12,15 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillReportFormat;
 import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlRequest;
-import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class DrillRunsListReportDownloadUrlWithResponseMockTests {
+public final class DrillRunsListReportDownloadUrlMockTests {
     @Test
-    public void testListReportDownloadUrlWithResponse() throws Exception {
-        String responseStr = "{\"format\":\"Html\",\"downloadUrl\":\"l\",\"expiryTimestamp\":\"2021-08-10T09:28:04Z\"}";
+    public void testListReportDownloadUrl() throws Exception {
+        String responseStr = "{}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +29,10 @@ public final class DrillRunsListReportDownloadUrlWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ListReportDownloadUrlResponse response = manager.drillRuns()
-            .listReportDownloadUrlWithResponse("l", "jrhuzgf", "on",
-                new ListReportDownloadUrlRequest().withFormat(DrillReportFormat.HTML), com.azure.core.util.Context.NONE)
-            .getValue();
+        manager.drillRuns()
+            .listReportDownloadUrl("ijjcea", "lijjjrtvam", "a", "zknxkv",
+                new ListReportDownloadUrlRequest().withFormat(DrillReportFormat.HTML),
+                com.azure.core.util.Context.NONE);
 
     }
 }

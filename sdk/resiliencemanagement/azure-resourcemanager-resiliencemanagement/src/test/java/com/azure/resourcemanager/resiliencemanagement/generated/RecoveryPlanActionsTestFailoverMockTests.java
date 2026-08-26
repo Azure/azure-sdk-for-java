@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 public final class RecoveryPlanActionsTestFailoverMockTests {
     @Test
     public void testTestFailover() throws Exception {
-        String responseStr = "{\"jobId\":\"sjvh\"}";
+        String responseStr = "{\"jobId\":\"hurql\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,14 +36,15 @@ public final class RecoveryPlanActionsTestFailoverMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPlanActionBaseResponse response = manager.recoveryPlanActions()
-            .testFailover("ecmslclbl", "jxl", "bsjuscvsfx", new FailoverRequest()
-                .withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
-                .withFailoverRequestProperties(new FailoverRequestProperties()
-                    .withSourceLocations(Arrays.asList("mgxuupbezqcc", "drtc", "ukdqkkyihztg", "qm"))
-                    .withSelectedResourceIds(Arrays.asList("gwldo", "chillcecf", "huwaoaguhic", "llizs"))
-                    .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED))),
+            .testFailover("gpbemeluclvdjju", "yrdnqod", "ahhxhqfaqnvzoqg",
+                new FailoverRequest().withFailoverDirection(FailoverDirectionTypes.FROM_SPECIFIC_LOCATIONS)
+                    .withFailoverRequestProperties(new FailoverRequestProperties()
+                        .withSourceLocations(Arrays.asList("mchgavsczuej", "txptlghw", "homewjjstliu", "qawmoaianc"))
+                        .withSelectedResourceIds(Arrays.asList("odrrslblxyd", "xrx", "vbxiwkgfbqlj", "qkhychocok"))
+                        .withExecutionConfigurations(
+                            new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sjvh", response.jobId());
+        Assertions.assertEquals("hurql", response.jobId());
     }
 }

@@ -46,42 +46,41 @@ public final class DrillsUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drills()
-            .update("phvxz", "wxh",
+            .update("dsajrednwyysh", "uwg",
                 new DrillUpdate()
-                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("udxjascowv", new UserAssignedIdentity())))
+                    .withIdentity(
+                        new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withUserAssignedIdentities(
+                                mapOf("oge", new UserAssignedIdentity(), "aekqsykvwj", new UserAssignedIdentity())))
                     .withProperties(new DrillUpdateProperties()
                         .withRecoveryPlanProperties(new RecoveryPlanPropertiesOfDrill()
-                            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                .withUserAssignedIdentity("dxphlk")))
-                        .withDrillAssetProperties(new AssetPropertiesOfDrill()
-                            .withSubscription("uqoly")
-                            .withRegion("hluqwquls")
-                            .withResourceGroup("rjb"))
+                            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentity("vmyltjcrspx")))
+                        .withDrillAssetProperties(new AssetPropertiesOfDrill().withSubscription("posew")
+                            .withRegion("igpxvkq")
+                            .withResourceGroup("upxvpifd"))
                         .withChaosResourceProperties(new ChaosResourcePropertiesOfDrill()
-                            .withIdentity(new AssociatedIdentity()
-                                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentity("fhyqezvqqugdrft"))
+                            .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentity("yzyzeyuu"))
                             .withChaosResourceIdentityForFaults(
                                 new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                    .withUserAssignedIdentity("exreu")))
-                        .withRbacSetupMode(RBACSetupMode.AUTOMATED_CUSTOM_ROLE)
+                                    .withUserAssignedIdentity("ds")))
+                        .withRbacSetupMode(RBACSetupMode.MANUAL)
                         .withMonitoringProperties(new MonitoringPropertiesOfDrill().withIdentity(
                             new AssociatedIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentity("vrqtvbc")))
+                                .withUserAssignedIdentity("gvdihoynkrxwetwk")))
                         .withHealthModelMonitoringProperties(
                             new HealthModelMonitoringProperties()
                                 .withIdentity(
                                     new AssociatedIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentity("ngoadyedmzr"))
-                                .withDiscoveryRuleId("jfoknubnoitpkp"))
+                                        .withUserAssignedIdentity("lknwfoanniyop"))
+                                .withDiscoveryRuleId("txiv"))
                         .withSliMonitoringProperties(new SliMonitoringProperties()
                             .withIdentity(new AssociatedIdentity().withType(ManagedServiceIdentityType.NONE)
-                                .withUserAssignedIdentity("dgxvco"))
+                                .withUserAssignedIdentity("yxnu"))
                             .withSlis(Arrays.asList(
-                                new SliSelection().withSliId("aswugyxpqitw").withType(SliType.AVAILABILITY),
-                                new SliSelection().withSliId("alwvskbu").withType(SliType.AVAILABILITY),
-                                new SliSelection().withSliId("acaqtyltcoqcu").withType(SliType.LATENCY))))),
+                                new SliSelection().withSliId("ephblkwqpatvbqs").withType(SliType.AVAILABILITY),
+                                new SliSelection().withSliId("cjbctviv").withType(SliType.LATENCY))))),
                 com.azure.core.util.Context.NONE);
 
     }

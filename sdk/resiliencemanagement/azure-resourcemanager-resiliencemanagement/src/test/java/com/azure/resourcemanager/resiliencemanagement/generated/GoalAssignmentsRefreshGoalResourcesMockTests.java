@@ -27,7 +27,8 @@ public final class GoalAssignmentsRefreshGoalResourcesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.goalAssignments().refreshGoalResources("xff", "shkwfbkgozxwopd", com.azure.core.util.Context.NONE);
+        manager.goalAssignments()
+            .refreshGoalResources("fhnykzcugs", "vxwlmzqwmvtxnj", com.azure.core.util.Context.NONE);
 
     }
 }

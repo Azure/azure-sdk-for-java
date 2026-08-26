@@ -38,44 +38,50 @@ public final class GoalAssignmentsUpdateGoalResourcesMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.goalAssignments()
-            .updateGoalResources("wtqabpxuckp", "gqoweyirdhlisn",
+            .updateGoalResources("qkzszuwiwtglxxh", "jfpgpicrmn",
                 new UpdateGoalResourceRequest()
                     .withResources(
                         Arrays
                             .asList(
                                 new GoalResourceInner()
-                                    .withProperties(
-                                        new GoalResourceProperties().withResourceArmId("lqqmpiz")
-                                            .withHighAvailabilityGoalParticipation(ExclusionState.EXCLUDED)
-                                            .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
-                                            .withZonalResiliency(new ResiliencyProperties()
-                                                .withGoalParticipation(ExclusionState.EXCLUDED)
-                                                .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                                                .withUserConfirmation(Arrays.asList(
-                                                    new UserConfirmationItem()
-                                                        .withSolutionDisplayName(
-                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
-                                                    new UserConfirmationItem()
-                                                        .withSolutionDisplayName(
-                                                            SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                        .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))
-                                            .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
-                                            .withDisasterRecoveryAttestationStatus(AttestationState.MANUALLY_ATTESTED)
-                                            .withUserConfirmationForHighAvailability(Arrays.asList(
+                                    .withProperties(new GoalResourceProperties().withResourceArmId("gmqgjs")
+                                        .withHighAvailabilityGoalParticipation(ExclusionState.INCLUDED)
+                                        .withHighAvailabilityAttestationStatus(AttestationState.NOT_ATTESTED)
+                                        .withZonalResiliency(new ResiliencyProperties()
+                                            .withGoalParticipation(ExclusionState.EXCLUDED)
+                                            .withAttestationStatus(AttestationState.MANUALLY_ATTESTED)
+                                            .withUserConfirmation(Arrays.asList(
                                                 new UserConfirmationItem()
-                                                    .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                    .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                                    .withSolutionDisplayName(
+                                                        SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
                                                 new UserConfirmationItem()
                                                     .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
                                                     .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
                                                 new UserConfirmationItem()
                                                     .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
-                                                    .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
                                                 new UserConfirmationItem()
                                                     .withSolutionDisplayName(
                                                         SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
-                                                    .withConfirmationStatus(ConfirmationStatus.APPROVAL_PENDING)))))),
+                                                    .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER))))
+                                        .withDisasterRecoveryGoalParticipation(ExclusionState.EXCLUDED)
+                                        .withDisasterRecoveryAttestationStatus(AttestationState.NOT_ATTESTED)
+                                        .withUserConfirmationForHighAvailability(Arrays.asList(
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVED_BY_USER),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(SolutionDisplayName.VM_IN_MULTI_ZONE_VMSS)
+                                                .withConfirmationStatus(ConfirmationStatus.REJECTED_BY_USER),
+                                            new UserConfirmationItem()
+                                                .withSolutionDisplayName(
+                                                    SolutionDisplayName.ZONE_PINNED_VM_WITH_ZRS_DISK)
+                                                .withConfirmationStatus(ConfirmationStatus.APPROVAL_NOT_NEEDED)))))),
                 com.azure.core.util.Context.NONE);
 
     }

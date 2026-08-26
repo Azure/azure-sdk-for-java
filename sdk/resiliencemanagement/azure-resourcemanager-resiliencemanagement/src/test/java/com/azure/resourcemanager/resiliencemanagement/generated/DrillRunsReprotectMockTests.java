@@ -32,10 +32,10 @@ public final class DrillRunsReprotectMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drillRuns()
-            .reprotect("f", "gzmxieqv", "smaklixqcahy", "xalybxawoijpo",
-                new DrillRunReprotectRequest()
-                    .withReprotectProperties(new ReprotectRequest().withReprotectRequestProperties(
-                        new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("xpkk")))),
+            .reprotect("xwaljgl", "o", "lqwa", "frqulhmzyqbhd",
+                new DrillRunReprotectRequest().withReprotectProperties(
+                    new ReprotectRequest().withReprotectRequestProperties(new ReprotectRequestProperties()
+                        .withSelectedResourceIds(Arrays.asList("rqpjiy", "qjcrgaxwmzwdf", "bnrzorpdltbqctq", "fg")))),
                 com.azure.core.util.Context.NONE);
 
     }

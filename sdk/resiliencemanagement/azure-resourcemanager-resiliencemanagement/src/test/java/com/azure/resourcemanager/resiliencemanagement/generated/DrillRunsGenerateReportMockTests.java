@@ -27,8 +27,7 @@ public final class DrillRunsGenerateReportMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.drillRuns()
-            .generateReport("dxlwyojbfqz", "kfnjyixhafrat", "xmbjroum", "znv", com.azure.core.util.Context.NONE);
+        manager.drillRuns().generateReport("xhqf", "qkaye", "sxtlg", "lwfgziiu", com.azure.core.util.Context.NONE);
 
     }
 }

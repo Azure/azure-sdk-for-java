@@ -11,14 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resiliencemanagement.fluent.DrillRunsClient;
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunInner;
-import com.azure.resourcemanager.resiliencemanagement.fluent.models.ListReportDownloadUrlResponseInner;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRun;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunAddNotesRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunFailoverRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRunReprotectRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.DrillRuns;
 import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlRequest;
-import com.azure.resourcemanager.resiliencemanagement.models.ListReportDownloadUrlResponse;
 import com.azure.resourcemanager.resiliencemanagement.models.MarkAsCompleteRequest;
 
 public final class DrillRunsImpl implements DrillRuns {
@@ -117,23 +115,15 @@ public final class DrillRunsImpl implements DrillRuns {
         this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName, context);
     }
 
-    public Response<ListReportDownloadUrlResponse> listReportDownloadUrlWithResponse(String serviceGroupName,
-        String drillName, String drillRunName, ListReportDownloadUrlRequest body, Context context) {
-        Response<ListReportDownloadUrlResponseInner> inner = this.serviceClient()
-            .listReportDownloadUrlWithResponse(serviceGroupName, drillName, drillRunName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ListReportDownloadUrlResponseImpl(inner.getValue(), this.manager()));
+    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body) {
+        this.serviceClient().listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body);
     }
 
-    public ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String drillName,
-        String drillRunName) {
-        ListReportDownloadUrlResponseInner inner
-            = this.serviceClient().listReportDownloadUrl(serviceGroupName, drillName, drillRunName);
-        if (inner != null) {
-            return new ListReportDownloadUrlResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void listReportDownloadUrl(String serviceGroupName, String operationId, String drillName,
+        String drillRunName, ListReportDownloadUrlRequest body, Context context) {
+        this.serviceClient()
+            .listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, context);
     }
 
     private DrillRunsClient serviceClient() {

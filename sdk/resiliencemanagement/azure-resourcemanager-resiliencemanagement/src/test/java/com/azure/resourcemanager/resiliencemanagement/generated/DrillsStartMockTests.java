@@ -30,7 +30,7 @@ public final class DrillsStartMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.drills()
-            .start("jeaoqaqbz", "yh", "w", new DrillStartRequest().withMode(DrillMode.FAILOVER),
+            .start("qcs", "hchkhufm", "qumq", new DrillStartRequest().withMode(DrillMode.FAILOVER),
                 com.azure.core.util.Context.NONE);
 
     }
