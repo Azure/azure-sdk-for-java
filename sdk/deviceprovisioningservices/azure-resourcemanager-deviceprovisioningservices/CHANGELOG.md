@@ -37,10 +37,10 @@
 #### `models.GroupIdInformationProperties` was modified
 
 * `GroupIdInformationProperties()` was changed to private access
-* `withRequiredMembers(java.util.List)` was removed
-* `withRequiredZoneNames(java.util.List)` was removed
 * `withGroupId(java.lang.String)` was removed
+* `withRequiredZoneNames(java.util.List)` was removed
 * `validate()` was removed
+* `withRequiredMembers(java.util.List)` was removed
 
 #### `models.IpFilterRule` was modified
 
@@ -62,15 +62,15 @@
 #### `models.VerificationCodeResponseProperties` was modified
 
 * `VerificationCodeResponseProperties()` was changed to private access
+* `withIsVerified(java.lang.Boolean)` was removed
+* `validate()` was removed
 * `withCreated(java.lang.String)` was removed
+* `withThumbprint(java.lang.String)` was removed
+* `withUpdated(java.lang.String)` was removed
+* `withCertificate(byte[])` was removed
 * `withVerificationCode(java.lang.String)` was removed
 * `withSubject(java.lang.String)` was removed
 * `withExpiry(java.lang.String)` was removed
-* `withThumbprint(java.lang.String)` was removed
-* `withUpdated(java.lang.String)` was removed
-* `withIsVerified(java.lang.Boolean)` was removed
-* `withCertificate(byte[])` was removed
-* `validate()` was removed
 
 #### `models.PrivateEndpointConnectionProperties` was modified
 
@@ -86,8 +86,8 @@
 
 #### `models.DpsCertificates` was modified
 
-* `models.CertificateListDescription list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
 * `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.CertificateListDescription list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
 
 #### `models.ProvisioningServiceDescription$Definition` was modified
 
@@ -99,12 +99,12 @@
 
 #### `models.IotDpsResources` was modified
 
+* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
 * `models.PrivateEndpointConnection deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnectionByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
 * `models.PrivateLinkResources listPrivateLinkResources(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listPrivateLinkResources(java.lang.String,java.lang.String)`
-* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
-* `models.PrivateEndpointConnection deletePrivateEndpointConnectionById(java.lang.String)` -> `void deletePrivateEndpointConnectionById(java.lang.String)`
-* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `models.PrivateEndpointConnection deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)` -> `void deletePrivateEndpointConnection(java.lang.String,java.lang.String,java.lang.String)`
+* `listPrivateLinkResourcesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.PrivateLinkServiceConnectionState` was modified
 
@@ -119,9 +119,9 @@
 
 * `ErrorMessage()` was changed to private access
 * `withDetails(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
 * `withMessage(java.lang.String)` was removed
 * `validate()` was removed
-* `withCode(java.lang.String)` was removed
 
 #### `IotDpsManager` was modified
 
@@ -139,12 +139,12 @@
 
 #### `models.IotHubDefinitionDescription` was modified
 
-* `authenticationType()` was added
-* `withAuthenticationType(models.IotHubAuthenticationType)` was added
 * `withHostName(java.lang.String)` was added
-* `withSelectedUserAssignedIdentityResourceId(java.lang.String)` was added
+* `authenticationType()` was added
 * `selectedUserAssignedIdentityResourceId()` was added
 * `hostName()` was added
+* `withSelectedUserAssignedIdentityResourceId(java.lang.String)` was added
+* `withAuthenticationType(models.IotHubAuthenticationType)` was added
 
 #### `models.GroupIdInformation` was modified
 
@@ -152,15 +152,15 @@
 
 #### `models.IotDpsPropertiesDescription` was modified
 
-* `portalOperationsHostName()` was added
 * `withPortalOperationsHostName(java.lang.String)` was added
-* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `portalOperationsHostName()` was added
 * `disableLocalAuth()` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
 
 #### `models.ProvisioningServiceDescription` was modified
 
-* `identity()` was added
 * `resourceGroup()` was added
+* `identity()` was added
 * `subscriptionid()` was added
 
 #### `models.DpsCertificates` was modified
@@ -169,10 +169,10 @@
 
 #### `models.ProvisioningServiceDescription$Definition` was modified
 
-* `withExistingResourceGroup(java.lang.String)` was added
 * `withIdentity(models.ManagedServiceIdentity)` was added
 * `withSubscriptionid(java.lang.String)` was added
 * `withResourceGroup(java.lang.String)` was added
+* `withExistingResourceGroup(java.lang.String)` was added
 
 #### `models.IotDpsResources` was modified
 
