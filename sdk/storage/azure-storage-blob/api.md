@@ -393,7 +393,7 @@ package com.azure.storage.blob {
         V2026_04_06("2026-04-06"),
         V2026_06_06("2026-06-06"),
         V2026_10_06("2026-10-06");
-        public static BlobServiceVersion getLatest(// returns V2026_10_06 )
+        public static BlobServiceVersion getLatest() // returns V2026_10_06
         @Override public String getVersion()
     }
     public final class BlobUrlParts {
@@ -2429,7 +2429,7 @@ package com.azure.storage.blob.sas {
         V2020_04_08("2020-04-08"),
         V2020_06_12("2020-06-12"),
         V2020_08_04("2020-08-04");
-        public static BlobSasServiceVersion getLatest(// returns V2020_08_04 )
+        public static BlobSasServiceVersion getLatest() // returns V2020_08_04
         @Override public String getVersion()
     }
     @Deprecated

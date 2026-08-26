@@ -647,7 +647,7 @@ package com.azure.analytics.planetarycomputer {
     }
     public enum PlanetaryComputerServiceVersion implements ServiceVersion {
         V2026_04_15("2026-04-15");
-        public static PlanetaryComputerServiceVersion getLatest(// returns V2026_04_15 )
+        public static PlanetaryComputerServiceVersion getLatest() // returns V2026_04_15
         @Override public String getVersion()
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
