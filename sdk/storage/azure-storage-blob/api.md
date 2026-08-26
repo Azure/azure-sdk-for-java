@@ -5,13 +5,11 @@ maven {
     name : Microsoft Azure client library for Blob Storage
     description : This module contains client library for Microsoft Azure Blob Storage.
     dependencies {
-        // compile scope
         com.azure:azure-xml 1.2.1
         com.azure:azure-core 1.59.0
         com.azure:azure-core-http-netty 1.16.6
         com.azure:azure-storage-common 12.35.0-beta.2
         com.azure:azure-storage-internal-avro 12.21.0-beta.2
-        // provided scope
         com.google.code.findbugs:jsr305 3.0.2
     }
 }
@@ -64,7 +62,6 @@ package com.azure.storage.blob {
         public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
         protected BlobClient(BlobAsyncClient client)
         protected BlobClient(BlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId)
-        // Service Methods:
         public void upload(InputStream data)
         public void upload(BinaryData data)
         public void upload(InputStream data, long length)
@@ -78,7 +75,6 @@ package com.azure.storage.blob {
         @Deprecated public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context)
         public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout, Context context)
         @Deprecated public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout, Context context)
-        // Non-Service Methods:
         public AppendBlobClient getAppendBlobClient()
         public BlockBlobClient getBlockBlobClient()
         @Override public BlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey)
@@ -123,8 +119,6 @@ package com.azure.storage.blob {
         public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
         public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
         public static final String LOG_CONTAINER_NAME = BlobConstants.LOG_CONTAINER_NAME;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<BlobContainerAccessPolicies> getAccessPolicy()
         public Mono<Void> setAccessPolicy(PublicAccessType accessType, List<BlobSignedIdentifier> identifiers)
         public Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId)
@@ -152,7 +146,6 @@ package com.azure.storage.blob {
         public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions)
         public Mono<BlobContainerProperties> getProperties()
         public Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId)
-        // Non-Service Methods:
         public String getAccountName()
         public String getAccountUrl()
         public BlobAsyncClient getBlobAsyncClient(String blobName)
@@ -177,8 +170,6 @@ package com.azure.storage.blob {
         public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
         public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
         public static final String LOG_CONTAINER_NAME = BlobConstants.LOG_CONTAINER_NAME;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public BlobContainerAccessPolicies getAccessPolicy()
         public void setAccessPolicy(PublicAccessType accessType, List<BlobSignedIdentifier> identifiers)
         public Response<BlobContainerAccessPolicies> getAccessPolicyWithResponse(String leaseId, Duration timeout, Context context)
@@ -206,7 +197,6 @@ package com.azure.storage.blob {
         public Response<Void> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context)
         public BlobContainerProperties getProperties()
         public Response<BlobContainerProperties> getPropertiesWithResponse(String leaseId, Duration timeout, Context context)
-        // Non-Service Methods:
         public String getAccountName()
         public String getAccountUrl()
         public BlobClient getBlobClient(String blobName)
@@ -257,8 +247,6 @@ package com.azure.storage.blob {
     }
     @ServiceClient(builder  =  BlobServiceClientBuilder, isAsync  =  true)
     public final class BlobServiceAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<StorageAccountInfo> getAccountInfo()
         public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse()
         public Mono<BlobContainerAsyncClient> createBlobContainer(String containerName)
@@ -284,7 +272,6 @@ package com.azure.storage.blob {
         public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry)
         public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options)
         public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry)
-        // Non-Service Methods:
         public String getAccountName()
         public String getAccountUrl()
         public BlobContainerAsyncClient getBlobContainerAsyncClient(String containerName)
@@ -296,8 +283,6 @@ package com.azure.storage.blob {
     }
     @ServiceClient(builder  =  BlobServiceClientBuilder)
     public final class BlobServiceClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public StorageAccountInfo getAccountInfo()
         public Response<StorageAccountInfo> getAccountInfoWithResponse(Duration timeout, Context context)
         public BlobContainerClient createBlobContainer(String containerName)
@@ -323,7 +308,6 @@ package com.azure.storage.blob {
         public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry)
         public Response<UserDelegationKey> getUserDelegationKeyWithResponse(BlobGetUserDelegationKeyOptions options, Duration timeout, Context context)
         public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry, Duration timeout, Context context)
-        // Non-Service Methods:
         public String getAccountName()
         public String getAccountUrl()
         public BlobContainerClient getBlobContainerClient(String containerName)
@@ -1293,7 +1277,6 @@ package com.azure.storage.blob.models {
         public BlobQueryResponse(BlobQueryAsyncResponse response)
     }
     public interface BlobQuerySerialization {
-        // This interface does not declare any API.
     }
     @Immutable
     public final class BlobRange {
@@ -2508,8 +2491,6 @@ package com.azure.storage.blob.specialized {
     public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 *  Constants.MB;
         @Deprecated public static final int MAX_BLOCKS = 50000;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<AppendBlobItem> appendBlock(Flux<ByteBuffer> data, long length)
         public Mono<AppendBlobItem> appendBlockFromUrl(String sourceUrl, BlobRange sourceRange)
         public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options)
@@ -2524,7 +2505,6 @@ package com.azure.storage.blob.specialized {
         public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata, BlobRequestConditions requestConditions)
         public Mono<Void> seal()
         public Mono<Response<Void>> sealWithResponse(AppendBlobSealOptions options)
-        // Non-Service Methods:
         @Override public AppendBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey)
         @Override public AppendBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope)
         public int getMaxAppendBlockBytes()
@@ -2534,8 +2514,6 @@ package com.azure.storage.blob.specialized {
     public final class AppendBlobClient extends BlobClientBase {
         @Deprecated public static final int MAX_APPEND_BLOCK_BYTES = 4 *  Constants.MB;
         @Deprecated public static final int MAX_BLOCKS = 50000;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public AppendBlobItem appendBlock(InputStream data, long length)
         public AppendBlobItem appendBlockFromUrl(String sourceUrl, BlobRange sourceRange)
         public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Duration timeout, Context context)
@@ -2550,7 +2528,6 @@ package com.azure.storage.blob.specialized {
         public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context)
         public void seal()
         public Response<Void> sealWithResponse(AppendBlobSealOptions options, Duration timeout, Context context)
-        // Non-Service Methods:
         public BlobOutputStream getBlobOutputStream()
         public BlobOutputStream getBlobOutputStream(boolean overwrite)
         public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions requestConditions)
@@ -2742,14 +2719,11 @@ package com.azure.storage.blob.specialized {
         public String getVersionId()
     }
     public final class BlobInputStream extends StorageInputStream {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Override protected synchronized ByteBuffer dispatchRead(int readLength, long offset) throws IOException
         public BlobProperties getProperties()
     }
     @ServiceClient(builder  =  BlobLeaseClientBuilder, isAsync  =  true)
     public final class BlobLeaseAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<String> acquireLease(int durationInSeconds)
         public Mono<Response<String>> acquireLeaseWithResponse(BlobAcquireLeaseOptions options)
         public Mono<Response<String>> acquireLeaseWithResponse(int durationInSeconds, RequestConditions modifiedRequestConditions)
@@ -2765,15 +2739,12 @@ package com.azure.storage.blob.specialized {
         public Mono<String> renewLease()
         public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions)
         public Mono<Response<String>> renewLeaseWithResponse(BlobRenewLeaseOptions options)
-        // Non-Service Methods:
         public String getAccountName()
         public String getLeaseId()
         public String getResourceUrl()
     }
     @ServiceClient(builder  =  BlobLeaseClientBuilder)
     public final class BlobLeaseClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public String acquireLease(int durationInSeconds)
         public Response<String> acquireLeaseWithResponse(BlobAcquireLeaseOptions options, Duration timeout, Context context)
         public Response<String> acquireLeaseWithResponse(int durationInSeconds, RequestConditions modifiedRequestConditions, Duration timeout, Context context)
@@ -2789,7 +2760,6 @@ package com.azure.storage.blob.specialized {
         public String renewLease()
         public Response<String> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout, Context context)
         public Response<String> renewLeaseWithResponse(BlobRenewLeaseOptions options, Duration timeout, Context context)
-        // Non-Service Methods:
         public String getAccountName()
         public String getLeaseId()
         public String getResourceUrl()
@@ -2806,7 +2776,6 @@ package com.azure.storage.blob.specialized {
         public BlobLeaseClient buildClient()
     }
     public abstract class BlobOutputStream extends StorageOutputStream {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static BlobOutputStream blockBlobOutputStream(BlobAsyncClient client, BlockBlobOutputStreamOptions options, Context context)
         public static BlobOutputStream blockBlobOutputStream(BlobAsyncClient client, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions)
         public static BlobOutputStream blockBlobOutputStream(BlobAsyncClient client, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Context context)
@@ -2819,8 +2788,6 @@ package com.azure.storage.blob.specialized {
         @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 *  Constants.MB;
         public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
         public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds)
         public Mono<BlockBlobItem> commitBlockList(List<String> base64BlockIds, boolean overwrite)
         public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options)
@@ -2844,7 +2811,6 @@ package com.azure.storage.blob.specialized {
         public Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options)
         public Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options)
         public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions)
-        // Non-Service Methods:
         @Override public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey)
         @Override public BlockBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope)
     }
@@ -2855,8 +2821,6 @@ package com.azure.storage.blob.specialized {
         @Deprecated public static final int MAX_STAGE_BLOCK_BYTES = 100 *  Constants.MB;
         public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
         public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public BlockBlobItem commitBlockList(List<String> base64BlockIds)
         public BlockBlobItem commitBlockList(List<String> base64BlockIds, boolean overwrite)
         public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options, Duration timeout, Context context)
@@ -2880,7 +2844,6 @@ package com.azure.storage.blob.specialized {
         public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout, Context context)
         public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout, Context context)
         public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions, Duration timeout, Context context)
-        // Non-Service Methods:
         public BlobOutputStream getBlobOutputStream()
         public BlobOutputStream getBlobOutputStream(boolean overwrite)
         public BlobOutputStream getBlobOutputStream(BlobRequestConditions requestConditions)
@@ -2895,8 +2858,6 @@ package com.azure.storage.blob.specialized {
     public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
         public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public Mono<PageBlobItem> clearPages(PageRange pageRange)
         public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange, PageBlobRequestConditions pageBlobRequestConditions)
         public Mono<CopyStatusType> copyIncremental(String source, String snapshot)
@@ -2928,7 +2889,6 @@ package com.azure.storage.blob.specialized {
         public Mono<Response<PageBlobItem>> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions, BlobRequestConditions sourceRequestConditions)
         public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, PageBlobUploadPagesOptions options)
         @Deprecated public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions)
-        // Non-Service Methods:
         @Override public PageBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey)
         @Override public PageBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope)
     }
@@ -2936,8 +2896,6 @@ package com.azure.storage.blob.specialized {
     public final class PageBlobClient extends BlobClientBase {
         public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
         public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         public PageBlobItem clearPages(PageRange pageRange)
         public Response<PageBlobItem> clearPagesWithResponse(PageRange pageRange, PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context)
         public CopyStatusType copyIncremental(String source, String snapshot)
@@ -2969,7 +2927,6 @@ package com.azure.storage.blob.specialized {
         public Response<PageBlobItem> uploadPagesFromUrlWithResponse(PageRange range, String sourceUrl, Long sourceOffset, byte[] sourceContentMd5, PageBlobRequestConditions destRequestConditions, BlobRequestConditions sourceRequestConditions, Duration timeout, Context context)
         public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, PageBlobUploadPagesOptions options, Duration timeout, Context context)
         @Deprecated public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context)
-        // Non-Service Methods:
         public BlobOutputStream getBlobOutputStream(PageRange pageRange)
         public BlobOutputStream getBlobOutputStream(PageBlobOutputStreamOptions options)
         public BlobOutputStream getBlobOutputStream(PageRange pageRange, BlobRequestConditions requestConditions)

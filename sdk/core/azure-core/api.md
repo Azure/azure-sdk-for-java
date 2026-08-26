@@ -11,7 +11,6 @@ maven {
     name : Microsoft Azure Java Core Library
     description : This package contains core types for Azure Java clients.
     dependencies {
-        // compile scope
         com.azure:azure-json 1.5.1
         com.azure:azure-xml 1.2.1
         com.fasterxml.jackson.core:jackson-annotations 2.18.9
@@ -20,7 +19,6 @@ maven {
         com.fasterxml.jackson.datatype:jackson-datatype-jsr310 2.18.9
         org.slf4j:slf4j-api 1.7.36
         io.projectreactor:reactor-core 3.7.19
-        // provided scope
         com.google.code.findbugs:jsr305 3.0.2
     }
 }
@@ -99,7 +97,6 @@ package com.azure.core.annotation {
     @Retention(SOURCE)
     @Target(TYPE)
     public @annotation Fluent {
-        // This annotation does not declare any members.
     }
     @Retention(RUNTIME)
     @Target(PARAMETER)
@@ -110,7 +107,6 @@ package com.azure.core.annotation {
     @Retention(SOURCE)
     @Target({ METHOD, CONSTRUCTOR, FIELD })
     public @annotation Generated {
-        // This annotation does not declare any members.
     }
     @Retention(RUNTIME)
     @Target(METHOD)
@@ -151,12 +147,10 @@ package com.azure.core.annotation {
     @Retention(SOURCE)
     @Target(TYPE)
     public @annotation Immutable {
-        // This annotation does not declare any members.
     }
     @Retention(RUNTIME)
     @Target({ ElementType.ANNOTATION_TYPE, ElementType.TYPE, ElementType.FIELD })
     public @annotation JsonFlatten {
-        // This annotation does not declare any members.
     }
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
@@ -195,7 +189,6 @@ package com.azure.core.annotation {
     @Retention(RUNTIME)
     @Target(METHOD)
     public @annotation ResumeOperation {
-        // This annotation does not declare any members.
     }
     public enum ReturnType {
         SINGLE,
@@ -304,7 +297,6 @@ package com.azure.core.credential {
     }
     @Immutable
     public final class AzureNamedKey {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public String getKey()
         public String getName()
     }
@@ -451,7 +443,6 @@ package com.azure.core.http {
         public static final String APPLICATION_JSON = "application/json";
         public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
         public static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
     }
     @Immutable
     public final class HttpAuthorization {
@@ -598,7 +589,6 @@ package com.azure.core.http {
         CONNECT;
     }
     public final class HttpPipeline {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public HttpClient getHttpClient()
         public HttpPipelinePolicy getPolicy(int index)
         public int getPolicyCount()
@@ -617,7 +607,6 @@ package com.azure.core.http {
         public HttpPipeline build()
     }
     public final class HttpPipelineCallContext {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Context getContext()
         public Optional<Object> getData(String key)
         public void setData(String key, Object value)
@@ -625,12 +614,10 @@ package com.azure.core.http {
         public HttpPipelineCallContext setHttpRequest(HttpRequest request)
     }
     public class HttpPipelineNextPolicy {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Override public HttpPipelineNextPolicy clone()
         public Mono<HttpResponse> process()
     }
     public class HttpPipelineNextSyncPolicy {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Override public HttpPipelineNextSyncPolicy clone()
         public HttpResponse processSync()
     }
@@ -745,7 +732,6 @@ package com.azure.core.http.policy {
         @Override public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)
     }
     public interface AfterRetryPolicyProvider extends HttpPolicyProvider {
-        // This interface does not declare any API.
     }
     public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
         public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential)
@@ -769,7 +755,6 @@ package com.azure.core.http.policy {
         @Override public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)
     }
     public interface BeforeRetryPolicyProvider extends HttpPolicyProvider {
-        // This interface does not declare any API.
     }
     public class CookiePolicy implements HttpPipelinePolicy {
         public CookiePolicy()
@@ -875,7 +860,6 @@ package com.azure.core.http.policy {
         HttpPipelinePolicy create()
     }
     public final class HttpPolicyProviders {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static void addAfterRetryPolicies(List<HttpPipelinePolicy> policies)
         public static void addBeforeRetryPolicies(List<HttpPipelinePolicy> policies)
     }
@@ -886,7 +870,6 @@ package com.azure.core.http.policy {
         default void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions)
     }
     public final class HttpRequestLoggingContext {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Context getContext()
         public HttpRequest getHttpRequest()
         public Integer getTryCount()
@@ -898,7 +881,6 @@ package com.azure.core.http.policy {
         default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions)
     }
     public final class HttpResponseLoggingContext {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Context getContext()
         public HttpResponse getHttpResponse()
         public Duration getResponseDuration()
@@ -938,7 +920,6 @@ package com.azure.core.http.policy {
         @Override public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)
     }
     public final class RequestRetryCondition {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public HttpResponse getResponse()
         public List<Throwable> getRetriedThrowables()
         public Throwable getThrowable()
@@ -1060,7 +1041,6 @@ package com.azure.core.http.rest {
         @Override public T getValue()
     }
     public final class RestProxy implements InvocationHandler {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static <A> A create(Class<A> swaggerInterface)
         public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline)
         public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer)
@@ -1319,7 +1299,6 @@ package com.azure.core.util {
         @Override public String toString()
     }
     public final class Base64Util {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static byte[] decode(byte[] encoded)
         public static byte[] decodeString(String encoded)
         public static byte[] decodeURL(byte[] src)
@@ -1328,7 +1307,6 @@ package com.azure.core.util {
         public static byte[] encodeURLWithoutPadding(byte[] src)
     }
     public final class BinaryData {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static BinaryData fromByteBuffer(ByteBuffer data)
         public static BinaryData fromBytes(byte[] data)
         public static BinaryData fromFile(Path file)
@@ -1442,7 +1420,6 @@ package com.azure.core.util {
         public Configuration buildSection(String path)
     }
     public final class ConfigurationProperty<T> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Iterable<String> getAliases()
         public Function<String, T> getConverter()
         public T getDefaultValue()
@@ -1482,7 +1459,6 @@ package com.azure.core.util {
         public Map<Object, Object> getValues()
     }
     public final class Contexts {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Context getContext()
         public static Contexts empty()
         public ProgressReporter getHttpRequestProgressReporter()
@@ -1490,7 +1466,6 @@ package com.azure.core.util {
         public static Contexts with(Context context)
     }
     public final class CoreUtils {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static Thread addShutdownHookSafely(Thread shutdownThread)
         public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout)
         public static String getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions)
@@ -1548,7 +1523,6 @@ package com.azure.core.util {
         protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz)
     }
     public final class FluxUtil {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> flux, ProgressReporter progressReporter)
         public static byte[] byteBufferToArray(ByteBuffer byteBuffer)
         public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers)
@@ -1646,7 +1620,6 @@ package com.azure.core.util {
         void handleProgress(long progress)
     }
     public final class ProgressReporter {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public ProgressReporter createChild()
         public void reportProgress(long progress)
         public void reset()
@@ -1660,7 +1633,6 @@ package com.azure.core.util {
         String getVersion()
     }
     public final class SharedExecutorService implements ScheduledExecutorService {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Override public boolean awaitTermination(long timeout, TimeUnit unit)
         @Override public void execute(Runnable command)
         public ScheduledExecutorService getExecutorService()
@@ -1685,7 +1657,6 @@ package com.azure.core.util {
     }
     @Immutable
     public interface TelemetryAttributes {
-        // This interface does not declare any API.
     }
     public class TracingOptions {
         public TracingOptions()
@@ -1720,26 +1691,22 @@ package com.azure.core.util {
         public URL toUrl() throws MalformedURLException
     }
     public class UserAgentProperties {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public String getName()
         public String getVersion()
     }
     public final class UserAgentUtil {
         public static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion, Configuration configuration)
     }
 }
 package com.azure.core.util.builder {
     public final class ClientBuilderUtil {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static HttpPipelinePolicy validateAndGetRetryPolicy(HttpPipelinePolicy retryPolicy, RetryOptions retryOptions)
         public static HttpPipelinePolicy validateAndGetRetryPolicy(HttpPipelinePolicy retryPolicy, RetryOptions retryOptions, HttpPipelinePolicy defaultPolicy)
     }
 }
 package com.azure.core.util.io {
     public final class IOUtils {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static AsynchronousByteChannel toAsynchronousByteChannel(AsynchronousFileChannel fileChannel, long position)
         public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException
         public static void transfer(ReadableByteChannel source, WritableByteChannel destination, Long estimatedSourceSize) throws IOException
@@ -1787,7 +1754,6 @@ package com.azure.core.util.logging {
     }
     @Fluent
     public final class LoggingEventBuilder {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public LoggingEventBuilder addKeyValue(String key, String value)
         public LoggingEventBuilder addKeyValue(String key, Object value)
         public LoggingEventBuilder addKeyValue(String key, boolean value)
@@ -1880,7 +1846,6 @@ package com.azure.core.util.paging {
 }
 package com.azure.core.util.polling {
     public final class AsyncPollResponse<T, U> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public Mono<T> cancelOperation()
         public Mono<U> getFinalResult()
         public LongRunningOperationStatus getStatus()
@@ -1939,7 +1904,6 @@ package com.azure.core.util.polling {
     }
     @Immutable
     public final class PollOperationDetails implements JsonSerializable<PollOperationDetails> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public ResponseError getError()
         public String getOperationId()
     }
@@ -1961,7 +1925,6 @@ package com.azure.core.util.polling {
         public SyncPoller<T, U> getSyncPoller()
     }
     public final class PollingContext<T> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public PollResponse<T> getActivationResponse()
         public String getData(String name)
         public PollingContext<T> setData(String name, String value)
@@ -2106,7 +2069,6 @@ package com.azure.core.util.serializer {
         JsonSerializer createInstance()
     }
     public final class JsonSerializerProviders {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static JsonSerializer createInstance()
         public static JsonSerializer createInstance(boolean useDefaultIfAbsent)
     }
@@ -2117,7 +2079,6 @@ package com.azure.core.util.serializer {
         MemberNameConverter createInstance()
     }
     public final class MemberNameConverterProviders {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static MemberNameConverter createInstance()
     }
     public interface ObjectSerializer {
@@ -2223,7 +2184,6 @@ package com.azure.core.util.tracing {
     }
     @Deprecated
     public final class TracerProxy {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         public static void setAttribute(String key, String value, Context context)
         public static void end(int responseCode, Throwable error, Context context)
         public static Context setSpanName(String spanName, Context context)

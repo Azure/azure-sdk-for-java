@@ -11,7 +11,6 @@ maven {
     name : Microsoft Azure SDK for Planetary Computer
     description : This package contains Microsoft Azure Planetary Computer client library.
     dependencies {
-        // compile scope
         com.azure:azure-core 1.59.0
         com.azure:azure-core-http-netty 1.16.6
     }
@@ -26,8 +25,6 @@ module com.azure.analytics.planetarycomputer {
 package com.azure.analytics.planetarycomputer {
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
     public final class DataAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public Mono<ClassMapLegendResponse> getClassMapLegend(String classmapName)
         @Generated public Mono<ClassMapLegendResponse> getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd)
         @Generated public Mono<Response<BinaryData>> getClassMapLegendWithResponse(String classmapName, RequestOptions requestOptions)
@@ -281,8 +278,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
     public final class DataClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public ClassMapLegendResponse getClassMapLegend(String classmapName)
         @Generated public ClassMapLegendResponse getClassMapLegend(String classmapName, Integer trimStart, Integer trimEnd)
         @Generated public Response<BinaryData> getClassMapLegendWithResponse(String classmapName, RequestOptions requestOptions)
@@ -536,8 +531,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
     public final class IngestionAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public Mono<IngestionDefinition> get(String collectionId, String ingestionId)
         @Generated public PollerFlux<Operation, Void> beginDelete(String collectionId, String ingestionId)
         @Generated public PollerFlux<BinaryData, Void> beginDelete(String collectionId, String ingestionId, RequestOptions requestOptions)
@@ -580,8 +573,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
     public final class IngestionClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public IngestionDefinition get(String collectionId, String ingestionId)
         @Generated public SyncPoller<Operation, Void> beginDelete(String collectionId, String ingestionId)
         @Generated public SyncPoller<BinaryData, Void> beginDelete(String collectionId, String ingestionId, RequestOptions requestOptions)
@@ -652,8 +643,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
     public final class SharedAccessSignatureAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public Mono<Void> revokeToken()
         @Generated public Mono<Void> revokeToken(Integer durationInMinutes)
         @Generated public Mono<Response<Void>> revokeTokenWithResponse(RequestOptions requestOptions)
@@ -666,8 +655,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
     public final class SharedAccessSignatureClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public void revokeToken()
         @Generated public void revokeToken(Integer durationInMinutes)
         @Generated public Response<Void> revokeTokenWithResponse(RequestOptions requestOptions)
@@ -680,8 +667,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder, isAsync  =  true)
     public final class StacAsyncClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public Mono<StacMosaic> addMosaic(String collectionId, StacMosaic body)
         @Generated public Mono<Response<BinaryData>> addMosaicWithResponse(String collectionId, BinaryData body, RequestOptions requestOptions)
         @Generated public PollerFlux<Operation, Void> beginCreateCollection(StacCollection body)
@@ -763,8 +748,6 @@ package com.azure.analytics.planetarycomputer {
     }
     @ServiceClient(builder  =  PlanetaryComputerProClientBuilder)
     public final class StacClient {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-        // Service Methods:
         @Generated public StacMosaic addMosaic(String collectionId, StacMosaic body)
         @Generated public Response<BinaryData> addMosaicWithResponse(String collectionId, BinaryData body, RequestOptions requestOptions)
         @Generated public SyncPoller<Operation, Void> beginCreateCollection(StacCollection body)
@@ -857,12 +840,10 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class AssetStatisticsResponse implements JsonSerializable<AssetStatisticsResponse> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BandStatisticsMap> getAdditionalProperties()
     }
     @Immutable
     public final class BandStatistics implements JsonSerializable<BandStatistics> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public double getCount()
         @Generated public List<List<Double>> getHistogram()
         @Generated public double getMajority()
@@ -882,12 +863,10 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class BandStatisticsMap implements JsonSerializable<BandStatisticsMap> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BandStatistics> getAdditionalProperties()
     }
     @Immutable
     public final class ClassMapLegendResponse implements JsonSerializable<ClassMapLegendResponse> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BinaryData> getAdditionalProperties()
     }
     public final class ColorMapNames extends ExpandableStringEnum<ColorMapNames> {
@@ -1163,7 +1142,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class ErrorInfo implements JsonSerializable<ErrorInfo> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public ResponseError getError()
     }
     public final class FeatureType extends ExpandableStringEnum<FeatureType> {
@@ -1296,7 +1274,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class IngestionRun implements JsonSerializable<IngestionRun> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getCreationTime()
         @Generated public String getId()
         @Generated public Boolean isKeepOriginalAssets()
@@ -1307,7 +1284,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class IngestionRunOperation implements JsonSerializable<IngestionRunOperation> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getCreationTime()
         @Generated public OffsetDateTime getFinishTime()
         @Generated public String getId()
@@ -1328,7 +1304,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class IngestionSourceSummary implements JsonSerializable<IngestionSourceSummary> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getCreated()
         @Generated public String getId()
         @Generated public IngestionSourceType getKind()
@@ -1379,7 +1354,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class ManagedIdentityMetadata implements JsonSerializable<ManagedIdentityMetadata> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getObjectId()
         @Generated public String getResourceId()
     }
@@ -1420,7 +1394,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class Operation implements JsonSerializable<Operation> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, String> getAdditionalInformation()
         @Generated public String getCollectionId()
         @Generated public OffsetDateTime getCreationTime()
@@ -1445,7 +1418,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class OperationStatusHistoryItem implements JsonSerializable<OperationStatusHistoryItem> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getErrorCode()
         @Generated public String getErrorMessage()
         @Generated public OperationStatus getStatus()
@@ -1481,7 +1453,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class QueryableDefinitionsResponse implements JsonSerializable<QueryableDefinitionsResponse> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BinaryData> getAdditionalProperties()
     }
     @Fluent
@@ -1608,13 +1579,11 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class SharedAccessSignatureSignedLink implements JsonSerializable<SharedAccessSignatureSignedLink> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getExpiresOn()
         @Generated public String getHref()
     }
     @Immutable
     public final class SharedAccessSignatureToken implements JsonSerializable<SharedAccessSignatureToken> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public OffsetDateTime getExpiresOn()
         @Generated public String getToken()
     }
@@ -1681,7 +1650,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacCatalogCollections implements JsonSerializable<StacCatalogCollections> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<StacCollection> getCollections()
         @Generated public List<StacLink> getLinks()
     }
@@ -1727,7 +1695,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacConformanceClasses implements JsonSerializable<StacConformanceClasses> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<String> getConformsTo()
     }
     @Fluent
@@ -1812,7 +1779,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacItemBounds implements JsonSerializable<StacItemBounds> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<Double> getBounds()
     }
     @Fluent
@@ -1853,7 +1819,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacItemPointAsset implements JsonSerializable<StacItemPointAsset> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, StacAsset> getAssets()
         @Generated public List<Double> getBoundingBox()
         @Generated public String getCollectionId()
@@ -1893,20 +1858,17 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacItemStatisticsGeoJson implements JsonSerializable<StacItemStatisticsGeoJson> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public GeoJsonGeometry getGeometry()
         @Generated public StacItemStatisticsGeoJsonProperties getProperties()
         @Generated public FeatureType getType()
     }
     @Immutable
     public final class StacItemStatisticsGeoJsonProperties implements JsonSerializable<StacItemStatisticsGeoJsonProperties> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BinaryData> getAdditionalProperties()
         @Generated public Map<String, BandStatistics> getStatistics()
     }
     @Immutable
     public final class StacLandingPage implements JsonSerializable<StacLandingPage> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<String> getConformsTo()
         @Generated public OffsetDateTime getCreatedOn()
         @Generated public String getDescription()
@@ -1986,7 +1948,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class StacMosaicConfiguration implements JsonSerializable<StacMosaicConfiguration> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BinaryData> getDefaultCustomQuery()
         @Generated public DefaultLocation getDefaultLocation()
         @Generated public List<StacMosaic> getMosaics()
@@ -2098,7 +2059,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileJsonMetadata implements JsonSerializable<TileJsonMetadata> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getAttribution()
         @Generated public List<Double> getBounds()
         @Generated public List<Double> getCenter()
@@ -2117,7 +2077,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileMatrix implements JsonSerializable<TileMatrix> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public double getCellSize()
         @Generated public TileMatrixCornerOfOrigin getCornerOfOrigin()
         @Generated public String getDescription()
@@ -2141,7 +2100,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileMatrixSet implements JsonSerializable<TileMatrixSet> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public TileMatrixSetBoundingBox getBoundingBox()
         @Generated public String getCrs()
         @Generated public String getDescription()
@@ -2155,7 +2113,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileMatrixSetBoundingBox implements JsonSerializable<TileMatrixSetBoundingBox> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getCrs()
         @Generated public List<String> getLowerLeft()
         @Generated public List<String> getOrderedAxes()
@@ -2179,7 +2136,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileMatrixSetLimitsEntry implements JsonSerializable<TileMatrixSetLimitsEntry> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public int getMaxTileCol()
         @Generated public int getMaxTileRow()
         @Generated public int getMinTileCol()
@@ -2188,14 +2144,12 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileSetBoundingBox implements JsonSerializable<TileSetBoundingBox> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getCrs()
         @Generated public List<Double> getLowerLeft()
         @Generated public List<Double> getUpperRight()
     }
     @Immutable
     public final class TileSetEntry implements JsonSerializable<TileSetEntry> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getAccessConstraints()
         @Generated public TileSetBoundingBox getBoundingBox()
         @Generated public String getCrs()
@@ -2205,7 +2159,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileSetLink implements JsonSerializable<TileSetLink> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getHref()
         @Generated public String getRel()
         @Generated public String getTitle()
@@ -2213,12 +2166,10 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TileSetList implements JsonSerializable<TileSetList> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<TileSetEntry> getTilesets()
     }
     @Immutable
     public final class TileSetMetadata implements JsonSerializable<TileSetMetadata> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getAccessConstraints()
         @Generated public TileSetBoundingBox getBoundingBox()
         @Generated public String getCrs()
@@ -2237,7 +2188,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerAssetGeoJson implements JsonSerializable<TilerAssetGeoJson> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, StacAsset> getAssets()
         @Generated public List<Double> getBoundingBox()
         @Generated public String getCollection()
@@ -2245,7 +2195,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerCoreModelsResponsesPoint implements JsonSerializable<TilerCoreModelsResponsesPoint> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<String> getBandNames()
         @Generated public List<Double> getCoordinates()
         @Generated public List<Double> getValues()
@@ -2265,7 +2214,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerInfo implements JsonSerializable<TilerInfo> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<List<String>> getBandDescriptions()
         @Generated public List<List<BinaryData>> getBandMetadata()
         @Generated public List<Double> getBounds()
@@ -2286,7 +2234,6 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerInfoGeoJsonFeature implements JsonSerializable<TilerInfoGeoJsonFeature> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<Double> getBoundingBox()
         @Generated public GeoJsonGeometry getGeometry()
         @Generated public String getId()
@@ -2295,23 +2242,19 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerInfoMapResponse implements JsonSerializable<TilerInfoMapResponse> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, TilerInfo> getAdditionalProperties()
     }
     @Immutable
     public final class TilerMosaicSearchRegistrationResponse implements JsonSerializable<TilerMosaicSearchRegistrationResponse> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<StacLink> getLinks()
         @Generated public String getSearchId()
     }
     @Immutable
     public final class TilerStacItemStatistics implements JsonSerializable<TilerStacItemStatistics> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public Map<String, BandStatistics> getAdditionalProperties()
     }
     @Immutable
     public final class TilerStacSearchDefinition implements JsonSerializable<TilerStacSearchDefinition> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public String getHash()
         @Generated public OffsetDateTime getLastUsed()
         @Generated public MosaicMetadata getMetadata()
@@ -2320,19 +2263,16 @@ package com.azure.analytics.planetarycomputer.models {
     }
     @Immutable
     public final class TilerStacSearchRegistration implements JsonSerializable<TilerStacSearchRegistration> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public List<StacLink> getLinks()
         @Generated public TilerStacSearchDefinition getSearch()
     }
     @Immutable
     public final class UserCollectionSettings implements JsonSerializable<UserCollectionSettings> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public StacMosaicConfiguration getMosaicConfiguration()
         @Generated public TileSettings getTileSettings()
     }
     @Immutable
     public final class VariableMatrixWidth implements JsonSerializable<VariableMatrixWidth> {
-        // This class does not have any public constructors, and is not able to be instantiated using 'new'.
         @Generated public int getCoalesce()
         @Generated public int getMaxTileRow()
         @Generated public int getMinTileRow()
