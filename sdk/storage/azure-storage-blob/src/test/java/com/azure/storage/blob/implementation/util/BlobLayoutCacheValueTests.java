@@ -7,7 +7,6 @@ import com.azure.core.http.HttpRange;
 import com.azure.storage.blob.models.BlobLayoutRange;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -34,14 +33,15 @@ public class BlobLayoutCacheValueTests {
 
     @Test
     public void emptyRangesRepresentNoLayout() {
-        BlobLayoutCacheValue value = new BlobLayoutCacheValue(Collections.emptyList(), OffsetDateTime.now());
+        BlobLayoutCacheValue value
+            = new BlobLayoutCacheValue(Collections.emptyList(), OffsetDateTime.now().plusMinutes(5));
 
         assertTrue(value.getRanges().isEmpty());
     }
 
     @Test
     public void nullRangesRepresentFailure() {
-        BlobLayoutCacheValue value = new BlobLayoutCacheValue(null, OffsetDateTime.now());
+        BlobLayoutCacheValue value = new BlobLayoutCacheValue(null, OffsetDateTime.now().plusMinutes(5));
 
         assertNull(value.getRanges());
     }
@@ -50,18 +50,27 @@ public class BlobLayoutCacheValueTests {
     public void rangesAreUnmodifiable() {
         List<BlobLayoutRange> ranges
             = Collections.singletonList(new BlobLayoutRange(new HttpRange(0, 999L), "https://host-a:443"));
-        BlobLayoutCacheValue value = new BlobLayoutCacheValue(ranges, OffsetDateTime.now());
+        BlobLayoutCacheValue value = new BlobLayoutCacheValue(ranges, OffsetDateTime.now().plusMinutes(5));
 
         assertThrows(UnsupportedOperationException.class,
             () -> value.getRanges().add(new BlobLayoutRange(new HttpRange(1000, 999L), "https://host-b:443")));
     }
 
     @Test
-    public void refreshesThirtySecondsBeforeExpiration() {
+    public void expiredRangesRepresentNoUsableLayout() {
+        List<BlobLayoutRange> ranges
+            = Collections.singletonList(new BlobLayoutRange(new HttpRange(0, 999L), "https://host-a:443"));
+        BlobLayoutCacheValue value = new BlobLayoutCacheValue(ranges, OffsetDateTime.now().minusSeconds(1));
+
+        assertNull(value.getRanges());
+    }
+
+    @Test
+    public void refreshTimeUsesCacheJitter() {
         OffsetDateTime expiresOn = OffsetDateTime.now().plusMinutes(5);
 
         BlobLayoutCacheValue value = new BlobLayoutCacheValue(Collections.emptyList(), expiresOn);
 
-        assertEquals(expiresOn.minus(Duration.ofSeconds(30)), value.getRefreshOn());
+        assertNull(value.getRefreshOn());
     }
 }

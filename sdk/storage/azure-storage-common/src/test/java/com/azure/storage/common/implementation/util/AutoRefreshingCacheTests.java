@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation.util;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -12,8 +13,13 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -28,91 +34,174 @@ public class AutoRefreshingCacheTests {
     private static final String FIRST_VALUE = "first-value";
     private static final String SECOND_VALUE = "second-value";
     private static final Duration VALUE_LIFETIME = Duration.ofMinutes(5);
+    private static final Duration MIN_REFRESH_BEFORE_EXPIRATION = Duration.ofSeconds(30);
+    private static final Duration MAX_REFRESH_BEFORE_EXPIRATION = Duration.ofSeconds(90);
+    private static final Duration REFRESH_FAILURE_BACKOFF = Duration.ofSeconds(30);
 
     @Test
-    public void expiredByTimeOnSecondRequestCreatesNewValue() {
+    public void refreshPointIsJitteredBeforeExpiration() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
-
         OffsetDateTime expiration = now(clock).plus(VALUE_LIFETIME);
-        when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration))
-            .thenReturn(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2))));
+        Set<OffsetDateTime> refreshTimes = new HashSet<>();
 
-        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
-        verify(provider, times(1)).createSync();
-        verify(provider, never()).createAsync();
+        for (int i = 0; i < 100; i++) {
+            AutoRefreshingCache.ValueProvider<TestExpiringValue> provider
+                = mock(AutoRefreshingCache.ValueProvider.class);
+            AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+            when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration));
 
-        clock.advance(VALUE_LIFETIME.plusSeconds(1));
-
-        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
-        verify(provider, times(2)).createSync();
-        verify(provider, never()).createAsync();
-    }
-
-    @Test
-    public void automaticBackgroundRefreshFiresWithoutHint() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
-
-        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
-        when(provider.createAsync())
-            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME.multipliedBy(2)))));
-
-        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
-        verify(provider, times(1)).createSync();
-        verify(provider, never()).createAsync();
-
-        clock.advance(VALUE_LIFETIME.minusSeconds(2));
-
-        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
-        verify(provider, times(1)).createAsync();
-        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
-        verify(provider, times(1)).createSync();
-        verify(provider, times(1)).createAsync();
-    }
-
-    @Test
-    public void noRefreshBeforeJitterWindowWithoutHint() {
-        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
-        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
-
-        when(provider.createSync()).thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME)));
-
-        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
-        clock.advance(Duration.ofSeconds(30));
-
-        for (int i = 0; i < 3; i++) {
             assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+            OffsetDateTime refreshTime = cache.getNextRefreshTime();
+
+            assertNotNull(refreshTime);
+            assertTrue(refreshTime.isBefore(expiration));
+            assertFalse(refreshTime.isBefore(expiration.minus(MAX_REFRESH_BEFORE_EXPIRATION)));
+            assertFalse(refreshTime.isAfter(expiration.minus(MIN_REFRESH_BEFORE_EXPIRATION)));
+            refreshTimes.add(refreshTime);
+            cache.close();
         }
 
-        verify(provider, times(1)).createSync();
-        verify(provider, never()).createAsync();
+        assertTrue(refreshTimes.size() > 1);
     }
 
     @Test
-    public void refreshesAtValueSpecifiedRefreshTime() {
+    public void scheduledRefreshFiresWithoutAccess() {
         MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
         AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
-        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock, scheduler);
 
-        OffsetDateTime expiration = now(clock).plus(VALUE_LIFETIME);
-        when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration, expiration.minusSeconds(30)));
+        when(provider.createSync())
+            .thenReturn(value(FIRST_VALUE, now(clock).plusSeconds(30), now(clock).plusSeconds(5)));
         when(provider.createAsync())
-            .thenReturn(Mono.just(value(SECOND_VALUE, expiration.plus(VALUE_LIFETIME), expiration)));
-
-        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
-        clock.advance(VALUE_LIFETIME.minusSeconds(31));
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plusSeconds(60), now(clock).plusSeconds(20))));
 
         assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
         verify(provider, never()).createAsync();
+
+        clock.advance(Duration.ofSeconds(5));
+        scheduler.advanceTimeBy(Duration.ofSeconds(5));
+
+        verify(provider, times(1)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        cache.close();
+    }
+
+    @Test
+    public void failedRefreshBacksOffBeforeRetrying() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock, scheduler);
+
+        when(provider.createSync())
+            .thenReturn(value(FIRST_VALUE, now(clock).plusMinutes(1), now(clock).plusSeconds(1)));
+        when(provider.createAsync()).thenReturn(Mono.error(new IllegalStateException("refresh failed")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+
+        clock.advance(Duration.ofSeconds(1));
+        scheduler.advanceTimeBy(Duration.ofSeconds(1));
+
+        verify(provider, times(1)).createAsync();
+        assertEquals(now(clock).plus(REFRESH_FAILURE_BACKOFF), cache.getNextRefreshTime());
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        clock.advance(REFRESH_FAILURE_BACKOFF.minusSeconds(1));
+        assertEquals(FIRST_VALUE, cache.getValidValueAsync().block().getValue());
+        verify(provider, times(1)).createAsync();
+
+        clock.advance(Duration.ofSeconds(1));
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(2)).createAsync();
+        cache.close();
+    }
+
+    @Test
+    public void failedRefreshWhileCurrentValueIsValidServesCurrentValue() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock, scheduler);
+
+        when(provider.createSync())
+            .thenReturn(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME), now(clock).plusSeconds(1)));
+        when(provider.createAsync()).thenReturn(Mono.error(new IllegalStateException("refresh failed")));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
 
         clock.advance(Duration.ofSeconds(1));
 
         assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        assertEquals(FIRST_VALUE, cache.getValidValueAsync().block().getValue());
         verify(provider, times(1)).createAsync();
+        cache.close();
+    }
+
+    @Test
+    public void closeCancelsPendingRefreshAndStopsScheduling() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock, scheduler);
+
+        when(provider.createSync())
+            .thenReturn(value(FIRST_VALUE, now(clock).plusSeconds(30), now(clock).plusSeconds(5)));
+        when(provider.createAsync())
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plusSeconds(60), now(clock).plusSeconds(20))));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+
+        cache.close();
+        cache.close();
+
+        clock.advance(Duration.ofSeconds(5));
+        scheduler.advanceTimeBy(Duration.ofSeconds(5));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, never()).createAsync();
+    }
+
+    @Test
+    public void expiredValueServesCurrentValueAndRefreshesInBackground() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        VirtualTimeScheduler scheduler = VirtualTimeScheduler.create();
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock, scheduler);
+
+        OffsetDateTime expiration = now(clock).plusSeconds(5);
+        when(provider.createSync()).thenReturn(value(FIRST_VALUE, expiration, expiration.minusSeconds(1)));
+        when(provider.createAsync())
+            .thenReturn(Mono.just(value(SECOND_VALUE, now(clock).plus(VALUE_LIFETIME), now(clock).plusMinutes(1))));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+
+        clock.advance(Duration.ofSeconds(6));
+
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+        verify(provider, times(1)).createAsync();
+        assertEquals(SECOND_VALUE, cache.getValidValueSync().getValue());
+        cache.close();
+    }
+
+    @Test
+    public void singleFlightCreationAndSyncAsyncReadUsableValue() {
+        MutableClock clock = new MutableClock(Instant.parse("2026-06-19T00:00:00Z"));
+        AutoRefreshingCache.ValueProvider<TestExpiringValue> provider = mock(AutoRefreshingCache.ValueProvider.class);
+        AutoRefreshingCache<TestExpiringValue> cache = new AutoRefreshingCache<>(provider, clock);
+
+        when(provider.createAsync()).thenReturn(Mono.just(value(FIRST_VALUE, now(clock).plus(VALUE_LIFETIME))));
+
+        Mono<TestExpiringValue> first = cache.getValidValueAsync();
+        Mono<TestExpiringValue> second = cache.getValidValueAsync();
+
+        assertEquals(FIRST_VALUE, first.block().getValue());
+        assertEquals(FIRST_VALUE, second.block().getValue());
+        assertEquals(FIRST_VALUE, cache.getValidValueSync().getValue());
+
+        verify(provider, times(1)).createAsync();
+        verify(provider, never()).createSync();
+        cache.close();
     }
 
     private static OffsetDateTime now(Clock clock) {

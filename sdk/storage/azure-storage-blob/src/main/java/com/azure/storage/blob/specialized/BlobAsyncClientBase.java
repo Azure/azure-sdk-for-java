@@ -1624,6 +1624,7 @@ public class BlobAsyncClientBase {
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> chunkDownloadFunc
                     = downloadFunc;
+                AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = null;
                 long initialChunkSize = finalParallelTransferOptions.getBlockSizeLong();
                 if (finalRange.getCount() != null && finalRange.getCount() < initialChunkSize) {
                     initialChunkSize = finalRange.getCount();
@@ -1634,9 +1635,10 @@ public class BlobAsyncClientBase {
                     && remainingCount > 0) {
                     Context finalContext = context == null ? Context.NONE : context;
                     BlobRange layoutRange = new BlobRange(remainingOffset, remainingCount);
-                    AutoRefreshingCache<BlobLayoutCacheValue> layoutCache = BlobLayoutCacheFactory
+                    layoutCache = BlobLayoutCacheFactory
                         .create(() -> fetchLayoutCacheValueAsync(layoutRange, finalConditions, finalContext));
-                    chunkDownloadFunc = (range, conditions) -> layoutCache.getValidValueAsync().flatMap(cached -> {
+                    AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
+                    chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
                         Context callContext = endpoint == null
@@ -1648,7 +1650,8 @@ public class BlobAsyncClientBase {
                 }
                 BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> finalChunkDownloadFunc
                     = chunkDownloadFunc;
-                return Flux.range(0, numChunks)
+                AutoRefreshingCache<BlobLayoutCacheValue> finalLayoutCache = layoutCache;
+                Mono<Response<BlobProperties>> download = Flux.range(0, numChunks)
                     .flatMap(
                         chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse, finalRange,
                             finalParallelTransferOptions, finalConditions, newCount, finalChunkDownloadFunc,
@@ -1658,6 +1661,7 @@ public class BlobAsyncClientBase {
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
+                return finalLayoutCache == null ? download : download.doFinally(ignored -> finalLayoutCache.close());
             });
     }
 

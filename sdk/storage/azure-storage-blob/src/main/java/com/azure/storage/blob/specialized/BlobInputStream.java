@@ -123,6 +123,18 @@ public final class BlobInputStream extends StorageInputStream {
     }
 
     /**
+     * Closes this input stream and releases any data-locality layout cache refresh resources associated with it.
+     */
+    @Override
+    public synchronized void close() {
+        if (layoutCache != null) {
+            layoutCache.close();
+        }
+
+        super.close();
+    }
+
+    /**
      * Allows for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
      */
     private static long adjustBlobLength(long initialLength, Context context) {
