@@ -90,7 +90,6 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     private DataLakeServiceVersion version;
     private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
     private DataLakeAudience audience;
-    private SessionOptions sessionOptions = new SessionOptions();
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -572,8 +571,7 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
      * @return the updated DataLakeServiceClientBuilder object.
      */
     public DataLakeServiceClientBuilder sessionOptions(SessionOptions sessionOptions) {
-        this.sessionOptions = sessionOptions != null ? sessionOptions : new SessionOptions();
-        blobServiceClientBuilder.sessionOptions(this.sessionOptions);
+        blobServiceClientBuilder.sessionOptions(sessionOptions);
         return this;
     }
 }
