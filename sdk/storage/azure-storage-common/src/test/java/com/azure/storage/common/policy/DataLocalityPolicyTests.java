@@ -24,6 +24,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DataLocalityPolicyTests {
     @SyncAsyncTest
     public void requestUrlRewritesHostAndPreservesOriginalHeader() throws Exception {
+        assertRequestUrlRewritesHostAndPreservesOriginalHeader("https://layout.example.net",
+            "https://layout.example.net/container/blob");
+    }
+
+    @SyncAsyncTest
+    public void requestUrlRewritesHostAndPreservesExplicitPortAndOriginalHeader() throws Exception {
+        assertRequestUrlRewritesHostAndPreservesOriginalHeader("https://layout.example.net:8443",
+            "https://layout.example.net:8443/container/blob");
+    }
+
+    private void assertRequestUrlRewritesHostAndPreservesOriginalHeader(String layoutEndpoint, String expectedUrl)
+        throws Exception {
         final HttpRequest[] seenRequest = new HttpRequest[1];
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
@@ -35,11 +47,11 @@ public class DataLocalityPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://storage.example.com/container/blob"));
         request.setHeader(HttpHeaderName.HOST, "storage.example.com");
-        Context context = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "https://layout.example.net:443");
+        Context context = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, layoutEndpoint);
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, context), () -> pipeline.send(request, context));
 
-        assertEquals("https://layout.example.net:443/container/blob", seenRequest[0].getUrl().toString());
+        assertEquals(expectedUrl, seenRequest[0].getUrl().toString());
         assertEquals("storage.example.com", seenRequest[0].getHeaders().getValue(HttpHeaderName.HOST.toString()));
     }
 }

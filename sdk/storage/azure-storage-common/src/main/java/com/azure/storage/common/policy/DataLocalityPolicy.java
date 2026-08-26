@@ -74,7 +74,8 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
 
             String originalAuthority = request.getUrl().getAuthority();
             requestUrlBuilder.setHost(endpointUrlBuilder.getHost());
-            requestUrlBuilder.setPort(endpointUrlBuilder.getPort());
+            Integer endpointPort = endpointUrlBuilder.getPort();
+            requestUrlBuilder.setPort(endpointPort == null ? null : endpointPort.toString());
 
             request.setUrl(requestUrlBuilder.toString());
             request.setHeader(HttpHeaderName.HOST, originalAuthority);
