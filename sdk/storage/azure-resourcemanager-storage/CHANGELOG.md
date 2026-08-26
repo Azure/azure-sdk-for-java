@@ -2,6 +2,8 @@
 
 ## 2.57.2 (2026-08-18)
 
+- Package api-version 2026-04-01.
+
 ### Other Changes
 
 #### Dependency Updates
