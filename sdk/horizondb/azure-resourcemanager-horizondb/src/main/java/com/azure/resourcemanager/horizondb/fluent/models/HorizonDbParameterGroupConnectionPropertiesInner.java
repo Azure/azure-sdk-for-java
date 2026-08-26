@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Connection information for HorizonDb parameter group.
+ * Connection information for HorizonDB parameter group.
  */
 @Immutable
 public final class HorizonDbParameterGroupConnectionPropertiesInner
