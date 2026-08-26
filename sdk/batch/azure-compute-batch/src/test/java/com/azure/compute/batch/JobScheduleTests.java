@@ -153,7 +153,9 @@ public class JobScheduleTests extends BatchClientTestBase {
         poller.waitForCompletion();
 
         PollResponse<BatchJobSchedule> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion.");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed job schedule state after deletion.");
+        Assertions.assertEquals(jobScheduleId, finalResponse.getValue().getId());
 
         try {
             SyncAsyncExtension.execute(() -> batchClient.getJobSchedule(jobScheduleId),

@@ -107,9 +107,11 @@ public class JobTests extends BatchClientTestBase {
         // Wait for LRO to finish
         poller.waitForCompletion();
 
-        // Final result should be null after successful deletion
+        // Final result should expose the last observed job state (the DELETING snapshot) after deletion
         PollResponse<BatchJob> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed job state after deletion");
+        Assertions.assertEquals(jobId, finalResponse.getValue().getId());
 
         // Confirm job is no longer retrievable
         try {

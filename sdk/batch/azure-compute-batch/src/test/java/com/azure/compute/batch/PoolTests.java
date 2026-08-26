@@ -297,9 +297,11 @@ public class PoolTests extends BatchClientTestBase {
 
         Assertions.assertEquals(404, httpErrorRes.getResponse().getStatusCode());
 
-        // Final result should be null after successful deletion
+        // Final result should expose the last observed pool state (the DELETING snapshot) after deletion
         PollResponse<BatchPool> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed pool state after deletion");
+        Assertions.assertEquals(poolId, finalResponse.getValue().getId());
     }
 
     @Test
