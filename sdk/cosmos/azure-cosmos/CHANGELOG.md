@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.82.0 (2026-08-25)
+### 4.82.0 (2026-08-26)
 
 #### Features Added
 * Enabled Gateway V2 (thin-client) data-plane routing by default for `Cosmos(Async)Client` instances configured with `gatewayMode` and HTTP/2, gated by an HTTP/2 connectivity probe with automatic fallback to Gateway V1. - See [PR 49437](https://github.com/Azure/azure-sdk-for-java/pull/49437)

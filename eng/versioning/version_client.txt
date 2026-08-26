@@ -110,7 +110,7 @@ com.azure:azure-cosmos;4.81.0;4.82.0
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3;0.0.1-beta.1;0.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-5;0.0.1-beta.1;0.0.1-beta.1
-com.azure:azure-cosmos-encryption;2.30.0;2.31.0-beta.1
+com.azure:azure-cosmos-encryption;2.30.0;2.31.0
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.19;1.0.0-beta.20
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.49.2;4.50.0-beta.1
