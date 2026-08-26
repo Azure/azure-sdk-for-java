@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 import com.azure.resourcemanager.cognitiveservices.models.ClusterComputeProperties;
 import com.azure.resourcemanager.cognitiveservices.models.ContainerInstanceComputeProperties;
 import com.azure.resourcemanager.cognitiveservices.models.Identity;
@@ -32,18 +31,19 @@ public final class ComputesCreateOrUpdateSamples {
     public static void
         putContainerInstanceCompute(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.computes()
-            .createOrUpdate("rgcognitiveservices", "myAccount", "myContainerInstance", new ComputeInner()
-                .withProperties(new ContainerInstanceComputeProperties().withLocation("eastus")
-                    .withTargetClusterId(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
-                    .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest")
-                    .withIdleTimeBeforeShutdown("PT30M")
-                    .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
-                .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
-                        new UserAssignedIdentity()))),
-                com.azure.core.util.Context.NONE);
+            .define("myContainerInstance")
+            .withExistingAccount("rgcognitiveservices", "myAccount")
+            .withProperties(new ContainerInstanceComputeProperties().withLocation("eastus")
+                .withTargetClusterId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/computes/myCluster")
+                .withImageLink("mcr.microsoft.com/azureml/curated/pytorch-gpu:latest")
+                .withIdleTimeBeforeShutdown("PT30M")
+                .withSshSettings(new SshSettings().withSshPublicKey("fakeTokenPlaceholder").withAdminEnabled(true)))
+            .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity",
+                    new UserAssignedIdentity())))
+            .create();
     }
 
     /*
@@ -56,14 +56,15 @@ public final class ComputesCreateOrUpdateSamples {
      */
     public static void putCompute(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         manager.computes()
-            .createOrUpdate("rgcognitiveservices", "myAccount", "myCompute",
-                new ComputeInner().withProperties(new ClusterComputeProperties().withLocation("eastus")
-                    .withPools(Arrays.asList(new Pool().withName("default")
-                        .withVmPriority(VmPriority.REGULAR)
-                        .withInstanceType("Standard_DS3_v2")
-                        .withNodeCount(2))))
-                    .withIdentity(new Identity().withType(ResourceIdentityType.NONE)),
-                com.azure.core.util.Context.NONE);
+            .define("myCompute")
+            .withExistingAccount("rgcognitiveservices", "myAccount")
+            .withProperties(new ClusterComputeProperties().withLocation("eastus")
+                .withPools(Arrays.asList(new Pool().withName("default")
+                    .withVmPriority(VmPriority.REGULAR)
+                    .withInstanceType("Standard_DS3_v2")
+                    .withNodeCount(2))))
+            .withIdentity(new Identity().withType(ResourceIdentityType.NONE))
+            .create();
     }
 
     // Use "Map.of" if available

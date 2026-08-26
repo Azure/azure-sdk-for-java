@@ -1,18 +1,10 @@
 # Release History
 
-## 1.5.0-beta.4 (2026-08-20)
+## 1.5.0-beta.4 (2026-08-26)
 
 - Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package api-version 2026-07-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
-
-#### `models.Compute$DefinitionStages` was removed
-
-#### `models.Compute$UpdateStages` was removed
-
-#### `models.Compute$Definition` was removed
-
-#### `models.Compute$Update` was removed
 
 #### `models.ConnectionPropertiesV2BasicResource$DefinitionStages` was modified
 
@@ -24,46 +16,33 @@
 
 #### `models.AccountConnections` was modified
 
-* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
+* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
 * `update(java.lang.String,java.lang.String,java.lang.String)` was removed
 * `createWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was removed
-* `create(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was removed
 
 #### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
 
 * `withExistingProject(java.lang.String,java.lang.String,java.lang.String)` was removed
 
-#### `models.Computes` was modified
+#### `models.Compute$Definition` was modified
 
-* `deleteById(java.lang.String)` was removed
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `define(java.lang.String)` was removed
-* `getById(java.lang.String)` was removed
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `withRegion(com.azure.core.management.Region)` was removed
+* `withRegion(java.lang.String)` was removed
 
 #### `models.ProjectConnections` was modified
 
-* `getById(java.lang.String)` was removed
-* `deleteById(java.lang.String)` was removed
 * `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
-* `define(java.lang.String)` was removed
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getById(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
 
 #### `models.Compute` was modified
 
-* `start()` was removed
-* `update()` was removed
-* `resourceGroupName()` was removed
-* `stop(com.azure.core.util.Context)` was removed
-* `location()` was removed
-* `refresh()` was removed
-* `stop()` was removed
-* `region()` was removed
-* `restart(com.azure.core.util.Context)` was removed
-* `refresh(com.azure.core.util.Context)` was removed
 * `regionName()` was removed
-* `start(com.azure.core.util.Context)` was removed
-* `restart()` was removed
+* `location()` was removed
+* `region()` was removed
 
 ### Features Added
 
@@ -125,8 +104,8 @@
 
 * `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `getById(java.lang.String)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `define(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `deleteById(java.lang.String)` was added
 
 #### `models.ConnectionPropertiesV2BasicResource$Definition` was modified
@@ -139,8 +118,8 @@
 
 #### `models.ComputeProperties` was modified
 
-* `location()` was added
 * `withLocation(java.lang.String)` was added
+* `location()` was added
 
 #### `models.ProjectProperties` was modified
 
@@ -149,13 +128,8 @@
 
 #### `models.DeploymentProperties` was modified
 
-* `withContextCacheContainerId(java.lang.String)` was added
 * `contextCacheContainerId()` was added
-
-#### `models.Computes` was modified
-
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.ComputeInner,com.azure.core.util.Context)` was added
-* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.ComputeInner)` was added
+* `withContextCacheContainerId(java.lang.String)` was added
 
 #### `models.ProvisioningState` was modified
 
@@ -163,10 +137,10 @@
 
 #### `models.ProjectConnections` was modified
 
-* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
 * `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
-* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
 * `create(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `createWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,fluent.models.ConnectionPropertiesV2BasicResourceInner,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ConnectionUpdateContent,com.azure.core.util.Context)` was added
 
 #### `models.ContainerInstanceComputeProperties` was modified
 
@@ -174,12 +148,12 @@
 
 #### `models.AccountProperties` was modified
 
-* `withAgentHostingConfigurations(java.util.List)` was added
-* `a365LoggingEnabled()` was added
-* `capabilitySettings()` was added
 * `agentHostingConfigurations()` was added
-* `withA365LoggingEnabled(java.lang.Boolean)` was added
+* `withAgentHostingConfigurations(java.util.List)` was added
 * `withCapabilitySettings(models.CapabilitySettings)` was added
+* `capabilitySettings()` was added
+* `a365LoggingEnabled()` was added
+* `withA365LoggingEnabled(java.lang.Boolean)` was added
 
 #### `models.ClusterComputeProperties` was modified
 

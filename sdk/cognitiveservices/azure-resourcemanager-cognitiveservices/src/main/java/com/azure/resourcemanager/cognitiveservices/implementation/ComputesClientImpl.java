@@ -369,12 +369,12 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateOrUpdateAsync(String resourceGroupName, String accountName,
-        String computeName, ComputeInner resource) {
+    private PollerFlux<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String accountName, String computeName, ComputeInner resource) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, accountName, computeName, resource);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<ComputeInner, ComputeInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ComputeInner.class, ComputeInner.class, this.client.getContext());
     }
 
     /**
@@ -390,11 +390,12 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String accountName,
-        String computeName, ComputeInner resource) {
+    public SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String computeName, ComputeInner resource) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, accountName, computeName, resource);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<ComputeInner, ComputeInner>getLroResult(response, ComputeInner.class, ComputeInner.class,
+            Context.NONE);
     }
 
     /**
@@ -411,11 +412,12 @@ public final class ComputesClientImpl implements ComputesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreateOrUpdate(String resourceGroupName, String accountName,
-        String computeName, ComputeInner resource, Context context) {
+    public SyncPoller<PollResult<ComputeInner>, ComputeInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String computeName, ComputeInner resource, Context context) {
         Response<BinaryData> response
             = createOrUpdateWithResponse(resourceGroupName, accountName, computeName, resource, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<ComputeInner, ComputeInner>getLroResult(response, ComputeInner.class, ComputeInner.class,
+            context);
     }
 
     /**
@@ -428,10 +430,10 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createOrUpdateAsync(String resourceGroupName, String accountName, String computeName,
+    private Mono<ComputeInner> createOrUpdateAsync(String resourceGroupName, String accountName, String computeName,
         ComputeInner resource) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, computeName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -447,11 +449,12 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String accountName, String computeName,
+    public ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName,
         ComputeInner resource) {
-        beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource).getFinalResult();
+        return beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource).getFinalResult();
     }
 
     /**
@@ -465,11 +468,12 @@ public final class ComputesClientImpl implements ComputesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(String resourceGroupName, String accountName, String computeName, ComputeInner resource,
-        Context context) {
-        beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource, context).getFinalResult();
+    public ComputeInner createOrUpdate(String resourceGroupName, String accountName, String computeName,
+        ComputeInner resource, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, accountName, computeName, resource, context).getFinalResult();
     }
 
     /**

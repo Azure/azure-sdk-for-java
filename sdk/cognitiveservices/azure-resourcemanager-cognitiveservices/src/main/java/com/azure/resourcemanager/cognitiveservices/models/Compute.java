@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 import java.util.Map;
 
@@ -77,9 +78,292 @@ public interface Compute {
     SystemData systemData();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner object.
      * 
      * @return the inner object.
      */
     ComputeInner innerModel();
+
+    /**
+     * The entirety of the Compute definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * The Compute definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of the Compute definition.
+         */
+        interface Blank extends WithParentResource {
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify parent resource.
+         */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, accountName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param accountName The name of Cognitive Services account.
+             * @return the next definition stage.
+             */
+            WithProperties withExistingAccount(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Polymorphic properties of the compute resource. Use computeType to
+             * select Cluster or ContainerInstance..
+             * 
+             * @param properties Polymorphic properties of the compute resource. Use computeType to select Cluster or
+             * ContainerInstance.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(ComputeProperties properties);
+        }
+
+        /**
+         * The stage of the Compute definition which contains all the minimum required properties for the resource to be
+         * created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithKind, DefinitionStages.WithIdentity {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            Compute create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            Compute create(Context context);
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The kind (type) of compute resource..
+             * 
+             * @param kind The kind (type) of compute resource.
+             * @return the next definition stage.
+             */
+            WithCreate withKind(String kind);
+        }
+
+        /**
+         * The stage of the Compute definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity for the resource..
+             * 
+             * @param identity Identity for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
+        }
+    }
+
+    /**
+     * Begins update for the Compute resource.
+     * 
+     * @return the stage of resource update.
+     */
+    Compute.Update update();
+
+    /**
+     * The template for Compute update.
+     */
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithKind, UpdateStages.WithIdentity {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        Compute apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        Compute apply(Context context);
+    }
+
+    /**
+     * The Compute update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the Compute update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Compute update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Polymorphic properties of the compute resource. Use computeType to
+             * select Cluster or ContainerInstance..
+             * 
+             * @param properties Polymorphic properties of the compute resource. Use computeType to select Cluster or
+             * ContainerInstance.
+             * @return the next definition stage.
+             */
+            Update withProperties(ComputeProperties properties);
+        }
+
+        /**
+         * The stage of the Compute update allowing to specify kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies the kind property: The kind (type) of compute resource..
+             * 
+             * @param kind The kind (type) of compute resource.
+             * @return the next definition stage.
+             */
+            Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the Compute update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity for the resource..
+             * 
+             * @param identity Identity for the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    Compute refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    Compute refresh(Context context);
+
+    /**
+     * Starts a stopped ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start();
+
+    /**
+     * Starts a stopped ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(Context context);
+
+    /**
+     * Stops a running ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop();
+
+    /**
+     * Stops a running ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(Context context);
+
+    /**
+     * Restarts a running ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart();
+
+    /**
+     * Restarts a running ContainerInstance compute resource.
+     * This is a long-running operation that returns 202 Accepted.
+     * Only applicable when computeType is ContainerInstance.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restart(Context context);
 }

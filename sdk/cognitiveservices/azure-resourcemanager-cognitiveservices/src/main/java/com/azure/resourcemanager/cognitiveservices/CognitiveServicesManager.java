@@ -757,7 +757,7 @@ public final class CognitiveServicesManager {
     }
 
     /**
-     * Gets the resource collection API of Computes.
+     * Gets the resource collection API of Computes. It manages Compute.
      * 
      * @return Resource collection API of Computes.
      */

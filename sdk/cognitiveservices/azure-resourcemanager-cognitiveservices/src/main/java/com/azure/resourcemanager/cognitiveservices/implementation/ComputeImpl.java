@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.ComputeInner;
 import com.azure.resourcemanager.cognitiveservices.models.Compute;
 import com.azure.resourcemanager.cognitiveservices.models.ComputeProperties;
@@ -12,16 +13,10 @@ import com.azure.resourcemanager.cognitiveservices.models.Identity;
 import java.util.Collections;
 import java.util.Map;
 
-public final class ComputeImpl implements Compute {
+public final class ComputeImpl implements Compute, Compute.Definition, Compute.Update {
     private ComputeInner innerObject;
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
-
-    ComputeImpl(ComputeInner innerObject,
-        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -64,11 +59,134 @@ public final class ComputeImpl implements Compute {
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ComputeInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String accountName;
+
+    private String computeName;
+
+    public ComputeImpl withExistingAccount(String resourceGroupName, String accountName) {
+        this.resourceGroupName = resourceGroupName;
+        this.accountName = accountName;
+        return this;
+    }
+
+    public Compute create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public Compute create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), context);
+        return this;
+    }
+
+    ComputeImpl(String name, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+        this.innerObject = new ComputeInner();
+        this.serviceManager = serviceManager;
+        this.computeName = name;
+    }
+
+    public ComputeImpl update() {
+        return this;
+    }
+
+    public Compute apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public Compute apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .createOrUpdate(resourceGroupName, accountName, computeName, this.innerModel(), context);
+        return this;
+    }
+
+    ComputeImpl(ComputeInner innerObject,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.computeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "computes");
+    }
+
+    public Compute refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .getWithResponse(resourceGroupName, accountName, computeName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public Compute refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getComputes()
+            .getWithResponse(resourceGroupName, accountName, computeName, context)
+            .getValue();
+        return this;
+    }
+
+    public void start() {
+        serviceManager.computes().start(resourceGroupName, accountName, computeName);
+    }
+
+    public void start(Context context) {
+        serviceManager.computes().start(resourceGroupName, accountName, computeName, context);
+    }
+
+    public void stop() {
+        serviceManager.computes().stop(resourceGroupName, accountName, computeName);
+    }
+
+    public void stop(Context context) {
+        serviceManager.computes().stop(resourceGroupName, accountName, computeName, context);
+    }
+
+    public void restart() {
+        serviceManager.computes().restart(resourceGroupName, accountName, computeName);
+    }
+
+    public void restart(Context context) {
+        serviceManager.computes().restart(resourceGroupName, accountName, computeName, context);
+    }
+
+    public ComputeImpl withProperties(ComputeProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public ComputeImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
+        return this;
+    }
+
+    public ComputeImpl withKind(String kind) {
+        this.innerModel().withKind(kind);
+        return this;
+    }
+
+    public ComputeImpl withIdentity(Identity identity) {
+        this.innerModel().withIdentity(identity);
+        return this;
     }
 }
