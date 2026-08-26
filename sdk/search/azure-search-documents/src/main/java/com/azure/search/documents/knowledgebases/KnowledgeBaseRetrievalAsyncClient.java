@@ -466,7 +466,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *
      * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
      * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
-     * propagated through the reactive error path. The client does not reconnect automatically.
+     * propagated through the reactive error path. The client does not reconnect automatically. A pending server-sent
+     * event is limited to 16 MiB of raw UTF-8 content; exceeding this limit terminates the stream through the reactive
+     * error path.
      *
      * @param retrievalRequest The retrieval request to process.
      * @return A stream of typed knowledge base retrieval events.
@@ -485,7 +487,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      *
      * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
      * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
-     * propagated through the reactive error path. The client does not reconnect automatically.
+     * propagated through the reactive error path. The client does not reconnect automatically. A pending server-sent
+     * event is limited to 16 MiB of raw UTF-8 content; exceeding this limit terminates the stream through the reactive
+     * error path.
      *
      * @param retrievalRequest The retrieval request to process.
      * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is

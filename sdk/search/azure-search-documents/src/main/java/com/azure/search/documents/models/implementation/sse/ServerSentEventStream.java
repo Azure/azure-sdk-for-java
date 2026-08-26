@@ -30,6 +30,8 @@ import reactor.core.publisher.Flux;
  */
 final class ServerSentEventStream {
     private static final String DEFAULT_EVENT = "message";
+    // Counts non-CR/LF bytes retained between blank-line event boundaries.
+    static final int MAX_PENDING_EVENT_SIZE_BYTES = 16 * 1024 * 1024;
 
     private ServerSentEventStream() {
     }
@@ -218,6 +220,7 @@ final class ServerSentEventStream {
         private final StreamState state = new StreamState();
         private byte[] lineBytes = new byte[256];
         private int lineLength;
+        private int pendingEventSizeBytes;
         private boolean pendingCarriageReturn;
         private boolean firstLine = true;
         private String event;
@@ -256,8 +259,12 @@ final class ServerSentEventStream {
         }
 
         private void appendByte(byte value) {
+            if (pendingEventSizeBytes >= MAX_PENDING_EVENT_SIZE_BYTES) {
+                throw new IllegalStateException("Server-sent event exceeded the maximum pending event size of 16 MiB.");
+            }
+            pendingEventSizeBytes++;
             if (lineLength == lineBytes.length) {
-                lineBytes = Arrays.copyOf(lineBytes, lineBytes.length * 2);
+                lineBytes = Arrays.copyOf(lineBytes, Math.min(lineBytes.length * 2, MAX_PENDING_EVENT_SIZE_BYTES));
             }
             lineBytes[lineLength++] = value;
         }
@@ -285,6 +292,7 @@ final class ServerSentEventStream {
 
         private void processLine(String line, List<ServerSentEventFrame> events) {
             if (line.isEmpty()) {
+                pendingEventSizeBytes = 0;
                 ServerSentEventFrame parsedEvent = buildEvent();
                 if (parsedEvent != null) {
                     events.add(parsedEvent);
