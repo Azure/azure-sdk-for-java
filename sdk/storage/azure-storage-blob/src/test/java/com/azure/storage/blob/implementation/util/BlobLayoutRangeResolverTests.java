@@ -41,6 +41,22 @@ public class BlobLayoutRangeResolverTests {
     }
 
     @ParameterizedTest
+    @MethodSource("unusableEndpointCases")
+    public void unusableResolvedEndpointReturnsNull(String endpoint) {
+        List<BlobLayoutRange> ranges = Collections.singletonList(range(0, 999, endpoint));
+
+        assertNull(BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validEndpointCases")
+    public void validResolvedEndpointReturnsUnchanged(String endpoint) {
+        List<BlobLayoutRange> ranges = Collections.singletonList(range(0, 999, endpoint));
+
+        assertEquals(endpoint, BlobLayoutRangeResolver.resolveEndpoint(0, ranges));
+    }
+
+    @ParameterizedTest
     @MethodSource("validOffsetCases")
     public void resolvesCorrectEndpointForValidOffsets(long offset, List<BlobLayoutRange> ranges,
         String expectedEndpoint) {
@@ -121,6 +137,16 @@ public class BlobLayoutRangeResolverTests {
 
     private static Arguments validCase(long offset, List<BlobLayoutRange> ranges, String expectedEndpoint) {
         return Arguments.of(offset, ranges, expectedEndpoint);
+    }
+
+    private static Stream<Arguments> unusableEndpointCases() {
+        return Stream.of(Arguments.of((Object) null), Arguments.of(""), Arguments.of("   "), Arguments.of(":443"));
+    }
+
+    private static Stream<Arguments> validEndpointCases() {
+        return Stream.of(Arguments.of("blob.stamp.store.core.windows.net:443"),
+            Arguments.of("blob.stamp.store.core.windows.net"),
+            Arguments.of("https://blob.stamp.store.core.windows.net:443"));
     }
 
     private static List<BlobLayoutRange> threeEndpointRanges() {

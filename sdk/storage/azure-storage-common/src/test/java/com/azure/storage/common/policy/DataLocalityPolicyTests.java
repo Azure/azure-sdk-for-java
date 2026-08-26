@@ -20,22 +20,68 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataLocalityPolicyTests {
     @SyncAsyncTest
-    public void requestUrlRewritesHostAndPreservesOriginalHeader() throws Exception {
+    public void bareHostPortEndpointRewritesHostAndPreservesOriginalHeader() throws Exception {
+        assertRequestUrlRewritesHostAndPreservesOriginalHeader("layout.example.net:8443",
+            "https://layout.example.net:8443/container/blob");
+    }
+
+    @SyncAsyncTest
+    public void fullUrlEndpointRewritesHostAndPreservesOriginalHeader() throws Exception {
         assertRequestUrlRewritesHostAndPreservesOriginalHeader("https://layout.example.net",
             "https://layout.example.net/container/blob");
     }
 
     @SyncAsyncTest
-    public void requestUrlRewritesHostAndPreservesExplicitPortAndOriginalHeader() throws Exception {
+    public void fullUrlEndpointRewritesExplicitPortAndPreservesOriginalHeader() throws Exception {
         assertRequestUrlRewritesHostAndPreservesOriginalHeader("https://layout.example.net:8443",
             "https://layout.example.net:8443/container/blob");
     }
 
+    @SyncAsyncTest
+    public void absentAndEmptyEndpointDoNotRewriteRequestUrl() throws Exception {
+        assertRequestUrlDoesNotRewrite(Context.NONE);
+        assertRequestUrlDoesNotRewrite(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, ""));
+    }
+
+    @SyncAsyncTest
+    public void malformedEndpointThrowsClearError() {
+        assertMalformedEndpointThrows("http://");
+    }
+
+    @SyncAsyncTest
+    public void whitespaceEndpointThrowsClearError() {
+        assertMalformedEndpointThrows("   ");
+    }
+
+    private void assertMalformedEndpointThrows(String endpoint) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint)));
+
+        assertTrue(exception.getMessage().contains("Invalid data locality endpoint '" + endpoint + "'"));
+        assertTrue(exception.getMessage().contains("host[:port]"));
+    }
+
     private void assertRequestUrlRewritesHostAndPreservesOriginalHeader(String layoutEndpoint, String expectedUrl)
         throws Exception {
+        HttpRequest seenRequest = sendRequest(new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, layoutEndpoint));
+
+        assertEquals(expectedUrl, seenRequest.getUrl().toString());
+        assertEquals("storage.example.com", seenRequest.getHeaders().getValue(HttpHeaderName.HOST));
+    }
+
+    private void assertRequestUrlDoesNotRewrite(Context context) throws Exception {
+        HttpRequest seenRequest = sendRequest(context);
+
+        assertEquals("https://storage.example.com/container/blob", seenRequest.getUrl().toString());
+        assertEquals("storage.example.com", seenRequest.getHeaders().getValue(HttpHeaderName.HOST));
+    }
+
+    private HttpRequest sendRequest(Context context) throws Exception {
         final HttpRequest[] seenRequest = new HttpRequest[1];
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
@@ -47,11 +93,9 @@ public class DataLocalityPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://storage.example.com/container/blob"));
         request.setHeader(HttpHeaderName.HOST, "storage.example.com");
-        Context context = new Context(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, layoutEndpoint);
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, context), () -> pipeline.send(request, context));
 
-        assertEquals(expectedUrl, seenRequest[0].getUrl().toString());
-        assertEquals("storage.example.com", seenRequest[0].getHeaders().getValue(HttpHeaderName.HOST.toString()));
+        return seenRequest[0];
     }
 }

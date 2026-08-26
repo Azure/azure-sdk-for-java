@@ -4,6 +4,8 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpRange;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.storage.blob.models.BlobLayoutRange;
 
 import java.util.List;
@@ -46,7 +48,33 @@ public final class BlobLayoutRangeResolver {
         }
 
         BlobLayoutRange candidate = layoutRanges.get(candidateIndex);
-        return contains(candidate, chunkRangeStart) ? candidate.getEndpoint() : null;
+        if (!contains(candidate, chunkRangeStart)) {
+            return null;
+        }
+
+        String endpoint = candidate.getEndpoint();
+        if (!isUsableDataLocalityEndpoint(endpoint)) {
+            // Layout data is an optimization for SDK-managed downloads; ETag conditions still guarantee correctness,
+            // so ignore an unusable service-supplied endpoint instead of failing like caller-supplied policy input.
+            return null;
+        }
+
+        return endpoint;
+    }
+
+    private static boolean isUsableDataLocalityEndpoint(String endpoint) {
+        if (CoreUtils.isNullOrEmpty(endpoint) || endpoint.trim().isEmpty()) {
+            return false;
+        }
+
+        UrlBuilder endpointUrlBuilder;
+        try {
+            endpointUrlBuilder = UrlBuilder.parse(endpoint);
+        } catch (RuntimeException ex) {
+            return false;
+        }
+
+        return endpointUrlBuilder != null && !CoreUtils.isNullOrEmpty(endpointUrlBuilder.getHost());
     }
 
     /**

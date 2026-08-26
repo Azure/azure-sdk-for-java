@@ -32,8 +32,8 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
 
     /**
      * The {@link com.azure.core.util.Context} data key used to opt a request into locality-aware routing.
-     * When present and set to a non-null, non-empty absolute endpoint URL string, this policy rewrites the
-     * outgoing request's host/port to that endpoint.
+     * When present and set to a non-null, non-empty endpoint string, this policy rewrites the outgoing request's
+     * host/port to that endpoint. The endpoint may be a bare {@code host[:port]} or a full URL.
      */
     public static final String LAYOUT_ENDPOINT_KEY = "Azure.Storage.LayoutEndpoint";
 
@@ -68,20 +68,44 @@ public final class DataLocalityPolicy implements HttpPipelinePolicy {
             return;
         }
 
-        try {
-            UrlBuilder requestUrlBuilder = UrlBuilder.parse(request.getUrl().toString());
-            UrlBuilder endpointUrlBuilder = UrlBuilder.parse(endpoint);
+        UrlBuilder requestUrlBuilder = UrlBuilder.parse(request.getUrl().toString());
+        UrlBuilder endpointUrlBuilder = parseEndpoint(endpoint);
 
-            String originalAuthority = request.getUrl().getAuthority();
-            requestUrlBuilder.setHost(endpointUrlBuilder.getHost());
-            Integer endpointPort = endpointUrlBuilder.getPort();
-            requestUrlBuilder.setPort(endpointPort == null ? null : endpointPort.toString());
+        String originalAuthority = request.getUrl().getAuthority();
+        requestUrlBuilder.setHost(endpointUrlBuilder.getHost());
+        Integer endpointPort = endpointUrlBuilder.getPort();
+        requestUrlBuilder.setPort(endpointPort == null ? null : endpointPort.toString());
 
-            request.setUrl(requestUrlBuilder.toString());
-            request.setHeader(HttpHeaderName.HOST, originalAuthority);
-        } catch (RuntimeException ex) {
-            LOGGER.warning("Invalid data locality endpoint. Skipping request URL rewrite.", ex);
+        request.setUrl(requestUrlBuilder.toString());
+        request.setHeader(HttpHeaderName.HOST, originalAuthority);
+    }
+
+    private static UrlBuilder parseEndpoint(String endpoint) {
+        if (endpoint.trim().isEmpty()) {
+            throw invalidEndpoint(endpoint, null);
         }
+
+        UrlBuilder endpointUrlBuilder;
+        try {
+            endpointUrlBuilder = UrlBuilder.parse(endpoint);
+        } catch (IllegalArgumentException ex) {
+            throw invalidEndpoint(endpoint, ex);
+        }
+
+        if (CoreUtils.isNullOrEmpty(endpointUrlBuilder.getHost())) {
+            throw invalidEndpoint(endpoint, null);
+        }
+
+        return endpointUrlBuilder;
+    }
+
+    private static IllegalArgumentException invalidEndpoint(String endpoint, Throwable cause) {
+        String message = "Invalid data locality endpoint '" + endpoint
+            + "'. The endpoint must be a host[:port] or an absolute URL.";
+        IllegalArgumentException exception
+            = cause == null ? new IllegalArgumentException(message) : new IllegalArgumentException(message, cause);
+        LOGGER.logExceptionAsError(exception);
+        return exception;
     }
 
     /**
