@@ -125,7 +125,8 @@ To set up the credential provider:
 
 For detailed instructions, refer to the [Maven Credential Provider documentation](https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-docs/azure-artifacts/maven-credprovider).
 
-> **Note:** If you're using WSL, ensure URL opening is configured to use your host OS browser. On Ubuntu-based WSL distros, you can install `wslu` (`sudo apt update && sudo apt install -y wslu`), which provides `wslview`.
+> [!NOTE]
+> If you're using WSL, ensure URL opening is configured to use your host OS browser. On Ubuntu-based WSL distros, you can install `wslu` (`sudo apt update && sudo apt install -y wslu`), which provides `wslview`.
 
 > **Note:** For Maven Azure DevOps pipeline authentication, use the [MavenAuthenticate@0](https://learn.microsoft.com/azure/devops/pipelines/tasks/reference/maven-authenticate-v0) pipeline task.
 
