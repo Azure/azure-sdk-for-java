@@ -1942,13 +1942,15 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
         Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
             = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, definition,
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -1970,10 +1972,13 @@ public final class AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, CreateAgentVersionInput createAgentVersionInput) {
+        // Customized convenience method for createAgentVersionWithResponse (removed @Generated to add tracing).
         RequestOptions requestOptions = new RequestOptions();
         BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionInput);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+        return tracer.traceCreateAgentVersion(agentName, createAgentVersionInput.getDefinition(),
+            (request, options) -> createAgentVersionWithResponse(agentName, request, options).getValue()
+                .toObject(AgentVersionDetails.class),
+            createAgentVersionRequest, requestOptions);
     }
 
     /**

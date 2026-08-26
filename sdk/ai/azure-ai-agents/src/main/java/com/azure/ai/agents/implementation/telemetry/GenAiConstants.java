@@ -74,11 +74,6 @@ final class GenAiConstants {
     // --- Error ---
     static final String ERROR_TYPE = "error.type";
 
-    // --- Events ---
-    static final String GEN_AI_AGENT_WORKFLOW = "gen_ai.agent.workflow";
-    static final String GEN_AI_EVENT_CONTENT = "gen_ai.event.content";
-    static final String GEN_AI_WORKFLOW_ACTION = "gen_ai.workflow.action";
-
     // --- Token type (for metrics) ---
     static final String GEN_AI_TOKEN_TYPE = "gen_ai.token.type";
     static final String TOKEN_TYPE_INPUT = "input";
@@ -95,7 +90,6 @@ final class GenAiConstants {
     // --- Agent type values ---
     static final String AGENT_TYPE_PROMPT = "prompt";
     static final String AGENT_TYPE_HOSTED = "hosted";
-    static final String AGENT_TYPE_WORKFLOW = "workflow";
 
     // --- Default port (HTTPS) ---
     static final int DEFAULT_HTTPS_PORT = 443;

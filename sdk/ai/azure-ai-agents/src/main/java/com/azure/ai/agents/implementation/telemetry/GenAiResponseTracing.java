@@ -3,9 +3,9 @@
 
 package com.azure.ai.agents.implementation.telemetry;
 
+import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.openai.core.JsonValue;
 import com.openai.helpers.ResponseAccumulator;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
@@ -21,32 +21,28 @@ import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.responses.ResponseOutputText;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.models.responses.ResponseUsage;
+import com.openai.models.conversations.Conversation;
+import com.openai.models.conversations.ConversationCreateParams;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_WORKFLOW_ACTION;
-
 /**
  * Tracing for the response convenience methods on {@link com.azure.ai.agents.ResponsesClient}. Wraps response
  * creation with a {@code chat} or {@code invoke_agent} span (based on whether an {@link AgentReference} is present),
- * recording request/response attributes, token usage, input/output messages (content-gated), workflow-action
- * events, and metrics. Also traces {@code create_conversation}.
+ * recording request/response attributes, token usage, input/output messages (content-gated), and metrics. Also
+ * traces {@code create_conversation}.
  *
  * <p>Constructed with a per-client {@link GenAiInstrumentation}; there is no global state.</p>
  */
 public final class GenAiResponseTracing {
 
     private final GenAiInstrumentation instrumentation;
+    private final OpenAITracingContextBridge contextBridge;
 
     /**
      * Creates a {@link GenAiResponseTracing}.
@@ -54,7 +50,18 @@ public final class GenAiResponseTracing {
      * @param instrumentation the per-client telemetry holder.
      */
     public GenAiResponseTracing(GenAiInstrumentation instrumentation) {
+        this(instrumentation, null);
+    }
+
+    /**
+     * Creates a {@link GenAiResponseTracing} with an asynchronous OpenAI context bridge.
+     *
+     * @param instrumentation the per-client telemetry holder.
+     * @param contextBridge the per-client bridge used by the OpenAI HTTP adapter.
+     */
+    public GenAiResponseTracing(GenAiInstrumentation instrumentation, OpenAITracingContextBridge contextBridge) {
         this.instrumentation = instrumentation;
+        this.contextBridge = contextBridge;
     }
 
     /**
@@ -137,21 +144,22 @@ public final class GenAiResponseTracing {
      *
      * @param createResponse the Azure-specific create response options.
      * @param builtParams the built request parameters.
-     * @param operation the supplier that starts the asynchronous API call.
+     * @param operation the function that starts the asynchronous API call with trace context in the request headers.
      * @return a {@link Mono} emitting the response from the operation.
      */
     public Mono<Response> traceResponseAsync(AzureCreateResponseOptions createResponse,
-        ResponseCreateParams builtParams, Supplier<Mono<Response>> operation) {
+        ResponseCreateParams builtParams, Function<ResponseCreateParams, Mono<Response>> operation) {
         if (!instrumentation.isEnabled()) {
-            return operation.get();
+            return operation.apply(builtParams);
         }
         ResponseSpanParams params = extractParams(createResponse, builtParams);
 
         Mono<GenAiTracingScope> resourceSupplier = Mono.fromSupplier(() -> startResponseScope(params));
-        Function<GenAiTracingScope, Mono<Response>> resourceClosure = scope -> operation.get().map(response -> {
-            recordResponseAttributes(scope, response, params.isInvokeAgent);
-            return response;
-        });
+        Function<GenAiTracingScope, Mono<Response>> resourceClosure
+            = scope -> startMonoWithContext(scope, builtParams, operation).map(response -> {
+                recordResponseAttributes(scope, response, params.isInvokeAgent);
+                return response;
+            });
         return Mono.usingWhen(resourceSupplier, resourceClosure, scope -> {
             scope.close();
             return Mono.empty();
@@ -171,20 +179,20 @@ public final class GenAiResponseTracing {
      *
      * @param createResponse the Azure-specific create response options.
      * @param builtParams the built request parameters.
-     * @param operation the supplier that starts the streaming operation.
+     * @param operation the function that starts the streaming operation with trace context in the request headers.
      * @return a {@link Flux} that wraps the stream and records attributes on completion.
      */
     public Flux<ResponseStreamEvent> traceStreamingResponseAsync(AzureCreateResponseOptions createResponse,
-        ResponseCreateParams builtParams, Supplier<Flux<ResponseStreamEvent>> operation) {
+        ResponseCreateParams builtParams, Function<ResponseCreateParams, Flux<ResponseStreamEvent>> operation) {
         if (!instrumentation.isEnabled()) {
-            return operation.get();
+            return operation.apply(builtParams);
         }
         ResponseSpanParams params = extractParams(createResponse, builtParams);
 
         Mono<StreamingState> resourceSupplier
             = Mono.fromSupplier(() -> new StreamingState(startResponseScope(params), params.isInvokeAgent));
         Function<StreamingState, Flux<ResponseStreamEvent>> resourceClosure
-            = state -> operation.get().doOnNext(state::accumulate);
+            = state -> startFluxWithContext(state.scope, builtParams, operation).doOnNext(state::accumulate);
         return Flux.usingWhen(resourceSupplier, resourceClosure, state -> {
             state.finalizeStream(this);
             return Mono.empty();
@@ -197,22 +205,116 @@ public final class GenAiResponseTracing {
         });
     }
 
+    private Mono<Response> startMonoWithContext(GenAiTracingScope scope, ResponseCreateParams params,
+        Function<ResponseCreateParams, Mono<Response>> operation) {
+        if (contextBridge == null) {
+            return startMono(scope, () -> operation.apply(params));
+        }
+        String token = contextBridge.register(scope.getSpanContext());
+        ResponseCreateParams.Builder builder = params.toBuilder();
+        builder.replaceAdditionalHeaders(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token);
+        return startMono(scope, () -> operation.apply(builder.build()))
+            .doFinally(signalType -> contextBridge.discard(token));
+    }
+
+    private Flux<ResponseStreamEvent> startFluxWithContext(GenAiTracingScope scope, ResponseCreateParams params,
+        Function<ResponseCreateParams, Flux<ResponseStreamEvent>> operation) {
+        if (contextBridge == null) {
+            return startFlux(scope, () -> operation.apply(params));
+        }
+        String token = contextBridge.register(scope.getSpanContext());
+        ResponseCreateParams.Builder builder = params.toBuilder();
+        builder.replaceAdditionalHeaders(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token);
+        return startFlux(scope, () -> operation.apply(builder.build()))
+            .doFinally(signalType -> contextBridge.discard(token));
+    }
+
+    private Mono<Conversation> startConversationWithContext(GenAiTracingScope scope,
+        Function<ConversationCreateParams, Mono<Conversation>> operation) {
+        if (contextBridge == null) {
+            return startMono(scope, () -> operation.apply(ConversationCreateParams.builder().build()));
+        }
+        String token = contextBridge.register(scope.getSpanContext());
+        ConversationCreateParams.Builder builder = ConversationCreateParams.builder();
+        builder.replaceAdditionalHeaders(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token);
+        return startMono(scope, () -> operation.apply(builder.build()))
+            .doFinally(signalType -> contextBridge.discard(token));
+    }
+
     /**
-     * Traces a {@code create_conversation} operation using the conversation ID returned by the service.
+     * Traces a synchronous {@code create_conversation} operation.
      *
-     * @param conversationId the conversation ID returned by the service.
+     * @param operation the supplier that performs the API call.
+     * @return the created conversation.
      */
-    public void traceCreateConversation(String conversationId) {
+    @SuppressWarnings("try")
+    public Conversation traceCreateConversation(Supplier<Conversation> operation) {
         GenAiTracingScope scope = instrumentation.startCreateConversation();
         if (scope == null) {
-            return;
+            return operation.get();
         }
         try {
-            if (conversationId != null) {
-                scope.setConversationId(conversationId);
+            Conversation conversation;
+            try (AutoCloseable ignored = scope.makeSpanCurrent()) {
+                conversation = operation.get();
             }
+            scope.setConversationId(conversation.id());
+            return conversation;
+        } catch (Exception e) {
+            scope.recordError(e);
+            sneakyThrows(e);
+            return null;
         } finally {
             scope.close();
+        }
+    }
+
+    /**
+     * Traces an asynchronous {@code create_conversation} operation.
+     *
+     * @param operation the function that performs the asynchronous API call with trace context in the request headers.
+     * @return a {@link Mono} emitting the created conversation.
+     */
+    public Mono<Conversation>
+        traceCreateConversationAsync(Function<ConversationCreateParams, Mono<Conversation>> operation) {
+        if (!instrumentation.isEnabled()) {
+            return operation.apply(ConversationCreateParams.builder().build());
+        }
+
+        Mono<GenAiTracingScope> resourceSupplier = Mono.fromSupplier(instrumentation::startCreateConversation);
+        Function<GenAiTracingScope, Mono<Conversation>> resourceClosure
+            = scope -> startConversationWithContext(scope, operation).map(conversation -> {
+                scope.setConversationId(conversation.id());
+                return conversation;
+            });
+        return Mono.usingWhen(resourceSupplier, resourceClosure, scope -> {
+            scope.close();
+            return Mono.empty();
+        }, (scope, throwable) -> {
+            scope.recordError(throwable);
+            scope.close();
+            return Mono.empty();
+        }, scope -> {
+            scope.close();
+            return Mono.empty();
+        });
+    }
+
+    @SuppressWarnings("try")
+    private static <T> Mono<T> startMono(GenAiTracingScope scope, Supplier<Mono<T>> operation) {
+        try (AutoCloseable ignored = scope.makeSpanCurrent()) {
+            return operation.get();
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
+    @SuppressWarnings("try")
+    private static <T> Flux<T> startFlux(GenAiTracingScope scope, Supplier<Flux<T>> operation) {
+        try (AutoCloseable ignored = scope.makeSpanCurrent()) {
+            return operation.get();
+        } catch (Exception e) {
+            return Flux.error(e);
         }
     }
 
@@ -276,7 +378,6 @@ public final class GenAiResponseTracing {
             scope.setRequestModelAttributes(responseModel, null, null);
         }
 
-        emitWorkflowActionEvents(scope, response);
     }
 
     String formatOutputFromResponse(Response response) {
@@ -503,85 +604,6 @@ public final class GenAiResponseTracing {
             return model.asOnly().asString();
         }
         return model.toString();
-    }
-
-    /**
-     * Emits {@code gen_ai.workflow.action} events for any workflow_action output items in the response.
-     */
-    @SuppressWarnings("unchecked")
-    void emitWorkflowActionEvents(GenAiTracingScope scope, Response response) {
-        if (response.output() == null || response.output().isEmpty()) {
-            return;
-        }
-
-        for (ResponseOutputItem item : response.output()) {
-            // workflow_action is not explicitly modeled — detect via raw JSON.
-            Optional<JsonValue> rawJson = item._json();
-            if (!rawJson.isPresent()) {
-                continue;
-            }
-            Optional<Map<String, JsonValue>> objOpt = rawJson.get().asObject();
-            if (!objOpt.isPresent()) {
-                continue;
-            }
-            Map<String, JsonValue> obj = objOpt.get();
-            JsonValue typeVal = obj.get("type");
-            if (typeVal == null) {
-                continue;
-            }
-            Optional<String> typeStr = typeVal.asString();
-            if (!typeStr.isPresent() || !"workflow_action".equals(typeStr.get())) {
-                continue;
-            }
-
-            String contentArray = formatWorkflowActionEventContent(obj);
-            Map<String, Object> eventAttributes = new HashMap<>();
-            eventAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
-            eventAttributes.put(GEN_AI_EVENT_CONTENT, contentArray);
-            scope.addEvent(GEN_AI_WORKFLOW_ACTION, eventAttributes);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private String formatWorkflowActionEventContent(Map<String, JsonValue> item) {
-        StringBuilder workflowDetails = new StringBuilder("{");
-        boolean hasField = false;
-
-        JsonValue statusVal = item.get("status");
-        if (statusVal != null) {
-            Optional<String> status = statusVal.asString();
-            if (status.isPresent()) {
-                workflowDetails.append("\"status\":").append(GenAiMessageFormatter.jsonEscape(status.get()));
-                hasField = true;
-            }
-        }
-
-        if (captureContent()) {
-            hasField = appendRawStringField(workflowDetails, item, "action_id", hasField);
-            appendRawStringField(workflowDetails, item, "previous_action_id", hasField);
-        }
-
-        workflowDetails.append("}");
-
-        return "[{\"role\":\"workflow\",\"parts\":[{\"type\":\"workflow_action\",\"content\":" + workflowDetails
-            + "}]}]";
-    }
-
-    @SuppressWarnings("unchecked")
-    private static boolean appendRawStringField(StringBuilder sb, Map<String, JsonValue> item, String field,
-        boolean hasField) {
-        JsonValue value = item.get(field);
-        if (value != null) {
-            Optional<String> str = value.asString();
-            if (str.isPresent()) {
-                if (hasField) {
-                    sb.append(",");
-                }
-                sb.append("\"").append(field).append("\":").append(GenAiMessageFormatter.jsonEscape(str.get()));
-                return true;
-            }
-        }
-        return hasField;
     }
 
     private ResponseSpanParams extractParams(AzureCreateResponseOptions createResponse,

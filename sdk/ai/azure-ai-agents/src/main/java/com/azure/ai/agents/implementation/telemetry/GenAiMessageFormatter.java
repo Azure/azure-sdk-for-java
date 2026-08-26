@@ -82,16 +82,6 @@ final class GenAiMessageFormatter {
     }
 
     /**
-     * Formats the content array for a {@code gen_ai.agent.workflow} event (content-gated).
-     */
-    static String formatWorkflowEventContent(boolean captureContent, String workflowDefinition) {
-        if (captureContent && workflowDefinition != null && !workflowDefinition.isEmpty()) {
-            return "[{\"type\":\"workflow\",\"content\":" + jsonEscape(workflowDefinition) + "}]";
-        }
-        return "[]";
-    }
-
-    /**
      * Formats a tool result value. If the value looks like a JSON object or array, emit it raw (unescaped).
      * Otherwise, emit it as a JSON string.
      */

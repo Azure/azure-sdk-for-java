@@ -7,6 +7,7 @@ import com.azure.ai.agents.implementation.AgentsClientImpl;
 import com.azure.ai.agents.implementation.TokenUtils;
 import com.azure.ai.agents.implementation.http.FoundryPolicyHelper;
 import com.azure.ai.agents.implementation.http.HttpClientHelper;
+import com.azure.ai.agents.implementation.http.OpenAITracingContextBridge;
 import com.azure.ai.agents.implementation.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.implementation.models.FoundryFeaturesOptInKeys;
 import com.azure.ai.agents.implementation.telemetry.GenAiAgentTracing;
@@ -384,16 +385,23 @@ public final class AgentsClientBuilder
         return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures));
     }
 
+    private com.openai.core.http.HttpClient createOpenAIHttpClient(String foundryFeatures,
+        OpenAITracingContextBridge contextBridge) {
+        return HttpClientHelper.mapToOpenAIHttpClient(resolvePipeline(foundryFeatures), contextBridge);
+    }
+
     /**
      * Builds an instance of ResponsesClient class with a default setup for OpenAI
      *
      * @return an instance of ResponsesClient
      */
     public ResponsesClient buildResponsesClient() {
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
         return new ResponsesClient(
             getOpenAIClientBuilder(null).build()
-                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))),
-            new GenAiResponseTracing(createInstrumentation()));
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -402,10 +410,12 @@ public final class AgentsClientBuilder
      * @return an instance of ResponsesAsyncClient
      */
     public ResponsesAsyncClient buildResponsesAsyncClient() {
+        final com.azure.core.util.tracing.Tracer tracer = createTracer();
+        final OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
         return new ResponsesAsyncClient(
             getOpenAIAsyncClientBuilder(null).build()
-                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null))),
-            new GenAiResponseTracing(createInstrumentation()));
+                .withOptions(optionBuilder -> optionBuilder.httpClient(createOpenAIHttpClient(null, contextBridge))),
+            new GenAiResponseTracing(createInstrumentation(tracer), contextBridge));
     }
 
     /**
@@ -553,13 +563,17 @@ public final class AgentsClientBuilder
     }
 
     private GenAiInstrumentation createInstrumentation() {
+        return createInstrumentation(createTracer());
+    }
+
+    private GenAiInstrumentation createInstrumentation(com.azure.core.util.tracing.Tracer tracer) {
         final String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         final String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         final com.azure.core.util.MetricsOptions metricsOptions
             = this.clientOptions == null ? null : this.clientOptions.getMetricsOptions();
         final com.azure.core.util.metrics.Meter meter = com.azure.core.util.metrics.MeterProvider.getDefaultProvider()
             .createMeter(clientName, clientVersion, metricsOptions);
-        return new GenAiInstrumentation(this.endpoint, this.configuration, createTracer(), meter);
+        return new GenAiInstrumentation(this.endpoint, this.configuration, tracer, meter);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 Status: **Planning**
 
-Last updated: **2026-08-25**
+Last updated: **2026-08-26**
 
 This document defines the work required to complete GenAI telemetry for
 `azure-ai-agents` and its use from `azure-ai-projects`.
@@ -41,6 +41,14 @@ corresponding records in [ADR.md](ADR.md) and link each resolution to PR #49706
 or a public issue. Do not rely on chat or meeting history as the only
 specification for shipped behavior.
 
+The August 25, 2026 Java tracing design discussion established the current
+working approach: use the current Python implementation as the behavioral
+baseline, use Azure SDK telemetry abstractions before direct OpenTelemetry APIs,
+validate end to end through a Foundry project connected to Application Insights,
+and require Azure SDK architecture review before merge. The historical tracing
+specification remains useful context, but it is a living document and must not
+override current implementations or the approved contract.
+
 ## Goals
 
 - Emit Foundry GenAI spans and metrics that conform to an explicitly versioned
@@ -58,6 +66,8 @@ specification for shipped behavior.
   regeneration.
 - Provide tests that assert emitted telemetry rather than only verifying that
   instrumented operations execute.
+- Validate that emitted client spans are visible and correctly correlated in
+  Foundry and Application Insights.
 
 ## Non-goals
 
@@ -79,9 +89,11 @@ The following proof-of-concept decisions should be retained:
 | State | Inject immutable telemetry dependencies into each client. |
 | Placement | Keep helpers under `com.azure.ai.agents.implementation.telemetry`. |
 | Activation | Use configured tracing and metrics providers; do not add a public global toggle API. |
+| Reference behavior | Treat the current Python implementation as the primary cross-language baseline; use other languages and the historical spec as corroborating inputs. |
+| Abstraction | Prefer `azure-core` tracing and metrics abstractions; use direct OpenTelemetry APIs only for documented gaps that cannot be addressed in Azure SDK abstractions. |
 | HTTP tracing | Use `azure-core` pipeline instrumentation and propagate the GenAI span context. |
 | Generated methods | Instrument the existing convenience methods transparently. |
-| Content | Disable content recording by default and require explicit opt-in. |
+| Content | Disable content recording by default and require explicit opt-in; without opt-in, emit no customer-controlled prompts, responses, messages, instructions, or function arguments. |
 | Library metadata | Read client name and version from `azure-ai-agents.properties`. |
 
 If the cross-language contract requires
@@ -166,8 +178,11 @@ extensions. In particular, resolve:
 - Per-client Java configuration versus the global experimental configuration
   used by PR #49434.
 
-Current cross-language implementations are useful inputs but are not mutually
-consistent:
+The current Python implementation is the primary behavioral reference because
+it was implemented first and is the implementation other languages generally
+follow. Do not copy Python-only legacy or deprecated paths without confirming
+that they remain part of the current Agents contract. Other language
+implementations are useful corroborating inputs but are not mutually consistent:
 
 - [Python telemetry](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/ai/azure-ai-projects/azure/ai/projects/telemetry)
 - [JavaScript tracing constants](https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/ai/ai-projects/src/tracing/constants.ts)
@@ -191,11 +206,30 @@ consistent:
 
 ## Phase 1: Complete Operation Coverage
 
+Implementation status as of 2026-08-26:
+
+- All current synchronous and asynchronous `createAgentVersion` convenience
+  overloads use the tracing wrapper.
+- Typed synchronous and asynchronous response and streaming entry points are
+  instrumented.
+- Conversation creation now wraps the service call and handles success, error,
+  and cancellation.
+- Workflow-specific instrumentation is intentionally excluded because workflow
+  agents are retiring; unsupported definitions receive only generic agent
+  identity attributes.
+- Raw-response methods, conversation-item listing, and broader CRUD coverage
+  remain blocked on ADR 8 and ADR 9 rather than being inferred from legacy
+  Python or Projects APIs.
+
 ### Agent creation
 
 - Instrument every supported `createAgentVersion` overload.
 - Cover synchronous and asynchronous clients.
-- Cover prompt, workflow, hosted, and unknown agent definitions.
+- Cover every agent definition in the approved current contract, including
+  prompt, hosted, and unknown definitions.
+- Explicitly confirm whether workflow-agent telemetry remains in scope; do not
+  retain it solely because it exists in an older Python or prototype
+  implementation.
 - Record response-assigned agent identity and version.
 - Put sampling-relevant values such as agent name and request model into
   `StartSpanOptions` when available.
@@ -231,6 +265,24 @@ consistent:
 
 ## Phase 2: Correct Context and Lifecycle Handling
 
+Implementation status as of 2026-08-26:
+
+- Sync operations make the GenAI span current around request initiation.
+- Async OpenAI response, streaming, and conversation operations use a
+  per-client, request-scoped bridge to carry the original Azure `Context`
+  across openai-java's deferred `CompletableFuture` execution. The opaque
+  bridge token is consumed before the Azure request is built and is never sent
+  to the service.
+- Reactor owns span and bridge cleanup through success, error, and
+  cancellation.
+- Duration metrics use monotonic elapsed time.
+- The maintained E2E verifier now requires each response HTTP span to share the
+  GenAI operation's trace ID and use its span ID as the direct parent.
+- Live synchronous and asynchronous quick runs each passed 142/142 checks with
+  content recording both disabled and enabled. This verifies local exported
+  spans against a live Foundry service; Foundry and Application Insights UI
+  inspection remains outstanding.
+
 - Continue passing the GenAI span context through `RequestOptions` for
   `AgentsClient` and `AgentsAsyncClient`.
 - Propagate context through Reactor for OpenAI Java asynchronous response calls.
@@ -261,8 +313,12 @@ consistent:
 - Replace hand-built JSON with `azure-json` and `JsonWriter`.
 - Validate message, tool-call, tool-response, workflow, and system-instruction
   payloads against the selected schemas.
-- Avoid accumulating content when content recording is disabled unless
-  structural data is explicitly required.
+- When content recording is disabled, do not collect or emit
+  customer-controlled prompts, responses, messages, instructions, function
+  arguments, tool results, or equivalent agent content.
+- Allow only contract-approved generic metadata such as identifiers and
+  structural fields in content-disabled mode, and test every content-bearing
+  attribute and event against this rule.
 - Add request and response model attributes to metrics when available.
 - Record `gen_ai.client.operation.duration`.
 - Record `gen_ai.client.token.usage` separately for input and output tokens.
@@ -276,6 +332,18 @@ consistent:
 - Span and metric tests cover success and failure.
 
 ## Phase 4: Make Instrumentation Regeneration-safe
+
+Verification status as of 2026-08-26:
+
+- `tsp-client update` completed successfully after temporarily restoring the
+  expected `tsp-location.yaml` filename.
+- Existing tracing constructors, fields, and customized non-`@Generated`
+  methods were preserved without duplication, including all instrumented
+  `createAgentVersion` overloads and conversation wrappers.
+- The generator produced unrelated broad specification drift, which is not part
+  of this tracing change and was removed after verifying preservation.
+- ADR 11 remains open because one successful fallback verification does not
+  replace an ownership decision about AST-based customization.
 
 Preferred approach:
 
@@ -344,6 +412,19 @@ Repository validation must include:
 - Sample and README snippet compilation.
 - TypeSpec regeneration validation.
 
+Live validation must also include:
+
+- A dedicated Foundry project connected to an Application Insights resource.
+- Marko's end-to-end tracing application, or an equivalent checked-in sample,
+  as the initial scenario driver.
+- Confirmation that client spans appear in the Foundry tracing UI and
+  Application Insights with the expected parent-child relationships.
+- Content-enabled and content-disabled runs, with explicit inspection that the
+  disabled run contains no customer-controlled content.
+- A validation run that keeps the agent available until traces are inspected.
+  The current Foundry UI groups traces by agent, so deleting the agent during
+  sample cleanup can make the traces difficult or impossible to access.
+
 ## Phase 6: Documentation and Release
 
 ### `azure-ai-agents`
@@ -356,6 +437,8 @@ Repository validation must include:
 - Document trace-context propagation separately from content recording,
   including whether baggage is propagated.
 - Provide console and Azure Monitor samples.
+- Document that Foundry UI validation requires the project to be connected to
+  Application Insights.
 - Document sync, async, and streaming span lifetime behavior.
 - Update the changelog only after the implementation contract is final.
 
@@ -386,6 +469,8 @@ Therefore:
    as separate commits where practical.
 7. Request Java SDK, Foundry telemetry, and API reviewers before removing draft
    status.
+8. Obtain Azure SDK architecture review before merge, with particular attention
+   to any direct OpenTelemetry usage and the content-recording privacy boundary.
 
 ## Completion Criteria
 
@@ -401,9 +486,14 @@ Telemetry is ready to ship when:
   policy.
 - Streaming spans close on all supported terminal paths.
 - Content remains disabled by default.
+- Content-disabled telemetry contains no customer-controlled prompts,
+  responses, messages, instructions, function arguments, or tool results.
 - Attributes and metrics match golden cross-language expectations.
 - Regeneration preserves the implementation.
 - Package tests, quality checks, API checks, and samples pass.
 - The maintained E2E harness and approved reference output pass review.
+- Live client spans are visible and correlated in a Foundry project connected
+  to Application Insights.
+- Azure SDK architecture review is complete.
 - `azure-ai-agents` and `azure-ai-projects` documentation is consistent.
 - Final ownership and the release milestone are recorded.

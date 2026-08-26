@@ -58,9 +58,7 @@ public final class ResponsesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Conversation createConversation() {
-        Conversation conversation = conversationService.create();
-        tracer.traceCreateConversation(conversation.id());
-        return conversation;
+        return tracer.traceCreateConversation(conversationService::create);
     }
 
     /**

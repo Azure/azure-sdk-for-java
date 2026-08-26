@@ -8,29 +8,20 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.HostedAgentDefinition;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.ProtocolVersionRecord;
-import com.azure.ai.agents.models.WorkflowAgentDefinition;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.AGENT_TYPE_HOSTED;
 import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.AGENT_TYPE_PROMPT;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.AGENT_TYPE_WORKFLOW;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_AGENT_WORKFLOW;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_EVENT_CONTENT;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME;
-import static com.azure.ai.agents.implementation.telemetry.GenAiConstants.GEN_AI_PROVIDER_NAME_VALUE;
 
 /**
  * Tracing for the agent-management convenience methods on {@link com.azure.ai.agents.AgentsClient} and
  * {@link com.azure.ai.agents.AgentsAsyncClient}. Wraps {@code createAgentVersion} with a {@code create_agent} span,
- * extracting agent-type-specific attributes (prompt / hosted / workflow) and emitting a {@code gen_ai.agent.workflow}
- * event for workflow agents.
+ * extracting agent-type-specific attributes for supported prompt and hosted agents.
  *
  * <p>Constructed with a per-client {@link GenAiInstrumentation}; there is no global state.</p>
  */
@@ -158,10 +149,6 @@ public final class GenAiAgentTracing {
             scope.setAgentAttributes(null, agentName, null, AGENT_TYPE_PROMPT);
             scope.setRequestModelAttributes(prompt.getModel(), prompt.getTemperature(), prompt.getTopP());
             scope.setSystemInstructions(prompt.getInstructions());
-        } else if (definition instanceof WorkflowAgentDefinition) {
-            WorkflowAgentDefinition workflow = (WorkflowAgentDefinition) definition;
-            scope.setAgentAttributes(null, agentName, null, AGENT_TYPE_WORKFLOW);
-            emitWorkflowEvent(scope, workflow.getWorkflow());
         } else if (definition instanceof HostedAgentDefinition) {
             HostedAgentDefinition hosted = (HostedAgentDefinition) definition;
             String protocol = null;
@@ -179,15 +166,6 @@ public final class GenAiAgentTracing {
         } else {
             scope.setAgentAttributes(null, agentName, null, null);
         }
-    }
-
-    private void emitWorkflowEvent(GenAiTracingScope scope, String workflowDefinition) {
-        String contentArray = GenAiMessageFormatter
-            .formatWorkflowEventContent(instrumentation.isContentRecordingEnabled(), workflowDefinition);
-        Map<String, Object> eventAttributes = new HashMap<>();
-        eventAttributes.put(GEN_AI_PROVIDER_NAME, GEN_AI_PROVIDER_NAME_VALUE);
-        eventAttributes.put(GEN_AI_EVENT_CONTENT, contentArray);
-        scope.addEvent(GEN_AI_AGENT_WORKFLOW, eventAttributes);
     }
 
     private static void enrichFromResult(GenAiTracingScope scope, AgentVersionDetails result) {
