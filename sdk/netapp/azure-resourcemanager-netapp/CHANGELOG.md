@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0-beta.2 (2026-08-14)
+## 2.5.0-beta.2 (2026-08-26)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2026-06-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,8 +8,8 @@
 
 #### `models.LdapConfiguration` was modified
 
-* `withLdapOverTLS(java.lang.Boolean)` was removed
 * `ldapOverTLS()` was removed
+* `withLdapOverTLS(java.lang.Boolean)` was removed
 
 #### `models.LdapConfigurationPatch` was modified
 
@@ -22,8 +22,8 @@
 
 #### `models.LdapConfiguration` was modified
 
-* `secureLdapType()` was added
 * `withSecureLdapType(models.SecureLdapType)` was added
+* `secureLdapType()` was added
 
 #### `models.LdapConfigurationPatch` was modified
 
