@@ -20,8 +20,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalOptions;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResult;
+import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalStreamEvent;
+import com.azure.search.documents.models.ServerSentEvent;
+import com.azure.search.documents.models.implementation.sse.ServerSentEventStreams;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -454,5 +459,60 @@ public final class KnowledgeBaseRetrievalAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
+     * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
+     * propagated through the reactive error path. The client does not reconnect automatically. A pending server-sent
+     * event is limited to 16 MiB of raw UTF-8 content; exceeding this limit terminates the stream through the reactive
+     * error path.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @return A stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>>
+        retrieveStream(KnowledgeBaseRetrievalOptions retrievalRequest) {
+        RequestOptions requestOptions = new RequestOptions();
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
+                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
+    }
+
+    /**
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
+     * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
+     * propagated through the reactive error path. The client does not reconnect automatically. A pending server-sent
+     * event is limited to 16 MiB of raw UTF-8 content; exceeding this limit terminates the stream through the reactive
+     * error path.
+     *
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param queryWorkIQSourceAuthorization User assertion token for a customer-owned Entra app registration configured
+     * on a Work IQ knowledge source. Used for on-behalf-of authentication to the Work IQ API.
+     * @return A stream of typed knowledge base retrieval events.
+     */
+    @Generated
+    public Flux<ServerSentEvent<KnowledgeBaseRetrievalStreamEvent>> retrieveStream(
+        KnowledgeBaseRetrievalOptions retrievalRequest, String querySourceAuthorization,
+        String queryWorkIQSourceAuthorization) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (queryWorkIQSourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-work-iq-source-authorization"),
+                queryWorkIQSourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveStreamWithResponse(BinaryData.fromObject(retrievalRequest), requestOptions)
+            .flatMapMany(response -> ServerSentEventStreams.toFlux(response,
+                KnowledgeBaseRetrievalStreamEventConverter::convert, event -> event.getData().isTerminal()));
     }
 }

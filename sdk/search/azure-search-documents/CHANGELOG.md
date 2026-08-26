@@ -16,6 +16,10 @@
 - Added knowledge base retrieval models `KnowledgeBaseActivityRecordModel`, `KnowledgeBaseQueryHintProcessing`,
   `KnowledgeBaseRetrieveDefaults`, and `KnowledgeRetrievalAutoReasoningEffort`.
 - Added `EntraAppAuthentication`, `KnowledgeSourceNetworkAccessMode`, `ServedImage`, and `ListingSearchType` models.
+- Added typed server-sent event `retrieveStream` APIs to `KnowledgeBaseRetrievalClient` and
+  `KnowledgeBaseRetrievalAsyncClient`, reusable `ServerSentEvent` and `ServerSentEventListener` models, and event
+  wrappers derived from `KnowledgeBaseRetrievalStreamEvent`, including `UnknownKnowledgeBaseRetrievalStreamEvent` for
+  forward-compatible handling of unrecognized event names.
 
 ### Breaking Changes
 
