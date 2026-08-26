@@ -8,7 +8,6 @@ import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,7 +57,7 @@ final class GenAiTracingScope implements AutoCloseable {
     private final String operationName;
     private final String serverAddress;
     private final int serverPort;
-    private final Instant startTime;
+    private final long startTimeNanos;
     private final AtomicInteger ended = new AtomicInteger(0);
 
     // Deferred attributes for metrics.
@@ -75,7 +74,7 @@ final class GenAiTracingScope implements AutoCloseable {
         this.operationName = operationName;
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        this.startTime = Instant.now();
+        this.startTimeNanos = System.nanoTime();
     }
 
     void setAgentAttributes(String agentId, String agentName, String agentVersion, String agentType) {
@@ -183,7 +182,7 @@ final class GenAiTracingScope implements AutoCloseable {
     }
 
     private void recordMetrics() {
-        double durationSeconds = (Instant.now().toEpochMilli() - startTime.toEpochMilli()) / 1000.0;
+        double durationSeconds = (System.nanoTime() - startTimeNanos) / 1_000_000_000.0;
 
         Map<String, Object> baseAttributes = new HashMap<>();
         baseAttributes.put(GEN_AI_OPERATION_NAME, operationName);

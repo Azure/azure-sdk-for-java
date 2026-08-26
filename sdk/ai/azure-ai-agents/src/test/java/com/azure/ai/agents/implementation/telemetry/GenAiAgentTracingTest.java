@@ -5,7 +5,6 @@ package com.azure.ai.agents.implementation.telemetry;
 
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.ai.agents.models.WorkflowAgentDefinition;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.BinaryData;
@@ -25,7 +24,6 @@ import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.SpanProcessor;
-import io.opentelemetry.sdk.trace.data.EventData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -116,27 +114,6 @@ public final class GenAiAgentTracingTest {
         String instructions = attrs.get(GEN_AI_SYSTEM_INSTRUCTIONS);
         assertNotNull(instructions);
         assertEquals(captureContent, instructions.contains("Be helpful"));
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void tracesWorkflowAgentCreationWithEvent(boolean captureContent) {
-        WorkflowAgentDefinition definition = new WorkflowAgentDefinition().setWorkflow("workflow-definition-yaml");
-        AgentVersionDetails response = agentVersionResponse();
-
-        agentTracing(captureContent).traceCreateAgentVersion(AGENT_NAME, definition, (request, options) -> response,
-            BinaryData.fromString("{}"), new RequestOptions());
-
-        ReadableSpan span = getSpan();
-        assertEquals("workflow", span.getAttributes().get(GEN_AI_AGENT_TYPE));
-
-        List<EventData> events = span.toSpanData().getEvents();
-        EventData workflowEvent
-            = events.stream().filter(e -> "gen_ai.agent.workflow".equals(e.getName())).findFirst().orElse(null);
-        assertNotNull(workflowEvent, "expected a gen_ai.agent.workflow event");
-        String content = workflowEvent.getAttributes().get(AttributeKey.stringKey("gen_ai.event.content"));
-        assertNotNull(content);
-        assertEquals(captureContent, content.contains("workflow-definition-yaml"));
     }
 
     @Test

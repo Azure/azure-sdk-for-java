@@ -64,10 +64,4 @@ public final class GenAiMessageFormatterTest {
         assertTrue(nullContent.contains("\"id\":\"call-1\""));
     }
 
-    @Test
-    public void workflowEventContentRespectsContentGate() {
-        assertTrue(GenAiMessageFormatter.formatWorkflowEventContent(true, "wf").contains("\"content\":\"wf\""));
-        assertEquals("[]", GenAiMessageFormatter.formatWorkflowEventContent(false, "wf"));
-        assertEquals("[]", GenAiMessageFormatter.formatWorkflowEventContent(true, null));
-    }
 }

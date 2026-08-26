@@ -57,10 +57,7 @@ public final class ResponsesAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Conversation> createConversation() {
-        return Mono.fromFuture(conversationServiceAsync.create()).map(conversation -> {
-            tracer.traceCreateConversation(conversation.id());
-            return conversation;
-        });
+        return tracer.traceCreateConversationAsync(params -> Mono.fromFuture(conversationServiceAsync.create(params)));
     }
 
     /**
@@ -107,7 +104,7 @@ public final class ResponsesAsyncClient {
 
         ResponseCreateParams builtParams = params.build();
         return tracer.traceResponseAsync(createResponse, builtParams,
-            () -> Mono.fromFuture(this.responseServiceAsync.create(builtParams)));
+            tracedParams -> Mono.fromFuture(this.responseServiceAsync.create(tracedParams)));
     }
 
     /**
@@ -133,7 +130,7 @@ public final class ResponsesAsyncClient {
 
         ResponseCreateParams builtParams = params.build();
         return tracer.traceStreamingResponseAsync(createResponse, builtParams,
-            () -> StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(builtParams)));
+            tracedParams -> StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(tracedParams)));
     }
 
     /**
