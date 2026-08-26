@@ -4,6 +4,9 @@
 
 ### Features Added
 - Added support for retrieving a blob's physical layout through `BlobClient` and `BlobAsyncClient`.
+- Added locality-aware routing for buffered chunked downloads through `downloadToFile` and `openInputStream`; the layout is cached, refreshed in the background, and falls back to the client's configured endpoint if layout retrieval fails.
+- Added `setDataLocalityEndpoint` to `BlobDownloadStreamOptions` and `BlobDownloadContentOptions` so one-shot downloads can use an endpoint selected from `getLayout`.
+- Added `BlobLayout`, `BlobLayoutInfo`, `BlobLayoutRange`, and `DownloadHint` in `com.azure.storage.blob.models`.
 
 ### Breaking Changes
 
