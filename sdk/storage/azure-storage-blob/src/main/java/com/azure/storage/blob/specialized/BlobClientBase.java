@@ -1870,12 +1870,16 @@ public class BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
 
+        // PagedIterable doesn't expose a supplier constructor, so re-enumerating this instance reuses the locked ETag.
+        AtomicReference<String> layoutETag = new AtomicReference<>();
         BiFunction<String, Integer, PagedResponse<BlobLayout>> pageRetriever = (continuationToken, pageSize) -> {
-            BlobRange range = finalOptions.getRange() == null ? new BlobRange(0) : finalOptions.getRange();
-            BlobRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            BlobGetLayoutOptions requestOptions
+                = BlobAsyncClientBase.getLayoutOptionsWithLockedETag(finalOptions, continuationToken, layoutETag.get());
+            BlobRange range = requestOptions.getRange() == null ? new BlobRange(0) : requestOptions.getRange();
+            BlobRequestConditions requestConditions = requestOptions.getRequestConditions() == null
                 ? new BlobRequestConditions()
-                : finalOptions.getRequestConditions();
-            Integer finalPageSize = pageSize == null ? finalOptions.getMaxResultsPerPage() : pageSize;
+                : requestOptions.getRequestConditions();
+            Integer finalPageSize = pageSize == null ? requestOptions.getMaxResultsPerPage() : pageSize;
 
             Callable<ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal>> operation
                 = () -> this.azureBlobStorage.getBlobs()
@@ -1887,6 +1891,10 @@ public class BlobClientBase {
 
             ResponseBase<BlobsGetLayoutHeaders, BlobLayoutInternal> response
                 = sendRequest(operation, null, BlobStorageException.class);
+            if (continuationToken == null) {
+                layoutETag.set(response.getDeserializedHeaders().getETag());
+            }
+
             BlobLayoutInfo value = ModelHelper.transformBlobLayoutInfo(response);
             BlobLayout publicValue = value == null
                 ? null

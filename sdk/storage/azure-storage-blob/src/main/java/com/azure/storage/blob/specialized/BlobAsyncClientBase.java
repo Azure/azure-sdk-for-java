@@ -133,6 +133,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
@@ -1913,10 +1914,12 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options) {
-        return new PagedFlux<>(
-            pageSize -> withContext(context -> getPublicLayoutPage(null, options, pageSize, context)),
-            (continuationToken, pageSize) -> withContext(
-                context -> getPublicLayoutPage(continuationToken, options, pageSize, context)));
+        return PagedFlux.create(() -> {
+            AtomicReference<String> layoutETag = new AtomicReference<>();
+            return (continuationToken, pageSize) -> withContext(
+                context -> getPublicLayoutPageWithLockedETag(continuationToken, options, pageSize, context, layoutETag))
+                    .flux();
+        });
     }
 
     /**
@@ -1928,8 +1931,11 @@ public class BlobAsyncClientBase {
      */
     public PagedFlux<BlobLayout> getLayoutWithResponse(BlobGetLayoutOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        return new PagedFlux<>(pageSize -> getPublicLayoutPage(null, options, pageSize, finalContext),
-            (continuationToken, pageSize) -> getPublicLayoutPage(continuationToken, options, pageSize, finalContext));
+        return PagedFlux.create(() -> {
+            AtomicReference<String> layoutETag = new AtomicReference<>();
+            return (continuationToken, pageSize) -> getPublicLayoutPageWithLockedETag(continuationToken, options,
+                pageSize, finalContext, layoutETag).flux();
+        });
     }
 
     Mono<BlobLayoutCacheValue> fetchLayoutCacheValueAsync(BlobRange layoutRange,
@@ -1996,6 +2002,23 @@ public class BlobAsyncClientBase {
 
     private Mono<PagedResponse<BlobLayout>> getPublicLayoutPage(String marker, BlobGetLayoutOptions options,
         Integer pageSize, Context context) {
+        return getPublicLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> response);
+    }
+
+    private Mono<PagedResponse<BlobLayout>> getPublicLayoutPageWithLockedETag(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context, AtomicReference<String> layoutETag) {
+        BlobGetLayoutOptions optionsWithConditions = getLayoutOptionsWithLockedETag(options, marker, layoutETag.get());
+        return getPublicLayoutPageWithHeaders(marker, optionsWithConditions, pageSize, context).map(response -> {
+            if (marker == null) {
+                layoutETag.set(response.getDeserializedHeaders().getETag());
+            }
+
+            return response;
+        });
+    }
+
+    private Mono<PagedResponseBase<BlobsGetLayoutHeaders, BlobLayout>> getPublicLayoutPageWithHeaders(String marker,
+        BlobGetLayoutOptions options, Integer pageSize, Context context) {
         return getLayoutPageWithHeaders(marker, options, pageSize, context).map(response -> new PagedResponseBase<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
             response.getValue()
@@ -2045,8 +2068,19 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders());
     }
 
-    private static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source,
+    static BlobGetLayoutOptions getLayoutOptionsWithLockedETag(BlobGetLayoutOptions options, String marker,
         String layoutETag) {
+        if (marker == null || layoutETag == null) {
+            return options;
+        }
+
+        BlobGetLayoutOptions finalOptions = options == null ? new BlobGetLayoutOptions() : options;
+        return new BlobGetLayoutOptions().setRange(finalOptions.getRange())
+            .setMaxResultsPerPage(finalOptions.getMaxResultsPerPage())
+            .setRequestConditions(copyRequestConditionsWithIfMatch(finalOptions.getRequestConditions(), layoutETag));
+    }
+
+    static BlobRequestConditions copyRequestConditionsWithIfMatch(BlobRequestConditions source, String layoutETag) {
         // ScrubEtagPolicy strips the quotes from the response ETag, but RFC 9110 requires them on the wire.
         if (source == null) {
             return new BlobRequestConditions().setIfMatch(StorageImplUtils.toETagHeaderValue(layoutETag));
