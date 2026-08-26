@@ -5,8 +5,10 @@ package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Pipeline policy that applies the HTTP header {@code Expect: 100-continue} to requests that carry a body.
@@ -16,6 +18,8 @@ import com.azure.core.util.Configuration;
  * RESERVED FOR INTERNAL USE.
  */
 public final class ExpectContinuePolicy extends HttpPipelineSyncPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(ExpectContinuePolicy.class);
+
     private final long contentLengthThreshold;
     private final boolean disabled;
 
@@ -46,6 +50,13 @@ public final class ExpectContinuePolicy extends HttpPipelineSyncPolicy {
         HttpRequest request = context.getHttpRequest();
         if (!disabled && ExpectContinuePolicyHelper.isEligible(request, contentLengthThreshold)) {
             ExpectContinuePolicyHelper.applyHeader(request);
+            ExpectContinuePolicyHelper.installObservationHolder(context);
         }
+    }
+
+    @Override
+    protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+        ExpectContinuePolicyHelper.logObservation(context, LOGGER);
+        return super.afterReceivedResponse(context, response);
     }
 }

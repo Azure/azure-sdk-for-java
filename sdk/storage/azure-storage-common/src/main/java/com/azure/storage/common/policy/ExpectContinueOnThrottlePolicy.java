@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,6 +22,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * RESERVED FOR INTERNAL USE.
  */
 public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(ExpectContinueOnThrottlePolicy.class);
+
     // Capped so that adding the interval to System.nanoTime() cannot overflow.
     private static final long MAX_INTERVAL_NANOS = Long.MAX_VALUE / 4;
 
@@ -64,6 +67,7 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
             && isWithinThrottleWindow()
             && ExpectContinuePolicyHelper.isEligible(request, contentLengthThreshold)) {
             ExpectContinuePolicyHelper.applyHeader(request);
+            ExpectContinuePolicyHelper.installObservationHolder(context);
         }
     }
 
@@ -73,6 +77,7 @@ public final class ExpectContinueOnThrottlePolicy extends HttpPipelineSyncPolicy
             windowExpiryNanos.set(System.nanoTime() + throttleIntervalNanos);
         }
 
+        ExpectContinuePolicyHelper.logObservation(context, LOGGER);
         return super.afterReceivedResponse(context, response);
     }
 

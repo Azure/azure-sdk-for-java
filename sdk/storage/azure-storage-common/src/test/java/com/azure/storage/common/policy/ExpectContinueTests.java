@@ -49,10 +49,12 @@ import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -260,6 +262,50 @@ public class ExpectContinueTests {
         assertTrue(policies.get(0) instanceof ExpectContinueOnThrottlePolicy);
     }
 
+    // The observation holder key must match the one the Netty client reads
+    // (AzureNettyHttpClientContext.EXPECT_CONTINUE_RECEIVED_KEY). This guards against the two drifting apart.
+    @Test
+    public void observationKeyMatchesTransportContract() {
+        assertEquals("azure-http-client-expect-continue-received",
+            ExpectContinuePolicyHelper.EXPECT_CONTINUE_RECEIVED_KEY);
+    }
+
+    // When the header is applied, the policy installs an observation holder that a supporting client sets, and the
+    // result is readable through the helper. This is the storage half of the bridge; the Netty half is covered by
+    // NettyExpectContinueObservationTests.
+    @SyncAsyncTest
+    public void observationHolderIsSetWhenServiceSendsContinue() throws MalformedURLException {
+        ObservingHttpClient client = new ObservingHttpClient(true, 200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), client);
+
+        send(pipeline, requestWithBody());
+
+        assertTrue(client.holderInstalled, "policy did not install the observation holder");
+        assertEquals(Boolean.TRUE, client.observedValue, "a received 100 Continue was not surfaced to the holder");
+    }
+
+    @SyncAsyncTest
+    public void observationHolderStaysFalseWithoutContinue() throws MalformedURLException {
+        ObservingHttpClient client = new ObservingHttpClient(false, 200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.ON), client);
+
+        send(pipeline, requestWithBody());
+
+        assertTrue(client.holderInstalled, "policy did not install the observation holder");
+        assertEquals(Boolean.FALSE, client.observedValue, "holder should be false when no 100 Continue is observed");
+    }
+
+    @Test
+    public void noObservationHolderWhenHeaderNotApplied() throws MalformedURLException {
+        // In APPLY_ON_THROTTLE mode with no prior throttling the header is not applied, so no holder is installed.
+        ObservingHttpClient client = new ObservingHttpClient(false, 200);
+        HttpPipeline pipeline = pipeline(options(ExpectContinueMode.APPLY_ON_THROTTLE), client);
+
+        pipeline.sendSync(requestWithBody(), Context.NONE);
+
+        assertFalse(client.holderInstalled, "no observation holder should be installed when the header is not applied");
+    }
+
     @ParameterizedTest
     @ValueSource(ints = { 200, 201, 304, 404, 412, 501 })
     public void applyOnThrottleIgnoresNonThrottlingResponses(int statusCode) throws MalformedURLException {
@@ -451,6 +497,48 @@ public class ExpectContinueTests {
         @Override
         public HttpResponse sendSync(HttpRequest request, Context context) {
             return handle(request);
+        }
+    }
+
+    /**
+     * A client that reads the observation holder the policy installs and, when the request carries the expect header,
+     * optionally sets it, mimicking a transport that observed a {@code 100 Continue}. Records what it saw so the test
+     * can assert the round trip.
+     */
+    private static final class ObservingHttpClient extends NoOpHttpClient {
+        private final boolean simulateContinue;
+        private final int status;
+        private volatile boolean holderInstalled;
+        private volatile Boolean observedValue;
+
+        ObservingHttpClient(boolean simulateContinue, int status) {
+            this.simulateContinue = simulateContinue;
+            this.status = status;
+        }
+
+        private HttpResponse handle(HttpRequest request, Context context) {
+            Object holder = context.getData(ExpectContinuePolicyHelper.EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
+            if (holder instanceof AtomicBoolean) {
+                holderInstalled = true;
+                boolean hasExpect = CONTINUE.equals(request.getHeaders().getValue(HttpHeaderName.EXPECT));
+                if (simulateContinue && hasExpect) {
+                    ((AtomicBoolean) holder).set(true);
+                }
+                observedValue = ((AtomicBoolean) holder).get();
+            } else {
+                holderInstalled = false;
+            }
+            return new MockHttpResponse(request, status);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            return Mono.fromCallable(() -> handle(request, context));
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            return handle(request, context);
         }
     }
 

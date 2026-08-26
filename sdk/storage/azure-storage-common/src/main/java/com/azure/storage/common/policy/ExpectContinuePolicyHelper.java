@@ -4,10 +4,14 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Logic shared by {@link ExpectContinuePolicy} and {@link ExpectContinueOnThrottlePolicy}.
@@ -16,6 +20,14 @@ import com.azure.storage.common.implementation.Constants;
  */
 final class ExpectContinuePolicyHelper {
     private static final String CONTINUE = "100-continue";
+
+    /*
+     * Context key under which an AtomicBoolean holder is placed for the HTTP client to set when it observes an interim
+     * "100 Continue" response. This must match the key the Netty client reads
+     * (AzureNettyHttpClientContext.EXPECT_CONTINUE_RECEIVED_KEY). It cannot be shared as a constant because the two
+     * modules do not share a common module beyond azure-core; ideally this contract is promoted into azure-core.
+     */
+    static final String EXPECT_CONTINUE_RECEIVED_KEY = "azure-http-client-expect-continue-received";
 
     private ExpectContinuePolicyHelper() {
     }
@@ -55,6 +67,41 @@ final class ExpectContinuePolicyHelper {
      */
     static void applyHeader(HttpRequest request) {
         request.getHeaders().set(HttpHeaderName.EXPECT, CONTINUE);
+    }
+
+    /**
+     * Installs a holder in the call context that a supporting HTTP client sets when it observes an interim
+     * {@code 100 Continue} response. Only call this when the header has been applied, so the observation is meaningful.
+     *
+     * @param context The pipeline call context.
+     */
+    static void installObservationHolder(HttpPipelineCallContext context) {
+        context.setData(EXPECT_CONTINUE_RECEIVED_KEY, new AtomicBoolean(false));
+    }
+
+    /**
+     * Reads the result of the {@code 100 Continue} observation.
+     *
+     * @param context The pipeline call context.
+     * @return {@link Boolean#TRUE} if a {@code 100 Continue} was observed, {@link Boolean#FALSE} if the header was
+     * applied but no interim response was observed, or {@code null} if no observation was requested for this request.
+     */
+    static Boolean observationResult(HttpPipelineCallContext context) {
+        Object holder = context.getData(EXPECT_CONTINUE_RECEIVED_KEY).orElse(null);
+        return (holder instanceof AtomicBoolean) ? ((AtomicBoolean) holder).get() : null;
+    }
+
+    /**
+     * Logs whether the service engaged in the {@code Expect: 100-continue} handshake, when an observation was made.
+     *
+     * @param context The pipeline call context.
+     * @param logger The logger to log to.
+     */
+    static void logObservation(HttpPipelineCallContext context, ClientLogger logger) {
+        Boolean received = observationResult(context);
+        if (received != null) {
+            logger.verbose("Expect: 100-continue was {} by the service.", received ? "honored" : "not observed");
+        }
     }
 
     private static Long getContentLength(HttpRequest request, BinaryData body) {
