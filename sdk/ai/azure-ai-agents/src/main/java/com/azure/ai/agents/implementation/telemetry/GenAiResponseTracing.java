@@ -28,7 +28,9 @@ import com.openai.models.conversations.ConversationCreateParams;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -508,31 +510,24 @@ public final class GenAiResponseTracing {
             return null;
         }
 
-        List<ResponseOutputItem> outputs = response.output();
-        StringBuilder sb = new StringBuilder("[");
-        boolean first = true;
-
-        for (ResponseOutputItem item : outputs) {
-            String part = formatOutputItem(item);
-            if (part == null) {
-                continue;
+        List<Object> messages = new ArrayList<>();
+        for (ResponseOutputItem item : response.output()) {
+            Map<String, Object> message = formatOutputItem(item);
+            if (message != null) {
+                messages.add(message);
             }
-            if (!first) {
-                sb.append(",");
-            }
-            first = false;
-            sb.append(part);
         }
 
-        if (first) {
-            return "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\"}],\"finish_reason\":\"completed\"}]";
+        if (messages.isEmpty()) {
+            messages.add(GenAiMessageFormatter.jsonObject("role", "assistant", "parts",
+                GenAiMessageFormatter.jsonArray(GenAiMessageFormatter.jsonObject("type", "text")), "finish_reason",
+                "completed"));
         }
 
-        sb.append("]");
-        return sb.toString();
+        return GenAiMessageFormatter.toJson(messages);
     }
 
-    private String formatOutputItem(ResponseOutputItem item) {
+    private Map<String, Object> formatOutputItem(ResponseOutputItem item) {
         if (item.isMessage()) {
             return formatOutputMessage(item.asMessage());
         } else if (item.isFunctionCall()) {
@@ -557,157 +552,117 @@ public final class GenAiResponseTracing {
         return null;
     }
 
-    private String formatFunctionCall(ResponseFunctionToolCall funcCall) {
-        StringBuilder sb = new StringBuilder("{\"role\":\"assistant\",\"parts\":[{\"type\":\"tool_call\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(funcCall.callId()));
+    private Map<String, Object> formatFunctionCall(ResponseFunctionToolCall funcCall) {
+        Map<String, Object> part = GenAiMessageFormatter.jsonObject("type", "tool_call", "id", funcCall.callId());
         if (captureContent()) {
-            sb.append(",\"name\":").append(GenAiMessageFormatter.jsonEscape(funcCall.name()));
-            sb.append(",\"arguments\":").append(GenAiMessageFormatter.jsonEscape(funcCall.arguments()));
+            part.put("name", funcCall.name());
+            part.put("arguments", funcCall.arguments());
         }
-        sb.append("}]}");
-        return sb.toString();
+        return assistantMessage(part);
     }
 
-    private String formatFileSearchCall(ResponseFileSearchToolCall fileSearch) {
-        StringBuilder sb = new StringBuilder(
-            "{\"role\":\"assistant\",\"parts\":[{\"type\":\"tool_call\",\"content\":{\"type\":\"file_search_call\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(fileSearch.id()));
+    private Map<String, Object> formatFileSearchCall(ResponseFileSearchToolCall fileSearch) {
+        Map<String, Object> content
+            = GenAiMessageFormatter.jsonObject("type", "file_search_call", "id", fileSearch.id());
         if (captureContent()) {
             List<String> queries = fileSearch.queries();
             if (queries != null && !queries.isEmpty()) {
-                sb.append(",\"queries\":[");
-                for (int i = 0; i < queries.size(); i++) {
-                    if (i > 0) {
-                        sb.append(",");
-                    }
-                    sb.append(GenAiMessageFormatter.jsonEscape(queries.get(i)));
-                }
-                sb.append("]");
+                content.put("queries", queries);
             }
             Optional<List<ResponseFileSearchToolCall.Result>> results = fileSearch.results();
             if (results.isPresent() && !results.get().isEmpty()) {
-                sb.append(",\"results\":[");
-                boolean firstResult = true;
+                List<Object> serializedResults = new ArrayList<>();
                 for (ResponseFileSearchToolCall.Result result : results.get()) {
-                    if (!firstResult) {
-                        sb.append(",");
-                    }
-                    firstResult = false;
-                    sb.append("{");
-                    boolean hasField = false;
+                    Map<String, Object> serializedResult = GenAiMessageFormatter.jsonObject();
                     if (result.fileId().isPresent()) {
-                        sb.append("\"file_id\":").append(GenAiMessageFormatter.jsonEscape(result.fileId().get()));
-                        hasField = true;
+                        serializedResult.put("file_id", result.fileId().get());
                     }
                     if (result.filename().isPresent()) {
-                        if (hasField) {
-                            sb.append(",");
-                        }
-                        sb.append("\"filename\":").append(GenAiMessageFormatter.jsonEscape(result.filename().get()));
-                        hasField = true;
+                        serializedResult.put("filename", result.filename().get());
                     }
                     if (result.score().isPresent()) {
-                        if (hasField) {
-                            sb.append(",");
-                        }
-                        sb.append("\"score\":").append(result.score().get());
+                        serializedResult.put("score", result.score().get());
                     }
-                    sb.append("}");
+                    serializedResults.add(serializedResult);
                 }
-                sb.append("]");
+                content.put("results", serializedResults);
             }
         }
-        sb.append("}}]}");
-        return sb.toString();
+        return assistantMessage(GenAiMessageFormatter.jsonObject("type", "tool_call", "content", content));
     }
 
-    private String formatWebSearchCall(ResponseFunctionWebSearch webSearch) {
-        return "{\"role\":\"assistant\",\"parts\":[{\"type\":\"tool_call\",\"content\":{\"type\":\"web_search_call\",\"id\":"
-            + GenAiMessageFormatter.jsonEscape(webSearch.id()) + "}}]}";
+    private Map<String, Object> formatWebSearchCall(ResponseFunctionWebSearch webSearch) {
+        return assistantMessage(GenAiMessageFormatter.jsonObject("type", "tool_call", "content",
+            GenAiMessageFormatter.jsonObject("type", "web_search_call", "id", webSearch.id())));
     }
 
-    private String formatCodeInterpreterCall(ResponseCodeInterpreterToolCall codeInterpreter) {
-        StringBuilder sb = new StringBuilder(
-            "{\"role\":\"assistant\",\"parts\":[{\"type\":\"tool_call\",\"content\":{\"type\":\"code_interpreter_call\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(codeInterpreter.id()));
+    private Map<String, Object> formatCodeInterpreterCall(ResponseCodeInterpreterToolCall codeInterpreter) {
+        Map<String, Object> content
+            = GenAiMessageFormatter.jsonObject("type", "code_interpreter_call", "id", codeInterpreter.id());
         if (captureContent()) {
             Optional<String> code = codeInterpreter.code();
             if (code.isPresent()) {
-                sb.append(",\"code\":").append(GenAiMessageFormatter.jsonEscape(code.get()));
+                content.put("code", code.get());
             }
         }
-        sb.append("}}]}");
-        return sb.toString();
+        return assistantMessage(GenAiMessageFormatter.jsonObject("type", "tool_call", "content", content));
     }
 
-    private String formatComputerCall(ResponseComputerToolCall computerCall) {
-        return "{\"role\":\"assistant\",\"parts\":[{\"type\":\"computer_call\",\"id\":"
-            + GenAiMessageFormatter.jsonEscape(computerCall.callId()) + "}]}";
+    private Map<String, Object> formatComputerCall(ResponseComputerToolCall computerCall) {
+        return assistantMessage(GenAiMessageFormatter.jsonObject("type", "computer_call", "id", computerCall.callId()));
     }
 
-    private String formatMcpCall(ResponseOutputItem.McpCall mcpCall) {
-        StringBuilder sb = new StringBuilder("{\"role\":\"assistant\",\"parts\":[{\"type\":\"mcp_call\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(mcpCall.id()));
+    private Map<String, Object> formatMcpCall(ResponseOutputItem.McpCall mcpCall) {
+        Map<String, Object> part = GenAiMessageFormatter.jsonObject("type", "mcp_call", "id", mcpCall.id());
         if (captureContent()) {
-            sb.append(",\"name\":").append(GenAiMessageFormatter.jsonEscape(mcpCall.name()));
-            sb.append(",\"server_label\":").append(GenAiMessageFormatter.jsonEscape(mcpCall.serverLabel()));
-            sb.append(",\"arguments\":").append(GenAiMessageFormatter.jsonEscape(mcpCall.arguments()));
+            part.put("name", mcpCall.name());
+            part.put("server_label", mcpCall.serverLabel());
+            part.put("arguments", mcpCall.arguments());
         }
-        sb.append("}]}");
-        return sb.toString();
+        return assistantMessage(part);
     }
 
-    private String formatImageGenerationCall(ResponseOutputItem.ImageGenerationCall imageGen) {
-        return "{\"role\":\"assistant\",\"parts\":[{\"type\":\"image_generation_call\",\"id\":"
-            + GenAiMessageFormatter.jsonEscape(imageGen.id()) + "}]}";
+    private Map<String, Object> formatImageGenerationCall(ResponseOutputItem.ImageGenerationCall imageGen) {
+        return assistantMessage(GenAiMessageFormatter.jsonObject("type", "image_generation_call", "id", imageGen.id()));
     }
 
-    private String formatMcpApprovalRequest(ResponseOutputItem.McpApprovalRequest approval) {
-        StringBuilder sb
-            = new StringBuilder("{\"role\":\"assistant\",\"parts\":[{\"type\":\"mcp_approval_request\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(approval.id()));
+    private Map<String, Object> formatMcpApprovalRequest(ResponseOutputItem.McpApprovalRequest approval) {
+        Map<String, Object> part
+            = GenAiMessageFormatter.jsonObject("type", "mcp_approval_request", "id", approval.id());
         if (captureContent()) {
-            sb.append(",\"name\":").append(GenAiMessageFormatter.jsonEscape(approval.name()));
-            sb.append(",\"server_label\":").append(GenAiMessageFormatter.jsonEscape(approval.serverLabel()));
-            sb.append(",\"arguments\":").append(GenAiMessageFormatter.jsonEscape(approval.arguments()));
+            part.put("name", approval.name());
+            part.put("server_label", approval.serverLabel());
+            part.put("arguments", approval.arguments());
         }
-        sb.append("}]}");
-        return sb.toString();
+        return assistantMessage(part);
     }
 
-    private String formatMcpListTools(ResponseOutputItem.McpListTools mcpListTools) {
-        StringBuilder sb = new StringBuilder("{\"role\":\"assistant\",\"parts\":[{\"type\":\"mcp_list_tools\",\"id\":");
-        sb.append(GenAiMessageFormatter.jsonEscape(mcpListTools.id()));
+    private Map<String, Object> formatMcpListTools(ResponseOutputItem.McpListTools mcpListTools) {
+        Map<String, Object> part = GenAiMessageFormatter.jsonObject("type", "mcp_list_tools", "id", mcpListTools.id());
         if (captureContent()) {
-            sb.append(",\"server_label\":").append(GenAiMessageFormatter.jsonEscape(mcpListTools.serverLabel()));
+            part.put("server_label", mcpListTools.serverLabel());
         }
-        sb.append("}]}");
-        return sb.toString();
+        return assistantMessage(part);
     }
 
-    private String formatOutputMessage(ResponseOutputMessage message) {
-        StringBuilder sb = new StringBuilder("{\"role\":\"assistant\",\"parts\":[");
-        boolean firstPart = true;
-
+    private Map<String, Object> formatOutputMessage(ResponseOutputMessage message) {
+        List<Object> parts = new ArrayList<>();
         if (message.content() != null) {
             for (ResponseOutputMessage.Content contentPart : message.content()) {
-                if (!firstPart) {
-                    sb.append(",");
-                }
-                firstPart = false;
                 if (contentPart.isOutputText() && captureContent()) {
                     ResponseOutputText textPart = contentPart.asOutputText();
-                    sb.append("{\"type\":\"text\",\"content\":")
-                        .append(GenAiMessageFormatter.jsonEscape(textPart.text()))
-                        .append("}");
+                    parts.add(GenAiMessageFormatter.jsonObject("type", "text", "content", textPart.text()));
                 } else {
-                    sb.append("{\"type\":\"text\"}");
+                    parts.add(GenAiMessageFormatter.jsonObject("type", "text"));
                 }
             }
         }
 
-        sb.append("],\"finish_reason\":\"completed\"}");
-        return sb.toString();
+        return GenAiMessageFormatter.jsonObject("role", "assistant", "parts", parts, "finish_reason", "completed");
+    }
+
+    private static Map<String, Object> assistantMessage(Map<String, Object> part) {
+        return GenAiMessageFormatter.jsonObject("role", "assistant", "parts", GenAiMessageFormatter.jsonArray(part));
     }
 
     /**

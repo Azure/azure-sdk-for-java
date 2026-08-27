@@ -14,6 +14,7 @@ import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.openai.core.JsonValue;
+import com.openai.core.ObjectMappers;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpResponseFor;
 import com.openai.core.http.StreamResponse;
@@ -38,11 +39,13 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -267,6 +270,29 @@ public final class GenAiResponseTracingTest {
         assertEquals(StatusCode.ERROR, getResponseSpan().toSpanData().getStatus().getStatusCode());
     }
 
+    @Test
+    public void responseFixtureFormattingGatesContentAndProducesValidJson() throws Exception {
+        Response response = ObjectMappers.jsonMapper().readValue(RESPONSE_FIXTURE, Response.class);
+
+        String contentOff = responseTracing.formatOutputFromResponse(response);
+        assertFalse(contentOff.contains("lookup-tool"));
+        assertFalse(contentOff.contains("Seattle"));
+        assertFalse(contentOff.contains("hello"));
+
+        GenAiResponseTracing contentEnabledTracing = createResponseTracing(true);
+        String contentOn = contentEnabledTracing.formatOutputFromResponse(response);
+        assertTrue(contentOn.contains("lookup-tool"));
+        assertTrue(contentOn.contains("Seattle"));
+
+        Object parsed = ObjectMappers.jsonMapper().readValue(contentOn, Object.class);
+        assertTrue(parsed instanceof List);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> messages = (List<Map<String, Object>>) parsed;
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> textParts = (List<Map<String, Object>>) messages.get(1).get("parts");
+        assertEquals("hello \"world\"", textParts.get(0).get("content"));
+    }
+
     private ReadableSpan getConversationSpan() {
         ReadableSpan span = spanProcessor.getEndedSpans()
             .stream()
@@ -339,6 +365,29 @@ public final class GenAiResponseTracingTest {
             .object_(JsonValue.from("conversation"))
             .build();
     }
+
+    private GenAiResponseTracing createResponseTracing(boolean captureContent) {
+        ConfigurationBuilder configuration
+            = new ConfigurationBuilder().putProperty("experimental.enable_genai_tracing", "true")
+                .putProperty("otel.instrumentation.genai.capture_message_content", Boolean.toString(captureContent));
+        return new GenAiResponseTracing(
+            new GenAiInstrumentation("https://contoso.services.ai.azure.com", configuration.build(),
+                TracerProvider.getDefaultProvider().createTracer("test", null, "Microsoft.CognitiveServices", null),
+                MeterProvider.getDefaultProvider().createMeter("test", null, null)),
+            new OpenAITracingContextBridge());
+    }
+
+    private static final String RESPONSE_FIXTURE
+        = "{\"id\":\"resp-1\",\"object\":\"response\",\"created_at\":1,\"status\":\"completed\","
+            + "\"error\":null,\"incomplete_details\":null,\"instructions\":null,\"model\":\"gpt-4o\","
+            + "\"output\":[{\"type\":\"function_call\",\"id\":\"fc-1\",\"call_id\":\"call-1\","
+            + "\"name\":\"lookup-tool\",\"arguments\":\"{\\\"city\\\":\\\"Seattle\\\"}\",\"status\":\"completed\"},"
+            + "{\"type\":\"message\",\"id\":\"msg-1\",\"status\":\"completed\",\"role\":\"assistant\","
+            + "\"content\":[{\"type\":\"output_text\",\"annotations\":[],\"text\":\"hello \\\"world\\\"\"}]}],"
+            + "\"parallel_tool_calls\":true,\"metadata\":{},\"tool_choice\":\"auto\",\"tools\":[],"
+            + "\"text\":{\"format\":{\"type\":\"text\"}},\"truncation\":\"disabled\","
+            + "\"usage\":{\"input_tokens\":10,\"input_tokens_details\":{\"cached_tokens\":0},"
+            + "\"output_tokens\":5,\"output_tokens_details\":{\"reasoning_tokens\":0},\"total_tokens\":15}}";
 
     private static final class TestSpanProcessor implements SpanProcessor {
         private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();

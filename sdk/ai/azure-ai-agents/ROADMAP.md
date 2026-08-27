@@ -135,8 +135,9 @@ specific differences listed in [GAPS.md](GAPS.md). The immediate parity work is:
 - Use the Python content-recording configuration key while retaining the former
   Java key as a compatibility fallback.
 - Match provider and legacy-attribute compatibility behavior.
-- Confirm whether Python-equivalent propagation controls are required while
-  keeping baggage disabled by default.
+- Match Python's default wire behavior: propagate `traceparent` and
+  `tracestate`, and do not propagate baggage. Do not add Python-specific
+  OpenAI-client hook controls to Java's Azure Core pipeline.
 - Keep the implemented raw-response and raw-stream coverage in the first
   release and in maintained live validation.
 
@@ -273,7 +274,7 @@ Implementation status as of 2026-08-26:
 - Use the exact attribute names and value types from the approved contract.
 - Emit numeric attributes as numbers where required.
 - Emit collection attributes, including finish reasons, as collections.
-- Replace hand-built JSON with `azure-json` and `JsonWriter`.
+- Serialize GenAI message attributes with `azure-json` and `JsonWriter`.
 - Validate message, tool-call, tool-response, workflow, and system-instruction
   payloads against the selected schemas.
 - When content recording is disabled, do not collect or emit
