@@ -100,7 +100,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationModeResolver;
 
 import reactor.core.publisher.Flux;
@@ -1207,7 +1206,7 @@ public class BlobAsyncClientBase {
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
-                addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
+                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1261,7 +1260,7 @@ public class BlobAsyncClientBase {
             return withContext(context -> downloadStreamWithResponseInternal(finalOptions.getRange(),
                 finalOptions.getDownloadRetryOptions(), finalOptions.getRequestConditions(),
                 finalOptions.isRetrieveContentRangeMd5(), finalOptions.getContentValidationAlgorithm(),
-                addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
+                StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint()))
                     .flatMap(r -> BinaryData.fromFlux(r.getValue())
                         .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
                             r.getHeaders(), data, r.getDeserializedHeaders()))));
@@ -1274,15 +1273,6 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
         // Prevents revapi visibility increased error
         return downloadStreamWithResponseInternal(range, options, requestConditions, getRangeContentMd5, null, context);
-    }
-
-    private static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
-        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
-            return context;
-        }
-
-        Context finalContext = context == null ? Context.NONE : context;
-        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponseInternal(BlobRange range, DownloadRetryOptions options,
@@ -1641,9 +1631,7 @@ public class BlobAsyncClientBase {
                     chunkDownloadFunc = (range, conditions) -> finalLayoutCache.getValidValueAsync().flatMap(cached -> {
                         String endpoint
                             = BlobLayoutRangeResolver.resolveEndpoint(range.getOffset(), cached.getRanges());
-                        Context callContext = endpoint == null
-                            ? finalContext
-                            : finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint);
+                        Context callContext = StorageImplUtils.addDataLocalityEndpoint(finalContext, endpoint);
                         return BlobAsyncClientBase.this.downloadStreamWithResponse(range, downloadRetryOptions,
                             conditions, rangeGetContentMd5, callContext);
                     });

@@ -1497,7 +1497,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
             Context context = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, null);
-            context = Transforms.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
+            context = StorageImplUtils.addDataLocalityEndpoint(context, finalOptions.getDataLocalityEndpoint());
 
             return blockBlobAsyncClient.downloadStreamWithResponse(Transforms.toBlobDownloadStreamOptions(finalOptions))
                 .contextWrite(FluxUtil.toReactorContext(context))

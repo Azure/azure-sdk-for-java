@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.policy.DataLocalityPolicy;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -361,6 +362,24 @@ public class StorageImplUtils {
             logger.info(STRING_TO_SIGN_LOG_INFO_MESSAGE, stringToSign, System.lineSeparator());
             logger.warning(STRING_TO_SIGN_LOG_WARNING_MESSAGE, Constants.STORAGE_LOG_STRING_TO_SIGN);
         }
+    }
+
+    /**
+     * Adds a data locality endpoint to the given {@link Context} so that {@link DataLocalityPolicy} routes the
+     * request to that endpoint.
+     *
+     * @param context The call context. May be null.
+     * @param dataLocalityEndpoint The endpoint the request should be routed to. May be null or empty, in which case
+     * the context is returned unchanged.
+     * @return The context carrying the data locality endpoint, or the original context if no endpoint was supplied.
+     */
+    public static Context addDataLocalityEndpoint(Context context, String dataLocalityEndpoint) {
+        if (CoreUtils.isNullOrEmpty(dataLocalityEndpoint)) {
+            return context;
+        }
+
+        Context finalContext = context == null ? Context.NONE : context;
+        return finalContext.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, dataLocalityEndpoint);
     }
 
     /**

@@ -10,9 +10,9 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
-import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.policy.DataLocalityPolicy;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.util.AutoRefreshingCache;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -91,9 +91,7 @@ public final class BlobInputStream extends StorageInputStream {
             if (layoutCache != null) {
                 BlobLayoutCacheValue cached = layoutCache.getValidValueSync();
                 String endpoint = BlobLayoutRangeResolver.resolveEndpoint(offset, cached.getRanges());
-                if (endpoint != null) {
-                    callContext = this.context.addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, endpoint);
-                }
+                callContext = StorageImplUtils.addDataLocalityEndpoint(this.context, endpoint);
             }
 
             ByteBuffer currentBuffer = this.blobClient

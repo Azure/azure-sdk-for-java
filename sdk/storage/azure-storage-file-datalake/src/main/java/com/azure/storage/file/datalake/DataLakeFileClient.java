@@ -1135,7 +1135,8 @@ public class DataLakeFileClient extends DataLakePathClient {
         Context context) {
         FileReadOptions finalOptions = options == null ? new FileReadOptions() : options;
         Context upnContext = BuilderHelper.addUpnHeader(finalOptions::isUserPrincipalName, context);
-        Context finalContext = Transforms.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
+        Context finalContext
+            = StorageImplUtils.addDataLocalityEndpoint(upnContext, finalOptions.getDataLocalityEndpoint());
 
         return DataLakeImplUtils.returnOrConvertException(() -> {
             BlobDownloadResponse response = blockBlobClient.downloadStreamWithResponse(stream,
