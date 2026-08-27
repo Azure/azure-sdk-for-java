@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class ResourceAnchorsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ResourceAnchors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ResourceAnchors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: ResourceAnchors_Delete_MaximumSet.

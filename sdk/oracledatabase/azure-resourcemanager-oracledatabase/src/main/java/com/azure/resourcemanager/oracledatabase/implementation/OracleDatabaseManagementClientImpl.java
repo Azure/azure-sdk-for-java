@@ -532,7 +532,7 @@ public final class OracleDatabaseManagementClientImpl implements OracleDatabaseM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2025-11-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.cloudExadataInfrastructures = new CloudExadataInfrastructuresClientImpl(this);
         this.dbServers = new DbServersClientImpl(this);

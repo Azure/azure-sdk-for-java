@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class GiMinorVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GiMinorVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/GiMinorVersions_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: GiMinorVersions_Get_MaximumSet.

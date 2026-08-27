@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ResourceAnchorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ResourceAnchors_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/ResourceAnchors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: ResourceAnchors_CreateOrUpdate_MaximumSet.

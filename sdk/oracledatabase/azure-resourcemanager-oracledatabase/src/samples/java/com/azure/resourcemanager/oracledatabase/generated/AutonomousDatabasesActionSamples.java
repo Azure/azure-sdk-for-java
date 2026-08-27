@@ -12,7 +12,7 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecyc
  */
 public final class AutonomousDatabasesActionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Action_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-11-01-preview/AutonomousDatabases_Action_MaximumSet_Gen.json
      */
     /**
      * Sample code: AutonomousDatabases_Action_MaximumSet.
